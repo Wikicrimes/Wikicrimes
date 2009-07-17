@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+<head>
+	<title>WikiCrimes.org - Denounce Posting Confirmation</title>
+</head>
+
+<body bgcolor="#bae7fe" font-size="10px" leftmargin="0" topmargin="0" rightmargin="0" bottommargin="0" marginwidth="0" marginheight="0">
+
+<!-- CSS goes in <body> in case contents of <head> is stripped -->
+
+<style>
+body,td { color: #000000; font-size: 11px; line-height: 14px; font-family: Verdana, Arial, Helvetica, sans-serif; }
+p { font-size: 12px; margin-top : 5px; margin-bottom : 10px; line-height: 15px; font-family: Verdana, Arial, Helvetica, sans-serif; color: #333; }
+a { text-decoration: underline; color: #0062bd; }
+a:hover { text-decoration: none; }
+.repeaterTitle { color: #0158bc; font-size: 14px; font-weight: bold; padding-bottom:5px; margin-bottom: 20px; border-bottom: 1px solid #d9d9d9; }
+.footerText, .footerText a { color: #fff; }
+.topNote { font-size: 10px; color: #0a567e; padding: 10px 0 8px 0; }
+.topNote a { color: #023955; }
+.imgBorder { border: 5px solid #e2e2e2; }
+</style>
+
+<!-- The entire email is wrapped in a table to make sure the background color is displayed if it's stripped from the body tag -->
+
+<table width="100%" bgcolor="#bae7fe" cellpadding="0" cellspacing="0">
+<tr>
+<td valign="top" align="center">
+
+	<!-- Link to web-based version of this email -->
+
+	<table align="center" width="600" cellspacing="0" cellpadding="0" border="0">
+	<tr>
+		<td class="topNote"></td>
+
+	</tr>
+	</table>
+	
+	<!-- Header table -->
+	
+	<table align="center" width="600" cellspacing="0" cellpadding="0" border="0" bgcolor="#164886">
+	<tr>
+		<td><img src="http://www.wikicrimes.org/images/topemail.jpg" alt="WikiCrimes.org - Mapping Crimes Collaboratively" width="603" height="66"></td>
+	</tr>
+	</table>
+	
+	<!-- Content table -->
+
+	
+	<table align="center" width="600" cellspacing="0" cellpadding="0" border="0" bgcolor="ffffff">
+	<tr>
+		<td width="25"><img src="_space.gif" width="20" height="1" border="0"></td>	
+		<td width="550" valign="top">
+		
+		<br><br>
+		
+		<!-- Email Content -->
+		
+		<p class="repeaterTitle">Crime Posting Confirmation - WikiCrimes.org</p>
+		
+				
+		<p>Hi,</p>
+
+	
+		<p>${usuario.primeiroNome} (${usuario.email}) is a member of WikiCrimes' user <a href=http://www.wikicrimes.org>WikiCrimes</a>, a project to share information about crimes in a digitalized map.</p>
+		
+		<p> He/She reported a existence of Denounce and wants to hear you about it. </p>
+<p> Please, click <a href=http://www.wikicrimes.org/main.html?idrelato=${relato.chave}&idconf=${confirmacao.idConfirmacao}> here</a>(*) to access the website and to give your opinion.</p>
+	
+	<p> Information about the posting to be confirmed: </p>
+	 <table>	
+			<tr> <td> Type of denounce: </td> <td>${subTipoRelato}</td> </tr>
+			<tr> <td> Description: </td> <td>${relato.descricao}</td> </tr>
+
+	</table>
+		<p> While confirming this posting take a time to register to WikiCrimes and know more about this project that informs you where is not safe! </p>
+	<br>
+		
+		<p class="repeaterTitle">WikiCrimes Team.</p>
+		
+		
+		<br>
+		(*) In case you can not click the link, copy the address and paste it in your browser window
+		</td>
+		<td width="25"><img src="" width="20" height="1" border="0"></td>	
+	</tr>
+	</table>
+	
+	<!-- Unsubscribe -->
+	
+	<table align="center" width="600" cellspacing="0" cellpadding="00" border="0" bgcolor="#CCFFFF">
+
+	<tr>
+		<td width="25"><img src="_space.gif" width="25" height="1" border="0"></td>	
+		<td width="225"><span class="footerText">This email was sent to [${confirmacao.usuario.email}]<br><strong><unsubscribe>Click here</unsubscribe></strong>, in case you do <em>not</em> want to receive e-mails like this anymore.</span></td>
+		<td width="225" align="right"><img src="/_space.gif" width="1" height="15" border="0"><br><span class="footerText"><strong><a href="#">WikiCrimes.org</a></strong><br>©2007-2009 Wikinova Solutions. All Rights Reserved<br></span><br><img src="/_space.gif" width="1" height="15" border="0"><br></td>
+
+		<td width="25"><img src="_space.gif" width="25" height="1" border="0"></td>	
+	</tr>
+	</table>
+	
+	<br><br>
+
+	</td>
+</tr>
+</table>
+
+</body>
+</html>

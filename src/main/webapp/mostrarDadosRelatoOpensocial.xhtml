@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC
+"-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:jsp="http://java.sun.com/JSP/Page">
+	
+	<head>
+		<meta http-equiv="Cache-Control" content="no-store" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+		<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+		
+		<link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" type="text/css" href="./styles/wikicrimes.css" title="default" />		
+		
+	<script	type="text/javascript">
+	/* <![CDATA[ */
+		function chamaModal(){
+			parent.displayMessage('./login.html?idCrime='+'#{mostrarDadosForm.crime.chave}', 300, 245,'Login');
+		}			
+	/* ]]> */
+	</script>	
+	
+		
+	</head>
+	
+	<body style="overflow-x: hidden">
+		
+		
+		<script type="text/javascript" src="scripts/wz_tooltip.js"></script>
+		<script type="text/javascript" src="scripts/tip_balloon.js"></script>
+		<style type="text/css">
+
+			a:link, a:visited, a:active {
+			text-decoration: underline;
+			 background:#FFFFFF;
+			}
+			a:hover {
+			text-decoration: underline; 
+			 color:#000; 
+			background:#FFFFCC;
+			cursor: pointer; 
+			}
+
+		</style>	
+		
+		<f:loadBundle var="messages" basename="messages" />
+		<div id="topoBalao"> <b>Dados do Alerta</b> </div>
+		<h:panelGrid border="0" style="font-size: 11px; font-family: sans-serif;" columns="1">
+			
+			
+			<h:form id="mostrarDadosForm">
+				
+				<c:if test="#{not empty message}">
+					<h:outputText value="#{message}" styleClass="message" />
+				</c:if>
+				
+				
+				<!--  Dados Gerais -->
+				<h:panelGrid border="0" columns="1" style="text-align:left">
+					
+					<h:outputText value="#{messages['relato.mostra.descricao']}" style="vertical-align: text-top" />				
+				
+					
+					<h:outputText value="#{mostrarDadosRelatoForm.relato.descricao}" />
+				<br/>
+					<h:outputText value ="#{messages['razao.mostrarDados.titulo']}" />	
+					
+					<h:panelGrid>
+						<t:selectManyCheckbox layoutWidth="2" id="razoesCheck" displayValueOnly="true" disabled="true" layout="pageDirection"  value="#{mostrarDadosRelatoForm.razoesSel}">						
+							<f:selectItems id="razoes" value="#{mostrarDadosRelatoForm.razoes}" />
+						</t:selectManyCheckbox>
+					</h:panelGrid>				
+				
+					<h:outputText value="#{messages['relato.mostra.periodo']}" style="vertical-align: text-top" />
+					
+					<h:panelGrid columns="4">
+						<h:selectBooleanCheckbox value="#{mostrarDadosRelatoForm.relato.madrugada}" disabled="true" rendered="#{mostrarDadosRelatoForm.relato.madrugada}"></h:selectBooleanCheckbox><h:outputText value="#{messages['relato.madrugada']}" rendered="#{mostrarDadosRelatoForm.relato.madrugada}"/>
+						
+						<h:selectBooleanCheckbox value="#{mostrarDadosRelatoForm.relato.manha}" disabled="true" rendered="#{mostrarDadosRelatoForm.relato.manha}"></h:selectBooleanCheckbox><h:outputText value="#{messages['relato.manha']}" rendered="#{mostrarDadosRelatoForm.relato.manha}"/>
+						
+						<h:selectBooleanCheckbox value="#{mostrarDadosRelatoForm.relato.tarde}" disabled="true" rendered="#{mostrarDadosRelatoForm.relato.tarde}"></h:selectBooleanCheckbox><h:outputText value="#{messages['relato.tarde']}" rendered="#{mostrarDadosRelatoForm.relato.tarde}"/>
+						
+						<h:selectBooleanCheckbox value="#{mostrarDadosRelatoForm.relato.noite}" disabled="true" rendered="#{mostrarDadosRelatoForm.relato.noite}"></h:selectBooleanCheckbox><h:outputText value="#{messages['relato.noite']}" rendered="#{mostrarDadosRelatoForm.relato.noite}"/>										
+					</h:panelGrid>
+				
+					
+					
+					
+				</h:panelGrid>		
+
+				
+				<t:saveState value="#{mostrarDadosRelatoForm.relato.idRelato}" />
+			</h:form>			
+		</h:panelGrid>
+		<!--  	<table>
+				<tr align="left">
+					<td> #{messages['mostrardados.permalinkRelato']} (<a href="" onmouseover="Tip('#{messages['relato.mostra.permalink']}', BALLOON, true, ABOVE, true, OFFSETX, -100);"  >?</a>) </td>
+				</tr>
+				<tr align="left">
+						<td> <input type="text" readonly="readonly" style="font-size: 10px;" onclick="this.select();" value="http://www.wikicrimes.org/main.html?idcrime=#{mostrarDadosRelatoForm.relato.chave}" size="55"/> </td>
+				</tr>
+			</table>	-->	
+	</body>
+</html>

@@ -1,0 +1,44 @@
+#divBalaoTutor {
+	position: absolute;
+	visibility:visible;
+	top:50%;
+	left:100px;
+	padding: 15px 0 0 0;
+	width:200px;
+	font-family:Arial, sans-serif; 
+	font-size: 11px;			
+}
+#topoBalaoSetaCima {
+	text-align: right;
+	cursor: pointer;
+	display: block;
+	padding: 25px 5px 0;
+ 	background: url(../img/balao/bubble.gif) no-repeat top;			
+}
+#meioBalaoSetaCima {
+	display: block;
+	padding: 0 8px; 
+	background: url(../img/balao/bubble_filler.gif) repeat bottom;			
+}
+#baseBalaoSetaCima {
+	display: block;
+	padding:3px 8px 10px;				
+ 	background: url(../img/balao/bubble.gif) no-repeat bottom;			
+}
+#topoBalaoSetaBaixo {
+	text-align: right;
+	cursor: pointer;
+	display: block;
+	padding: 3px 8px 0;
+ 	background: url(../img/balao/bubble_baixo.gif) no-repeat top;			
+}
+#meioBalaoSetaBaixo {
+	display: block;
+	padding: 0 8px; 
+	background: url(../img/balao/bubble_filler.gif) repeat bottom;			
+}
+#baseBalaoSetaBaixo {
+	display: block;
+	padding:30px 8px 0;				
+ 	background: url(../img/balao/bubble_baixo.gif) no-repeat bottom;			
+}

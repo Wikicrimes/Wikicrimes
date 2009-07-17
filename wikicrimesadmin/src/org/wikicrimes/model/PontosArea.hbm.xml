@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="org.wikicrimes.model.PontosArea" table="TB_PTA_PONTOS_AREA" lazy="true">
+        <id name="idPontosArea" column="ARO_IDPONTOS_AREA" unsaved-value="null">
+            <generator class="increment"/>
+        </id>
+        <property name="latitude" column="PTA_LATITUDE" type="java.lang.Double" not-null="false"/>
+        <property name="longitude" column="PTA_LONGITUDE" type="java.lang.Double" not-null="false"/>
+        <property name="ordemCriacao" column="PTA_ORDEM_CRIACAO" type="java.lang.String" not-null="false"/>        
+        <many-to-one name="areaObservacao" column="ARO_IDAREA_OBSERVACAO" class="org.wikicrimes.model.AreaObservacao" /> 
+  	</class>
+</hibernate-mapping>

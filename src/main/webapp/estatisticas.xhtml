@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:c="http://java.sun.com/jstl/core"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:t="http://myfaces.apache.org/tomahawk"
+	  xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:rich="http://richfaces.org/rich">
+	  
+		<f:loadBundle var="messages" basename="messages" />
+		<t:panelGrid id="painelPrincipalEstatisticas" style=" font-family: sans-serif;" width="100%" columns="2">
+			<t:panelGrid columns="2">
+				<t:panelGroup colspan="2" style="text-align: left; vertical-align: top">
+					<b><h:outputText style="font-size: 13px" value="#{messages['estatisticas.area.visivel']}" /></b>
+				</t:panelGroup>
+				
+				<t:panelGroup colspan="2" >
+					<h:outputText style="font-size: 12px" value="#{messages['estatistivas.area.visivel.total.ocorrencias']}" />
+					<t:panelGroup style="font-size: 12px; text-align: left;" id="divQtdeCrimesFiltrados">
+						
+					</t:panelGroup>
+				</t:panelGroup>	
+				<t:panelGroup colspan="2" >
+					<h:outputText style="font-size: 12px" value="#{messages['estatistivas.area.visivel.filtros.aplicados']}:" />
+					<t:panelGroup style="font-size: 12px; text-align: left;" id="divFiltrosAplicados">
+						
+					</t:panelGroup>
+					
+				</t:panelGroup>
+				<t:panelGroup colspan="2">
+					<h:outputLink style="background-color: transparent; color:blue;" value="estatistica.html" target="_blank">
+						<h:outputText value="#{messages['estatistica.link']}"/>
+					</h:outputLink>
+				</t:panelGroup>	
+			</t:panelGrid>	
+			<t:panelGrid width="100%" columns="2">
+				<t:panelGroup style="position: relative;" id="graficoEstatisticasAV">
+					
+				</t:panelGroup>
+				<t:panelGroup style="position: relative;" id="graficoRazoesAV">
+					
+				</t:panelGroup>
+				
+			</t:panelGrid>
+		</t:panelGrid>	
+</html>
+
+

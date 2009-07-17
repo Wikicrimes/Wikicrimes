@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="org.wikicrimes.model.Log" table="TB_L_LOG" lazy="true">
+        <id name="idLog" column="L_IDLOG" unsaved-value="null">
+            <generator class="increment"/>
+        </id>
+        <property name="campo" column="L_CAMPO" type="java.lang.String"/>
+        <property name="data" column="L_DATA" type="java.util.Date" not-null="true"/>
+        <property name="campoAntigo" column="L_CAMPO_ANTIGO" type="java.lang.String"/>
+        <property name="campoNovo" column="L_CAMPO_NOVO" type="java.lang.String"/>
+        <property name="idObj" column="L_IDOBJ" type="java.lang.Long" />
+        <many-to-one name="usuario" column="USU_IDUSUARIO" class="org.wikicrimes.model.Usuario" />
+        <many-to-one name="tipoLog" column="TLOG_IDTIPO_LOG" class="org.wikicrimes.model.TipoLog" />
+        
+               
+
+    </class>
+</hibernate-mapping>

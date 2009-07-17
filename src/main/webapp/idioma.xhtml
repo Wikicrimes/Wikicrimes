@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+
+<h:form>
+<table border="0" width="100%" cellspacing="0" cellpadding="0">
+	<tr >
+		<td>
+			<t:commandLink immediate="true" action="#{localeForm.MudaLocale}">
+				<f:param value="pt" name="languageCode" />
+				<h:graphicImage value="/images/flags/Brazil.gif"></h:graphicImage>
+			</t:commandLink>
+
+			<t:commandLink immediate="true" action="#{localeForm.MudaLocale}">
+				<f:param value="en" name="languageCode" />
+				<h:graphicImage value="/images/flags/USA.png"></h:graphicImage>
+			</t:commandLink>
+			<t:commandLink immediate="true" action="#{localeForm.MudaLocale}">
+				<f:param value="es" name="languageCode" />
+				<h:graphicImage value="/images/flags/Spain.gif"></h:graphicImage>
+			</t:commandLink>
+			<t:commandLink immediate="true" action="#{localeForm.MudaLocale}">
+				<f:param value="it" name="languageCode" />
+				<h:graphicImage value="/images/flags/Italy.png"></h:graphicImage>
+			</t:commandLink>
+		</td>
+		<td >
+			<h:outputLink value="#" onclick="displayMessage('#{messages['webapp.localAjuda']}', 650, 400,'#{messages['usuario.ajuda']}');">
+				<h:outputText value="#{messages['usuario.ajuda']}"
+					title="#{messages['usuario.ajudaWikicrimes']}"/>
+			</h:outputLink>									
+		</td>
+		<td>
+			<a href="#{request.contextPath}/rss" styleClass="estiloImagem">
+				<t:graphicImage url="/images/feed-icon-14x14.png" style="border: 0;"/>								
+			</a>
+		</td>
+	</tr>
+</table>
+</h:form>
+
+</html>

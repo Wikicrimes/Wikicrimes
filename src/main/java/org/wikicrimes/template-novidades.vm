@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01 Transitional//EN'>
+
+<html>
+<head>
+	<title>WikiCrimes.org - Confirmação de Cadastro</title>
+</head>
+
+<body bgcolor='#bae7fe' font-size='10px' leftmargin='0' topmargin='0' rightmargin='0' bottommargin='0' marginwidth='0' marginheight='0'>
+
+<!-- CSS goes in <body> in case contents of <head> is stripped -->
+
+<style>
+body,td { color: #000000; font-size: 11px; line-height: 14px; font-family: Verdana, Arial, Helvetica, sans-serif; }
+p { font-size: 12px; margin-top : 5px; margin-bottom : 10px; line-height: 15px; font-family: Verdana, Arial, Helvetica, sans-serif; color: #333; }
+a { text-decoration: underline; color: #0062bd; }
+a:hover { text-decoration: none; }
+.repeaterTitle { color: #0158bc; font-size: 14px; font-weight: bold; padding-bottom:5px; margin-bottom: 20px; border-bottom: 1px solid #d9d9d9; }
+.footerText, .footerText a { color: #fff; }
+.topNote { font-size: 10px; color: #0a567e; padding: 10px 0 8px 0; }
+.topNote a { color: #023955; }
+.imgBorder { border: 5px solid #e2e2e2; }
+</style>
+
+<!-- The entire email is wrapped in a table to make sure the background color is displayed if it's stripped from the body tag -->
+
+<table width='100%' bgcolor='#bae7fe' cellpadding='0' cellspacing='0'>
+<tr>
+<td valign='top' align='center'>
+
+	<!-- Link to web-based version of this email -->
+
+	<table align='center' width='600' cellspacing='0' cellpadding='0' border='0'>
+	<tr>
+		<td class='topNote'></td>
+
+	</tr>
+	</table>
+	
+	<!-- Header table -->
+	
+	<table align='center' width='600' cellspacing='0' cellpadding='0' border='0' bgcolor='#164886'>
+	<tr>
+		<td><img src='http://www.wikicrimes.org/images/topemail.jpg' alt='WikiCrimes.org - Mapeando Crimes Colaborativamente' width='603' height='66'></td>
+	</tr>
+	</table>
+	
+	<!-- Content table -->
+
+	
+	<table align='center' width='600' cellspacing='0' cellpadding='0' border='0' bgcolor='ffffff'>
+	<tr>
+		<td width='25'><img src='_space.gif' width='20' height='1' border='0'></td>	
+		<td width='550' valign='top'>
+		
+		<br><br>
+		
+		<!-- Email Content -->
+		
+		<p class='repeaterTitle'>Novidades em WikiCrimes - WikiCrimes.org</p>
+		
+				
+		<p>Ola ${crime.usuario.nome},</p>
+
+	
+		<p ALIGN='JUSTIFY'> WikiCrimes tem uma nova versão. Nela colocamos novos mecanismos de filtragem de crimes. 
+Já é possível selecionar só aqueles que foram confirmados ou mesmo apenas os crimes com fontes confiáveis (feitos por entidades certificadoras). 
+Aproveitamos para dizer que o Jornal Diário do Nordeste  (um dos maiores do estado do ceará) é nosso mais novo parceiro, sendo a primeira entidade
+ certificadora cadastrada no site. Estamos incluindo todos os homicídios coletados por esse veículo de mídia na região metropolitana de Fortaleza. 
+Outra novidade nessa nova versão é a chamada por colaboradores. A colaboração pode basicamente ser de duas formas: colaboradores individuais voluntários e 
+as  entidades certificadoras.  Os colaboradores individuais voluntários são aqueles que têm interesse de ajudar basicamente com o registro de crimes, moderação
+ (realizando confirmações e identificando abusos, por exemplo) e com a divulgação do projeto. A única exigência que se faz a esses colaboradores é que façam registros de crimes
+ periodicamente. Esses colaboradores formarão uma comunidade que será chamada a discutir as melhorias e direções que devem ser seguidas no sistema.
+ Eles terão ainda prioridade na recepção de novas versões do software e na participação de promoções que forem realizadas. 
+As entidades certificadoras podem ser instituições ou mesmo pessoas físicas que detenham informação sobre crimes e que desejem cadastrá-lo em WikiCrimes.
+ Ao serem inscritos com tal elas terão o poder de criar seu próprio mapa de crimes através da funcionalidade de pesquisa avançada de crimes.
+ Além disso, os mapas gerados pela entidade certificadora podem ser exportados em forma de widgets a serem instalados em outras páginas. 
+Para ser entidade certificadora é necessária uma atuação consistente e contínua de registro de crimes que sejam  obrigatoriamente de fonte com credibilidade. 
+São potenciais entidades certificadoras os meios de comunicação, as associações classistas, ONGs e evidentemente os órgãos públicos de segurança e justiça. 
+Tendo interesse em participar, mande uma mensagem para <a href='mailto:faleconosco@wikicrimes.org'>faleconosco@wikicrimes.org</a>. 
+De qualquer forma, consultem WikiCrimes e compartilhem informações sobre crimes para saber onde não é seguro.
+</p>
+	<br>
+		
+		<p class='repeaterTitle'>Equipe WikiCrimes.</p>
+		
+		
+		<br>
+		(*) Se não conseguir clicar no link, copie o endereço e cole-o na janela do seu navegador
+		<p> </p>
+		</td>
+		<td width='25'><img src='' width='20' height='1' border='0'></td>	
+		
+	</tr>
+	</table>
+	
+	<!-- Unsubscribe -->
+	
+	<table align='center' width='600' cellspacing='0' cellpadding='00' border='0' bgcolor='#CCFFFF'>
+
+	<tr>
+		<td width='25'><img src='_space.gif' width='25' height='1' border='0'></td>	
+		<td width='225'><span class='footerText' ><font color = 'gray'>Este email foi enviado para [${crime.usuario.email}]<br><strong><unsubscribe>Clique aqui</unsubscribe></strong>, caso <em>não</em> queira mais receber e-mails como este.</span></td>
+		<td width='225' align='right'><img src='/_space.gif' width='1' height='15' border='0'><br><span class='footerText'><strong><font color = 'gray'><a href='#'><font color = 'gray'>WikiCrimes.org</a></strong><br>Fortaleza, CE Brasil<br></span><br><img src='/_space.gif' width='1' height='15' border='0'><br></td>
+
+		<td width='25'><img src='_space.gif' width='25' height='1' border='0'></td>	
+	</tr>
+	</table>
+	
+	<br><br>
+
+	</td>
+</tr>
+</table>
+
+</body>
+</html>

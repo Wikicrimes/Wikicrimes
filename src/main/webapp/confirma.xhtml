@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<ui:composition template="./layoutAvisos.xhtml">
+		<ui:define name="titulo">
+			#{messages['usuario.ativacao']}
+			</ui:define>
+		<ui:define name="menu">
+				<ui:include src="headerSemMenu.xhtml" />
+		</ui:define>
+		<ui:define name="menucentral">
+			<f:view>
+				<h:panelGrid>
+					<br />
+					<h:outputText value="#{messages['usuario.ativacao.parabens']}" />
+					<br />
+					<h:outputText value="#{messages['usuario.ativacao.orientacao']}" />
+
+					<h:form id="confirmaCadastro">
+						<h:inputHidden id="key" value="#{confirmaCadastro.key}" />
+						<h:inputHidden id="id" value="#{confirmaCadastro.id}" />
+					</h:form>
+				</h:panelGrid>
+				<ui:include src="loginUsuarioContent.xhtml" />
+				
+			</f:view>
+
+
+
+
+		</ui:define>
+	</ui:composition>
+
+</html>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="org.wikicrimes.model.Perfil" table="TB_PER_PERFIL" lazy="true">
+        <id name="idPerfil" column="PER_IDPERFIL" unsaved-value="null">
+            <generator class="increment"/>
+        </id>
+        <property name="nome" column="PER_NOME" type="java.lang.String" not-null="true"/>
+        <property name="descricao" column="PER_DESCRICAO" type="java.lang.String"/>
+    </class>
+</hibernate-mapping>

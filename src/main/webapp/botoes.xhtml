@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:c="http://java.sun.com/jstl/core"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:t="http://myfaces.apache.org/tomahawk"
+	  xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:rich="http://richfaces.org/rich">
+	<head>
+		<meta http-equiv="content-type"
+			content="text/html; charset=iso-8859-1" />		
+		<link rel="stylesheet" href="./styles/modal-message.css" type="text/css"/>
+		<script type="text/javascript" src="./scripts/modal-message.js"></script> 
+		<meta http-equiv="Cache-Control" content="no-store" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+		<meta http-equiv="content-type"
+			content="text/html; charset=iso-8859-1" />
+	</head>
+	<body>
+	
+		<!--  <div id="anylinkmenu1" class="anylinkcss">
+
+			<a onclick="setPodeRegistrar(true,4,1);" style="font-size:10px;">#{messages['menu.roubo.roubopessoa']}</a>
+			<a onclick="setPodeRegistrar(true,4,2);" style="font-size:10px;">#{messages['menu.roubo.roubopropriedade']}</a>
+			<a onclick="setPodeRegistrar(true,1,1);" style="font-size:10px;">#{messages['menu.roubo.tentativaroubopessoa']}</a>
+			<a onclick="setPodeRegistrar(true,1,2);" style="font-size:10px;">#{messages['menu.roubo.tentativaroubopropriedade']}</a>
+
+		</div>
+		<div id="anylinkmenu2" class="anylinkcss">
+
+			<a onclick="setPodeRegistrar(true,3,1);" style="font-size:10px;">#{messages['menu.furto.furtopessoa']}</a>
+			<a onclick="setPodeRegistrar(true,3,2);" style="font-size:10px;">#{messages['menu.furto.furtopropriedade']}</a>
+			<a onclick="setPodeRegistrar(true,2,1);"	style="font-size:10px;">#{messages['menu.furto.tentativafurtopessoa']}</a>
+			<a onclick="setPodeRegistrar(true,2,2);" style="font-size:10px;">#{messages['menu.furto.tentativafurtopropriedade']}</a>
+
+		</div>
+		<div id="anylinkmenu3" class="anylinkcss">
+
+			<a onclick="setPodeRegistrar(true,5,3);" style="font-size:10px;">#{messages['menu.violencia.rixasbrigas']}</a>
+			<a onclick="setPodeRegistrar(true,5,4);" style="font-size:10px;">#{messages['menu.violencia.violenciadomestica']}</a>
+			<a onclick="setPodeRegistrar(true,5,5);" style="font-size:10px;">#{messages['menu.violencia.abusoautoridade']}</a>
+			<a onclick="setPodeRegistrar(true,5,6);" style="font-size:10px;">#{messages['menu.violencia.homicidio']}</a>
+			<a onclick="setPodeRegistrar(true,5,7);" style="font-size:10px;">#{messages['menu.violencia.tentativahomicidio']}</a>
+			<a onclick="setPodeRegistrar(true,5,8);" style="font-size:10px;">#{messages['menu.violencia.latrocinio']}</a>
+		</div>
+
+		<div id="anylinkmenu4" class="anylinkcss">
+			<a onclick="setPodeRegistrar(true,6,1);" style="font-size:10px;">#{messages['menu.relato.areasperigosas']}</a>
+			<a onclick="setPodeRegistrar(true,6,2);" style="font-size:10px;">#{messages['menu.relato.drogas']}</a>
+		</div>
+		-->		
+<!-- Caso o usuário esteja logado -->
+		<a4j:form id="pesquisaGenerica">
+			<a4j:commandButton value=""
+					id="btnBuscaGenerica" reRender="painelMostraDadosPesqGen" action="#{filtroForm.pesquisarGenericamente}" style="display: none"/>
+			
+		<t:panelGrid cellpadding="0" cellspacing="0" columns="2" width="100%">
+				<t:panelGrid columns="2" cellpadding="0" cellspacing="0">
+					<c:if test="#{!empty usuario}">	
+						<t:panelGrid width="130px">	
+							<h:outputLink value="#" onclick="mostraDivTelaEscolhaRegistroTipoCrime();return false;">
+								<h:outputText style="font-size:13px" value="#{messages['botoes.registro.crime']}" />
+							</h:outputLink>
+						</t:panelGrid>
+						<t:panelGrid>								 
+							<h:outputLink value="#" onclick="mostraDivTelaEscolhaRegistroTipoDenuncia();return false;">
+								<h:outputText style="font-size:13px" value="#{messages['botoes.registro.denuncia']}" />
+							</h:outputLink>
+						</t:panelGrid>
+					</c:if>
+					<c:if test="#{empty usuario}">
+						<t:panelGrid width="130px">	
+							<h:outputLink value="#" onclick="displayMessage(\'./login.html?mensagemLogin=#{messages['usuario.informacao']}&amp;tipoRegistro=1\', 300, 245,'Login');return false">
+								<h:outputText style="font-size:13px" value="#{messages['botoes.registro.crime']}" />
+							</h:outputLink>
+						</t:panelGrid>
+						<t:panelGrid>								 
+							<h:outputLink value="#" onclick="displayMessage(\'./login.html?mensagemLogin=#{messages['usuario.informacao.denuncia']}&amp;tipoRegistro=2\', 300, 245,'Login');return false">
+								<h:outputText style="font-size:13px" value="#{messages['botoes.registro.denuncia']}" />
+							</h:outputLink>
+						</t:panelGrid>	
+					</c:if>
+				</t:panelGrid>
+				<t:panelGrid align="right" cellpadding="0" cellspacing="0" columns="3">		
+					<t:panelGrid cellpadding="0" cellspacing="0">
+						<t:selectOneMenu value="#{filtroForm.tipoPesquisaSel}" id="tipoPesquisa">
+							<f:selectItem itemLabel="#{messages['webapp.btn.procurar']}" itemValue="0"/>
+							<f:selectItem itemLabel="#{messages['botoes.combo.endereco']}" itemValue="1"/>
+							<f:selectItem itemLabel="#{messages['botoes.combo.crime']}" itemValue="2"/>
+						</t:selectOneMenu>
+					</t:panelGrid>
+					<t:panelGrid cellpadding="0" cellspacing="0">	
+						<t:inputText value="#{filtroForm.valorPesquisado}" forceId="true" id="pesquisa" onkeypress="return submitEnter(event);" size="30"/>
+					</t:panelGrid>
+					<t:panelGrid cellpadding="0" cellspacing="0">	
+						<t:commandButton id="btnPesquisa" forceId="true" styleClass="button" onclick="submeteFormularioPesquisaGenerica();return false;" value="#{messages['botoes.btn.pesquisar']}">
+						</t:commandButton>
+					</t:panelGrid>
+				</t:panelGrid>
+				
+			</t:panelGrid>								
+			<script>				
+			/* <![CDATA[ */						
+				function submeteFormularioPesquisaGenerica(){
+					var opcao = document.getElementById("pesquisaGenerica:tipoPesquisa").value;
+					if(	opcao=='0' || opcao=='1'){
+						showLocal();						
+					}
+					if(opcao=='2'){
+						jaMostrouAjudaPesquisaCrime = true;
+						document.getElementById("pesquisaGenerica:btnBuscaGenerica").click(); 
+					}
+					return false;						
+				}
+				function submitEnter(e){
+					
+					var unicode=e.keyCode? e.keyCode : e.charCode
+					if (unicode == 13) {
+						submeteFormularioPesquisaGenerica();				
+						return false;
+					}
+					else return true;	
+				}
+				function mostraDivPesquisaGenerica(){
+					//if(net_browser==11){
+						//document.getElementById("divPesquisaGenerica").style.top = '154px';
+						//document.getElementById("divPesquisaGenerica").style.left='57.12%';
+					//}
+					
+					document.getElementById("divPesquisaGenerica").style.visibility = 'visible';
+				}
+				function fechaDivPesquisaGenerica(){
+					document.getElementById("divPesquisaGenerica").style.visibility = 'hidden';
+				}
+				
+				function mostraDivTelaEscolhaRegistroTipoCrime(){
+					document.getElementById("formReRenderRegistroCrimes:btRegistroCrimeSubmit").click();	
+					setPodeRegistrar(false, 0);
+					fechaDivTelaEscolhaRegistroTipoDenuncia();
+					
+				}
+				function fechaDivTelaEscolhaRegistroTipoCrime(){
+					document.getElementById("divTelaEscolhaRegistroTipoCrime").style.visibility = 'hidden';
+				}
+
+				function mostraDivTelaEscolhaRegistroTipoDenuncia(){
+					document.getElementById("formReRenderRegistroDenuncia:btRegistroDenunciaSubmit").click();
+					setPodeRegistrar(false, 0);
+					fechaDivTelaEscolhaRegistroTipoCrime();
+					
+				}
+				function fechaDivTelaEscolhaRegistroTipoDenuncia(){
+					document.getElementById("divTelaEscolhaRegistroTipoDenuncia").style.visibility = 'hidden';
+				}
+				
+				function fechaDivPesquisaGenericaChamandoMostraDados(chave, lat, lng){
+					idconf = null;
+					mostrarCrimeMapa(chave, lat, lng);
+					fechaDivPesquisaGenerica();
+				}
+
+				function limparPesquisaGenerica(){
+					fechaDivPesquisaGenerica();
+					document.getElementById("pesquisa").value = "";
+				}	
+							
+			/* ]]> */
+			</script>
+			
+		</a4j:form>
+		
+	</body>
+</html>
+
+

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="org.wikicrimes.model.AreaObservacao" table="TB_ARO_AREA_OBSERVACAO" lazy="true">
+        <id name="idAreaObservacao" column="ARO_IDAREA_OBSERVACAO" unsaved-value="null">
+            <generator class="increment"/>
+        </id> 
+        <many-to-one name="periodoInformacao" column="ARO_IDPERIODO_INFORMACAO" class="org.wikicrimes.model.PeriodoInformacao" lazy="false"/>       
+       
+        <many-to-one name="usuario" column="USU_IDUSUARIO" class="org.wikicrimes.model.Usuario"/>        
+        <set name="pontos" table="TB_PTA_PONTOS_AREA" lazy="true" cascade="save-update">
+            <key><column name="ARO_IDAREA_OBSERVACAO" not-null="true" /></key>
+            <one-to-many class="org.wikicrimes.model.PontosArea"/>
+        </set>
+
+    </class>
+</hibernate-mapping>

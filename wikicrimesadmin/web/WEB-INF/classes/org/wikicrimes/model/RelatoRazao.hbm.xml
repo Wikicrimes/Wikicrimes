@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="org.wikicrimes.model.RelatoRazao" table="TB_RLZ_RELATO_RAZAO" lazy="true">
+        <id name="idRelatoRazao" column="RLZ_IDRELATO_RAZAO" unsaved-value="null">
+            <generator class="increment"/>
+        </id>       
+        <many-to-one name="relato" column="RLZ_IDRELATO" class="org.wikicrimes.model.Relato" unique-key="UK_RELATO_RAZAO" />
+        <many-to-one name="razao" column="RLZ_IDRAZAO" class="org.wikicrimes.model.Razao" unique-key="UK_RELATO_RAZAO" />      
+    </class>
+</hibernate-mapping>

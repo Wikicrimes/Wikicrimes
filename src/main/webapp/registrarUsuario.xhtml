@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<style type="text/css">
+	        .jscalendar-DB-div-style {
+	            position: absolute;
+	            margin-top: -169px;
+	            margin-left: 18px;
+	        }
+        </style>
+		<link rel="stylesheet" type="text/css" href="./styles/wikicrimes.css"
+			title="default" />
+		<script type="text/javascript" src="scripts/util.js"></script>
+		<script type="text/javascript">
+			function goFocus(elementID){
+				document.getElementById(elementID).focus();
+			}
+			function showEstado(value, reset) {
+				if (value == 'BR') {
+					if (reset) document.getElementById('comboEstado').value = "0";
+					document.getElementById('inputEstado').value = "";
+
+					document.getElementById('comboEstado').style.display = 'inline';
+					document.getElementById('inputEstado').style.display = 'none';
+				}
+				else {
+					document.getElementById('comboEstado').value = "0";
+					if (reset) document.getElementById('inputEstado').value = "";					
+
+					document.getElementById('comboEstado').style.display = 'none';
+					document.getElementById('inputEstado').style.display = 'inline';					
+				}
+			}	
+			
+			function getCityLatLng(){
+				if (!parent.geocoder)
+					parent.geocoder = new parent.GClientGeocoder();
+			 	parent.geocoder.getLocations(document.getElementById('usuarioForm:cidade').value + " , " +  document.getElementById('pais').value,setLatLng);			 		
+			}
+			
+			function setLatLng(response){				
+				if (!response || response.Status.code != 200) {
+       				 alert("#{messages['usuario.cidade.nao.encontrada']} (" + document.getElementById('usuarioForm:cidade').value + " , " +  document.getElementById('pais').value + ")");
+       				 document.getElementById('usuarioForm:cidade').focus();
+      			}
+      			else{
+      			place = response.Placemark[0];
+      			//alert(place.address);
+                document.getElementById('usuarioForm:latUsuario').value=place.Point.coordinates[1];
+                document.getElementById('usuarioForm:lngUsuario').value=place.Point.coordinates[0];
+                document.getElementById('btnConfirmar').click();
+                }
+			}
+		</script>
+	</head>
+	<body>
+
+	<f:view> <!-- locale="#{facesContext.externalContext.request.locale}"> -->
+		
+		<f:loadBundle var="messages" basename="messages" />
+
+		<h:panelGrid border="0" columns="1"
+			style="text-align:left;"
+			cellpadding="0" cellspacing="0">
+			
+			<p>
+				<h:outputText value="#{messages['usuario.titulo']}" />
+			</p>
+
+			<h:form id="usuarioForm">
+				<h:inputHidden id="latUsuario"  value="#{usuarioForm.lat}" />
+				<h:inputHidden id="lngUsuario"  value="#{usuarioForm.lng}" />
+				<t:saveState value="#{usuarioForm.lat}" />
+				<t:saveState value="#{usuarioForm.lng}" />
+				<h:panelGroup border="0" columns="1">
+
+					<h:panelGroup border="0" columns="2" style="text-align:left"
+						cellpadding="0" cellspacing="0">
+						<h:panelGrid border="0" columns="2" style="text-align:left">
+							<h:outputText id="primeiroNomeoutput"
+								value="*#{messages['usuario.primeiroNome']}:" />
+							<h:outputText value="*#{messages['usuario.ultimoNome']}:" />
+								
+							<t:inputText required="true" forceId="true"
+								value="#{usuarioForm.usuario.primeiroNome}" id="primeiroNome" />
+							
+							<h:inputText required="true"
+								value="#{usuarioForm.usuario.ultimoNome}" id="ultimoNome" />	
+								
+							<h:message styleClass="errorMessage" for="primeiroNome" />
+							
+							<h:message styleClass="errorMessage" for="ultimoNome" />
+							<t:saveState value="#{usuarioForm.usuario.primeiroNome}" />
+						</h:panelGrid>
+						
+					</h:panelGroup>
+					
+					<h:panelGrid border="0" columns="1" style="text-align:left">
+						<h:outputText value="*#{messages['usuario.email']}:" />
+						<h:inputText required="true" value="#{usuarioForm.usuario.email}"
+							id="email" size="40">
+							<t:validateEmail />
+						</h:inputText>
+						<h:message styleClass="errorMessage" for="email" />
+						<c:if test="#{not empty message}">
+							<c:if test="#{message == messages['erro.email.existente'] }">
+								<h:outputText value="#{message}" styleClass="errorMessage" />
+							</c:if>
+					    </c:if>
+						
+					</h:panelGrid>
+					
+					<h:panelGrid border="0" columns="1" style="text-align:left">
+						<h:outputText value="*#{messages['usuario.cemail']}:" />
+						<h:inputText required="true" id="confemail" size="40"
+								value="#{usuarioForm.cemail}">
+								<t:validateEqual for="email" />
+						</h:inputText>
+						
+						<h:message styleClass="errorMessage" for="confemail" />
+						<c:if test="#{not empty message}">
+							<c:if test="#{message == messages['erro.email.existente'] }">
+								<h:outputText value="#{message}" styleClass="errorMessage" />
+							</c:if>
+					    </c:if>
+						
+					</h:panelGrid>
+					
+					<h:panelGrid border="0" columns="2" style="text-align:left">
+						<h:panelGrid border="0" columns="1" style="text-align:left">
+							<h:outputText value="*#{messages['usuario.senha']}:" />
+							<h:inputSecret required="true"
+								value="#{usuarioForm.usuario.senha}" id="senha">
+								<f:validateLength minimum="4" maximum="10" />
+							</h:inputSecret>
+							<h:message styleClass="errorMessage" for="senha" />
+						</h:panelGrid>
+						<h:panelGrid border="0" columns="1" style="text-align:left">
+							<h:outputText value="*#{messages['usuario.ConfirmacaoSenha']}:" />
+							<h:inputSecret required="true" id="confsenha"
+								value="#{usuarioForm.csenha}">
+								<t:validateEqual for="senha" />
+							</h:inputSecret>
+							<h:message styleClass="errorMessage" for="confsenha" />
+						</h:panelGrid>
+					</h:panelGrid>
+					
+					<h:panelGrid style="">
+						<h:outputText value="*#{messages['usuario.pais']}:" />
+						<t:selectOneCountry forceId="true" 
+							emptySelection="#{messages['usuario.Selecione']}" size="20"
+							required="true" id="pais" value="#{usuarioForm.usuario.pais}" onchange="showEstado(this.value, true);">
+						</t:selectOneCountry>
+						<h:message styleClass="errorMessage" for="pais" />
+					</h:panelGrid>
+					
+					<h:panelGrid style="">
+						<h:outputText value="#{messages['usuario.estado']}:" />
+						<t:inputText id="inputEstado" forceId="true"
+							value="#{usuarioForm.usuario.estado}"/>
+						<t:selectOneMenu required="false"
+							value="#{usuarioForm.usuario.estado}" 
+							id="comboEstado" forceId="true" >
+							<f:selectItem itemLabel="#{messages['usuario.Selecione']}"
+								itemValue="0" />
+							<f:selectItems id="estados" value="#{usuarioForm.estados}" />
+						</t:selectOneMenu>
+						<h:message styleClass="errorMessage" for="comboEstado" />
+					</h:panelGrid>
+					
+					<script>showEstado(document.getElementById('pais').value, false);</script>
+					
+					<h:panelGrid style="">
+						<h:outputText value="*#{messages['usuario.cidade']}:" />
+						<h:inputText  required="true" id="cidade" value="#{usuarioForm.usuario.cidade}" />
+						<h:message styleClass="errorMessage" for="cidade" />
+					</h:panelGrid>
+		
+					<h:panelGrid style="">
+						
+							<h:outputText value="*#{messages['webapp.receber.email.novidades']}" />
+							<h:selectOneListbox size="1" value="#{usuarioForm.usuario.receberNewsletter}" id="receberNewsletter" >									
+									<f:selectItem itemLabel="#{messages['webapp.btn.sim']}" itemValue="1"/>
+									<f:selectItem itemLabel="#{messages['webapp.btn.nao']}" itemValue="0"/>																
+							</h:selectOneListbox>
+							
+										
+					</h:panelGrid>
+					
+					
+					<h:panelGrid>
+						<h:outputText value="*#{messages['usuario.idioma']}:" />
+						<h:panelGroup>
+							<h:selectOneListbox size="1" value="#{usuarioForm.usuario.idiomaPreferencial}" id="idiomaPref" required="true" >
+									<f:selectItem itemLabel="#{messages['usuario.Selecione']}" itemValue=""/>
+									<f:selectItem itemLabel="#{messages['webapp.idioma.en']}" itemValue="en"/>
+									<f:selectItem itemLabel="#{messages['webapp.idioma.pt']}" itemValue="pt"/>
+									<f:selectItem itemLabel="#{messages['webapp.idioma.es']}" itemValue="es"/>
+									<f:selectItem itemLabel="#{messages['webapp.idioma.it']}" itemValue="it"/>								
+							</h:selectOneListbox>
+							<h:message styleClass="errorMessage" for="idiomaPref" />
+						</h:panelGroup>						
+					
+					</h:panelGrid>
+					
+					<h:panelGrid style="">
+						<h:inputTextarea id="termoUso" value="#{usuarioForm.termoUso}" readonly="true" cols="60" rows="8"/>
+						<h:panelGrid columns="3" style="">
+							<t:selectBooleanCheckbox id="concordaTermo" forceId="true" 
+									value="#{usuarioForm.concordaTermo}" 
+									onclick="habilitaBtnRegistrar();"
+									required="true"/>
+							<h:outputText value="#{messages['usuario.aceito']}" />
+							<h:message styleClass="errorMessage" for="concordaTermo" />
+						</h:panelGrid>
+					</h:panelGrid>
+
+					<t:commandButton id="btnConfirmar" forceId="true" action="#{usuarioForm.insert}" style="display: none;" />
+										
+					<t:commandButton id="btnRegistrar" forceId="true"
+						value="#{messages['usuario.btn.registrar']}" onclick="getCityLatLng(); return false;" styleClass="button" disabled="true" />
+					<h:commandButton id="cancel"  value="#{messages['faleconosco.cancelar']}" 
+						onclick="parent.closeMessage();return false" styleClass="button" style="margin-left:10px"/>
+					
+					<script type="text/javascript">
+						function habilitaBtnRegistrar() {
+							v=dwr.util.getValue('concordaTermo'); 
+							if (v==true) {
+								$('btnRegistrar').disabled = false;
+								$('btnRegistrar').className = 'button';
+							}
+							else {
+								$('btnRegistrar').disabled = true;
+								$('btnRegistrar').className = 'button-disabled';
+							}
+						}
+						
+						habilitaBtnRegistrar();
+					</script>
+				</h:panelGroup>
+
+			</h:form>
+
+		</h:panelGrid>
+
+	
+	
+	</f:view>
+
+	
+
+</body>
+
+</html>

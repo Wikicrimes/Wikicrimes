@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="org.wikicrimes.model.EstatisticaCidade" table="TB_ECI_ESTATISTICA_CIDADE" lazy="true">
+        <id name="idEstatisticaCidade" column="ECI_IDESTATISTICA_CIDADE" unsaved-value="null">
+            <generator class="increment"/>
+        </id>
+        <property name="nome" column="ECI_NOME" type="java.lang.String" not-null="true"/>
+        <property name="quantidadeUsuarios" column="ECI_QTD_USUARIOS" type="java.lang.Long" not-null="true"/>
+        <property name="quantidadeCrimes" column="ECI_QTD_CRIMES" type="java.lang.Long" not-null="true"/>
+
+		<property name="quantidadeRoubos" column="ECI_QTD_ROUBOS" type="java.lang.Long" not-null="true"/>
+		<property name="qtdRouboPessoa" column="ECI_QTD_ROUBO_PESSOA" type="java.lang.Long" not-null="true"/>
+		<property name="qtdRouboPropriedade" column="ECI_QTD_ROUBO_PROPRIEDADE" type="java.lang.Long" not-null="true"/>
+		<property name="qtdTentativaRouboPessoa" column="ECI_QTD_TENTATIVA_ROUBO_PESSOA" type="java.lang.Long" not-null="true"/>
+		<property name="qtdTentativaRouboPropriedade" column="ECI_QTD_TENTATIVA_ROUBO_PROPRIEDADE" type="java.lang.Long" not-null="true"/>
+
+		<property name="quantidadeFurtos" column="ECI_QTD_FURTO" type="java.lang.Long" not-null="true"/>
+		<property name="qtdFurtoPessoa" column="ECI_QTD_FURTO_PESSOA" type="java.lang.Long" not-null="true"/>
+		<property name="qtdFurtoPropriedade" column="ECI_QTD_FURTO_PROPRIEDADE" type="java.lang.Long" not-null="true"/>
+		<property name="qtdTentativaFurtoPessoa" column="ECI_QTD_TENTATIVA_FURTO_PESSOA" type="java.lang.Long" not-null="true"/>
+		<property name="qtdTentativaFurtoPropriedade" column="ECI_QTD_TENTATIVA_FURTO_PROPRIEDADE" type="java.lang.Long" not-null="true"/>
+
+		<property name="qtdTentativaRoubo" column="ECI_QTD_TENTATIVA_ROUBO" type="java.lang.Long" not-null="true"/>
+		<property name="qtdTentativaFurto" column="ECI_QTD_TENTATIVA_FURTO" type="java.lang.Long" not-null="true"/>
+
+		<property name="quantidadeOutros" column="ECI_QTD_OUTROS" type="java.lang.Long" not-null="true"/>
+		<property name="qtdOutroRixas" column="ECI_QTD_OUTRO_RIXAS" type="java.lang.Long" not-null="true"/>
+		<property name="qtdOutroViolenciaDomestica" column="ECI_QTD_OUTRO_VIOLENCIA_DOMESTICA" type="java.lang.Long" not-null="true"/>
+		<property name="qtdOutroAbusoAutoridade" column="ECI_QTD_OUTRO_ABUSO_AUTORIDADE" type="java.lang.Long" not-null="true"/>
+		<property name="qtdOutroHomicidio" column="ECI_QTD_OUTRO_HOMICIDIO" type="java.lang.Long" not-null="true"/>
+		<property name="qtdOutroTentativaHomicidio" column="ECI_QTD_OUTRO_TENTATIVA_HOMICIDIO" type="java.lang.Long" not-null="true"/>
+		<property name="qtdOutroLatrocinio" column="ECI_QTD_OUTRO_LATROCINIO" type="java.lang.Long" not-null="true"/>
+		
+		<property name="qtdTurnoUm" column="ECI_QTD_TURNO_UM" type="java.lang.Long" not-null="true"/>
+		<property name="qtdTurnoDois" column="ECI_QTD_TURNO_DOIS" type="java.lang.Long" not-null="true"/>
+		<property name="qtdTurnoTres" column="ECI_QTD_TURNO_TRES" type="java.lang.Long" not-null="true"/>
+		<property name="qtdTurnoQuatro" column="ECI_QTD_TURNO_QUATRO" type="java.lang.Long" not-null="true"/>
+		
+		<property name="latitude" column="ECI_LATITUDE" type="java.lang.Double" not-null="true"/>
+        <property name="longitude" column="ECI_LONGITUDE" type="java.lang.Double" not-null="true"/>
+		
+		<many-to-one name="estatisticaEstado" column="EES_IDESTATISTICA_ESTADO" class="org.wikicrimes.model.EstatisticaEstado" />
+		
+    </class>
+</hibernate-mapping>

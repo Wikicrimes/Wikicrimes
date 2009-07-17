@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC
+"-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:rich="http://richfaces.org/rich">
+
+	<head>
+		<meta http-equiv="Cache-Control" content="no-store" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<link rel="shortcut icon" href="./images/favicon.ico"
+			type="image/x-icon" />
+		<link rel="stylesheet" type="text/css" href="./styles/wikicrimes.css"
+			title="default" />
+	</head>
+
+	<body style="overflow-x: hidden">
+
+	<f:view>
+		<f:loadBundle var="messages" basename="messages" />
+		<ui:composition template="./layoutEstatisticas.xhtml">
+			<ui:define name="titulo">
+			#{messages['estatistica.tituloMundo']}
+			</ui:define>
+			<ui:define name="menu">
+				<ui:include src="headerSemMenu.xhtml" />
+			</ui:define>
+			<ui:define name="menucentral">
+				<!-- chamada ao chart tem que ser em uma mesma linha senao nao funciona... chf=c,ls,0,CCCCCC,0.2,FFFFFF,0.2-->
+				
+				<h:panelGrid border="0" columns="1" style="text-align: center;">
+					<h:panelGrid border="0" columns="1" style="text-align: center;">
+						<h:outputText value="#{messages['estatistica.escopo']} = #{messages['estatistica.escopo.mundo']}" style="text-align:left;font-weight:600;"/>  
+					</h:panelGrid>
+					<h:panelGrid border="0" columns="1" style="text-align: center;">
+						<h:outputText value="#{messages['estatistica.grafico.titulo.gTemporalMundo']}" style="text-align:left;font-weight:600;"/>  
+						<h:graphicImage url="#{estatisticaForm.gTemporalMundo}" alt="#{messages['estatistica.alt.gTemporalMundo']}" />
+					</h:panelGrid>
+					<h:panelGrid border="0" columns="2" style="text-align: justify;">
+						<h:panelGrid corder="0" columns="1" style="text-align: center;">
+							<h:outputText value="#{messages['estatistica.grafico.titulo.gMundo']}" style="text-align:left;font-weight:600;"/> 
+							<h:graphicImage url="#{estatisticaForm.gMundo}" alt="#{messages['estatistica.alt.gMundo']}" />
+						</h:panelGrid>
+						<h:panelGrid corder="0" columns="1" style="text-align: center;">
+							<h:outputText value="#{messages['estatistica.grafico.titulo.gPizzaTurnoMundo']}" style="text-align:left;font-weight:600;"/> 
+							<br/>
+							<br/>
+							<br/>
+							<br/>
+							<br/>
+							<h:graphicImage url="#{estatisticaForm.gPizzaTurnoMundo}" alt="#{messages['estatistica.alt.gPizzaTurnoMundo']}" />
+						</h:panelGrid>
+					</h:panelGrid>
+					<h:panelGrid corder="0" columns="2" style="text-align: justify;">
+						<h:panelGrid corder="0" columns="1" style="text-align: center;">
+							<h:outputText value="#{messages['estatistica.grafico.titulo.gMeterMundo']}" style="text-align:left;font-weight:600;"/> 
+							<h:graphicImage url="#{estatisticaForm.gMeterMundo}" alt="#{messages['estatistica.alt.gMeterMundo']}" />
+						</h:panelGrid>
+						<h:panelGrid corder="0" columns="1" style="text-align: center;">
+							<h:outputText value="#{messages['estatistica.grafico.titulo.gPizzaCrimesMundo']}" style="text-align:left;font-weight:600;"/> 
+							<h:graphicImage url="#{estatisticaForm.gPizzaCrimesMundo}" alt="#{messages['estatistica.alt.gPizzaCrimesMundo']}" />
+						</h:panelGrid>
+					</h:panelGrid>
+				</h:panelGrid>
+				
+				<!-- ############################ Estatisticas de Pais -->
+				 
+				<br/>
+				<h:panelGroup border="0" columns="1" style="text-align:justify;overflow:auto;" width="500" >  <!-- styleClass="scrollerTable" columnClasses="standardTable_ColumnCentered" -->
+				<h:outputText value="#{messages['estatistica.tabela.pais']}" style="text-align:left;font-weight:600;"/> 
+				<br/>
+				<br/>
+				<div align="center" style="overflow:auto; width: 500">
+					<rich:dataTable align="center" id="ePais" var="pais" style="margin-top: 10px" width="500"
+    				value="#{estatisticaForm.ePais}" rows="0" styleClass="rich-table" 
+    				onRowMouseOver="this.style.backgroundColor='#F1F1F1'"
+				onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'">
+    					<rich:column>
+        					<f:facet name="header">
+            					
+                					<h:outputText value="#{messages['epais.pais']}"/>
+            					
+        					</f:facet>
+     					   	<h:outputText value="#{pais.nome}"/>
+    					</rich:column>
+    					<rich:column>
+        					<f:facet name="header">
+            						<h:outputText value="#{messages['epais.quantidadeCrimes']}"/>
+            					</f:facet>
+        					<h:outputText value="#{pais.quantidadeCrimes}"/>
+    					</rich:column>
+    					<rich:column>
+        					<f:facet name="header">
+            						<h:outputText value="#{messages['epais.quantidadeRoubos']}"/>
+            					</f:facet>
+        					<h:outputText value="#{pais.quantidadeRoubos}"/>
+    					</rich:column>
+    					<rich:column>
+        					<f:facet name="header">
+            						<h:outputText value="#{messages['epais.quantidadeFurtos']}"/>
+            				</f:facet>
+        					<h:outputText value="#{pais.quantidadeFurtos}"/>
+    					</rich:column>
+    					<rich:column>
+        					<f:facet name="header">
+            						<h:outputText value="#{messages['epais.quantidadeTentativaRoubo']}"/>
+            					</f:facet>
+        					<h:outputText value="#{pais.qtdTentativaRoubo}"/>
+    					</rich:column>
+    					<rich:column>
+        					<f:facet name="header">
+            						<h:outputText value="#{messages['epais.quantidadeTentativaFurto']}"/>
+            					</f:facet>
+        					<h:outputText value="#{pais.qtdTentativaFurto}"/>
+    					</rich:column>
+    				<rich:column>
+        				<f:facet name="header">
+            					<h:outputText value="#{messages['epais.quantidadeOutros']}"/>
+            				</f:facet>
+        				<h:outputText value="#{pais.quantidadeOutros}"/>
+    				</rich:column>
+    				<rich:column>
+        				<f:facet name="header">
+            				<h:outputText value="#{messages['epais.qtdTurnoUm']}"/>
+            			</f:facet>
+        				<h:outputText value="#{pais.qtdTurnoUm}"/>
+    				</rich:column>
+    				<rich:column>
+        				<f:facet name="header">
+            				<h:outputText value="#{messages['epais.qtdTurnoDois']}"/>
+            				</f:facet>
+        				<h:outputText value="#{pais.qtdTurnoDois}"/>
+    				</rich:column>
+    				<rich:column>
+        				<f:facet name="header">
+            				<h:outputText value="#{messages['epais.qtdTurnoTres']}"/>
+            				</f:facet>
+        				<h:outputText value="#{pais.qtdTurnoTres}"/>
+    				</rich:column>
+    				<rich:column>
+        				<f:facet name="header">
+            				<h:outputText value="#{messages['epais.qtdTurnoQuatro']}"/>
+            				</f:facet>
+        				<h:outputText value="#{pais.qtdTurnoQuatro}"/>
+    				</rich:column>
+    				<rich:column>
+    	 				<f:facet name="header">
+            				<h:outputText value="#{messages['estatistica.visualizar']}"/>
+            			</f:facet>
+            			<h:form>
+           				<h:commandLink value="#{messages['estatistica.grafico']}" action="#{estatisticaForm.acaoPais}" > 
+           					<f:param name="pais" value="#{pais}"/>
+           				</h:commandLink>
+            			</h:form>
+    				</rich:column>
+				</rich:dataTable>
+			</div>
+		</h:panelGroup>
+		
+		<h:outputText value="#{estatisticaForm.escopoGrafico}" style="text-align:left;font-weight:600;" />
+		
+	</ui:define>
+	</ui:composition>  
+	</f:view>
+	</body>
+</html>

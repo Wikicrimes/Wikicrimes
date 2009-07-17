@@ -1,0 +1,210 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+ 
+	<head>
+	   	<link rel="stylesheet" href="./styles/modal-message.css" type="text/css"/>
+		<script type="text/javascript" src="./scripts/modal-message.js"></script>
+		<link rel="alternate" type="application/rss+xml" title="#{messages['rss.titulo']}" href="#{request.contextPath}/rss"/> 	
+	</head>
+
+	<body>
+		<t:panelGroup id="painelPrincipaLoginLogout">
+			<c:if test="#{empty usuario}">	
+				<table align="right" cellpadding="1" cellspacing="0" border="0">
+					<tr>
+						<td width="40px">
+						
+						</td>
+						<td >
+							
+							<h:outputLink value="#" onclick="displayMessage('./login.html', 300, 245,'Login');return false">
+								<h:outputText value="Login" />
+							</h:outputLink>
+							|
+							
+							
+						</td>
+						<td>
+							<h:outputLink value="#" onclick="displayMessage('./registrarUsuario.html', 600, 350,'#{messages['usuario.registrar']}');return false;">
+								<h:outputText value="#{messages['usuario.registre']}" />
+							</h:outputLink>						
+							
+						</td>
+						
+					</tr>
+					<tr>
+						<td colspan="3"> 
+							<div align="right">
+								<br/><br/>
+								<h:outputText value="#{filtroForm.quantidadeCrimes} #{messages['titulo.crimesRegistrados']}" style="font-size:12px; font-weight: bold; text-align: center; margin-top: 2px;"/>
+			    			</div>
+						</td>
+					</tr>
+					
+				</table>
+				
+			</c:if>	
+			<c:if test="#{not empty usuario}">
+				<h:form>
+				
+					<table align="right" border="0" cellspacing="0" cellpadding="1">
+						<tr >
+							<td width="40px">
+						
+							</td>
+						
+							<td>
+								<h:outputText value="#{usuario.email} " />
+							</td>
+							<td>|</td>
+							<td>
+								<a4j:commandLink value=" Logout " reRender="pesquisaGenerica, painelPrincipaLoginLogout" action="#{usuarioForm.logout}" 
+									immediate="true" />
+							</td>
+							<td>|</td>				
+								
+									<td>				
+										<h:outputLink value="#" onclick="displayMessage('./listarAreas.html', 420, 200,'#{messages['webapp.area.titulo.minhasareas']}');return false">
+											<h:outputText value=" #{messages['webapp.area.titulo.minhasareas']} "
+												title="#{messages['webapp.area.titulo.minhasareas']}" />
+										</h:outputLink>
+									</td>
+									<td>|</td>
+								
+							<td>				
+								<h:outputLink value="#" onclick="displayMessage('./listarCrimes.html', 800, 350,'#{messages['usuario.denuncias']}');return false">
+									<h:outputText value=" #{messages['usuario.denuncias']} " 
+										title="#{messages['usuario.denuncias.hint']}" />
+								</h:outputLink>
+							</td>
+							<td>|</td>
+							<td>
+								<h:outputLink value="#" onclick="displayMessage('./editarPreferencias.html', 650, 400,'#{messages['usuario.conta']}');return false">
+									<h:outputText value=" #{messages['usuario.conta']} " 
+										title="#{messages['usuario.conta.hint']}"/>
+								</h:outputLink>
+								
+							</td>
+							
+						</tr>
+						<tr valign="top">
+							<td colspan="10"> 
+								<div align="right">
+									<br/><br/>
+									<h:outputText value="#{filtroForm.quantidadeCrimes} #{messages['titulo.crimesRegistrados']}" style="font-size:12px; font-weight: bold; text-align: center; margin-top: 2px;"/>
+			    				</div>
+							</td>
+						</tr>
+					</table>
+				</h:form>
+				
+			</c:if>
+			
+			
+			<h:form id="formReRenderRegistroCrimes">
+				<a4j:commandButton id="btRegistroCrimeSubmit" reRender="panelRegistroCrime" style="display: none" />
+			</h:form>
+			<h:form id="formReRenderRegistroDenuncia">
+				<a4j:commandButton id="btRegistroDenunciaSubmit" reRender="panelRegistroDenuncia" style="display: none" />
+			</h:form>
+			<h:form id="formDesabilitaTutor">
+				<a4j:commandButton id="btDesabilitaTutor" action="#{filtroForm.desabilitaTutor}" style="display: none" />
+			</h:form>
+			<h:form id="formReRenderLogin">
+				<a4j:commandButton id="btLoginSubmit" reRender="pesquisaGenerica, painelPrincipaLoginLogout" style="display: none" />
+			</h:form>
+			<script>
+			/* <![CDATA[ */
+				function usuarioEstaLogado(){				
+					if(#{usuario != null})
+						return true;
+					else
+						return false;				
+				}
+				function registrarArea1(){ 			
+					if(#{usuario != null}){
+						selecionarComando(map, 'area');
+				  		//document.getElementById("divExplicaMarcarArea").style.visibility = "visible";
+				  		estaRegistrandoArea = true;
+					    startShape();
+					}
+					else{
+						displayMessage('./login.html?mensagemLogin=#{messages["usuario.informacao.area"]}&amp;tipoRegistro=3',300, 245,'Login');
+					}
+				}
+
+				function gerarEmbedded(){
+					if(#{usuario != null}){
+						displayMessage('./geradorEmbedded.html', 900, 510,'#{messages["mapaEmbedded.estado.mapa"]}');
+					}else{
+						displayMessage('./login.html',300, 245,'Login');
+					}	
+				}
+
+
+				var comandoControleMao = new ComandoMao();
+				var comandoControleMaoSelecionado = new ComandoMaoSelecionado();
+				var comandoControleMarcadorDeArea = new ComandoMarcadorDeArea();
+				var comandoControleMarcadorDeAreaSelecionado = new ComandoMarcadorDeAreaSelecionado();
+				var comandoControleEmbed = new ComandoEmbed();	
+				var comandoControleEmbedSelecionado = new ComandoEmbedSelecionado();
+				function selecionarComando(mapa, comando){
+						mapa.removeControl(comandoControleMao);
+						mapa.removeControl(comandoControleMaoSelecionado);
+						mapa.removeControl(comandoControleMarcadorDeArea);
+						mapa.removeControl(comandoControleMarcadorDeAreaSelecionado);
+						mapa.removeControl(comandoControleEmbed);
+						mapa.removeControl(comandoControleEmbedSelecionado);
+						if(comando=='mao'){					
+							mapa.addControl(comandoControleMarcadorDeArea);
+							mapa.addControl(comandoControleMaoSelecionado);
+							if(#{usuario.perfil.nome == 'CERTIFICADOR'}||#{usuario.perfil.nome == 'ADMINISTRADOR'}){
+								if(#{usuario.entidadeCertificadora.idEntidadeCertificadora != 12})
+									mapa.addControl(comandoControleEmbed);
+							}
+						}
+						if(comando == 'area'){					
+							mapa.addControl(comandoControleMarcadorDeAreaSelecionado);
+							mapa.addControl(comandoControleMao);
+							if(#{usuario.perfil.nome == 'CERTIFICADOR'}||#{usuario.perfil.nome == 'ADMINISTRADOR'}){
+								if(#{usuario.entidadeCertificadora.idEntidadeCertificadora != 12})
+									mapa.addControl(comandoControleEmbed);
+							}
+						}
+						if(comando == 'nenhum'){
+							mapa.addControl(comandoControleMarcadorDeArea);
+							mapa.addControl(comandoControleMao);
+							if(#{usuario.perfil.nome == 'CERTIFICADOR'}||#{usuario.perfil.nome == 'ADMINISTRADOR'}){
+								if(#{usuario.entidadeCertificadora.idEntidadeCertificadora != 12})
+									mapa.addControl(comandoControleEmbed);
+							}
+						}
+						if(comando == 'embed'){
+							mapa.addControl(comandoControleMarcadorDeArea);
+							mapa.addControl(comandoControleMao);
+							if(#{usuario.perfil.nome == 'CERTIFICADOR'}||#{usuario.perfil.nome == 'ADMINISTRADOR'}){
+								if(#{usuario.entidadeCertificadora.idEntidadeCertificadora != 12})
+									mapa.addControl(comandoControleEmbedSelecionado);
+							}
+						}
+						
+				}
+				
+				try{
+						
+					selecionarComando(map, 'mao');
+				}catch(e){};				
+			 /* ]]> */	
+			</script>
+		</t:panelGroup>
+	</body>
+</html>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC
+"-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" type="text/css" href="./styles/wikicrimes.css" title="default" />
+	</head>
+	<body>
+
+		<f:loadBundle var="messages" basename="messages" />
+		<h:panelGrid border="0" columns="1" cellspacing="0" style="text-align:left;">
+			<h:outputText id="loginMsg" value="#{loginMessage}" 
+					styleClass="errorMessage" 
+					style="#{empty loginMessage ? 'display:none;' : 'display:inline;'} "/>
+			<h:outputText value="#{messages['usuario.recupere.titulo']}:" />
+			<h:form id="usuarioForm2">
+				<h:panelGrid border="0" columns="2">
+					<h:outputText value="#{messages['usuario.email']}" />
+					<h:inputText required="true" id="emailField" value="#{usuarioForm.usuario.email}" style="width:170px">
+						<t:validateEmail />
+					</h:inputText>
+				</h:panelGrid>
+				<h:panelGrid border="0" columns="1" style="text-align:left; margin-bottom:0px;" width="197">
+					<h:message styleClass="errorMessage" for="emailField" />
+					<c:if test="#{not empty message}">
+						<h:outputText value="#{message}" styleClass="errorMessage" />
+					</c:if>
+					<h:commandButton value="#{messages['usuario.btn.recuperar']}"
+						action="#{usuarioForm.recuperaSenha}" styleClass="button" />
+				</h:panelGrid>	
+			</h:form>
+			
+		</h:panelGrid>			
+
+	</body>
+</html>

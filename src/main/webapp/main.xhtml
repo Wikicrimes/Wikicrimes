@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:c="http://java.sun.com/jstl/core">
+	<head>
+		<meta http-equiv="Cache-Control" content="no-store" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+		<meta http-equiv="content-type"
+			content="text/html; charset=iso-8859-1" />
+	</head>
+	<f:loadBundle var="messages" basename="messages" />
+	<f:view>
+
+	
+		<ui:composition template="layout.xhtml">
+			<ui:define name="titulo">
+                #{messages['webapp.welcome']}
+            </ui:define>
+			<ui:define name="menu">		
+				
+					<ui:include src="header.xhtml" />
+				
+			</ui:define>
+			<ui:define name="botoes">				
+				
+				<ui:include src="botoes.xhtml" />
+							 
+			</ui:define>
+			<ui:define name="conteudo">
+			 
+				<ui:include src="mapa.xhtml" />
+			
+			</ui:define>
+			<ui:define name="estatisticas">
+				<ui:include src="estatisticas.xhtml" />
+				
+			</ui:define>
+			<ui:define name="rightmenu">
+				<ui:include src="idioma.xhtml" />
+				<ui:include src="filtro.xhtml" />
+			</ui:define>
+			<ui:define name="footer">
+				<ui:include src="footer.xhtml" />
+			</ui:define>
+		</ui:composition>
+	</f:view>
+		
+
+
+
+</html>

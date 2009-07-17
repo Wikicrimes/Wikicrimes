@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+	<f:loadBundle var="messages" basename="messages" />
+
+	<head>
+		<title><ui:insert name="titulo" /> | WikiCrimes.org</title>
+		<meta http-equiv="Cache-Control" content="no-store" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+		<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+		<link rel="shortcut icon" href="./images/favicon.ico"
+			type="image/x-icon" />
+		<link rel="stylesheet" type="text/css" href="./styles/wikicrimes.css"
+			title="default" />
+		
+
+		<style type="text/css">
+       .dojoDialog {
+           background: #eee;
+           border: 1px solid #999;
+           -moz-border-radius: 5px;
+           padding: 4px; /*positioning outside of the visible scope to prevent some ui glitches visibility hidden does not work*/
+           position: absolute;
+           left: -800px;
+           top: -800px;
+       }
+
+       .viewDialog {
+           background: #eee;
+           border: 1px solid #999;
+           -moz-border-radius: 5px;
+           padding: 4px; /*positioning outside of the visible scope to prevent some ui glitches visibility hidden does not work*/
+           position: absolute;
+           left: -800px;
+           top: -800px;
+       }
+       
+        .loginDialog {
+           background: #eee;
+           border: 1px solid #999;
+           -moz-border-radius: 5px;
+           padding: 4px; /*positioning outside of the visible scope to prevent some ui glitches visibility hidden does not work*/
+           position: absolute;
+           left: -800px;
+           top: -800px;
+       }
+       
+       .loginDialogDecoration {
+           width: 250px;
+       }
+
+       .loginDialogContent {
+           width: 250px;
+           height: 170px;
+       }
+       .viewDialogDecoration {
+           width: 500px;
+       }
+
+       .viewDialogContent {
+           width: 500px;
+           height: 500px;
+       }
+       
+       .denunciasDialog {
+           background: #eee;
+           border: 1px solid #999;
+           -moz-border-radius: 5px;
+           padding: 4px; /*positioning outside of the visible scope to prevent some ui glitches visibility hidden does not work*/
+           position: absolute;
+           left: -800px;
+           top: -800px;
+       }
+       
+       .denunciasDialogDecoration {
+           width: 800px;
+       }
+
+       .denunciasDialogContent {
+           width: 800px;
+           height: 500px;
+       }
+
+   </style>
+
+		<ui:insert name="head" />
+	</head>
+	<body>
+
+		<table border="0" style="font-size: 11px; font-family: sans-serif;" cellspacing="0" cellpadding="0"
+			align="center" width="100%">
+			<tr>
+				<td align="center">
+					<img src="./images/logo.jpg" style="background-repeat: no-repeat;" />
+					<ui:insert name="menu">
+					</ui:insert>
+				</td>
+			</tr>
+			<tr>
+				<td align="center">
+					<ui:insert name="menucentral">
+					</ui:insert>
+				</td>			
+			</tr>
+			<tr>
+				<td align="center">
+					<h:outputText style="font-size: 10px" value="#{messages['webapp.copyright']}" />
+				</td>
+			</tr>
+		</table>
+		
+	</body>
+</html>

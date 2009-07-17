@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC
+"-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+	<head>
+		<meta http-equiv="Cache-Control" content="no-store" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+		<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+		<link rel="shortcut icon" href="./images/favicon.ico"
+			type="image/x-icon" />
+		<link rel="stylesheet" type="text/css" href="./styles/wikicrimes.css"
+			title="default" />
+		<script type="text/javascript"> 
+			/* <![CDATA[ */						
+				function plotaAreaMapa(nome, pontosTexto){				
+					parent.plotaAreaMapaDaListagem(nome, pontosTexto);					
+					fechaModal();
+				}
+				
+				function fechaModal(){
+					parent.closeMessage(); 
+					return false;
+				}
+	   		/* ]]> */
+	    </script>	
+			
+	</head>
+
+	<body style="overflow-x: hidden">
+
+		<f:view>
+		<f:loadBundle var="messages" basename="messages"/>
+		<h:form id="areaForm">
+		<h:panelGrid columns="1">
+		<c:if test="#{areaForm.qtdAreas != 0}">
+			<rich:dataTable id="areas" var="area" align="center"
+	    	value="#{areaForm.areas}" onRowMouseOver="this.style.backgroundColor='#F1F1F1'"
+					onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'"
+					border="1" cellspacing="0" cellpadding="2" rows="2"
+					styleClass="rich-table">
+			<rich:column>        	
+	        	<f:facet name="header">            	
+	                	<h:outputText value="#{messages['webapp.area.atributo.nome']}"/>            	
+	        	</f:facet>
+	        	<h:outputText value="#{area.nome}"/>
+	    	</rich:column>  		
+	     	<rich:column>        	
+	        	<f:facet name="header">            	
+	                	<h:outputText value="#{messages['webapp.area.atributo.periodo']}"/>            	
+	        	</f:facet>
+	        	<h:outputText value="#{messages[area.periodoInformacao.nome]}"/>
+	    	</rich:column>    	 	
+	    	<rich:column>
+	    	 	<f:facet name="header">
+	            	<h:outputText value="#{messages['crime.visualizar']}"/>
+	            </f:facet>
+	            
+	        	<a onclick="plotaAreaMapa('#{area.nome}','#{area.pontosModoTexto}');" style="cursor: pointer; color: blue;"  href="" target="_parent">
+	            	<u><h:outputText value="#{messages['crime.mapa']}" /></u>
+	        	</a>
+	    	</rich:column>
+	    	<rich:column>
+	    	 	<f:facet name="header">
+	            	<h:outputText value=""/>
+	            </f:facet>            
+	        	<h:commandButton onclick="return window.confirm('#{messages['webapp.area.erro.pergunta.exclusao.area']}');" styleClass="button" value="#{messages['webapp.area.acao.excluir']}" action="#{areaForm.excluirArea}" >
+	        		<f:setPropertyActionListener value="#{area}" target="#{areaForm.areaExcluir}" />
+	        	</h:commandButton>
+	    	</rich:column>   
+	    	
+			</rich:dataTable>
+		</c:if>	
+		</h:panelGrid>
+		</h:form>					
+		</f:view>
+	</body>
+</html>

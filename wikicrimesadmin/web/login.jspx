@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+<f:view>
+<ui:composition template="/templates/print.jspx">
+	<ui:define name="title">#{msg['page.login.title']}</ui:define>
+	<ui:define name="body">
+		<div align="center">
+			<h:form id="loginForm">
+				<rich:panel header="#{msg['page.login.title']}" style="width: 50%;">
+					<h:message for="loginForm" errorStyle="color: red;" />
+					<h:panelGrid columns="3">
+						<h:outputLabel for="cpfInput" value="#{msg['page.login.label.user']}:" />
+						<h:inputText id="cpfInput" value="#{usuarioBean.usuario.email}" 
+							 size="12" required="true" />
+						<h:message for="cpfInput" errorStyle="color: red;" />
+						
+						<h:outputLabel for="senhaInput" value="#{msg['page.login.label.senha']}:" />
+						<h:inputSecret id="senhaInput" value="#{usuarioBean.usuario.senha}"
+							maxlength="11" size="12" required="true" />
+						<h:message for="senhaInput" errorStyle="color: red;" />
+					</h:panelGrid>
+					<h:commandButton action="#{usuarioBean.autenticar}"
+						value="#{msg['page.login.label.entrar']}" />
+				</rich:panel>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>
+</f:view>
+</jsp:root>
+

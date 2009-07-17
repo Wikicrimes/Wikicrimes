@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC
+"-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+
+
+<ui:composition template="./layoutAvisos.xhtml">
+		<f:loadBundle var="messages" basename="messages" />
+		<ui:define name="titulo">
+				<h:outputText value="#{messages['relato.registrado.sucesso']}"
+					style="vertical-align: text-top; font-size: 11px;" />
+			</ui:define>
+		<ui:define name="menu">
+			<script type="text/javascript">
+				parent.crime2.setRegistrado(1);
+			</script>
+			<br />
+		</ui:define>
+	<ui:define name="menucentral">
+
+		<c:if test="#{not empty message}">
+		<h:panelGrid style="font-size:11px;">
+			<h:outputText value="#{message}" />
+			</h:panelGrid>
+		</c:if>
+			<script type="text/javascript">
+				parent.crime2.setIdCrime(<h:outputText value="#{filtroForm.idCrimeRegistrado}" />);
+				parent.showDivComment();
+				parent.relatoRegistrado('<h:outputText value="#{filtroForm.chaveRelatoRegistrado}" />', '<h:outputText value="#{filtroForm.descricaoRelato}" />');
+			</script>
+		</ui:define>
+</ui:composition>
+
+</html>

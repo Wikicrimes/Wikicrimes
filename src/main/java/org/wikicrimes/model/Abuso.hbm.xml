@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="org.wikicrimes.model.Abuso" table="TB_ABU_ABUSO" lazy="true">
+        <id name="idAbuso" column="ABU_IDABUSO" unsaved-value="null">
+            <generator class="increment"/>
+        </id>
+        <property name="descricao" column="ABU_DESCRICAO" type="java.lang.String" not-null="true"/>
+	    <property name="ip" column="ABU_IP" type="java.lang.String"/>
+        <property name="dataHoraRegistro" column="ABU_DATA_HORA_REGISTRO" type="java.util.Date"/>
+        <many-to-one name="usuario" column="USU_IDUSUARIO" class="org.wikicrimes.model.Usuario" />
+        <many-to-one name="crime" column="CRI_IDCRIME" class="org.wikicrimes.model.Crime" />
+        <many-to-one name="relato" column="RRL_IDRELATO" class="org.wikicrimes.model.Relato"/>
+                
+
+    </class>
+</hibernate-mapping>

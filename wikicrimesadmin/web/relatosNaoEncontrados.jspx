@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+
+	<f:view>
+		<ui:composition template="/templates/padrao.jspx">
+			<ui:define name="title">#{msg['commons.editrelato']}</ui:define>
+
+			<ui:define name="head">
+
+				<script>			
+/* <![CDATA[ */
+
+var msgDeErro = '#{msg['page.enderecoCrimes.revgeoError']}';
+var textoBotaoReverse = '#{msg['page.enderecoCrimes.procurarEndereco']}';
+var i = 0;
+var relato;
+var relatos = new Array();
+var map;
+
+//Inicia map
+function initialize() {
+	limparForm();
+}
+
+//Método chamado quando o usuário clica em editar no mapa
+function editarNoMapa(id) {
+	
+	for(var i = 0; i < relatos.length; i++)
+		if(relatos[i].id == id)
+			relatoNoMapa = relatos[i];
+
+	iniciarForm(relatoNoMapa);
+
+	document.getElementById("frameMapa").contentWindow.fixarTarrachaPonto(relatoNoMapa);
+}
+
+
+
+//Trata e envia os dados do formulário
+function salvarEndereco() {
+	if((document.getElementById("idForm").value != '' ||
+		document.getElementById("paisForm").value != '' ||
+		document.getElementById("estadoForm").value != '' ||
+		document.getElementById("cidadeForm").value != '' ||
+		document.getElementById("enderecoForm").value != '' ||
+		document.getElementById("cepForm").value != '') && 
+		document.getElementById("latForm").value != '' &&
+		document.getElementById("lngForm").value != '' ) {
+
+		document.getElementById("enviarBtn").click();
+	}
+}
+
+//Limpa o form e mostra o ID do relato atual.
+function iniciarForm(relato) {
+	document.getElementById("atencao").style.display = "block";
+	document.getElementById("idForm").value = relato.id;
+	document.getElementById("idAuxForm").value = relato.id;
+	document.getElementById("paisForm").value = '';
+	document.getElementById("estadoForm").value = '';
+	document.getElementById("cidadeForm").value = '';
+	document.getElementById("enderecoForm").value = '';
+	document.getElementById("cepForm").value = '';
+	document.getElementById("latForm").value = relato.lat;
+	document.getElementById("lngForm").value = relato.lng;
+}
+
+//Limpa o form completamente
+function limparForm() {
+	document.getElementById("atencao").style.display = "none";
+	document.getElementById("idForm").value = '';
+	document.getElementById("idAuxForm").value = '';
+	document.getElementById("paisForm").value = '';
+	document.getElementById("estadoForm").value = '';
+	document.getElementById("cidadeForm").value = '';
+	document.getElementById("enderecoForm").value = '';
+	document.getElementById("cepForm").value = '';
+	document.getElementById("latForm").value = '';
+	document.getElementById("lngForm").value = '';
+}
+
+//Adiciona relatos ao vetor
+function addRelato(relato) {
+	relatos[i++] = relato;
+}
+
+//"Classe" Ponto que representara relato
+function Ponto() {
+	this.id;
+	this.lat;
+	this.lng;
+	this.cep;
+	this.cidade;
+	this.estado;
+	this.endereco;
+	this.pais;
+}
+/* ]]> */
+				</script>
+
+			</ui:define>
+
+			<ui:define name="body">
+
+				<h:form>
+					<c:forEach var="relato"
+						items="#{relatoBean.relatosSemEnderecoEncontrado}">
+						<script>
+							//Adiciona cada relato ao vetor;
+							relato = new Ponto();
+							relato.id = #{relato.idRelato};
+							relato.lat = #{relato.latitude};
+							relato.lng = #{relato.longitude};								
+							addRelato(relato);
+						</script>
+					</c:forEach>
+
+					<h2 style="text-color: red;">#{msg['page.enderecoRelatos.semEnderecos']}</h2>
+
+					<rich:dataTable id="relatos"
+						value="#{relatoBean.relatosSemEnderecoEncontrado}" var="relato"
+						onRowMouseOver="this.style.backgroundColor='#F1F1F1'"
+						onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'"
+						border="1" cellspacing="0" rows="10" cellpadding="2" width="100%">
+
+						<rich:column style="text-align:center">
+							<f:facet name="header">
+								<h:outputText value="ID" />
+							</f:facet>
+							<input type="checkbox" id="cb#{relato.idRelato}" />
+							<h:outputText value="#{relato.idRelato}" />
+						</rich:column>
+
+						<rich:column style="text-align:center">
+							<f:facet name="header">
+								<h:outputText value="#{msg['commons.data']}" />
+							</f:facet>
+							<h:outputText value="#{relato.dataHoraRegistro}">
+								<f:converter
+									converterId="converters.WikiSearchCrimesDataConverter" />
+							</h:outputText>
+						</rich:column>
+
+						<rich:column style="text-align:center">
+							<f:facet name="header">
+								<h:outputText value="#{msg['crime.descricao']}" />
+							</f:facet>
+							<h:outputText value="#{relato.descricao}" />
+						</rich:column>
+
+						<!-- Turnos -->
+						<rich:column style="text-align:center">
+							<f:facet name="header">
+								<h:outputText value="#{msg['relato.manha']}" />
+							</f:facet>
+							<c:if test="#{relato.manha == BOOLEAN.TRUE}">
+								<h:outputText value="X" />
+							</c:if>
+						</rich:column>
+
+						<rich:column style="text-align:center">
+							<f:facet name="header">
+								<h:outputText value="#{msg['relato.tarde']}" />
+							</f:facet>
+							<c:if test="#{relato.tarde == BOOLEAN.TRUE}">
+								<h:outputText value="X" />
+							</c:if>
+						</rich:column>
+
+						<rich:column style="text-align:center">
+							<f:facet name="header">
+								<h:outputText value="#{msg['relato.noite']}" />
+							</f:facet>
+							<c:if test="#{relato.noite == BOOLEAN.TRUE}">
+								<h:outputText value="X" />
+							</c:if>
+						</rich:column>
+
+						<rich:column style="text-align:center">
+							<f:facet name="header">
+								<h:outputText value="#{msg['relato.madrugada']}" />
+							</f:facet>
+							<c:if test="#{relato.madrugada == BOOLEAN.TRUE}">
+								<h:outputText value="X" />
+							</c:if>
+						</rich:column>
+						<!-- Fim Turnos -->
+
+						<rich:column style="text-align:center">
+							<f:facet name="header">
+								<h:outputText value="#{msg['commons.mapaedit']}" />
+							</f:facet>
+							<a href="#divMapa" onclick="editarNoMapa(#{relato.idRelato});">
+							<h:outputText value="#{msg['page.enderecoCrimes.editarNoMapa']}" />
+							</a>
+						</rich:column>
+
+						<f:facet name="footer">
+							<rich:datascroller for="relatos" />
+						</f:facet>
+
+					</rich:dataTable>
+					<br />
+					<a name="divMapa"></a>
+
+					<div id="atencao" style="display: none;">
+						<h:outputText value="#{msg['page.usuario.atencao']}"
+							style="font-size:14px; color: orange;" /> <h:outputText
+							value="#{msg['page.enderecoCrimes.instrucaoDoDrag']}"
+							style="font-size:14px;" />
+					</div>
+					<h:panelGrid columns="2" cellspacing="10"
+						style="border-width: 1px; border-style: solid solid solid solid; border-color: gray gray gray gray;">
+						<h:panelGrid cellspacing="5">
+							<h:panelGrid cellpadding="3"
+								style="border-width: 1px; border-style: solid solid solid solid; border-color: gray gray gray gray;">
+								<h:outputText value="ID " />
+								<t:inputText id="idAuxForm" forceId="true"
+									value="#{relatoBean.relato.idRelato}" disabled="true"
+									style="background-color: #F1F1F1; " />
+								<t:inputHidden id="idForm" forceId="true"
+									value="#{relatoBean.relato.idRelato}" />
+
+								<h:outputText value="#{msg['page.enderecoCrimes.pais']}" />
+								<t:inputText id="paisForm" forceId="true"
+									value="#{relatoBean.relato.pais}" />
+
+								<h:outputText value="#{msg['page.enderecoCrimes.estado']}" />
+								<t:inputText id="estadoForm" forceId="true"
+									value="#{relatoBean.relato.estado}" />
+
+								<h:outputText value="#{msg['page.enderecoCrimes.cidade']}" />
+								<t:inputText id="cidadeForm" forceId="true"
+									value="#{relatoBean.relato.cidade}" />
+
+								<h:outputText value="#{msg['page.enderecoCrimes.endereco']}" />
+								<t:inputText id="enderecoForm" forceId="true"
+									value="#{relatoBean.relato.endereco}" />
+
+								<h:outputText value="#{msg['page.enderecoCrimes.cep']}" />
+								<t:inputText id="cepForm" forceId="true"
+									value="#{relatoBean.relato.cep}" />
+
+								<t:inputHidden id="latForm" forceId="true"
+									value="#{relatoBean.relato.latitude}" />
+
+								<t:inputHidden id="lngForm" forceId="true"
+									value="#{relatoBean.relato.longitude}" />
+							</h:panelGrid>
+							<input type="button" onclick="salvarEndereco();"
+								value="#{msg['commons.salvar']}" />
+							<t:commandButton id="enviarBtn" forceId="true"
+								style="display: none" action="#{relatoBean.atualizarEndereco}" />
+						</h:panelGrid>
+
+						<iframe name="frameMapa" id="frameMapa" src="mapa.html"
+							style="width: 500px; height: 350px;" frameborder="0"
+							marginheight="0" marginwidth="0" />
+
+					</h:panelGrid>
+
+					<h:commandLink action="#{relatoBean.irEnderecoRelatos}"
+						value="#{msg['commons.voltar']}" />
+				</h:form>
+
+				<script>
+					initialize();
+				</script>
+
+			</ui:define>
+		</ui:composition>
+
+	</f:view>
+
+</jsp:root>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC
+"-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+
+
+<ui:composition template="./layoutAvisos.xhtml">
+		<f:loadBundle var="messages" basename="messages" />
+		<ui:define name="titulo">
+				
+			</ui:define>
+		<ui:define name="menu">
+			
+		<br />	
+			<h:outputText value="#{messages['webapp.area.mensagem1']}"
+							style="vertical-align: text-top; font-size: 11px;" /><br/>
+			<h:outputText value="#{messages['webapp.area.mensagem2']}"
+							style="vertical-align: text-top; font-size: 11px;" />
+			<br />
+		</ui:define>
+	<ui:define name="menucentral">
+
+		<c:if test="#{not empty message}">
+		<h:panelGrid>
+			<h:outputText value="#{message}" />
+			</h:panelGrid>
+		</c:if>
+			
+
+		</ui:define>
+</ui:composition>
+
+</html>

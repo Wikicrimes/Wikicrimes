@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+	<f:loadBundle var="messages" basename="messages" />
+	
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+        <style>
+			#loading {
+				position: absolute;
+				top: 200px;
+				left: 25%;
+				text-align: center;
+				padding: 2em;
+				margin-left: auto;
+				margin-right: auto;
+				z-index: 100;
+				opacity: .85;
+				-moz-opacity:0.85;
+				filter: alpha(opacity=85);
+				color:#0000CD;
+				font-family:helvetica,verdana,sans;
+				font-size:14px;
+			}
+			#divPesquisaGenerica {
+				position: absolute;
+				right:206px;
+				z-index: 100;
+				opacity: .95;
+				-moz-opacity:0.95;
+				filter: alpha(opacity=95);
+				color:#000000;
+				font-family:helvetica,verdana,sans;
+				font-size:12px;
+				visibility:hidden;
+				background-color:#ffffff;
+				border:1px solid #333333;
+			}
+			#divTelaEscolhaRegistroTipoCrime {
+				position: absolute;
+				top: 180px;
+				left: 34%;				
+				text-align: center;				
+				margin-left: auto;
+				margin-right: auto;
+				z-index: 100;
+				opacity: .95;
+				-moz-opacity:0.95;
+				filter: alpha(opacity=95);
+				color:#000000;
+				font-family:helvetica,verdana,sans;
+				font-size:12px;
+				visibility:hidden;
+				background-color:#ffffff;				
+			}
+			#divTelaEscolhaRegistroTipoDenuncia {
+				position: absolute;
+				top: 220px;
+				left: 34%;
+				text-align: center;				
+				margin-left: auto;
+				margin-right: auto;
+				z-index: 100;
+				opacity: .95;
+				-moz-opacity:0.95;
+				filter: alpha(opacity=95);
+				color:#000000;
+				font-family:helvetica,verdana,sans;
+				font-size:12px;
+				visibility:hidden;
+				background-color:#ffffff;				
+			}
+			#divAvisosNoMapa {
+				position: absolute;
+				top: 220px;
+				left: 30%;
+				text-align: center;				
+				margin-left: auto;
+				margin-right: auto;
+				z-index: 100;
+				opacity: .95;
+				-moz-opacity:0.95;
+				filter: alpha(opacity=95);
+				color:#000000;
+				font-family:helvetica,verdana,sans;
+				font-size:12px;
+				visibility:hidden;
+				background-color:#ffffff;				
+			}
+			#loadingKernelMap {
+				position: absolute;
+				top: 35%;
+				left: 25%;
+				text-align: center;
+				padding: 2em;
+				margin-left: auto;
+				margin-right: auto;
+				z-index: 100;
+				opacity: .85;
+				-moz-opacity:0.85;
+				filter: alpha(opacity=85);
+				color:#0000CD;
+				font-family:helvetica,verdana,sans;
+				font-size:14px;
+				visibility:hidden;
+			}			
+			
+			#divHintComandoMapa {
+				position: absolute;				
+				text-align: left;
+				padding: 1em;				
+				z-index: 100;				
+				-moz-opacity:0.85;
+				filter: alpha(opacity=85);
+				color:#000000;
+				font-family:helvetica,verdana,sans;
+				font-size:14px;
+				visibility:hidden;
+			}
+			
+			#cursor1 {
+				background-color:#ffffff;
+				border:1px solid black;
+				font-family:helvetica,verdana,sans;
+				font-size:10px;
+				font-weight:bold;
+				left:0px;
+				padding:5px;
+				position:absolute;
+				top:0px;
+				white-space:nowrap;
+				filter: alpha(opacity=85);
+				opacity: .85;
+				-moz-opacity:0.85;
+			}
+			#comment {
+				position: absolute;
+				top: 574px;
+				left: 4px;
+				text-align: left;
+				z-index: 100;
+				opacity: .55;
+				-moz-opacity:0.55;
+				filter: alpha(opacity=55);
+				background-color:#3A5FCD;
+				font-family:helvetica,verdana,sans;
+				font-size:12px;
+				overflow: auto;
+				height: 100px;
+				width: 638px;
+				display: none;
+			}
+			.moldura{
+				background-color:yellow;
+				border:1px solid #333333;
+				padding:15px;
+				font-size:10px;
+				text-align:center;
+				width:16px;
+				padding:0px;	
+			}
+			#divBalaoTutorEsquerda {
+				position: absolute;
+				visibility:visible;
+				top:50%;
+				left:100px;				
+				padding: 15px 0 0 0;
+				width:200px;
+				font-family:Arial, sans-serif; 
+				font-size: 11px;
+				z-index: 100;						
+			}
+			#divBalaoTutorDireita {
+				position: absolute;
+				visibility:visible;
+				top:50%;
+				right:150px;				
+				padding: 15px 0 0 0;
+				width:200px;
+				font-family:Arial, sans-serif; 
+				font-size: 11px;
+				z-index: 100;						
+			}			
+		</style>
+		
+	</head>
+
+	<div id="comment">	
+	</div>
+	<script><!-- 
+	/* <![CDATA[ */
+		var contNumRender = 0;
+		var contNumRenderRegistroDenuncia = 0;
+		var contNumRenderRegistroCrime = 0;
+		var tipoCrimeSel = 0;
+		var tipoVitimaSel = 0;
+		function setaTipoVitimaTipoCrime(tipoCrime, tipoVitima){
+			document.getElementById('divErroRegistroCrime').innerHTML="";
+			tipoCrimeSel = tipoCrime;
+			tipoVitimaSel = tipoVitima
+		}
+		function marcarCrimeMapa(eCrime){
+			if(tipoCrimeSel!=0 && tipoVitimaSel!=0)			
+				setPodeRegistrar(true,tipoCrimeSel,tipoVitimaSel);
+			else{
+				if(eCrime)
+					document.getElementById('divErroRegistroCrime').innerHTML="#{messages['erro.selecao.tipo.crime.obrigatoria']}";
+				else
+					document.getElementById('divErroRegistroDenuncia').innerHTML="#{messages['erro.selecao.tipo.crime.obrigatoria']}";
+			}					
+		}
+		function mostraSubtipoCrime(tipoCrime){
+			document.getElementById('divErroRegistroCrime').innerHTML="";
+			tipoCrimeSel = 0;
+			tipoVitimaSel = 0;
+			var htmlRegistroCrime = "";
+			if(tipoCrime==1){
+				habilitaBtn('btnMarcarMapa');
+				htmlRegistroCrime += "<hr/><table align='left'";
+				htmlRegistroCrime += "	<tr>";
+				htmlRegistroCrime += "		<td colspan='2'> #{messages['escolha.opcao.melhor.adequa.registro']} </td>";
+				htmlRegistroCrime += "	</tr>";
+				htmlRegistroCrime += "	<tr>";
+				htmlRegistroCrime += "		<td width='12px'> <input type='radio' name='group1' onclick='setaTipoVitimaTipoCrime(4,1);'></td><td align='left'>#{messages['menu.roubo.roubopessoa']} </td>";
+				htmlRegistroCrime += "	</tr>";
+				htmlRegistroCrime += "	<tr>";
+				htmlRegistroCrime += "		<td> <input type='radio' name='group1' onclick='setaTipoVitimaTipoCrime(4,2);'></td><td align='left'>#{messages['menu.roubo.roubopropriedade']} </td>";
+				htmlRegistroCrime += "	</tr>";
+				htmlRegistroCrime += "	<tr>";
+				htmlRegistroCrime += "		<td> <input type='radio' name='group1' onclick='setaTipoVitimaTipoCrime(1,1);'></td><td align='left'>#{messages['menu.roubo.tentativaroubopessoa']} </td>";
+				htmlRegistroCrime += "	</tr>";
+				htmlRegistroCrime += "	<tr>";
+				htmlRegistroCrime += "		<td> <input type='radio' name='group1' onclick='setaTipoVitimaTipoCrime(1,2);'></td><td align='left'>#{messages['menu.roubo.tentativaroubopropriedade']} </td>";
+				htmlRegistroCrime += "	</tr>";
+				htmlRegistroCrime += "</table>";
+				document.getElementById('divSubTipoCrime').innerHTML = htmlRegistroCrime;
+				document.getElementById('divLembreSe').innerHTML = "#{messages['crime.roubo.descricao']}";
+			}else
+			if(tipoCrime==2){
+				habilitaBtn('btnMarcarMapa');
+				htmlRegistroCrime += "<hr/><table align='left'";
+				htmlRegistroCrime += "	<tr>";
+				htmlRegistroCrime += "		<td colspan='2'> #{messages['escolha.opcao.melhor.adequa.registro']} </td>";
+				htmlRegistroCrime += "	</tr>";
+				htmlRegistroCrime += "	<tr>";
+				htmlRegistroCrime += "		<td width='12px'> <input type='radio' name='group1' onclick='setaTipoVitimaTipoCrime(3,1);'></td><td align='left'>#{messages['menu.furto.furtopessoa']} </td>";
+				htmlRegistroCrime += "	</tr>";
+				htmlRegistroCrime += "	<tr>";
+				htmlRegistroCrime += "		<td> <input type='radio' name='group1' onclick='setaTipoVitimaTipoCrime(3,2);'></td><td align='left'>#{messages['menu.furto.furtopropriedade']} </td>";
+				htmlRegistroCrime += "	</tr>";
+				htmlRegistroCrime += "	<tr>";
+				htmlRegistroCrime += "		<td> <input type='radio' name='group1' onclick='setaTipoVitimaTipoCrime(2,1);'></td><td align='left'>#{messages['menu.furto.tentativafurtopessoa']} </td>";
+				htmlRegistroCrime += "	</tr>";
+				htmlRegistroCrime += "	<tr>";
+				htmlRegistroCrime += "		<td> <input type='radio' name='group1' onclick='setaTipoVitimaTipoCrime(2,2);'></td><td align='left'>#{messages['menu.furto.tentativafurtopropriedade']} </td>";
+				htmlRegistroCrime += "	</tr>";
+				htmlRegistroCrime += "</table>";
+				document.getElementById('divSubTipoCrime').innerHTML = htmlRegistroCrime;
+				document.getElementById('divLembreSe').innerHTML = "#{messages['crime.furto.descricao']}";
+			}else
+			if(tipoCrime==3){
+				habilitaBtn('btnMarcarMapa');
+				htmlRegistroCrime += "<hr/><table align='left'";
+				htmlRegistroCrime += "	<tr>";
+				htmlRegistroCrime += "		<td colspan='2'> #{messages['escolha.opcao.melhor.adequa.registro']} </td>";
+				htmlRegistroCrime += "	</tr>";
+				htmlRegistroCrime += "	<tr>";
+				htmlRegistroCrime += "		<td width='12px'> <input type='radio' name='group1' onclick='setaTipoVitimaTipoCrime(5,3);'></td><td align='left'>#{messages['menu.violencia.rixasbrigas']} </td>";
+				htmlRegistroCrime += "	</tr>";
+				htmlRegistroCrime += "	<tr>";
+				htmlRegistroCrime += "		<td> <input type='radio' name='group1' onclick='setaTipoVitimaTipoCrime(5,4);'></td><td align='left'>#{messages['menu.violencia.violenciadomestica']} </td>";
+				htmlRegistroCrime += "	</tr>";
+				htmlRegistroCrime += "	<tr>";
+				htmlRegistroCrime += "		<td> <input type='radio' name='group1' onclick='setaTipoVitimaTipoCrime(5,5);'></td><td align='left'>#{messages['menu.violencia.abusoautoridade']} </td>";
+				htmlRegistroCrime += "	</tr>";
+				htmlRegistroCrime += "	<tr>";
+				htmlRegistroCrime += "		<td> <input type='radio' name='group1' onclick='setaTipoVitimaTipoCrime(5,6);'></td><td align='left'>#{messages['menu.violencia.homicidio']} </td>";
+				htmlRegistroCrime += "	</tr>";
+				htmlRegistroCrime += "	<tr>";
+				htmlRegistroCrime += "		<td> <input type='radio' name='group1' onclick='setaTipoVitimaTipoCrime(5,7);'></td><td align='left'>#{messages['menu.violencia.tentativahomicidio']} </td>";
+				htmlRegistroCrime += "	</tr>";
+				htmlRegistroCrime += "	<tr>";
+				htmlRegistroCrime += "		<td> <input type='radio' name='group1' onclick='setaTipoVitimaTipoCrime(5,8);'></td><td align='left'>#{messages['menu.violencia.latrocinio']} </td>";
+				htmlRegistroCrime += "	</tr>";
+				htmlRegistroCrime += "</table>";
+				document.getElementById('divSubTipoCrime').innerHTML = htmlRegistroCrime;
+				document.getElementById('divLembreSe').innerHTML = "";
+			}else{
+				desabilitaBtn('btnMarcarMapa');
+				document.getElementById('divSubTipoCrime').innerHTML = "";
+				document.getElementById('divLembreSe').innerHTML = "";
+			}
+		}
+		function habilitaBtn(btn){
+			document.getElementById(btn).style.visibility = 'visible';
+			
+			}
+		function desabilitaBtn(btn){
+			document.getElementById(btn).style.visibility = 'hidden';
+			
+			}
+	/* ]]> */
+ --></script>
+	<div id="divTelaEscolhaRegistroTipoCrime">
+		<rich:panel header="#{messages['titulo.registroCrimes']}">
+			<t:panelGrid id="panelRegistroCrime" width="400px" style="text-align: left" columns="3">
+				<t:panelGroup colspan="3" forceId="true" id="divErroRegistroCrime" style="with:100%;color:red;">
+					
+				</t:panelGroup>
+				<t:panelGroup colspan="3">
+					<h:outputText value="#{messages['que.tipo.crime.deseja.registrar']}" />
+				</t:panelGroup>
+				<t:panelGroup colspan="2">
+					<select style="font-size: 12px" id="comboTipoCrime" onchange="mostraSubtipoCrime(this.value);">
+						<option value=""> #{messages['usuario.Selecione']} </option>
+						<option value="1"> #{messages['tipocrime.roubo']} </option>
+						<option value="2"> #{messages['tipocrime.furto']}</option>
+						<option value="3"> #{messages['tipocrime.violencia']} </option>
+					</select>
+				</t:panelGroup>			
+				<t:panelGroup forceId="true" id="divLembreSe" style="with:100%;color:blue;">
+					
+				</t:panelGroup>
+				
+				<t:panelGroup forceId="true" id="divSubTipoCrime" colspan="3" style="with:100%">
+					
+				</t:panelGroup>
+				
+				<t:panelGroup style="width: 100%" colspan="3">
+					<br/>
+					<input name="btnMarcarMapa" id="btnMarcarMapa" style="font-size: 11px; visibility : hidden;" class="button" type="button" value="#{messages['marcar.no.mapa']}" onclick="marcarCrimeMapa(true);desabilitaBtn('btnMarcarMapa');" />
+					<input style="font-size: 11px;" class="button" type="button" value="#{messages['faleconosco.cancelar']}" onclick="fechaDivTelaEscolhaRegistroTipoCrime();desabilitaBtn('btnMarcarMapa');"/>
+					<script>
+						contNumRenderRegistroCrime++;
+						if(contNumRenderRegistroCrime > 1)
+							document.getElementById("divTelaEscolhaRegistroTipoCrime").style.visibility = 'visible';
+					</script>	
+				</t:panelGroup>
+				
+			</t:panelGrid>
+			
+		</rich:panel>
+		
+	</div>
+	<div id="divBalaoTutorEsquerda" ></div>
+	<div id="divBalaoTutorDireita" ></div>
+	
+	<div id="divTelaEscolhaRegistroTipoDenuncia">
+		<rich:panel id="panelRegistroDenuncia" header="#{messages['titulo.registroDenuncias']}">
+			<t:panelGrid width="400px" style="text-align: left">
+				<t:panelGroup forceId="true" id="divErroRegistroDenuncia" style="with:100%;color:red;">
+					
+				</t:panelGroup>
+				<t:panelGroup style="width: 100%">
+					<h:outputText value="#{messages['que.tipo.relato.deseja.registrar']}" />
+				</t:panelGroup>
+				
+				<t:panelGroup style="width: 100%">
+					<table cellpadding="0" cellspacing="0">
+						<tr>
+							<td>								
+								<input type='radio' name='tipoRelato' onclick='setaTipoVitimaTipoCrime(6,1);'> </input>#{messages['menu.relato.areasperigosas']}
+							</td>
+							<td>
+								<input type='radio' name='tipoRelato' onclick='setaTipoVitimaTipoCrime(6,2);'> </input> #{messages['menu.relato.drogas']}
+							</td>
+						</tr>
+					</table>
+				</t:panelGroup>
+				
+				<t:panelGroup style="width: 100%">
+					<br/>
+					<input style="font-size: 11px;" class="button" type="button" value="#{messages['marcar.no.mapa']}" onclick="marcarCrimeMapa(false);"/>
+					<input style="font-size: 11px;" class="button" type="button" value="#{messages['faleconosco.cancelar']}" onclick="fechaDivTelaEscolhaRegistroTipoDenuncia();"/>
+					<script>
+						contNumRenderRegistroDenuncia++;
+						if(contNumRenderRegistroDenuncia > 1)
+							document.getElementById("divTelaEscolhaRegistroTipoDenuncia").style.visibility = 'visible';
+					</script>	
+				</t:panelGroup>
+				
+			</t:panelGrid>
+			
+		</rich:panel>
+				
+	</div>
+	
+	<div id="divAvisosNoMapa" style="width:300px; text-align:center">
+		<rich:panel id="panelAvisosNoMapa" style="text-align: center; width:100%;" header="#{messages['mensagem.sistema']}">
+			<table align="center" style="width:100%; cursor:pointer;padding : 0px;font-family:Arial, sans-serif;font-size: 11px;">
+				<tr>
+					<td>	
+						<t:panelGroup align="justify" id="divInternaAvisosNoMapa" style="text-align:center">
+						
+						</t:panelGroup>
+					</td>
+				</tr>
+				<tr>
+					<td>	
+						<t:panelGroup align="center" id="divfecharAvisosNoMapa" style="text-align:center">
+							<input align="center" style="font-size: 11px;" class="button" type="button" value="OK" onclick="esconderMensagem();"/>
+						</t:panelGroup>
+					</td>
+				</tr>	
+			</table>
+		</rich:panel>
+	</div>		
+	
+	<div id="divPesquisaGenerica">
+		<t:panelGrid id="painelMostraDadosPesqGen">
+			<t:panelGrid style="width:330px" columns="2" cellpadding="0" cellspacing="1">		
+				<c:forEach var="crimeAtualIter" items="#{filtroForm.crimesRespostaPesqGen}">								
+					<h:panelGroup><a onclick="fechaDivPesquisaGenericaChamandoMostraDados('#{crimeAtualIter.chave}', '#{crimeAtualIter.latitude}', '#{crimeAtualIter.longitude}');" style="cursor:pointer;color:blue"><u><div class="moldura"><h:outputText value="#{crimeAtualIter.idCrime}"/></div></u></a></h:panelGroup> <h:panelGroup><a onclick="fechaDivPesquisaGenericaChamandoMostraDados('#{crimeAtualIter.chave}', '#{crimeAtualIter.latitude}', '#{crimeAtualIter.longitude}');" style="cursor:pointer;color:blue; font-size:11px"><h:outputText value="#{crimeAtualIter.descricao}"/></a></h:panelGroup> 				
+				</c:forEach>				
+				<c:if test="#{empty filtroForm.crimesRespostaPesqGen}">
+					<t:panelGroup colspan="2" style="text-align:center">
+						<h:outputText value="#{messages['mapa.consulta.sem.resultado']}"/>
+					</t:panelGroup>
+				</c:if>
+			</t:panelGrid>
+			
+			<t:panelGroup colspan="2">
+				<script>
+					contNumRender++;
+					if(contNumRender > 1)
+						 mostraDivPesquisaGenerica();
+				</script>					
+				<a onclick="limparPesquisaGenerica();" style="cursor:pointer;color:blue"><u><h:outputText value="#{messages['mapa.consulta.limpar']}"/></u></a>	
+			</t:panelGroup>	
+		</t:panelGrid>
+		
+	</div>
+	
+	<div id="loading" >
+		<rich:panel style="width: 390px; border-color:blue; border-width: 2px; background-color:#3A5FCD" >
+	        <p>
+				<span>
+					<h:outputText value="#{messages['webapp.carregandoMapaTexto']}" style=" margin:5px; font-size:16px; color:white; font-weight:bold" rendered="#{(filtroForm.primeiraVez eq 'true') ? 'true' : 'false'}"/> <br/>
+					<h:outputText value="#{messages['webapp.carregandoMapaTexto2']}" style="margin:5px; font-size:16px; color:white; font-weight:bold" rendered="#{(filtroForm.primeiraVez eq 'true') ? 'true' : 'false'}"/> <br/>
+					<h:outputText value="#{messages['webapp.carregandoMapaTexto3']}" style="margin:5px; font-size:16px; color:white; font-weight:bold" rendered="#{(filtroForm.primeiraVez eq 'true') ? 'true' : 'false'}"/> <br/><br/>	
+				</span>
+				<span id="loadingMessage" style="font-size:14px; color:white">
+						<h:outputText value="#{messages['webapp.carregandomapa']}" />	 
+				</span>
+			</p>
+			<p align="right" >
+				<h:outputLink value="#" onclick="window.stop();displayMessage('./login.html', 300, 245,'Login');return false" rendered="#{(filtroForm.primeiraVez eq 'true') ? 'true' : 'false'}">
+					<h:outputText value="Login" style="margin:5px; font-size:14px; font-weight:bold; color:#87CEFA; background-color:#3A5FCD; float:right; "/>
+				</h:outputLink>
+				<br/>
+			</p>
+
+		</rich:panel>
+	</div>
+	
+	
+	
+	<div id="loadingKernelMap" >
+		<rich:panel style="width: 390px; border-color:blue; border-width: 2px; background-color:#3A5FCD" >
+	        <p>		
+				<br/><br/><br/>
+				<span id="loadingMessageKernelMap" style="font-size:14px; color:white">
+					<h:outputText value="#{messages['webapp.carregandomapaKernelMap']}" />	 
+				</span>
+				<br/><br/>
+			</p>
+		</rich:panel>
+	</div>	
+	
+	
+	<div id="divHintComandoMapa" >
+		<rich:panel style="width: 160px;border-color:black; border-width: 1px; background-color:#FFFF99">			
+				<span id="msgHintComandoMapa">
+					
+				</span>
+		</rich:panel>
+	</div>
+	
+	
+	
+	<div id="cursor1" onMouseOver="escondeTooltip(1)" style="display: none;">
+		<span id="loadingMessage">crimes</span>
+	</div>
+	<div onclick="fechaDivPesquisaGenerica();" id="map" style="width: 100%; height: 386px;" /> 
+		
+	
+</html>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC
+"-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+
+	<head>
+		<script	src="http://maps.google.com/maps?file=api&amp;v=2&amp;hl=#{messages['webapp.locale']}&amp;key=#{messages['chave.googlemaps']}"
+			type="text/javascript"></script>
+		<script type="text/javascript" src="scripts/prototype.js"></script>
+		<script type="text/javascript" src="scripts/HashMap.js"></script>
+		<ui:include src="scripts/embeddedjs.xhtml" />
+		<link rel="stylesheet" type="text/css" href="./styles/wikicrimes.css"
+			title="default" />
+		
+								
+		<script type="text/javascript">		
+		/*	<![CDATA[ */
+			qs=new Array()
+			variaveis=location.search.replace(/\x3F/,"").replace(/\x2B/g," ").split("&")
+			if(variaveis!=""){
+				for(i=0;i<variaveis.length;i++){
+					nvar=variaveis[i].split("=")
+					qs[nvar[0]]=unescape(nvar[1])
+				}
+			}
+			function QueryString(variavel){
+				return qs[variavel];
+			}			
+			
+			function setaTamMapa(){
+				if(QueryString('lm')!='undefined' && QueryString('lm')!= undefined && QueryString('lm')!= null && QueryString('am')!='undefined' && QueryString('am')!= undefined && QueryString('am')!= null ){
+					document.getElementById("map").style.width=QueryString('lm');
+					document.getElementById("map").style.height=QueryString('am');
+				}
+			}		
+				
+				
+			/* ]]> */	
+		</script>
+	</head>	
+	<body onload="load(QueryString('zoom'),QueryString('lat'),QueryString('lng'),QueryString('tc'),QueryString('tv'),QueryString('tl'),QueryString('di'),QueryString('df'),QueryString('hi'),QueryString('hf'),QueryString('ic'),QueryString('ec'),'mapaEmbedded',QueryString('cp'),QueryString('n'),QueryString('e'),QueryString('w'),QueryString('s'));setaTamMapa();">
+		<f:view>
+			<f:loadBundle var="messages" basename="messages" />
+			<h:form id="filtroForm">
+					<h:inputHidden value="#{filtroForm.zoomMapa}"/>
+						
+					<div id="map" style="width: 418px; height: 282px;"></div>
+								
+			</h:form>
+		</f:view>	
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." :
+		"http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost +
+		"google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+		<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-3266136-1");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>	
+				
+	</body>	
+
+
+</html>

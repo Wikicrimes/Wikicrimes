@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+
+<ui:composition template="./layout2.xhtml">
+
+	<ui:define name="head">
+		<link rel="stylesheet" href="./styles/modal-message.css"
+			type="text/css" />
+		<script type="text/javascript" src="./scripts/modal-message.js"></script>
+		
+	</ui:define>
+
+	<ui:define name="titulo">
+			#{messages['usuario.administracao']}
+			</ui:define>
+	<ui:define name="menu">
+		<ui:include src="headerSemMenu.xhtml" />
+
+	</ui:define>
+	<ui:define name="menucentral">
+
+		<h:form id="editarUsuarioForm">
+			<rich:messages layout="list" ajaxRendered="true" tooltip="true" showDetail="true" showSummary="true">
+	            <f:facet name="header">
+	                <h:outputText value="teste"></h:outputText>                        
+	            </f:facet>
+	            
+	            <f:facet name="infoMarker">
+	                <h:graphicImage value="/images/ok.gif" />   
+	            </f:facet>	            
+	            
+	            <f:facet name="errorMarker">
+	                <h:graphicImage value="/images/error.gif" />   
+	            </f:facet>
+            </rich:messages> 	
+			<h:panelGrid columns="2">		
+				<h:outputText value="Primeiro Nome:" />	<h:inputText disabled="true" value="#{adminForm.usuarioEdit.primeiroNome}" />
+				<h:outputText value="Email:" />	<h:inputText disabled="true" value="#{adminForm.usuarioEdit.email}" />	
+					
+				<h:outputText value="Entidade Certificadora" />
+				<h:selectOneMenu
+					value="#{adminForm.entCerSelEdit}">								
+					<f:selectItems value="#{adminForm.entidadeCertificadorasTelaEdicao}" />
+				</h:selectOneMenu>
+				
+				<a4j:commandButton value="Alterar" styleClass="button" action="#{adminForm.alterarUsuario}" /> <h:commandButton value="Voltar" styleClass="button" action="voltar" />
+					
+			</h:panelGrid>
+		</h:form>
+		
+	</ui:define>
+</ui:composition>
+
+</html>

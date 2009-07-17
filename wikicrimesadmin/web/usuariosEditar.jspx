@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+	<f:view>
+		<ui:composition template="/templates/padrao.jspx">
+			<ui:define name="title"> #{msg['commons.editusuario']}</ui:define>
+			<ui:define name="body">
+			<script type="text/javascript">
+			
+							function showEC(value, reset) {
+								if (value == '4') {			
+									document.getElementById('usuarioForm:ECselLabel').style.display = 'inline';
+									document.getElementById('usuarioForm:ECselSelect').style.display = 'inline';								
+								}
+								else {									
+									document.getElementById('usuarioForm:ECselSelect').style.display = 'none';
+									document.getElementById('usuarioForm:ECselLabel').style.display = 'none';	
+								}
+							}	
+						</script>
+				<h:form id="usuarioForm">
+					<h:panelGrid columns="2">
+						<h:outputLabel value="ID" />
+						<h:outputText id="idInput"
+							value="#{usuarioBean.usuarioEditar.idUsuario}" />
+
+						<h:outputLabel value="#{msg['page.usuario.label.nome']}" />
+						<h:panelGroup>
+							<h:inputText value="#{usuarioBean.usuarioEditar.primeiroNome}" />
+						</h:panelGroup>
+
+						<h:outputLabel value="#{msg['page.usuario.label.email']}" />
+						<h:inputText value="#{usuarioBean.usuarioEditar.email}" />
+
+						<h:outputLabel value="#{msg['page.usuario.label.cidade']}" />
+						<h:inputText value="#{usuarioBean.usuarioEditar.cidade}" />
+
+
+						<h:outputLabel value="#{msg['page.usuario.label.estado']}" />
+						<h:selectOneMenu required="false"
+							value="#{usuarioBean.usuarioEditar.estado}" >
+							<f:selectItem itemLabel="Selecione" itemValue="" />
+							<f:selectItems id="estados"
+								value="#{usuarioBean.estadosBrasileiros}" />
+						</h:selectOneMenu>
+
+						<h:outputLabel value="#{msg['idioma.nome']}" />
+						<h:selectOneMenu required="false"
+							value="#{usuarioBean.usuarioEditar.idiomaPreferencial}" >
+							<f:selectItem itemLabel="" itemValue="" />
+							<f:selectItem itemLabel="#{msg['en']}" itemValue="en" />
+							<f:selectItem itemLabel="#{msg['pt']}" itemValue="pt" />
+							<f:selectItem itemLabel="#{msg['es']}" itemValue="es" />
+						</h:selectOneMenu>
+
+						<h:outputText value="#{msg['page.usuario.label.tipo']}" />
+						<h:selectOneMenu value="#{usuarioBean.perfilSel}" required="false"
+							forceId="true" id="tipouser" onchange="showEC(this.value, true);">
+							<f:selectItem
+								itemLabel="#{msg['page.usuario.label.tipo.confim']}"
+								itemValue="1" />
+							<f:selectItem itemLabel="#{msg['usuario.admin']}" itemValue="3" />
+							<f:selectItem
+								itemLabel="#{msg['page.usuario.label.tipo.convidado']}"
+								itemValue="2" />
+							
+							<f:selectItem itemLabel="#{msg['usuario.cert']}" itemValue="4" />
+						</h:selectOneMenu>
+
+						
+						
+							<h:outputLabel id="ECselLabel" value="#{msg['page.usuario.label.ec']}" />
+							<h:selectOneMenu id="ECselSelect" value="#{usuarioBean.entCerEditSel}">
+								<f:selectItems value="#{usuarioBean.entidadeCertificadoras}" />
+							</h:selectOneMenu>
+						
+						
+						<script>showEC(document.getElementById('usuarioForm:tipouser').value, false);</script>
+
+					</h:panelGrid>
+					<hr />
+					<h:commandButton action="#{usuarioBean.salvar}"
+						value="#{msg['commons.salvar']}" />
+					<a href="#" onclick="javascript:history.go(-1)">
+					#{msg['commons.voltar']} </a>
+				</h:form>
+			</ui:define>
+		</ui:composition>
+	</f:view>
+</jsp:root>
+

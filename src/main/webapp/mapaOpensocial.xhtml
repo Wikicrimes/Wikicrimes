@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC
+"-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+
+	<head>
+		<link rel="stylesheet" href="./styles/modal-message.css" type="text/css"/>
+		<script type="text/javascript" src="./scripts/modal-message.js"></script>
+		<script type="text/javascript" src="./scripts/jgcookie.js"></script>
+		
+		<script	src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=#{messages['chave.googlemaps']}"
+			type="text/javascript"></script>
+			
+		<!--<script	src="#{messages['script.hintsEmbedded']}" type="text/javascript"></script>-->
+		<link rel="stylesheet" type="text/css" href="./styles/wikicrimes.css"
+			title="default" />		
+		
+		<style>
+			@import url("http://www.google.com/uds/css/gsearch.css");
+			@import url("http://www.google.com/uds/solutions/localsearch/gmlocalsearch.css");
+			
+			table{
+				font-family:Arial, sans-serif;
+				font-size: 11px;
+			}			
+			.mens_filtro_mapa {
+				position: absolute;
+				padding: 0.2em;
+				padding-left: 0.8em;
+				background-color: #2763a5;
+				border-style: solid;
+				border-width: 2px;
+				width: 228px;
+				height: 14px;
+				color: #ffffff;
+				font: bold;
+			}
+			
+		</style>
+		<script src="http://www.google.com/uds/api?file=uds.js&amp;v=1.0" type="text/javascript"></script>
+		<script src="http://www.google.com/uds/solutions/localsearch/gmlocalsearch.js" type="text/javascript"></script> 						
+		<script type="text/javascript">		
+		/*	<![CDATA[ */			
+			var map;			
+			var mgr;
+			var crimes = new Array();
+			var amigos = new Array();
+			var usuarioRedeSocial = new UsuarioRedeSocial();
+			var dominioRedeSocial='';
+			//Inicializa o mapa
+			function initialize() {			
+				if (GBrowserIsCompatible()) {
+					
+					map = new GMap2(document.getElementById('map'));
+					map.setCenter(new GLatLng(-8.16100515602485, -34.9125123023987), 3);
+					map.addControl(new GLargeMapControl());
+					map.addControl(new GMapTypeControl(), new GControlPosition(G_ANCHOR_BOTTOM_RIGHT, new GSize(4,20)));
+					map.addControl(new google.maps.LocalSearch(), new GControlPosition(G_ANCHOR_TOP_RIGHT, new GSize(4,4)));
+					map.enableScrollWheelZoom();
+					new GKeyboardHandler(map);
+					mgr = new GMarkerManager(map);
+					dominioRedeSocial= QueryString('redeSocial');
+					montaArrayAmigos(QueryString('amigosTexto'));
+					montaObjetoUsuarioRedeSocial(QueryString('usuarioRedeSocial'));									
+					executaRequisicao('listCrimes&dominioRedeSocial='+dominioRedeSocial,1);					
+				}
+				else
+					alert('Maps não é compatível com o seu browser!');			
+			}
+			//Inicializa o mapa
+			
+			//Tipo agregado Crime
+			function Crime() {
+				this.id = '';				
+				this.chave = '';
+				this.latitude = '';
+				this.longitude = '';
+				this.tipo_crime = '';
+				this.email_usuario = '';
+				this.html_amigo = '';
+			}
+			//Tipo agregado Crime
+			
+			//Tipo agregado Amigo
+			function Amigo() {
+				this.nome = '';
+				this.email = '';
+				this.linkPerfil = '';
+				this.foto = '';
+			}
+			//Tipo agregado Amigo
+			
+			//Tipo agregado UsuarioRedeSocial
+			function UsuarioRedeSocial() {
+				this.nome = '';
+				this.idUsuario = '';
+				this.idRedeSocial='';				
+			}
+			//Tipo agregado UsuarioRedeSocial
+			
+			//função que constroi o html de um amigo			
+			function constroiHtml(amigo){
+				var html_amigo="<div id='topoMostrarDados'> <b> Dados do seu amigo </b> </div> <br/> <br/> <table>";
+				html_amigo+="<tr> <td rowspan='2'> <a target='_blank' href='" + amigo.linkPerfil + "'> <img width='46' height='56' src='" + amigo.foto + "' /> </a> </td> <td> <b> Nome : </b> </td> <td align='left'> " + amigo.nome + " </td>  </tr>";
+				html_amigo+="<tr> <td> <b> Email : </b> </td> <td align='left'> " + amigo.email + " </td> </tr>";				
+				html_amigo+="</table>";
+				return html_amigo;
+			}			
+			//função que constroi o html de um amigo
+			
+			function montaObjetoUsuarioRedeSocial(text){
+				var array = text.split(';');
+				usuarioRedeSocial.idUsuario = array[0];
+				usuarioRedeSocial.nome = array[1];				
+			}
+			
+			//Carrega os amigos do modo texto para o array(hash map) 'amigos'
+			function montaArrayAmigos(text){
+				var amigos_texto = text.split('|');				
+				var amigo = null;
+				for(var i=0; i<amigos_texto.length;i++){
+					if(amigos_texto[i]!='' && amigos_texto[i]!=null){
+						amigo = amigos_texto[i].split(';');
+						if(amigo[0]!=null && amigo[0]!= undefined ){
+							amigos[i] = new Amigo();
+							amigos[i].nome = amigo[4];
+							amigos[i].email = amigo[3];
+							amigos[i].linkPerfil = amigo[1];
+							amigos[i].foto = amigo[2];																				
+							//JGCookie.set(crime[1],crime[2]+'#'+crime[3]+'#'+crime[4]+'#'+crime[5],7);
+							//mgr.addMarker(criaMarcador(crimes[crime[1]], 'oi', null), 3);
+							//alert('nome='+amigos[amigo[3]].nome+'\n'+' email='+amigos[amigo[3]].email+'\n'+' perfil='+ amigos[amigo[3]].linkPerfil+'\n'+' foto='+amigos[amigo[3]].foto);
+							amigo = null;							
+						}
+					}
+				}
+			}
+			//Carrega os amigos do modo texto para o array(hash map) 'amigos'
+			
+			//Carrega os crimes do modo texto para o array(hash map) 'crimes'
+			function montaArrayCrimes(responseText){
+				var crimes_texto = responseText.split('|');				
+				var crime = null;
+				var eDeAmigo = false;
+				for(var i=0; i<crimes_texto.length;i++){
+					if(crimes_texto[i]!='' && crimes_texto[i]!=null){
+						crime = crimes_texto[i].split('#');
+						if(crime[0]!=null && crime[0]!= undefined ){
+							crimes[i] = new Crime();
+							crimes[i].chave = crime[1];
+							crimes[i].latitude = crime[3];
+							crimes[i].longitude = crime[4];
+							crimes[i].tipo_crime = crime[5];
+							crimes[i].email_usuario = crime[2];
+							crimes[i].id = crime[6];
+							for(var j = 0 ; j <= amigos.length ; j++ ){
+								if(amigos[j]!='' && amigos[j]!=null){
+									if( amigos[j].email == crimes[i].email_usuario ){
+										mgr.addMarker(criaMarcador(crimes[i], constroiHtml(amigos[j])), 3);
+										eDeAmigo = true;
+										break;
+									}
+								}	
+								
+							}
+							if(!eDeAmigo){
+								mgr.addMarker(criaMarcador(crimes[i], null), 3);
+							}	
+							
+							eDeAmigo = false;
+								
+							crime = null;
+						}
+					}
+				}
+			}
+			//Carrega os crimes do modo texto para o array(hash map) 'crimes'
+			
+			//Funções que recuperam os crimes na requisição.
+			function executaRequisicao(acao, codigo) {
+				http_request = GXmlHttp.create();
+				if (http_request.overrideMimeType) {
+					http_request.overrideMimeType('text/xml');
+				}
+				
+				//Espera retorno do servidor
+				http_request.open('GET', 'ServletOpensocial?acao='+acao, true);
+				if(codigo==1)
+					http_request.onreadystatechange = responseGetCrimes;				 
+				if(codigo==2)
+					http_request.onreadystatechange = responseVerificaResgistro;		
+				http_request.send(null);
+			};
+			
+			function responseGetCrimes() {
+				if (http_request.readyState == 4) {
+					if (http_request.status == 200) {
+						var responseText = http_request.responseText;						
+						montaArrayCrimes(responseText);
+						executaRequisicao('verificaResgistro&idUsuarioRedeSocial='+usuarioRedeSocial.idUsuario+'&dominioRedeSocial='+dominioRedeSocial,2);
+					}
+					else {
+						alert('Erro ao tentar recuperar os crimes do servidor.');
+					}
+				}
+			}
+			
+			function responseVerificaResgistro(){
+				if (http_request.readyState == 4) {
+					if (http_request.status == 200) {
+						var responseText = http_request.responseText;						
+						if(responseText=='registrado'){
+							//alert('Seu login já foi validado no WikiCrimes.');
+						}
+						if(responseText=='nao_registrado'){
+							displayMessage('./loginOpensocial.html?idUsuarioRedeSocial='+usuarioRedeSocial.idUsuario+'&idRedeSocial=1', 360, 240,'Login');
+						}
+					}
+					else {
+						alert('Erro ao verificar registro do usuario.');
+					}
+				}
+			}
+			//Funções que recuperam os crimes na requisição.		
+			
+			
+			//Função que cria o marcador
+			function criaMarcador(crime, htmlUser) {
+			
+				var icone = new GIcon(G_DEFAULT_ICON);
+				icone.shadow = "";
+				if(htmlUser==null){
+					icone.iconSize = new GSize(11,19);
+					icone.iconAnchor = new GPoint(1,21);
+				}	
+				else{
+					icone.iconSize = new GSize(23,21);
+					icone.iconAnchor = new GPoint(2,20);
+				}	
+				if(crime.tipo_crime == 'tipocrime.roubo' || crime.tipo_crime == 'tipocrime.tentativaderoubo' ){
+					if(htmlUser==null)
+						icone.image = './images/widget/vermelho.png';
+					else
+						icone.image = './images/widget/vermelho_amigo.png';
+				}
+				if(crime.tipo_crime == 'tipocrime.furto' || crime.tipo_crime == 'tipocrime.tentativadefurto' ){
+					if(htmlUser==null)
+						icone.image = './images/widget/azul.png';
+					else{
+						icone.image = './images/widget/azul_amigo.png';
+					}
+				}
+				if(crime.tipo_crime == 'tipocrime.violencia'){
+					if(htmlUser==null)
+						icone.image = './images/widget/laranja.png';
+					else
+						icone.image = './images/widget/laranja_amigo.png';
+				}
+			
+				markerOptions = { icon:icone };
+				var marcador = new GMarker(new GLatLng(crime.latitude, crime.longitude), markerOptions);
+				GEvent.addListener(marcador, "click", function() {
+					if(htmlUser==null){
+						marcador.openInfoWindowHtml("<iframe src='./mostrarDadosOpenSocial.html?idCrime=" + crime.id + "' width='380' height='150' frameborder='0'></iframe>");
+					}
+					else{
+						marcador.openInfoWindowTabsHtml([new GInfoWindowTab('Ocorrencia',"<iframe src='./mostrarDadosOpenSocial.html?idCrime=" + crime.id + "' width='380' height='150' frameborder='0'></iframe>"),new GInfoWindowTab('Amigo',htmlUser)]);
+					}
+				});
+				return marcador;
+			}
+			//Função que cria o marcador
+			
+			//Recupera parametros da URL
+			qs=new Array()
+			variaveis=location.search.replace(/\x3F/,'').replace(/\x2B/g,' ').split('&')
+			if(variaveis!=''){
+				for(i=0;i<variaveis.length;i++){
+					nvar=variaveis[i].split('=')
+					qs[nvar[0]]=unescape(nvar[1])
+				}
+			}
+			function QueryString(variavel){
+				return qs[variavel];
+			}
+			/* ]]> */	
+		</script>
+	</head>	
+	<body onload="initialize();" onunload="GUnload()">
+		<f:view>
+			<f:loadBundle var="messages" basename="messages" />
+			<h:form id="filtroForm">				
+				
+				<table>
+					<tr>
+						<td align="left" colspan="2"><img id="img_logo"
+							src="./images/widget/wikicrimes.PNG" />
+							#{messages['mapaEmbedded.vaParaWikicrimes']}
+							<a href='http://www.wikicrimes.org/main.html' target='_blank'> 
+								<b> #{messages['webapp.name']} </b>. 
+							</a>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="1" align="center">
+							<div class="div_erro" id="content_erro"></div>
+							<div class="div_info" id="content_info"></div>
+							<div class="div_alerta" id="content_alerta"></div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div id="map"
+								style="width: 520px; height: 360px; border: 2px solid #2763a5;"></div>
+						</td>
+						<td align="left" valign="top">
+							<div id="filtro" style="width: 243px; height: 360px;">
+								<div align="center" class="mens_filtro_mapa"><b id="tituloFiltro">Carregue ... </b></div>
+								<br/>
+								<br/>
+								<div id="amigos"
+									style="width: 242px; height: 234px; overflow: auto;">
+								</div>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td><img id="img_legenda"
+							src="./images/widget/legenda.PNG" />
+						</td>
+					</tr>
+				</table>
+	</h:form>
+		</f:view>	
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." :
+		"http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost +
+		"google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+		<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-3266136-1");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>	
+				
+	</body>	
+
+
+</html>

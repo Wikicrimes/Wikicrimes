@@ -1,0 +1,2151 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC
+"-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+
+	
+	<f:loadBundle var="messages" basename="messages" />
+	<script type="text/javascript" src="./scripts/googleClusterer.js"></script>
+	<script>
+	 var chamouLoadMapa = false;
+	 function loadMapa() {
+	 		chamouLoadMapa=true;	 		
+			<c:if test="#{not empty usuario}">
+				load(#{usuario.lat},#{usuario.lng},13);
+			</c:if>    
+			<c:if test="#{empty usuario}">
+				load(#{filtroForm.latMapa},#{filtroForm.lngMapa},#{filtroForm.zoomMapa});
+			</c:if>
+		} 
+	</script>
+	<script type="text/javascript"><!-- 
+	/* <![CDATA[ */
+			
+			
+		if (GBrowserIsCompatible()) {
+			//*********************** Area INICIO ****************************
+			var labelArea = null;
+			var vaiEditarArea = false;
+			var estaRemovendoPoligono = false;
+			var estaRegistrandoArea = false;
+			var estaDesenhandoArea = false;
+			var labelAreaAviso = null;
+			var polygon = null;
+			var eventoEndLine = null;
+			var eventoFecharJanela = null;
+			var eventoLineUpdate = null;
+			var eventoClickArea = null;
+			var eventoMoveMouse = null;
+			var eventoClickMap = null;
+			var excedeuLimite = false;
+			var hintAjudaArea = null;
+		
+			//*********************** Area FIM ****************************
+			
+			//*********************** Kernel Map INICIO ****************************
+				var arrayCrimesLatLng = new Array();
+				var arrayCrimesPixel = new Array();	
+				var index = 0;
+			    var zoomKernel;
+			    var photo = new TPhoto();
+			    var idUsuarioMapaKernel;  
+				var emailUsuarioMapaKernel;
+				var northPixel;
+				var southPixel;
+				var eastPixel;
+				var westPixel;
+				
+				var mapa =  '#{messages["webapp.nome.mapa.default"]}';
+				var satelite = '#{messages["webapp.nome.mapa.satelite"]}';
+				var hibrido = '#{messages["webapp.nome.mapa.hibrido"]}';
+				var terreno = '#{messages["webapp.nome.mapa.terreno"]}';
+				var kernelLabel = '#{messages["webapp.nome.mapa.zonasquentes"]}';
+				var earth ="3D";
+				/*var mapa = "Map";
+				var satelite = "Satellite";
+				var hibrido = "Hybrid";
+				var terreno = "Terrain";*/
+				
+			    var aindaCarregando = false;
+			    var me;
+			    var kernelLayer;
+			    var kernelDiv;
+			//*********************** Kernel Map FIM ****************************
+			
+			
+			//*********************** ROTAS SEGURAS INICIO ****************************
+				var contextmenu;
+				var clickedPixel;
+				
+				var dirn1 = new GDirections();
+			    var dirn2 = new GDirections();
+			    var dirn3 = new GDirections();
+			    var dirnRotaSegura = new GDirections();
+			
+			    var rotafirstpoint = true;
+			    var rotagmarkers = [];
+			    var rotagpolys = [];
+			    var rotalastindex = 0;
+			    var rotaMarcadores = new Array();
+			    var rotaMarcadoresIndice = 0;
+			    var rotaSegura = new Array();
+			    var rotaNumMarcadores = 0;
+			    var rotaSeguraPolyline;
+			    var rotaSeguraMarcador = [];
+			//*********************** ROTAS SEGURAS FIM ****************************
+			    var qtd_roubos = 0;
+				var qtd_furtos = 0;
+				var qtd_outros = 0;
+				var qtd_denuncias = 0;
+				var renovaSessao = false;
+				var ignoraData;
+				var clusterer;
+				var map;
+				var mgr;
+				var crime;
+				var crime2;
+				var id;
+				var podeRegistrar = false;
+				var podeCarregarCrimes = true; // boolean para checar se deve carregar crimes ou nao
+				var lastBounds; // guarda os ultimos bounds 
+				var limpaTela = true;
+				var idTipoCrime = 0;
+				var idSubTipoCrime = 0;
+				var geocoder;
+				var crimesAtuais = {};
+				var ii = 0;
+				var IE=false;
+				var tempX = 0;
+				var tempY = 0;
+				var showWindow=false;
+				var lastZoom;
+				var atualiza=true;
+				var atualizaGrupos=true;
+				var filtrou=false;
+
+				//tutor
+				var acoesUsuario = {};
+				acoesUsuario['qtd_move_map'] = 0;
+				acoesUsuario['qtd_mostrar_dados'] = 0;	
+				//tutor
+				
+				// Google Agrupador
+				var crimesAtuaisAgrupador = {};
+				var GClusterer;
+				var GVetorMarcadores = [];
+				var agrupadorToolTipText = '#{messages["agrupador.toolTip.texto"]}';
+				
+				browser=navigator.appName;
+				check=browser.indexOf("Microsoft");
+				if (check!=-1) IE=true;
+			} else {
+				alert('#{messages["webapp.maps.nao.compativel"]}');
+			}
+					
+			function removerPoligono(){
+				estaRemovendoPoligono = true;
+				if(!map.getInfoWindow().isHidden())
+					map.closeInfoWindow();
+				estaRegistrandoArea = false;
+				if(polygon!=null){
+					if(polygon.getVertexCount()==0){
+						polygon.insertVertex(0,  new GLatLng(88, 55));
+						polygon.insertVertex(1,  new GLatLng(88, 54));
+						polygon.insertVertex(2,  new GLatLng(88, 53));
+						polygon.insertVertex(3,  new GLatLng(88, 52));
+						GEvent.trigger(polygon,'endline');
+					}					
+					map.removeOverlay(polygon);
+					polygon = null;
+				}	
+				if(eventoEndLine != null){
+					GEvent.removeListener(eventoEndLine);
+					eventoEndLine = null;
+				}
+				if(eventoLineUpdate != null){
+					GEvent.removeListener(eventoLineUpdate);
+					eventoLineUpdate = null;
+				}
+				if(eventoClickArea != null){
+					GEvent.removeListener(eventoClickArea);
+					eventoClickArea = null;
+				}	
+				if(eventoClickMap!=null){
+					GEvent.removeListener(eventoClickMap);
+					eventoClickMap = null;
+				}
+				if(eventoFecharJanela!=null){
+					GEvent.removeListener(eventoFecharJanela);
+					eventoFecharJanela = null;
+				}		
+				if(labelArea != null){ 
+					map.removeOverlay(labelArea);		
+				}
+				if(labelAreaAviso!=null){
+					map.removeOverlay(labelAreaAviso);
+				}	
+				labelArea = null;
+				labelAreaAviso = null;	
+				removeHintAjudaArea(); 
+				//pontosLatLngArea=new Array();
+				//pontosArea=new Array();
+				estaRemovendoPoligono = false;
+			}
+			function removeHintAjudaArea(){
+				if(eventoMoveMouse!=null){
+					GEvent.removeListener(eventoMoveMouse);
+					eventoMoveMouse = null;
+				}
+				if(hintAjudaArea!=null){
+					map.removeOverlay(hintAjudaArea);
+					hintAjudaArea = null;
+				}	
+			}
+
+			
+
+			function plotaEnderecoMap(response) {
+				if (!response || response.Status.code != 200) {
+			    	alert("#{messages['menu.mensagem.erro']}");
+			    } 
+			    else {
+			    	  //informando tutor que o usu�rio j� usou a busca por endere�o	  
+			    	  jaMostrouAjudaPesquisa = true;
+				      place = response.Placemark[0];
+				      point = new GLatLng(place.Point.coordinates[1],place.Point.coordinates[0]);
+				      var html=place.address  + ' <br/> ' + '<b>Codigo Pais:</b> ' + place.AddressDetails.Country.CountryNameCode;
+			
+				      switch(place.AddressDetails.Accuracy)
+					  {
+							case 0:
+								zoom=#{filtroForm.zoomMapa};
+								  break;    
+							case 1:
+								zoom=4;
+							  break;
+						 	case 2:
+								zoom=6;
+							  break;
+							case 3:
+								zoom=12;
+							  break;
+							case 4:
+								zoom=13;
+							  break;
+							case 5:
+								zoom=14;
+							  break;
+							case 6:
+								zoom=16;
+							  break;
+							case 7:
+								zoom=17;
+							  break;
+							case 8:
+								zoom=17;
+							  break;
+							default:
+								zoom=#{filtroForm.zoomMapa};		
+						}
+				      	preparaRequisicaoMudandoData(point, zoom);
+				      	map.openInfoWindowHtml(point,html); 
+				      
+			      }
+			}
+
+			function preparaRequisicaoMudandoData(point, zoom){
+				var temp=podeCarregarCrimes;
+			   	podeCarregarCrimes=false;
+			   	if(point != null)			  
+		        	map.setCenter(point,zoom);		        
+			   	ignoraData="true";
+			   	filtrou=false;
+		   	  	tempDataMaisAntiga= new Date();
+		        atualizaMapa();
+		      	podeCarregarCrimes=temp;
+			}	
+		   
+			function createLabelTemp(point, tipoLabel) {
+				var icone = new GIcon();
+				var marker;
+				//icone.shadow = "./images/baloes/shadow50.png";
+				
+				if (tipoLabel == 1) {
+					icone.image = "./images/hints/area/"+"#{messages['webapp.area.hint.img1']}";
+					icone.iconSize = new GSize(276, 22);
+				}
+				if (tipoLabel == 2) {
+					icone.image = "./images/hints/area/"+"#{messages['webapp.area.hint.img2']}";
+					icone.iconSize = new GSize(276, 22);
+				}
+				if (tipoLabel == 3) {
+					icone.image = "./images/hints/area/"+"#{messages['webapp.area.hint.img3']}";
+					icone.iconSize = new GSize(398, 22);
+				}
+				
+				
+				icone.iconAnchor = new GPoint(2, 34);
+				icone.infoWindowAnchor = new GPoint(9, 2);
+				marker = new CrimeMarker(point, {draggable:true, icon:icone});
+				marker.idTipoCrime = tipoLabel;
+				return marker;
+			}
+			
+			function startShape() {
+			  estaRegistrandoArea = true;
+			  var contCliques = 0;
+			  eventoClickMap = GEvent.addListener(map, "click", function (overlay, latLng) {			  	 	
+			     estaDesenhandoArea = true;
+			     if(contCliques==0){
+			     	removeHintAjudaArea();
+			     	hintAjudaArea = createLabelTemp(latLng, 2);
+			  		map.addOverlay(hintAjudaArea);
+			  		eventoMoveMouse=GEvent.addListener(map, "mousemove", function (latLng) {
+					
+					if (!hintAjudaArea) {
+						hintAjudaArea = createLabelTemp(latLng, 2);
+						map.addOverlay(hintAjudaArea);
+					} else {
+						hintAjudaArea.setLatLng(latLng);
+				  	}
+						
+				  });
+			     }
+			     if(contCliques==2){
+			     	removeHintAjudaArea();
+			     	hintAjudaArea = createLabelTemp(latLng, 3);
+			  		map.addOverlay(hintAjudaArea);
+			  		eventoMoveMouse=GEvent.addListener(map, "mousemove", function (latLng) {
+					
+					if (!hintAjudaArea) {
+						hintAjudaArea = createLabelTemp(latLng, 3);
+						map.addOverlay(hintAjudaArea);
+					} else {
+						hintAjudaArea.setLatLng(latLng);
+				  	}
+						
+				  });
+			     }
+				 contCliques++;
+			  });
+			  hintAjudaArea = createLabelTemp(map.getCenter(), 1);
+			  map.addOverlay(hintAjudaArea);
+			  eventoMoveMouse=GEvent.addListener(map, "mousemove", function (latLng) {				
+				if (!hintAjudaArea) {
+					hintAjudaArea = createLabelTemp(latLng, 1);
+					map.addOverlay(hintAjudaArea);
+				} else {
+					hintAjudaArea.setLatLng(latLng);
+				}
+					
+			  });
+			  //select("shape_b");
+			  //var color = getColor(false);
+			  polygon = new GPolygon([], 'blue', 2, 0.7, '#000080', 0.2);
+			  /*GEvent.addListener(polygon, "cancelline", function() {
+			    	alert("cancelline");
+			  });*/
+			  startDrawing("Shape 1", function() {
+			    //alert(polygon.getArea());
+			  	if(polygon != null){  
+				    var color;
+				    if(polygon.getArea()>2000000.0){
+				    	color = 'red'; 
+				    	excedeuLimite = true;   	
+				    }	
+				    else{
+				    	color = 'blue';
+				    	excedeuLimite = false;    	
+				    }	
+				    if(labelArea!=null){
+				    	map.removeOverlay(labelArea);    	
+				    }
+				    if(labelAreaAviso!=null){
+						map.removeOverlay(labelAreaAviso);
+					}		    
+				    var maxLatIndice = 0;	
+				    var maxLatitude = polygon.getVertex(0).lat();
+				    for(var i = 1 ; i < polygon.getVertexCount() ; i++){
+				    	if(polygon.getVertex(i).lat()>maxLatitude){
+				    		maxLatIndice = i;
+				    		maxLatitude = polygon.getVertex(i).lat();
+				    	}
+				    		
+				    }   
+				    if(polygon.getArea()>2000000.0){
+				    	labelAreaAviso = new ELabel(polygon.getVertex(maxLatIndice), '<div style="background-color:#ffffff;border:1px solid '+color+';color:'+color+';text-align:center;width:268px;height:14px"> #{messages["webapp.area.erro.limiteexcedido.tam.area2"]}</div>', null, new GSize(6,-30), 75);
+				    	map.addOverlay(labelAreaAviso);    	
+				    }
+				    else{
+				    	labelAreaAviso = new ELabel(polygon.getVertex(maxLatIndice), '<div style="background-color:#ffffff;border:1px solid '+color+';color:'+color+';text-align:center;width:268px;height:14px"> #{messages["webapp.area.label.clique.na.area.registra.la"]}</div>', null, new GSize(6,-30), 75);
+				    	map.addOverlay(labelAreaAviso);
+				    }
+				    labelArea = new ELabel(polygon.getVertex(maxLatIndice), '<div style="background-color:#ffffff;border:1px solid '+color+';color:'+color+';text-align:center;width:220px;height:14px"> #{messages["webapp.area.tamanho"]} '+ (Math.round(polygon.getArea() / 10000) / 100) + "km2" +'.</div>', null, new GSize(6,-10), 75);
+				    map.addOverlay(labelArea);
+				}        
+			  }, '#ff0000');
+			}
+			
+			function startDrawing(name, onUpdate, color) {
+			 map.addOverlay(polygon);
+			  polygon.enableDrawing({});
+			  polygon.enableEditing({onEvent: "mouseover"});
+			  polygon.disableEditing({onEvent: "mouseout"});
+			 
+			  eventoEndLine = GEvent.addListener(polygon, "endline", function() {    
+			  	if(eventoClickMap!=null){
+					GEvent.removeListener(eventoClickMap);
+					eventoClickMap = null;
+				}
+			  	estaDesenhandoArea = false;
+			  	removeHintAjudaArea();
+			  	if(!estaRemovendoPoligono)
+			  		registrarArea();  	 
+			    eventoLineUpdate = GEvent.bind(polygon, "lineupdated", null, onUpdate);
+			    eventoClickArea = GEvent.addListener(polygon, "click", function(latlng, index) {
+			    	if(!estaRemovendoPoligono)
+			    		registrarArea();
+			    });
+			  });
+			}
+			
+			function registrarArea(){
+				vaiEditarArea = false;
+				if(polygon.getArea()>2000000.0){
+					excedeuLimite = true;
+				}
+				else{
+					excedeuLimite = false;
+				}
+				if(!excedeuLimite){	 
+			      var latitudes='';
+			      var longitudes='';
+			      for(var i=0 ; i<polygon.getVertexCount();i++){
+					if(i!=polygon.getVertexCount()-1){	
+						if(i==polygon.getVertexCount()-2){
+							latitudes+= polygon.getVertex(i).lat();
+							longitudes+= polygon.getVertex(i).lng();
+						}
+						else{
+							latitudes+= polygon.getVertex(i).lat()+';';
+							longitudes+= polygon.getVertex(i).lng()+';';
+						}
+					}		
+				  }
+			      var myHtml = "<iframe src='./registrarArea.html?latitudes="+ latitudes  +"&longitudes="+ longitudes  +"&areaKm2="+polygon.getArea()+"' width='400' height='160' frameborder='0'></iframe>";
+				  map.openInfoWindowHtml(polygon.getVertex(0),myHtml);	   
+				  eventoFecharJanela=GEvent.addListener(map,"infowindowbeforeclose", function(overlay,latlng) {
+					if (overlay) {
+						// ignore if we click on the info window
+						return;
+					}else{
+						if(vaiEditarArea){
+							polygon.enableEditing({onEvent: "mouseover"});
+				  			polygon.disableEditing({onEvent: "mouseout"});							
+						}
+						else{
+							selecionarComando(map, 'mao');		
+							removerPoligono();
+						}
+					}				
+				  });	
+			      polygon.disableEditing({onEvent: "mouseover"});  
+			   	}
+			}
+			
+			function plotaAreaMapaDaListagem(nome, pontosTexto){
+				//polyListArea.insertVertex(0,  new GLatLng(88, 55));						 
+				var arrayPontos = pontosTexto.split('|');
+				var arrayLatLng = null;
+				var cont = 0;
+				var arrayPontosLatLng = new Array();				
+				for(var i = 0; i < arrayPontos.length;i++){
+					if(arrayPontos[i]!=null && arrayPontos[i]!=''){					
+						arrayLatLng = arrayPontos[i].split(';');
+						arrayPontosLatLng[cont] = new GLatLng(arrayLatLng[0], arrayLatLng[1]);
+						//polyListArea.insertVertex(cont,  new GLatLng(arrayLatLng[0], arrayLatLng[1]));
+						cont++;
+						arrayLatLng = null;
+					}
+					
+				}
+				arrayPontosLatLng[cont+1] = arrayPontosLatLng[0];
+				var polyListArea = new GPolygon(arrayPontosLatLng, 'blue', 2, 0.7, '#000080', 0.2);
+				var label = new ELabel(polyListArea.getVertex(0), '<div style="background-color:#ffffff;border:1px solid blue;color:blue;width:120px;height:14px"> #{messages["webapp.area.clique.para.fechar"]} </div>', null, new GSize(6,-10), 75);
+				GEvent.addListener(polyListArea, "click", function(latlng, index) {
+			  		map.removeOverlay(label);
+			  		polyListArea.hide();
+			  		
+			  	});  
+			    GEvent.addListener(polyListArea, "mouseover", function(latlng, index) {
+			     	map.addOverlay(label);
+			    });
+			    GEvent.addListener(polyListArea, "mouseout", function(latlng, index) {
+			     	map.removeOverlay(label);
+			    });  	 	
+				map.addOverlay(polyListArea);					
+				map.setCenter(polyListArea.getVertex(0),14);
+			}	
+			
+			
+//*********************** Kernel Map INICIO ****************************
+			
+			function KernelLayer(map, opt_opts) {
+			  //alert('oi');
+			  var me = this;
+			  me.map = map;  
+			}
+			
+			KernelLayer.prototype.enable = function() {
+			  //if(usuarioEstaLogado()){
+			  	if(!aindaCarregando){
+				  	this.enabled = true;
+				  	document.getElementById("loadingKernelMap").style.visibility='visible';		
+				  	aindaCarregando = true;
+				  	podeCarregarCrimes=false;
+				  	window.setTimeout(constroiMapaKernel,1);  	
+			  	}
+			  /*}else{
+			  	//alert('Por favor, efetue o login para visualizar o mapa de kernel!');
+			  	displayMessage('./login.html', 300, 210,'Login');
+			  }*/
+			  
+			}
+			
+			KernelLayer.prototype.disable = function() {
+				if(!aindaCarregando){
+					this.enabled = false;
+					apagaMapaKernel();
+					mostraMarcadores();
+					podeCarregarCrimes=true;
+					//alert('disable');
+				}  
+			}
+			
+			KernelLayer.prototype.getEnabled = function() {
+			  return this.enabled;
+			}
+			
+			function crimeKernelMap(lng, lat, crimeMarker){
+				this.lng = lng;
+				this.lat = lat;
+				this.crimeMarker = crimeMarker;
+			}
+			
+			function zeraArrayCrimes(){
+				arrayCrimesLatLng = new Array();
+				index = 0;	
+				apagaMapaKernel();
+				desabilitaBotaoKernel();
+			}
+			
+			function desabilitaBotaoKernel(){
+				//alert(me);
+				if (me != null && me.kernelLayer != null){
+					me.kernelLayer.disable();
+					me.toggleButton_(kernelDiv.firstChild, me.kernelLayer.getEnabled());
+					aindaCarregando = false;		
+				}
+			}
+			
+			function apagaMapaKernel(){
+				map.removeTPhoto(photo);
+				//alert("Apagou");
+			}
+			
+			function constroiMapaKernel(){
+				
+				var url = constroiURLMapaKernel();
+				
+				//alert('Inicio');
+				constroiRequisicaoKernelMap(url);
+				
+				carregaKernelMap();
+				
+			}
+			
+			function constroiURLMapaKernel(){
+				//alert('Teste 1');
+				jaMostrouAjudaHotSpot = true;
+				//Recupera os limites da tela
+				var b = map.getBounds();
+				var north = b.getNorthEast().lat();
+				var south = b.getSouthWest().lat();
+				var east = b.getNorthEast().lng();
+				var west = b.getSouthWest().lng();
+				   
+				//Passa os limites para pixel
+				northPixel = map.getCurrentMapType().getProjection().fromLatLngToPixel(b.getNorthEast(), map.getZoom()).y;
+				southPixel = map.getCurrentMapType().getProjection().fromLatLngToPixel(b.getSouthWest(), map.getZoom()).y;
+				eastPixel = map.getCurrentMapType().getProjection().fromLatLngToPixel(b.getNorthEast(), map.getZoom()).x;
+				westPixel = map.getCurrentMapType().getProjection().fromLatLngToPixel(b.getSouthWest(), map.getZoom()).x;
+				idUsuarioMapaKernel = retornaIdUsuario();  
+				emailUsuarioMapaKernel = retornaEmailUsuario();
+					
+				var url = '';  	
+				
+				convertLatLngParaPixel();	
+													
+				//Adiciona os parametros da requisição
+				//url = 'ServletKernelMap?northPixel=' + northPixel + '&southPixel=' + southPixel + '&eastPixel=' + eastPixel + '&westPixel=' + westPixel + '&pontoXY=';
+				url = 'emailUsuarioMapaKernel=' + emailUsuarioMapaKernel + '&idUsuarioMapaKernel=' + idUsuarioMapaKernel + '&northPixel=' + northPixel + '&southPixel=' + southPixel + '&eastPixel=' + eastPixel + '&westPixel=' + westPixel + '&pontoXY=';
+				
+				//Monta os parametros da requisi��o contendo todos os crimes clicados na tela
+				for (i = 0; i < arrayCrimesPixel.length; i++){
+					//arrayCrimesPixel[i];
+					//�ltimo crime n�o adiciona o "a" no final
+					if (i == arrayCrimesPixel.length - 1){
+						url += arrayCrimesPixel[i].lng + "," + arrayCrimesPixel[i].lat;
+					}
+					//Crimes s�o adicionados como strings separados por "a" e os latlng separados por ","
+					else{				
+						url += arrayCrimesPixel[i].lng + "," + arrayCrimesPixel[i].lat + "a";
+					} 
+				}
+				getTamMapClienteWikiCrimes(); 	      		
+		      	url +='&width='+widthMapClienteWikiCrimes+'&height='+heightMapClienteWikiCrimes;
+				//Mosta a url
+				//alert(url);
+				
+				return url;
+			}
+			
+			function escondeMarcadores(){
+				for (i = 0; i < arrayCrimesLatLng.length; i++){
+					arrayCrimesLatLng[i].crimeMarker.hide();
+				}
+			}
+			
+			function mostraMarcadores(){
+				for (i = 0; i < arrayCrimesLatLng.length; i++){
+					arrayCrimesLatLng[i].crimeMarker.show();
+				}
+				
+			}
+
+			function limpaCrimesAgrupador(){
+				// Google Agrupadores: Limpa agrupadores quando mapa de kernel é chamado. 
+				GVetorMarcadores = [];
+				GClusterer.resetViewport();
+				GClusterer.clearMarkers();		
+			}
+
+			function mostraCrimesAgrupador(){
+				for (k in crimesAtuais) {
+					GVetorMarcadores.push(crimesAtuais[k]);
+			 	} 	
+				GClusterer = new MarkerClusterer(map, GVetorMarcadores);
+				//setTimeout(atualizaMapa, 1000);
+			}		
+			
+			function convertLatLngParaPixel(){
+			
+				//Apaga o array de pixel
+				arrayCrimesPixel = new Array();	
+				
+				//Apaga a photo
+				apagaMapaKernel();
+				
+				//recupera o zoom atual
+				zoomKernel = map.getZoom();
+				
+				var j = 0;
+
+
+				
+
+				
+				for (i = 0; i < arrayCrimesLatLng.length; i++){
+					//Convete o latlng em pixel
+					var sw = map.getCurrentMapType().getProjection().fromLatLngToPixel(new GLatLng(arrayCrimesLatLng[i].lat, arrayCrimesLatLng[i].lng), zoomKernel);
+					
+					arrayCrimesLatLng[i].crimeMarker.hide();
+					
+					pontoXPixel = sw.y; //Longitude (x)
+					pontoYPixel = sw.x; //Latitude (y)
+					
+					if(westPixel <= pontoYPixel && eastPixel >= pontoYPixel && northPixel <= pontoXPixel && southPixel >= pontoXPixel){
+						arrayCrimesPixel[j] = new crimeKernelMap(pontoXPixel, pontoYPixel);
+						j = j + 1;
+					}
+				}	
+			}
+
+			var widthMapClienteWikiCrimes;
+			var heightMapClienteWikiCrimes;
+			function getTamMapClienteWikiCrimes(){
+				var b = map.getBounds();
+				var north = b.getNorthEast().lat();
+				var south = b.getSouthWest().lat();
+				var east = b.getNorthEast().lng();
+				var west = b.getSouthWest().lng();	
+
+				var northPixel = map.getCurrentMapType().getProjection().fromLatLngToPixel(b.getNorthEast(), map.getZoom()).y;
+				var southPixel = map.getCurrentMapType().getProjection().fromLatLngToPixel(b.getSouthWest(), map.getZoom()).y;
+				var eastPixel = map.getCurrentMapType().getProjection().fromLatLngToPixel(b.getNorthEast(), map.getZoom()).x;
+				var westPixel = map.getCurrentMapType().getProjection().fromLatLngToPixel(b.getSouthWest(), map.getZoom()).x;
+				widthMapClienteWikiCrimes = (eastPixel - westPixel);
+				heightMapClienteWikiCrimes = (southPixel - northPixel);
+			}
+			
+			function constroiRequisicaoKernelMap(url) {
+						
+			      http_request = GXmlHttp.create();
+			      if (http_request.overrideMimeType) {
+			         http_request.overrideMimeType('text/xml');
+			      }
+				 
+				 //alert('Antes...');
+				 
+			      //Espera retorno do servidor
+			     http_request.open('POST', 'ServletKernelMap', false);
+				 http_request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+				 //http_request.onreadystatechange = carregaKernelMap;
+				 http_request.send(url);
+				 
+				 //alert('Depois...');
+				 
+				 
+			}			
+			
+			function carregaKernelMap(){
+			
+				//alert('Teste 2.1');
+				
+				if (http_request.readyState == 4) {
+					if (http_request.status == 200) {
+					
+						//alert('Teste 2.2');
+					
+						//Recupera a resposta
+						var documento = http_request.responseText;
+						
+						//Separa a resposta em "n" linhas
+						var linhas = documento.split("\n");
+			
+			
+						if (linhas.length > 1){
+						
+							//Tr�s linhas da resposta da requisi��o
+							/*alert("Tr�s linhas da resposta da requisi��o de " + linhas.length +" (linhas): " + "\n" +
+								 linhas[0] + "\n" +
+								 linhas[1] + "\n" +
+								 linhas[2]);*/ 
+						
+								
+							//Recupera de cada linha os: lat, lng e a cor em hexa 
+							var linha0 = linhas[0].split(",");
+							var linha1 = linhas[1].split(",");
+							
+							//Converte pixel para latlng. Lembrete: GPoint(lat, lng)
+							var sw1 = map.getCurrentMapType().getProjection().fromPixelToLatLng(new GPoint(linha0[0],linha0[1]), zoomKernel, true);
+							var sw2 = map.getCurrentMapType().getProjection().fromPixelToLatLng(new GPoint(linha1[0],linha1[1]), zoomKernel, true);
+							
+							//Recupara os latlong da resposta da requisicao						
+			
+						
+							var lon1 = sw1.lng();
+							var lat1 = sw1.lat();
+							
+							//Recupara os latlong da resposta da requisicao						
+			
+						
+							var lon2 = sw2.lng();
+							var lat2 = sw2.lat();
+							
+							var idImage = linhas[2];
+							
+							var numRandomico = linhas[3];
+							
+									
+							/*alert("Pontos (lat, lng): " + linha0[1] + " / " + linha0[0] + "\n" +
+								  "LatLng: " + lat1 + " / " + lon1 );*/
+							
+							/*alert(map.getZoom() + " - " + zoomKernel);*/
+									
+							if (map.getZoom() == zoomKernel){
+								//alert('zoomKernel: ' + zoomKernel);
+								  
+								photo = new TPhoto();
+								photo.id = 'addphoto';
+								//photo.id = id;
+								
+								photo.src = './images/KernelMap/'+ numRandomico + '/Img' + idImage + '.png';
+								
+								//photo.src = './images/KernelMap/' + idUsuarioMapaKernel +'@'+ emailUsuarioMapaKernel + '/Img' + idImage + '.png';
+								//photo.src = '${contextPath}/Img2.png';			
+								//photo.src = '${pageContext.request.contextPath}/Img2.png';
+								//photo.src = 'images/TesteM.png';
+								photo.percentOpacity = 50;
+								photo.anchorTopLeft = new GLatLng(lat1,lon1);
+								photo.anchorBottomRight = new GLatLng(lat2,lon2);
+						
+						  		map.addTPhoto(photo);
+						  		
+						  		document.getElementById("loadingKernelMap").style.visibility='hidden';
+						  		
+								//Manda confirma��o para apagar a imagem no servidor
+								url = 'imagem=' + numRandomico;
+								constroiRequisicaoKernelMap(url);
+						  		
+						  		aindaCarregando = false;
+						  		
+						  		//alert('Fim');
+						  	}
+						}		
+					}
+				}
+			}
+							 
+			
+			//*********************** Kernel Map FIM ****************************
+			
+			//*********************** ROTAS SEGURAS INICIO ****************************
+			function controleMenu(){
+				// === create the context menu div ===
+				contextmenu = document.createElement("div");
+				contextmenu.style.visibility="hidden";
+				contextmenu.style.background="#ffffff";
+				contextmenu.style.border="1px solid #8888FF";
+			
+				contextmenu.innerHTML = '<a class="menu" href="javascript:adicionaPontoOrigem()"><div class="contextMenu">&nbsp;&nbsp;Ponto Origem&nbsp;&nbsp;</div></a>'
+								+ '<a class="menu" href="javascript:adicionaPontoDestino()"><div class="contextMenu">&nbsp;&nbsp;Ponto Destino&nbsp;&nbsp;</div></a>'				
+								+ '<a class="menu" href="javascript:tiraCrimes()"><div class="contextMenu">&nbsp;&nbsp;Tira Crimes&nbsp;&nbsp;</div></a>'
+								+ '<a class="menu" href="javascript:colocaCrimes()"><div class="contextMenu">&nbsp;&nbsp;Mostra Crimes&nbsp;&nbsp;</div></a>'
+								+ '<a class="menu" href="javascript:calculaRotaSegura()"><div class="contextMenu">&nbsp;&nbsp;Rotas Segura&nbsp;&nbsp;</div></a>'
+								+ '<a class="menu" href="javascript:removeRotas()"><div class="contextMenu">&nbsp;&nbsp;Remove Rotas&nbsp;&nbsp;</div></a>';
+		
+				map.getContainer().appendChild(contextmenu);
+			
+				// === listen for singlerightclick ===
+				GEvent.addListener(map,"singlerightclick",function(pixel,tile) {
+					// store the "pixel" info in case we need it later
+					// adjust the context menu location if near an egde
+					// create a GControlPosition
+					// apply it to the context menu, and make the context menu visible
+					clickedPixel = pixel;
+					var x=pixel.x;
+					var y=pixel.y;
+					if (x > map.getSize().width - 120) { x = map.getSize().width - 120 }
+					if (y > map.getSize().height - 100) { y = map.getSize().height - 100 }
+					var pos = new GControlPosition(G_ANCHOR_TOP_LEFT, new GSize(x,y));  
+					pos.apply(contextmenu);
+					contextmenu.style.visibility = "visible";
+				});
+			}
+			
+		      // === functions that perform the context menu options ===
+		      function zoomInM() {
+		        // perform the requested operation
+		        map.zoomIn();
+		        // hide the context menu now that it has been used
+		        contextmenu.style.visibility="hidden";
+		      }      
+		      function zoomOutM() {
+		        // perform the requested operation
+		        map.zoomOut();
+		        // hide the context menu now that it has been used
+		        contextmenu.style.visibility="hidden";
+		      }      
+		      function zoomInHereM() {
+		        // perform the requested operation
+		        var point = map.fromContainerPixelToLatLng(clickedPixel)
+		        map.zoomIn(point,true);
+		        // hide the context menu now that it has been used
+		        contextmenu.style.visibility="hidden";
+		      }      
+		      function zoomOutHereM() {
+		        // perform the requested operation
+		        var point = map.fromContainerPixelToLatLng(clickedPixel)
+		        map.setCenter(point,map.getZoom()-1); // There is no map.zoomOut() equivalent
+		        // hide the context menu now that it has been used
+		        contextmenu.style.visibility="hidden";
+		      }      
+		      function centreMapHereM() {
+		        // perform the requested operation
+		        var point = map.fromContainerPixelToLatLng(clickedPixel)
+		        map.setCenter(point);
+		        // hide the context menu now that it has been used
+		        contextmenu.style.visibility="hidden";
+		      }
+		      
+		      
+		      
+		      
+		      
+		
+		
+		
+		
+		
+			function tiraCrimes(){
+				escondeMarcadores();
+				
+				//dirnRotaSegura.loadFromWaypoints( [new GLatLng(-3.72647,-38.535748),new GLatLng(-3.733665,-38.529224)],{getPolyline:true});
+				//dirnRotaSegura.loadFromWaypoints("torres camera, fortaleza, ceara to carlos vasconcelos, fortaleza, ceara");
+				//map.setCenter(new GLatLng(37.5937, -121.88), 13);
+				
+				
+				 //var point = map.fromContainerPixelToLatLng(clickedPixel); 
+		        
+            	 //dirnRotaSegura.loadFromWaypoints([point.toUrlValue(6),point.toUrlValue(6)],{getPolyline:true});
+				
+				
+				 // hide the context menu now that it has been used
+		        contextmenu.style.visibility="hidden";
+			}
+			
+			function colocaCrimes(){
+				mostraMarcadores();				
+				 // hide the context menu now that it has been used
+		        contextmenu.style.visibility="hidden";
+			}
+		
+			function adicionaPontoOrigem() {
+				if (rotaNumMarcadores == 0){
+				
+			        // perform the requested operation
+			        var point = map.fromContainerPixelToLatLng(clickedPixel); 
+			        
+			        if (rotafirstpoint) {
+			            dirn1.loadFromWaypoints([point.toUrlValue(6),point.toUrlValue(6)],{getPolyline:true});
+			        } else {
+			            dirn1.loadFromWaypoints([rotagmarkers[rotagmarkers.length-1].getPoint(),point.toUrlValue(6)],{getPolyline:true});
+			        }
+		       	}
+		        
+		        
+		        // hide the context menu now that it has been used
+		        contextmenu.style.visibility="hidden";
+		      }    
+		      
+		      function adicionaPontoDestino() {
+				if (rotaNumMarcadores == 1){
+				
+			        // perform the requested operation
+			        var point = map.fromContainerPixelToLatLng(clickedPixel); 
+			        
+			        if (rotafirstpoint) {
+			            dirn1.loadFromWaypoints([point.toUrlValue(6),point.toUrlValue(6)],{getPolyline:true});
+			        } else {
+			            dirn1.loadFromWaypoints([rotagmarkers[rotagmarkers.length-1].getPoint(),point.toUrlValue(6)],{getPolyline:true});
+			        }
+		       	}
+		        
+		        
+		        // hide the context menu now that it has been used
+		        contextmenu.style.visibility="hidden";
+		      }
+		      
+		      function removeRotas() {
+		      	//alert("removeRotas");
+		      
+			    /*map.removeOverlay(dirn1.getPolyline());
+			    map.removeOverlay(dirn2.getPolyline());
+			    map.removeOverlay(dirn3.getPolyline());
+			    map.removeOverlay(dirnRotaSegura.getPolyline());*/
+			    
+			    
+			    
+			    for(i = 0; i < rotagmarkers.length; i++){
+			  		map.removeOverlay(rotagmarkers[i]);
+			  	}
+			  	
+			  	for(i = 0; i < rotagpolys.length; i++){
+			  		map.removeOverlay(rotagpolys[i]);
+			  	}
+			  	
+			  	for(i = 0; i < rotaSeguraMarcador.length; i++){
+			  		map.removeOverlay(rotaSeguraMarcador[i]);
+			  	}
+			  	
+			  	map.removeOverlay(rotaSeguraPolyline);
+			  	
+			  	rotafirstpoint = true;  
+			  	rotagmarkers = [];
+			    rotagpolys = [];
+			    rotalastindex = 0;
+			    romoveMardadoresDaGPolyline();
+			    rotaSegura = new Array();
+			    rotaNumMarcadores = 0;
+			    
+			    // hide the context menu now that it has been used
+		        contextmenu.style.visibility="hidden";
+		      }
+		      
+		      
+		      
+		      function calculateDistance() {
+		        var dist = 0;
+		        for (var i=0; i<rotagpolys.length; i++) {
+		          dist+=rotagpolys[i].Distance();
+		        }
+		        //document.getElementById("distance").innerHTML="Path length: "+(dist/1000).toFixed(2)+" km. "+(dist/1609.344).toFixed(2)+" miles.";
+		      }
+		
+		      // == when the load event completes, plot the point on the street ==
+		      GEvent.addListener(dirn1,"load", function() {
+		        // snap to last vertex in the polyline
+		        var n = dirn1.getPolyline().getVertexCount();
+				
+				//alert("rotaMarcadoresIndice: " + rotaMarcadoresIndice);
+				
+				/*for(i = 0; i < n; i++){
+					var latlng = dirn1.getPolyline().getVertex(i);
+					var marcador = new GMarker(latlng);
+					map.addOverlay(marcador);
+				}*/
+				
+				
+		        var p=dirn1.getPolyline().getVertex(n-1);
+		        var marker;
+		        if (rotaNumMarcadores == 0){
+		        	marker=new GMarker(p, {draggable:true, icon: G_START_ICON});
+		        }else{
+		        	marker=new GMarker(p, {draggable:true, icon: G_END_ICON});
+		        }
+		        		        
+		        GEvent.addListener(marker, "dragend", function() {
+				  //alert("marker: " + marker.getPoint());
+		          rotalastindex = marker.MyIndex;
+		          var point = marker.getPoint();
+		          if (rotalastindex > 0) {
+		            // recalculate the polyline preceding this point
+					//alert("atualiza antes do ponto");
+		            dirn2.loadFromWaypoints([rotagmarkers[rotalastindex-1].getPoint(),point.toUrlValue(6)],{getPolyline:true});
+		          }
+		          if (rotalastindex < (rotagmarkers.length-1)) {
+		            // recalculate the polyline following this point
+					//alert("Atualiza depois do ponto");
+		            dirn3.loadFromWaypoints([point.toUrlValue(6),rotagmarkers[rotalastindex+1].getPoint()],{getPolyline:true});
+		          }
+		        });
+		        map.addOverlay(marker);
+		        rotaNumMarcadores++;
+		        // store the details
+		        marker.MyIndex=rotagmarkers.length;
+		        rotagmarkers.push(marker);
+		        if (!rotafirstpoint) {
+		          map.addOverlay(dirn1.getPolyline());
+		          rotagpolys.push(dirn1.getPolyline());
+		          calculateDistance();
+		        }
+		        rotafirstpoint = false;
+		        
+		        /*if (rotagmarkers.length>1 && rotagmarkers.length<26) {
+		          document.getElementById("link").style.display="";
+		        } else {
+		          document.getElementById("link").style.display="none";
+		        }*/
+				
+				
+				
+				
+				
+				var numRotas = dirn1.getNumRoutes();
+				
+				var groute = dirn1.getRoute(0);
+				
+				var numSteps = groute.getNumSteps();
+				
+				
+				var numGeocodes = dirn1.getNumGeocodes();
+				
+				
+				var teste;
+				
+				romoveMardadoresDaGPolyline();
+				adicionaRotaMarcadores();
+				
+		      });
+		
+		      // == move the polyline preceding this point ==
+		      GEvent.addListener(dirn2,"load", function() {
+		        // snap to last vertex in the polyline
+		        var n = dirn2.getPolyline().getVertexCount();
+		        var p=dirn2.getPolyline().getVertex(n-1);
+		        rotagmarkers[rotalastindex].setPoint(p);
+		        // remove the old polyline
+		        map.removeOverlay(rotagpolys[rotalastindex-1]);
+		        
+		        // add the new polyline
+		        map.addOverlay(dirn2.getPolyline());
+		        rotagpolys[rotalastindex-1] = (dirn2.getPolyline());
+		        calculateDistance();
+		        
+		        //Remove os marcadores do GPolyline removido
+		        romoveMardadoresDaGPolyline();		        
+		        adicionaRotaMarcadores();
+		      });
+		
+		      // == move the polyline following this point ==
+		      GEvent.addListener(dirn3,"load", function() {
+		        // snap to first vertex in the polyline
+		        var p=dirn3.getPolyline().getVertex(0);
+		        rotagmarkers[rotalastindex].setPoint(p);
+		        // remove the old polyline
+		        map.removeOverlay(rotagpolys[rotalastindex]);
+		        
+		        // add the new polyline
+		        map.addOverlay(dirn3.getPolyline());
+		        rotagpolys[rotalastindex] = (dirn3.getPolyline());
+		        calculateDistance();
+		        
+		        
+		        
+		       	//Remove os marcadores do GPolyline removido
+		        romoveMardadoresDaGPolyline();		        
+		        adicionaRotaMarcadores();
+		      });
+		      
+		      // == move the polyline following this point ==
+		      GEvent.addListener(dirnRotaSegura,"load", function() {
+				
+				//alert('dirnRotaSegura');
+				
+		        
+		        
+		        
+		         var points = []; 
+                 var gpolylineRota = dirnRotaSegura.getPolyline();
+                 for (var i = 0; i < gpolylineRota.getVertexCount(); i++) { 
+                  points[i] = gpolylineRota.getVertex(i); 
+                 } 
+                 var mypoly = new GPolyline(points, "#00ff00", 3, 1); 
+                
+                rotaSeguraPolyline = mypoly; 
+                
+                 // add the new polyline
+                 map.addOverlay(mypoly); 
+		         
+		         //map.addOverlay(dirnRotaSegura.getPolyline());
+		        
+		        
+		        
+		        
+		        
+		        
+		      });
+		      
+		      
+			
+			  
+			  function romoveMardadoresDaGPolyline() {
+			  	  for(i = 0; i < rotaMarcadores.length; i++){
+			  	  		map.removeOverlay(rotaMarcadores[i]);
+			  	  }
+			  	  
+			  	  rotaMarcadoresIndice = 0;  	  			  
+			  }
+			  
+			  function adicionaRotaMarcadores(){			  	
+			  	for(i = 0; i < rotagpolys.length; i++){
+			  		var n = rotagpolys[i].getVertexCount();
+			  		for(j = 0; j < n - 1; j++){
+				  		var latlng = rotagpolys[i].getVertex(j);
+						var marcador = new GMarker(latlng);
+						rotaMarcadores[rotaMarcadoresIndice] = marcador;
+						rotaMarcadoresIndice++;
+						//if (j != 0)
+							//map.addOverlay(marcador);
+			  		}
+			  		
+					//Adiciona um �ltimo ponto
+			  		if(i == rotagpolys.length - 1){
+			  			var latlng = rotagpolys[i].getVertex(n - 1);
+						var marcador = new GMarker(latlng);
+						rotaMarcadores[rotaMarcadoresIndice] = marcador;
+						rotaMarcadoresIndice++;
+						//map.addOverlay(marcador);
+			  		}
+			  	}
+			  }
+			  
+			  
+		      GEvent.addListener(dirn1,"error", function() {
+		        GLog.write("Failed: "+dirn1.getStatus().code);
+		      });
+		      GEvent.addListener(dirn2,"error", function() {
+		        GLog.write("Failed: "+dirn2.getStatus().code);
+		      });
+		      GEvent.addListener(dirn3,"error", function() {
+		        GLog.write("Failed: "+dirn3.getStatus().code);
+		      });		      
+		      GEvent.addListener(dirnRotaSegura,"error", function() {
+		        GLog.write("Failed: "+dirnRotaSegura.getStatus().code);
+		      });
+		      
+		      function calculaRotaSegura() {
+		      	//hide the context menu now that it has been used
+		        contextmenu.style.visibility="hidden";
+		        
+		      	var url = constroiURLMapaKernel();
+		      	
+		      	url += '&rotas=';
+		      	
+		      	for(i = 0; i < rotaMarcadoresIndice - 1; i++){
+		      		var latlng = rotaMarcadores[i].getLatLng();
+		      		var gpoint = map.getCurrentMapType().getProjection().fromLatLngToPixel(latlng, map.getZoom());
+		      		url += gpoint.y + ',' + gpoint.x + 'a';
+		      	}
+		      	
+		      	var latlng = rotaMarcadores[rotaMarcadoresIndice - 1].getLatLng();
+	      		var gpoint = map.getCurrentMapType().getProjection().fromLatLngToPixel(latlng, map.getZoom());
+	      		url += gpoint.y + ',' + gpoint.x;
+	      		getTamMapClienteWikiCrimes();     		
+	      		
+		      	url +='&width='+widthMapClienteWikiCrimes+'&height='+heightMapClienteWikiCrimes;
+		      	constroiRequisicaoRotaSegura(url);
+		      	carregaKernelMapParaRotas();
+		      	
+		      	
+		      	// hide the context menu now that it has been used
+		        contextmenu.style.visibility="hidden";
+		      }
+		      
+		      function constroiRequisicaoRotaSegura(url) {
+						
+			      http_request = GXmlHttp.create();
+			      if (http_request.overrideMimeType) {
+			         http_request.overrideMimeType('text/xml');
+			      }
+				 
+				 //alert('Antes...');
+				 
+			      //Espera retorno do servidor
+			     http_request.open('POST', 'ServletRotaSegura', false);
+				 http_request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+				 //http_request.onreadystatechange = carregaKernelMap;
+				 http_request.send(url);
+				 
+				 //alert('Depois...');			 
+				 
+			  }
+			  
+			function carregaKernelMapParaRotas(){
+				
+					//alert('Teste 2.1');
+					
+					if (http_request.readyState == 4) {
+						if (http_request.status == 200) {
+						
+							//alert('Teste 2.2');
+						
+							//Recupera a resposta
+							var documento = http_request.responseText;
+							
+							//Separa a resposta em "n" linhas
+							var linhas = documento.split("\n");
+				
+				
+							if (linhas.length > 1){
+							
+								//Tr�s linhas da resposta da requisi��o
+								/*alert("Tr�s linhas da resposta da requisi��o de " + linhas.length +" (linhas): " + "\n" +
+									 linhas[0] + "\n" +
+									 linhas[1] + "\n" +
+									 linhas[2]);*/ 
+							
+									
+								//Recupera de cada linha os: lat, lng e a cor em hexa 
+								var linha0 = linhas[0].split(",");
+								var linha1 = linhas[1].split(",");
+								
+								//Converte pixel para latlng. Lembrete: GPoint(lat, lng)
+								var sw1 = map.getCurrentMapType().getProjection().fromPixelToLatLng(new GPoint(linha0[0],linha0[1]), zoomKernel, true);
+								var sw2 = map.getCurrentMapType().getProjection().fromPixelToLatLng(new GPoint(linha1[0],linha1[1]), zoomKernel, true);
+								
+								//Recupara os latlong da resposta da requisicao						
+				
+							
+								var lon1 = sw1.lng();
+								var lat1 = sw1.lat();
+								
+								//Recupara os latlong da resposta da requisicao						
+				
+							
+								var lon2 = sw2.lng();
+								var lat2 = sw2.lat();
+								
+								var idImage = linhas[2];
+								
+								var numRandomico = linhas[3];
+								
+								var marcadoresRota = linhas[4].split("a");
+								
+								
+								
+								
+										
+								/*alert("Pontos (lat, lng): " + linha0[1] + " / " + linha0[0] + "\n" +
+									  "LatLng: " + lat1 + " / " + lon1 );*/
+								
+								/*alert(map.getZoom() + " - " + zoomKernel);*/
+										
+								if (map.getZoom() == zoomKernel){
+									//alert('zoomKernel: ' + zoomKernel);
+									  
+									photo = new TPhoto();
+									photo.id = 'addphoto';
+									//photo.id = id;
+									
+									photo.src = './images/KernelMap/'+ numRandomico + '/Img' + idImage + '.png';
+									
+									//photo.src = './images/KernelMap/' + idUsuarioMapaKernel +'@'+ emailUsuarioMapaKernel + '/Img' + idImage + '.png';
+									//photo.src = '${contextPath}/Img2.png';			
+									//photo.src = '${pageContext.request.contextPath}/Img2.png';
+									//photo.src = 'images/TesteM.png';
+									photo.percentOpacity = 50;
+									photo.anchorTopLeft = new GLatLng(lat1,lon1);
+									photo.anchorBottomRight = new GLatLng(lat2,lon2);
+							
+							  		map.addTPhoto(photo);
+							  		
+							  		document.getElementById("loadingKernelMap").style.visibility='hidden';
+							  		
+									//Manda confirma��o para apagar a imagem no servidor
+									url = 'imagem=' + numRandomico;
+									constroiRequisicaoKernelMap(url);
+							  		
+							  		
+							  		
+							  		
+							  		
+							  		
+								  	//Plota os marcadores de resposta -> Nova Rota
+									for(z = 0; z < marcadoresRota.length; z++){
+										var marcadorRota = marcadoresRota[z].split(",");
+										
+										//Converte pixel para latlng. Lembrete: GPoint(lat, lng)
+										var swRota = map.getCurrentMapType().getProjection().fromPixelToLatLng(new GPoint(marcadorRota[1], marcadorRota[0]), zoomKernel, true);
+										
+										var lonRota = swRota.lng();
+										var latRota = swRota.lat();
+										
+										var marcador = new GMarker(new GLatLng(latRota, lonRota));
+										//N�o mostra o primeiro e o ultimo marcador pois sao origem e destino
+										if (z != 0 && z != marcadoresRota.length - 1){
+											map.addOverlay(marcador);
+										}
+										rotaSeguraMarcador[z] = marcador;
+										//map.setCenter(new GLatLng(lonRota,latRota), 14);
+										
+										//Adiciona os pontos da rota segura
+										rotaSegura[z] = new GLatLng(latRota, lonRota);
+																												
+									}
+									
+									//dirnRotaSegura.loadFromWaypoints( [new GLatLng(-3.72647,-38.535748),new GLatLng(-3.733665,-38.529224)],{getPolyline:true});
+									dirnRotaSegura.loadFromWaypoints(rotaSegura ,{getPolyline:true});
+								
+							  		/*var aux1 = null;
+							  		var aux2 = null;
+							  		//var aux3 = null;
+							  		for(var i = 0; i< array.length;i++){
+							  			if(i%3==0){
+							  			
+							  			}
+							  			else{
+							  				
+							  			}
+							  		}*/
+							  		
+							  		
+							  		
+							  		aindaCarregando = false;
+							  		
+							  		//alert('Fim');
+							  	}
+							}		
+						}
+					}
+				}
+		
+		
+		
+		
+		
+		
+		
+		
+			//*********************** ROTAS SEGURAS FIM ****************************
+			
+			  // Call this function when the page has been loaded
+			function load(_lat, _long, _zoom) {
+				
+				document.getElementById("loading").style.visibility = "visible";
+				map = new GMap2(document.getElementById("map"));
+				map.setCenter(new GLatLng(_lat, _long), _zoom);
+				map.addControl(new LegendaWikicrimes());
+				map.disableScrollWheelZoom();
+			//*********************** Kernel Map INICIO ****************************	
+				map.addControl(new KernelMapTypeControl());
+			//*********************** Kernel Map FIM ****************************	
+			//*********************** ROTAS SEGURAS INICIO ****************************
+				//controleMenu(map);
+			//*********************** ROTAS SEGURAS FIM ****************************
+				
+				//mostraComandosLogado(map);
+				selecionarComando(map, 'mao');
+				map.setUIToDefault();
+				new GKeyboardHandler(map);
+				mgr = new MarkerManager(map);	
+				//clusterer = new Clusterer(map);
+				
+				// Marcador Temporário
+				var infoTT = document.createElement("div");
+				var posMarcador = null;
+				
+				// Google Agrupadores
+				GClusterer = new MarkerClusterer(map, []);
+				GVetorMarcadores = [];	
+				
+				setPodeRegistrar(false, 0);
+				GEvent.addListener(map, "mousemove", function (latLng) {
+					if (podeRegistrar) {
+						if (!crime) {
+							crime = createMarkerTemp(latLng, idTipoCrime);
+							map.addOverlay(crime);
+						} else {
+							crime.setLatLng(latLng);
+
+							// Tooltip para o marcador temporário criado - INICIO
+							// Calcula posição da tooltip
+							var point = map.getCurrentMapType().getProjection().fromLatLngToPixel(map.fromDivPixelToLatLng(new GPoint(0,0),true),map.getZoom());
+							var offset = map.getCurrentMapType().getProjection().fromLatLngToPixel(crime.getPoint(),map.getZoom());
+							var anchor = crime.getIcon().iconAnchor;
+							var width = crime.getIcon().iconSize.width;
+							var height = infoTT.clientHeight;
+							var pos = new GControlPosition(G_ANCHOR_TOP_LEFT, new GSize(offset.x - point.x - anchor.x + width, offset.y - point.y -anchor.y -height));
+
+				      	  	infoTT.innerHTML = "<div class='infoMarcadorTemporario'>#{messages["marcador.temporario.toolTip.texto"]}</div>";
+
+							// Plota toolTip no mapa
+				      	  	pos.apply(infoTT);
+				      	  	map.getPane(G_MAP_FLOAT_PANE).appendChild(infoTT);
+				      	  					      	  	
+				    	  	infoTT.style.visibility="visible";
+				    	  	// Tooltip para o marcador temporário criado - FIM
+				    	  	
+						}
+					}
+				});
+				//Este evento era infowindowclose mudei para o infowindowbeforeclose pq 
+				//da forma antiga o evento n�o era diparado, dando um erro(IE) dentro da api do googlemaps
+				//Carlos Caminha
+				GEvent.addListener(map, "infowindowbeforeclose", function (latLng) {
+					podeCarregarCrimes = true;
+					selecionarComando(map, 'mao');
+					if (crime != null) {
+						crime.hide();
+					}
+					if (crime2 != null) {
+						if (crime2.getRegistrado() != 1) {
+							crime2.hide();
+							mgr.removeMarker(crime2);
+							crime2 = null;
+						} else {
+							if (crime2.getEvento() != 1) {
+			
+								GEvent.addListener(crime2, "click", function () {
+										if(crime2.idTipoCrime == 6)
+											crime2.mostrarDadosRelato();
+										else 
+											crime2.mostrarDados();
+								});
+								mgr.refresh();
+								crime2.setEvento(1);
+			
+							}
+						}
+					}
+					podeCarregarCrimes=true;
+					crime = null;
+				});
+				GEvent.addListener(map, "singlerightclick", function (overlay, latLng) {
+					if (podeRegistrar) {
+						setPodeRegistrar(false, 0);
+					}
+
+					// Esconde toolTip do marcador temporário.
+					infoTT.style.visibility="hidden";		
+				});
+				GEvent.addListener(map, "click", function (overlay, latLng) {
+
+					//*********************** ROTAS SEGURAS INICIO ****************************				
+					//contextmenu.style.visibility="hidden";
+					//*********************** ROTAS SEGURAS FIM ****************************
+				
+					if (podeRegistrar) {
+						podeCarregarCrimes=false;	
+						crime2 = createMarker(latLng, idTipoCrime);
+						//tive que comentar o markermanager pois dava erro quando utilizava o modo hibrido, adiciona com overlay e depois removo
+						map.addOverlay(crime2);
+						//clusterer.addMarker(crime2,idTipoCrime);
+						//mgr.addMarker(crime2,2);
+						
+						if (idTipoCrime == 6)
+							crime2.registrarRelato(idTipoCrime, idSubTipoCrime);
+						else
+							crime2.registrarCrime(idTipoCrime, idSubTipoCrime);
+							
+						crime2.disableDragging();
+						map.enableDragging();
+						mgr.addMarker(crime2, 2);
+						atualiza=true;
+						atualizaGrupos=true;
+					}
+					setPodeRegistrar(false, 0);
+
+					// Esconde toolTip do marcador temporário.
+					infoTT.style.visibility="hidden";
+				});
+				
+				GEvent.addListener(map, "moveend", function() {
+					if (podeCarregarCrimes) {						
+			            limpaTela=false;
+					 	atualizaMapa();
+						
+						if(map.getZoom() >= 15) showDivComment();
+						else hideDivComment();
+					 	
+				  }
+				});
+				
+				GEvent.addListener(map, "zoomend", function (overlay, latLng) {
+					acoesUsuario['zoom'] = map.getZoom();
+					alertarTutorDeAcaoDoUsuario(acoesUsuario,"zoom_map");
+					if(map.getZoom() >= 15) showDivComment();
+					else hideDivComment();
+			//*********************** Kernel Map INICIO ****************************
+					apagaMapaKernel();
+			  		desabilitaBotaoKernel();
+			  		document.getElementById("loadingKernelMap").style.visibility='hidden';
+			//*********************** Kernel Map FIM ****************************
+					//GEvent.trigger(map,"moveend");
+		
+				});
+				
+				GEvent.addListener(map, "dragend", function (overlay, latLng) {
+					acoesUsuario['qtd_move_map'] = acoesUsuario['qtd_move_map'] + 1;
+					alertarTutorDeAcaoDoUsuario(acoesUsuario, "move_map");
+					//if(usuarioEstaLogado()){   				  
+						//renovaSessao=true;
+					//}	
+							   
+				});
+				if('#{filtroForm.tutorAtivado}'=='0')
+					tutorEstaAtivado = false;
+				else
+					if('#{filtroForm.tutorAtivado}'=='1')
+						tutorEstaAtivado = true;		
+				//setTimeout(reqRenovaSessao,60000*9+30000);
+				GEvent.trigger(map,"moveend");			
+			}
+			
+			function reqRenovaSessao(){
+				if(renovaSessao){	
+					http_request = GXmlHttp.create();
+				    if (http_request.overrideMimeType) {
+				    	http_request.overrideMimeType('text/xml');
+				    }
+				
+				    //Espera retorno do servidor
+				    http_request.open('GET', 'RenovaSessao', true);
+					http_request.onreadystatechange = recuperaTxt;
+					http_request.send(null);
+				}	
+			}
+			
+			function recuperaTxt() {
+			
+				if (http_request.readyState == 4) {
+				    if (http_request.status == 200) {
+						var documento = http_request.responseText;
+						linhas = documento.split("\n");
+						//alert(linhas[0]);
+						if (linhas.length > 1){
+								
+							
+				       	}						          
+					}
+					else {
+				    	alert('Erro na requisição');
+				    }
+				}
+				renovaSessao=false;
+				setTimeout(reqRenovaSessao,60000*9+30000);
+			}
+			
+			function zoomIn(i) {				
+				var marker = crimesAtuais[i];				
+				map.setCenter(marker.getPoint(), map.getZoom() + 5);
+				GEvent.trigger(marker, "click");				
+			}
+			function zoomOut(i) {
+				var marker = crimesAtuais[i];
+				map.setCenter(marker.getPoint(), map.getZoom() - 5);
+				GEvent.trigger(marker, "click");
+			}
+			function zoomInGroup() {
+				map.setCenter(map.getCenter(),6);
+				map.setCenter(map.getCenter(),map.getZoom()-1);
+			
+			}
+			function zoomOutGroup() {
+			
+			}
+			function setPodeRegistrar(valor, idTipo, idSub) {	
+				fechaDivTelaEscolhaRegistroTipoCrime();
+				fechaDivTelaEscolhaRegistroTipoDenuncia();
+				if(!estaDesenhandoArea){	
+					podeRegistrar = valor;
+					idTipoCrime = idTipo;
+					idSubTipoCrime = idSub;
+					if (podeRegistrar) {
+						removerPoligono();
+					    selecionarComando(map, 'nenhum');
+						map.disableDragging();
+									// alert('Mova o mouse ao local do crime');
+						if (crime != null) {
+							crime.hide();
+						}
+						crime = null;
+						crime = createMarkerTemp(map.getCenter(), idTipoCrime);
+						map.addOverlay(crime);
+					} else {
+						if (crime != null) {
+							crime.hide();
+						}
+						crime = null;
+						map.enableDragging();
+						tipoCrimeSel = 0;
+						tipoVitimaSel = 0;
+					}
+				}	
+			}
+			function showLocal() {
+				var endereco = document.getElementById("pesquisa").value;
+				if (!geocoder) {
+					geocoder = new GClientGeocoder();
+				}
+				geocoder.getLocations(endereco, plotaEnderecoMap);
+				geocoder = null;				
+			}			
+			
+			function mostraDialogMapa(idCrime) {
+				displayMessage("./abuso.html?idCrime=" + idCrime,480,320,'Reporte de Abuso - WikiCrimes.org');
+			}
+			function mostraDialogMapaRelato(idRelato) {
+				displayMessage("./abuso.html?idRelato=" + idRelato,480,320,'Reporte de Abuso - WikiCrimes.org');
+			}
+			/**
+			*
+			*/
+			function CrimeMarker(latlng, opts) {
+				this.latlng = latlng;
+				this.idCrime = 0;
+				this.registrado = 0;
+				this.evento = 0;
+				this.texto="";
+				GMarker.apply(this, arguments);
+			}
+			/**
+			*
+			*/
+			CrimeMarker.prototype = Object.extend(new GMarker(new GLatLng(0, 0)), {initialize:function (map) {
+				GMarker.prototype.initialize.call(this, map);
+			}, setIdCrime:function (i) {
+				this.idCrime = i;
+			}, setEvento:function (i) {
+				this.evento = i;
+			}, getEvento:function (i) {
+				return this.evento;
+			}, setIdTipoCrime:function (i) {
+				this.idTipoCrime = i;
+			}, setRegistrado:function (i) {
+				this.registrado = i;
+			}, getRegistrado:function (i) {
+				return this.registrado;
+			}, getIdCrime:function () {
+				return this.idCrime;
+			}, getIdTipoCrime:function () {
+				return this.idTipoCrime;				
+			}, registrarCrime:function (idTipoCrime, idSubTipoCrime) {
+				var latitude = this.getLatLng().lat();
+				var longitude = this.getLatLng().lng();
+				//width='500' height='180'
+				var myHtml = "<iframe src='./registrarCrime.html?tipoCrime=" + idTipoCrime + "&tipoVitima=" + idSubTipoCrime + "&latitude=" + latitude + "&longitude=" + longitude + "' width='515' height='205' frameborder='0'></iframe>";
+				this.openInfoWindowHtml(myHtml, 600);
+			}, confirmaCrime:function (idConfirmacao) {
+				var latitude = this.getLatLng().lat();
+				var longitude = this.getLatLng().lng();
+				var myHtml = "<iframe src='./confirmaCrime.html?idConfirmacao=" + idConfirmacao + "' width='400' height='180' frameborder='0'></iframe>";
+				this.openInfoWindowHtml(myHtml, 400);
+			},confirmaRelato:function (idConfirmacao) {
+				var latitude = this.getLatLng().lat();
+				var longitude = this.getLatLng().lng();
+				var myHtml = "<iframe src='./confirmaRelato.html?idConfirmacaoRelato=" + idConfirmacao + "' width='400' height='180' frameborder='0'></iframe>";
+				this.openInfoWindowHtml(myHtml, 400);
+			}, mostrarDados:function () {
+				podeCarregarCrimes = false;
+				acoesUsuario['qtd_mostrar_dados'] = acoesUsuario['qtd_mostrar_dados'] + 1;
+				alertarTutorDeAcaoDoUsuario(acoesUsuario, "mostrar_dados");	
+
+				var myHtml = "<iframe src='./mostrarDados.html?idCrime=" + this.idCrime + "' width='400' height='150' frameborder='0'></iframe>";
+				var myHtml2 = "<iframe src='./mostrarInformacoes.html?idCrime=" + this.idCrime + "' width='400' height='150' frameborder='0'></iframe>";
+				this.openInfoWindowTabsHtml([new GInfoWindowTab('#{messages["crimes.tabs.titulo.dados"]}', myHtml), 
+				             				new GInfoWindowTab('#{messages["crimes.tabs.titulo.comentarios"]}', myHtml2)]);
+			}, mostrarDadosRelato:function () {
+				podeCarregarCrimes = false;
+				var myHtml = "<iframe src='./mostrarDadosRelato.html?idRelato=" + this.idCrime + "' width='400' height='150' frameborder='0'></iframe>";
+				this.openInfoWindowHtml(myHtml, 600);
+			}, mostrarGraficos:function() {
+					var myHtml = "<iframe src='./mostrarGraficos.html?agrupadorEstado=" + this.texto + "' width='400' height='150' frameborder='0'></iframe>";
+					this.openInfoWindow(myHtml,400);			
+			}, registrarRelato:function (idTipoRelato, idSubTipoRelato) {
+				var latitude = this.getLatLng().lat();
+				var longitude = this.getLatLng().lng();
+				var myHtml = "<iframe src='./registrarRelato.html?tipoRelato=" + idTipoRelato + "&subTipoRelato=" + idSubTipoRelato + "&latitude=" + latitude + "&longitude=" + longitude + "' width='600' height='180' frameborder='0'></iframe>";
+				this.openInfoWindowHtml(myHtml, 600);
+			}
+			});
+			
+			
+			/**
+			*
+			*/
+			function createMarker(point, tipoCrime) {
+				var icone = new GIcon();
+				var marker;
+				icone.shadow = "";
+				icone.iconSize = new GSize(14, 24);
+				icone.iconAnchor = new GPoint(2, 24);
+				icone.infoWindowAnchor = new GPoint(9, 2);
+				if (tipoCrime) {
+					if (tipoCrime == 1) {
+						icone.image = "./images/baloes/novoMarcadorVermelha.png";
+					}
+					if (tipoCrime == 2) {
+						icone.image = "./images/baloes/novoMarcadorAzul.png";
+					}
+					if (tipoCrime == 3) {
+						icone.image = "./images/baloes/novoMarcadorAzul.png";
+					}
+					if (tipoCrime == 4) {
+						icone.image = "./images/baloes/novoMarcadorVermelha.png";
+					}
+					if (tipoCrime == 5) {
+						icone.image = "./images/baloes/novoMarcadorLaranja.png";
+					}
+					if (tipoCrime == 6) {
+						icone.image = "./images/baloes/novoMarcadorVerde.png";
+					}					
+				}
+				
+				
+				marker = new CrimeMarker(point, {draggable:true, icon:icone});
+				marker.idTipoCrime = tipoCrime;
+				GEvent.addListener(marker, "click", function () {
+										podeCarregarCrimes=false;											
+										if(marker.idTipoCrime == 6)
+											marker.mostrarDadosRelato();
+										else 
+											marker.mostrarDados();
+									});
+				return marker;
+			}
+			function createMarkerId(point, tipoCrime, idCrime, texto) {
+				var marker = createMarker(point, tipoCrime);
+				marker.disableDragging();
+				marker.setIdCrime(idCrime);
+				marker.texto=texto;
+				
+				/* Evento jah eh adicionado no createMarker
+				GEvent.addListener(marker, "click", function () {
+						podeCarregarCrimes=false;	
+					marker.mostrarDados();
+				});
+				*/
+				
+				//GEvent.addListener(marker, "mouseover",	function () {
+				//		mostraTooltip(texto);
+				//});
+				return marker;
+			}
+			function createMarkerGroup(point, texto) {
+				var icone = new GIcon();
+				icone.image = "./images/baloes/vermelhoMais.png";
+				icone.iconSize = new GSize(27, 34);
+				icone.iconAnchor = new GPoint(9, 34);
+				icone.infoWindowAnchor = new GPoint(9, 2);
+				var marker = new CrimeMarker(point, {draggable:false, icon:icone});
+				marker.texto=texto;
+				GEvent.addListener(marker, "mouseover",	function () {
+						mostraTooltip(texto);
+				});
+				GEvent.addListener(marker, "click",	function () {
+						marker.mostrarGraficos();
+				});
+				return marker;
+			}
+			
+			function createMarkerTemp(point, tipoCrime) {
+				var icone = new GIcon();
+				var marker;
+				//icone.shadow = "./images/baloes/shadow50.png";
+				icone.iconSize = new GSize(23, 34);
+				icone.iconAnchor = new GPoint(2, 34);
+				icone.infoWindowAnchor = new GPoint(9, 2);				
+				if (tipoCrime) {
+					if (tipoCrime == 1) {
+						icone.image = "./images/baloes/marcadorTempVermelho.png";
+					}
+					if (tipoCrime == 2) {
+						icone.image = "./images/baloes/marcadorTempAzul.png";
+					}
+					if (tipoCrime == 3) {
+						icone.image = "./images/baloes/marcadorTempAzul.png";
+					}
+					if (tipoCrime == 4) {
+						icone.image = "./images/baloes/marcadorTempVermelho.png";
+					}
+					if (tipoCrime == 5) {
+						icone.image = "./images/baloes/marcadorTempLaranja.png";
+					}
+					if (tipoCrime == 6) {
+						icone.image = "./images/baloes/marcadorTempVerde.png";
+					}					
+				}
+				marker = new CrimeMarker(point, {draggable:true, icon:icone});
+				marker.idTipoCrime = tipoCrime;
+				return marker;
+			}
+			
+			function mostraTooltip(text){
+				document.getElementById("cursor1").innerHTML=text;
+				showWindow=true;
+			}
+			
+			function atualizaCrimes(){
+				//limpa
+				map.clearOverlays();
+				//fronteiras
+			    var b = map.getBounds();
+				var norte = b.getNorthEast().lat();
+			    var sul = b.getSouthWest().lat();
+			    var leste =b.getNorthEast().lng();
+			    var oeste =b.getSouthWest().lng();
+				var getVars= '&n=' +norte.toUrlValue() + '&s=' +sul.toUrlValue()+ '&e=' +leste.toUrlValue()+ '&w=' +oeste.toUrlValue();
+				
+				//requisicao AJAX 
+				var request = GXmlHttp.create();
+				request.open('GET','ServletManipuladorTXT?'+getVars,true);
+				request.onreadystatechange = function () {
+					if (request.readyState == 4) {
+						var jscript = request.responseText;
+						
+					}
+				}
+			
+			}
+			
+			function limpaCrimesOutOfBounds(id, idRelato) {
+			 var mapBounds = map.getBounds();		
+			 GVetorMarcadores = [];
+			  
+			 //loop para checar crimes fora do viewport apaga todos os crimes fora do viewport com excecao do id
+			 for (k in crimesAtuais) {
+				if (!mapBounds.contains(crimesAtuais[k].getPoint())){
+					if(crimesAtuais[id]!=crimesAtuais[k] && crimesAtuais[idRelato]!=crimesAtuais[k]){
+						//GClusterer.removeMarker(crimesAtuais[k]);
+						//delete crimesAtuaisAgrupador[k] = undefined;
+						//mgr.removeMarker(crimesAtuais[k]);
+						removeComment(k);
+						delete crimesAtuais[k];
+					}
+				}
+			}
+			 for (k in crimesAtuais) {
+				 GVetorMarcadores.push(crimesAtuais[k]);
+		 	 } 			
+			}
+			function escondeTooltip(force) {
+			
+			if (force!=null && force==1)
+			 document.getElementById("cursor1").style.display="none";
+			 	showWindow=false;
+			}
+	 
+			
+			function retornaIdUsuario(){
+				return '#{usuario.idUsuario}';			
+			}
+			
+			function retornaEmailUsuario(){
+				return '#{usuario.email}';			
+			}
+			
+			
+			/*function mostraComandosLogado(mapa){
+				if(#{usuario.perfil.nome == 'CERTIFICADOR'}||#{usuario.perfil.nome == 'ADMINISTRADOR'}){				
+					 mapa.addControl(new ComandoGeradorEmbedded());					 
+				}				
+			}*/
+						
+			function escondeTooltip(force) {
+				if (force!=null && force==1)
+					 document.getElementById("cursor1").style.display="none";
+		 			showWindow=false;
+			}		
+			
+			function mostraHintComandosMapa(msg, top, left){
+				document.getElementById("divHintComandoMapa").style.top = top;
+				document.getElementById("divHintComandoMapa").style.left= left;
+				document.getElementById("divHintComandoMapa").style.visibility = "visible";
+				if(msg == "webapp.area.erro.info.hint.area")  	
+  					document.getElementById("msgHintComandoMapa").innerHTML = '#{messages["webapp.area.erro.info.hint.area"]}';
+  				if(msg == "botoes.title.mover")
+  					document.getElementById("msgHintComandoMapa").innerHTML = '#{messages["botoes.title.mover"]}';
+  				if(msg == "embedded.hint.comando.mapa")
+  					document.getElementById("msgHintComandoMapa").innerHTML = '#{messages["embedded.hint.comando.mapa"]}';		
+			}
+			
+			function removeHintComandosMapa(){
+				document.getElementById("divHintComandoMapa").style.visibility = "hidden";
+			}			
+			
+			function relatoRegistrado(chave, descricao) {
+			    crimesAtuais[chave] = crime2;
+			 	addComment(chave, descricao);
+			}
+			
+			function addComment(id, descricao){
+				var span = window.parent.document.getElementById('span_'+id);
+				if (span == null) {
+					if(map.getZoom()>=15){
+						var comment = window.parent.document.getElementById('comment');
+						var span = window.parent.document.createElement('span');
+						span.setAttribute('id','span_'+id);
+						span.setAttribute('style', 'style="font-size:14px; color: yellow"');
+						span.innerHTML = '&nbsp;- <a href="#"'+
+										 ' onclick="showRelatedData(\''+id+'\')" style="background-color:#3A5FCD; color:yellow; text-decoration: none; font-style: normal;" onmouseover="highlightComment(\''+id+
+										 '\', true)" onmouseout="highlightComment(\''+id+'\', false)">'+descricao+'</a><br/>';
+					  	comment.appendChild(span);
+					}
+				}	
+			}
+			
+			function removeComment(id){
+				
+				var span = window.parent.document.getElementById('span_'+id);
+				if (span != null) {
+					var div = span.parentNode; 
+					span.parentNode.removeChild(span);
+					if (div.childNodes.length == 1) div.style.display = 'none';
+				}
+				
+			}
+			
+			function showDivComment(){
+				/*var div = window.parent.document.getElementById('comment');
+				if (div != null && map.getZoom() >= 15 && div.childNodes.length > 1) {				 
+					window.parent.document.getElementById('comment').style.display = 'block';
+				}*/
+			}
+			
+			function hideDivComment(){
+				var div = window.parent.document.getElementById('comment');
+				//if (div != null && map.getZoom() < 15) {
+					window.parent.document.getElementById('comment').style.display = 'none';
+				//}
+			}
+			
+			function showRelatedData(id) {
+				 for (k in crimesAtuais) {
+					if(k == id) crimesAtuais[k].mostrarDadosRelato();
+				}
+			}
+
+			function highlightComment(id, highlight) {
+				 var mapBounds = map.getBounds();		
+
+				 for (k in crimesAtuais) {
+					if(k == id){					
+						
+							
+						if (highlight) {
+							crimesAtuais[k].getIcon().image = "./images/baloes/relatoDestaque.png";
+							crimesAtuais[k].getIcon().iconSize = new GSize(42, 68);	
+							crimesAtuais[k].getIcon().iconAnchor = new GPoint(13, 66);							
+						}
+						else {
+							crimesAtuais[k].getIcon().image = "./images/baloes/novoMarcadorVerde.png";
+							crimesAtuais[k].getIcon().iconSize = new GSize(29, 39);
+							crimesAtuais[k].getIcon().iconAnchor = new GPoint(9, 38);
+						}
+						mgr.refresh();
+						
+					
+						/*							
+						mgr.removeMarker(crimesAtuais[k]);
+
+						var icone = new GIcon();
+						var marker;
+						icone.shadow = "";
+						icone.infoWindowAnchor = new GPoint(9, 2);
+							
+						if (highlight) {
+							icone.image = "./images/baloes/relatoDestaque.png";							
+							icone.iconSize = new GSize(42, 68);	
+							icone.iconAnchor = new GPoint(13, 66);							
+						}
+						else {
+							icone.image = "./images/baloes/relato.png";
+							icone.iconSize = new GSize(29, 39);
+							icone.iconAnchor = new GPoint(9, 38);
+						}
+					
+						marker = new CrimeMarker(crimesAtuais[k].getLatLng(), {draggable:true, icon:icone, title:id });
+						marker.idTipoCrime = crimesAtuais[k].idTipoCrime;
+						marker.disableDragging();
+						GEvent.addListener(marker,"click", function() {
+					    	crimesAtuais[k].mostrarDadosRelato();     	  
+					    });						    
+					    mgr.addMarker(marker,2);
+					    crimesAtuais[id] = marker;
+					    */
+					}
+				}
+			}	
+
+			function mostrarCrimeMapa(chave,lat, lng){
+				idconf = null;
+				map.closeInfoWindow();				
+				podeCarregarCrimes = false;
+				id=chave;
+				qtd_roubos = 0;
+				qtd_furtos = 0;
+				qtd_outros = 0;
+				qtd_denuncias = 0;
+				
+				//var temp=podeCarregarCrimes;
+			   	//podeCarregarCrimes=false;
+			   	if(lat != undefined && lng != undefined){
+				   	var latLngGM = new GLatLng(lat,lng);	
+			        //map.setCenter(latLngGM,15);
+			        preparaRequisicaoMudandoData(latLngGM, 15);
+			   	}else{
+			   		preparaRequisicaoMudandoData(null, 15);	
+				}				
+			}
+
+			function mostrarRelatoMapa(chave){
+				idconf = null;
+				map.closeInfoWindow();
+				podeCarregarCrimes = false;			
+				idRelato=chave;
+				qtd_roubos = 0;
+				qtd_furtos = 0;
+				qtd_outros = 0;
+				qtd_denuncias = 0;
+				submeteRequisicao();
+				
+			}
+			var statusLegenda='visivel';
+
+			function mostraEscondeLeganda(){
+				if(statusLegenda=='visivel'){
+					statusLegenda = 'invisivel';
+					wikicrimesDiv.innerHTML = htmlLegendaEscondida();
+				}
+				else{
+					statusLegenda='visivel';
+					wikicrimesDiv.innerHTML = htmlLegenda();
+				}							
+			}
+
+			function esconderMensagem(){
+				document.getElementById("divAvisosNoMapa").style.visibility = "hidden";
+			}		
+			
+			function mostrarMensagem(descricao, tamanhoTela){
+				document.getElementById("divAvisosNoMapa").style.width = tamanhoTela;							
+				document.getElementById("divInternaAvisosNoMapa").innerHTML=descricao;
+				document.getElementById("divAvisosNoMapa").style.visibility = "visible";
+			}
+
+			function htmlLegendaEscondida(){
+				var html = "<table cellpading='0' cellspacing='0' style='width:100px; padding:4px ;border:1px solid #333333; opacity: .75; -moz-opacity:0.75; filter: alpha(opacity=75); background-color:#F0F8FF;font-family:Arial, sans-serif;  font-size: 11px;'>";
+				html+="     	<tr>";
+				html+="     		<td align='center' colspan='2'> <b>"+ "#{messages['wikicrimes.legenda.mapa']}" +"</b> <img width='12px' height='12px' src='./images/maximizar.png' onclick='mostraEscondeLeganda();' style='font-size: 12px;cursor: pointer;'/></td>";
+				html+="         </tr>"				
+				html += "	</table>";
+				return html;
+			}
+
+			function htmlLegenda(){
+				var html = "<table cellpading='0' cellspacing='0' style='width:100px; padding:4px ;border:1px solid #333333; opacity: .75; -moz-opacity:0.75; filter: alpha(opacity=75); background-color:#F0F8FF;font-family:Arial, sans-serif;  font-size: 11px;'>";
+				html+="     	<tr>";
+				html+="     		<td align='center' colspan='2'> <b >"+ "#{messages['wikicrimes.legenda.mapa']}" +"</b> <img width='12px' height='12px' src='./images/maximizar.png' onclick='mostraEscondeLeganda();' style='font-size: 12px;cursor: pointer;'/> </td>";
+				html+="         </tr>"
+				html+="     	<tr>";
+				html+="     		<td align='center'> <img width='19px' height='33px' src='./images/baloes/clusterIcon_Legend.png' />  </td> <td> "+ "#{messages['agrupador.legenda.texto']}" +"  </td>";
+				html+="         </tr>"
+				html+="     	<tr>";
+				html+="     		<td align='center'> <img width='14px' height='24px' src='./images/baloes/novoMarcadorVermelha.png' /> </td> <td> "+ "#{messages['tipocrime.roubo']}" +"  </td>";
+				html+="         </tr>"
+				html+="     	<tr>";
+				html+="     		<td align='center'> <img width='14px' height='24px' src='./images/baloes/novoMarcadorAzul.png' />  </td> <td> "+ "#{messages['tipocrime.furto']}" +"  </td>";
+				html+="         </tr>"
+				html+="     	<tr>";
+				html+="     		<td align='center'> <img width='14px' height='24px' src='./images/baloes/novoMarcadorLaranja.png' />  </td> <td> "+ "#{messages['tipocrime.violencia']}" +"  </td>";
+				html+="         </tr>"
+				html+="     	<tr>";
+				html+="     		<td align='center'> <img width='14px' height='24px' src='./images/baloes/novoMarcadorVerde.png' />  </td> <td> "+ "#{messages['abuso.texto']}" +"  </td>";
+				html+="         </tr>"	
+				html += "	</table>";
+				return html;
+			}
+
+			var wikicrimesDiv;
+
+			function LegendaWikicrimes() {
+			}
+			LegendaWikicrimes.prototype = new GControl();
+			
+			LegendaWikicrimes.prototype.initialize = function(map) {
+			  var container = document.createElement("div");
+			
+			  wikicrimesDiv = document.createElement("div");
+			  this.setButtonStyle_(wikicrimesDiv);
+			  container.appendChild(wikicrimesDiv);
+			  wikicrimesDiv.innerHTML = htmlLegenda();
+			 
+			  map.getContainer().appendChild(container);
+			  return container;
+			}
+			
+			
+			LegendaWikicrimes.prototype.getDefaultPosition = function() {
+			  return new GControlPosition(G_ANCHOR_BOTTOM_RIGHT, new GSize(10,16));
+			}
+			
+			
+			LegendaWikicrimes.prototype.setButtonStyle_ = function(button) {				
+			  //button.style.height = "3.8em";
+			  //button.style.cursor = "pointer";
+			  //button.style.backgroundImage = "url('./images/logoWikicrimesEmbedded.PNG')";
+			}		
+				
+	    /* ]]> */
+	    --></script>	
+
+</html>

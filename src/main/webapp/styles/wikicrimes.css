@@ -1,0 +1,180 @@
+@import url(deliciouslyblue/calendar.css);
+
+@CHARSET "ISO-8859-1";
+/*
+	Estilos de tags
+*/
+body,input {
+	font-family: Arial;
+	font-size: 12px;
+}
+
+a, a:visited {
+    color: #6DA6E2;
+    background-color: #FFFFFF;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a:hover {
+    background-color: #FFFFFF;
+    color: inherit;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.button, button {
+    padding: 2px;
+    background-color: #6DA6E2;
+    color: #FFFFFF;
+    border: 1px solid #2763A5; 
+    font-size: 11px;
+}
+
+.button-disabled {
+    padding: 2px;
+    background-color: #D2DEE2;
+    color: #505456;
+    border: 1px solid #2763A5; 
+    font-size: 11px;
+}
+
+.message {
+	background-color: #FFFFCC ;
+	border: solid 1px black; 
+	width: 100%;
+	padding: 0.1em;
+	padding-left: 0.6em;
+	padding-right: 0.6em;
+}	
+
+span.fieldError, .errorMessage {
+    color: red;
+    font-size: .95em;
+    font-weight: bold;
+    display: block;
+}
+
+
+#topoBalao {
+	padding: 0.2em;
+	padding-left: 0.8em;
+	background-color: #6da6e2;
+	border-style: solid;
+	border-width: 1px;	
+	width: 98%;
+	height: 12px;
+	color: #ffffff;
+	font: bold;
+	font-family: sans-serif;
+	font-size: 12px;
+	text-align: left;
+	vertical-align: center;
+}
+table tfoot tr td {
+	text-align: right;
+}
+
+div, form {
+	margin: 0em;
+	padding: 0em;
+}
+
+.left {
+	text-align: left;	
+}
+
+img {
+	border: 0em;
+}
+
+.right {
+	text-align: right;	
+}
+
+/*
+	Estilos comuns
+*/
+.error {
+	color: red;
+}
+
+/*
+	RichFaces
+*/
+.rich-panel-body {
+	padding: 0px;
+}
+.rich-panel-header {
+	font-size: 10pt;
+	font-weight: bold;
+}
+
+/*
+	Agrupador Google: ToolTip Style
+*/
+.tooltip {
+	margin: 0;
+	padding: 2px 5px 2px 5px;
+	
+	font: normal normal normal 8pt Arial;
+	
+	background-color: #F0F8FF;
+	border: 1px Gray solid;
+}
+
+/*
+	Marcador Temporário (Adicionando um novo crime): ToolTip Style
+*/
+.infoMarcadorTemporario {
+	width: 150px;
+	heidth: 100px;
+	
+	padding: 5px;
+	
+	font: normal normal normal 8pt Arial;
+	text-align: justify;
+	
+	border: solid 1px black;
+	background-color: #F0F8FF;
+}
+
+#topoBalaoSetaCima {
+	text-align: right;
+	cursor: pointer;
+	display: block;
+	padding: 25px 5px 0;
+ 	background: url(../gadget/img/balao/bubble.gif) no-repeat top;			
+}
+
+#meioBalaoSetaCima {
+	display: block;
+	padding: 0 8px; 
+	background: url(../gadget/img/balao/bubble_filler.gif) repeat bottom;			
+}
+
+#baseBalaoSetaCima {
+	display: block;
+	padding:3px 8px 10px;				
+ 	background: url(../gadget/img/balao/bubble.gif) no-repeat bottom;			
+}
+
+#topoBalaoSetaBaixo {
+	text-align: right;
+	cursor: pointer;
+	display: block;
+	padding: 3px 8px 0;
+ 	background: url(../gadget/img/balao/bubble_baixo.gif) no-repeat top;			
+}
+
+#meioBalaoSetaBaixo {
+	display: block;
+	padding: 0 8px; 
+	background: url(../gadget/img/balao/bubble_filler.gif) repeat bottom;			
+}
+
+#baseBalaoSetaBaixo {
+	display: block;
+	padding:30px 8px 0;				
+ 	background: url(../gadget/img/balao/bubble_baixo.gif) no-repeat bottom;			
+}

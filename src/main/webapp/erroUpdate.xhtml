@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<ui:composition template="./layout2.xhtml">
+	<ui:define name="head">
+	
+		</ui:define>
+		<ui:define name="titulo">
+			#{messages['usuario.administracao']}
+			</ui:define>
+		<ui:define name="menu">
+		<br />
+		<ui:include src="headerSemMenu.xhtml" />
+	</ui:define>
+		<ui:define name="menucentral">
+
+				<c:if test="#{not empty message}">
+							<h:outputText value="#{message}" styleClass="message" />
+				</c:if>
+					
+
+
+	<h:form>
+	
+				
+				<h:outputText value="Erro ao Atualizar Crime. Favor tente de novo!" /> <br/>
+					
+				
+				<h:commandButton value="Voltar" id="btnvoltar" action="admin" styleClass="button" style="width : 88px; height : 24px;" />
+
+		</h:form>	
+	
+			
+
+
+
+
+
+		</ui:define>
+	</ui:composition>
+
+</html>

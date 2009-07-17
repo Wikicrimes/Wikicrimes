@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<onload-config xmlns="urn:onload-config"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="urn:onload-config onload-config.xsd">
+	<navigation-rule>
+		<view-id>/filtro.xhtml</view-id>
+		<action>#{filtroForm.showAllIfNotExist}</action>
+	</navigation-rule>
+</onload-config>

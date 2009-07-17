@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC
+"-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:jsp="http://java.sun.com/JSP/Page">
+
+	<head>
+		<meta http-equiv="Cache-Control" content="no-store" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+		<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+		<link rel="shortcut icon" href="./images/favicon.ico"
+			type="image/x-icon" />
+		<link rel="stylesheet" type="text/css" href="./styles/wikicrimes.css"
+			title="default" />
+	</head>
+
+	<body style="overflow-x: hidden">
+
+		<f:view>
+			<f:loadBundle var="messages" basename="messages" />
+			<h:panelGrid border="0" columns="1" style="text-align: justify;">
+				<!-- <h1><a>Perguntas Frequentes</a></h1> -->
+				<a href="#faq1">#{messages['faq.p1']}</a><br></br><br></br>
+				<a href="#faq2">#{messages['faq.p2']}</a><br></br><br></br>
+				<a href="#faq3">#{messages['faq.p3']}</a><br></br><br></br>
+				<a href="#faq4">#{messages['faq.p4']}</a><br></br><br></br>
+				<a href="#faq5">#{messages['faq.p5']}</a><br></br><br></br>
+				<a href="#faq6">#{messages['faq.p6']}</a><br></br><br></br>
+				<a href="#faq7">#{messages['faq.p7']}</a><br></br><br></br>
+				<a href="#faq8">#{messages['faq.p8']}</a><br></br><br></br>
+				<a href="#faq9">#{messages['faq.p9']}</a><br></br><br></br>
+				<br></br>
+				<h5><a name="faq1">#{messages['faq.p1']}</a></h5>
+				<h:outputText style="text-align: justify;" value="#{messages['faq.r1']}" />
+				
+				<h5><a name="faq2">#{messages['faq.p2']}</a></h5>
+				<h:outputText style="text-align: justify;" value="#{messages['faq.r2']}" />
+				
+				<h5><a name="faq3">#{messages['faq.p3']}</a></h5>
+				<h:outputText style="text-align: justify;" value="#{messages['faq.r3']}" />
+				
+				<h5><a name="faq4">#{messages['faq.p4']}</a></h5>
+				<h:outputText style="text-align: justify;" value="#{messages['faq.r4']}" />
+				
+				<h5><a name="faq5">#{messages['faq.p5']}</a></h5>
+				<h:outputText style="text-align: justify;" value="#{messages['faq.r51']}" /><br></br>
+				<h:outputText style="text-align: justify;" value="#{messages['faq.r52']}" /><br></br>
+				<h:outputText style="text-align: justify;" value="#{messages['faq.r53']}" /><br></br>
+				<h:outputText style="text-align: justify;" value="#{messages['faq.r54']}" /><br></br>
+				<h:outputText style="text-align: justify;" value="#{messages['faq.r55']}" /><br></br>
+				<h:outputText style="text-align: justify;" value="#{messages['faq.r56']}" /><br></br>
+				<h:outputText style="text-align: justify;" value="#{messages['faq.r57']}" /><br></br>
+				
+				<h5><a name="faq6">#{messages['faq.p6']}</a></h5>
+				<h:outputText style="text-align: justify;" value="#{messages['faq.r6']}" /><br></br>
+				
+				<h5><a name="faq7">#{messages['faq.p7']}</a></h5>
+				<h:outputText style="text-align: justify;" value="#{messages['faq.r7']}"/><br></br>
+				<h5><a name="faq8">#{messages['faq.p8']}</a></h5>
+				<h:outputText style="text-align: justify;" value="#{messages['faq.r8']}" /><br></br> 
+				<h5><a name="faq9">#{messages['faq.p9']}</a></h5>
+				<h:outputText style="text-align: justify;" value="#{messages['faq.r9']}" /><br></br>
+			</h:panelGrid>
+		</f:view>
+	</body>
+</html>

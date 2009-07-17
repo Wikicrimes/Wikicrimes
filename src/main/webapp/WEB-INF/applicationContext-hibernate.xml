@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd"> 
+
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="${jdbc.driverClassName}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+        <property name="maxActive" value="50"/>     
+ 		<property name="maxIdle" value="10"/>
+ 		<property name="initialSize" value="10"/>
+        <property name="maxWait" value="1000"/>
+	<property name="validationQuery" value="SELECT 1"/>
+        <!-- Remove as conexoes canceladas pelo BD  -->
+        <property name="removeAbandoned" value="true" />
+        <property name="removeAbandonedTimeout" value="300" />
+        <property name="logAbandoned" value="true" />
+        <property name="defaultAutoCommit" value="true"/> 
+
+    </bean>
+
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="mappingResources">
+            <list>
+
+                 <value>org/wikicrimes/model/Confirmacao.hbm.xml</value>
+                 <value>org/wikicrimes/model/TipoConfirmacao.hbm.xml</value>
+                 <value>org/wikicrimes/model/ConfirmacaoRelato.hbm.xml</value>
+                 <value>org/wikicrimes/model/Crime.hbm.xml</value>
+                 <value>org/wikicrimes/model/CrimeCelular.hbm.xml</value>
+                 <value>org/wikicrimes/model/CrimeVitima.hbm.xml</value>
+                 <value>org/wikicrimes/model/TipoArmaUsada.hbm.xml</value>
+                 <value>org/wikicrimes/model/TipoCrime.hbm.xml</value>
+                 <value>org/wikicrimes/model/TipoLocal.hbm.xml</value>
+                 <value>org/wikicrimes/model/TipoPapel.hbm.xml</value>
+                 <value>org/wikicrimes/model/TipoRegistro.hbm.xml</value>
+                 <value>org/wikicrimes/model/TipoTransporte.hbm.xml</value>
+                 <value>org/wikicrimes/model/TipoVitima.hbm.xml</value>
+                 <value>org/wikicrimes/model/Usuario.hbm.xml</value>
+                 <value>org/wikicrimes/model/UsuarioCelular.hbm.xml</value>
+                 <value>org/wikicrimes/model/Perfil.hbm.xml</value>
+                 <value>org/wikicrimes/model/Comentario.hbm.xml</value>
+                 <value>org/wikicrimes/model/EstatisticaPais.hbm.xml</value>
+                 <value>org/wikicrimes/model/EstatisticaEstado.hbm.xml</value>
+                 <value>org/wikicrimes/model/EstatisticaCidade.hbm.xml</value>
+                 <value>org/wikicrimes/model/AreaObservacao.hbm.xml</value>
+                 <value>org/wikicrimes/model/PontosArea.hbm.xml</value>
+                 <value>org/wikicrimes/model/EntidadeCertificadora.hbm.xml</value>
+                 <value>org/wikicrimes/model/PeriodoInformacao.hbm.xml</value>
+                 <value>org/wikicrimes/model/RedeSocial.hbm.xml</value>
+                 <value>org/wikicrimes/model/UsuarioRedeSocial.hbm.xml</value>
+                 <value>org/wikicrimes/model/Relato.hbm.xml</value>
+                 <value>org/wikicrimes/model/ComentarioRelato.hbm.xml</value>
+                 <value>org/wikicrimes/model/Razao.hbm.xml</value>
+                 <value>org/wikicrimes/model/CrimeRazao.hbm.xml</value>
+                 <value>org/wikicrimes/model/RelatoRazao.hbm.xml</value>
+                 <value>org/wikicrimes/model/RepasseRelato.hbm.xml</value>
+                 <value>org/wikicrimes/model/Log.hbm.xml</value>
+                 <value>org/wikicrimes/model/TipoLog.hbm.xml</value>
+                 <value>org/wikicrimes/model/Abuso.hbm.xml</value>
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">${hibernate.dialect}</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+                <prop key="hibernate.show_sql">false</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <bean id="usuarioDao" class="org.wikicrimes.dao.hibernate.UsuarioDaoHibernate">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <bean id="crimeDao" class="org.wikicrimes.dao.hibernate.CrimeDaoHibernate">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    
+    <bean id="tipoArmaUsadaDao" class="org.wikicrimes.dao.hibernate.TipoArmaUsadaDaoHibernate">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    
+    <bean id="tipoLocalDao" class="org.wikicrimes.dao.hibernate.TipoLocalDaoHibernate">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    
+    <bean id="tipoVitimaDao" class="org.wikicrimes.dao.hibernate.TipoVitimaDaoHibernate">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <bean id="tipoCrimeDao" class="org.wikicrimes.dao.hibernate.TipoCrimeDaoHibernate">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    
+    <bean id="tipoPapelDao" class="org.wikicrimes.dao.hibernate.TipoPapelDaoHibernate">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    
+    <bean id="tipoRegistroDao" class="org.wikicrimes.dao.hibernate.TipoRegistroDaoHibernate">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    
+    <bean id="tipoTransporteDao" class="org.wikicrimes.dao.hibernate.TipoTransporteDaoHibernate">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    
+    <bean id="confirmacaoDao" class="org.wikicrimes.dao.hibernate.ConfirmacaoDaoHibernate">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    
+    <bean id="confirmacaoRelatoDao" class="org.wikicrimes.dao.hibernate.ConfirmacaoRelatoDaoHibernate">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    
+    <bean id="comentarioDao" class="org.wikicrimes.dao.hibernate.ComentarioDaoHibernate">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    
+    <bean id="estatisticaPaisDao" class="org.wikicrimes.dao.hibernate.EstatisticaPaisDaoHibernate">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    
+	<bean id="estatisticaEstadoDao" class="org.wikicrimes.dao.hibernate.EstatisticaEstadoDaoHibernate">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    
+    <bean id="estatisticaCidadeDao" class="org.wikicrimes.dao.hibernate.EstatisticaCidadeDaoHibernate">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="entidadeCertificadoraDao" class="org.wikicrimes.dao.hibernate.EntidadeCertificadoraDaoHibernate">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="opensocialDao" class="org.wikicrimes.dao.hibernate.OpensocialDaoHibernate">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    
+    <bean id="relatoDao" class="org.wikicrimes.dao.hibernate.RelatoDaoHibernate">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    
+    <bean id="razaoDao" class="org.wikicrimes.dao.hibernate.RazaoDaoHibernate">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    
+</beans>

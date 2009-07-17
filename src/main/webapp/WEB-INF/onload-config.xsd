@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+  targetNamespace="urn:onload-config" 
+  xmlns="urn:onload-config"
+  elementFormDefault="qualified" version="1.0">
+  
+  <xs:element name="onload-config" type="Config"/>
+  
+  <xs:complexType name="Config">
+    <xs:annotation>
+      <xs:documentation>
+        Root element. Contains the configuration for the OnLoadPhaseListener
+      </xs:documentation>
+    </xs:annotation>  
+    <xs:sequence maxOccurs="unbounded">
+      <xs:element name="navigation-rule" type="Rule"/>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="Rule">
+    <xs:annotation>
+      <xs:documentation>
+        Defines the navigation rule for a JSF view-id or view-id pattern
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="view-id" type="ViewId"/>
+      <xs:element name="action" type="Action"/>
+      <xs:element name="success-result" type="SuccessResult" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:simpleType name="ViewId">
+    <xs:annotation>
+      <xs:documentation>
+        The view ID to match. This can be a full view-id or a path
+        ending with an asterisk. Examples: /myDir/myFile.xhtml, /myDir/my*, *
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+  
+  <xs:simpleType name="Action">
+    <xs:annotation>
+      <xs:documentation>
+        The EL syntax action name to invoke. This is the same syntax as
+        when specifying an action in the JSF page.
+        Example: #{myBean.myActionMethod}
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+  
+  <xs:simpleType name="SuccessResult">
+    <xs:annotation>
+      <xs:documentation>
+        If the result of an action is null or equal to the success result,
+        nothing is done. If the result is not equal to the success result
+        the result is used to navigate to a new view based on the 
+        faces configuration file.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+  
+</xs:schema>

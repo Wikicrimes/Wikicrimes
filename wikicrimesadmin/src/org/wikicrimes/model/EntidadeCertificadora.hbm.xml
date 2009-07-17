@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="org.wikicrimes.model.EntidadeCertificadora"
+		table="TB_ENTCER_ENTIDADE_CERTIFICADORA" lazy="true">
+        <id name="idEntidadeCertificadora" column="ENTCER_IDENTIDADECERTIFICADORA" unsaved-value="null">
+            <generator class="increment"/>
+        </id>
+        <property name="nome" column="ENTCER_NOME" type="java.lang.String" not-null="false"/>
+        <property name="descricao" column="ENTCER_DESCRICAO" type="java.lang.String" />
+        <property name="homepage" column="ENTCER_HOMEPAGE" type="java.lang.String"/>
+    </class>
+</hibernate-mapping>

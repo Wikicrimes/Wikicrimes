@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+
+<f:loadBundle var="messages" basename="messages" />
+<ui:composition template="./layout2.xhtml">
+	
+<ui:define name="head">	 	
+	<link rel="stylesheet" href="./styles/modal-message.css" type="text/css"/>
+    <script	src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=#{messages['chave.googlemaps']}" type="text/javascript"></script>
+	<script type="text/javascript">    
+		var geocoder;
+		var linhaCorrente;
+ 		   	
+    	function getCoordenadas(linha , endereco) {
+    		linhaCorrente = linha;
+			geocoder = new GClientGeocoder();
+			geocoder.getLocations(endereco, capturaCoordenadas);
+			geocoder = null;
+		}
+		
+    	function capturaCoordenadas(response) {
+    		if (!response || response.Status.code != 200) {
+    	    	alert("Desculpe, mas nao foi possivel encontrar o endereco citado");
+      		} else {
+        		var place = response.Placemark[0];
+        		var point = new GLatLng(place.Point.coordinates[1], place.Point.coordinates[0]);
+  				var latitudeComponente = "coordenadasPaisForm:PaisesSemLatLong:" + linhaCorrente + ":inputLatitude";
+        		var longitudeComponente = "coordenadasPaisForm:PaisesSemLatLong:" + linhaCorrente + ":inputLongitude";
+        		document.getElementById(latitudeComponente).value=place.Point.coordinates[1];
+				document.getElementById(longitudeComponente).value=place.Point.coordinates[0];
+			}
+	    }
+
+    </script>
+</ui:define>
+	
+<ui:define name="titulo">
+			Paises sem Estatísticas
+</ui:define>
+<ui:define name="menu">
+			<ui:include src="headerSemMenu.xhtml" />
+</ui:define>
+<ui:define name="menucentral">
+<c:if test="#{estatisticaForm.acesso}">
+<h:panelGrid columns="1">
+	<br/>
+	<h:outputText value="Países sem Estatísticas" style="font-weight:600;"/>
+	<br/>
+<h:form id="coordenadasPaisForm">
+		<t:dataTable id="PaisesSemLatLong" var="pais" style="margin-top: 10px" width="300"
+    		value="#{estatisticaForm.paisesSemLatLong}" rows="0" rowIndexVar="row"
+    		styleClass="scrollerTable table" headerClass="standardTable_Header" 
+    		rowClasses="standardTable_Row1,standardTable_Row2"
+    		columnClasses="standardTable_Column,standardTable_Column,standardTable_Column,standardTable_ColumnCentered">
+    		
+     		<t:column>
+        		<f:facet name="header">
+            		<t:commandSortHeader columnName="sigla" arrow="false">
+            			<h:outputText value="Sigla do País"/>
+            		</t:commandSortHeader>
+        		</f:facet>
+     			<h:outputText value="#{pais.sigla}"/>
+    		</t:column>
+    		<t:column>
+        		<f:facet name="header">
+   					<t:commandSortHeader columnName="latitude" arrow="false">
+       					<h:outputText value="Latitude"/>
+   					</t:commandSortHeader>
+ 			   	</f:facet>
+ 				<h:inputText id="inputLatitude" value="#{pais.latitude}" />
+ 			</t:column>
+    		<t:column>
+        		<f:facet name="header">
+            		<t:commandSortHeader columnName="longitude" arrow="true">
+            			<h:outputText value="Longitude"/>
+            		</t:commandSortHeader>
+        		</f:facet>
+        		<h:inputText id="inputLongitude" value="#{pais.longitude}" />
+    		</t:column>
+			<t:column>
+ 				<f:facet name="header">
+       				<h:outputText value="Coordenadas"/>
+       			</f:facet>
+       				<h:commandLink value="Obter" onclick="getCoordenadas(#{row} , '#{pais.sigla}'); return true;" />
+			</t:column>
+			<t:column>
+ 				<f:facet name="header">
+       				<h:outputText value="Coordenadas"/>
+       			</f:facet>
+       				<h:commandLink value="Salvar" action="#{estatisticaForm.savePaisLatLong}" > 
+           				<f:param name="pais" value="#{pais}" />
+           			</h:commandLink>
+			</t:column>
+	
+		</t:dataTable>
+	</h:form>	
+</h:panelGrid>
+</c:if>
+<c:otherwise>
+	<br />
+	#{messages["estatistica.acesso"]}
+	<br />
+</c:otherwise>
+</ui:define>
+</ui:composition>
+</html>

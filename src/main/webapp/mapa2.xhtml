@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:a4j="https://ajax4jsf.dev.java.net/ajax">
+
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+		<script
+			src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=#{messages['chave.googlemaps']}"
+			type="text/javascript"></script>
+		<script type="text/javascript" src="scripts/prototype.js"></script>
+		<script type="text/javascript" src="scripts/scriptaculous.js"></script>
+		<script type="text/javascript" src="scripts/stylesheetswitcher.js"></script>
+		<script type="text/javascript" src="scripts/global.js"></script>
+		<script type="text/javascript" src="scripts/wikicrimes.js"></script>
+		<script type="text/javascript">
+
+            var map;
+			var crime;
+			var podeRegistrar = false;
+			var idTipoCrime = 0;
+			var geocoder;
+		    // Call this function when the page has been loaded
+		    function initialize() {
+		        map = new GMap2(document.getElementById("map"));
+		        map.setCenter(new GLatLng(-3.738189815174382, -38.52081298828125), 2);
+		        map.addControl(new GLargeMapControl());
+		        map.addControl(new GScaleControl());
+		        map.addControl(new GMapTypeControl());
+		        map.addControl(new GOverviewMapControl());
+				map.enableScrollWheelZoom();
+                setPodeRegistrar(false, 0);
+				 geocoder = new GClientGeocoder();
+		        GEvent.addListener(map, "mousemove", function(latLng) {
+                    if ( podeRegistrar ) {
+			        	if (!crime) {
+		                    crime = createMarker(latLng,idTipoCrime);
+				            map.addOverlay(crime);
+			            } else {
+			                      	crime.setLatLng(latLng);
+			                       }
+                    }
+		        });
+		        
+		        GEvent.addListener(map, "infowindowclose", function(latLng) {
+						if (crime!=null)
+							crime.hide();
+						crime=null;
+		        });
+		        
+		        
+		        
+                GEvent.addListener(map, "click", function(overlay, latLng) {
+                    if ( podeRegistrar ) {
+                        if (!crime) {
+                            crime = createMarker(latLng,idTipoCrime);
+                            map.addOverlay(crime);
+                        } else {
+                            crime.setLatLng(latLng);
+                        }
+
+                        crime.registrarCrime(idTipoCrime);
+                        showAllCrimes();
+						 map.enableDragging();
+                    }
+                    
+                    setPodeRegistrar(false, 0);
+					     
+                      showAllCrimes();
+                });
+
+                showAllCrimes();
+                 
+		    }
+
+		    
+		    function setPodeRegistrar(valor, id) {
+                podeRegistrar = valor;
+                idTipoCrime = id;
+                if (podeRegistrar) {
+					 map.disableDragging();
+					 if (crime !=null)
+						 crime.hide();
+                   crime=null;
+                   
+                } else {
+                    map.enableDragging();
+                }
+		    }
+
+            function showAllCrimes() {
+                <t:dataList var="crime" value="#{filtroForm.crimes}" rowIndexVar="index">
+	                <h:outputText value="crime#{crime.idCrime}" /> = createMarker(new GLatLng(<h:outputText value="#{crime.latitude}" />, <h:outputText value="#{crime.longitude}" />), <h:outputText value="#{crime.tipoCrime.idTipoCrime}" />);
+	                <h:outputText value="crime#{crime.idCrime}" />.disableDragging();
+	                map.addOverlay(<h:outputText value="crime#{crime.idCrime}" />);
+                    GEvent.addListener(<h:outputText value="crime#{crime.idCrime}" />, "click", function() {
+                        <h:outputText value="crime#{crime.idCrime}" />.mostrarDados(<h:outputText value="#{crime.idCrime}" />);
+                    });
+                    
+                    <h:outputText rendered="#{index == 0}">
+                       
+                    </h:outputText>
+
+                </t:dataList>
+
+            }
+
+    function showLocal() {
+      var endereco = document.getElementById("pesquisa:q").value;
+      geocoder.getLocations(endereco, plotaEnderecoMap);
+
+
+    }
+    
+    
+    function plotaEnderecoMap(response) {
+      map.clearOverlays();
+      if (!response || response.Status.code != 200) {
+        alert("Desculpe, mas nao foi possivel encontrar o endereco citado");
+      } else {
+        place = response.Placemark[0];
+        point = new GLatLng(place.Point.coordinates[1],
+                            place.Point.coordinates[0]);
+
+
+        map.openInfoWindowHtml(point,place.address + '<br/>' +
+          '<b>Codigo Pais:</b> ' + place.AddressDetails.Country.CountryNameCode);
+          map.setCenter(point,13);
+          showAllCrimes();
+
+      }
+    }
+		    window.onload = initialize;
+		    window.onunload = GUnload;
+		</script>
+		<SCRIPT language="JavaScript">
+
+
+function changeAll() {
+	document.images[0].src='/wikicrimes/images/btns/btnMover.jpg';
+	document.images[1].src='/wikicrimes/images/btns/btnRoubo.jpg';
+    document.images[2].src='/wikicrimes/images/btns/btnFurto.jpg';
+	document.images[3].src='/wikicrimes/images/btns/btnTentRoubo.jpg';
+	document.images[4].src='/wikicrimes/images/btns/btnTentFurto.jpg';
+	document.images[5].src='/wikicrimes/images/btns/btnBriga.jpg';
+
+}
+
+function movepic(img_name,img_src) {
+	
+	img_name.src=img_src;
+	
+}
+
+ 
+
+// End -->
+</SCRIPT>
+	</head>
+
+
+	<h:panelGrid border="0" columns="1" cellspacing="0" cellpadding="0">
+
+		<h:outputText styleClass="errorMessage"
+			value="#{messages['webapp.msgcrimes']}" />
+		<h:panelGroup columns="6" style="text-align: left">
+			<h:graphicImage
+				onclick="setPodeRegistrar(false,0);changeAll();movepic(this,'/wikicrimes/images/btns/btnMoverOver.jpg')"
+				value="/images/btns/btnMoverOver.jpg" title="Mover o mapa" />
+			<h:graphicImage id="btn3" value="/images/btns/btnFurto.jpg"
+				title="Mapear Furto" />
+			<t:popup styleClass="popup" id="z">
+			<h:graphicImage id="btn2" value="/images/btns/btnRoubo.jpg"
+				title="Mapear Roubo" />
+				
+				<f:facet name="popup">
+					<h:panelGroup>
+						<h:panelGrid columns="1">
+								<h:outputText value="Roubo a propriedade" />
+								<h:outputText value="Roubo a pessoa" />
+								<h:outputText value="Tentativa de roubo a pessoa" />
+								<h:outputText value="Tentativa de roubo a propriedade" />
+								
+						</h:panelGrid>
+					</h:panelGroup>
+				</f:facet>
+			</t:popup>
+			<h:graphicImage value="/images/btns/btnBriga.jpg"
+				title="Mapear Rixas ou Brigas" />
+
+		</h:panelGroup>
+
+
+
+
+
+	</h:panelGrid>
+
+</html>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC
+"-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:jsp="http://java.sun.com/JSP/Page">
+
+	<head>
+		<meta http-equiv="Cache-Control" content="no-store" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+		<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+		<link rel="shortcut icon" href="./images/favicon.ico"
+			type="image/x-icon" />
+		<link rel="stylesheet" type="text/css" href="./styles/wikicrimes.css"
+			title="default" />
+	</head>
+
+	<body style="overflow-x: hidden">
+
+	<f:view>
+		<h:form>
+			<f:loadBundle var="messages" basename="messages" />
+				<h:panelGrid border="0" columns="1" style="text-align:left;" >
+				<div align ="left">
+					<h:graphicImage value="/images/denuncia2.jpg"/>	
+					<h:outputText style="text-align: left;" value="#{messages['abuso.mensagem']} "/>
+				</div>
+				<br/>
+
+					<h:outputText value="#{messages['abuso.texto']} "
+								style="vertical-align: text-top; font-size: 12px;font-weight:bold" />
+					<h:inputTextarea id="texto"   rows="9" cols="55"   value="#{abusoForm.texto}"/>
+			</h:panelGrid>
+			<h:inputHidden required="false" value="#{abusoForm.idCrime}" id="idCrime"/>
+			<h:inputHidden required="false" value="#{abusoForm.idRelato}" id="idRelato"/>
+			<t:saveState value="#{abusoForm.idCrime}" />
+			<h:panelGrid border="0" columns="2" size="40" style="text-align:right;">
+				<h:commandButton id="enviarEmail"  value="#{messages['faleconosco.enviar']}" action="#{abusoForm.enviarEmail}" styleClass="button">
+				</h:commandButton>
+				<h:commandButton id="cancel"  value="#{messages['faleconosco.cancelar']}" 
+					onclick="parent.closeMessage(); return false;" styleClass="button">
+				</h:commandButton> 
+			</h:panelGrid>
+			
+			
+		</h:form>
+	</f:view>
+	</body>
+</html>

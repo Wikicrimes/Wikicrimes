@@ -1,0 +1,6 @@
+jdbc.driverClassName=com.mysql.jdbc.Driver
+jdbc.url=jdbc:mysql://localhost/appfuse_light?createDatabaseIfNotExist=true
+jdbc.username=root
+jdbc.password=
+
+hibernate.dialect=org.hibernate.dialect.MySQLInnoDBDialect

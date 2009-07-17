@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+		<f:loadBundle var="messages" basename="messages" />
+			<head>
+		<meta http-equiv="content-type"
+			content="text/html; charset=iso-8859-1" />
+		<script
+			src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=#{messages['chave.googlemaps']}"
+			type="text/javascript"></script>
+		<script	src="scripts/greversegeocoderv107.js"
+			type="text/javascript"></script>
+		<script type="text/javascript" src="scripts/prototype.js"></script>
+		<script type="text/javascript" src="scripts/HashMap.js"></script>
+
+        <style>
+ #loading {
+position: absolute;
+height: 30px;
+width: 150px;
+top: 35%;
+left: 35%;
+text-align: center;
+padding: 2em;
+border: 1px solid #ff0000;
+background-color: #ffffff;
+margin-left: auto;
+margin-right: auto;
+z-index: 100;
+opacity: .75;
+-moz-opacity:0.75;
+filter: alpha(opacity=75);
+}
+</style>
+		<script type="text/javascript">
+		/* <![CDATA[ */
+            if (GBrowserIsCompatible()) { 
+            
+            var reversegeocoder;
+            var map;
+			var crime;
+			var crime2;
+			var id;
+			var podeRegistrar = false;
+			var idTipoCrime = 0;
+			var idSubTipoCrime = 0;
+			var geocoder;  
+	        var gmarkers = new HashMap();
+			var ii = 0;
+
+				
+	  		
+	    /* ]]> */
+        }
+        else {
+	      alert("Desculpe, WikiCrimes.org nao e compativel com seu browser");
+    	}
+		
+
+		
+		    // Call this function when the page has been loaded
+		    function load(_lat,_long,_zoom) {
+
+		        map = new GMap2(document.getElementById("map"));
+		        map.setCenter(new GLatLng(_lat,_long),_zoom);
+		        map.addControl(new GLargeMapControl());
+		        map.addControl(new GScaleControl());
+		        map.addControl(new GMapTypeControl());
+		        map.addControl(new GOverviewMapControl());
+    	       map.addMapType(G_PHYSICAL_MAP);
+    	       reversegeocoder = new GReverseGeocoder(map);
+
+				map.enableScrollWheelZoom();
+                setPodeRegistrar(false, 0);
+
+
+
+		        GEvent.addListener(map, "mousemove", function(latLng) {
+                    if ( podeRegistrar ) {
+			        	if (!crime) {
+		                    crime = createMarkerTemp(latLng,idTipoCrime);
+				            map.addOverlay(crime);
+			            } else {
+			                      	crime.setLatLng(latLng);
+			                       }
+                    }
+		        });
+		        
+		        GEvent.addListener(map, "infowindowclose", function(latLng) {
+		        		if (crime!=null)
+							crime.hide();
+						if (crime2!=null){
+							if(crime2.getRegistrado()!=1){
+									crime2.hide();
+									crime2=null;			
+								}
+							else{
+							  if(crime2.getEvento()!=1){
+								GEvent.addListener(crime2, "click", function() {
+		                        crime2.mostrarDados(crime2.getIdCrime());
+							
+	                   		});
+	                   		crime2.setEvento(1);
+								}
+								
+							}
+						}
+						
+						crime=null;
+		        });
+		        
+
+		        
+                GEvent.addListener(map, "click", function(overlay, latLng) {
+                    if ( podeRegistrar ) {
+     						               
+                        crime2 = createMarker(latLng,idTipoCrime);
+                        map.addOverlay(crime2);
+                        crime2.registrarCrime(idTipoCrime,idSubTipoCrime);
+						crime2.disableDragging();
+						map.enableDragging();
+                    }
+                    
+                    setPodeRegistrar(false, 0);
+					     
+
+                });
+
+ 			
+
+		    }
+	
+	      function zoomIn(i){
+	  		map.setCenter(gmarkers.get(i).getPoint(), map.getZoom()+5); 
+			GEvent.trigger(gmarkers.get(i), "click");
+
+		}
+	  function zoomOut(i){
+	  		map.setCenter(gmarkers.get(i).getPoint(), map.getZoom()-5); 
+			GEvent.trigger(gmarkers(i), "click");
+
+		}
+	function mostraMapa(lat,lng) {
+		map.clearOverlays();
+		map.addOverlay(new GMarker(new GLatLng(lat,lng)));
+		map.setCenter(new GLatLng(lat,lng),16);
+	}
+		    
+		    function setPodeRegistrar(valor, idTipo, idSub) {
+
+                podeRegistrar = valor;
+                idTipoCrime = idTipo;
+                idSubTipoCrime=idSub;
+                if (podeRegistrar) {
+					 map.disableDragging();
+					// alert('Mova o mouse ao local do crime');
+					 if (crime !=null)
+						 crime.hide();
+                   crime=null;
+                   			 crime = createMarkerTemp(map.getCenter(),idTipoCrime);
+				            map.addOverlay(crime);
+                   
+                   
+                } else {
+	                 if (crime !=null)
+						 crime.hide();
+    	               crime=null;
+                    map.enableDragging();
+                }
+		    }
+
+          
+
+    function showLocal() {
+
+      var endereco = document.getElementById("pesquisa").value;
+       if (!geocoder)
+       		geocoder = new GClientGeocoder();
+	  geocoder.getLocations(endereco, plotaEnderecoMap);
+	  geocoder=null;
+
+
+    }
+    		/* <![CDATA[ */
+    
+    function plotaEnderecoMap(response) {
+
+      if (!response || response.Status.code != 200) {
+        alert("Desculpe, mas nao foi possivel encontrar o endereco citado");
+      } else {
+        place = response.Placemark[0];
+        point = new GLatLng(place.Point.coordinates[1],
+                            place.Point.coordinates[0]);
+
+
+        map.openInfoWindowHtml(point,place.address + '<br/>' +
+          '<b>Codigo Pais:</b> ' + place.AddressDetails.Country.CountryNameCode);
+
+         switch(place.AddressDetails.Accuracy)
+		{
+			case 0:
+				zoom=#{filtroForm.zoomMapa};
+			  break;    
+			case 1:
+				zoom=4;
+			  break;
+		 	case 2:
+				zoom=6;
+			  break;
+			case 3:
+				zoom=12;
+			  break;
+			case 4:
+				zoom=13;
+			  break;
+			case 5:
+				zoom=14;
+			  break;
+			case 6:
+				zoom=16;
+			  break;
+			case 7:
+				zoom=17;
+			  break;
+			case 8:
+				zoom=17;
+			  break;
+			default:
+				zoom=#{filtroForm.zoomMapa};		
+		}
+
+          map.setCenter(point,zoom);
+         
+
+      }
+    }
+        /* ]]> */
+    function loadMapa() {
+		<c:if test="#{not empty usuario}">
+			load(#{usuario.lat},#{usuario.lng},13);
+		</c:if>    
+		<c:if test="#{empty usuario}">
+			load(#{filtroForm.latMapa},#{filtroForm.lngMapa},#{filtroForm.zoomMapa});
+		</c:if>
+    }
+		  
+    window.onload = function() { setTimeout(loadMapa,100) };
+	window.onunload = function () {GUnload;};
+																
+	
+
+	</script>
+	<script language="JavaScript">
+		// End -->
+	</script>
+	
+	</head>
+
+	<div id="map" style="width: 500px; height: 400px" />
+	
+	
+	
+	
+</html>

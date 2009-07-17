@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC
+"-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:t="http://myfaces.apache.org/tomahawk">
+
+
+<f:loadBundle var="messages" basename="messages"/>
+
+<head>
+    <title>#{messages['userForm.title']}</title>
+    <style type="text/css">
+        .jscalendar-DB-div-style {
+            position: absolute;
+            margin-top: -69px;
+            margin-left: -408px;
+        }
+    </style>
+</head>
+
+<h:messages errorClass="error" layout="table" style="width: 100%"/>
+
+<p>Por favor complete as informações abaixo:</p>
+
+<h:form id="crimeForm">
+<h:inputHidden value="#{crimeForm.crime.idCrime}">
+    <f:convertNumber/>
+</h:inputHidden>
+<h:panelGrid columns="3" styleClass="detail" columnClasses="label">
+
+    <h:outputLabel for="tipoCrime" value="Tipo Crime"/>
+    <h:inputText value="#{crimeForm.crime.tipoCrime}" id="tipoCrime"/>
+    <h:message for="tipoCrime" styleClass="errorMessage"/>
+
+    <h:inputHidden value=""/>
+    
+    <h:panelGroup>
+        <h:commandButton value="Salvar" action="#{userForm.save}" id="save" styleClass="button"/>
+    <c:if test="${not empty userForm.id}">
+        <h:commandButton value="Apagar" action="#{userForm.delete}" id="delete" styleClass="button"/>
+    </c:if>
+        <h:commandButton value="Cancelar" action="cancel" immediate="true" id="cancel" styleClass="button"/>
+    </h:panelGroup>
+    <h:inputHidden value=""/>
+</h:panelGrid>
+</h:form>
+
+<script type="text/javascript">
+    Form.focusFirstElement(document.forms['crimeForm']);
+</script>
+
+
+</html>

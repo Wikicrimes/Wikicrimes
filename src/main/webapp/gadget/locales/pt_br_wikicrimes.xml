@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<messagebundle>
+	<!-- Canvas -->
+	<msg name="erro.pesquisa">O endereço pesquisado não foi encontrado</msg>
+	<msg name="hint.alertarAmigos">Clique nesta imagem para alertar seus amigos</msg>
+	<msg name="carregando">carregando...</msg>
+	<msg name="amigo">Amigo</msg>
+	<msg name="ocorrencia">Ocorrência</msg>
+	<msg name="alertas.que.voce.recebeu">Alertas que você recebeu</msg>
+	<msg name="comentarios">Comentários</msg>
+	<msg name="alertou.em">alertou em</msg>
+	<msg name="pesquisar.no.mapa">pesquisar no mapa</msg>
+	<msg name="pesquise.um.endereco.no.mapa">Pesquise um endereço no mapa, ex:"Av João Pessoa, Fortaleza"</msg>
+	<msg name="fale.conosco">Fale Conosco</msg>
+	<msg name="registrar.crimes">WikiCrimes.org</msg>
+	<msg name="nenhum.comentario">Nenhum comentário sobre esse alerta</msg>
+	<msg name="nenhum.amigo.registrou.alerta">Nenhum de seus amigos registrou um alerta</msg>
+	<msg name="usuario.anonimo">Usuário Anônimo</msg>
+	<msg name="comenta">comenta</msg>
+	<msg name="salvar">Salvar</msg>
+	<msg name="cancelar">Cancelar</msg>
+	<msg name="selecione">Selecione</msg>
+	<msg name="nome">Nome</msg>
+	<msg name="dados.do.seu.amigo">Dados do seu Amigo</msg>
+	<msg name="sem.permissao">Para realizar esta operação você deve adicionar o WikiCrimes no seu perfil!</msg>
+	<msg name="comentario.registrado">Comentário registrado com sucesso!</msg>
+	<msg name="confirmacao.registrada">Confirmação efetuada com sucesso!</msg>
+	<msg name="alerta.registrado"> Alerta registrado com sucesso  </msg>
+	<msg name="ja.confirmou">Você já confirmou essa notificação!</msg>
+	<msg name="repasse.efetuado">Repasse efetuado com sucesso!</msg>
+	<msg name="erro.requisicao">Não foi possivel realizar a sua ultima requisição!</msg>
+	<msg name="email.fale.conosco.enviado">Email Fale Conosco enviado com sucesso!</msg>
+	<msg name="cod.pais">Código País</msg>	
+	<msg name="hint.repasse.alerta">Repasse esse Alerta para os seu amigos </msg>
+	<msg name="hint.confirmar.positivamente"> Concorde com esse alerta </msg>
+	<msg name="hint.confirmar.negativamente"> Discorde desse alerta </msg>
+	<msg name="hint.comentar.alerta"> Comente esse alerta </msg>
+	<msg name="imagem.wikicrimes"> images/widget/wikicrimes.PNG </msg>
+	<msg name="imagem.registrar.relato_hint"> images/baloes/pt/relato_hint.gif </msg>
+	<msg name="imagem.registrar.roubo_hint"> images/baloes/pt/vermelha_hint.png </msg>
+	<msg name="imagem.registrar.furto_hint"> images/baloes/pt/azul_hint.png </msg>
+	<msg name="imagem.registrar.outros_hint"> images/baloes/pt/laranja_hint.png </msg>	
+	<msg name="denuncia_text"> Denúncia </msg>
+	<msg name="roubo_text"> Roubo </msg>
+	<msg name="furto_text"> Furto </msg>
+	<msg name="outros_text"> Outros </msg>
+	<msg name="tentativa_text"> Tentativa de </msg>
+	<msg name="pergunta_escolha_tipo_crime">Que tipo de Crime você deseja registrar?</msg>
+	<msg name="pergunta_escolha_tipo_alerta">Você deseja alertar seus amigos registrando um(a):</msg>
+	<msg name="imagem.registrar.relato"> images/btns/pt/btnAlerta.PNG </msg>
+	<msg name="mensagem.conf.repasse"> Deseja repassar este alerta para seus amigos? </msg>
+	<msg name="mensagem.sistema"> Mensagem do Sistema </msg>
+	<msg name="convidar.amigos"> Convide seus amigos </msg>
+	<msg name="canvas.configuracoes"> Configurações </msg>
+	<msg name="canvas.mensagem.desativa.tutor">A ajuda automática foi desativada com sucesso! Para ativa-la novamente, acesse o link "Configurações" logo abaixo do mapa.</msg>
+	<!-- Canvas -->
+	
+	<!-- Tela de configuracoes-->
+	<msg name="config.deseja.receber.ajuda.baloes"> Deseja receber ajuda na forma de balões </msg>	
+	<msg name="config.salvas" >Configurações salvas com sucesso!</msg>
+	<!-- Tela de configuracoes-->
+	
+	<!-- Texto Baloes -->
+	<msg name="balao.ajuda.alertar">Para alertar seus amigos clique neste botão e em seguida informe os dados solicitados.</msg>
+	<msg name="balao.ajuda.notificacoes">Esta é a sua área de notificações. Aqui vão estar listados todos os alertas que seus amigos lhe fizeram.</msg>
+	<msg name="balao.ajuda.pesquisar.endereco">Você pode pesquisar um endereço no mapa! Basta escreve-lo nessa caixa de texto, ex: "Fortaleza, Av. João pessoa", e em seguida clicar no botão "pesquisa no mapa".</msg>
+	<msg name="balao.ajuda.manipulacao.mapa">Use esses botões para mover o mapa e aumentar ou diminuir o seu zoom. Se prefirir pode usar as setas do seu teclado para movimentação e os sinais de "+" ou "-" para manipular o zoom.</msg>
+	<msg name="balao.ajuda.tipo.mapa">Existem outros tipos de mapas. Com o tipo ''Satélite'', por exemplo, você pode visualizar o mapa a partir de imagens geradas via satélite.</msg>
+	<msg name="balao.ajuda.relacionada">Ajuda relacionada</msg>
+	<msg name="balao.ajuda.nao.receber">Não quero receber ajuda</msg>
+	<msg name="balao.ajuda.relacionada.cade.meus.alertas">Cadê os alertas que recebí</msg>
+	<msg name="balao.ajuda.relacionada.como.registrar.alerta">Como registrar um alerta</msg>
+	<!-- Texto Baloes -->
+	
+	<!-- Tela inicial -->
+	<msg name="voce.ja.e.usuario.wikicrimes">Você já é usuário do WikiCrimes? </msg>
+	<msg name="sim">Sim</msg>
+	<msg name="nao">Não</msg>
+	<!-- Tela inicial -->
+	
+	<!-- Registrar Usuário(Não é usuario do wikicrimes) -->
+	<msg name="informe.cidade.pais">Informe a sua cidade e país </msg>
+	<msg name="cidade">Cidade</msg>
+	<msg name="pais">País</msg>
+	<!-- Registrar Usuário(Não é usuario do wikicrimes) -->
+	
+	<!-- Modal Fale Conosco -->
+	<msg name="msg.email.fale.conosco">Mande-nos uma mensagem com sugestões, denuncias, críticas e/ou comentários.Teremos o maior prazer de escutá-lo e buscaremos sempre que possível respondê-lo.</msg>
+	<msg name="enviar">enviar</msg>	
+	<!-- Modal Fale Conosco -->
+	
+	<!-- Tela de Login -->
+	<msg name="informe.login.senha">Digite seu Login e Senha do WikiCrimes</msg>
+	<msg name="senha">Senha</msg>
+	<msg name="voltar">voltar</msg>
+	<msg name="login.senha.invalido">login ou senha inválido</msg>
+	<msg name="deseja.amigos.ver.crimes">Deseja que seus amigos vejam os crimes que você registrou em WikiCrime?</msg>
+	<!-- Tela de Login -->
+	
+	<!-- Modal Registrar Alerta -->
+	<msg name="alerta.tipo.roubo">Tipo de Roubo</msg>
+	<msg name="alerta.tipo.furto">Tipo de Furto</msg>
+	<msg name="alerta.tipo.crime">Tipo de Crime</msg>
+	<msg name="alerta.tipo.local">Local</msg>
+	<msg name="alerta.tipo.horario">Horário</msg>
+	<msg name="alerta.tipo.data">Data</msg>
+	<msg name="alerta.qtd.vitimas">Quantidade de Vítimas</msg>
+	<msg name="alerta.qtd.criminosos">Quantidade de Criminosos</msg>
+	<msg name="alerta.tipo.arma.usada">Arma Usada</msg>
+	<msg name="alerta.tipo.relacao.crime">Qual a sua relação com o crime?</msg>
+	<msg name="alerta.tipo.pol.info">A polícia foi informada?</msg>
+	<msg name="titulo.registrar.alerta">Registrar Alerta</msg>
+	<msg name="desc.alerta">  Descrição do Alerta </msg>
+	<msg name="em.que.turno.ocorre"> Em que turno isso ocorre </msg>
+	<msg name="manha"> Manhã (05:00 as 11:59) </msg>
+	<msg name="tarde"> Tarde (12:00 as 17:59) </msg>
+	<msg name="noite"> Noite (18:00 as 23:59) </msg>
+	<msg name="madrugada"> Madrugada (00:00 as 04:59) </msg>
+	<msg name="causa.motivo.ocorrência1"> Diga-nos o que você considera como causa/motivo desta </msg>
+	<msg name="causa.motivo.ocorrência2"> ocorrência. Marque no minimo 1 e no máximo 4 opções </msg>
+	<msg name="ma.iluminacao.publica"> Má iluminação pública </msg> 	   	 
+	<msg name="ausencia.lazer.jovens">Ausência de lazer para os jovens</msg>
+	<msg name="desemprego.regiao">Desemprego na regiao</msg>
+	<msg name="facil.acesso.fuga">Fácil acesso/fuga do criminoso</msg>
+	<msg name="disputa.gangues">Disputa de gangues</msg>
+	<msg name="trafico.drogas">Uso/Tráfico de drogas</msg>
+	<msg name="uso.alcool">Uso de alcool</msg>
+	<msg name="criancas.ruas">Crianças/Adolescentes nas ruas</msg>
+	<msg name="alta.concentracao.pessoas">Alta concentração de pessoas</msg> 		
+	<msg name="falta.policiamento">Falta de Policiamento</msg>
+	<msg name="omissao.testemunhas">Omissão das testemunhas</msg>
+	<msg name="proximidade.regioes.perigosas">Proximidade de regioes perigosas</msg>
+	<msg name="impunidade.penal">Impunidade Penal</msg>
+	<msg name="pistolagem">Pistolagem</msg>
+	<msg name="violencia.policial">Violência Policial</msg>
+	<msg name="falta.moradia">Falta de Moradia/Má urbanização</msg>
+	<msg name="crime.organizado">Crime organizado</msg>
+	<msg name="crime.passional">Crime passional</msg>
+	<msg name="outros">Outros</msg>
+	<msg name="nao.sei">Não sei</msg>	
+	<msg name="relato.descricao.requerida"> A descrição do Alerta é um campo obrigatório </msg>
+	<msg name="relato.turno.requerida"> Você deve selecionar pelo menos um turno! </msg>
+	<msg name="relato.razao.requerida"> Você deve selecionar no minimo 1 e no máximo 4 razoes! </msg>
+	<msg name="alerta.campo.requerido"> Campo requerido! </msg>
+	<msg name="alerta.campo.numero">Valor informado não é um número</msg>
+	<!-- Modal Registrar Alerta -->
+</messagebundle>

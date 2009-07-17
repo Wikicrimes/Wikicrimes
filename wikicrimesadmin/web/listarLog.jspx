@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+	<f:view>
+		<ui:composition template="/templates/padrao.jspx">
+			<ui:define name="title"> #{msg['page.log.title']}</ui:define>
+			<ui:define name="body">
+				<h:form>
+					<c:if test="#{logBean.qtdLogs == 0 }">
+						<h:outputText value="#{msg['log.zerouser']}"
+							style="font-size:15px;" />
+					</c:if>
+					<c:if test="#{logBean.qtdLogs == -1 }">
+						<h:outputText value="#{msg['log.zerocrime']}"
+							style="font-size:15px;" />
+					</c:if>
+					<c:if test="#{logBean.qtdLogs > 0 }">
+
+						<rich:simpleTogglePanel label="#{msg['commons.filtro']}"
+							opened="true">
+
+							<h:panelGrid columns="2">
+
+								<h:outputText value="#{msg['log.usuario']}" />
+								<h:inputText value="#{logBean.log.usuario.primeiroNome}" />
+
+								<h:outputText value="#{msg['log.data']}" />
+								<h:inputText id="data" forceId="true" value="#{logBean.data}"
+									size="10">
+									<f:converter
+										converterId="converters.WikiSearchCrimesDataConverter" />
+								</h:inputText>
+
+								<h:outputText value="#{msg['log.campo']}" />
+								<h:inputText value="#{logBean.log.campo}" />
+
+
+							</h:panelGrid>
+
+							<h:commandButton action="#{logBean.consultarLogs}"
+								value="#{msg['page.usuario.botao.buscar']}" />
+						</rich:simpleTogglePanel>
+						
+						<br />
+						<h:outputText
+							value="#{msg['page.usuario.label.qtd1']} #{logBean.qtdLogs} #{msg['log.modificacao']}."
+							style="font-size:15px;" />
+						<br />
+						<br />
+						<rich:dataTable id="logs" var="log" value="#{logBean.logs}"
+							onRowMouseOver="this.style.backgroundColor='#F1F1F1'"
+							onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'"
+							border="1" cellspacing="0" cellpadding="2" rows="20"
+							styleClass="rich-table">
+							<rich:column style="text-align:center">
+								<f:facet name="header">
+									<h:outputText value="ID" />
+								</f:facet>
+								<h:outputText value="#{log.idLog}" />
+							</rich:column>
+							<rich:column style="text-align:center">
+								<f:facet name="header">
+									<h:outputText value="#{msg['log.campo']}" />
+								</f:facet>
+								<h:outputText value="#{log.campo}" />
+							</rich:column>
+							<rich:column style="text-align:center">
+								<f:facet name="header">
+									<h:outputText value="#{msg['log.campoantigo']}" />
+								</f:facet>
+								<h:outputText value="#{log.campoAntigo}" />
+							</rich:column>
+							<rich:column style="text-align:center">
+								<f:facet name="header">
+									<h:outputText value="#{msg['log.camponovo']}" />
+								</f:facet>
+								<h:outputText value="#{log.campoNovo}" />
+							</rich:column>
+							<rich:column style="text-align:center">
+								<f:facet name="header">
+									<h:outputText value="#{msg['log.data']}" />
+								</f:facet>
+								<h:outputText value="#{log.data}">
+									<f:converter
+										converterId="converters.WikiSearchCrimesDataConverter" />
+								</h:outputText>
+							</rich:column>
+							<rich:column style="text-align:center">
+								<f:facet name="header">
+									<h:outputText value="#{msg['log.usuario']}" />
+								</f:facet>
+								<h:commandLink action="#{usuarioBean.setUserLog}">
+									<h:outputText value="#{log.usuario.primeiroNome}" />
+									<f:setPropertyActionListener
+										target="#{usuarioBean.usuarioEditar}" value="#{log.usuario}" />
+								</h:commandLink>
+							</rich:column>
+							<f:facet name="footer">
+								<rich:datascroller for="logs" />
+							</f:facet>
+						</rich:dataTable>
+					</c:if>
+					<hr />
+					<a href="#" onclick="javascript:history.go(-1)">
+					#{msg['commons.voltar']} </a>
+				</h:form>
+			</ui:define>
+		</ui:composition>
+	</f:view>
+</jsp:root>
+

@@ -1,0 +1,482 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC
+"-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+
+	<head>
+		<meta http-equiv="Cache-Control" content="no-store" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+		<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+		<link rel="shortcut icon" href="./images/favicon.ico"
+			type="image/x-icon" />
+		<link rel="stylesheet" type="text/css" href="./styles/wikicrimes.css"
+			title="default" />
+		<style type="text/css">
+	        .jscalendar-DB-div-style {
+	            position: absolute;
+	            margin-top: -120px;
+	            margin-left: -18px;
+	        }
+        </style>
+     	
+     <script type="text/javascript" src="./scripts/calendar.js"></script>
+		<script type="text/javascript" src="./scripts/calendar-setup.js"></script>	
+		<script type="text/javascript" src="./scripts/lang/calendar-en.js"></script>
+		<script type="text/javascript" src="./scripts/lang/#{messages['webapp.calendar']}"></script>	
+		<c:if test="#{messages['webapp.calendar'] == 'calendar-pt.js' }">
+			<script type="text/javascript" src="./scripts/lang/calendar-br.js"></script>	
+		</c:if>
+	  <script type="text/javascript">
+		function getEnderecoCrime(){
+	 					
+
+					    document.getElementById('btnConfirmar').click();
+								
+			}
+			
+			
+		</script>
+
+	</head>
+
+	<body >
+
+
+	<f:view > <!-- > locale="#{facesContext.externalContext.request.locale}" -->
+			<f:loadBundle var="messages" basename="messages" />
+			<h:panelGrid border="0" columns="1" style="text-align:left">
+				<c:if test="#{crimeForm.crime.tipoCrime.idTipoCrime == 4 }">
+					<c:if test="#{crimeForm.crime.tipoVitima.idTipoVitima == 1}">
+						<div id="topoBalao"> <b>#{messages['crime.topo.roubopessoa']}</b> </div>
+											
+					</c:if>
+					
+						
+				</c:if>
+				<c:if test="#{crimeForm.crime.tipoCrime.idTipoCrime == 4 }">
+					<c:if test="#{crimeForm.crime.tipoVitima.idTipoVitima == 2}">
+						<div id="topoBalao"><b> #{messages['crime.topo.roubopropriedade']}</b> </div>
+					</c:if>	
+				</c:if>	
+				<c:if test="#{crimeForm.crime.tipoCrime.idTipoCrime == 3 }">
+					<c:if test="#{crimeForm.crime.tipoVitima.idTipoVitima == 1}">
+						<div id="topoBalao"><b> #{messages['crime.topo.furtopessoa']}</b></div>
+					</c:if>	
+				</c:if>	
+				<c:if test="#{crimeForm.crime.tipoCrime.idTipoCrime == 3 }">
+					<c:if test="#{crimeForm.crime.tipoVitima.idTipoVitima == 2}">
+						<div id="topoBalao"><b> #{messages['crime.topo.furtopropriedade']}</b> </div>
+					</c:if>	
+				</c:if>
+				<c:if test="#{crimeForm.crime.tipoCrime.idTipoCrime == 1 }">
+					<c:if test="#{crimeForm.crime.tipoVitima.idTipoVitima == 1}">
+						<div id="topoBalao"><b> #{messages['crime.topo.tentativaroubopessoa']}</b> </div>
+					</c:if>	
+				</c:if>
+				<c:if test="#{crimeForm.crime.tipoCrime.idTipoCrime == 1 }">
+					<c:if test="#{crimeForm.crime.tipoVitima.idTipoVitima == 2}">
+						<div id="topoBalao"><b> #{messages['crime.topo.tentativaroubopropriedade']}</b> </div>
+					</c:if>	
+				</c:if>
+				<c:if test="#{crimeForm.crime.tipoCrime.idTipoCrime == 2 }">
+					<c:if test="#{crimeForm.crime.tipoVitima.idTipoVitima == 1}">
+						<div id="topoBalao"><b> #{messages['crime.topo.tentativafurtopessoa']}</b> </div>
+					</c:if>	
+				</c:if>
+				<c:if test="#{crimeForm.crime.tipoCrime.idTipoCrime == 2 }">
+					<c:if test="#{crimeForm.crime.tipoVitima.idTipoVitima == 2}">
+						<div id="topoBalao"><b> #{messages['crime.topo.tentativafurtopropriedade']}</b> </div>	
+					</c:if>	
+				</c:if>
+				
+				<c:if test="#{crimeForm.crime.tipoCrime.idTipoCrime == 5 }">
+					<c:if test="#{crimeForm.crime.tipoVitima.idTipoVitima == 3}">
+						<div id="topoBalao"><b> #{messages['crime.topo.rixasbrigas']}</b></div>
+					</c:if>	
+				</c:if>	
+				<c:if test="#{crimeForm.crime.tipoCrime.idTipoCrime == 5 }">
+					<c:if test="#{crimeForm.crime.tipoVitima.idTipoVitima == 4}">
+						<div id="topoBalao"><b> #{messages['crime.topo.violenciadomestica']}</b> </div>
+					</c:if>	
+				</c:if>	
+				<c:if test="#{crimeForm.crime.tipoCrime.idTipoCrime == 5 }">
+					<c:if test="#{crimeForm.crime.tipoVitima.idTipoVitima == 5}">
+						<div id="topoBalao"><b> #{messages['crime.topo.abusoautoridade']}</b> </div>
+					</c:if>	
+				</c:if>
+				<c:if test="#{crimeForm.crime.tipoCrime.idTipoCrime == 5 }">
+					<c:if test="#{crimeForm.crime.tipoVitima.idTipoVitima == 7}">
+						<div id="topoBalao"><b> #{messages['crime.topo.tentativahomicidio']}</b> </div>
+					</c:if>	
+				</c:if>	
+				<c:if test="#{crimeForm.crime.tipoCrime.idTipoCrime == 5 }">
+					<c:if test="#{crimeForm.crime.tipoVitima.idTipoVitima == 6}">
+						<div id="topoBalao"><b> #{messages['crime.topo.homicidio']}</b> </div>	
+					</c:if>	
+				</c:if>	
+				<c:if test="#{crimeForm.crime.tipoCrime.idTipoCrime == 5 }">
+					<c:if test="#{crimeForm.crime.tipoVitima.idTipoVitima == 8}">
+						<div id="topoBalao"><b> #{messages['crime.topo.latrocinio']}</b> </div>
+					</c:if>	
+				</c:if>				
+				
+				
+				<c:if test="#{not empty message}">				
+					<c:if test="#{(message != messages['errors.email.confirmacao']) and (message != messages['errors.dataMaior']) and (message != messages['errors.razao']) and (message != messages['errors.embed.invaliado'])}">
+					
+						<h:outputText value="#{message}" styleClass="message" />
+					</c:if>	
+				</c:if>
+
+				<h:form id="crimeForm">
+					<h:inputHidden required="true" value="#{crimeForm.latitude}"
+						id="latitude" />
+					<h:inputHidden required="true" value="#{crimeForm.longitude}"
+						id="longitude" />
+						
+					<h:inputHidden value="#{crimeForm.tipoCrime}" id="tipoCrime" />
+					<t:saveState value="#{crimeForm.crime.tipoCrime}" />
+					<h:inputHidden value="#{crimeForm.tipoVitima}" id="tipoVitima" />
+					<t:saveState value="#{crimeForm.crime.tipoVitima}" />
+
+
+				<h:panelGrid >
+					<h:outputText
+						value="(*)#{messages['crime.registro.campoobrigatorio']}"
+						style="font-size: 10px; text-align:right" />
+				</h:panelGrid>
+
+					<!--  Dados Gerais -->
+					
+					<h:panelGrid border="0" style="font-size: 11px; font-family: sans-serif;" columns="3" width="480">
+					
+						<c:if test="${(crimeForm.crime.tipoCrime.idTipoCrime != 5) || (crimeForm.crime.tipoVitima.idTipoVitima != 4)}">
+							<h:panelGroup >
+								
+								<h:outputText value="#{messages['crime.tipoLocal']}(*)"
+									style="vertical-align: text-top; font-size: 11px;"
+									rendered="#{not empty crimeForm.tipoVitimaItens}" />
+								<br/>
+								<h:selectOneMenu style="font-size: 11px; font-family: sans-serif;" value="#{crimeForm.tipoLocal}" id="tipoLocal"
+									rendered="#{not empty crimeForm.tipoVitimaItens}"
+									disabled="#{empty crimeForm.tipoLocalItens}" required="true">
+									<f:selectItem itemLabel="#{messages['usuario.Selecione']}" />
+									<f:selectItems value="#{crimeForm.tipoLocalItens}" />
+									<t:saveState value="#{crimeForm.tipoLocalItens}" />
+								</h:selectOneMenu>							
+								
+								<h:message styleClass="errorMessage" for="tipoLocal" />							
+							
+							</h:panelGroup>
+						</c:if>
+						
+						<c:if test="#{crimeForm.crime.tipoCrime.idTipoCrime == 5 }">
+								<c:if test="#{crimeForm.crime.tipoVitima.idTipoVitima == 4}">
+										<h:panelGroup>
+							
+											<h:outputText value="#{messages['crime.tipoLocal']}(*)"
+												style="vertical-align: text-top; font-size: 11px;"
+												rendered="#{not empty crimeForm.tipoVitimaItens}" />
+										
+											<input type="text" value="#{messages['crime.residencia']}" readonly="readonly"  />						
+											<t:inputHidden id="hiddenTipoLocal" forceId="true" value="#{crimeForm.tipoLocal}" /> 
+											<script>
+												document.getElementById("hiddenTipoLocal").value=4;
+											</script>
+											
+									
+										
+										
+										</h:panelGroup>
+								</c:if>
+							</c:if>
+										
+						<h:panelGroup>									
+									
+							<h:outputText value="#{messages['crime.data']}(*)" style="vertical-align: text-top; font-size: 11px;"/>
+							
+							<br/>
+								<t:inputText style="font-size: 11px; font-family: sans-serif;" id="data" onkeyup="limpaData();" forceId="true" required="true" 
+										value="#{crimeForm.data}" 
+										size="8">
+									<f:converter
+										converterId="wikicrimes.WikiSearchCrimesDataConverter" />
+								</t:inputText>
+								<t:graphicImage id="triggerData" forceId="true" value="/images/btns/btnCalendar.gif" style="display:inline; cursor:pointer;"/>
+							
+							<c:if test="#{not empty message}">
+							<c:if test="#{message == messages['errors.dataMaior'] }">
+								<h:outputText value="#{message}" styleClass="errorMessage" />
+							</c:if>
+					    </c:if>	
+							<h:message styleClass="errorMessage" for="data" />
+						</h:panelGroup>
+						<h:panelGroup>							
+							<h:outputText value="#{messages['crime.horario']}(*)" style="vertical-align: text-top; font-size: 11px;"/>
+							<br/>
+							<h:selectOneListbox style="font-size: 11px; font-family: sans-serif;" value="#{crimeForm.horario}" id="horario" size="1" required="true" >
+								<f:selectItem itemLabel="" />
+								<f:selectItems value="#{crimeForm.horarioItens}"/>
+								<f:selectItem itemLabel="#{messages['crime.horario.desconhecido']}" itemValue="24"/>							
+
+							</h:selectOneListbox>
+							
+							<h:message styleClass="errorMessage" for="horario" />
+							
+						</h:panelGroup>
+						
+						<h:panelGroup>
+							<h:outputText value="#{messages['crime.quantidade']}:" style="vertical-align: text-top; font-size: 11px;"/><br/>
+							<h:inputText style="font-size: 11px; font-family: sans-serif;" value="#{crimeForm.crime.quantidade}" maxlength="3"
+								size="3" id="quantidade" />
+							<h:message styleClass="errorMessage" for="quantidade" />	
+						</h:panelGroup>
+						
+						<h:panelGroup>
+						<h:outputText value="#{messages['crime.quantidadeVitimas']}:" style="vertical-align: text-top; font-size: 11px;"/><br/>
+						<h:inputText style="font-size: 11px; font-family: sans-serif;" value="#{crimeForm.crime.qtdMasculino}" maxlength="3"
+							size="3" id="qtdMasculino" />
+						<h:message styleClass="errorMessage" for="qtdMasculino" />	
+						</h:panelGroup>
+						
+						<h:panelGroup>						
+						<h:outputText value="#{messages['crime.tipoArmaUsada']}:(*)" style="vertical-align: text-top; font-size: 11px;"/><br/>
+						<h:selectOneListbox style="font-size: 11px; font-family: sans-serif;" value="#{crimeForm.tipoArmaUsada}"
+							id="tipoArmaUsada" size="1" required="true">
+							<f:selectItem itemLabel="#{messages['usuario.Selecione']}" />
+							<f:selectItems value="#{crimeForm.tipoArmaUsadaItens}" />
+						</h:selectOneListbox>
+						<h:message styleClass="errorMessage" for="tipoArmaUsada" />
+						</h:panelGroup>
+
+					</h:panelGrid>
+					<!-- botei os <br/> para realizar o alinhamento  
+					<h:panelGrid border="0" style="font-size: 11px; font-family: sans-serif;" columns="3" width="480">
+						
+						foi esquecido!!
+					</h:panelGrid>-->
+
+
+					<h:panelGroup style="font-size: 11px; font-family: sans-serif;">
+						<h:outputText value="#{messages['crime.tipoPapel']}(*)" style="vertical-align: text-top; font-size: 11px;"/>
+
+						<h:selectOneRadio style="font-size: 11px; font-family: sans-serif;" value="#{crimeForm.tipoPapel}" id="tipoPapel"
+							required="true" >
+							<f:selectItems value="#{crimeForm.tipoPapelItens}" />
+							<t:saveState value="#{crimeForm.tipoPapelItens}" />
+						</h:selectOneRadio>
+
+						<h:message styleClass="errorMessage" for="tipoPapel" />
+
+					</h:panelGroup>
+					<h:panelGroup style="font-size: 11px; font-family: sans-serif;">
+
+						<h:outputText value="#{messages['crime.tipoRegistro']}(*)"
+							style="vertical-align: text-top; font-size: 11px;" />
+
+						<h:selectOneRadio value="#{crimeForm.tipoRegistro}"
+							id="tipoRegistro" required="true" style="font-size: 11px; font-family: sans-serif;">
+							<f:selectItems value="#{crimeForm.tipoRegistroItens}" />
+						</h:selectOneRadio>
+
+						<h:message styleClass="errorMessage" for="tipoRegistro" />
+					</h:panelGroup>
+
+					<!--   Dados do autor do crime -->
+					<!--<h:outputText style="font-weight:bold"
+						value="#{messages['crime.registro.autor']}" />
+					<h:panelGrid border="0" columns="3">
+
+						<h:outputText value="#{messages['crime.quantidade']}:"/>
+						<h:outputText value="#{messages['crime.faixaEtaria']}:"/>
+						<h:outputText value="#{messages['crime.sexo']}"/>
+												
+						<h:selectOneListbox value="#{crimeForm.quantidade}"
+							id="quantidade" size="1" required="true">
+							<f:selectItems value="#{crimeForm.quantidadeCriminosos}" />
+						</h:selectOneListbox>
+						<h:selectOneListbox value="#{crimeForm.faixaEtaria}"
+							id="faixaEtaria" size="1" required="true">
+							<f:selectItems value="#{crimeForm.faixaEtariaItens}" />
+						</h:selectOneListbox>
+						<h:selectOneRadio value="#{crimeForm.sexo}" id="sexo" required="true">
+							<f:selectItems value="#{crimeForm.sexoItens}" />
+						</h:selectOneRadio>
+						
+						<h:message styleClass="errorMessage" for="quantidade" />
+						<h:message styleClass="errorMessage" for="faixaEtaria" />
+						<h:message styleClass="errorMessage" for="sexo" />
+
+						<h:outputText value="#{messages['crime.tipoArmaUsada']}:"/>
+						<h:outputText value="#{messages['crime.tipoTransporte']}"/>
+						<h:outputText />
+						
+						<h:selectOneListbox value="#{crimeForm.tipoArmaUsada}"
+							id="tipoArmaUsada" size="1" required="true">
+							<f:selectItems value="#{crimeForm.tipoArmaUsadaItens}" />
+						</h:selectOneListbox>
+						<h:selectOneListbox value="#{crimeForm.tipoTransporte}"
+							id="tipoTransporte" size="1" required="true">
+							<f:selectItems value="#{crimeForm.tipoTransporteItens}" />
+						</h:selectOneListbox>
+						<h:outputText />
+						
+						<h:message styleClass="errorMessage" for="tipoArmaUsada" />
+						<h:message styleClass="errorMessage" for="tipoTransporte" />
+						<h:outputText />
+						
+					</h:panelGrid>
+
+					<h:outputText style="font-weight:bold" value="#{messages['crime.registro.vitima']}" />
+					<h:panelGrid border="0" columns="4">
+						<h:outputText value="#{messages['crime.qtdMasculino']}"
+							style="vertical-align: text-top" />
+						<h:selectOneListbox value="#{crimeForm.qtdMasculino}"
+							id="qtdMasculino" size="1" required="true">
+							<f:selectItems value="#{crimeForm.quantidadeItens}" />
+						</h:selectOneListbox>
+						<h:outputText value="#{messages['crime.qtdFeminino']}"
+							style="vertical-align: text-top" />
+						<h:selectOneListbox  required="true" value="#{crimeForm.qtdFeminino}"
+							id="qtdFeminino" size="1">
+							<f:selectItems value="#{crimeForm.quantidadeItens}" />
+						</h:selectOneListbox>
+
+						<h:outputText value="" />
+						<h:message styleClass="errorMessage" for="qtdMasculino" />
+						<h:outputText value="" />
+						<h:message styleClass="errorMessage" for="qtdFeminino" />
+
+					</h:panelGrid>-->
+					<h:panelGrid style="font-size: 11px; font-family: sans-serif;">
+						<h:outputText value="#{messages['crime.descricao']}(*)"
+							style="vertical-align: text-top; font-size: 11px;" />
+						<h:outputText value="#{messages['crime.descricao.lembrete']}"
+							style="font-size: 10px;text-align:left; font-style:italic;" />	
+						<h:inputTextarea style="font-size: 11px; font-family: sans-serif;" value="#{crimeForm.descricao}" id="descricao"
+							cols="60" rows="8" required="true" />
+						<h:message styleClass="errorMessage" for="descricao" />
+					</h:panelGrid> 
+					<h:panelGrid style="font-size: 11px; font-family: sans-serif;">
+						<h:outputText value="#{messages['mostrarinformacoes.linkrelacionado']}" />
+						<h:inputText size="62" style="font-size: 11px; font-family: sans-serif;" value="#{crimeForm.crime.linkNoticia}" />
+						<h:outputText value="#{messages['mostrarinformacoes.linkembed']} (Ex: youtube):"/>
+						<h:inputText size="62" style="font-size: 11px; font-family: sans-serif;" value="#{crimeForm.crime.embedNoticia}" />
+						<c:if test="#{not empty message}">
+							<c:if test="#{message == messages['errors.embed.invaliado'] }">
+								<h:outputText value="#{message}" styleClass="errorMessage" />
+							</c:if>
+					    </c:if>
+					</h:panelGrid>						
+					
+					<h:panelGrid style="font-size: 11px; font-family: sans-serif;">
+						<c:if test="#{not empty message}">
+							<c:if test="#{message == messages['errors.razao'] }">
+								<h:outputText value="#{message}" styleClass="errorMessage" />
+							</c:if>
+					    </c:if>
+						<h:outputText value ="#{messages['razao.titulo']}" />						
+						<t:selectManyCheckbox style="font-size: 11px; font-family: sans-serif;" layoutWidth="2" id="razoesCheck" layout="pageDirection"   value="#{crimeForm.razoesSel}">						
+							<f:selectItems id="razoes" value="#{crimeForm.razoes}" />							
+						</t:selectManyCheckbox>
+					</h:panelGrid>
+					
+					<h:panelGrid style="font-size: 11px; font-family: sans-serif;">
+						<h:outputText value="#{messages['crime.confirmacoes']}(*)"
+							style="vertical-align: text-top; font-size: 11px;" />
+						<h:outputText value="#{messages['crime.email.lembrete.Confirmacao']}"
+							style="font-size: 10px; text-align:left; font-style:italic;" />	
+						<c:if test="#{not empty message}">
+							<c:if test="#{message == messages['errors.email.confirmacao'] }">
+								<h:outputText value="#{message}" styleClass="errorMessage" />
+							</c:if>
+					    </c:if>	
+						
+						<h:outputText value="#{messages['crime.email1']}"
+							style="vertical-align: text-top; font-size: 11px;" />
+							
+						<h:inputText style="font-size: 11px; font-family: sans-serif;" value="#{crimeForm.email1}"
+							id="email1" size="40">
+							<t:validateEmail />
+						</h:inputText>	
+						<h:message styleClass="errorMessage" for="email1" />
+						
+						<h:outputText value="#{messages['crime.email2']}"
+							style="vertical-align: text-top; font-size: 11px;" />
+							
+						<h:inputText style="font-size: 11px; font-family: sans-serif;" value="#{crimeForm.email2}"
+							id="email2" size="40">
+							<t:validateEmail />
+						</h:inputText>	
+						<h:message styleClass="errorMessage" for="email2" />
+						
+						<h:outputText value="#{messages['crime.email3']}"
+							style="vertical-align: text-top; font-size: 11px;" />
+							
+						<h:inputText style="font-size: 11px; font-family: sans-serif;" value="#{crimeForm.email3}"
+							id="email3" size="40">
+							<t:validateEmail />
+						</h:inputText>	
+						<h:message styleClass="errorMessage" for="email3" />
+						
+						<h:outputText value="#{messages['crime.email4']}"
+							style="vertical-align: text-top; font-size: 11px;" />
+							
+						<h:inputText style="font-size: 11px; font-family: sans-serif;" value="#{crimeForm.email4}"
+							id="email4" size="40">
+							<t:validateEmail />
+						</h:inputText>	
+						<h:message styleClass="errorMessage" for="email4" />
+						
+						<h:outputText value="#{messages['crime.email5']}"
+							style="vertical-align: text-top; font-size: 11px;" />
+							
+						<h:inputText style="font-size: 11px; font-family: sans-serif;" value="#{crimeForm.email5}"
+							id="email5" size="40">
+							<t:validateEmail />
+						</h:inputText>	
+						<h:message styleClass="errorMessage" for="email5" />
+						
+						<h:outputText value="#{messages['crime.email6']}"
+							style="vertical-align: text-top; font-size: 11px;" />
+							
+						<h:inputText style="font-size: 11px; font-family: sans-serif;" value="#{crimeForm.email6}"
+							id="email6" size="40">
+							<t:validateEmail />
+						</h:inputText>	
+						<h:message styleClass="errorMessage" for="email6" />
+						
+					</h:panelGrid>
+
+					<h:commandButton value="#{messages['crime.btn.registrar']}"
+						id="btnRegistrar" action="#{crimeForm.insert}" styleClass="button" />
+
+				</h:form>
+			</h:panelGrid>
+
+
+		<script type="text/javascript">
+			function limpaData(){
+				document.getElementById("data").value="";
+			}	
+			
+		    Calendar.setup(
+		    {
+		      inputField  : "data",         // ID of the input field
+		      ifFormat    : "#{messages['date.format.calendar']}",    // the date format
+		      button      : "triggerData",       // ID of the button
+		      weekNumbers : false
+		    }
+		  	);
+		</script>
+</f:view>
+	</body>
+</html>

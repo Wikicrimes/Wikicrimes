@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+<ui:composition template="./layout2.xhtml">
+
+	<ui:define name="head">
+		<link rel="stylesheet" href="./styles/modal-message.css"
+			type="text/css" />
+		<script type="text/javascript" src="./scripts/modal-message.js"></script>
+		<script type="text/javascript">
+		/* <![CDATA[ */
+		
+				
+		function getEnderecoCrime(latitude, longitude){
+
+				if (!reversegeocoder)
+						reversegeocoder = new GReverseGeocoder(map);
+			 	
+			 	GEvent.addListener(reversegeocoder, "load",
+					function(placemark) {
+					//	alert(reversegeocoder.getPlacemarkProperty(placemark,"LocalityName"));
+	 					document.getElementById('crimeForm:inputCidade').value= reversegeocoder.getPlacemarkProperty(placemark,"LocalityName");  
+					    document.getElementById('crimeForm:inputEndereco').value= reversegeocoder.getPlacemarkProperty(placemark,"ThoroughfareName");
+					   if (reversegeocoder.getPlacemarkProperty(placemark,"AdministrativeAreaName")) 
+	   					    document.getElementById('crimeForm:inputEstado').value= reversegeocoder.getPlacemarkProperty(placemark,"AdministrativeAreaName");  					      					    
+	   					else     
+	   					    document.getElementById('crimeForm:inputEstado').value= reversegeocoder.getPlacemarkProperty(placemark,"AdministrativeAreaName");  					      					    
+	       				document.getElementById('crimeForm:inputPais').value= reversegeocoder.getPlacemarkProperty(placemark,"CountryNameCode");  					      					    
+	 					alert('dados encontrados');
+						alert(placemark.address);
+
+						mostraMapa(latitude,longitude);		
+				  }
+				);		
+
+				reversegeocoder.reverseGeocode(new GLatLng(latitude,longitude));
+								
+			}
+			
+			function limpaFormularios(){
+				document.getElementById('crimeForm:inputCidade').value="";
+   	    		 document.getElementById('crimeForm:inputEndereco').value= "";
+  		    document.getElementById('crimeForm:inputEstado').value= ""; 
+	    			document.getElementById('crimeForm:inputPais').value= ""; 
+			}
+		/* ]]> */
+		</script>
+	</ui:define>
+
+	<ui:define name="titulo">
+			#{messages['usuario.administracao']}
+			</ui:define>
+	<ui:define name="menu">
+		<ui:include src="headerSemMenu.xhtml" />
+
+	</ui:define>
+	<ui:define name="menucentral">
+
+		<h:form id="crimeForm">
+			<t:dataTable id="crimes" var="crimeLocal" style="margin-top: 10px"
+				value="#{crimeForm.crimes}" sortColumn="#{crimeForm.sortColumn}"
+				sortAscending="#{crimeForm.ascending}"
+				styleClass="scrollerTable table" headerClass="standardTable_Header"
+				rowClasses="standardTable_Row1,standardTable_Row2"
+				columnClasses="standardTable_Column,standardTable_Column,standardTable_Column,standardTable_Column,standardTable_Column,standardTable_Column,standardTable_Column,standardTable_Column,standardTable_ColumnCentered">
+				<t:column>
+					<f:facet name="header">
+						<t:commandSortHeader columnName="id" arrow="true">
+							<h:outputText value="ID" />
+						</t:commandSortHeader>
+
+					</f:facet>
+
+					<h:outputLink value="editCrime1.html?idCrime=#{crimeLocal.idCrime}">
+							<h:outputText value="#{crimeLocal.idCrime}"
+								style="padding-right:12px; font-size:12px;font-weight:bold" />
+					</h:outputLink>
+
+
+				</t:column>
+				<t:column>
+					<f:facet name="header">
+						<t:commandSortHeader columnName="tipoCrime.nome" arrow="true">
+							<h:outputText value="#{messages['crime.tipoCrime']}" />
+						</t:commandSortHeader>
+					</f:facet>
+					<h:outputText value="#{messages[crimeLocal.tipoCrime.nome]}" />
+				</t:column>
+				<t:column>
+					<f:facet name="header">
+						<t:commandSortHeader columnName="tipoPapel.nome" arrow="true">
+							<h:outputText value="#{messages['crime.tipoPapel']}" />
+						</t:commandSortHeader>
+					</f:facet>
+					<h:outputText value="#{messages[crimeLocal.tipoPapel.nome]}" />
+				</t:column>
+				<t:column>
+					<f:facet name="header">
+						<t:commandSortHeader columnName="tipoArmaUsada.nome" arrow="true">
+							<h:outputText value="#{messages['crime.tipoArmaUsada']}" />
+						</t:commandSortHeader>
+					</f:facet>
+					<h:outputText value="#{messages[crimeLocal.tipoArmaUsada.nome]}" />
+				</t:column>
+				<t:column>
+					<f:facet name="header">
+						<t:commandSortHeader columnName="horario" arrow="true">
+							<h:outputText value="#{messages['crime.horario']}" />
+						</t:commandSortHeader>
+					</f:facet>
+					<h:outputText value="#{crimeLocal.horario}:00" />
+				</t:column>
+				<t:column>
+					<f:facet name="header">
+						<t:commandSortHeader columnName="data" arrow="true">
+							<h:outputText value="#{messages['crime.data']}" />
+						</t:commandSortHeader>
+					</f:facet>
+					<h:outputText value="#{crimeLocal.data}" />
+				</t:column>
+				<t:column>
+					<f:facet name="header">
+						<t:commandSortHeader columnName="descricao" arrow="true">
+							<h:outputText value="#{messages['crime.descricao']}" />
+						</t:commandSortHeader>
+					</f:facet>
+					<h:outputText value="#{crimeLocal.descricao}" />
+				</t:column>
+				<t:column>
+					<f:facet name="header">
+						<h:outputText value="#{messages['crime.visualizar']}" />
+					</f:facet>
+					<a href="#minimapa"
+						onclick="mostraMapa(#{crimeLocal.latitude},#{crimeLocal.longitude});">
+					<h:outputText value="#{messages['crime.mapa']}" /> </a>
+				</t:column>
+				<t:column>
+					<f:facet name="header">
+						<h:outputText value="Reverse Geocoder" />
+					</f:facet>
+					<a href="#dadosCrime"
+						onclick="document.getElementById('crimeForm:inputIdCrime').value=#{crime.idCrime}; document.getElementById('crimeForm:outputIdCrime').value=#{crime.idCrime};getEnderecoCrime(#{crime.latitude} , #{crime.longitude} ); return true;">
+					reverse geocoder </a>
+
+				</t:column>
+			</t:dataTable>
+			<h:outputText value="Total de: #{crimeForm.qtdCrimes} crimes" />
+
+
+			<h:panelGrid>
+
+
+
+
+				<c:if test="#{not empty message}">
+					<h:outputText value="#{message}" styleClass="message" />
+				</c:if>
+				<h:commandButton value="Crimes Sem estatisticas" id="btnMostra"
+					action="#{crimeForm.mostraCrimesSemEstatisticas}"
+					onclick="limpaFormularios();" styleClass="button" />
+				<a name="dadosCrime"> <h:panelGrid cols="2">
+						ID<h:inputText readonly="true" id="outputIdCrime" value="" />
+					<h:inputHidden id="inputIdCrime" value="#{crimeForm.crime.idCrime}" />
+						Cidade<h:inputText id="inputCidade"
+						value="#{crimeForm.crime.cidade}" />
+						Estado<h:inputText id="inputEstado"
+						value="#{crimeForm.crime.estado}" />
+						Pais<h:inputText id="inputPais" value="#{crimeForm.crime.pais}" />
+						Endereco<h:inputText id="inputEndereco"
+						value="#{crimeForm.crime.endereco}" />
+				</h:panelGrid> <h:commandButton value="Atualiza crime" id="btnGeocoder"
+					action="#{crimeForm.atualizaEndereco}" styleClass="button" /> </a>
+			</h:panelGrid>
+
+		</h:form>
+		<a name="minimapa"> <ui:include src="miniMapa.xhtml" /> </a>
+
+
+
+
+
+	</ui:define>
+</ui:composition>
+
+</html>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="org.wikicrimes.model.CrimeCelular" table="TB_CRC_CRIME_CELULAR" lazy="true">
+        <id name="idCrime" column="CRC_IDCRIME_CELULAR" unsaved-value="null">
+            <generator class="increment"/>
+        </id>
+        <property name="latitude" column="CRC_LATITUDE" type="java.lang.String"/>
+        <property name="longitude" column="CRC_LONGITUDE" type="java.lang.String"/>
+        <property name="descricao" column="CRC_DESCRICAO" type="java.lang.String" not-null="true"/>
+	    <property name="data" column="CRC_DATA" type="java.lang.String"/>
+        <property name="turno" column="CRC_TURNO" type="java.lang.String" not-null="true"/>
+        <property name="dataHoraRegistro" column="CRC_DATA_HORA_REGISTRO" type="java.lang.String"/>
+        <property name="tipoCrime" column="CRC_TIPO_CRIME" type="java.lang.String"/>
+      	<property name="jaImportado" column="CRC_JA_IMPORTADO" type="java.lang.Long"/>
+      	<many-to-one name="usuarioCelular" column="CRC_IDUSUARIO_CELULAR" class="org.wikicrimes.model.UsuarioCelular" />
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<ui:composition template="./layout2.xhtml">
+		<ui:define name="titulo">
+Ooooopsss!
+			</ui:define>
+		<ui:define name="menu">
+			<ui:include src="headerSemMenu.xhtml" />
+		</ui:define>
+		<ui:define name="menucentral">
+			<f:view>
+				<h:panelGrid style="text-align: center;">
+					<br />
+					<br />
+					<br />
+
+					<h:outputText style="font-size: 15px;"
+						value="Desculpe. A página não pode ser exibida devido a problemas
+						internos. Tente Novamente" />
+					<br />
+					<br />
+<h:form>
+
+					<h:commandButton styleClass="button" value="Voltar para o mapa"
+						onclick="window.location.href='./main.html'; " />
+</h:form>
+					<p style="text-align: center; margin-top: 20px">
+						<img style="border: 0" src="./images/404.jpg"
+							alt="Emerald Lake - Western Canada" />
+					</p>
+				</h:panelGrid>
+
+
+			</f:view>
+
+
+
+
+		</ui:define>
+	</ui:composition>
+
+</html>

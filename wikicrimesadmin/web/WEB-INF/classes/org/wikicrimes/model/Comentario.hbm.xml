@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="org.wikicrimes.model.Comentario" table="TB_CON_COMENTARIO" lazy="true">
+        <id name="idComentario" column="CON_IDCOMENTARIO" unsaved-value="null">
+            <generator class="increment"/>
+        </id>
+        <property name="comentario" column="CON_COMENTARIO" type="java.lang.String" />
+        <property name="link" column="CON_LINK" type="java.lang.String" />
+        <property name="embedLink" column="CON_EMBED_LINK" type="java.lang.String" />
+        <property name="dataConfirmacao" column="CON_DATA_CONFIRMACAO" type="java.util.Date"/>
+        <many-to-one name="crime" column="CRI_IDCRIME" class="org.wikicrimes.model.Crime"/>
+        <many-to-one name="usuario" column="USU_IDUSUARIO" class="org.wikicrimes.model.Usuario"/>
+    </class>
+</hibernate-mapping>

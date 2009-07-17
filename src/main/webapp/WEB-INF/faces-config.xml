@@ -1,0 +1,825 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd"
+	version="1.2">
+
+	<!-- Spring VariableResolver for JSF -->
+	<application>
+		<view-handler>
+			com.sun.facelets.FaceletViewHandler
+		</view-handler>
+		<variable-resolver>
+			org.springframework.web.jsf.DelegatingVariableResolver
+		</variable-resolver>
+		<locale-config>
+			<default-locale>en</default-locale>
+			<supported-locale>pt</supported-locale>		
+			<supported-locale>es</supported-locale>
+			<supported-locale>it</supported-locale>
+		</locale-config>
+		<message-bundle>messages</message-bundle>
+	</application>
+	
+	<lifecycle>
+		<phase-listener>net.sf.jsfcomp.ext.onload.OnLoadPhaseListener</phase-listener>
+		<phase-listener>org.wikicrimes.web.listeners.LocalePhaseListener</phase-listener>
+	</lifecycle>
+
+	<converter>
+		<converter-id>wikicrimes.WikiCrimesDataConverter</converter-id>
+		<converter-class>
+			org.wikicrimes.web.converter.WikiCrimesDataConverter
+		</converter-class>
+	</converter>
+    <converter>
+        <converter-id>wikicrimes.WikiSearchCrimesDataConverter</converter-id>
+        <converter-class>
+            org.wikicrimes.web.converter.WikiCrimesSearchDataConverter
+        </converter-class>
+    </converter>
+
+	<navigation-rule>
+		<from-view-id>/usuario.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>add</from-outcome>
+			<to-view-id>/usuarioForm.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/usuarioForm.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>sessao_expirada</from-outcome>
+			<to-view-id>/sessaoexpirada.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>estatistica</from-outcome>
+			<to-view-id>/estatistica.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/registrarCrime.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>failure</from-outcome>
+			<to-view-id>/registrarCrime.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/crimeConfirmado.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>sessao_expirada</from-outcome>
+			<to-view-id>/sessaoexpirada.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>/registrarRelato.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>failure</from-outcome>
+			<to-view-id>/registrarRelato.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/relatoConfirmado.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>sessao_expirada</from-outcome>
+			<to-view-id>/sessaoexpirada.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/registrarArea.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>failure</from-outcome>
+			<to-view-id>/registrarArea.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/areaConfirmada.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>sessao_expirada</from-outcome>
+			<to-view-id>/sessaoexpirada.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/listarUsuariosAdmin.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>voltar</from-outcome>
+			<to-view-id>/administration.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>editarUsuario</from-outcome>
+			<to-view-id>/editUsuario.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/editUsuario.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>voltar</from-outcome>
+			<to-view-id>/administration.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>		
+	</navigation-rule>			
+	
+	<navigation-rule>
+		<from-view-id>/administration.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>successUser</from-outcome>
+			<to-view-id>/listarUsuariosAdmin.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>failure</from-outcome>
+			<to-view-id>/erroUpdate.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/listarCrimesAdmin1.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>sessao_expirada</from-outcome>
+			<to-view-id>/sessaoexpirada.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>pagina_nao_permitida</from-outcome>
+			<to-view-id>/areaNaoPermitida.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/admin.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>failure</from-outcome>
+			<to-view-id>/admin.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/listarCrimesAdmin.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>sessao_expirada</from-outcome>
+			<to-view-id>/sessaoexpirada.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>pagina_nao_permitida</from-outcome>
+			<to-view-id>/areaNaoPermitida.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>/registrarUsuario.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>failure</from-outcome>
+			<to-view-id>/registrarUsuario.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/registrar_usuario_efetuado.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/editarPreferencias.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>failure</from-outcome>
+			<to-view-id>/editarPreferencias.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/registro_efetuado.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>/recuperaSenha.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>failure</from-outcome>
+			<to-view-id>/recuperaSenha.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/registro_efetuado.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/mudaSenha.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>failure</from-outcome>
+			<to-view-id>/mudaSenha.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/registro_efetuado.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/faleConosco.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>failure</from-outcome>
+			<to-view-id>/faleConosco.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/faleConoscoEfetuado.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
+		<navigation-rule>
+		<from-view-id>/abuso.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>failure</from-outcome>
+			<to-view-id>/abuso.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/registro_efetuado.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>/confirma.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>failure</from-outcome>
+			<to-view-id>/loginUsuario.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/main.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+	
+	
+	
+	<navigation-rule>
+		<from-view-id>/loginUsuarioContent.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>failure</from-outcome>
+			<to-view-id>/loginUsuarioContent.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/main.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/confirmaCrime.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>failure</from-outcome>
+			<to-view-id>/confirmaCrime.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/blank.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/confirmaRelato.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>failure</from-outcome>
+			<to-view-id>/confirmaRelato.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/blank.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/mostrarDados.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>failure</from-outcome>
+			<to-view-id>/mostrarDados.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/blank.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/tipoConfirmacao.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>failure</from-outcome>
+			<to-view-id>/blank.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/registro_efetuado.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/mostrarDadosRelato.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>failure</from-outcome>
+			<to-view-id>/mostrarDadosRelato.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/blank.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/mostrarInformacoes.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>failure</from-outcome>
+			<to-view-id>/mostrarInformacoes.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/blank.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>sessao_expirada</from-outcome>
+			<to-view-id>/sessaoexpirada.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
+    <navigation-rule>
+        <from-view-id>/main.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>success</from-outcome>
+            <to-view-id>/main.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>failure</from-outcome>
+            <to-view-id>/falhaGenerica.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+    	<from-view-id>/estatistica.xhtml</from-view-id>
+    	<navigation-case>
+    		<from-outcome>sucesso</from-outcome>
+    		<to-view-id>/graficos.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+    		<from-outcome>pais</from-outcome>
+    		<to-view-id>/estatisticaPais.xhtml</to-view-id>
+    	</navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+		<from-view-id>/estatisticaPais.xhtml</from-view-id>
+		<navigation-case>
+    		<from-outcome>sucesso</from-outcome>
+    		<to-view-id>/graficos.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+    		<from-outcome>estado</from-outcome>
+    		<to-view-id>/estatisticaEstado.xhtml</to-view-id>
+        </navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/estatisticaEstado.xhtml</from-view-id>
+		<navigation-case>
+    		<from-outcome>sucesso</from-outcome>
+    		<to-view-id>/graficos.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+    		<from-outcome>cidade</from-outcome>
+    		<to-view-id>/estatisticaCidade.xhtml</to-view-id>
+        </navigation-case>
+	</navigation-rule>	
+	
+	<managed-bean>
+		<managed-bean-name>crimeListForm</managed-bean-name>
+		<managed-bean-class>
+			org.wikicrimes.web.CrimeListForm
+		</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+		<managed-property>
+			<property-name>crimeService</property-name>
+			<value>#{crimeService}</value>
+		</managed-property>
+	</managed-bean>
+	
+	<managed-bean>
+		<managed-bean-name>entidadeCertificadoraForm</managed-bean-name>
+		<managed-bean-class>
+			org.wikicrimes.web.EntidadeCertificadoraForm
+		</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+		<managed-property>
+			<property-name>entidadeCertificadoraService</property-name>
+			<value>#{entidadeCertificadoraService}</value>
+		</managed-property>
+	</managed-bean>
+	
+	<managed-bean>
+		<managed-bean-name>estatisticaForm</managed-bean-name>
+		<managed-bean-class>
+			org.wikicrimes.web.EstatisticaForm
+		</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+		<managed-property>
+			<property-name>estatisticaService</property-name>
+			<value>#{estatisticaService}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>crimeService</property-name>
+			<value>#{crimeService}</value>
+		</managed-property>
+		
+	</managed-bean>
+	
+	<managed-bean>
+		<managed-bean-name>faleConoscoForm</managed-bean-name>
+		<managed-bean-class>
+			org.wikicrimes.web.FaleConoscoForm
+		</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+		<managed-property>
+			<property-name>emailService</property-name>
+			<value>#{emailService}</value>
+		</managed-property>
+	</managed-bean>
+	
+		<managed-bean>
+		<managed-bean-name>abusoForm</managed-bean-name>
+		<managed-bean-class>
+			org.wikicrimes.web.AbusoForm
+		</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+		<managed-property>
+			<property-name>emailService</property-name>
+			<value>#{emailService}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>crimeService</property-name>
+			<value>#{crimeService}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>relatoService</property-name>
+			<value>#{relatoService}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>idCrime</property-name>
+			<value>#{param.idCrime}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>idRelato</property-name>
+			<value>#{param.idRelato}</value>
+		</managed-property>
+	</managed-bean>
+
+	<managed-bean>
+		<managed-bean-name>usuarioForm</managed-bean-name>
+		<managed-bean-class>
+			org.wikicrimes.web.UsuarioForm
+		</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+		<managed-property>
+			<property-name>usuarioService</property-name>
+			<value>#{usuarioService}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>emailService</property-name>
+			<value>#{emailService}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>idCrime</property-name>
+			<value>#{param.idCrime}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>idRelato</property-name>
+			<value>#{param.idRelato}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>mensagemLogin</property-name>
+			<value>#{param.mensagemLogin}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>tipoRegistro</property-name>
+			<value>#{param.tipoRegistro}</value>
+		</managed-property>
+		   		
+	</managed-bean>
+
+	<managed-bean>
+		<managed-bean-name>confirmaCadastro</managed-bean-name>
+		<managed-bean-class>
+			org.wikicrimes.web.ConfirmaCadastro
+		</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+		<managed-property>
+			<property-name>id</property-name>
+			<value>#{param.id}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>key</property-name>
+			<value>#{param.key}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>usuarioService</property-name>
+			<value>#{usuarioService}</value>
+		</managed-property>
+	</managed-bean>
+
+	<managed-bean>
+		<managed-bean-name>crimeForm</managed-bean-name>
+		<managed-bean-class>
+			org.wikicrimes.web.CrimeForm
+		</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+		<managed-property>
+			<property-name>crimeService</property-name>
+			<value>#{crimeService}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>usuarioService</property-name>
+			<value>#{usuarioService}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>idCrime</property-name>
+			<value>#{param.idCrime}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>latitude</property-name>
+			<value>#{param.latitude}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>longitude</property-name>
+			<value>#{param.longitude}</value>
+		</managed-property>
+        <managed-property>
+            <property-name>tipoCrime</property-name>
+            <value>#{param.tipoCrime}</value>
+        </managed-property>
+         <managed-property>
+            <property-name>tipoVitima</property-name>
+            <value>#{param.tipoVitima}</value>
+        </managed-property>
+	</managed-bean>
+	
+	<managed-bean>
+		<managed-bean-name>areaForm</managed-bean-name>
+		<managed-bean-class>
+			org.wikicrimes.web.AreaForm
+		</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>		
+		<managed-property>
+			<property-name>usuarioService</property-name>
+			<value>#{usuarioService}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>latitudes</property-name>
+			<value>#{param.latitudes}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>longitudes</property-name>
+			<value>#{param.longitudes}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>areaKm2</property-name>
+			<value>#{param.areaKm2}</value>
+		</managed-property>					
+	</managed-bean>
+	
+	<managed-bean>
+		<managed-bean-name>confirmaForm</managed-bean-name>
+		<managed-bean-class>
+			org.wikicrimes.web.ConfirmaForm
+		</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+        <managed-property>
+            <property-name>confirmacaoService</property-name>
+            <value>#{confirmacaoService}</value>
+        </managed-property>
+        <managed-property>
+            <property-name>confirmacaoRelatoService</property-name>
+            <value>#{confirmacaoRelatoService}</value>
+        </managed-property>
+        <managed-property>
+            <property-name>comentarioService</property-name>
+            <value>#{comentarioService}</value>
+        </managed-property>
+         <managed-property>
+            <property-name>relatoService</property-name>
+            <value>#{relatoService}</value>
+        </managed-property>
+         <managed-property>
+            <property-name>emailService</property-name>
+            <value>#{emailService}</value>
+        </managed-property>
+		<managed-property>
+			<property-name>crimeService</property-name>
+			<value>#{crimeService}</value>
+		</managed-property>
+        <managed-property>
+            <property-name>idConfirmacao</property-name>
+            <value>#{param.idConfirmacao}</value>
+        </managed-property>
+        <managed-property>
+            <property-name>idConfirmacaoRelato</property-name>
+            <value>#{param.idConfirmacaoRelato}</value>
+        </managed-property>
+        <managed-property>
+            <property-name>idCrime</property-name>
+            <value>#{param.idCrime}</value>
+        </managed-property>
+        <managed-property>
+            <property-name>p</property-name>
+            <value>#{param.p}</value>
+        </managed-property>
+        
+	</managed-bean>
+	
+    <managed-bean>
+        <managed-bean-name>filtroForm</managed-bean-name>
+        <managed-bean-class>
+            org.wikicrimes.web.FiltroForm
+        </managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+        <managed-property>
+            <property-name>crimeService</property-name>
+            <value>#{crimeService}</value>
+        </managed-property>
+         <managed-property>
+            <property-name>usuarioService</property-name>
+            <value>#{usuarioService}</value>
+        </managed-property>
+		<managed-property>
+			<property-name>relatoService</property-name>
+			<value>#{relatoService}</value>
+		</managed-property>        
+        <managed-property>
+			<property-name>estatisticaService</property-name>
+			<value>#{estatisticaService}</value>
+		</managed-property>            
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>adminForm</managed-bean-name>
+        <managed-bean-class>
+            org.wikicrimes.web.AdminForm
+        </managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+        <managed-property>
+            <property-name>crimeService</property-name>
+            <value>#{crimeService}</value>
+        </managed-property>
+		<managed-property>
+			<property-name>usuarioService</property-name>
+			<value>#{usuarioService}</value>
+		</managed-property>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>mostrarDadosForm</managed-bean-name>
+        <managed-bean-class>
+            org.wikicrimes.web.MostrarDadosForm
+        </managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+        <managed-property>
+            <property-name>crimeService</property-name>
+            <value>#{crimeService}</value>
+        </managed-property>
+         <managed-property>
+            <property-name>confirmacaoService</property-name>
+            <value>#{confirmacaoService}</value>
+        </managed-property>
+        <managed-property>
+            <property-name>idCrime</property-name>
+            <value>#{param.idCrime}</value>
+        </managed-property>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>mostrarDadosRelatoForm</managed-bean-name>
+        <managed-bean-class>
+            org.wikicrimes.web.MostrarDadosRelatoForm
+        </managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+        <managed-property>
+            <property-name>relatoService</property-name>
+            <value>#{relatoService}</value>
+        </managed-property>
+        <managed-property>
+            <property-name>confirmacaoRelatoService</property-name>
+            <value>#{confirmacaoRelatoService}</value>
+        </managed-property>
+         <managed-property>
+            <property-name>emailService</property-name>
+            <value>#{emailService}</value>
+        </managed-property>
+        <managed-property>
+            <property-name>idRelato</property-name>
+            <value>#{param.idRelato}</value>
+        </managed-property>
+    </managed-bean>    
+    
+    <managed-bean>
+        <managed-bean-name>localeForm</managed-bean-name>
+        <managed-bean-class>
+            org.wikicrimes.web.LocaleForm
+        </managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+      </managed-bean>
+
+	<managed-bean>
+		<managed-bean-name>relatoForm</managed-bean-name>
+		<managed-bean-class>
+			org.wikicrimes.web.RelatoForm
+		</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+		<managed-property>
+			<property-name>relatoService</property-name>
+			<value>#{relatoService}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>usuarioService</property-name>
+			<value>#{usuarioService}</value>
+		</managed-property>		
+		<managed-property>
+			<property-name>idRelato</property-name>
+			<value>#{param.idRelato}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>latitude</property-name>
+			<value>#{param.latitude}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>longitude</property-name>
+			<value>#{param.longitude}</value>
+		</managed-property>
+        <managed-property>
+            <property-name>tipoRelato</property-name>
+            <value>#{param.tipoRelato}</value>
+        </managed-property>
+        <managed-property>
+            <property-name>subTipoRelato</property-name>
+            <value>#{param.subTipoRelato}</value>
+        </managed-property>        
+	</managed-bean>
+
+ 
+
+</faces-config>

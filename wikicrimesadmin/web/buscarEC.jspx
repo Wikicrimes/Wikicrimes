@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+	<f:view>
+		<ui:composition template="/templates/padrao.jspx">
+			<ui:define name="title"> #{msg['ec.nome']}</ui:define>
+			<ui:define name="body">
+				<h:form>
+					<rich:simpleTogglePanel label="#{msg['commons.filtro']}">
+						<h:panelGrid columns="2">
+							<h:outputText value="#{msg['page.usuario.label.nome']}" />
+							<h:inputText rendered="true"
+								value="#{entidadeCertificadoraBean.entidadeCertificadora.nome}" />
+
+							<h:outputText value="Homepage" />
+							<h:inputText
+								value="#{entidadeCertificadoraBean.entidadeCertificadora.homepage}" />
+
+							<h:outputText value="#{msg['crime.descricao']}" />
+							<h:inputTextarea
+								value="#{entidadeCertificadoraBean.entidadeCertificadora.descricao}"
+								cols="30" rows="5" />
+						</h:panelGrid>
+
+						<h:commandButton action="#{entidadeCertificadoraBean.consultarEC}"
+							value="#{msg['page.usuario.botao.buscar']}" />
+					</rich:simpleTogglePanel>
+
+					<br />
+					<c:if test="#{entidadeCertificadoraBean.qtdECs > 0 }">
+						<h:outputText
+							value="#{msg['page.usuario.label.qtd1']} #{entidadeCertificadoraBean.qtdECs} #{msg['ec.nomemin']}."
+							style="font-size:15px;" />
+						<br />
+						<br />
+						<h:outputText value="#{msg['page.usuario.atencao']}"
+							style="font-size:14px; color: red;" />
+						<h:outputText value="#{msg['ec.edit']}" style="font-size:14px;" />
+					</c:if>
+
+					<c:if test="#{entidadeCertificadoraBean.qtdECs == -1 }">
+						<h:outputText value="#{msg['ec.total']}:" style="font-size:15px;" />
+						<h:outputText value="#{entidadeCertificadoraBean.qtdTotalECs}   "
+							style="font-size:15px;" />
+						<h:commandLink action="#{entidadeCertificadoraBean.getTotalECs}">
+							<h:outputText value="  #{msg['page.usuario.ver']}"
+								style="font-size:14px;" />
+						</h:commandLink>
+						<br />
+						<br />
+
+					</c:if>
+					<c:if test="#{entidadeCertificadoraBean.qtdECs == 0 }">
+						<h:outputText value="#{msg['ec.naoencontrar']}"
+							style="font-size:15px;" />
+					</c:if>
+					<br />
+					<br />
+					<c:if test="#{entidadeCertificadoraBean.qtdECs > 0 }">
+
+						<rich:dataTable
+							value="#{entidadeCertificadoraBean.entidadeCertificadoras}"
+							var="EC" id="ECs" rows="20"
+							onRowMouseOver="this.style.backgroundColor='#F1F1F1'"
+							onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'"
+							border="1" cellspacing="0" cellpadding="2" width="100%">
+							<rich:column style="text-align:center">
+								<f:facet name="header">
+									<h:outputText value="ID" />
+								</f:facet>
+								<h:commandLink action="entidadeCertificadoraEditar">
+									<h:outputText value="#{EC.idEntidadeCertificadora}" />
+									<f:setPropertyActionListener
+										target="#{entidadeCertificadoraBean.ecEditar}" value="#{EC}" />
+								</h:commandLink>
+							</rich:column>
+							<rich:column style="text-align:center">
+								<f:facet name="header">
+									<h:outputText value="#{msg['page.usuario.label.nome']}" />
+								</f:facet>
+								<h:outputText value="#{EC.nome}" />
+							</rich:column>
+							<rich:column style="text-align:center">
+								<f:facet name="header">
+									<h:outputText value="Homepage" />
+								</f:facet>
+								<h:outputText value="#{EC.homepage}" />
+							</rich:column>
+							<rich:column style="text-align:center">
+								<f:facet name="header">
+									<h:outputText value="#{msg['crime.descricao']}" />
+								</f:facet>
+								<h:outputText value="#{EC.descricao}" />
+							</rich:column>
+							<f:facet name="footer">
+								<rich:datascroller for="ECs" />
+							</f:facet>
+						</rich:dataTable>
+					</c:if>
+					<hr />
+					<a href="#" onclick="javascript:history.go(-1)" > #{msg['commons.voltar']} </a>
+				</h:form>
+			</ui:define>
+		</ui:composition>
+	</f:view>
+</jsp:root>
+

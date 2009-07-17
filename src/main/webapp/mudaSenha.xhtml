@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC
+"-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+	<link rel="stylesheet" type="text/css" href="./styles/wikicrimes.css"
+			title="default" />
+			
+     <f:loadBundle var="messages" basename="messages" />
+     <h:form id="usuarioForm">
+    <h:message styleClass="errorMessage" for="senha2" />						
+	<h:message styleClass="errorMessage" for="senha" />
+	<h:message styleClass="errorMessage" for="confsenha" />
+     <h:panelGrid columns="2">
+     <h:outputText value="*#{messages['usuario.senha.antiga']}:" />
+     <h:inputSecret value="#{usuarioForm.senhaAtual}" id="senha2" required="true">
+								<f:validateLength minimum="4" maximum="10" />
+							</h:inputSecret>						
+	<h:outputText value="*#{messages['usuario.senha']}:" />
+	<h:inputSecret value="#{usuarioForm.nsenha}" id="senha" required="true">
+								<f:validateLength minimum="4" maximum="10" />
+	</h:inputSecret>
+	
+	<h:outputText value="*#{messages['usuario.ConfirmacaoSenha']}:" />
+	<h:inputSecret  id="confsenha"	value="#{usuarioForm.csenha}" required="true">
+								<t:validateEqual for="senha" />
+	</h:inputSecret>
+	
+     </h:panelGrid>   
+     <h:commandButton value="#{messages['usuario.btn.salvar']}"
+						action="#{usuarioForm.alteraSenha}" styleClass="button" />
+	<h:commandButton id="cancel"  value="#{messages['faleconosco.cancelar']}" 
+						onclick="parent.closeMessage();return false" styleClass="button" style="margin-left:10px"/>
+     </h:form>
+</html>

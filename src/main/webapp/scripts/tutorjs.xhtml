@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC
+"-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+
+	
+	<f:loadBundle var="messages" basename="messages" />
+	<script type="text/javascript"><!-- 
+	/* <![CDATA[ */
+	    var tutorEstaAtivado;	
+		var jaMostrouAjudaPesquisa = false;
+		var jaMostrouInteracaoMapa = false;
+		var jaMostrouTipoMapa = false;
+		var jaMostrouAjudaPesquisaCrime = false;
+		var jaMostrouFiltro = false;
+		var jaMostrouAjudaEstatisticasAV=false;
+		var jaMostrouAjudaHotSpot = false;
+		var jaMostrouAjudaAreaAlerta = false;
+		function verificarRegras(situacao, ultimaAcao){
+			var numAleatorio = geraNumero(1,100);
+			if(situacao['carregou_app']){
+				if(numAleatorio>50 && !jaMostrouAjudaEstatisticasAV){
+					mostraBalaoEstatisticasAreaVisivel();
+					situacao['carregou_app'] = false;
+					return;
+				}else if(!jaMostrouAjudaAreaAlerta){
+					mostraBalaoAreaAlerta();
+					situacao['carregou_app'] = false;				
+					return;
+				}
+					
+			}
+			if(situacao['filtrou'] && situacao['massa_dados_filtrados']>=100){
+			
+				if(!jaMostrouAjudaHotSpot){				
+					mostraBalaoHotSpot();					
+					situacao['filtrou']=false;
+					return;
+				}	
+			}
+			if(situacao['qtd_move_map']>=5 && ultimaAcao=="move_map"){			
+				if(!jaMostrouAjudaPesquisa && numAleatorio> 60){
+					mostraBalaoPesquisaEndereco();
+					return;
+				}	
+			}
+			if(situacao['qtd_move_map']>=13 && ultimaAcao=="move_map"){
+				
+				if(!jaMostrouInteracaoMapa && numAleatorio> 60){
+					mostrarBalaoInteracaoMapa()
+					return;
+				}	
+			}
+			if(situacao['qtd_mostrar_dados']>=2 && ultimaAcao=="mostrar_dados"){
+				
+				if(!jaMostrouAjudaPesquisaCrime && numAleatorio> 70){
+					mostraBalaoPesquisaCrime();
+					return;
+				}	
+			}
+			if(situacao['zoom']>=15 && map.getCurrentMapType() != G_SATELLITE_MAP && (ultimaAcao=="move_map" || ultimaAcao=="zoom_map")){
+				
+				if(!jaMostrouTipoMapa && numAleatorio> 40){
+					mostrarBalaoTipoMapa();
+					return;
+				}	
+			}			
+		}		
+	
+		function mostraBalaoPesquisaEndereco(){
+			criaBalaoSetaCima("#{messages['tutor.ajuda.pesquisa.endereco']}",conteudoSemAjudaRelacionada(),"divBalaoTutorDireita");
+			mostrarBalao('190px','76px',"divBalaoTutorDireita");
+			jaMostrouAjudaPesquisa = true;
+		}
+		
+		function mostraBalaoFiltro(){
+			criaBalaoSetaCima("#{messages['tutor.ajuda.filtro']}",conteudoSemAjudaRelacionada(),"divBalaoTutorDireita");
+			mostrarBalao('8px','216px',"divBalaoTutorDireita");
+			jaMostrouFiltro = true;
+		}
+		
+		function mostraBalaoEstatisticasAreaVisivel(){
+			criaBalaoSetaBaixo("#{messages['tuto.ajuda.area.visivel1']} #{filtroForm.quantidadeCrimes} #{messages['tuto.ajuda.area.visivel2']} "+(qtd_roubos+qtd_furtos+qtd_outros+qtd_denuncias)+" #{messages['tuto.ajuda.area.visivel3']} <a style='cursor:pointer; color:blue; text-decoration: none; background-color: transparent' onclick='fecharBalao();mostraBalaoFiltro();'>#{messages['tutor.ajuda.filtro.nome']}</a>  #{messages['tuto.ajuda.area.visivel4']} "+document.getElementById("dataInicial").value+" #{messages['estatisticas.area.visivel.data.periodo']} "+document.getElementById("dataFinal").value+".",conteudoSemAjudaRelacionada(),"divBalaoTutorEsquerda");
+			mostrarBalao('72px','260px',"divBalaoTutorEsquerda");
+			jaMostrouAjudaEstatisticasAV = true;
+		}
+
+		function mostraBalaoPesquisaCrime(){
+			criaBalaoSetaCima("#{messages['tutor.ajuda.pesquisa.crime']}",conteudoSemAjudaRelacionada(),"divBalaoTutorDireita");
+			mostrarBalao('370px','76px',"divBalaoTutorDireita");
+			jaMostrouAjudaPesquisaCrime = true;
+		}
+		
+		function mostraBalaoHotSpot(){
+			criaBalaoSetaCima("#{messages['tutor.ajuda.hots.spots']}",conteudoSemAjudaRelacionada(),"divBalaoTutorDireita");
+			mostrarBalao('388px','108px',"divBalaoTutorDireita");
+			jaMostrouAjudaHotSpot = true;
+		}
+		
+		function mostraBalaoAreaAlerta(){
+			criaBalaoSetaCima("#{messages['tutor.ajuda.area.alerta']}",conteudoSemAjudaRelacionada(),"divBalaoTutorEsquerda");
+			mostrarBalao('94px','118px',"divBalaoTutorEsquerda");
+			
+			jaMostrouAjudaAreaAlerta = true;
+		}
+	
+		function mostrarBalaoInteracaoMapa(){
+			criaBalaoSetaCima("#{messages['tutor.ajuda.interacao.mapa']}",conteudoSemAjudaRelacionada(),"divBalaoTutorEsquerda");
+			mostrarBalao('32px','152px', "divBalaoTutorEsquerda");
+			jaMostrouInteracaoMapa = true;
+		}
+		
+		function mostrarBalaoTipoMapa(){
+			criaBalaoSetaCima("#{messages['tutor.ajuda.tipo.mapa']}",conteudoSemAjudaRelacionada(),"divBalaoTutorDireita");
+			mostrarBalao('212px','104px', "divBalaoTutorDireita");
+			jaMostrouTipoMapa = true;
+		}	
+		
+		function alertarTutorDeAcaoDoUsuario(situacao, ultimaAcao){
+			if(tutorEstaAtivado){
+				verificarRegras(situacao, ultimaAcao);				
+			}	
+		}
+		
+		function geraNumero(inferior,superior){
+		    var numPossibilidades = superior - inferior;
+		    var aleat = Math.random() * numPossibilidades;
+		    aleat = Math.floor(aleat);
+		    return parseInt(inferior) + aleat;
+		}
+		
+		function desabilitaTutor(time){
+			var flag = false;
+			if(tutorEstaAtivado){
+				tutorEstaAtivado = false;
+				flag = true;
+			}	
+			setTimeout(function(){
+				if(flag)
+					tutorEstaAtivado = true; 
+			},time);
+		}
+
+		function conteudoSemAjudaRelacionada(){
+			var html = '<br/><table style="width:100%; cursor:pointer;padding : 0px;font-family:Arial, sans-serif;font-size: 11px;">';
+				html += '	<tr>';
+				html += '		<td><hr/>';
+				html += 			conteudoNaoReceberAjudaTutor();
+				html += '		</td>';
+				html += '	</tr>';
+				html += '</table>';	
+			return html;
+		}
+
+		function conteudoNaoReceberAjudaTutor(){
+			var html = '<input type="checkbox" id="checkDesabilitaTutor" name="checkDesabilitaTutor"/>#{messages["tutor.nao.ser.ajudado"]}';
+			return html;
+		}
+
+		function fecharBalao(){
+			document.getElementById("divBalaoTutorEsquerda").style.visibility = "hidden";
+			document.getElementById("divBalaoTutorDireita").style.visibility = "hidden";
+			if(document.getElementById("checkDesabilitaTutor")!=null && document.getElementById("checkDesabilitaTutor").checked)
+				desabilitaTutorSemTempo();
+		}
+
+		function desabilitaTutorSemTempo(){
+			document.getElementById('formDesabilitaTutor:btDesabilitaTutor').click();
+			
+			tutorEstaAtivado = false;
+			if(usuarioEstaLogado())
+				mostrarMensagem("#{messages['tutor.desabilita.ajuda.logado']}", "300px");
+			else
+				mostrarMensagem("#{messages['tutor.desabilita.ajuda']}", "260px");
+		}					
+    /* ]]> */
+--></script>	
+
+</html>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC
+"-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:jsp="http://java.sun.com/JSP/Page">
+
+	<head>
+		<meta http-equiv="Cache-Control" content="no-store" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+		<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+		<link rel="shortcut icon" href="./images/favicon.ico"
+			type="image/x-icon" />
+		<link rel="stylesheet" type="text/css" href="./styles/wikicrimes.css"
+			title="default" />
+	</head>
+
+	<body style="overflow-x: hidden">
+
+		<f:view>
+			<f:loadBundle var="messages" basename="messages" />
+			<h:panelGrid border="0" columns="1" style="text-align: justify;">
+				<h:panelGroup>
+				<h:outputText style="text-align: justify;"	value="#{messages['quemsomos.mensagem1']} " />
+				<h:outputLink value="http://www.mentores.com.br/vasco" target="_blank"><f:verbatim>Vasco Furtado</f:verbatim></h:outputLink>
+				<h:outputText style="text-align: justify;"	value="#{messages['quemsomos.mensagem2']}" />
+				<h:outputLink value="http://leoayres.blogspot.com" target="_blank"><f:verbatim>Leonardo Ayres</f:verbatim></h:outputLink>
+ 				<h:outputText style="text-align: justify;"	value=" #{messages['quemsomos.mensagem2.1']} " />
+ 				<h:outputLink value="http://vfurtado.blogspot.com" target="_blank"><f:verbatim>#{messages['quemsomos.mensagem3']}</f:verbatim></h:outputLink>
+ 				<h:outputText style="text-align: justify;"	value=" #{messages['quemsomos.mensagem4']} " />
+ 				<h:outputLink value="http://200.19.188.105/enghtml/" target="_blank"><f:verbatim>#{messages['quemsomos.mensagem5']}</f:verbatim></h:outputLink>
+ 				<h:outputText style="text-align: justify;" value="#{messages['quemsomos.mensagem6']}" />
+ 				<h:outputLink value="http://www.ivia.com.br" target="_blank"><f:verbatim>IVIA</f:verbatim></h:outputLink>
+				<h:outputText style="text-align: justify;" value="." />
+				</h:panelGroup>
+				<br/>
+				<br/>
+				<h:outputText style="vertical-align: text-top; font-size: 14px;font-weight:bold; text-decoration: underline;" value="#{messages['quem.somos.contributors']}" />
+				<br/>			
+				<h:panelGrid columns="2" >
+				<h:outputText style="vertical-align: text-top; font-size: 12px;font-weight:bold" value="WikiCrimes Social:" />
+				<h:outputText style="text-align: justify;"	value="Carlos Caminha" />
+				<h:outputText style="vertical-align: text-top; font-size: 12px;font-weight:bold" value="#{messages['quem.somos.contributors.traducao.en']}:" />
+				<h:outputText style="text-align: justify;"	value="Marcos de Oliveira" />
+				<h:outputText style="vertical-align: text-top; font-size: 12px;font-weight:bold" value="#{messages['quem.somos.contributors.traducao.es']}:" />
+				<h:outputText style="text-align: justify;"	value="Kazuhito Shirasu/Ieda de Paula/Lara Furtado" />
+				<h:outputText style="vertical-align: text-top; font-size: 12px;font-weight:bold" value="#{messages['quem.somos.contributors.traducao.it']}:"/>
+				<h:outputText style="text-align: justify;"	value="Mauro Ferri" /> 
+				
+				</h:panelGrid>
+			</h:panelGrid>
+		</f:view>
+	</body>
+</html>

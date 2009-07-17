@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+
+	<f:view>
+
+		<ui:composition template="/templates/padrao.jspx">
+			<ui:define name="title">#{msg['commons.editcrime']}</ui:define>
+
+			<ui:define name="head">
+
+			<script>			
+/* <![CDATA[ */
+	
+	//Declaração de variáveis
+	var atualizacaoTotal = '#{msg['page.enderecoCrimes.atualizacaoTotal']}';
+	var atualizacaoParcial = '#{msg['page.enderecoCrimes.atualizacaoParcial']}';
+	var atualizacaoNaoEfetuada = '#{msg['page.enderecoCrimes.atualizacaoNaoEfetuada']}';
+	var nenhumaCrimeSelecionado = '#{msg['page.enderecoCrimes.naoSelecionado']}';
+	var qtdCrimes = #{crimeBean.qtdCrimes};
+	var msgAtualizacao;
+	var crimes = new Array();
+
+	//Inicializa o googleMaps e o processo do reverseGeocoder
+	function iniciarBusca() {
+		crimesSelecionados = getCrimesSelecionados();
+
+		if(crimesSelecionados != null && crimesSelecionados.length > 0) {
+			document.getElementById("aguarde").style.display = "block";
+			document.getElementById("frameMapa").contentWindow.iniciarBusca(crimesSelecionados);
+		} else {
+			alert(nenhumaCrimeSelecionado);
+		}
+	}
+	
+	//Retorna os crimes marcados na checkbox
+	function getCrimesSelecionados() {
+		var selecionados = new Array();
+		var indice = 0;
+
+		for(var j = 0; j < qtdCrimes; j++) {
+			if(crimes[j]!= null && document.getElementById("cb"+crimes[j].id) != null &&
+					 document.getElementById("cb"+crimes[j].id).checked)
+				 selecionados[indice++] = crimes[j];
+		}
+		
+		return selecionados;
+	}
+
+	//Método que marca todas as checkbox
+	function marcarTodasCB() {
+		for(var j = 0; j < crimes.length; j++) {
+			if(crimes[j]!= null && document.getElementById("cb"+crimes[j].id) != null)
+					document.getElementById("cb"+crimes[j].id).checked = 1;
+		}
+	}
+
+	//Método que desmarca todas as checkbox
+	function desmarcarTodasCB() {
+		for(var j = 0; j < qtdCrimes; j++) {
+			if(crimes[j]!= null && document.getElementById("cb"+crimes[j].id) != null)
+					document.getElementById("cb"+crimes[j].id).checked = 0;
+		}
+	}
+
+	//Método que envia a String com os crimes.
+	function submit(req) {
+		document.getElementById("stringCrimes").value = req;
+		alert(msgAtualizacao);
+		setTimeout(clickar, 500);
+	}
+
+	/*
+	Método necessário para funcionamento no IE.
+	Chamar diretamente "setTimeout(document.getElementById("j_id31:btnEnviar").click(), 500)" 
+	não funciona no IE.
+	*/
+	function clickar() {
+		document.getElementById("btnEnviar").click()
+	}
+
+	//Adiciona crimes ao vetor
+	function addCrime(crime) {
+		crimes[i++] = crime;
+	}
+	
+	//"Classe" Ponto que representara crime
+	function Ponto() {
+		this.id;
+		this.lat;
+		this.lng;
+		this.cep;
+		this.cidade;
+		this.estado;
+		this.endereco;
+		this.pais;
+	}
+/* ]]> */
+</script>
+				</ui:define>
+				
+				<ui:define name="body">
+				
+				<h:form>
+
+					<br />
+
+					<c:if test="#{crimeBean.qtdCrimes > 0 }">
+
+						<c:forEach var="crime" items="#{crimeBean.crimes}">
+							<script>
+								//Adiciona cada crime ao vetor;
+								crime = new Ponto();
+								crime.id = #{crime.idCrime};
+								crime.lat = #{crime.latitude};
+								crime.lng = #{crime.longitude};								
+								addCrime(crime);
+							</script>
+						</c:forEach>
+
+						<a4j:commandButton onclick="iniciarBusca();"
+							value="#{msg['page.enderecoCrimes.atualizarEnderecos']}" />
+						<br />
+						<br />
+
+						<a href='#' onclick="marcarTodasCB();">#{msg['page.enderecoCrimes.marcar']}</a> |
+						<a href='#' onclick="desmarcarTodasCB();">#{msg['page.enderecoCrimes.desmarcar']}</a>
+						<br />
+						<br />
+
+						<rich:dataTable id="crimes" value="#{crimeBean.crimes}"
+							var="crime" onRowMouseOver="this.style.backgroundColor='#F1F1F1'"
+							onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'"
+							border="1" cellspacing="0" rows="10" cellpadding="2" width="100%">
+
+							<rich:column style="text-align:center">
+								<f:facet name="header">
+									<h:outputText value="ID" />
+								</f:facet>
+								<input type="checkbox" id="cb#{crime.idCrime}" />
+								<h:commandLink action="#{crimeBean.editarCrime}">
+									<h:outputText value="#{crime.idCrime}" />
+									<f:setPropertyActionListener target="#{crimeBean.crimeEditar}"
+										value="#{crime}" />
+									<f:setPropertyActionListener
+										target="#{crimeBean.usuarioLogado}"
+										value="#{usuarioBean.usuarioLogado}" />
+								</h:commandLink>
+								
+								
+
+							</rich:column>
+
+							<rich:column style="text-align:center">
+								<f:facet name="header">
+									<h:outputText value="#{msg['crime.tipoCrime']}" />
+								</f:facet>
+								<h:outputText value="#{msg[crime.tipoCrime.nome]}" />
+							</rich:column>
+
+							<rich:column style="text-align:center">
+								<f:facet name="header">
+									<h:outputText value="#{msg['crime.tipoPapel']}" />
+								</f:facet>
+								<h:outputText value="#{msg[crime.tipoPapel.nome]}" />
+							</rich:column>
+
+							<rich:column style="text-align:center">
+								<f:facet name="header">
+									<h:outputText value="#{msg['crime.tipoArmaUsada']}" />
+								</f:facet>
+								<h:outputText value="#{msg[crime.tipoArmaUsada.nome]}" />
+							</rich:column>
+
+							<rich:column style="text-align:center">
+								<f:facet name="header">
+									<h:outputText value="#{msg['crime.horario']}" />
+								</f:facet>
+								<h:outputText value="#{crime.horario}:00" />
+							</rich:column>
+
+							<rich:column style="text-align:center">
+								<f:facet name="header">
+									<h:outputText value="#{msg['crime.data']}" />
+								</f:facet>
+								<h:outputText value="#{crime.data}">
+									<f:converter
+										converterId="converters.WikiSearchCrimesDataConverter" />
+								</h:outputText>
+							</rich:column>
+
+							<rich:column style="text-align:center">
+								<f:facet name="header">
+									<h:outputText value="#{msg['crime.qtdconf']}" />
+								</f:facet>
+								<h:outputText value="#{crime.confirmacoesPositivas}" />
+							</rich:column>
+
+							<rich:column style="text-align:center">
+								<f:facet name="header">
+									<h:outputText value="#{msg['crime.descricao']}" />
+								</f:facet>
+								<h:outputText value="#{crime.descricao}" />
+							</rich:column>
+							
+							<rich:column style="text-align:center">
+								<f:facet name="header">
+									<h:outputText value="E-mail" />
+								</f:facet>
+								<h:commandLink action="#{usuarioBean.editarUser}">
+									<h:outputText value="#{crime.usuario.email}" />
+									<f:setPropertyActionListener
+										target="#{usuarioBean.usuarioEditar}" value="#{crime.usuario}" />
+								</h:commandLink>
+							</rich:column>						
+
+							<rich:column style="text-align:center">
+								<f:facet name="header">
+									<h:outputText value="#{msg['crime.verusers']}" />
+								</f:facet>
+								<h:commandLink action="#{usuarioBean.getUsuariosConfCrime}">
+									<h:outputText value="#{msg['page.usuario.ver']}" />
+									<f:setPropertyActionListener target="#{usuarioBean.crimeConf}"
+										value="#{crime}" />
+								</h:commandLink>
+							</rich:column>
+
+							<rich:column style="text-align:center">
+								<f:facet name="header">
+									<h:outputText value="#{msg['commons.mapaedit']}" />
+								</f:facet>
+								<h:commandLink action="mapa">
+									<h:outputText
+										value="#{msg['page.usuario.ver']} #{msg['commons.mapa']}" />
+									<f:setPropertyActionListener target="#{crimeBean.crimeEditar}"
+										value="#{crime}" />
+								</h:commandLink>
+							</rich:column>
+
+							<f:facet name="footer">
+								<rich:datascroller for="crimes" />
+							</f:facet>
+
+						</rich:dataTable>
+
+						<br />
+
+						<a name="botton" />
+						<a href='#botton' onclick="marcarTodasCB();">#{msg['page.enderecoCrimes.marcar']}</a> |
+						<a href='#botton' onclick="desmarcarTodasCB();">#{msg['page.enderecoCrimes.desmarcar']}</a>
+						<br />
+						<br />
+
+						<t:inputHidden forceId="true" id="stringCrimes" value="#{crimeBean.stringCrimes}" />
+
+						<t:commandButton forceId="true" id="btnEnviar" style="display: none;" action="#{crimeBean.atualizarEnderecos}"/>
+						<a4j:commandButton onclick="iniciarBusca();"
+							value="#{msg['page.enderecoCrimes.atualizarEnderecos']}" />
+						<div id="aguarde" style="display: none; font-size:14px; color: orange;">#{msg['commons.aguarde']}</div>
+					</c:if>
+
+					<c:if test="#{crimeBean.qtdCrimes == 0 }">
+						<h:outputText value="#{msg['crime.naoencontrar']}"
+							style="font-size:15px;" />
+					</c:if>					
+
+				</h:form>
+				<div style="display: none">
+					<iframe name="frameMapa" id="frameMapa" src="mapa.html"/>
+				</div>
+			</ui:define>
+		</ui:composition>
+
+	</f:view>
+
+</jsp:root>

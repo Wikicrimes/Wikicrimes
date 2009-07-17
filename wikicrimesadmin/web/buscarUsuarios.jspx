@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+	<f:view>
+		<ui:composition template="/templates/padrao.jspx">
+			<ui:define name="title"> #{msg['page.usuario.title']}</ui:define>
+			<ui:define name="body">
+				<h:form>
+					<rich:simpleTogglePanel label="#{msg['commons.filtro']}">
+						<h:panelGrid columns="2">
+							<h:outputText value="#{msg['page.usuario.label.nome']}" />
+							<h:inputText rendered="true"
+								value="#{usuarioBean.usuario.primeiroNome}" />
+
+							<h:outputText value="#{msg['page.usuario.label.email']}" />
+							<h:inputText value="#{usuarioBean.usuario.email}" />
+
+							<h:outputText value="#{msg['page.usuario.label.cidade']}" />
+							<h:inputText value="#{usuarioBean.usuario.cidade}" />
+
+							<h:outputText value="#{msg['page.usuario.label.estado']}" />
+							<h:selectOneMenu required="false"
+								value="#{usuarioBean.usuario.estado}" forceId="true">
+								<f:selectItem itemLabel="" itemValue="-1" />
+								<f:selectItems id="estados"
+									value="#{usuarioBean.estadosBrasileiros}" />
+							</h:selectOneMenu>
+							
+							<h:outputText value="#{msg['idioma.nome']}" />
+							<h:selectOneMenu required="false"
+								value="#{usuarioBean.usuario.idiomaPreferencial}" >
+								<f:selectItem itemLabel="" itemValue="-1" />
+								<f:selectItem itemLabel="#{msg['en']}" itemValue="en" />
+								<f:selectItem itemLabel="#{msg['pt']}" itemValue="pt" />
+								<f:selectItem itemLabel="#{msg['es']}" itemValue="es" />
+							</h:selectOneMenu>
+
+							<h:outputText value="#{msg['page.usuario.label.ec']}" />
+							<h:selectOneMenu value="#{usuarioBean.ecSel}">
+								<f:selectItem itemLabel="" itemValue="-1" />
+								<f:selectItem itemLabel="#{msg['commons.todas']}" itemValue="0" />
+								<f:selectItems value="#{usuarioBean.entidadeCertificadoras}" />
+							</h:selectOneMenu>
+
+							<h:outputText value="#{msg['page.usuario.label.tipo']}" />
+							<h:selectOneMenu value="#{usuarioBean.usuario.confirmacao}"
+								required="false" forceId="true">
+								<f:selectItem itemLabel="" itemValue="-1" />
+								<f:selectItem
+									itemLabel="#{msg['page.usuario.label.tipo.convidado']}"
+									itemValue="2" />
+								<f:selectItem
+									itemLabel="#{msg['page.usuario.label.tipo.confim']}"
+									itemValue="1" />
+								<f:selectItem
+									itemLabel="#{msg['page.usuario.label.tipo.nconfim']}"
+									itemValue="0" />
+							</h:selectOneMenu>
+							
+							<h:outputText value="#{msg['page.usuario.label.numregistrados']}" />
+							<h:panelGrid columns="2">
+							<h:selectOneMenu value="#{usuarioBean.operadores}"
+								required="false">
+								<f:selectItem itemLabel="" itemValue="-1" />
+								<f:selectItem
+									itemLabel="="
+									itemValue="4" />
+								<f:selectItem
+									itemLabel="&lt;="
+									itemValue="3" />
+								<f:selectItem
+									itemLabel="&gt;="
+									itemValue="2" />
+								<f:selectItem
+									itemLabel="&lt;"
+									itemValue="1" />
+								<f:selectItem
+									itemLabel="&gt;"
+									itemValue="0" />
+							</h:selectOneMenu>
+							<h:inputText value="#{usuarioBean.usuario.qtdCrimes}" size="6" />
+							</h:panelGrid>
+							<h:outputText value="#{msg['page.usuario.periodo']}" />
+							<h:panelGrid border="0" columns="1" style="margin-bottom: 10px">
+
+								<h:panelGroup border="0" columns="3">
+									<h:inputText id="dataInicial" forceId="true"
+										value="#{usuarioBean.dataInicial}" size="10">
+										<f:converter
+											converterId="converters.WikiSearchCrimesDataConverter" />
+									</h:inputText>
+									<h:outputText value=" #{msg['commons.a']}" />
+								</h:panelGroup>
+
+								<h:panelGroup border="0" columns="2">
+									<h:inputText id="dataFinal" forceId="true"
+										value="#{usuarioBean.dataFinal}" size="10">
+										<f:converter
+											converterId="converters.WikiSearchCrimesDataConverter" />
+									</h:inputText>
+								</h:panelGroup>
+							</h:panelGrid>
+						</h:panelGrid>
+
+						<h:commandButton action="#{usuarioBean.consultarUsuario}"
+							value="#{msg['page.usuario.botao.buscar']}" />
+
+					</rich:simpleTogglePanel>
+
+					<br />
+					<c:if test="#{usuarioBean.qtdUsuarios > 0 }">
+						<h:outputText
+							value="#{msg['page.usuario.label.qtd1']} #{usuarioBean.qtdUsuarios} #{msg['page.usuario.title']}."
+							style="font-size:15px;" />
+						<br />
+						<br />
+						<h:outputText value="#{msg['page.usuario.atencao']}"
+							style="font-size:14px; color: red;" />
+						<h:outputText value="#{msg['page.usuario.fraseatencao']}"
+							style="font-size:14px;" />
+
+					</c:if>
+					<c:if test="#{usuarioBean.qtdUsuarios == -1 }">
+						<h:outputText value="#{msg['usuario.total']}:"
+							style="font-size:15px;" />
+						<h:outputText value="#{usuarioBean.qtdTotalUsuarios}   "
+							style="font-size:15px;" />
+						<h:commandLink action="#{usuarioBean.getTotalUsuarios}">
+							<h:outputText value="  #{msg['page.usuario.ver']}"
+								style="font-size:14px;" />
+						</h:commandLink>
+						<br />
+						<br />
+
+						<h:outputText value="#{msg['usuario.conf']}:"
+							style="font-size:15px;" />
+						<h:outputText value="#{usuarioBean.qtdUsuariosConf}   "
+							style="font-size:15px;" />
+						<h:commandLink action="#{usuarioBean.getUsuariosConf}">
+							<h:outputText value="  #{msg['page.usuario.ver']}"
+								style="font-size:14px;" />
+						</h:commandLink>
+						<br />
+						<br />
+
+						<h:outputText value="#{msg['usuario.nconf']}:"
+							style="font-size:15px;" />
+						<h:outputText value="#{usuarioBean.qtdUsuariosNConf}   "
+							style="font-size:15px;" />
+						<h:commandLink action="#{usuarioBean.getUsuariosNConf}">
+							<h:outputText value="  #{msg['page.usuario.ver']}"
+								style="font-size:14px;" />
+						</h:commandLink>
+						<br />
+						<br />
+
+						<h:outputText value="#{msg['usuario.conv']}:"
+							style="font-size:15px;" />
+						<h:outputText value="#{usuarioBean.qtdUsuariosConv}   "
+							style="font-size:15px;" />
+						<h:commandLink action="#{usuarioBean.getUsuariosConv}">
+							<h:outputText value="  #{msg['page.usuario.ver']}"
+								style="font-size:14px;" />
+						</h:commandLink>
+						<br />
+						<br />
+
+						<h:outputText value="#{msg['usuario.adm']}:"
+							style="font-size:15px;" />
+						<h:outputText value="#{usuarioBean.qtdUsuariosAdm}   "
+							style="font-size:15px;" />
+						<h:commandLink action="#{usuarioBean.getUsuariosAdm}">
+							<h:outputText value="  #{msg['page.usuario.ver']}"
+								style="font-size:14px;" />
+						</h:commandLink>
+						<br />
+						<br />
+						
+						<h:outputText value="#{msg['usuario.area']}:"
+							style="font-size:15px;" />
+						<h:outputText value="#{usuarioBean.qtdUsuariosArea}   "
+							style="font-size:15px;" />
+						<h:commandLink action="#{usuarioBean.getUsuariosArea}">
+							<h:outputText value="  #{msg['page.usuario.ver']}"
+								style="font-size:14px;" />
+						</h:commandLink>
+						<br />
+						<br />
+						
+						<h:outputText value="#{msg['usuario.redesocial']}:"
+							style="font-size:15px;" />
+						<h:outputText value="#{usuarioBean.qtdUsuariosRedeSocial}   "
+							style="font-size:15px;" />
+						<br />
+						<br />
+
+					</c:if>
+					<c:if test="#{usuarioBean.qtdUsuarios == 0 }">
+						<h:outputText value="#{msg['page.usuario.naoencontrar']}"
+							style="font-size:15px;" />
+					</c:if>
+					<br />
+					<br />
+					<c:if test="#{usuarioBean.qtdUsuarios > 0 }">
+
+						<rich:dataTable id="usuarios" var="usuario"
+							value="#{usuarioBean.usuarios}"
+							onRowMouseOver="this.style.backgroundColor='#F1F1F1'"
+							onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'"
+							border="1" cellspacing="0" cellpadding="2" rows="20"
+							styleClass="rich-table">
+							<rich:column style="text-align:center">
+								<f:facet name="header">
+									<h:outputText value="ID" />
+								</f:facet>
+								<h:commandLink action="#{usuarioBean.editarUser}">
+									<h:outputText value="#{usuario.idUsuario}" />
+									<f:setPropertyActionListener
+										target="#{usuarioBean.usuarioEditar}" value="#{usuario}" />
+								</h:commandLink>
+							</rich:column>
+							<rich:column style="text-align:center">
+								<f:facet name="header">
+									<h:outputText value="#{msg['page.usuario.label.nome']}" />
+								</f:facet>
+								<h:outputText value="#{usuario.primeiroNome}" />
+							</rich:column>
+							<rich:column style="text-align:center">
+								<f:facet name="header">
+									<h:outputText value="#{msg['page.usuario.label.email']}" />
+								</f:facet>
+								<h:outputLink value="mailto:#{usuario.email}">
+									<h:outputText value="#{usuario.email}" />
+								</h:outputLink>
+							</rich:column>
+							<rich:column style="text-align:center">
+								<f:facet name="header">
+									<h:outputText value="#{msg['page.usuario.label.cidade']}" />
+								</f:facet>
+								<h:outputText value="#{usuario.cidade}" />
+							</rich:column>
+							<rich:column style="text-align:center">
+								<f:facet name="header">
+									<h:outputText value="#{msg['page.usuario.label.estado']}" />
+								</f:facet>
+								<h:outputText value="#{usuario.estado}" />
+							</rich:column>
+							<rich:column style="text-align:center">
+								<f:facet name="header">
+									<h:outputText value="#{msg['idioma.nome']}" />
+								</f:facet>
+								<h:outputText value="#{msg[usuario.idiomaPreferencial]}" />
+							</rich:column>
+							<rich:column style="text-align:center">
+								<f:facet name="header">
+									<h:outputText value="#{msg['page.usuario.datareg']}" />
+								</f:facet>
+								<h:outputText value="#{usuario.dataHoraRegistro}">
+									<f:converter
+										converterId="converters.WikiSearchCrimesDataConverter" />
+								</h:outputText>
+							</rich:column>
+							<rich:column style="text-align:center">
+								<f:facet name="header">
+									<h:outputText value="#{msg['page.usuario.label.ec']}" />
+								</f:facet>
+								<h:outputText value="#{usuario.entidadeCertificadora.nome}" />
+							</rich:column>
+							<rich:column style="text-align:center">
+								<f:facet name="header">
+									<h:outputText value="#{msg['page.usuario.label.area']}" />
+								</f:facet>
+								<h:outputText value="#{usuario.qtdAreas}" />
+							</rich:column>
+							<rich:column style="text-align:center">
+								<f:facet name="header">
+									<h:outputText value="#{msg['page.usuario.vercrimesreg']}" />
+								</f:facet>
+								<h:commandLink action="#{crimeBean.getByUser}">
+									<h:outputText value="#{usuario.qtdCrimes}" />
+									<f:setPropertyActionListener
+										target="#{crimeBean.usuarioRegistro}" value="#{usuario}" />
+								</h:commandLink>
+							</rich:column>
+							<rich:column style="text-align:center">
+								<f:facet name="header">
+									<h:outputText value="#{msg['page.usuario.ver']} Log" />
+								</f:facet>
+								<h:commandLink action="#{logBean.filtroUser}">
+									<h:outputText value="#{msg['page.usuario.ver']}" />
+									<f:setPropertyActionListener
+										target="#{logBean.usuario}" value="#{usuario}" />
+								</h:commandLink>
+							</rich:column>
+							 <f:facet name="footer">
+								<rich:datascroller for="usuarios" />
+							</f:facet>
+						</rich:dataTable>
+						<div style="text-align:center">
+							<h:commandButton action="#{usuarioBean.gerarCSV}"
+									value="#{msg['page.usuario.botao.gerarcsv']}"/>
+						</div>
+					</c:if>
+					<br />
+						
+						<hr />
+					<a href="#" onclick="javascript:history.go(-1)" > #{msg['commons.voltar']} </a>
+				</h:form>
+			</ui:define>
+		</ui:composition>
+	</f:view>
+</jsp:root>
+

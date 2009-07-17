@@ -1,0 +1,1470 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC
+"-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+<head>
+
+<meta http-equiv="Cache-Control" content="no-store" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+
+<script type="text/javascript"
+	src="http://www.google.com/jsapi?key=ABQIAAAAg4v-Pz31X7RpxlFPsEIYsRTFxkwrVf99uCE-DFDYzwuulB3IQBTEtjQzYCPUvNslNNQOJKHac-ipqw"></script>
+
+<script type="text/javascript" src="./scripts/gfeedfetcher.js"></script>
+
+<script type="text/javascript" src="./scripts/gajaxticker.js"></script>
+
+<script type="text/javascript" src="./scripts/util.js"></script>
+<script type="text/javascript" src="./scripts/calendar.js"></script>
+<script type="text/javascript" src="./scripts/calendar-setup.js"></script>
+<script type="text/javascript" src="./scripts/googleClusterer.js"></script>
+<script type="text/javascript" src="./scripts/lang/calendar-en.js"></script>
+<script type="text/javascript"
+	src="./scripts/lang/#{messages['webapp.calendar']}"></script>
+<c:if test="#{messages['webapp.calendar'] == 'calendar-pt.js' }">
+	<script type="text/javascript" src="./scripts/lang/calendar-br.js"></script>
+</c:if>
+
+<script type="text/javascript">
+        /* <![CDATA[ */
+          
+			var linhas;
+		    var query = location.search.substring(1);
+	  		var pairs = query.split("&");
+	  		var temhash = location.hash;
+	  		var idconf;
+	  		var id;
+	  		var idRelato;
+	  		var i=0;
+	  		var totalCrimes;
+	  		var markers = [];
+   			var tempDataMaisAntiga= new Date();
+   			var dataMaisAntiga;
+            var tipoCrime; 
+		    var tipoVitima;
+			var tipoLocal;
+			var dataInicial;
+			var dataFinal;
+			var horarioInicial; 
+			var horarioFinal; 
+			var entidadeCertificadora;
+			var confirmadosPositivamente;
+			var http_request = null;
+			var submeteu=true;
+
+			
+	  		for (var i=0;i<pairs.length;i++) {
+				var pos = pairs[i].indexOf("=");
+				var argname = pairs[i].substring(0,pos).toLowerCase();
+				var value = pairs[i].substring(pos+1).toLowerCase();
+		  		if (argname == "idcrime") {
+	  				if (temhash == "") {
+	  					
+	  					id = unescape(value);
+	  					id = id.toUpperCase();
+	  				}
+	  			}
+	  			if(argname == "idrelato"){
+					if(temhash == ""){
+						idRelato = unescape(value);
+						idRelato = idRelato.toUpperCase();
+					}	
+	  			}	
+		  		if (argname == "idconf") {idconf = unescape(value);}
+			}
+        
+        	var tpCrimes = [ 
+        			{id:3, nome:'Furto'},
+					{id:4, nome:'Roubo'},
+					{id:2, nome:'Tentativa de Furto'},
+					{id:1, nome:'Tentativa de Roubo'},
+					{id:5, nome:'Violência'} 
+			];
+        	
+        	var tpVitimaPrimLinha = {
+					0:'#{messages["filtro.option.todosTipos"]}'
+			};
+        	
+        	var tpVitima = {
+					0:'#{messages["filtro.option.todosTipos"]}',
+					1:'#{messages["filtro.option.pessoa"]}',
+					2:'#{messages["filtro.option.propriedade"]}'
+			};
+			
+			var tpVitimaViolencia = {
+					0:'#{messages["filtro.option.todosTipos"]}',
+					3:'#{messages["filtro.option.rixasBrigas"]}',
+					4:'#{messages["filtro.option.violenciaDomestica"]}',
+					5:'#{messages["filtro.option.abusoAutoridade"]}',
+					6:'#{messages["filtro.option.homicidio"]}',
+					7:'#{messages["filtro.option.tentativa.homicidio"]}',
+					8:'#{messages["filtro.option.latrocinio"]}'
+									
+					
+			};
+			
+			var tpLocalPrimLinha = {
+					0:'#{messages["filtro.option.todosLocais"]}'
+			};
+			
+			var tpLocalPessoa = {
+					0:'#{messages["filtro.option.todosLocais"]}',
+					1:'#{messages["filtro.option.viaPublica"]}',
+					2:'#{messages["filtro.option.dentroVeiculo"]}',
+					3:'#{messages["filtro.option.estabComercial"]}',
+					4:'#{messages["filtro.option.residencia"]}',
+					5:'#{messages["filtro.option.escola"]}',
+					6:'#{messages["filtro.option.outros"]}'
+			};
+			
+			var tpLocalResidencia = {
+					0:'#{messages["filtro.option.todasPropriedades"]}',
+					7:'#{messages["filtro.option.residencia"]}',
+					8:'#{messages["filtro.option.banco"]}',
+					9:'#{messages["filtro.option.farmacia"]}',
+					10:'#{messages["filtro.option.postoGasolina"]}',
+					11:'#{messages["filtro.option.loterica"]}',
+					12:'#{messages["filtro.option.veiculo"]}',
+					15:'#{messages["filtro.option.outros"]}'
+			};
+			function limpaUrl(){
+					location.hash=";";
+					id="";
+
+			}
+			
+			function makeTipoVitima() {
+				dwr.util.removeAllOptions('tipoVitimaNew');
+				var tpCrimeId = dwr.util.getValue('tipoCrime');
+				if (tpCrimeId == 0) {
+					dwr.util.addOptions('tipoVitimaNew', tpVitimaPrimLinha);
+				}
+				else if (tpCrimeId == 5) {
+					dwr.util.addOptions('tipoVitimaNew', tpVitimaViolencia);
+				}
+				else {
+					dwr.util.addOptions('tipoVitimaNew', tpVitima);
+				}
+
+				dwr.util.setValue('tipoVitimaNew', 0);
+			}
+			
+			function makeTipoLocal() {
+				dwr.util.removeAllOptions('tipoLocalNew');
+				var tpVitimaId = dwr.util.getValue('tipoVitimaNew');
+				if (tpVitimaId == 1) {
+					dwr.util.addOptions('tipoLocalNew', tpLocalPessoa);
+					$('tipoLocalNew').style.display = 'inline';
+				}
+				else if (tpVitimaId == 2) {
+					dwr.util.addOptions('tipoLocalNew', tpLocalResidencia);
+					$('tipoLocalNew').style.display = 'inline';
+				}
+				else {
+					dwr.util.addOptions('tipoLocalNew', tpLocalPrimLinha);
+					$('tipoLocalNew').style.display = 'none';
+				}
+			}
+			
+			function changeTipoVitima() {
+				makeTipoVitima();
+				dwr.util.setValue('tipoVitima', 0);
+				dwr.util.setValue('tipoVitimaNew', 0);
+				changeTipoLocal(); 
+			}
+			
+			function changeTipoLocal() {
+				makeTipoLocal();				
+				dwr.util.setValue('tipoLocal', 0);
+				dwr.util.setValue('tipoLocalNew', 0);
+			}
+			
+			function makeCombos() {
+				makeTipoVitima();
+				var tv = '#{filtroForm.tipoVitima}';
+				if (!isEmptyStr(tv))
+					dwr.util.setValue('tipoVitimaNew', tv); 
+				else
+					dwr.util.setValue('tipoVitimaNew', 0);
+				
+				makeTipoLocal();
+				var tl = '#{filtroForm.tipoLocal}';
+				if (!isEmptyStr(tl))
+					dwr.util.setValue('tipoLocalNew', tl);
+				else
+					dwr.util.setValue('tipoLocalNew', 0);
+			}
+								
+			function isEmptyStr(str) {
+				if (str.match(/^\s*$/))
+					return true;
+				else
+					return false;
+			}
+			function getUserMapConfig(){
+				document.getElementById("filtroForm:zoomMapa").value=map.getZoom();
+				document.getElementById("filtroForm:latMapa").value=map.getCenter().lat();
+				document.getElementById("filtroForm:lngMapa").value=map.getCenter().lng();
+				limpaTela=true;
+				filtrou=true;
+
+			}
+			
+			function validaPeriodoData(){
+			 	var inicio              = document.getElementById("dataInicial").value.split("/");
+                            var fim                 = document.getElementById("dataFinal").value.split("/");
+				if (inicio == "" & fim == "")
+					return true;
+                            var mesInicio   = ( inicio[2] * 12 + inicio[1] );
+                            var mesFim              = ( fim[2] * 12 + fim[1] );
+
+                            var diferenca   = ( mesFim - mesInicio );
+                            var periodo             = diferenca + 1
+                            if (periodo <= 0) {
+                            	alert('ATENCAO: A data de inicio e maior que a data final!');
+ 	                                return false;
+                            }
+                            else return true;
+
+			}
+			
+			function isNenhumCrimeEncontrado(){
+					
+		 		if (linhas){
+		 			if (linhas.length == 1 || linhas.length==0) {
+		 					return true;
+		 			}
+		 		}
+		 		return false;
+			}
+
+			function limpaDataInicial(){
+				document.getElementById("dataInicial").value = "";
+			}
+
+			function limpaDataFinal(){
+				document.getElementById("dataFinal").value = "";
+			}	
+		
+			function limpaFiltro (){
+				if (map) {
+					qtd_roubos = 0;
+					qtd_furtos = 0;
+					qtd_outros = 0;
+					qtd_denuncias = 0;
+					zeraEstatisticasRazoes();
+					zeraArrayCrimes();
+					map.clearOverlays();
+					crimesAtuais = {}							
+					mgr.clearMarkers();
+					//document.getElementById("quantidadeCrimesEncontrados").value = "#{messages['filtro.contador.nenhum']}";
+
+					// Google Agrupador: Limpa variáveis de controle
+					crimesAtuaisAgrupador = {};
+					GVetorMarcadores = [];
+					GClusterer.clearMarkers();
+				}
+			}
+			
+		/* ]]> */
+        </script>
+</head>
+
+<body >
+<br/>
+<f:loadBundle var="messages" basename="messages" />
+<h:panelGrid border="0" columns="1" cellpadding="0" cellspacing="0">
+
+	<h:form id="filtroForm">
+
+		<t:inputHidden id="tipoLocal" forceId="true"
+			value="#{filtroForm.tipoLocal}" />
+		<t:inputHidden id="tipoVitima" forceId="true"
+			value="#{filtroForm.tipoVitima}" />
+		<h:inputHidden id="zoomMapa" value="#{filtroForm.zoomMapa}" />
+		<h:inputHidden id="latMapa" value="#{filtroForm.latMapa}" />
+		<h:inputHidden id="lngMapa" value="#{filtroForm.lngMapa}" />
+
+		<!-- Pesquisa -->
+		<rich:simpleTogglePanel id="togglePanelPesquisa"
+			bodyClass="filtrosSimpleTogglePanelBodyPesquisa"
+			headerClass="panelHeaderFiltro" opened="true" switchType="client"
+			label="#{messages['titulo.pesquisaCrimes']}" style="width:100%">
+			<h:panelGrid border="0" columns="1" cellpadding="1" cellspacing="0"
+				style="margin:0px">
+				<!--				<h:outputText value="#{messages['crime.filtro.titulo']}"
+					style="vertical-align: text-top; font-size:11px; " /> -->
+
+				<t:selectOneMenu style="font-size:10px;"
+					value="#{filtroForm.tipoCrime}" required="false" id="tipoCrime"
+					forceId="true" onchange="changeTipoVitima();">
+					<f:selectItem itemLabel="#{messages['filtro.option.todosCrimes']}"
+						itemValue="0" />
+					<f:selectItem itemLabel="#{messages['filtro.option.furto']}"
+						itemValue="3" />
+					<f:selectItem itemLabel="#{messages['filtro.option.roubo']}"
+						itemValue="4" />
+					<f:selectItem
+						itemLabel="#{messages['filtro.option.tentativaFurto']}"
+						itemValue="2" />
+					<f:selectItem
+						itemLabel="#{messages['filtro.option.tentativaRoubo']}"
+						itemValue="1" />
+					<f:selectItem itemLabel="#{messages['filtro.option.violencia']}"
+						itemValue="5" />
+				</t:selectOneMenu>
+				<h:outputText value="" />
+				<select style="font-size: 10px;" id="tipoVitimaNew"
+					onchange="dwr.util.setValue('tipoVitima', dwr.util.getValue(this.id)); changeTipoLocal();">
+				</select>
+				<h:outputText value="" />
+				<select style="font-size: 10px;" id="tipoLocalNew"
+					onchange="dwr.util.setValue('tipoLocal', dwr.util.getValue(this.id));">
+				</select>
+			</h:panelGrid>
+
+
+
+			<script type="text/javascript"><!--
+		/*	<![CDATA[ */	   
+				
+					
+				makeCombos();
+				
+				function verificaFiltrosAplicados(){
+					var filtrosHtml = "";
+					var temFiltroAplicado = false;
+					if(document.getElementById("tipoCrime").value!=0){
+						var textoHint = "";
+						if(document.getElementById("tipoCrime").value==1)
+							textoHint ="#{messages['tipocrime.tentativaderoubo']}";
+						if(document.getElementById("tipoCrime").value==2)
+							textoHint ="#{messages['tipocrime.tentativadefurto']}";
+						if(document.getElementById("tipoCrime").value==3)
+							textoHint ="#{messages['tipocrime.furto']}";
+						if(document.getElementById("tipoCrime").value==4)
+							textoHint ="#{messages['tipocrime.roubo']}";
+						if(document.getElementById("tipoCrime").value==5)
+							textoHint ="#{messages['tipocrime.violencia']}";			
+						filtrosHtml+=" <span title='"+textoHint+"'>#{messages['estatisticas.area.visivel.tipo.crime']}</span>,";
+						temFiltroAplicado = true;						
+						if(document.getElementById("tipoVitima").value!=0){
+							filtrosHtml+="<span> #{messages['estatisticas.area.visivel.subtipo.crime']}</span>,"
+							if(tipoLocal = document.getElementById("tipoLocal").value!=0){
+								filtrosHtml+="<span> #{messages['estatisticas.area.visivel.tipo.local']}</span>,"
+							}
+						}
+					}
+					if(document.getElementById("dataInicial").value!='' || document.getElementById("dataFinal").value!=''){
+						filtrosHtml+=" <span style='cursor: pointer; color:black;' title='"+document.getElementById("dataInicial").value+" #{messages['estatisticas.area.visivel.data.periodo']} "+document.getElementById("dataFinal").value+"'>#{messages['scheduler.titulo.data']},</span>";
+						temFiltroAplicado = true;
+					}
+					if(document.getElementById("filtroForm:horarioInicial").value!=-1 && document.getElementById("filtroForm:horarioFinal").value!=-1){
+						filtrosHtml+=" <span style='cursor: pointer; color:black;' title='"+document.getElementById("filtroForm:horarioInicial").value+":00 #{messages['estatisticas.area.visivel.horario.periodo']} "+document.getElementById("filtroForm:horarioFinal").value+":00'>#{messages['scheduler.titulo.horario']},</span>";
+						temFiltroAplicado = true;
+					}
+					if(!temFiltroAplicado){
+						filtrosHtml=" #{messages['estatisticas.area.visivel.sem.filtros']}";
+					}
+					if(filtrosHtml != " #{messages['estatisticas.area.visivel.sem.filtros']}")
+						filtrosHtml= filtrosHtml.substring(0,filtrosHtml.length-8)+"</span>";
+					document.getElementById('divFiltrosAplicados').innerHTML = filtrosHtml;
+				}
+				var idRazao1;
+				var idRazao2;
+				var idRazao3;
+				var qtdOutras;
+				function atualizaEstatisticasAreaVisivel(){
+					mostraListaDezMais();	
+					montaDadosGraficoRazoes();
+					var total_marcadores = qtd_roubos+qtd_furtos+qtd_outros+qtd_denuncias;
+					var total_agrupadores = GClusterer.getQtdAgrupadores();
+					if(total_marcadores != 0)
+						document.getElementById('graficoEstatisticasAV').innerHTML="<img title='#{messages['estatisticas.area.visivel.titulo.graf.ocorrencias']}' src='http://chart.apis.google.com/chart?cht=p&amp;chd=t:"+(qtd_roubos/total_marcadores)+","+(qtd_furtos/total_marcadores)+","+(qtd_denuncias/total_marcadores)+","+(qtd_outros/total_marcadores)+"&amp;chs=200x70&amp;chdl=#{messages['tipocrime.roubo']} ("+((qtd_roubos/total_marcadores)*100).toFixed(2)+"%)|#{messages['tipocrime.furto']} ("+((qtd_furtos/total_marcadores)*100).toFixed(2)+"%)|#{messages['abuso.texto']} ("+((qtd_denuncias/total_marcadores)*100).toFixed(2)+"%)|#{messages['tipocrime.violencia']} ("+((qtd_outros/total_marcadores)*100).toFixed(2)+"%)&amp;chco=A52A2A|0066FF|006600|FF9933&amp;chf=bg,s,65432100'/>";
+					else
+						document.getElementById('graficoEstatisticasAV').innerHTML="";
+					document.getElementById('divQtdeCrimesFiltrados').innerHTML = total_marcadores + " (" + total_agrupadores +  ' #{messages['estatistivas.area.visivel.total.agrupadores']}' + ")";
+					if(getTotalRazoes() != 0)
+						document.getElementById('graficoRazoesAV').innerHTML="<img title='#{messages['estatisticas.area.visivel.titulo.graf.causas']}' src='http://chart.apis.google.com/chart?cht=p&amp;chd=t:"+(arrayEstatisticasQtd[idRazao1]/getTotalRazoes())+","+(arrayEstatisticasQtd[idRazao2]/getTotalRazoes())+","+(arrayEstatisticasQtd[idRazao3]/getTotalRazoes())+","+((getTotalRazoes()-(arrayEstatisticasQtd[idRazao3]+arrayEstatisticasQtd[idRazao2]+arrayEstatisticasQtd[idRazao1]))/getTotalRazoes())+"&amp;chs=320x70&amp;chdl="+escape(arrayEstatisticasDescricao[idRazao1])+" ("+((arrayEstatisticasQtd[idRazao1]/getTotalRazoes())*100).toFixed(2)+"%)|"+escape(arrayEstatisticasDescricao[idRazao2])+" ("+((arrayEstatisticasQtd[idRazao2]/getTotalRazoes())*100).toFixed(2)+"%)|"+escape(arrayEstatisticasDescricao[idRazao3])+" ("+((arrayEstatisticasQtd[idRazao3]/getTotalRazoes())*100).toFixed(2)+"%)|#{messages['razao.outros']} ("+(((getTotalRazoes()-(arrayEstatisticasQtd[idRazao3]+arrayEstatisticasQtd[idRazao2]+arrayEstatisticasQtd[idRazao1]))/getTotalRazoes())*100).toFixed(2)+"%)&amp;chf=bg,s,65432100&amp;chco=CD5C5C'/>";
+					else
+						document.getElementById('graficoRazoesAV').innerHTML="";
+
+					acoesUsuario['carregou_app'] = true;
+					if(acoesUsuario['filtrou']){
+						acoesUsuario['massa_dados_filtrados'] = total_marcadores;
+					}	
+					alertarTutorDeAcaoDoUsuario(acoesUsuario,"");
+					
+					
+				}
+
+				function getTotalRazoes(){
+					return (arrayEstatisticasQtd[1]+arrayEstatisticasQtd[2]+arrayEstatisticasQtd[3]+arrayEstatisticasQtd[4]+arrayEstatisticasQtd[5]+arrayEstatisticasQtd[6]+arrayEstatisticasQtd[7]+arrayEstatisticasQtd[8]+arrayEstatisticasQtd[9]+arrayEstatisticasQtd[10]+arrayEstatisticasQtd[11]+arrayEstatisticasQtd[12]+arrayEstatisticasQtd[13]+arrayEstatisticasQtd[14]+arrayEstatisticasQtd[15]+arrayEstatisticasQtd[16]+arrayEstatisticasQtd[17]+arrayEstatisticasQtd[18]+arrayEstatisticasQtd[19]);
+				}	
+
+				function montaDadosGraficoRazoes(){
+					arrayEstatisticasQtd[0] = -1;
+					qtdOutras = 0;	
+					idRazao1 = 0;
+					idRazao2 = 0;
+					idRazao3 = 0;
+					var aux1;
+					var aux2;
+					for(var j = 0 ; j<arrayEstatisticasQtd.length-2; j++){
+						if(arrayEstatisticasQtd[j]>arrayEstatisticasQtd[idRazao1]){
+							aux1 = idRazao1;
+							idRazao1 = j;
+							aux2 = idRazao2; 
+							idRazao2 = aux1;
+							idRazao3 = aux2;
+						}	
+						if((arrayEstatisticasQtd[j]<arrayEstatisticasQtd[idRazao1] && arrayEstatisticasQtd[j]>arrayEstatisticasQtd[idRazao2])||(arrayEstatisticasQtd[j]==arrayEstatisticasQtd[idRazao1] && j!= idRazao1)){
+							aux2 = idRazao2; 
+							idRazao2 = j;
+							idRazao3 = aux2;
+							
+						}	
+						if((arrayEstatisticasQtd[j]<arrayEstatisticasQtd[idRazao2] && arrayEstatisticasQtd[j]>arrayEstatisticasQtd[idRazao3])||(arrayEstatisticasQtd[j]==arrayEstatisticasQtd[idRazao2] && j!= idRazao2)){
+							idRazao3 = j;
+						}	
+					}
+					if(idRazao1 == 1 && idRazao2 == 1 && idRazao3 == 1){
+						idRazao2 = 2;
+						idRazao3 = 3;
+					}	
+					
+
+					for(var j = 1 ; j<arrayEstatisticasQtd.length-1; j++){
+						if(j != idRazao1 && j != idRazao2 && j != idRazao3 && arrayEstatisticasQtd[j]!= undefined){
+							qtdOutras = qtdOutras + arrayEstatisticasQtd[j];
+						}	
+					}
+											
+				}	
+	
+				function verificaPermalink(){
+
+	                    if (id || idRelato) {
+		                    var idSelPerma;
+		                    if(id)
+		                    	idSelPerma = id;
+		                    else{
+		                    	idSelPerma = idRelato;
+								idRelato = "";
+		                    }	
+       						var marker=	crimesAtuais[idSelPerma];
+       						podeCarregarCrimes=false;               					
+							map.setCenter(marker.getLatLng(),15);
+							
+        					
+//delay necessario pois dava erro quando se mostrar os dados de um marcador que nao esta no view port. Provavelmente pelo fato de o Markermanager nao criar o marker									
+									try {
+									setTimeout(function(){
+									if(idconf){
+										if(marker.idTipoCrime == '6')	
+											marker.confirmaRelato(idconf);
+										else							
+											marker.confirmaCrime(idconf);
+									}	
+									else{
+										if(marker.idTipoCrime == '6')	
+											marker.mostrarDadosRelato();
+										else																				
+											marker.mostrarDados();
+									}	
+										},500);
+											
+									}
+									catch(e){
+										try {
+											setTimeout(function(){
+											if(idconf){
+												if(marker.idTipoCrime == '6')	
+													marker.confirmaRelato(idconf);
+												else							
+													marker.confirmaCrime(idconf);
+											}	
+											else{
+												if(marker.idTipoCrime == '6')	
+													marker.mostrarDadosRelato();
+												else									
+													marker.mostrarDados();
+											}	
+												},1000);
+											}
+										catch(e){
+											try {
+												setTimeout(function(){
+												if(idconf){
+													if(marker.idTipoCrime == '6')	
+														marker.confirmaRelato(idconf);
+													else							
+														marker.confirmaCrime(idconf);
+												}	
+												else{
+													if(marker.idTipoCrime == '6')	
+														marker.mostrarDadosRelato();
+													else									
+														marker.mostrarDados();
+												}	
+												},3000);
+											}
+											catch(e){
+												try {
+													setTimeout(function(){
+													if(idconf){
+														if(marker.idTipoCrime == '6')	
+															marker.confirmaRelato(idconf);
+														else							
+															marker.confirmaCrime(idconf);
+													}	
+													else{
+														if(marker.idTipoCrime == '6')	
+															marker.mostrarDadosRelato();
+														else									
+															marker.mostrarDados();
+													}	
+				 									},5000);
+											
+												}
+												catch(e){}
+											}
+									}
+        						}
+								limpaUrl();
+        					}
+
+
+						  	else {
+						  	//map.setCenter(new GLatLng(#{filtroForm.latMapa},#{filtroForm.lngMapa}),#{filtroForm.zoomMapa});                 		
+						  	}
+						 
+				  }
+			    /*Download de arquivos .TXT*/
+				function constroiRequisicao(url) {
+
+					      http_request = GXmlHttp.create();
+					      if (http_request.overrideMimeType) {
+					         http_request.overrideMimeType('text/xml');
+					      }
+
+					      //Espera retorno do servidor
+					     http_request.open('GET', url, true);
+						 http_request.onreadystatechange = constroiMarcadores;
+						 http_request.send(null);
+
+					   }
+					   // Ler os dados do arquivo texto enviado pelo servidor e constrói os marcadores de crimes
+					   function constroiMarcadores() {
+
+						 	if (http_request.readyState == 4) {
+					         if (http_request.status == 200) {
+								var documento = http_request.responseText;
+								linhas = documento.split("\n");
+
+						 		if (linhas.length > 1){
+
+//						 			if (map.getZoom() >=7 ){
+//									if (linhas.length > 150)
+	//						 			document.getElementById("loading").style.visibility='visible';
+										document.getElementById('divQtdeCrimesFiltrados').innerHTML = linhas.length-1;
+									  //document.getElementById("quantidadeCrimesEncontrados").value = linhas.length-1 + " #{messages['filtro.contador.crimes']}";
+							        	i=0;
+							        	window.setTimeout(plotaMarcadores,1);	
+	/*					 			} 
+						 			else {
+						 				//carregando estados
+											plotaEstados();					 			
+						 				} */
+						        	
+						        }
+						          else{
+						          	atualizaEstatisticasAreaVisivel();
+						          	//verificaFiltrosAplicados();
+						        	//document.getElementById("quantidadeCrimesEncontrados").value = "#{messages['filtro.contador.nenhum']}";
+        	                		document.getElementById("loading").style.visibility='hidden';
+									//if(map.getZoom()<15)	
+        	                		hideDivComment();
+						        }
+						        
+						 	  }
+						 	  else {
+					            alert('Erro na requisição');
+					         }
+						 	}
+						 }
+
+							 
+					function atualizaMapa(){
+						zeraDezMais();
+						verificaFiltrosAplicados();
+						zeraEstatisticasRazoes();
+						qtd_roubos = 0;
+						qtd_furtos = 0;
+						qtd_outros = 0;
+						qtd_denuncias = 0;
+						if(map){
+
+						if (limpaTela) {
+//*********************** Kernel Map INICIO ****************************
+							zeraArrayCrimes();
+//*********************** Kernel Map FIM ****************************	
+							map.clearOverlays();
+							crimesAtuais = {}							
+							mgr.clearMarkers();
+
+							
+							// Google Agrupador: Limpa variáveis de controle
+							//crimesAtuaisAgrupador = {};
+							//GClusterer.clearMarkers();
+							GVetorMarcadores = [];
+							GClusterer.resetViewport();
+						}
+		  			        submeteRequisicao();
+					   
+					   /*Fim - Download de arquivos .TXT*/
+						 
+						}
+						else {
+							setTimeout(atualizaMapa,500);
+
+						}
+					}
+					
+					function zeraEstatisticasRazoes(){
+						arrayEstatisticasQtd[1] = 0;
+						arrayEstatisticasQtd[2] = 0;
+						arrayEstatisticasQtd[3] = 0;
+						arrayEstatisticasQtd[4] = 0;
+						arrayEstatisticasQtd[5] = 0;
+						arrayEstatisticasQtd[6] = 0;
+						arrayEstatisticasQtd[7] = 0;
+						arrayEstatisticasQtd[8] = 0;
+						arrayEstatisticasQtd[9] = 0;
+						arrayEstatisticasQtd[10] = 0;
+						arrayEstatisticasQtd[11] = 0;
+						arrayEstatisticasQtd[12] = 0;
+						arrayEstatisticasQtd[13] = 0;
+						arrayEstatisticasQtd[14] = 0;
+						arrayEstatisticasQtd[15] = 0;
+						arrayEstatisticasQtd[16] = 0;
+						arrayEstatisticasQtd[17] = 0;
+						arrayEstatisticasQtd[18] = 0;
+						arrayEstatisticasQtd[19] = 0;
+						arrayEstatisticasQtd[20] = 0;
+					}	
+
+					var arrayEstatisticasQtd = new Array();
+					var arrayEstatisticasDescricao = new Array();
+					arrayEstatisticasDescricao[1] = "#{messages['razao.ma.iluminacao']}";
+					arrayEstatisticasDescricao[2] = "#{messages['razao.falta.lazer.jovens']}";
+					arrayEstatisticasDescricao[3] = "#{messages['razao.desemprego']}";
+					arrayEstatisticasDescricao[4] = "#{messages['razao.facil.acesso.fuga']}";
+					arrayEstatisticasDescricao[5] = "#{messages['razao.disputas.gangues']}";
+					arrayEstatisticasDescricao[6] = "#{messages['razao.trafico']}";
+					arrayEstatisticasDescricao[7] = "#{messages['razao.alcool.excesso']}";
+					arrayEstatisticasDescricao[8] = "#{messages['razao.criancas.ruas']}";
+					arrayEstatisticasDescricao[9] = "#{messages['razao.alta.cons.pessoas']}";
+					arrayEstatisticasDescricao[10] = "#{messages['razao.falta.policiamento']}";
+					arrayEstatisticasDescricao[11] = "#{messages['razao.omissao.testemunha']}";
+					arrayEstatisticasDescricao[12] = "#{messages['razao.regiao.perigosa']}";
+					arrayEstatisticasDescricao[13] = "#{messages['razao.impunidade.penal']}";
+					arrayEstatisticasDescricao[14] = "#{messages['razao.pistolagem']}";
+					arrayEstatisticasDescricao[15] = "#{messages['razao.violencia.policial']}";
+					arrayEstatisticasDescricao[16] = "#{messages['razao.falta.moradia']}";
+					arrayEstatisticasDescricao[17] = "#{messages['razao.crime.organizado']}";
+					arrayEstatisticasDescricao[18] = "#{messages['razao.crime.passional']}";
+					arrayEstatisticasDescricao[19] = "#{messages['razao.outros']}";
+					arrayEstatisticasDescricao[20] = "#{messages['razao.naosei']}";
+					
+								
+						
+					function atualizaEstatisticasRazoes(razoesTexto){
+						var arrayRazoesOcorrencia = razoesTexto.split(",");
+						if(arrayRazoesOcorrencia[0] != undefined && arrayRazoesOcorrencia[0] != null && arrayRazoesOcorrencia[0] != ''){
+							arrayEstatisticasQtd[parseInt(arrayRazoesOcorrencia[0])]++;
+						}
+						if(arrayRazoesOcorrencia[1] != undefined && arrayRazoesOcorrencia[1] != null && arrayRazoesOcorrencia[1] != ''){
+							arrayEstatisticasQtd[parseInt(arrayRazoesOcorrencia[1])]++;	
+						}		
+						if(arrayRazoesOcorrencia[2] != undefined && arrayRazoesOcorrencia[2] != null && arrayRazoesOcorrencia[2] != ''){
+							arrayEstatisticasQtd[parseInt(arrayRazoesOcorrencia[2])]++;	
+						}		
+						if(arrayRazoesOcorrencia[3] != undefined && arrayRazoesOcorrencia[3] != null && arrayRazoesOcorrencia[3] != ''){
+							arrayEstatisticasQtd[parseInt(arrayRazoesOcorrencia[3])]++;
+						}		
+								
+					}
+					var tipoDezMais = '1';
+					function mostraListaDezMais(){
+						var eMapa = document.getElementById("op_dez_mais1").checked;
+						if(eMapa){
+							var html = "<table width='100%' >";
+							
+							if(tipoDezMais == '1'){
+								for (k in arrayMaisVistos){
+									if(arrayMaisVistos[k].qtd != -1)
+										html += "<tr> <td> <div style='cursor: pointer;' onclick='getCrimeAreaVisivel(\""+arrayMaisVistos[k].id+"\", \""+arrayMaisVistos[k].lat+"\", \""+arrayMaisVistos[k].lng+"\");' class='moldura'>"+(parseInt(k)+1)+"</div> </td> <td> <a style='cursor: pointer;' onclick='getCrimeAreaVisivel(\""+arrayMaisVistos[k].id+"\", \""+arrayMaisVistos[k].lat+"\", \""+arrayMaisVistos[k].lng+"\");'>"+arrayMaisVistos[k].desc+"</a> </td> </tr>";
+								}
+							}
+							if(tipoDezMais == '2'){
+								for (k in arrayMaisComentados){
+									if(arrayMaisComentados[k].qtd != -1){
+										//alert(arrayMaisComentados[k].id+"    "+arrayMaisComentados[k].lat+"      "+ arrayMaisComentados[k].lng);
+										html += "<tr> <td> <div style='cursor: pointer;' onclick='getCrimeAreaVisivel(\""+arrayMaisComentados[k].id+"\", \""+arrayMaisComentados[k].lat+"\", \""+arrayMaisComentados[k].lng+"\");' class='moldura'>"+(parseInt(k)+1)+"</div> </td> <td> <a style='cursor: pointer;' onclick='getCrimeAreaVisivel(\""+arrayMaisComentados[k].id+"\", \""+arrayMaisComentados[k].lat+"\", \""+arrayMaisComentados[k].lng+"\");'>"+arrayMaisComentados[k].desc+"</a> </td> </tr>";
+									}	
+								}	
+							}
+							if(tipoDezMais == '3'){
+								for (k in arrayMaisConfirmados){
+									if(arrayMaisConfirmados[k].qtd != -1)
+										html += "<tr> <td> <div style='cursor: pointer;' onclick='getCrimeAreaVisivel(\""+arrayMaisConfirmados[k].id+"\", \""+arrayMaisConfirmados[k].lat+"\", \""+arrayMaisConfirmados[k].lng+"\");' class='moldura'>"+(parseInt(k)+1)+"</div> </td> <td> <a style='cursor: pointer;' onclick='getCrimeAreaVisivel(\""+arrayMaisConfirmados[k].id+"\", \""+arrayMaisConfirmados[k].lat+"\", \""+arrayMaisConfirmados[k].lng+"\");'>"+arrayMaisConfirmados[k].desc+"</a> </td> </tr>";
+								}	
+							}
+							html+="</table>";
+							document.getElementById("filtroForm:painelDezMaisListagem").innerHTML = html;							
+						}	
+					}
+
+					function getCrimeAreaVisivel(idCrime, lat, lng){
+						if(map.getZoom()>=15){
+							id=idCrime;
+							qtd_roubos = 0;
+							qtd_furtos = 0;
+							qtd_outros = 0;
+							qtd_denuncias = 0;
+							submeteRequisicao();
+						}
+						else
+							mostrarCrimeMapa(idCrime, lat, lng);
+					}	
+
+					function zeraDezMais(){
+						arrayMaisVistos[0] = new ItemDezMais();
+						arrayMaisVistos[1] = new ItemDezMais();
+						arrayMaisVistos[2] = new ItemDezMais();
+						arrayMaisVistos[3] = new ItemDezMais();
+						arrayMaisVistos[4] = new ItemDezMais();
+						arrayMaisComentados[0] = new ItemDezMais();
+						arrayMaisComentados[1] = new ItemDezMais();
+						arrayMaisComentados[2] = new ItemDezMais();
+						arrayMaisComentados[3] = new ItemDezMais();
+						arrayMaisComentados[4] = new ItemDezMais();
+						arrayMaisConfirmados[0] = new ItemDezMais();
+						arrayMaisConfirmados[1] = new ItemDezMais();
+						arrayMaisConfirmados[2] = new ItemDezMais();
+						arrayMaisConfirmados[3] = new ItemDezMais();
+						arrayMaisConfirmados[4] = new ItemDezMais();
+					}	
+					
+					var arrayMaisVistos = {};
+					arrayMaisVistos[0] = new ItemDezMais();
+					arrayMaisVistos[1] = new ItemDezMais();
+					arrayMaisVistos[2] = new ItemDezMais();
+					arrayMaisVistos[3] = new ItemDezMais();
+					arrayMaisVistos[4] = new ItemDezMais();
+
+					var arrayMaisComentados = {};
+					arrayMaisComentados[0] = new ItemDezMais();
+					arrayMaisComentados[1] = new ItemDezMais();
+					arrayMaisComentados[2] = new ItemDezMais();
+					arrayMaisComentados[3] = new ItemDezMais();
+					arrayMaisComentados[4] = new ItemDezMais();
+					
+					var arrayMaisConfirmados = {};
+					arrayMaisConfirmados[0] = new ItemDezMais();
+					arrayMaisConfirmados[1] = new ItemDezMais();
+					arrayMaisConfirmados[2] = new ItemDezMais();
+					arrayMaisConfirmados[3] = new ItemDezMais();
+					arrayMaisConfirmados[4] = new ItemDezMais();
+					
+					function ItemDezMais() {
+						this.id = '';
+						this.lat = '';
+						this.lng = '';						
+						this.desc = '';
+						this.qtd = -1;
+					}
+					
+					
+					function montaListaDezMais(idCrime, descricao, qtdView, qtdComentarios, qtdConf, lat, lng){
+						var aux1;
+						var aux2;
+						var aux3;
+						var aux4;
+						var itemDM;
+						if(idCrime != arrayMaisVistos[0].id && idCrime != arrayMaisVistos[1].id && idCrime != arrayMaisVistos[2].id && idCrime != arrayMaisVistos[3].id && idCrime != arrayMaisVistos[4].id){ 
+							if(qtdView > arrayMaisVistos[0].qtd){
+								itemDM = new ItemDezMais();
+								itemDM.id = idCrime;
+								itemDM.desc = descricao;
+								itemDM.qtd = qtdView;
+								itemDM.lat = lat;
+								itemDM.lng = lng;
+								aux1 = arrayMaisVistos[0];
+								arrayMaisVistos[0] = itemDM; 
+								aux2 = arrayMaisVistos[1];
+								arrayMaisVistos[1] = aux1;
+								aux3 = arrayMaisVistos[2];
+								arrayMaisVistos[2] = aux2;
+								aux4 = arrayMaisVistos[3];
+								arrayMaisVistos[3] = aux3;
+								arrayMaisVistos[4] = aux4;
+								
+							}else
+							if(qtdView > arrayMaisVistos[1].qtd){
+								itemDM = new ItemDezMais();
+								itemDM.id = idCrime;
+								itemDM.desc = descricao;
+								itemDM.qtd = qtdView;
+								itemDM.lat = lat;
+								itemDM.lng = lng;
+								aux1 = arrayMaisVistos[1];
+								arrayMaisVistos[1] = itemDM; 
+								aux2 = arrayMaisVistos[2];
+								arrayMaisVistos[2] = aux1;
+								aux3 = arrayMaisVistos[3];
+								arrayMaisVistos[3] = aux2;							
+								arrayMaisVistos[4] = aux3;
+	
+								
+							}else
+							if(qtdView > arrayMaisVistos[2].qtd){
+								itemDM = new ItemDezMais();
+								itemDM.id = idCrime;
+								itemDM.desc = descricao;
+								itemDM.qtd = qtdView;
+								itemDM.lat = lat;
+								itemDM.lng = lng;
+								aux1 = arrayMaisVistos[2];
+								arrayMaisVistos[2] = itemDM; 
+								aux2 = arrayMaisVistos[3];
+								arrayMaisVistos[3] = aux1;							
+								arrayMaisVistos[4] = aux2;
+			
+							}else
+							if(qtdView > arrayMaisVistos[3].qtd){
+								itemDM = new ItemDezMais();
+								itemDM.id = idCrime;
+								itemDM.desc = descricao;
+								itemDM.qtd = qtdView;
+								itemDM.lat = lat;
+								itemDM.lng = lng;
+								aux1 = arrayMaisVistos[3];
+								arrayMaisVistos[3] = itemDM; 
+								arrayMaisVistos[4] = aux1;
+							
+							}else
+							if(qtdView > arrayMaisVistos[4].qtd){							
+								itemDM = new ItemDezMais();
+								itemDM.id = idCrime;
+								itemDM.desc = descricao;
+								itemDM.qtd = qtdView;
+								itemDM.lat = lat;
+								itemDM.lng = lng;
+								arrayMaisVistos[4] = itemDM;
+														
+							}
+						}
+												
+						//Comentarios
+						if(idCrime != arrayMaisComentados[0].id && idCrime != arrayMaisComentados[1].id && idCrime != arrayMaisComentados[2].id && idCrime != arrayMaisComentados[3].id && idCrime != arrayMaisComentados[4].id){ 
+							if(qtdComentarios > arrayMaisComentados[0].qtd){
+								itemDM = new ItemDezMais();
+								itemDM.id = idCrime;
+								itemDM.desc = descricao;
+								itemDM.qtd = qtdComentarios;
+								itemDM.lat = lat;
+								itemDM.lng = lng;
+								aux1 = arrayMaisComentados[0];
+								arrayMaisComentados[0] = itemDM; 
+								aux2 = arrayMaisComentados[1];
+								arrayMaisComentados[1] = aux1;
+								aux3 = arrayMaisComentados[2];
+								arrayMaisComentados[2] = aux2;
+								aux4 = arrayMaisComentados[3];
+								arrayMaisComentados[3] = aux3;
+								arrayMaisComentados[4] = aux4;
+								
+							}else
+							if(qtdComentarios > arrayMaisComentados[1].qtd){
+								itemDM = new ItemDezMais();
+								itemDM.id = idCrime;
+								itemDM.desc = descricao;
+								itemDM.qtd = qtdComentarios;
+								itemDM.lat = lat;
+								itemDM.lng = lng;
+								aux1 = arrayMaisComentados[1];
+								arrayMaisComentados[1] = itemDM; 
+								aux2 = arrayMaisComentados[2];
+								arrayMaisComentados[2] = aux1;
+								aux3 = arrayMaisComentados[3];
+								arrayMaisComentados[3] = aux2;							
+								arrayMaisComentados[4] = aux3;
+	
+								
+							}else
+							if(qtdComentarios > arrayMaisComentados[2].qtd){
+								itemDM = new ItemDezMais();
+								itemDM.id = idCrime;
+								itemDM.desc = descricao;
+								itemDM.qtd = qtdComentarios;
+								itemDM.lat = lat;
+								itemDM.lng = lng;
+								aux1 = arrayMaisComentados[2];
+								arrayMaisComentados[2] = itemDM; 
+								aux2 = arrayMaisComentados[3];
+								arrayMaisComentados[3] = aux1;							
+								arrayMaisComentados[4] = aux2;
+			
+							}else
+							if(qtdComentarios > arrayMaisComentados[3].qtd){
+								itemDM = new ItemDezMais();
+								itemDM.id = idCrime;
+								itemDM.desc = descricao;
+								itemDM.qtd = qtdComentarios;
+								itemDM.lat = lat;
+								itemDM.lng = lng;
+								aux1 = arrayMaisComentados[3];
+								arrayMaisComentados[3] = itemDM; 
+								arrayMaisComentados[4] = aux1;
+							
+							}else
+							if(qtdComentarios > arrayMaisComentados[4].qtd){							
+								itemDM = new ItemDezMais();
+								itemDM.id = idCrime;
+								itemDM.desc = descricao;
+								itemDM.qtd = qtdComentarios;
+								itemDM.lat = lat;
+								itemDM.lng = lng;
+								arrayMaisComentados[4] = itemDM;
+														
+							}
+						}	
+
+						//Confirmados
+						if(idCrime != arrayMaisConfirmados[0].id && idCrime != arrayMaisConfirmados[1].id && idCrime != arrayMaisConfirmados[2].id && idCrime != arrayMaisConfirmados[3].id && idCrime != arrayMaisConfirmados[4].id){						
+							if(qtdConf > arrayMaisConfirmados[0].qtd){
+								itemDM = new ItemDezMais();
+								itemDM.id = idCrime;
+								itemDM.desc = descricao;
+								itemDM.qtd = qtdConf;
+								itemDM.lat = lat;
+								itemDM.lng = lng;
+								aux1 = arrayMaisConfirmados[0];
+								arrayMaisConfirmados[0] = itemDM; 
+								aux2 = arrayMaisConfirmados[1];
+								arrayMaisConfirmados[1] = aux1;
+								aux3 = arrayMaisConfirmados[2];
+								arrayMaisConfirmados[2] = aux2;
+								aux4 = arrayMaisConfirmados[3];
+								arrayMaisConfirmados[3] = aux3;
+								arrayMaisConfirmados[4] = aux4;
+								
+							}else
+							if(qtdConf > arrayMaisConfirmados[1].qtd){
+								itemDM = new ItemDezMais();
+								itemDM.id = idCrime;
+								itemDM.desc = descricao;
+								itemDM.qtd = qtdConf;
+								itemDM.lat = lat;
+								itemDM.lng = lng;
+								aux1 = arrayMaisConfirmados[1];
+								arrayMaisConfirmados[1] = itemDM; 
+								aux2 = arrayMaisConfirmados[2];
+								arrayMaisConfirmados[2] = aux1;
+								aux3 = arrayMaisConfirmados[3];
+								arrayMaisConfirmados[3] = aux2;							
+								arrayMaisConfirmados[4] = aux3;
+	
+								
+							}else
+							if(qtdConf > arrayMaisConfirmados[2].qtd){
+								itemDM = new ItemDezMais();
+								itemDM.id = idCrime;
+								itemDM.desc = descricao;
+								itemDM.qtd = qtdConf;
+								itemDM.lat = lat;
+								itemDM.lng = lng;
+								aux1 = arrayMaisConfirmados[2];
+								arrayMaisConfirmados[2] = itemDM; 
+								aux2 = arrayMaisConfirmados[3];
+								arrayMaisConfirmados[3] = aux1;							
+								arrayMaisConfirmados[4] = aux2;
+			
+							}else
+							if(qtdConf > arrayMaisConfirmados[3].qtd){
+								itemDM = new ItemDezMais();
+								itemDM.id = idCrime;
+								itemDM.desc = descricao;
+								itemDM.qtd = qtdConf;
+								itemDM.lat = lat;
+								itemDM.lng = lng;
+								aux1 = arrayMaisConfirmados[3];
+								arrayMaisConfirmados[3] = itemDM; 
+								arrayMaisConfirmados[4] = aux1;
+							
+							}else
+							if(qtdConf > arrayMaisConfirmados[4].qtd){							
+								itemDM = new ItemDezMais();
+								itemDM.id = idCrime;
+								itemDM.desc = descricao;
+								itemDM.qtd = qtdConf;
+								itemDM.lat = lat;
+								itemDM.lng = lng;
+								arrayMaisConfirmados[4] = itemDM;
+														
+							}
+						}	
+							
+					}
+					
+					function plotaMarcadores() {
+
+					   			limpaCrimesOutOfBounds(id, idRelato);
+			      				if (i < linhas.length-1){
+						      		var keep=Math.min(i + 30000, linhas.length-1);
+						      		while (i < keep){
+							      		var dadosCrimeLinha = linhas[i].split("|");
+						            	var idCrime = dadosCrimeLinha[0];						            	
+						            	var idTipoCrime = dadosCrimeLinha[1];
+						            	var lat = dadosCrimeLinha[2];
+	   					           		 var long = dadosCrimeLinha[3];
+ 						            	var idCrime2 = dadosCrimeLinha[4];
+ 						            	var dataCrime = dadosCrimeLinha[6];
+ 						            	if(dataCrime != undefined){
+ 	 						            	var dia=dataCrime.substring(0,2);
+	 						            	var mes = dataCrime.substring(3,5);	
+	 						            	var ano = dataCrime.substring(6,10);
+	 						            	if (!filtrou) {
+		 						            	var tempDataCrime = new Date(ano,mes-1,dia);
+		 						            	if (tempDataCrime < tempDataMaisAntiga){
+		 						            		dataMaisAntiga=dataCrime;
+		 						            		tempDataMaisAntiga=tempDataCrime;
+		 						            	}
+											}
+ 						            	}
+ 						            	var razoes = dadosCrimeLinha[7];
+ 						            	atualizaEstatisticasRazoes(razoes);	
+ 						            	if (id==idCrime2)
+ 						            		id=idCrime;
+ 						            	
+ 						            	if (idTipoCrime == 1 || idTipoCrime == 4)
+ 						            		qtd_roubos++;
+ 						            	if (idTipoCrime == 2 || idTipoCrime == 3)
+ 						            		qtd_furtos++;		
+ 						            	if (idTipoCrime == 5)
+ 						            		qtd_outros++;					                	
+								
+ 						            	if (idTipoCrime == 6) {
+ 						           
+											  qtd_denuncias++;
+						                	//if(map.getZoom() >= 15){		
+							                  //addComment(idCrime, descricao);
+						                  	  //showDivComment();
+						                	//}  								                  								                  						                
+						                }else{
+						                	montaListaDezMais(idCrime,dadosCrimeLinha[8],dadosCrimeLinha[9],dadosCrimeLinha[10],dadosCrimeLinha[11], lat, long);
+						                }
+						                
+	 						           if(!crimesAtuais[idCrime])	{
+		   					                  // Cria o marcador
+							                var marcador = createMarkerId(new GLatLng(lat, long),idTipoCrime,idCrime2,dataCrime);
+							                
+							                
+											//mgr.addMarker(marcador,2);
+	
+	//*********************** Kernel Map INICIO ****************************
+											arrayCrimesLatLng[index] = new crimeKernelMap(long, lat, marcador);
+											++index;
+	//*********************** Kernel Map FIM ****************************	   
+											crimesAtuais[idCrime]=marcador;
+											// Google Agrupadores: Preenchendo Vetor de marcadores
+											GVetorMarcadores.push(marcador);
+											
+										}
+						            		
+							      		i++
+							      			
+						      		}
+						      		if (document.getElementById("loading")){
+										 var datainicial = document.getElementById("dataInicial").value;
+						      			 var datafinal = document.getElementById("dataFinal").value;
+							      		 document.getElementById("loadingMessage").innerHTML= "#{messages['webapp.carregando.crimes']} "  + i + " #{messages['webapp.carregando.de']} " +  (linhas.length-1) +  "<br/> #{messages['webapp.carregando.periodo']}: " + datainicial + " #{messages['webapp.carregando.a']} " + datafinal;		           				    
+						      		}
+						      		window.setTimeout(plotaMarcadores,1);			      				
+			      				}
+			      				else {
+			      					atualizaEstatisticasAreaVisivel();
+				      				verificaPermalink();
+        	                		 document.getElementById("loading").style.visibility='hidden';
+        	                		 document.getElementById("loadingMessage").innerHTML="#{messages['webapp.carregando.crimes']}".
+        	                		 i=0;
+			      				}
+
+				      			if (!filtrou) {
+				      				document.getElementById("dataInicial").value=dataMaisAntiga;
+				      				verificaFiltrosAplicados();
+				      				dataInicial=dataMaisAntiga.split("/");	
+				      			}
+				      			/*
+				      			 *
+				      			 * Google Agrupadores: Plotando Agrupadores
+				      			 *
+				      			 */
+				      			GClusterer.clearMarkers();
+								GClusterer = new MarkerClusterer(map, GVetorMarcadores);
+				      			
+			      		}						
+					  
+					   function plotaEstados() {
+   	                		 document.getElementById("loading").style.visibility='hidden';   	                		     		 
+   	                		 i=0;
+   	                		 totalCrimes=0;
+				      		while (i < linhas.length-1){
+				      		     		var dadosCrimeLinha = linhas[i].split("|");
+						            	var sigla = dadosCrimeLinha[0];
+						            	var qtd = dadosCrimeLinha[1];
+						            	var lat = dadosCrimeLinha[2];
+	   					           		 var long = dadosCrimeLinha[3];
+
+	   					           		 totalCrimes+=parseInt(qtd);
+	   					                  // Cria o marcador
+						                var marcador = createMarkerGroup(new GLatLng(lat, long),sigla + ' (' + qtd + ')');
+								      	// Adiciona o marcador ao mapa
+									mgr.addMarker(marcador,2,6);
+								
+									//gmarkers.put(idCrime,marcador);
+						      		i++
+						      		}
+   			 				//var temp =	document.getElementById("quantidadeCrimesEncontrados").value;
+ 				        	//document.getElementById("quantidadeCrimesEncontrados").value = totalCrimes + " " + temp;	
+			      				
+				      			//	verificaPermalink();
+        	                	
+        	                	
+			      		}
+
+					function setaSubmeteuFiltro(){
+						acoesUsuario['filtrou'] = true;
+						submeteu = true;
+					}				      		
+					function submeteRequisicao(){
+					 		
+					 if (submeteu) {
+					 	submeteu=false;					 	
+					    tipoCrime = document.getElementById("tipoCrime").value;
+					    tipoVitima = document.getElementById("tipoVitima").value;  
+					    tipoLocal = document.getElementById("tipoLocal").value;
+					    dataInicial = document.getElementById("dataInicial").value.split("/");
+					    dataFinal = document.getElementById("dataFinal").value.split("/");
+					    horarioInicial = document.getElementById("filtroForm:horarioInicial").value;
+					    horarioFinal = document.getElementById("filtroForm:horarioFinal").value;
+				        entidadeCertificadora = document.getElementById("filtroForm:entidadeCertificadora").value;
+					    var isEntidadeCertificadoraSelecionada = document.getElementById("filtroForm:crimeConfirmadoEntidadeCertificadora").checked;
+                        if(isEntidadeCertificadoraSelecionada == false) {
+							document.getElementById("filtroForm:entidadeCertificadora").disabled = true;
+							document.getElementById("filtroForm:entidadeCertificadora").value="";                                                     
+							entidadeCertificadora = "-1"; 
+                        }
+   					   if (document.getElementById("filtroForm:crimeConfirmadoPositivamente").checked == true )
+	   					    confirmadosPositivamente = document.getElementById("filtroForm:crimeConfirmadoPositivamente").value;
+					    else
+						    confirmadosPositivamente = "";
+					 
+					    }
+					    var b = map.getBounds();
+						var north = b.getNorthEast().lat();
+						  var south = b.getSouthWest().lat();
+						  var east = b.getNorthEast().lng();
+						  var west = b.getSouthWest().lng();
+
+					  /*  if (id){//verifica se e permalink. se for seta zoom para nao entrar nos agrupadores
+   					    	atualiza=false; //seta atualiza false para no evento zoom end outra requisicao nao ser aberta
+					    	map.setZoom(7); 
+
+							
+					    	}*/
+					    
+					    if(validaPeriodoData()) {
+						   	constroiRequisicao('ServletManipuladorTXT?tc='+tipoCrime+'&tv='+tipoVitima+'&tl='+document.getElementById("tipoLocal").value+'&di='+dataInicial+'&df='+dataFinal+'&hi='+horarioInicial+'&hf='+horarioFinal +  '&z=' + map.getZoom()+ '&ic=' + id+ '&ec=' + entidadeCertificadora + '&cp=' + confirmadosPositivamente + '&n=' +north+ '&s=' +south+
+            '&e=' +east + '&w='+west + '&id=' + ignoraData +'&rl='+idRelato);
+				            ignoraData="";
+
+            			}
+
+					
+					}
+					/*Função que habilita/desabilita a lista contendo as entidades certificadoras cadastradas*/
+								function habilitaListaEntidadeCertificadora(){
+									
+									var listaHabilitada = document.getElementById("filtroForm:entidadeCertificadora").disabled;
+									if(listaHabilitada == true){
+										document.getElementById("filtroForm:entidadeCertificadora").disabled = false;
+  										 document.getElementById("filtroForm:entidadeCertificadora").selectedIndex = 1;
+  										 }
+									else {
+									 document.getElementById("filtroForm:entidadeCertificadora").disabled = true;
+									 document.getElementById("filtroForm:entidadeCertificadora").selectedIndex = 0;
+
+									}
+									 
+								}
+
+
+				/* ]]> */			
+				--></script>
+
+			<h:outputText value="#{messages['crime.filtro.periodo']}:"
+				style="font-size:11px;" />
+			<h:panelGrid border="0" columns="1">
+
+				<h:panelGroup border="0" columns="3">
+					<t:inputText id="dataInicial" onkeyup="limpaDataInicial();" forceId="true"
+						value="#{filtroForm.dataInicial}" style="font-size:10px;"
+						size="10">
+						<f:converter
+							converterId="wikicrimes.WikiSearchCrimesDataConverter" />
+					</t:inputText>
+					<t:graphicImage id="triggerINI" forceId="true"
+						value="/images/btns/btnCalendar.gif"
+						style="display:inline; cursor:pointer;" />
+					<h:outputText value="#{messages['filtro.label.acrase']}"
+						style="font-size:11px;" />
+				</h:panelGroup>
+
+				<h:panelGroup border="0" columns="2">
+					<t:inputText id="dataFinal" forceId="true" onkeyup="limpaDataFinal();"
+						value="#{filtroForm.dataFinal}" style="font-size:10px;" size="10">
+						<f:converter
+							converterId="wikicrimes.WikiSearchCrimesDataConverter" />
+					</t:inputText>
+					<t:graphicImage id="triggerDF" forceId="true"
+						value="/images/btns/btnCalendar.gif"
+						style="display:inline; cursor:pointer;" />
+				</h:panelGroup>
+
+			</h:panelGrid>
+			<!-- Filtros Avançados -->
+			<rich:simpleTogglePanel id="togglePanelFiltroAvancado"
+				bodyClass="filtrosSimpleTogglePanelBodyFiltroAvancado"
+				onexpand="SimpleTogglePanelManager.toggleOnClient(event,'filtroForm:togglePanelFiltroAvancado');"
+				oncollapse="SimpleTogglePanelManager.toggleOnClient(event,'filtroForm:togglePanelFiltroAvancado');"
+				headerClass="panelHeader" opened="false" switchType="client"
+				style="width:158px;">
+				<!--  label="#{messages['crime.filtro.avancado']}"> -->
+
+				<f:facet name="header">
+					<h:panelGroup>
+						<h:outputText value="#{messages['crime.filtro.avancado']}" />
+					
+					</h:panelGroup>
+				</f:facet>
+
+				<h:panelGrid border="0" columns="1" cellpadding="2" cellspacing="2"
+					style="margin:0px;">
+
+					<h:outputText value="#{messages['crime.filtro.horario']}:"
+						style="font-size:11px;" />
+
+
+					<h:panelGroup border="0" columns="2">
+						<h:selectOneMenu value="#{filtroForm.horarioInicial}"
+							style="font-size:10px;" id="horarioInicial">
+							<f:selectItem itemLabel="#{messages['filtro.btn.qualquer']}"
+								itemValue="-1" />
+							<f:selectItems value="#{filtroForm.horarioItens}" />
+						</h:selectOneMenu>
+
+						<h:outputText value="#{messages['filtro.label.acrase']}"
+							style="font-size:11px;" />
+					</h:panelGroup>
+					<h:selectOneMenu value="#{filtroForm.horarioFinal}"
+						style="font-size:10px; " id="horarioFinal">
+						<f:selectItem itemLabel="#{messages['filtro.btn.qualquer']}"
+							itemValue="-1" />
+						<f:selectItems value="#{filtroForm.horarioItens}" />
+					</h:selectOneMenu>
+
+					<!-- Filtro por nível de confiabilidade  -->
+					<h:outputText value="#{messages['crime.filtro.certificacao']}:"
+						style="vertical-align: text-top; font-size:11px;" />
+					<h:panelGrid border="0" columns="2" cellpadding="0" cellspacing="0">
+
+						<h:selectBooleanCheckbox
+							value="#{filtroForm.crimeConfirmadoPositivamente}"
+							id="crimeConfirmadoPositivamente" style="font-size:11px;">
+						</h:selectBooleanCheckbox>
+
+						<h:outputText
+							value="#{messages['crime.filtro.option.certificadoPositivamente']}"
+							style="font-size:10px;" />
+
+						<h:selectBooleanCheckbox id="crimeConfirmadoEntidadeCertificadora"
+							value="#{filtroForm.crimeConfirmadoEntCer}"
+							style="font-size:11px;"
+							onclick="habilitaListaEntidadeCertificadora();">
+						</h:selectBooleanCheckbox>
+
+						<h:outputText
+							value="#{messages['crime.filtro.option.entidadeCertificadora']}"
+							style="font-size:10px;" />
+					</h:panelGrid>
+					<h:selectOneMenu
+						style="font-size:10px"
+						value="#{filtroForm.entidadeCertificadora}"
+						id="entidadeCertificadora">
+						<f:selectItems value="#{filtroForm.entidadeCertificadoraItens}" />
+					</h:selectOneMenu>
+					<!-- FIM Filtro por nível de confiabilidade  -->
+					<!-- Inserção de um código javaScript para resolução dos problemas com a propriedade disable do componente "selectOneMenu"-->
+					<script type="text/javascript">
+						
+							var isEntidadeCertificadoraSelecionada = document.getElementById("filtroForm:crimeConfirmadoEntidadeCertificadora").checked;
+							if(isEntidadeCertificadoraSelecionada == false) {
+								document.getElementById("filtroForm:entidadeCertificadora").disabled = true;
+								document.getElementById("filtroForm:entidadeCertificadora").itemValue = "";
+								}
+						</script>
+					<!-- update vazio somente para gravar na sessao os parametros do mapa (lat,lng,zoom) -->
+
+				</h:panelGrid>
+
+		
+				<!-- Fim dos Filtros Avançados -->
+			</rich:simpleTogglePanel>
+			<h:panelGrid border="0" columns="2"	>
+
+				<a4j:commandButton value="#{messages['filtro.btn.atualizar']}"
+					id="btnAtualizar" action="#{filtroForm.update}" styleClass="button"
+					onclick="getUserMapConfig(); limpaUrl();setaSubmeteuFiltro();atualizaMapa();" />
+
+				<a4j:commandButton value="#{messages['filtro.btn.limpar']}"
+					id="btnLimpar" onclick="limpaUrl();limpaFiltro(); return false;"
+					styleClass="button" />
+			</h:panelGrid>
+	</rich:simpleTogglePanel>
+		<!-- Fim da Pesquisa -->
+		<!-- Estatísticas -->
+				<rich:simpleTogglePanel id="togglePanelRss"
+			bodyClass="filtrosSimpleTogglePanelBodyPesquisa"
+			headerClass="panelHeaderFiltro" opened="true" switchType="client"
+			label="#{messages['novidades.title']}" style="width:100%;">
+			
+			<div align="center"><a target="_blank"
+							href="http://www.orkut.com.br/Main#AppInfo.aspx?appUrl=http%3A%2F%2Fwww.wikicrimes.org%2Fgadget%2Fwikicrimes.xml&amp;objs=&amp;sn=&amp;ref=SR"><img src="./images/img_propaganda.PNG" /></a><br/>
+			<h:outputText value="#{messages['novidades.wikicrimes.orkut.descricao1']}" /><h:outputText /><br/> 
+			</div>
+		</rich:simpleTogglePanel>
+				<rich:simpleTogglePanel id="togglePanelDezMais"
+					bodyClass="filtrosSimpleTogglePanelBodyPesquisa" 
+					headerClass="panelHeaderFiltro" opened="true" switchType="client"
+					label="#{messages['cinco.mais.titulo']}" style="width:100%;">
+					<t:panelGroup style="width: 100%; font-size: 10px; font-family: sans-serif;">
+						<table width="100%" cellpadding="0" cellspacing="0" align="center">
+							<tr>
+								<td align="center"> <select size="3" style="font-size: 10px; font-family: sans-serif;" id="tipoDezMaisSelecao" onchange="getDezMaisGeralMapa(this.value);"> <option selected="selected" value="1"> <h:outputText value="#{messages['cinco.mais.vistos']}" /> </option> <option value="2"> <h:outputText value="#{messages['cinco.mais.comentados']}" /> </option> <option value="3"> <h:outputText value="#{messages['cinco.mais.confirmados']}" /> </option>  </select> </td>
+							</tr>
+						</table>
+					</t:panelGroup>		
+				
+					<script><!--
+					/*	<![CDATA[ */
+					function getDezMaisGeralMapa(tipo){
+						if(tipo!=undefined)
+							tipoDezMais = tipo;
+						var eMapa = document.getElementById("op_dez_mais1").checked;
+						if(!eMapa){
+							if(tipoDezMais == '1')
+								document.getElementById("filtroForm:btSubmitVistos").click();
+							if(tipoDezMais == '2')
+								document.getElementById("filtroForm:btSubmitComentados").click();
+							if(tipoDezMais == '3')
+								document.getElementById("filtroForm:btSubmitConfirmados").click();
+								
+						}else{
+							
+							mostraListaDezMais();
+						}							
+					}	
+						
+					/* ]]> */			
+				--></script>
+					<hr />
+					<t:panelGrid align="center" style="width: 100%; font-size: 9px; font-family: sans-serif;"
+						cellpadding="0" cellspacing="0" columns="2">
+						<t:panelGroup>
+							<input checked="checked" type="radio" id="op_dez_mais" name="op_dez_mais"  value="1" onclick="getDezMaisGeralMapa();"/> <h:outputText value="#{messages['tipo.dez.mais.geral']}" />
+						</t:panelGroup>
+						<t:panelGroup>
+							<input type="radio" id="op_dez_mais1" name="op_dez_mais" value="2" onclick="getDezMaisGeralMapa();" /> <h:outputText value="#{messages['tipo.dez.mais.mapa']}" />
+						</t:panelGroup>
+					</t:panelGrid>
+					<t:panelGroup id="painelDezMaisListagem" style="width: 100%">	
+						<t:panelGrid 
+							style="font-size: 11px; font-family: sans-serif;" width="100%"
+							columns="2" cellpadding="1" cellspacing="1">
+							<c:forEach var="dezMaisIter" items="#{filtroForm.dezMais}">
+								<t:panelGroup>
+									<div style="cursor: pointer;"
+										onclick="mostrarCrimeMapa('#{dezMaisIter.chave}','#{dezMaisIter.latitude}', '#{dezMaisIter.longitude}');"
+										class="moldura">
+										<h:outputText value="#{dezMaisIter.idCrime}" />
+									</div>
+								</t:panelGroup>
+								<t:panelGroup >
+									<a onclick="mostrarCrimeMapa('#{dezMaisIter.chave}','#{dezMaisIter.latitude}', '#{dezMaisIter.longitude}');"
+										style="cursor: pointer;"><h:outputText
+												value="#{dezMaisIter.descricao}" />								
+									</a>
+								</t:panelGroup>
+							</c:forEach>
+						</t:panelGrid>
+					</t:panelGroup>	
+				</rich:simpleTogglePanel>
+				<!-- Fim das Estatísticas -->
+		<!--  inicio rss feed reader -->
+
+		<a4j:commandButton id="btSubmitVistos" style="display: none" immediate="true" reRender="painelDezMaisListagem"
+								action="#{filtroForm.dezMaisVistos}"/>
+		<a4j:commandButton id="btSubmitComentados" style="display: none" immediate="true" reRender="painelDezMaisListagem"
+								action="#{filtroForm.dezMaisComentados}"/>
+		<a4j:commandButton id="btSubmitConfirmados" style="display: none" immediate="true" reRender="painelDezMaisListagem"
+								action="#{filtroForm.dezMaisConfirmados}"/>												
+						
+	</h:form>
+</h:panelGrid>
+
+<script type="text/javascript">
+		    Calendar.setup(
+		    {
+		      inputField  : "dataInicial",         // ID of the input field
+		      ifFormat    : "#{messages['date.format.calendar']}",    // the date format
+		      button      : "triggerINI",       // ID of the button
+		      weekNumbers : false
+		    }
+		  	);
+		    Calendar.setup(
+		    {
+		      inputField  : "dataFinal",         // ID of the input field
+		      ifFormat    : "#{messages['date.format.calendar']}",    // the date format
+		      button      : "triggerDF",       // ID of the button
+		      weekNumbers : false
+		    }
+		  	);
+		</script>
+
+</body>
+</html>

@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC
+"-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+ 
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:jsp="http://java.sun.com/JSP/Page">
+
+    <head>
+	    <meta http-equiv="Cache-Control" content="no-store"/>
+	    <meta http-equiv="Pragma" content="no-cache"/>
+	    <meta http-equiv="Expires" content="0"/>
+	    <meta http-equiv="content-type" content="text/html; charset=iso-8859-1"/>
+	    <link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon"/>
+	    <link rel="stylesheet" type="text/css" href="./styles/wikicrimes.css" title="default" />
+	    <script	type="text/javascript">
+	/* <![CDATA[ */
+	    function detectBrowser()
+		{
+		var browser=navigator.appName;
+		var b_version=navigator.appVersion;
+		var version=parseFloat(b_version);
+		if (browser!="Netscape")
+		{			//inclui espacos por causa do IE
+					document.getElementById("espacos").innerHTML="<br/><br/>";						
+
+		}
+
+		}
+	    /* ]]> */
+		</script>	
+    </head>
+
+    <body style="overflow-x: hidden" onload="detectBrowser();">
+
+    <f:view>
+        <f:loadBundle var="messages" basename="messages"/>
+       	<div id="topoBalao"> <b>#{messages['mostrardados.titulo']}</b> </div> 
+        <h:panelGrid border="0" columns="1" style="font-size: 11px; font-family: sans-serif;">
+            <h:form id="confirmaForm">
+			<div id="espacos" >
+			</div>
+            <c:if test="#{not empty message}">
+				<h:outputText value="#{message}" styleClass="message"/>
+            </c:if>
+
+            <!--  Dados Gerais -->
+            <h:panelGrid border="0" columns="2" style="text-align:left">
+
+               	<h:outputText value="#{messages['crime.tipoCrime']}"
+							style="vertical-align: text-top" />
+						<h:outputText value="#{messages[confirmaForm.confirmacao.crime.tipoCrime.nome]}" />
+
+						<h:outputText value="#{messages['crime.tipoVitima']}">
+							<c:if test="#{confirmaForm.confirmacao.crime.tipoVitima == null and confirmaForm.confirmacao.crime.tipoLocal.tipoVitima == null}">
+								<jsp:attribute name="style" value="visibility:hidden;" />
+							</c:if>
+						</h:outputText>
+						
+						<c:if test="#{confirmaForm.confirmacao.crime.tipoVitima == null and confirmaForm.confirmacao.crime.tipoLocal.tipoVitima != null}">
+						<h:outputText
+							value="#{messages[confirmaForm.confirmacao.crime.tipoLocal.tipoVitima.nome]}"/>
+						</c:if>
+						<c:if test="#{confirmaForm.confirmacao.crime.tipoVitima != null and confirmaForm.confirmacao.crime.tipoLocal.tipoVitima != null}">
+						<h:outputText
+							value="#{messages[confirmaForm.confirmacao.crime.tipoVitima.nome]}"/>
+						</c:if>
+                
+                <h:outputText value="#{messages['crime.tipoLocal']}">
+                    <c:if test="#{confirmaForm.confirmacao.crime.tipoLocal == null}">
+                        <jsp:attribute name="style" value="visibility:hidden;" />
+                    </c:if>
+                </h:outputText>
+                <h:outputText value="#{messages[confirmaForm.confirmacao.crime.tipoLocal.nome]}">
+                    <c:if test="#{confirmaForm.confirmacao.crime.tipoLocal == null}">
+                        <jsp:attribute name="style" value="visibility:hidden;" />
+                    </c:if>
+                </h:outputText>
+
+                <h:outputText value="#{messages['crime.horario']}" style="vertical-align: text-top"/>
+                <h:outputText value="#{confirmaForm.confirmacao.crime.horario}:00" />
+
+                <h:outputText value="#{messages['crime.data']}" style="vertical-align: text-top"/>
+                <h:outputText value="#{confirmaForm.confirmacao.crime.data}" converter="wikicrimes.WikiCrimesDataConverter"/>
+
+                <h:outputText value="#{messages['crime.tipoRegistro']}" style="vertical-align: text-top"/>
+                <h:outputText value="#{messages[confirmaForm.confirmacao.crime.tipoRegistro.nome]}" />
+                 <h:outputText value="#{messages['crime.mostra.descricao']}" />
+                <h:outputText value="#{confirmaForm.confirmacao.crime.descricao}" />
+                <h:outputText style="vertical-align: text-top" value="#{messages['crime.mostra.registradoEm']}:"/>
+				<h:outputText  value="#{confirmaForm.confirmacao.crime.dataHoraRegistro}" />												
+						<h:outputText value="#{messages['crime.mostra.confirmacoesPositivas']}:"
+							style="vertical-align: text-top; color: blue;" />
+						<h:outputText style="color: blue;" value="#{confirmaForm.confirmacao.crime.confirmacoesPositivas}" />						
+						<h:outputText value="#{messages['crime.mostra.confirmacoesNegativas']}:"
+							style="vertical-align: text-top; color: red;" />
+						<h:outputText style="color: red;" value="#{confirmaForm.confirmacao.crime.confirmacoesNegativas}" />
+            </h:panelGrid>
+            
+            <h:outputLink style="text-align: right;" value="#"  onclick="javascript:parent.zoomIn('#{confirmaForm.confirmacao.crime.chave}')">Zoom in  </h:outputLink>
+					<h:outputLink value="#"  onclick="javascript:parent.zoomOut('#{confirmaForm.confirmacao.crime.chave}')">  Zoom out</h:outputLink>
+           
+
+
+               
+<br/><br/>
+
+
+
+                <h:inputHidden required="true" value="#{confirmaForm.confirmacao.crime.idCrime}" id="idCrime"/>
+                <h:inputHidden required="true" value="#{confirmaForm.idConfirmacao}" id="idConfirmacao"/>
+                
+                <h:outputText value="#{messages['confirmacao.pergunta']}" style="vertical-align: text-top"/>
+				<h:outputText />
+				<br/><br/>
+				
+				<t:div style="align: center;">
+                	<h:commandButton value="#{messages['webapp.btn.sim']} " id="btnSim" onclick="parent.displayMessage('./tipoConfirmacao.html?idCrime='+'#{confirmaForm.crime.idCrime}'+ '&amp;p=true' + '&amp;idConfirmacao=' + '#{confirmaForm.idConfirmacao}', 380, 200,'#{messages['confirmacao.pergunta.pq.motivo']}');return false;" styleClass="button"/>
+   	            	<h:outputText value=" "/>
+   	            	<h:commandButton value=" #{messages['webapp.btn.nao']}" id="btnNao" onclick="parent.displayMessage('./tipoConfirmacao.html?idCrime='+'#{confirmaForm.crime.idCrime}' + '&amp;p=false' + '&amp;idConfirmacao=' + '#{confirmaForm.idConfirmacao}', 400, 200,'#{messages['confirmacao.pergunta.pq.motivo']}');return false;" styleClass="button"/>
+					<h:outputText value=" "/>
+					<h:outputLink value="#" onclick="parent.displayMessage('./abuso.html?idCrime=' + '#{mostrarDadosForm.crime.idCrime}',450,410,'#{messages['abuso.titulo']}');return false;" >
+						<h:graphicImage value="/images/denuncia2.jpg" title="#{messages['abuso.hint']}" style="vertical-align:middle; padding-bottom:5px;"/>
+					</h:outputLink>
+				
+				</t:div>
+                	
+<h:outputText />
+				<br/><br/>
+
+          
+        <table>
+				<tr align="left">
+					<td> #{messages['mostrardados.permalink']} (<a href="" onmouseover="Tip('#{messages['crime.mostra.permalink']}', BALLOON, true, ABOVE, true, OFFSETX, -100);"  >?</a>) </td>
+				</tr>
+				<tr align="left">
+					<td> <input type="text" readonly="readonly" style="font-size: 10px;" value="http://www.wikicrimes.org/main.html?idcrime=#{confirmaForm.confirmacao.crime.chave}" size="45"/> </td>
+				</tr>
+			</table>
+			  </h:form>
+        </h:panelGrid>
+      
+    </f:view>
+
+    </body>
+</html>

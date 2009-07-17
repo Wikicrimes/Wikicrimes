@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC
+"-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+
+
+
+	<f:loadBundle var="messages" basename="messages" />
+	<script type="text/javascript"> 
+	/* <![CDATA[ */
+		
+
+
+			if (GBrowserIsCompatible()) {
+				var telaRequisicao;
+				var idCrimeDestacado;	
+				var i = 0;
+				var clusterer;
+				var map;
+				var mgr;
+				var crime;
+				var crime2;
+				var id;
+				var podeRegistrar = false;
+				var idTipoCrime = 0;
+				var idSubTipoCrime = 0;
+				var geocoder;
+				var gmarkers = new HashMap();
+				var ii = 0;
+				var IE=false;
+				var tempX = 0;
+				var tempY = 0;	
+				var showWindow=false;
+				var lastZoom;
+				var atualiza=true;
+				var atualizaGrupos=true;
+				browser=navigator.appName;
+				check=browser.indexOf("Microsoft");
+				if (check!=-1) IE=true;
+			} else {
+				alert("Desculpe, WikiCrimes.org nao e compativel com seu browser");
+			}
+			
+			
+			
+			function ComandoVaParaWikicrimes() {
+			}
+			ComandoVaParaWikicrimes.prototype = new GControl();
+			
+			ComandoVaParaWikicrimes.prototype.initialize = function(map) {
+			  var container = document.createElement("div");
+			
+			  var wikicrimesDiv = document.createElement("div");
+			  this.setButtonStyle_(wikicrimesDiv);
+			  container.appendChild(wikicrimesDiv);
+			  wikicrimesDiv.appendChild(document.createTextNode(""));
+			  GEvent.addDomListener(wikicrimesDiv, "click", function() {
+			     window.open ("http://www.wikicrimes.org", "Wikicrimes","location=1,status=1,scrollbars=1,menubar=1,resizable=1");
+			  });    
+			
+			  map.getContainer().appendChild(container);
+			  return container;
+			}
+			
+			
+			ComandoVaParaWikicrimes.prototype.getDefaultPosition = function() {
+			  return new GControlPosition(G_ANCHOR_TOP_RIGHT, new GSize(6,6));
+			}
+			
+			
+			ComandoVaParaWikicrimes.prototype.setButtonStyle_ = function(button) {
+			  //button.style.textDecoration = "underline";
+			 // button.style.color = "#0000cc";
+			  //button.style.backgroundColor = "white";
+			  //button.style.font = "small Arial";
+			  //button.style.border = "1px solid black";
+			  //button.style.padding = "2px";
+			  //button.style.marginBottom = "3px";
+			  //button.style.textAlign = "center";
+			  if(telaRequisicao=='mapaEmbedded'){  
+			  	button.style.width = "12.8em";
+			  }
+			  else if(telaRequisicao=='geradorEmbedded'){
+			  	button.style.width = "9.6em";
+			  }	
+			  button.style.height = "1.8em";
+			  button.style.cursor = "pointer";
+			  button.style.backgroundImage = "url('./images/logoWikicrimesEmbedded.PNG')";
+			}
+			
+			
+					
+					    // Call this function when the page has been loaded		    
+			function load(zoomUrl,latUrl,lngUrl,tipoCrimeUrl,tipoVitimaUrl,tipoLocalUrl,dtInicialUrl,dtFinalUrl,hInicialUrl,hFinalUrl,idCrimeUrl,entidadeCertificadoraUrl,telaUrl, cpUrl,nUrl,eUrl,wUrl,sUrl) {//alert(zoom);
+					telaRequisicao = telaUrl;
+					idCrimeDestacado = idCrimeUrl;
+					//pogDoMal = idCrimeDestacado+"\r"; 
+					map = new GMap2(document.getElementById("map"));
+					map.setCenter(new GLatLng(latUrl, lngUrl),parseInt(zoomUrl));		
+					//map.disableDoubleClickZoom();
+			//		map.enableScrollWheelZoom();
+					mgr = new GMarkerManager(map);		
+					
+					map.addControl(new GSmallMapControl());
+			        //map.addControl(new GMapTypeControl());
+					map.addControl(new ComandoVaParaWikicrimes());
+					//alert('ServletManipuladorTXT?tc='+tipoCrimeUrl+'&tv='+tipoVitimaUrl+'&tl='+tipoLocalUrl+'&di='+dtInicialUrl+'&df='+dtFinalUrl+'&hi='+hInicialUrl+'&hf='+hFinalUrl+'&z='+zoomUrl+'&ic=undefined');
+					//alert(idCrimeDestacado);				
+					constroiRequisicao('ServletManipuladorTXT?tc='+tipoCrimeUrl+'&tv='+tipoVitimaUrl+'&tl='+tipoLocalUrl+'&di='+dtInicialUrl+'&df='+dtFinalUrl+'&hi='+hInicialUrl+'&hf='+hFinalUrl+'&z='+zoomUrl+'&ic=undefined&ec='+entidadeCertificadoraUrl+'&cp='+cpUrl+'&n='+nUrl+'&e='+eUrl+'&w='+wUrl+'&s='+sUrl);
+				  
+			}
+			
+			
+			function CrimeMarker(latlng, opts) {
+				this.latlng = latlng;
+				this.idCrime = 0;
+				this.registrado = 0;
+				this.evento = 0;
+				this.texto="";
+				GMarker.apply(this, arguments);
+			}
+			/**
+			*
+			*/
+			CrimeMarker.prototype = Object.extend(new GMarker(new GLatLng(0, 0)), {initialize:function (map) {
+				GMarker.prototype.initialize.call(this, map);
+			}, setIdCrime:function (i) {
+				this.idCrime = i;
+			}, setEvento:function (i) {
+				this.evento = i;
+			}, getEvento:function (i) {
+				return this.evento;
+			}, setIdTipoCrime:function (i) {
+				this.idTipoCrime = i;
+			}, setRegistrado:function (i) {
+				this.registrado = i;
+			}, getRegistrado:function (i) {
+				return this.registrado;
+			}, getIdCrime:function () {
+				return this.idCrime;
+			}, getIdTipoCrime:function () {
+				return this.idTipoCrime;
+			}, registrarCrime:function (idTipoCrime, idSubTipoCrime) {
+				var latitude = this.getLatLng().lat();
+				var longitude = this.getLatLng().lng();
+				var myHtml = "<iframe src='./registrarCrime.html?tipoCrime=" + idTipoCrime + "&tipoVitima=" + idSubTipoCrime + "&latitude=" + latitude + "&longitude=" + longitude + "' width='600' height='250' frameborder='0'></iframe>";
+				this.openInfoWindowHtml(myHtml, 600);
+			}, confirmaCrime:function (idConfirmacao) {
+				var latitude = this.getLatLng().lat();
+				var longitude = this.getLatLng().lng();
+				var myHtml = "<iframe src='./confirmaCrime.html?idConfirmacao=" + idConfirmacao + "' width='400' height='250' frameborder='0'></iframe>";
+				this.openInfoWindowHtml(myHtml, 400);
+			}, mostrarDados:function (idCrime) {
+				var myHtml = "<iframe src='./mostrarDados.html?idCrime=" + idCrime + "' width='400' height='150' frameborder='0'></iframe>";
+				var myHtml2 = "<iframe src='./mostrarInformacoes.html?idCrime=" + idCrime + "' width='400' height='150' frameborder='0'></iframe>";
+				this.openInfoWindowTabsHtml([new GInfoWindowTab("Dados", myHtml), new GInfoWindowTab("Coment\xe1rios", myHtml2)]);
+			}, mostrarGraficos:function() {
+					var myHtml = "<iframe src='./mostrarGraficos.html?agrupadorEstado=" + this.texto + "' width='400' height='150' frameborder='0'></iframe>";
+					this.openInfoWindow(myHtml,400);
+			
+			}});
+			
+			
+			/**
+			*
+			*/
+			function createMarker(point, tipoCrime, idCrime, texto) {
+				var icone = new GIcon();
+				var marker;
+				icone.shadow = "";
+				 	
+				//alert("crimeDestacado="+idCrimeDestacado+"          idCrime="+idCrime);
+				idCrimeDestacado = idCrimeDestacado.replace("\r","");	
+					
+				icone.iconSize = new GSize(14, 24);	
+				icone.iconAnchor = new GPoint(2, 24);
+				icone.infoWindowAnchor = new GPoint(9, 2);
+				if(idCrimeDestacado == idCrime){
+					icone.iconAnchor = new GPoint(18, 66);
+					icone.iconSize = new GSize(42, 68);			
+					if (tipoCrime == 1) {
+						icone.image = "./images/baloes/vermelhoDestaque.png";
+					}
+					if (tipoCrime == 2) {
+						icone.image = "./images/baloes/azulDestaque.png";
+					}
+					if (tipoCrime == 3) {
+						icone.image = "./images/baloes/azulDestaque.png";
+					}
+					if (tipoCrime == 4) {
+						icone.image = "./images/baloes/vermelhoDestaque.png";
+					}
+					if (tipoCrime == 5) {
+						icone.image = "./images/baloes/laranjaDestaque.png";
+					}
+				}
+				else{		
+					if (tipoCrime == 1) {
+						icone.image = "./images/baloes/vermelha.png";
+					}
+					if (tipoCrime == 2) {
+						icone.image = "./images/baloes/azul.png";
+					}
+					if (tipoCrime == 3) {
+						icone.image = "./images/baloes/azul.png";
+					}
+					if (tipoCrime == 4) {
+						icone.image = "./images/baloes/vermelha.png";
+					}
+					if (tipoCrime == 5) {
+						icone.image = "./images/baloes/laranja.png";
+					}
+				}
+				
+				marker = new CrimeMarker(point, {draggable:true, icon:icone, title:texto });
+				marker.idTipoCrime = tipoCrime;
+				marker.disableDragging();
+				GEvent.addListener(marker,"click", function() {
+			    	window.open ("http://www.wikicrimes.org/main.html?idcrime="+idCrime, "Wikicrimes","location=1,status=1,scrollbars=1,menubar=1,resizable=1");     	  
+			    });	
+				return marker;
+			}
+			/*function createMarkerId(point, tipoCrime, idCrime) {
+				var marker = createMarker(point, tipoCrime);
+				marker.disableDragging();
+				var eventoDestaqueCrime=GEvent.addListener(marker, "click", function () {
+					map.removeOverlay(marker);
+					var idTipoCrimeTemp = marker.idTipoCrime;
+					var idCrimeTemp = marker.idCrime;
+					var icone = new GIcon();
+					icone.shadow = "";
+					icone.iconSize = new GSize(20, 34);
+					icone.iconAnchor = new GPoint(2, 24);
+					icone.infoWindowAnchor = new GPoint(9, 2);
+					if (tipoCrime == 1) {
+						icone.image = "./images/baloes/vermelha.png";
+					}
+					if (tipoCrime == 2) {
+						icone.image = "./images/baloes/azul2.png";
+					}
+					if (tipoCrime == 3) {
+						icone.image = "./images/baloes/azul2.png";
+					}
+					if (tipoCrime == 4) {
+						icone.image = "./images/baloes/vermelha.png";
+					}
+					if (tipoCrime == 5) {
+						icone.image = "./images/baloes/laranja2.png";
+					}
+					marker = new CrimeMarker(point, {draggable:false, icon:icone});
+					marker.idTipoCrime = idTipoCrimeTemp;
+					marker.idCrime = idCrimeTemp;
+					map.addOverlay(marker);
+					//document.getElementById("filtroForm:campoEmbedded").value="";
+					
+					
+				});
+				return marker;
+			} 
+			*/
+			
+			
+			function constroiRequisicao(url) {
+				 
+			     http_request = GXmlHttp.create();
+			     if (http_request.overrideMimeType) {
+		         	http_request.overrideMimeType('text/xml');
+			     }
+		
+			     //Espera retorno do servidor
+			     http_request.open('GET', url, true);
+				 http_request.onreadystatechange = constroiMarcadores;
+				 http_request.send(null);
+		
+			}
+			
+			function constroiMarcadores() {
+				
+			 	if (http_request.readyState == 4) {
+		         if (http_request.status == 200) {
+					var documento = http_request.responseText;			
+					linhas = documento.split("\n");			
+			 		if (linhas.length > 1){
+		
+			 			//if (map.getZoom() >=7 ){
+				 			
+				        	window.setTimeout(plotaMarcadores,1);	
+			 			//} 
+			 			//else {
+			 				//carregando estados
+			 					
+								//plotaEstados();					 			
+			 				//}
+			        	
+			        }
+			          else{
+			        	//document.getElementById("quantidadeCrimesEncontrados").value = "#{messages['filtro.contador.nenhum']}";
+			        }
+			        
+			 	  }
+			 	  else {
+		            alert('Erro na requisi��o');
+		         }
+			 	}
+			}
+			function atualizaMapa(){
+		
+				if(map){
+					map.clearOverlays();	
+					gmarkers.clear();	
+			       	submeteRequisicao();
+				}
+				else {
+					setTimeout(atualizaMapa,500);
+				}
+			}
+										   //plota crimes
+		   function plotaMarcadores() {
+		    	i=0;
+		    	//if (i < linhas.length){
+		    				
+		     		//var keep=Math.min(i + 151, linhas.length);
+		     		
+		     		while (i < linhas.length){
+			      		var dadosCrimeLinha = linhas[i].split("|");
+			           	var idCrime = dadosCrimeLinha[0];
+			           	var idTipoCrime = dadosCrimeLinha[1];
+			           	var lat = dadosCrimeLinha[2];
+			        	var long = dadosCrimeLinha[3];
+			        	var idTipoVitima = dadosCrimeLinha[5];
+			        	if (idTipoVitima){
+			        		idTipoVitima = idTipoVitima.replace("\r","");
+					                  // Cria o marcador
+						    var texto ="";
+						    if(idTipoCrime == "1"){
+						    	texto = "#{messages['tipocrime.tentativaderoubo']}";
+						    }
+						    else if(idTipoCrime == "2"){
+						    	texto = "#{messages['tipocrime.tentativadefurto']}";
+						    }
+						    else if(idTipoCrime == "3"){
+						    	texto = "#{messages['tipocrime.furto']}";
+						    }
+						    else if(idTipoCrime == "4"){
+						    	texto = "#{messages['tipocrime.roubo']}";
+						    }
+						    else if(idTipoCrime == "5"){
+						    	//texto = "Outros";
+						    }           
+						    //else{
+						    	//alert('erro embedded!');
+						    //}
+						                      
+						     
+						    if(idTipoVitima == "1"){
+						    	texto += " (#{messages['tipovitima.pessoa']})";
+						    }
+						    else if(idTipoVitima == "2"){
+						    	texto += " (#{messages['tipovitima.propriedade']})";
+						    } 
+						    else if(idTipoVitima == "3"){
+						    	texto += "#{messages['tipovitima.rixasoubrigas']}";
+						    } 
+						    else if(idTipoVitima == "4"){
+						    	texto += "#{messages['tipovitima.violenciadomestica']}";
+						    } 
+						    else if(idTipoVitima == "5"){
+						    	texto += "#{messages['tipovitima.abusodeautoridade']}";
+						    } 
+						    else if(idTipoVitima == "6"){
+						    	texto += "#{messages['tipovitima.tentativadehomicidio']}";
+						    } 
+						    else if(idTipoVitima == "7"){
+						    	texto += "#{messages['tipovitima.homicidio']}";
+						    } 
+						    else if(idTipoVitima == "8"){
+						    	texto += "#{messages['tipovitima.latrocinio']}";
+						    }
+						    
+						     
+						                   			    
+				            var marcador = createMarker(new GLatLng(lat, long),idTipoCrime,idCrime,texto);
+				        	// Adiciona o marcador ao mapa
+							mgr.addMarker(marcador,2);
+							
+							gmarkers.put(idCrime,marcador);
+						}
+			     		i++;
+		     		}
+		     		//if (document.getElementById("loading")){
+		      		// document.getElementById("loading").innerHTML= "#{messages['webapp.carregando.crimes']} <br> <b> "  + i + " #{messages['webapp.carregando.de']} " + linhas.length + " </b>" ;		           				    
+		     		//}
+		     		//window.setTimeout(plotaMarcadores,1);			      				
+				//}
+				//else {
+					//verificaPermalink();
+		              		 //document.getElementById("loading").style.visibility='hidden';
+		          //  		 i=0;
+				//}
+		   }
+							  
+		   function plotaEstados() {
+		               		 //document.getElementById("loading").style.visibility='hidden';   	                		     		 
+		               		 i=0;
+		               		 totalCrimes=0;
+		     		while (i < linhas.length-1){
+		     		     		var dadosCrimeLinha = linhas[i].split("|");
+			            	var sigla = dadosCrimeLinha[0];
+			            	var qtd = dadosCrimeLinha[1];
+			            	var lat = dadosCrimeLinha[2];
+						           		 var long = dadosCrimeLinha[3];
+		
+						           		 totalCrimes+=parseInt(qtd);
+						                  // Cria o marcador
+			                var marcador = createMarkerGroup(new GLatLng(lat, long),sigla + ' (' + qtd + ')');
+					      	// Adiciona o marcador ao mapa
+						mgr.addMarker(marcador,2,6);	        
+					
+						//parent.gmarkers.put(idCrime,marcador);
+			      		i++
+			      		}
+			 				//var temp =	document.getElementById("quantidadeCrimesEncontrados").value;
+		        	//document.getElementById("quantidadeCrimesEncontrados").value = totalCrimes + " " + temp;	
+		    				
+		     			//	verificaPermalink();
+		   	                	
+		   	                	
+		    }
+    /* ]]> */
+    </script>	
+
+</html>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="org.wikicrimes.model.TipoLocal" table="TB_TLO_TIPO_LOCAL" lazy="true">
+        <id name="idTipoLocal" column="TLO_IDTIPO_LOCAL" unsaved-value="null">
+            <generator class="increment"/>
+        </id>
+        <property name="nome" column="TLO_NOME" type="java.lang.String" not-null="true"/>
+        <property name="descricao" column="TLO_DESCRICAO" type="java.lang.String"/>
+        <many-to-one name="tipoVitima" column="TVI_IDTIPO_VITIMA" class="org.wikicrimes.model.TipoVitima"/>
+    </class>
+</hibernate-mapping>

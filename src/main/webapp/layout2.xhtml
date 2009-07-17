@@ -1,0 +1,168 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+	<f:loadBundle var="messages" basename="messages" />
+
+	<head>
+		<title><ui:insert name="titulo" /> | WikiCrimes.org</title>
+		<meta http-equiv="Cache-Control" content="no-store" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+		<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+		<link rel="shortcut icon" href="./images/favicon.ico"
+			type="image/x-icon" />
+		<link rel="stylesheet" type="text/css" href="./styles/wikicrimes.css"
+			title="default" />
+					<link rel="stylesheet" href="./styles/modal-message.css" type="text/css"/>
+		<script type="text/javascript" src="./scripts/modal-message.js"></script>
+		<script type="text/javascript" src="./scripts/calendar.js"></script>
+		<script type="text/javascript" src="./scripts/calendar-setup.js"></script>	
+		<script type="text/javascript" src="./scripts/lang/calendar-en.js"></script>
+		<script type="text/javascript" src="./scripts/lang/#{messages['webapp.calendar']}"></script>	
+		<c:if test="#{messages['webapp.calendar'] == 'calendar-pt.js' }">
+			<script type="text/javascript" src="./scripts/lang/calendar-br.js"></script>	
+		</c:if> 	
+
+		<style type="text/css">
+       .dojoDialog {
+           background: #eee;
+           border: 1px solid #999;
+           -moz-border-radius: 5px;
+           padding: 4px; /*positioning outside of the visible scope to prevent some ui glitches visibility hidden does not work*/
+           position: absolute;
+           left: -800px;
+           top: -800px;
+       }
+
+       .viewDialog {
+           background: #eee;
+           border: 1px solid #999;
+           -moz-border-radius: 5px;
+           padding: 4px; /*positioning outside of the visible scope to prevent some ui glitches visibility hidden does not work*/
+           position: absolute;
+           left: -800px;
+           top: -800px;
+       }
+       
+        .loginDialog {
+           background: #eee;
+           border: 1px solid #999;
+           -moz-border-radius: 5px;
+           padding: 4px; /*positioning outside of the visible scope to prevent some ui glitches visibility hidden does not work*/
+           position: absolute;
+           left: -800px;
+           top: -800px;
+       }
+       
+       .loginDialogDecoration {
+           width: 250px;
+       }
+
+       .loginDialogContent {
+           width: 250px;
+           height: 170px;
+       }
+       .viewDialogDecoration {
+           width: 500px;
+       }
+
+       .viewDialogContent {
+           width: 500px;
+           height: 500px;
+       }
+       
+       .denunciasDialog {
+           background: #eee;
+           border: 1px solid #999;
+           -moz-border-radius: 5px;
+           padding: 4px; /*positioning outside of the visible scope to prevent some ui glitches visibility hidden does not work*/
+           position: absolute;
+           left: -800px;
+           top: -800px;
+       }
+       
+       .denunciasDialogDecoration {
+           width: 800px;
+       }
+
+       .denunciasDialogContent {
+           width: 800px;
+           height: 500px;
+       }
+
+   </style>
+
+		<ui:insert name="head" />
+	</head>
+	<body>
+
+		<table border="0" cellspacing="0" cellpadding="0"
+			cols="3" align="left">
+			<tr>
+				<td colspan="3" align="center"
+					background="./images/topo.gif" style="background-repeat: no-repeat;">
+					<ui:insert name="menu">
+					</ui:insert>
+			</td>
+			</tr>
+			<tr>
+				<td colspan="3" align="center">
+					<ui:insert name="menucentral">
+					</ui:insert>
+			</td>			
+			</tr>
+			<tr>
+				<td colspan="3" align="center">
+					<div>
+							<h:outputLink value="#" onclick="displayMessage('./quemSomos.html', 600, 250,'#{messages['titulo.quemsomos']}');return false" >
+								<h:outputText value="#{messages['webapp.quemSomos']}" style="font-size:12px;font-weight:bold"
+									title="#{messages['webapp.quemsomoshint']}" />
+							</h:outputLink> 
+							|
+							
+							<h:outputLink value="#" onclick="displayMessage('./faleConosco.html', 600, 450,'#{messages['webapp.faleConosco']}');return false" >
+								<h:outputText value="#{messages['webapp.faleConosco']}"  style="font-size:12px;font-weight:bold"
+									title="#{messages['webapp.faleconoscohint']}" />
+							</h:outputLink>						  
+							|
+							<h:outputLink value="#"  onclick="return showAjuda('http://74.55.152.242:8080/cs/livehelp.php?department=1', 580, 500);" > 
+								<h:outputText value="#{messages['webapp.ajudaOnLine']}"  style="font-size:12px;font-weight:bold"
+									title="#{messages['webapp.ajudaOnLineHint']}" />
+							</h:outputLink>						  
+							|
+							<h:outputLink value="#" onclick="displayMessage('./perguntasFrequentes.html',730, 250,'#{messages['webapp.perguntasFrequentes']}');return false;">
+								<h:outputText value="#{messages['webapp.perguntasFrequentes']}"  style="font-size:12px;font-weight:bold"
+									title="#{messages['webapp.perguntasfrequenteshint']}" />
+							</h:outputLink>							
+							|
+							
+							<h:outputLink value="#" onclick="displayMessage('./termosUso.html', 730, 400,'#{messages['webapp.termosUso']}');return false" >
+								<h:outputText value="#{messages['webapp.termosUso']}"  style="font-size:12px;font-weight:bold"
+									title="#{messages['webapp.termosusohint']}" />
+							</h:outputLink>						
+							|
+							
+							<h:outputLink value="#" onclick="displayMessage('./sobre.html', 600, 200,'#{messages['webapp.sobre']}');return false" >
+								<h:outputText value="#{messages['webapp.sobre']}"  style="font-size:12px;font-weight:bold"
+									title="#{messages['webapp.sobrehint']}" />
+							</h:outputLink>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="3" align="center">
+					#{messages['webapp.copyright']}
+				</td>
+			</tr>
+		</table>
+		
+	</body>
+</html>

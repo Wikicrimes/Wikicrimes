@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+	xml:lang="pt" lang="pt-br">
+<f:view>
+<head>
+	<title>
+		<h:outputText value=": #{msg['application.name']} - #{msg['application.version']} : " />
+		<ui:insert name="title" />
+	</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+	<link href="styles/padrao.css" rel="stylesheet" type="text/css" />
+	
+	<ui:insert name="head" />
+
+</head>
+
+<body>
+	<rich:panel>
+		<f:facet name="header">
+			<h:form>
+				<h:panelGrid columns="3" columnClasses="left,right,right" width="100%">
+					<h:outputText>
+						#{msg['application.name']}:<ui:insert name="title" />
+					</h:outputText>
+					<h:selectOneMenu value="#{localeBean.locale}"
+						valueChangeListener="#{localeBean.changeLocale}"
+						onchange="this.form.submit()">
+						<f:selectItems value="#{localeBean.localeList}" />
+					</h:selectOneMenu>
+					<h:commandLink action="logout" value="#{msg['page.logout.title']}" />
+				</h:panelGrid>
+			</h:form>
+		</f:facet>
+		<h:form>
+			<rich:toolBar>
+				<h:commandLink action="index">
+					<h:graphicImage value="images/go-home.png" />
+				</h:commandLink>
+
+				<rich:dropDownMenu value="#{msg['menu.label.usuarios']}">
+					<rich:menuItem value="#{msg['page.usuario.busca']}" action="#{usuarioBean.zerar}" />
+				</rich:dropDownMenu>
+
+				<rich:dropDownMenu value="#{msg['menu.label.crimes']}">
+					<rich:menuItem action="#{crimeBean.zerar}" value="#{msg['page.usuario.busca']}" />
+					<rich:menuItem action="#{crimeBean.irEnderecoCrimes}" value="#{msg['crime.editarEndereco']}" />
+				<!-- 	<rich:menuItem  value="#{msg['page.crime.maisvistos']}" />
+					<rich:menuItem  value="#{msg['page.crime.log']}" />   -->
+				</rich:dropDownMenu>
+
+				<rich:dropDownMenu value="#{msg['menu.label.relatos']}">
+					<rich:menuItem action="#{relatoBean.irEnderecoRelatos}" value="#{msg['relato.editarEndereco']}" />
+				</rich:dropDownMenu>
+
+				<rich:dropDownMenu value="#{msg['menu.label.ec']}">
+					<rich:menuItem action="#{entidadeCertificadoraBean.zerar}" value="#{msg['page.usuario.busca']}" />
+					<rich:menuItem  action="ecReg" value="#{msg['page.ec.cadastro']}" />
+		 	<!--    <rich:menuItem  value="#{msg['page.ec.grafo']}" />    -->
+				</rich:dropDownMenu>
+				
+				<rich:dropDownMenu value="#{msg['menu.label.chaves']}">
+					<rich:menuItem action="#{geraChavesBean.irConsultaDominio}" value="#{msg['menu.label.chaves.consulta.dominio']}" />
+					<rich:menuItem action="#{geraChavesBean.irGeradorChaves}" value="#{msg['menu.label.chaves.gera.chaves']}" />
+				</rich:dropDownMenu>
+			</rich:toolBar>
+		</h:form>
+		<div style="padding: 0.6em;">
+			<ui:insert name="body" />
+		</div>
+	</rich:panel>
+</body>
+</f:view>
+</html>

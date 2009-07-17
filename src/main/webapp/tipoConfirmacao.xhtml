@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC
+"-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+		<link rel="stylesheet" type="text/css" href="./styles/wikicrimes.css" title="default" />
+	</head>
+	<body>
+
+		<f:loadBundle var="messages" basename="messages" />
+		<h:form>
+		
+		<c:if test="#{not empty message}">
+						<h:outputText value="#{message}" styleClass="message" />
+		</c:if>
+		<h:inputHidden required="true" value="#{confirmaForm.idCrime}" id="idCrime"/>
+		<h:inputHidden required="true" value="#{confirmaForm.p}" id="p"/>
+		<t:saveState value="#{confirmaForm.p}"/>
+		<t:saveState value="#{confirmaForm.idCrime}"/>
+		<t:saveState value="#{confirmaForm.idConfirmacao}"/>
+		<h:panelGrid border="0" columns="1" cellspacing="0" style="text-align:left;">
+				<c:if test="#{confirmaForm.p}">
+					<h:outputText value="#{messages['confirmacao.pergunta.pq.sim']}" />
+				</c:if>
+				<c:if test="#{confirmaForm.p == false}">
+					<h:outputText value="#{messages['confirmacao.pergunta.pq.nao']}" />
+				</c:if>
+				<h:selectOneRadio layoutWidth="1" id="motivos" value="#{confirmaForm.idMotivo}" layout="pageDirection" style="vertical-align: text-top; font-size: 11px;" required="true">
+				<f:selectItems value="#{confirmaForm.motivoItens}" style="font-size: 12px;"/>
+				</h:selectOneRadio>
+				<h:message styleClass="errorMessage" for="motivos" />
+				<h:panelGroup><h:commandButton value="Ok" id="btnConfirma" action="#{confirmaForm.confirmaMotivo}" styleClass="button"/>
+				<input type="button" value="#{messages['usuario.fechar']}" id="btnFechar"
+					onclick="parent.closeMessage(); return false;"
+					class="button" style="margin-left:10px"/>
+					</h:panelGroup>
+					
+		</h:panelGrid>
+		</h:form>			
+	</body>
+</html>

@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+
+
+
+<ui:composition template="./layout2.xhtml">
+	<ui:define name="head">
+		
+	</ui:define>
+	<ui:define name="titulo">
+			#{messages['usuario.administracao']}
+			</ui:define>
+	<ui:define name="menu">
+		<br />
+		<ui:include src="headerSemMenu.xhtml" />
+	</ui:define>
+	<ui:define name="menucentral">
+
+		<c:if test="#{not empty message}">
+			<h:outputText value="#{message}" styleClass="message" />
+		</c:if>
+
+		<h:form>
+
+
+			<h:outputText value="Página de Administração"
+				style="text-align: justify; font-size: 31px; font-weight: bold;" />
+
+			<br /><br />
+			<h:outputText style="text-align: right;"
+				value="Wikicrimes é um software que permite o acesso e registro de ocorrências criminais no computador diretamente em um mapa digitalizado. 
+	Por esta razão esta atividade se chama mapear o crime. A filosofia que norteia Wikicrimes é a mesma da enciclopédia Wikipedia. Parte-se do princípio que a 
+	participação individual pode gerar uma sabedoria das massas. Ou seja, se todos participarem o mapeamento criminal passa a ser feito colaborativamente e todos 
+	terão o benefício de ter acesso às informações de crimes no mapa. Por isso nosso slogan é Compartilhe informações sobre crimes. Saiba onde não é seguro!. 
+	Wikicrimes não é um projeto desenvolvido por uma instituição policial. Trata-se de um projeto de cidadania. É importante ressaltar que não se pode, nem se deseja, 
+	substituir os órgãos policiais. O fato de se registrar uma ocorrência em WikiCrimes não exime o cidadão de o fazê-lo também nas organizações de segurança responsáveis." />
+
+			<c:if test="#{not empty message}">
+				<h:outputText value="#{message}" styleClass="message" />
+			</c:if>
+		<h:panelGrid>
+			<h:commandButton value="Exibir Crimes" immediate="true"
+				action="#{crimeForm.acessoAdministracao}" styleClass="button" />
+
+		</h:panelGrid>
+
+		</h:form>
+
+		
+		<h:panelGrid columns="3">
+
+			<h:form>
+				<rich:simpleTogglePanel
+					bodyClass="filtrosSimpleTogglePanelBodyFiltroAvancado"
+					onexpand="SimpleTogglePanelManager.toggleOnClient(event,'filtroForm:togglePanelFiltroAvancado');"
+					oncollapse="SimpleTogglePanelManager.toggleOnClient(event,'filtroForm:togglePanelFiltroAvancado');"
+					headerClass="panelHeader" opened="true" switchType="client"
+					label="Usuários" style="width:400px;">
+
+					<rich:simpleTogglePanel
+						bodyClass="filtrosSimpleTogglePanelBodyFiltroAvancado"
+						onexpand="SimpleTogglePanelManager.toggleOnClient(event,'filtroForm:togglePanelFiltroAvancado');"
+						oncollapse="SimpleTogglePanelManager.toggleOnClient(event,'filtroForm:togglePanelFiltroAvancado');"
+						headerClass="panelHeader" opened="true" switchType="client"
+						label="Busca" style="width:340px;">
+
+						<h:panelGrid columns="2">
+							<h:outputText value="Nome" />
+							<t:inputText value="#{adminForm.usuarioAdminForm.primeiroNome}" />
+						</h:panelGrid>
+
+						<h:panelGrid columns="2">
+							<h:outputText value="E-mail" />
+							<t:inputText value="#{adminForm.usuarioAdminForm.email}" />
+						</h:panelGrid>
+
+						<h:panelGrid columns="2">
+							<h:outputText value="Cidade" />
+							<t:inputText value="#{adminForm.usuarioAdminForm.cidade}" />
+						</h:panelGrid>
+
+						<h:panelGrid columns="2">
+							<h:outputText value="Estado" />
+							<h:selectOneMenu required="false"
+								value="#{adminForm.usuarioAdminForm.estado}" forceId="true">
+								<f:selectItem itemLabel="Selecione" itemValue="" />
+								<f:selectItems id="estados"
+									value="#{adminForm.estadosBrasileiros}" />
+							</h:selectOneMenu>
+						</h:panelGrid>
+
+						<h:panelGrid columns="2">
+							<h:outputText value="Entidade Certificadora" />
+							<h:selectOneMenu
+								value="#{adminForm.entCerSel}">								
+								<f:selectItems value="#{adminForm.entidadeCertificadoras}" />
+							</h:selectOneMenu>
+						</h:panelGrid>
+
+						<h:panelGrid columns="2">
+							<h:outputText value="Confirmado" />
+							<t:selectOneMenu value="#{adminForm.usuarioAdminForm.confirmacao}"
+								required="false" forceId="true">
+								<f:selectItem itemLabel="" itemValue="" />
+								<f:selectItem itemLabel="Sim" itemValue="1" />
+								<f:selectItem itemLabel="Não" itemValue="0" />
+							</t:selectOneMenu>
+						</h:panelGrid>
+
+
+						<h:panelGrid columns="2">
+							<h:outputText value="Registrados no período de" />
+							<h:panelGrid border="0" columns="1" style="margin-bottom: 10px">
+
+								<h:panelGroup border="0" columns="3">
+									<t:inputText id="dataInicial" forceId="true"
+										value="#{adminForm.dataInicial}" style="font-size:10px;"
+										size="10">
+										
+									</t:inputText>
+									<t:graphicImage id="triggerINI" forceId="true"
+										value="/images/btns/btnCalendar.gif"
+										style="display:inline; cursor:pointer;" />
+									<h:outputText value="#{messages['filtro.label.acrase']}"
+										style="padding-left:7px;font-size:11px;" />
+								</h:panelGroup>
+
+								<h:panelGroup border="0" columns="2">
+									<t:inputText id="dataFinal" forceId="true"
+										value="#{adminForm.dataFinal}" style="font-size:10px;"
+										size="10">
+										
+									</t:inputText>
+									<t:graphicImage id="triggerDF" forceId="true"
+										value="/images/btns/btnCalendar.gif"
+										style="display:inline; cursor:pointer;" />
+								</h:panelGroup>
+
+							</h:panelGrid>
+						</h:panelGrid>
+
+						<h:commandButton value="Buscar"
+							action="#{adminForm.consultarUsuario}" styleClass="button" />
+
+					</rich:simpleTogglePanel>
+
+					<rich:simpleTogglePanel
+						bodyClass="filtrosSimpleTogglePanelBodyFiltroAvancado"
+						onexpand="SimpleTogglePanelManager.toggleOnClient(event,'filtroForm:togglePanelFiltroAvancado');"
+						oncollapse="SimpleTogglePanelManager.toggleOnClient(event,'filtroForm:togglePanelFiltroAvancado');"
+						headerClass="panelHeader" opened="false" switchType="client"
+						label="Estatísticas" style="width:340px;">
+
+						<h:panelGrid columns="2">
+							<h:outputText
+								value="Quantidade de Usuários Confirmados: #{adminForm.qtdUsuariosConf}" />
+							<h:commandLink action="#{adminForm.acessoListarUsuariosConf}"
+								value="Ver" />
+
+						</h:panelGrid>
+
+					</rich:simpleTogglePanel>
+				</rich:simpleTogglePanel>
+			</h:form>
+
+			<h:form>
+				<rich:simpleTogglePanel
+					bodyClass="filtrosSimpleTogglePanelBodyFiltroAvancado"
+					onexpand="SimpleTogglePanelManager.toggleOnClient(event,'filtroForm:togglePanelFiltroAvancado');"
+					oncollapse="SimpleTogglePanelManager.toggleOnClient(event,'filtroForm:togglePanelFiltroAvancado');"
+					headerClass="panelHeader" opened="true" switchType="client"
+					label="Entidade Certificadora" style="width:400px;">
+
+					<h:panelGrid>
+						<h:commandButton value="Cadastrar Entidade Certificadora"
+							id="btnregEC"
+							onclick="displayMessage('./registrarEntidadeCertificadora.html', 750, 600,'Cadastrar Entidade Certificadora');return false"
+							styleClass="button" />
+					</h:panelGrid>
+
+					<h:panelGrid>
+						<h:commandButton value="Associar E-mail à Entidade Certificadora"
+							onclick="displayMessage('./associarEntidadeCertificadora.html', 750, 600,'Associar E-mail a Entidade Certificadora');return false"
+							styleClass="button" />
+					</h:panelGrid>
+
+					<h:panelGrid>
+						<h:commandButton value="Visualizar Grafo"
+							onclick="displayMessage('./associarEntidadeCertificadora.html', 750, 600,'Associar E-mail a Entidade Certificadora');return false"
+							styleClass="button" />
+					</h:panelGrid>
+
+					<rich:simpleTogglePanel
+						bodyClass="filtrosSimpleTogglePanelBodyFiltroAvancado"
+						onexpand="SimpleTogglePanelManager.toggleOnClient(event,'filtroForm:togglePanelFiltroAvancado');"
+						oncollapse="SimpleTogglePanelManager.toggleOnClient(event,'filtroForm:togglePanelFiltroAvancado');"
+						headerClass="panelHeader" opened="true" switchType="client"
+						label="Busca" style="width:340px;">
+
+						<h:panelGrid columns="2">
+							<h:outputText value="Nome" />
+							<t:inputText value="#{adminForm.entidadeCertificadora.nome}" />
+						</h:panelGrid>
+
+						<h:panelGrid columns="2">
+							<h:outputText value="HomePage" />
+							<t:inputText value="#{adminForm.entidadeCertificadora.homepage}" />
+						</h:panelGrid>
+
+						<h:panelGrid columns="2">
+							<h:outputText value="Descrição" />
+							<t:inputText value="#{adminForm.entidadeCertificadora.descricao}"
+								size="30" />
+						</h:panelGrid>
+
+						<t:saveState value="#{adminForm.entidadeCertificadora}" />
+						<h:commandButton value="Buscar" action="#{adminForm.BuscaEC}"
+							styleClass="button" />
+
+					</rich:simpleTogglePanel>
+					<rich:simpleTogglePanel
+						bodyClass="filtrosSimpleTogglePanelBodyFiltroAvancado"
+						onexpand="SimpleTogglePanelManager.toggleOnClient(event,'filtroForm:togglePanelFiltroAvancado');"
+						oncollapse="SimpleTogglePanelManager.toggleOnClient(event,'filtroForm:togglePanelFiltroAvancado');"
+						headerClass="panelHeader" opened="true" switchType="client"
+						label="Estatísticas" style="width:340px;">
+
+
+
+					</rich:simpleTogglePanel>
+				</rich:simpleTogglePanel>
+			</h:form>
+
+			<h:form>
+				<rich:simpleTogglePanel
+					bodyClass="filtrosSimpleTogglePanelBodyFiltroAvancado"
+					onexpand="SimpleTogglePanelManager.toggleOnClient(event,'filtroForm:togglePanelFiltroAvancado');"
+					oncollapse="SimpleTogglePanelManager.toggleOnClient(event,'filtroForm:togglePanelFiltroAvancado');"
+					headerClass="panelHeader" opened="true" switchType="client"
+					label="Crimes" style="width:400px;">
+
+					<h:panelGrid>
+						<h:commandButton value="Visualizar Crimes Mais Vistos"
+							onclick="displayMessage('./registrarEntidadeCertificadora.html', 750, 600,'Cadastrar Entidade Certificadora');return false"
+							styleClass="button" />
+					</h:panelGrid>
+					<h:panelGrid>
+						<h:commandButton value="Visualizar Log de Modificações"
+							onclick="displayMessage('./registrarEntidadeCertificadora.html', 750, 600,'Cadastrar Entidade Certificadora');return false"
+							styleClass="button" />
+					</h:panelGrid>
+
+					<rich:simpleTogglePanel
+						bodyClass="filtrosSimpleTogglePanelBodyFiltroAvancado"
+						onexpand="SimpleTogglePanelManager.toggleOnClient(event,'filtroForm:togglePanelFiltroAvancado');"
+						oncollapse="SimpleTogglePanelManager.toggleOnClient(event,'filtroForm:togglePanelFiltroAvancado');"
+						headerClass="panelHeader" opened="true" switchType="client"
+						label="Busca" style="width:340px;">
+
+						<h:panelGrid columns="2">
+							<h:outputText value="Tipo do Crime" />
+
+							<t:selectOneMenu value="#{adminForm.crime.tipoCrime.idTipoCrime}">
+								<f:selectItem itemLabel="" />
+								<f:selectItem itemLabel="Furto" itemValue="3" />
+								<f:selectItem itemLabel="Roubo" itemValue="4" />
+								<f:selectItem itemLabel="Tentativa de Furto" itemValue="2" />
+								<f:selectItem itemLabel="Tentativa de Roubo" itemValue="1" />
+								<f:selectItem itemLabel="Violencia" itemValue="5" />
+							</t:selectOneMenu>
+
+						</h:panelGrid>
+
+
+						<h:panelGrid columns="2">
+							<h:outputText value="Tipo de Arma" />
+							<t:selectOneMenu
+								value="#{adminForm.crime.tipoArmaUsada.idTipoArmaUsada}">
+								<f:selectItem itemLabel="" />
+								<f:selectItem itemLabel="Branca" itemValue="3" />
+								<f:selectItem itemLabel="Fogo" itemValue="2" />
+								<f:selectItem itemLabel="Nenhuma" itemValue="1" />
+								<f:selectItem itemLabel="Outras" itemValue="4" />
+								<f:selectItem itemLabel="Não Sei" itemValue="5" />
+							</t:selectOneMenu>
+						</h:panelGrid>
+						<h:panelGrid columns="2">
+							<h:outputText value="Horário" />
+							<h:selectOneListbox value="#{adminForm.crime.horario}" size="1">
+								<f:selectItem itemLabel="" />
+								<f:selectItems value="#{crimeForm.horarioItens}"
+									style="font-size: 12px;" />
+							</h:selectOneListbox>
+						</h:panelGrid>
+
+						<h:panelGrid columns="2">
+							<h:outputText value="Registrados no período de" />
+							<h:panelGrid border="0" columns="1" style="margin-bottom: 10px">
+
+								<h:panelGroup border="0" columns="3">
+									<t:inputText forceId="true" value="#{adminForm.dataInicial}"
+										style="font-size:10px;" size="12">
+										
+									</t:inputText>
+									<t:graphicImage forceId="true"
+										value="/images/btns/btnCalendar.gif"
+										style="display:inline; cursor:pointer;" />
+									<h:outputText value="#{messages['filtro.label.acrase']}"
+										style="padding-left:5px;font-size:11px;" />
+								</h:panelGroup>
+
+								<h:panelGroup border="0" columns="2">
+									<t:inputText forceId="true" value="#{adminForm.dataFinal}"
+										style="font-size:10px;" size="12">
+										
+									</t:inputText>
+									<t:graphicImage forceId="true"
+										value="/images/btns/btnCalendar.gif"
+										style="display:inline; cursor:pointer;" />
+								</h:panelGroup>
+							</h:panelGrid>
+						</h:panelGrid>
+
+						<h:panelGrid columns="2">
+							<h:outputText value="Descrição" />
+							<t:inputText value="#{adminForm.crime.descricao}" size="30" />
+						</h:panelGrid>
+
+						<h:panelGrid columns="2">
+							<h:outputText value="Quantidade de Confirmações" />
+							<t:selectOneMenu value="#{adminForm.crime.confirmacoes}">
+								<f:selectItem itemLabel="" />
+								<f:selectItem itemLabel="Nenhuma" itemValue="0" />
+								<f:selectItem itemLabel="Uma" itemValue="1" />
+								<f:selectItem itemLabel="Mais de uma" itemValue="2" />
+							</t:selectOneMenu>
+						</h:panelGrid>
+
+						<h:panelGrid columns="3">
+							<h:outputText value="Data da Ultima Modificação" />
+							<t:inputText forceId="true" value="#{adminForm.crime.data}"
+								style="font-size:10px;" size="12">
+								<f:converter
+									converterId="wikicrimes.WikiSearchCrimesDataConverter" />
+							</t:inputText>
+							<t:graphicImage forceId="true"
+								value="/images/btns/btnCalendar.gif"
+								style="display:inline; cursor:pointer;" />
+						</h:panelGrid>
+
+						<t:saveState value="#{adminForm.crime}" />
+						<t:saveState value="#{adminForm.dataInicial}" />
+						<t:saveState value="#{adminForm.dataFinal}" />
+						<h:commandButton value="Buscar" action="#{adminForm.BuscaEC}"
+							styleClass="button" />
+
+					</rich:simpleTogglePanel>
+
+					<rich:simpleTogglePanel
+						bodyClass="filtrosSimpleTogglePanelBodyFiltroAvancado"
+						onexpand="SimpleTogglePanelManager.toggleOnClient(event,'filtroForm:togglePanelFiltroAvancado');"
+						oncollapse="SimpleTogglePanelManager.toggleOnClient(event,'filtroForm:togglePanelFiltroAvancado');"
+						headerClass="panelHeader" opened="false" switchType="client"
+						label="Estatísticas" style="width:340px;">
+
+
+
+					</rich:simpleTogglePanel>
+
+				</rich:simpleTogglePanel>
+				<script type="text/javascript">
+				    Calendar.setup(
+				    {
+				      inputField  : "dataInicial",         // ID of the input field
+				      ifFormat    : "#{messages['date.format.calendar']}",    // the date format
+				      button      : "triggerINI",       // ID of the button
+				      weekNumbers : false
+				    }
+				  	);
+				    Calendar.setup(
+				    {
+				      inputField  : "dataFinal",         // ID of the input field
+				      ifFormat    : "#{messages['date.format.calendar']}",    // the date format
+				      button      : "triggerDF",       // ID of the button
+				      weekNumbers : false
+				    }
+				  	);
+				</script>
+			</h:form>
+
+		</h:panelGrid>
+
+	</ui:define>
+</ui:composition>
+		
+</html>

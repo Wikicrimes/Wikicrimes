@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="org.wikicrimes.model.TipoConfirmacao" table="TB_TIPCON_TIPOCONFIRMACAO" lazy="true">
+        <id name="idTipoConfirmacao" column="TIPCON_IDCONFIRMACAO" unsaved-value="null">
+            <generator class="increment"/>
+        </id>
+        <property name="descricao" column="TIPCON_DESCRICAO" type="java.lang.String"  not-null="true"/>
+        <property name="positiva" column="TIPCON_POSITIVA" type="java.lang.Boolean"/>
+    </class>
+</hibernate-mapping>

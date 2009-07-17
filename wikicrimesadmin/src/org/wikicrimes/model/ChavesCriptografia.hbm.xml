@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="org.wikicrimes.model.ChavesCriptografia" table="TB_CRYPTO_KEYS" lazy="true">
+        <id name="idChave" column="ID_CHAVE" unsaved-value="null">
+            <generator class="increment"/>
+        </id>         
+        
+        <property name="chavePrivada" column="CHAVE_PRIVADA" type="java.lang.String" not-null="true"/>
+        <property name="chavePublica" column="CHAVE_PUBLICA" type="java.lang.String" not-null="true"/>
+        <property name="site" column="SITE" type="java.lang.String" not-null="true"/>
+            
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="org.wikicrimes.model.RepasseRelato" table="TB_RRL_REPASSE_RELATO" lazy="true">
+        <id name="idRepasseRelato" column="RRL_IDREPASSE_RELATO" unsaved-value="null">
+            <generator class="increment"/>
+        </id>       
+        <many-to-one name="usuarioEnvio" column="RRL_IDUSUARIO_ENVIO" class="org.wikicrimes.model.UsuarioRedeSocial" unique-key="UK_REPASSE_RELATO"/>
+        <many-to-one name="usuarioRecebimento" column="RRL_IDUSUARIO_RECEBIMENTO" class="org.wikicrimes.model.UsuarioRedeSocial" unique-key="UK_REPASSE_RELATO"/>
+        <many-to-one name="relato" column="RRL_IDRELATO" class="org.wikicrimes.model.Relato" unique-key="UK_REPASSE_RELATO"/>
+        <property name="dataHoraRegistro" column="RRL_DATA_HORA_REGISTRO" type="java.util.Date"/>        
+    </class>
+</hibernate-mapping>

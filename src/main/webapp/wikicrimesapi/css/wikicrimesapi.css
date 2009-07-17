@@ -1,0 +1,54 @@
+.button, button {
+    padding: 2px;
+    background-color: #6DA6E2;
+    color: #FFFFFF;
+    border: 1px solid #2763A5; 
+    font-size: 11px;     
+}
+
+#topoAlerta {
+	padding: 0.2em;
+	padding-left: 0.8em;
+	background-color: #6da6e2;
+	border-style: solid;
+	border-width: 1px;
+	color: #ffffff;
+	font-size: 12px;
+	font-family:Arial, sans-serif;
+	font: bold;
+	width:94.8%;
+}
+
+.infoMarcadorTemporario {
+	width: 150px;
+	heidth: 100px;
+	
+	padding: 5px;
+	
+	font: normal normal normal 8pt Arial;
+	text-align: justify;
+	
+	border: solid 1px black;
+	background-color: #F0F8FF;
+}
+
+.botao{
+	background-image : url(../img/botao.png);
+	width : 104px;
+	height : 20px;
+	text-align : center;
+	padding-top : 5px;
+	font-size: 11px;
+	cursor:pointer;				
+}
+
+.botaoAtivado{
+	background-image : url(../img/botaoAtivado.png);
+	width : 104px;
+	height : 20px;
+	text-align : center;
+	padding-top : 5px;
+	font-size: 11px;
+	cursor:pointer;
+	color:gray;
+}

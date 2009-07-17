@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<ui:composition template="./layoutAvisos.xhtml">
+		<ui:define name="titulo">
+			#{messages['usuario.ativacao']}
+			</ui:define>
+		<ui:define name="menu">
+				</ui:define>
+		<ui:define name="menucentral">
+					
+					<h:outputText value="#{message}" />
+					<br />
+					<br />
+					<script>
+					/* <![CDATA[ */
+						if(#{usuario != null}){							
+							if('#{usuario.tutorAtivado}'=='0'){
+								parent.tutorEstaAtivado = false;						
+							}	
+							else
+								if('#{usuario.tutorAtivado}'=='1')
+									parent.tutorEstaAtivado = true;
+						}
+					/* ]]> */	
+					</script>				
+					<input type="button" value="#{messages['usuario.fechar']}" id="btnFechar"
+					onclick="parent.closeMessage(); return false;"
+					class="button" style="margin-left:10px"/>
+		</ui:define>
+	</ui:composition>
+
+</html>

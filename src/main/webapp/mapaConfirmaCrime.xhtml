@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC
+"-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+
+	<f:view>
+		<ui:composition template="layout.xhtml">
+			<ui:define name="titulo">
+                #{messages['webapp.confirmacao']}
+            </ui:define>
+			<ui:define name="head">
+
+			<script
+			src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=#{messages['chave.googlemaps']}"
+			type="text/javascript"></script>
+				<script type="text/javascript" src="scripts/prototype.js"></script>
+				<script type="text/javascript" src="scripts/scriptaculous.js"></script>
+				<script type="text/javascript" src="scripts/stylesheetswitcher.js"></script>
+				<script type="text/javascript" src="scripts/global.js"></script>
+				<script type="text/javascript" src="scripts/wikicrimes.js"></script>
+				<script type="text/javascript">
+		            var map;
+		            var confirmacao;
+		
+		            // Call this function when the page has been loaded
+		            function initialize() {
+		                map = new GMap2(document.getElementById("map"));
+		                map.setCenter(new GLatLng(<h:outputText value="#{confirmaForm.crime.latitude}" />, <h:outputText value="#{confirmaForm.crime.longitude}" />), 13);
+		                map.addControl(new GLargeMapControl());
+		                map.addControl(new GScaleControl());
+		                map.addControl(new GMapTypeControl());
+		                
+		                confirmacao = createMarker(new GLatLng(<h:outputText value="#{confirmaForm.crime.latitude}" />, <h:outputText value="#{confirmaForm.crime.longitude}" />));
+		                confirmacao.disableDragging();
+		                map.addOverlay(confirmacao);
+		                confirmacao.confirmaCrime(<h:outputText value="#{confirmaForm.idConfirmacao}" />);
+		                
+					    GEvent.addListener(confirmacao, "infowindowclose", function() {
+                            parent.location = "./main.html";
+					    });
+		                
+		            }
+		
+		            window.onload = initialize;
+		            window.onunload = GUnload;
+		        </script>
+
+			</ui:define>
+            <ui:define name="menu">
+                <c:if test="#{not empty usuario}">
+                    <ui:include src="headerLogged.xhtml" />
+                </c:if>
+                <c:if test="#{empty usuario}">
+                    <ui:include src="header.xhtml" />
+                </c:if>
+            </ui:define>
+			<ui:define name="conteudo">
+				<f:view>
+					<h:panelGrid border="0" columns="1">
+						<f:verbatim>
+							<div id="map" style="width: 900px; height: 500px" />
+						</f:verbatim>
+					</h:panelGrid>
+				</f:view>
+			</ui:define>
+		</ui:composition>
+	</f:view>
+</html>

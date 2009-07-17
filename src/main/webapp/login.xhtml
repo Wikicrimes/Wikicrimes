@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC
+"-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:a4j="http://richfaces.org/a4j">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" type="text/css" href="./styles/wikicrimes.css" title="default" />
+	</head>
+	<body>
+
+		<f:loadBundle var="messages" basename="messages" />
+		<h:panelGrid id="painelLogin" border="0" style="font-size: 11px; font-family: sans-serif;text-align:left;" columns="1" cellspacing="0">
+			<h:outputText id="loginMsg" value="#{loginMessage}" 
+					styleClass="errorMessage" 
+					style="#{empty loginMessage ? 'display:none;' : 'display:inline;'} "/>
+			<h:outputText value="#{messages['usuario.login']}" />
+			<h:form id="usuarioForm2">
+				<h:inputHidden required="false" value="#{usuarioForm.idCrime}"
+						id="idCrime" />
+				<h:inputHidden required="false" value="#{usuarioForm.idRelato}"
+						id="idRelato" />
+				<h:inputHidden required="false" value="#{usuarioForm.tipoRegistro}"
+						id="tipoRegistro" />		
+				<h:outputText  style="color: blue;" value="#{usuarioForm.mensagemLogin}"
+						id="mensagemLogin" />													
+				<h:panelGrid border="0" columns="2">
+					<h:outputText value="#{messages['usuario.email']}" />
+					<h:inputText id="emailField" value="#{usuarioForm.usuario.email}" style="width:150px"/>
+					<h:outputText value="#{messages['usuario.senha']}" />
+					<h:inputSecret id="senhaField" value="#{usuarioForm.usuario.senha}" style="width:150px" />
+				</h:panelGrid>
+				<a4j:commandButton reRender="painelLogin" value="#{messages['usuario.btn.entrar']}"
+					action="#{usuarioForm.login}"
+					styleClass="button" />	
+				<a4j:commandButton value="#{messages['usuario.btn.cancelar']}" id="btnCancelar"
+					onclick="parent.closeMessage(); return false;"
+					action="#{usuarioForm.clearAll}"
+					styleClass="button" style="margin-left:10px"/>
+					
+			</h:form>
+			<h:panelGroup>
+				<h:outputText  style="font-size:11px;" value="#{messages['usuario.registre.agora']} " />
+				<h:outputLink value="#" onclick="parent.displayMessage('./registrarUsuario.html', 600, 350,'#{messages['usuario.registrar']}');return false">
+				<h:outputText  value="#{messages['usuario.registre']}" style="font-size:11px;font-weight:bold"/>
+				</h:outputLink>
+				</h:panelGroup>
+			<h:panelGroup>					
+				<h:outputText  style="font-size:11px;" value="#{messages['usuario.recupere.senha']} " />
+				<h:outputLink value="#" onclick="parent.displayMessage('./recuperaSenha.html', 350, 210,'#{messages['usuario.recuperar']}');return false">
+				<h:outputText  value="#{messages['usuario.recupere']}" style="font-size:11px;font-weight:bold"/>
+				</h:outputLink>
+			</h:panelGroup>
+			
+			<script>
+			/* <![CDATA[ */
+				if(#{usuario != null}){
+					parent.document.getElementById("formReRenderLogin:btLoginSubmit").click();
+					parent.closeMessage();
+					var idCrime = document.getElementById("usuarioForm2:idCrime").value;
+					var temCrime = false;
+					var temRelato = false;
+					var temTipoRegistro = false;
+					if('#{usuario.tutorAtivado}'=='0'){
+						parent.tutorEstaAtivado = false;						
+					}	
+					else
+						if('#{usuario.tutorAtivado}'=='1')
+							parent.tutorEstaAtivado = true;
+					if(idCrime != null && idCrime != ''){
+						parent.mostrarCrimeMapa(idCrime);
+						temCrime = true;
+					}
+					var idRelato = document.getElementById("usuarioForm2:idRelato").value;
+					if(idRelato != null && idRelato != ''){
+						parent.mostrarRelatoMapa(idRelato);
+						temRelato = true;
+					}
+
+					var tipoRegistro = document.getElementById("usuarioForm2:tipoRegistro").value;
+					if(tipoRegistro=='1'){
+						parent.mostraDivTelaEscolhaRegistroTipoCrime();
+						temTipoRegistro = true;
+					}
+					if(tipoRegistro=='2'){
+						parent.mostraDivTelaEscolhaRegistroTipoDenuncia();
+						temTipoRegistro = true;
+					}	
+					if(tipoRegistro=='3'){
+						parent.selecionarComando(map, 'area');
+				  		//document.getElementById("divExplicaMarcarArea").style.visibility = "visible";
+				  		parent.estaRegistrandoArea = true;
+				  		parent.startShape();
+						temTipoRegistro = true;
+					}	
+					
+					if(!temCrime && !temRelato && !temTipoRegistro){
+						var latLng = new parent.GLatLng(#{empty usuario.lat ? 1111.111 : usuario.lat} ,#{empty usuario.lng ? 1111.111 : usuario.lng});
+						
+						var temp = parent.podeCarregarCrimes;
+						parent.podeCarregarCrimes=false;
+						parent.map.setCenter(latLng, 13);
+						parent.ignoraData="true";
+						parent.filtrou=false;
+						parent.tempDataMaisAntiga= new Date();
+						parent.atualizaMapa();
+						parent.podeCarregarCrimes=temp;
+					}	
+					
+				}
+			/* ]]> */		
+			</script>			
+		</h:panelGrid>			
+	</body>
+</html>

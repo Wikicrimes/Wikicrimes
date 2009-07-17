@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+
+<ui:composition template="./layout2.xhtml">
+
+	<ui:define name="head">
+		<link rel="stylesheet" href="./styles/modal-message.css"
+			type="text/css" />
+		<script type="text/javascript" src="./scripts/modal-message.js"></script>
+		
+	</ui:define>
+
+	<ui:define name="titulo">
+			#{messages['usuario.administracao']}
+			</ui:define>
+	<ui:define name="menu">
+		<ui:include src="headerSemMenu.xhtml" />
+
+	</ui:define>
+	<ui:define name="menucentral">
+
+		<h:form >
+			<h:panelGrid columns="1">
+				<h:panelGroup>
+					<div align="center"><b><h:outputText value="#{adminForm.sizeUsuarios}" /> <h:outputText value=" usuario(s) encontrados." />	</b></div>
+				</h:panelGroup>
+				<rich:dataTable id="usuariosAdministracao" var="usuarioLocal" style="margin-top: 10px"
+					value="#{adminForm.usuarios}" onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'"
+					border="1" cellspacing="0" cellpadding="2" rows="20"
+					styleClass="rich-table">
+					<rich:column>
+						<f:facet name="header">							
+							<h:outputText value="ID" />
+						</f:facet>	
+						<h:commandLink action="editarUsuario">
+								
+								<h:outputText value="#{usuarioLocal.idUsuario}"
+									style="padding-right:12px; font-size:12px;font-weight:bold" />
+								<f:setPropertyActionListener target="#{adminForm.usuarioEdit}"
+								value="#{usuarioLocal}"/>	
+						</h:commandLink>
+					</rich:column>
+					<rich:column>
+						<f:facet name="header">							
+							<h:outputText value="Primeiro Nome" />							
+						</f:facet>
+						<h:outputText value="#{usuarioLocal.primeiroNome}" />
+					</rich:column>
+					<rich:column>
+						<f:facet name="header">							
+							<h:outputText value="E-mail" />							
+						</f:facet>
+						<h:outputText value="#{usuarioLocal.email}" />
+					</rich:column>
+					<rich:column>
+						<f:facet name="header">							
+							<h:outputText value="Cidade" />							
+						</f:facet>
+						<h:outputText value="#{usuarioLocal.cidade}" />
+					</rich:column>
+					<rich:column>
+						<f:facet name="header">							
+							<h:outputText value="Estado" />							
+						</f:facet>
+						<h:outputText value="#{usuarioLocal.estado}" />
+					</rich:column>
+					<rich:column>
+						<f:facet name="header">							
+							<h:outputText value="Data de Registro" />							
+						</f:facet>
+						<h:outputText value="#{usuarioLocal.dataHoraRegistro}" />
+					</rich:column>
+					<rich:column>
+						<f:facet name="header">							
+							<h:outputText value="Entidade Certificadora" />							
+						</f:facet>
+						<h:outputText value="#{usuarioLocal.entidadeCertificadora.nome}" />
+					</rich:column>
+					<f:facet name="footer">
+						<rich:datascroller for="usuariosAdministracao"/>
+					</f:facet>				
+				</rich:dataTable>
+				<h:commandButton value="Voltar" styleClass="button" action="voltar" />
+			</h:panelGrid>
+		</h:form>
+		
+	</ui:define>
+</ui:composition>
+
+</html>

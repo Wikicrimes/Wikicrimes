@@ -1,0 +1,454 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC
+"-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:jsp="http://java.sun.com/JSP/Page">
+
+	<head>
+	<title>#{messages['usuario.ajuda']}</title>
+		<meta http-equiv="Cache-Control" content="no-store" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+		<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+		<link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" type="text/css" href="./styles/wikicrimes.css" title="default" />	
+		<link rel="stylesheet" type="text/css" href="scripts/sdmenu/sdmenu.css" />
+		
+		<script type="text/javascript" src="scripts/sdmenu/sdmenu.js">
+		</script>
+		<script type="text/javascript">
+
+			var myMenu;
+			window.onload = function() {
+				myMenu = new SDMenu("my_menu");
+				myMenu.init();
+			};
+
+
+			function show(url, w, h) {
+			  w += 10;
+			  h += 40;  
+			  wleft = (screen.width - w) / 2;
+			  wtop = (screen.height - h) / 2;
+			  url = url;
+			  var win = window.open(url,
+			    '',
+			    'width=' + w + ', height=' + h + ', ' +
+			    'left=' + wleft + ', top=' + wtop + ', ' +
+			    'location=no, menubar=no, titlebar=no,' +
+			    'status=no, toolbar=no, scrollbars=no, resizable=no');
+			  // Just in case width and height are ignored
+			  win.resizeTo(w, h);
+			  // Just in case left and top are ignored
+			  win.moveTo(wleft, wtop);
+			  win.focus();
+			  
+			  return false;
+		}
+
+
+		</script>
+		
+	</head>
+
+	<body style="overflow-x: hidden">
+		<div border="0" align="left" style="text-align: left;">
+			<br/><br/>
+			<h:outputText value="System Help"  style=" color:black; text-align:left; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight:bold" />
+			<br/><br/>
+			<h:outputText value="The system offers some ways of help to you user:"  style=" color:black; text-align:left; font-family: Arial, Helvetica, sans-serif; font-size: 14px; " />
+			<br/><br/>
+			<p align="left" style=" margin-left:25px;font-family: Arial, Helvetica, sans-serif; font-size: 14px; ">
+			1.	Help in Context: Some interface itens offers explanations about its use when mouse pointer is stopped for some seconds over the item.  <br/>
+			2.	Help in Text: Texts and images informing  "what is" and "how to" in the system; <br/> 
+			3. Help on-line:  Case you does not find the desired information in "help in text" or in "help in context" you can contact one of our on-line attendants and take off your doubts <a href="#" onclick="return show('http://200.217.149.102:8081/cs/livehelp.php?department=1', 580, 500);" > here</a>.
+			</p>
+			<a name="Top"><h:outputText value="Help in Text:"  style=" color:black; text-align:left; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight:bold" /></a>
+			<br/><br/>
+
+		</div>	
+	  <div style="float: left" id="my_menu" class="sdmenu">
+      <div>
+        <span>In Alphabetical Order</span>
+			<a href="#E2" style="padding-left:10px; text-align: left;">Changing data of a posted crime</a>
+			<a href="#H1" style="padding-left:10px; text-align: left;">Changing your personal data registered in the system</a>	
+			<a href="#E2" style="padding-left:10px; text-align: left;">Complementing the data of a posted crime</a>
+			<a href="#E4" style="padding-left:10px; text-align: left;">Confirming a posted criminal occurrence</a>
+			<a href="#B4" style="padding-left:10px; text-align: left;">Exit the system</a>
+			<a href="#G3" style="padding-left:10px; text-align: left;">Homicide, what is Homicide?</a>
+			<a href="#B2" style="padding-left:10px; text-align: left;">Logging in to the system:</a>
+			<a href="#B3" style="padding-left:10px; text-align: left;">Logging out of the system</a>
+			<a href="#C4" style="padding-left:10px; text-align: left;">Map zoom</a>
+			<a href="#D3" style="padding-left:10px; text-align: left;">My posted crimes</a>
+			<a href="#C3" style="padding-left:10px; text-align: left;">Moving the  map</a>
+			<a href="#D1" style="padding-left:10px; text-align: left;">Obtaining information about a posted crime</a>
+			<a href="#E1" style="padding-left:10px; text-align: left;">Post a crime</a>
+			<a href="#E4" style="padding-left:10px; text-align: left;">Refute a registered crime </a>
+			<a href="#B1" style="padding-left:10px; text-align: left;">Registering with the System</a>
+			<a href="#G5" style="padding-left:10px; text-align: left;">Robbery, what is Robbery?</a>
+			<a href="#G4" style="padding-left:10px; text-align: left;">Robbery Followed by Murder, What is it?</a>
+			<a href="#C1" style="padding-left:10px; text-align: left;">Search crimes</a>			
+			<a href="#C2" style="padding-left:10px; text-align: left;">Select an area on the map</a>
+			<a href="#G2" style="padding-left:10px; text-align: left;">Theft, what is Theft?</a>
+			<a href="#G1" style="padding-left:10px; text-align: left;">Types of crimes that can be posted in WikiCrimes</a>
+			<a href="#D1" style="padding-left:10px; text-align: left;">Viewing crimes</a>
+			<a href="#F4" style="padding-left:10px; text-align: left;">Viewing your posted occurrences</a>
+			<a href="#A2" style="padding-left:10px; text-align: left;">What is WikiCrimes</a>
+			<a href="#A3" style="padding-left:10px; text-align: left;">Who created WikiCrimes</a>
+			
+      </div>
+      <div>
+        <span>By Subject</span>
+        	<a style="padding-left:10px;text-align: left; font-size: 16;font-weight: bold; color: black"  href="#">WikiCrimes</a>
+			<a href="#A2" style="padding-left:40px; text-align: left;">What is WikiCrimes</a>
+			<a href="#A3" style="padding-left:40px; text-align: left;">Who created WikiCrimes</a>
+			
+			<a style=" padding-left:10px;text-align: left; font-size: 16;font-weight: bold; color: black"  href="#">Registro, Login e logout de usuário</a>
+			<a href="#B1" style="padding-left:40px; text-align: left;">How to register with the system</a>
+			<a href="#B2" style="padding-left:40px; text-align: left;">How to log in the system</a>
+			<a href="#B3" style="padding-left:40px; text-align: left;">How to log out the system</a>
+			<a href="#B4" style="padding-left:40px; text-align: left;">How to exit the system</a>
+			
+			<a style=" padding-left:10px; text-align: left; font-size: 16;font-weight: bold; color: black"  href="#">Pesquisa de crimes</a>
+			<a href="#C1" style="padding-left:40px; text-align: left;">How to search a crime</a>
+			<a href="#C2" style="padding-left:40px; text-align: left;">How to select an area in the map</a>
+			<a href="#C3" style="padding-left:40px; text-align: left;">How to move the map</a>
+			<a href="#C4" style="padding-left:40px; text-align: left;">How to increase and decrease the zoom of the map </a>
+			
+			<a style="padding-left:10px;text-align: left; font-size: 16;font-weight: bold; color: black"  href="#">Visualização de crimes</a>
+			<a href="#D1" style="padding-left:40px; text-align: left;">How to obtain information about a Posted Crime</a>
+			<a href="#C1" style="padding-left:40px; text-align: left;">How to search a crime</a>
+			<a href="#D3" style="padding-left:40px; text-align: left;">How to view my posted crimes</a>
+			<a href="#C2" style="padding-left:40px; text-align: left;">How to select an area in the map</a>
+			<a href="#C3" style="padding-left:40px; text-align: left;">How to move the map</a>
+			<a href="#C4" style="padding-left:40px; text-align: left;">How to zoom (+ or -) the map</a>
+						
+			<a style="padding-left:10px;text-align: left; font-size: 16;font-weight: bold; color: black"  href="#">Registro de crimes</a>
+			<a href="#E1" style="padding-left:40px; text-align: left;">How to post a crime</a>
+			<a href="#E2" style="padding-left:40px; text-align: left;">How to change the data of a posted crime</a>
+			<a href="#E2" style="padding-left:40px; text-align: left;">How to complement the data of a posted crime</a>
+			<a href="#E4" style="padding-left:40px; text-align: left;">How to confirm a posted crime</a>
+			<a href="#D3" style="padding-left:40px; text-align: left;">How to see my posted crimes</a>
+			<a href="#C3" style="padding-left:40px; text-align: left;">How to move the map</a>
+						
+			<a style="padding-left:10px;text-align: left; font-size: 16;font-weight: bold; color: black"  href="#">Manipulação do Mapa</a>
+			<a href="#C2" style="padding-left:40px; text-align: left;">How to search and view a location/address on the map</a>
+			<a href="#C3" style="padding-left:40px; text-align: left;">How to move the map</a>
+			<a href="#C4" style="padding-left:40px; text-align: left;">How to increase or decrease the zoom of the map</a>
+			<a href="#F4" style="padding-left:40px; text-align: left;">How to see the posted crimes on the map</a>
+			<a href="#C1" style="padding-left:40px; text-align: left;">How to select a posted crime on the map</a>
+			
+			<a style="padding-left:10px;text-align: left; font-size: 16;font-weight: bold; color: black"  href="#">Descrição dos tipos de crimes</a>			
+			<a href="#G1" style="padding-left:40px; text-align: left;">Types of Crimes that can be Posted in WikiCrimes</a>
+			<a href="#G2" style="padding-left:40px; text-align: left;">What is Theft?</a>
+			<a href="#G3" style="padding-left:40px; text-align: left;">What is Homicide?</a>
+			<a href="#G4" style="padding-left:40px; text-align: left;">What is Robbery Followed by Murder?</a>
+			<a href="#G5" style="padding-left:40px; text-align: left;">What is Robbery?</a>
+      </div>
+    </div>
+
+		
+
+		<div align="left" style="margin-top: 1650px;">
+			<a name="A2"></a>
+			<h:outputText value="What is WikiCrimes?" align ="left" style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight:bold; text-align:left;" />
+			<br/><br/>
+			<p align="justify" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">
+				WikiCrimes is a software program that permits users to <a href="#C1"> search</a>, <a href="#F4"> view </a> and <a href="#E1">post</a> criminal occurrences on a digital map. That's why this activity is called "mapping" the crime. The guiding philosophy of WikiCrimes is the same as that of the online encyclopedia <a href="www.wikipedia.org" target="_blank">Wikipedia</a>; it is based on the principle that individual participation can generate wisdom for the masses. In other words, if everyone participates, criminal mapping will come to be done in a collaborative manner, and everyone will benefit from having access to the crime information on the map. For this reason, our slogan is "Share crime information. Keep safe!" WikiCrimes is not a project developed by any law enforcement agency; it is a civic project. It is also important to point out that this software cannot nor intends to replace police organizations. The fact of registering an occurrence in WikiCrimes does not exempt citizens from doing so with the appropriate public safety authorities.			
+			</p>	
+			<a href="#Top"> <h:graphicImage title="Retorna ao inicio" value="/images/volta.PNG"/> </a>
+		</div>
+
+		<div align="left" style="margin-top: 1650px;">
+			<a name="A3"></a>
+			<h:outputText value="Who created WikiCrimes?"  style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight:bold; " />
+			<br/><br/>
+			<p align="justify" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">WikiCrimes was created by a research team with expertise in the areas of computer science and public safety. The team, headed by Dr. <a href="http://vfurtado.blogspot.com/" target="_blank">Vasco Furtado</a>, works in research and development of computer systems geared toward public safety, establishing partnerships with the private and public sector in projects such as ExpertCop and SimPol, among others.</p>	
+			<a href="#Top"> <h:graphicImage title="Retorna ao inicio" value="/images/volta.PNG"/> </a>
+		</div>
+		
+		<div align="left" style="margin-top: 1650px;">
+			<a name="C1"></a>
+			<h:outputText value="Searching Crimes:"  style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight:bold; " />
+			<br/><br/>
+			<p align="justify" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">WikiCrimes offers a  <a href="#H2">Crime Search Area</a> that enables users to view crimes, filtered by type of crime, date range and time range. The search also can be done by means of a direct search on the map by querying and viewing a location on the map.			
+			</p>	
+			<a href="#Top"> <h:graphicImage title="Retorna ao inicio" value="/images/volta.PNG"/> </a>
+		</div>
+		
+		<div align="left" style="margin-top: 1650px;">
+			<a name="F4"></a>
+			<h:outputText value="Viewing Crimes:"  style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight:bold; " />
+			<br/><br/>
+			<p align="justify" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">To view a crime in the system, you can:<br/>
+			1.	Move the mouse pointer over the map, identify the region in which you wish to view the crime(s), <a href="#C3">move the map</a> if necessary, or increase/decrease the <a href="#C4">map zoom</a>, in the left corner of the map, until you reach the adequate view for identifying the desired crime(s), and click on its marker (<h:graphicImage title="Retorna ao inicio" value="/images/marcadores.PNG"/>) to obtain  <a href="#D1">information about the crime you marked.</a><br/>
+			2.	In the <a href="#H3">Map Manipulation Area</a>, you can use the  <a href="#H4">Map Location/Address Search Tool</a> and enter the location or region in which you wish to view the crime(s), as precisely as possible (e.g.: Columbus Ave, 136 New York) and click on Search. The map will show the area described. Move the mouse pointer over the map, specifically, over the marker of the crime desired  (<h:graphicImage title="Retorna ao inicio" value="/images/marcadores.PNG"/>) and click on the marker to obtain   <a href="#D1">information about the crime you marked</a>.<br/>
+			3. To view a crime or a set of specific crimes, the user can use the tools of the "<a href="#H2">Crime Search Area</a>" to filter the crimes to be viewed on the map. The search offers filter options including type of crime, date range and time range.<br/>  
+				
+			</p>	
+			<a href="#Top"> <h:graphicImage title="Retorna ao inicio" value="/images/volta.PNG"/> </a>
+		</div>
+		
+		<div align="left" style="margin-top: 1650px;">
+			<a name="E1"></a>
+			<h:outputText value="Registering Occurrences of Crime:"  style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight:bold; " />
+			<br/><br/>
+			<p align="justify" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">To post a criminal occurrence, you must first be  <a href="#B1">registered</a> and <a href="#B2">logged in to the system</a>. Once you have <a href="#B2">logged in</a>, you must  <a href="#H4">search and view the location/address on the map</a> where you wish to record the crime. Once the crime location is visible on the map, select the desired crime type from the options in the "<a href="#H5">Crime Register Area</a>" (the mouse pointer will change identifying that the system is ready for the registration). Once you've selected the crime type, just click on the address/location where the crime occurred. A registration area will appear for you to fill in the data of the crime. Certain information - such as location type, date, time, weapon type, description of the crime, and email of person(s) who can confirm the crime - is mandatory for registering the crime.<br/><br/>The system currently permits you to post the following types of crime:<br/><br/>
+			Robbery: robbery against the person, robbery against property, attempted robbery against the person and attempted robbery against property;
+			Theft: theft against the person, theft against property, attempted theft against the person and attempted theft against property;
+			Others: homicide, attempted homicide, robbery followed by murder (aggravated robbery involving death of the victim), brawls or fights, domestic violence, abuse of authority.
+			</p>	
+			<a href="#Top"> <h:graphicImage title="Retorna ao inicio" value="/images/volta.PNG"/> </a>
+		</div>
+
+		<div align="left" style="margin-top: 1650px;">
+			<a name="C2"></a>
+			<h:outputText value="Searching and Viewing a Location/Address on the Map:"  style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight:bold; " />
+			<br/><br/>
+			<p align="justify" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">To search and view an address on the map, you can do the following:<br/>
+			1.	In the <a href="#H4">Map Manipulation Area</a>, can use the  <a href="#H4">Map Location/Address Search Tool</a> and enter the location or region that you wish to view (e.g.: Columbus Ave, 136 New York) and click on Search. The location being searched will be indicated on the map. The map will show the area described, provided such area exists and contains no typographical errors.<br/>
+			2.	You can move the mouse pointer over the map, and try to identify the region you wish to view directly on the map. If necessary, <a href="#C3"> move the map </a>, or increase/decrease the  <a href="#C4">map zoom </a> until you reach an adequate view of the desired area/address. 
+			
+			</p>	
+			<a href="#Top"> <h:graphicImage title="Retorna ao inicio" value="/images/volta.PNG"/> </a>
+		</div>
+		
+		<div align="left" style="margin-top: 1650px;">
+			<a name="B1"></a>
+			<h:outputText value="Registering with the System:"  style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight:bold; " />
+			<br/><br/>
+			<p align="justify" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">System registration permits users to post crimes and access personalized and privileged information in the system. All information is for restricted use in the system, and is protected as described in the Terms of Use of the system in the  <a href="#H6">WikiCrimes General Information Area</a>. To register with the system, you must select the "Join" option in the  <a href="#H7">"Login/Join/Help Area."</a> When registering with the system, the user must choose a username ("login"), which should be the users email, and a secret password, both of which are personnel, non-transferable, and will guarantee the user's access to the WikiCrimes site, enabling the user to browse and participate in activities under his/her user name, access and change all personal data and registration information. After submitting the required information, an email will be sent to the user's registered email account. You must the access the registered account, open the email and confirm the registration.
+			
+			
+			</p>	
+			<a href="#Top"> <h:graphicImage title="Retorna ao inicio" value="/images/volta.PNG"/> </a>
+		</div>
+		
+		<div align="left" style="margin-top: 1650px;">
+			<a name="E2"></a>
+			<h:outputText value="Changing Data of a Posted Criminal Occurrence:"  style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight:bold; " />
+			<br/><br/>
+			<p align="justify" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">Under development...
+			
+			</p>	
+			<a href="#Top"> <h:graphicImage title="Retorna ao inicio" value="/images/volta.PNG"/> </a>
+		</div>
+		
+		<div align="left" style="margin-top: 1650px;">
+			<a name="H1"></a>
+			<h:outputText value="Changing your Personal Data Registered in the System:"  style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight:bold; " />
+			<br/><br/>
+			<p align="justify" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">Under development...
+			
+			</p>	
+			<a href="#Top"> <h:graphicImage title="Retorna ao inicio" value="/images/volta.PNG"/> </a>
+		</div>
+		
+		<div align="left" style="margin-top: 1650px;">
+			<a name="E4"></a>
+			<h:outputText value="Confirming a Posted Criminal Occurrence:"  style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight:bold; " />
+			<br/><br/>
+			<p align="justify" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">By clicking on an occurrence on the map, a balloon will open with information on the occurrence. In this balloon, the user has the option of confirming (positively or negatively) the occurrence or entering additional data (comments or links) to the occurrence.
+If you received an email requesting confirmation of a criminal occurrence registered by some other person, just access the address contained in the email to view the data on that crime and confirm (or not) the posted criminal occurrence. This confirmation is important, since in order to validate the posted occurrences, users must associate the record to e-mails of people who can in some way confirm the veracity thereof, whether because they witnessed the occurrence, were part of it, heard about it, or because they trust the person who registered it.
+
+			
+			</p>	
+			<a href="#Top"> <h:graphicImage title="Retorna ao inicio" value="/images/volta.PNG"/> </a>
+		</div>
+		
+		<div align="left" style="margin-top: 1650px;">
+			<a name="D3"></a>
+			<h:outputText value="Viewing your Posted Occurrences:"  style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight:bold; " />
+			<br/><br/>
+			<p align="justify" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">To view the records of occurrences made by you in the system, first you must have  <a href="#B2">logged in to the system</a>. Once you have logged in, go to the <a href="#H7">Login/Join/Help Area</a>, and click on the "My Posted Crimes" link to access all occurrences that you have posted. To view a particular occurrence, just click on the occurrence from the list that appears.
+			
+			</p>	
+			<a href="#Top"> <h:graphicImage title="Retorna ao inicio" value="/images/volta.PNG"/> </a>
+		</div>
+		
+		<div align="left" style="margin-top: 1650px;">
+			<a name="B2"></a>
+			<h:outputText value="Logging in to the System (accessing the restricted parts of the system):"  style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight:bold; " />
+			<br/><br/>
+			<p align="justify" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">Logging in to the system is the manner whereby you inform the system who is utilizing it, in a way as to permit the system to offer personalized data in addition to providing privileged access to certain information. To log in to the system, you must be  <a href="#B1">registered</a>. Once you're registered, you can select the "login" option in the system's <a href="#A3">"Login/Join/Help Area"</a>.
+			</p>	
+			<a href="#Top"> <h:graphicImage title="Retorna ao inicio" value="/images/volta.PNG"/> </a>
+		</div>
+		
+		<div align="left" style="margin-top: 1650px;">
+			<a name="B3"></a>
+			<h:outputText value="Logging out of the System:"  style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight:bold; " />
+			<br/><br/>
+			<p align="justify" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">System logout is the manner whereby the users that have  <a href="#B2">logged in to the system</a> inform the system that they will no longer be using the personalized options and privileged accesses. This action must always be performed before exiting the system, for security reasons. To log out of the system, you must select the "logout" option in the system's "<a href="#H7">Login/Join/Help Area</a>" If this option is unavailable in the "<a href="#H7">Login/Join/Help Area</a>" it is because you did not log in to the system, and therefore it isn't necessary to log out.
+			</p>	
+			<a href="#Top"> <h:graphicImage title="Retorna ao inicio" value="/images/volta.PNG"/> </a>
+		</div>
+		
+		<div align="left" style="margin-top: 1650px;">
+			<a name="B4"></a>
+			<h:outputText value="Exiting the System:"  style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight:bold; " />
+			<br/><br/>
+			<p align="justify" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">If you have <a href="#B2">logged in to the system</a>, you must  <a href="#B3">log out of the system</a> before closing it. If you have not logged in, you can exit the system by closing the browser, simply clicking on the "x" in the upper right corner of your screen.
+			
+			</p>	
+			<a href="#Top"> <h:graphicImage title="Retorna ao inicio" value="/images/volta.PNG"/> </a>
+		</div>
+		
+		<div align="left" style="margin-top: 1650px;">
+			<a name="D1"></a>
+			<h:outputText value="Obtaining Information about a Posted Crime:"  style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight:bold; " />
+			<br/><br/>
+			<p align="justify" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">To obtain information about a crime you marked, just click on the respective marker of the crime  (<h:graphicImage title="Retorna ao inicio" value="/images/marcadores.PNG"/>). Certain information can only be obtained if the user is currently  <a href="#B2">logged in to the system</a>.
+			
+			</p>	
+			<a href="#Top"> <h:graphicImage title="Retorna ao inicio" value="/images/volta.PNG"/> </a>
+		</div>
+		
+		<div align="left" style="margin-top: 1650px;">
+			<a name="C3"></a>
+			<h:outputText value="Moving the Map:"  style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight:bold; " />
+			<br/><br/>
+			<p align="justify" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">To move the map, there are three options. You can move the map by:<br/>1. placing the mouse pointer on the map (when you move the pointer across the map, it changes to a hand), press and hold the left mouse button and move the mouse in the direction you wish to move the map (click and drag);<br/>
+			2.	clicking on the desired direction (north, south, east, west) with the mouse pointer on the map pan tool;<br/>
+			3.	searching the area to be viewed in the   <a href="#H4">map location/address search tool.</a>  <br/>
+			
+			</p>	
+			<a href="#Top"> <h:graphicImage title="Retorna ao inicio" value="/images/volta.PNG"/> </a>
+		</div>
+		
+		<div align="left" style="margin-top: 1650px;">
+			<a name="C4"></a>
+			<h:outputText value="Map Zoom:"  style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight:bold; " />
+			<br/><br/>
+			<p align="justify" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">To zoom (+ or -) on the map, you can:<br/>1. use the map zoom tool, located in the upper right corner of the map area;<br/>2. if your mouse has a scroll button, you can increase or decrease the zoom by moving the scroll button on your mouse.<br/>
+			
+			</p>
+			<div align="center"><h:graphicImage title="Retorna ao inicio" value="/images/scroll.PNG"/></div>	
+			<a href="#Top"> <h:graphicImage title="Retorna ao inicio" value="/images/volta.PNG"/> </a>
+		</div>
+		
+		<div align="left" style="margin-top: 1650px;">
+			<a name="G5"></a>
+			<h:outputText value="What is Robbery?"  style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight:bold; " />
+			<br/><br/>
+			<p align="justify" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">A ROBBERY is the taking of property by someone through the use of aggression or force. It implies the existence of violence or threat of violence. The fact that any type of weapon - whether a firearm or not - is used in the action, characterizes it as a robbery. 
+			
+			</p>	
+			<a href="#Top"> <h:graphicImage title="Retorna ao inicio" value="/images/volta.PNG"/> </a>
+		</div>
+		
+		<div align="left" style="margin-top: 1650px;">
+			<a name="G2"></a>
+			<h:outputText value="What is Theft?"  style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight:bold; " />
+			<br/><br/>
+			<p align="justify" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">A THEFT is the taking of property by someone, where there is no means of violence or coercion. The taking of property is often done without the victim's knowledge.
+			
+			</p>	
+			<a href="#Top"> <h:graphicImage title="Retorna ao inicio" value="/images/volta.PNG"/> </a>
+		</div>
+		
+		<div align="left" style="margin-top: 1650px;">
+			<a name="G3"></a>
+			<h:outputText value="What is Homicide?"  style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight:bold; " />
+			<br/><br/>
+			<p align="justify" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">A HOMICIDE is the act of taking a person's life. It is characterized legally as irreversible brain death of the victim. 
+			</p>	
+			<a href="#Top"> <h:graphicImage title="Retorna ao inicio" value="/images/volta.PNG"/> </a>
+		</div>
+		
+		<div align="left" style="margin-top: 1650px;">
+			<a name="G4"></a>
+			<h:outputText value="What is Robbery Followed by Murder?"  style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight:bold; " />
+			<br/><br/>
+			<p align="justify" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">In the Brazilian criminal justice system, "Robbery Followed by Murder" (or "Latrocínio") is the term used for an aggravated robbery in which the aggression employed by the perpetrator causes the victim's death. It is legally differentiated from homicide, because the fundamental purpose of the criminal act is against property. 
+			</p>	
+			<a href="#Top"> <h:graphicImage title="Retorna ao inicio" value="/images/volta.PNG"/> </a>
+		</div>
+		
+		<div align="left" style="margin-top: 1650px;">
+			<a name="G1"></a>
+			<h:outputText value="Types of Crimes that can be Posted in WikiCrimes:"  style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight:bold; " />
+			<br/><br/>
+			<p align="justify" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">You can post the following types of crimes in WikiCrimes:  <a href="#G5">robbery</a>, <a href="#G2">theft</a>, attempted robbery and attempted theft ("attempts" are characterized by the action of theft or robbery without the finalization of the act), violent conflicts such as fights, domestic mistreatment (aggression against women or children), abuse of authority, <a href="#G3">homicide</a> and <a href="#G4">robbery followed by murder</a>(aggravated robbery involving death of the victim).
+			
+			</p>	
+			<a href="#Top"> <h:graphicImage title="Retorna ao inicio" value="/images/volta.PNG"/> </a>
+		</div>
+		
+		<div align="left" style="margin-top: 1650px;">
+			<a name="H2"></a>
+			<h:outputText value="Crime Search Area"  style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight:bold; " />
+			<br/><br/>
+			<p align="justify" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">
+			<h:graphicImage title="Retorna ao inicio" value="/images/area_pesquisa_crimes_eng.PNG"/>
+			</p>	
+			<a href="#Top"> <h:graphicImage title="Retorna ao inicio" value="/images/volta.PNG"/> </a>
+		</div>
+		
+		<div align="left" style="margin-top: 1650px;">
+			<a name="H3"></a>
+			<h:outputText value="Getting to Know the Interface"  style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight:bold; " />
+			<br/><br/>
+			<p align="justify" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">
+			<h:graphicImage title="Retorna ao inicio" value="/images/interface_sistema_eng.PNG"/>
+			</p>	
+			<a href="#Top"> <h:graphicImage title="Retorna ao inicio" value="/images/volta.PNG"/> </a>
+		</div>
+		
+		<div align="left" style="margin-top: 1650px;">
+			<a name="H4"></a>
+			<h:outputText value="Map Manipulation Area"  style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight:bold; " />
+			<br/><br/>
+			<p align="justify" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">
+			<h:graphicImage title="Retorna ao inicio" value="/images/ferramenta_pesq_local_eng.PNG"/>
+			</p>	
+			<a href="#Top"> <h:graphicImage title="Retorna ao inicio" value="/images/volta.PNG"/> </a>
+		</div>
+		
+		<div align="left" style="margin-top: 1650px;">
+			<a name="H5"></a>
+			<h:outputText value="Crime Registe Area"  style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight:bold; " />
+			<br/><br/>
+			<p align="justify" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">
+			<h:graphicImage title="Retorna ao inicio" value="/images/area_registro_crimes_eng.PNG"/>
+			</p>	
+			<a href="#Top"> <h:graphicImage title="Retorna ao inicio" value="/images/volta.PNG"/> </a>
+		</div>		
+		
+		<div align="left" style="margin-top: 1650px;">
+			<a name="H6"></a>
+			<h:outputText value="WikiCrimes General Information Area"  style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight:bold; " />
+			<br/><br/>
+			<p align="justify" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">
+			<h:graphicImage title="Retorna ao inicio" value="/images/area_info_gerais_eng.PNG"/>
+			</p>	
+			<a href="#Top"> <h:graphicImage title="Retorna ao inicio" value="/images/volta.PNG"/> </a>
+		</div>
+		
+		<div align="left" style="margin-top: 1650px;">
+			<a name="H7"></a>
+			<h:outputText value="Login/Join/Help Area"  style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight:bold; " />
+			<br/><br/>
+			<p align="justify" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">For users who are not currently logged on via the Login /Join/Help Area, it appears in the following way: <br/>
+			<br/>
+			<h:graphicImage title="Retorna ao inicio" value="/images/area_login_logout_eng.PNG"/>
+			<br/><br/>
+			For users that are currently logged in (by changing the email shown below to the user's email) via the Login/Join/Help Area, it appears in the following way:<br/>
+			<br/>
+			<h:graphicImage title="Retorna ao inicio" value="/images/area_login_logado_eng.PNG" /><br/>
+			</p>	
+			<a href="#Top"> <h:graphicImage title="Retorna ao inicio" value="/images/volta.PNG"/> </a>
+		</div>
+			
+	</body>
+</html>
+
+
+

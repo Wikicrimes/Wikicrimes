@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC
+"-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+	<h:outputLink value="#" onclick="displayMessage('./quemSomos.html', 600, 250,'#{messages['titulo.quemsomos']}');return false" >
+		<h:outputText value="#{messages['webapp.quemSomos']}"
+			title="#{messages['webapp.quemsomoshint']}" />
+	</h:outputLink>
+	|
+	<h:outputText value=" "  
+			/>
+	<h:outputLink value="#" onclick="displayMessage('./faleConosco.html', 600, 450,'#{messages['webapp.faleConosco']}');return false" >
+		<h:outputText value="#{messages['webapp.faleConosco']}" 
+			title="#{messages['webapp.faleconoscohint']}" />
+	</h:outputLink>
+	|
+	<h:outputText value=" "  
+			/>
+	<h:outputLink value="#"  onclick="return showAjuda('http://74.55.152.242:8080/cs/livehelp.php?department=1', 580, 500);" > 
+		<h:outputText value="#{messages['webapp.ajudaOnLine']}" 
+			title="#{messages['webapp.ajudaOnLineHint']}" />
+	</h:outputLink>						  
+	|
+	<h:outputText value=" "  
+			/>
+	<h:outputLink value="#" onclick="displayMessage('./perguntasFrequentes.html',730, 250,'#{messages['webapp.perguntasFrequentes']}');return false;">
+		<h:outputText value="#{messages['webapp.perguntasFrequentes']}"  
+			title="#{messages['webapp.perguntasfrequenteshint']}" />
+	</h:outputLink>							
+	|
+	<h:outputText value=" "  
+			/>
+	<h:outputLink value="#" onclick="displayMessage('./termosUso.html', 730, 400,'#{messages['webapp.termosUso']}');return false" >
+		<h:outputText value="#{messages['webapp.termosUso']}" 
+			title="#{messages['webapp.termosusohint']}" />
+	</h:outputLink>						
+	|
+	<h:outputText value=" "  
+			/>
+	<h:outputLink value="#" onclick="displayMessage('./sobre.html', 600, 200,'#{messages['webapp.sobre']}');return false" >
+		<h:outputText value="#{messages['webapp.sobre']}"  
+			title="#{messages['webapp.sobrehint']}" />
+	</h:outputLink>
+
+</html>

@@ -1,0 +1,7 @@
+/* <![CDATA[ */
+const WIKICRIMES_ROUBO = '4';
+const WIKICRIMES_FURTO = '3';
+const WIKICRIMES_OUTROS = '5';
+const WIKICRIMES_TENTATIVA_ROUBO = '1';
+const WIKICRIMES_TENTATIVA_FURTO = '2';
+/* ]]> */

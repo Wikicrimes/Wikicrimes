@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd">
+
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" value="classpath:jdbc.properties" />
+	</bean>
+
+	<!-- Enable @Transactional support -->
+	<tx:annotation-driven />
+
+	<!-- Enable @AspectJ support -->
+	<aop:aspectj-autoproxy />
+
+	<aop:config>
+		<aop:advisor id="managerTx" advice-ref="txAdvice"
+			pointcut="execution(* *..service.*Service.*(..))" />
+	</aop:config>
+
+	<tx:advice id="txAdvice">
+		<tx:attributes>
+			<tx:method name="get*" read-only="true" />
+			<tx:method name="*" />
+		</tx:attributes>
+	</tx:advice>
+	
+	<bean id="comentarioService"
+		class="org.wikicrimes.service.impl.ComentarioServiceImpl">
+		<property name="comentarioDao" ref="comentarioDao" />
+	</bean>
+	
+    <bean id="confirmacaoService"
+        class="org.wikicrimes.service.impl.ConfirmacaoServiceImpl">
+        <property name="dao" ref="confirmacaoDao" />
+    </bean>
+    
+    <bean id="confirmacaoRelatoService"
+        class="org.wikicrimes.service.impl.ConfirmacaoRelatoServiceImpl">
+        <property name="dao" ref="confirmacaoRelatoDao" />
+        
+		<property name="confirmacaoRelatoDao" ref="confirmacaoRelatoDao" />
+    </bean>
+
+	<bean id="usuarioService"
+		class="org.wikicrimes.service.impl.UsuarioServiceImpl">
+		<property name="dao" ref="usuarioDao" />
+		<property name="usuarioDao" ref="usuarioDao" />
+		<property name="txtTermoUso" ref="termoUso"/>
+		<property name="txtTermoUso_EN" ref="termoUso_EN" />
+		<property name="txtTermoUso_ES" ref="termoUso_ES" />
+		
+		<property name="emailService" ref="emailService" />
+	</bean>
+	
+	<bean id="estatisticaService"
+		class="org.wikicrimes.service.impl.EstatisticaServiceImpl">
+		<property name="estatisticaCidadeDao" ref="estatisticaCidadeDao" />
+		<property name="estatisticaEstadoDao" ref="estatisticaEstadoDao" />
+		<property name="estatisticaPaisDao" ref="estatisticaPaisDao"/>
+	</bean>
+	
+	<bean id="emailService"
+		class="org.wikicrimes.service.impl.EmailServiceImpl">
+		<property name="mailSender" ref="mailSender" />
+		<property name="velocityEngine" ref="velocityEngine" />
+		<property name="dao" ref="confirmacaoRelatoDao" />		
+	</bean>
+	
+	<bean id="termoUso" class="org.springframework.core.io.ClassPathResource">
+		<constructor-arg value="termosDeUso.txt"/>
+	</bean>
+
+	<bean id="termoUso_EN"
+		class="org.springframework.core.io.ClassPathResource">
+		<constructor-arg value="termosDeUso_EN.txt" />
+	</bean>
+
+	<bean id="termoUso_ES"
+		class="org.springframework.core.io.ClassPathResource">
+		<constructor-arg value="termosDeUso_ES.txt" />
+	</bean>
+	
+	<bean id="opensocialService"
+		class="org.wikicrimes.service.impl.OpensocialServiceImpl">
+		<property name="dao" ref="opensocialDao" />		
+	</bean>
+	
+	<bean id="entidadeCertificadoraService"
+		class="org.wikicrimes.service.impl.EntidadeCertificadoraServiceImpl">
+		<property name="dao" ref="entidadeCertificadoraDao" />		
+		<property name="entidadeCertificadoraDao" ref="entidadeCertificadoraDao" />
+	</bean>
+
+	<bean id="crimeService"
+		class="org.wikicrimes.service.impl.CrimeServiceImpl">
+		<property name="dao" ref="crimeDao" />
+		<property name="crimeDao" ref="crimeDao" />
+		<property name="tipoArmaUsadaDao" ref="tipoArmaUsadaDao" />
+		<property name="tipoLocalDao" ref="tipoLocalDao" />
+		<property name="tipoCrimeDao" ref="tipoCrimeDao" />
+		<property name="tipoPapelDao" ref="tipoPapelDao" />
+		<property name="tipoRegistroDao" ref="tipoRegistroDao" />
+		<property name="tipoTransporteDao" ref="tipoTransporteDao" />
+		<property name="tipoVitimaDao" ref="tipoVitimaDao" />
+		<property name="entidadeCertificadoraDao" ref="entidadeCertificadoraDao" />
+		<property name="confirmacaoService" ref="confirmacaoService" />
+		<property name="emailService" ref="emailService" />
+		<property name="razaoDao" ref="razaoDao" />
+
+	</bean>
+	
+	<bean id="razaoService"
+		class="org.wikicrimes.service.impl.RazaoServiceImpl">
+		<property name="dao" ref="razaoDao" />
+		<property name="razaoDao" ref="razaoDao" />		
+	</bean>
+	
+	<bean id="relatoService"
+		class="org.wikicrimes.service.impl.RelatoServiceImpl">
+		<property name="dao" ref="relatoDao" />
+		<property name="relatoDao" ref="relatoDao" />
+		<property name="razaoDao" ref="razaoDao" />		
+		<property name="confirmacaoService" ref="confirmacaoService" />
+		<property name="emailService" ref="emailService" />		
+	</bean>
+
+	<!-- envio de emails -->
+	<bean id="mailSender"
+		class="org.springframework.mail.javamail.JavaMailSenderImpl">
+    	<property name="host" value="smtp.gmail.com" />
+		<property name="port" value="465" />
+		<property name="protocol" value="smtp" />
+		<property name="username" value="wikicrimes@wikicrimes.org" />
+		<property name="password" value="w1k1cr1m3s" />
+		<property name="javaMailProperties">
+			<props> 
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtp.socketFactory.port">465</prop>
+				<prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
+				<prop key="mail.smtp.socketFactory.fallback">false</prop>
+				<prop key="mail.smtp.timeout">true</prop>
+			</props> 
+		</property>
+	</bean>
+	
+	<bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+    <property name="velocityProperties">
+        <props>
+            <prop key="resource.loader">class</prop>
+            <prop key="class.resource.loader.class">
+                org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+            </prop>
+        </props>
+    </property>
+</bean>
+
+</beans>

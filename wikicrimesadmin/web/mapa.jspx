@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:v="urn:schemas-microsoft-com:vml">
+	<f:view>
+		<ui:composition template="/templates/padrao.jspx">
+			<ui:define name="title"> #{msg['commons.mapa']}</ui:define>
+			<ui:define name="body">
+				<h:form>
+					<head>
+					<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+					<script
+						src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAg4v-Pz31X7RpxlFPsEIYsRTazo9qQMtEEaWMpOq8Zpopb9nT3RT_PrvaAoazyXGxX2pPie38TEPKIQ"
+						type="text/javascript"></script>
+					<script type="text/javascript">
+	var map= null;
+	var marker = null;
+    function initialize() {
+      if (GBrowserIsCompatible()) {
+        map = new GMap2(document.getElementById("map_admin"));
+        var center = new GLatLng(#{crimeBean.crimeEditar.latitude},#{crimeBean.crimeEditar.longitude});
+        map.setCenter(center, 14);
+
+        marker = new GMarker(center, {draggable: true});
+
+        GEvent.addListener(marker, "dragstart", function() {
+          map.closeInfoWindow();
+        });
+
+        GEvent.addListener(marker, "dragend", function() {
+          marker.openInfoWindowHtml("Alterando a posição geográfica do crime...");
+         
+        });
+		 map.addControl(new GLargeMapControl());
+		 map.addControl(new GMapTypeControl());
+ 		 map.addControl(new GScaleControl());
+		 map.addControl(new GOverviewMapControl());
+		 map.enableScrollWheelZoom();
+         map.addOverlay(marker);
+                
+      }
+    }
+    
+    function x(){
+    	document.getElementById('j_id29:form:latitude').value = marker.getLatLng().lat();
+    	document.getElementById('j_id29:form:longitude').value = marker.getLatLng().lng();
+    } 	
+    </script>
+					</head>
+
+					<body onload="initialize()" onunload="GUnload()">
+					<br />
+					<h:outputText value="#{msg['page.usuario.atencao']}"
+							style="font-size:14px; color: orange;" />
+					<h:outputText style="font-size:14px;"
+						value="#{msg['mapa.frase']}" />
+					<br />
+					<br />
+					<div id="map_admin" style="width: 600px; height: 380px"></div>
+					<br />
+					<br />
+
+					<h:form id="form">
+						<h:inputHidden required="true"
+							value="#{crimeBean.crimeEditar.latitude}" id="latitude" />
+						<h:inputHidden required="true"
+							value="#{crimeBean.crimeEditar.longitude}" id="longitude" />
+
+						<h:commandButton  id="btnupdatelatlng" action="#{crimeBean.atualizarMapa}"
+							value="#{msg['commons.salvar']}" onclick="javascript:x()">
+						</h:commandButton>
+
+						<a href="#" onclick="javascript:history.go(-2)">
+						#{msg['commons.voltar']} </a>
+
+
+					</h:form>
+					</body>
+
+				</h:form>
+			</ui:define>
+		</ui:composition>
+	</f:view>
+</jsp:root>

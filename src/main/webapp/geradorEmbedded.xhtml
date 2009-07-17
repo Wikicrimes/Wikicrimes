@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC
+"-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+
+		<head>
+		<script	src="http://maps.google.com/maps?file=api&amp;v=2&amp;hl=#{messages['webapp.locale']}&amp;key=#{messages['chave.googlemaps']}"
+			type="text/javascript"></script>
+		<script type="text/javascript" src="scripts/prototype.js"></script>
+		<script type="text/javascript" src="scripts/HashMap.js"></script>
+		<ui:include src="scripts/embeddedjs.xhtml" />
+		
+		<script	type="text/javascript">
+			/* <![CDATA[ */
+			
+			var b;
+			var n;
+			var s;
+			var e;
+			var w;
+			var zoom;
+			var lat;
+			var lng;
+			var tc;
+			var tv;
+			var tl;
+			var di;
+			var df;
+			var hi;
+			var hf;
+			var ec;
+			var cp;
+			var lm = '220px';
+			var am = '150px';
+			function init(){
+				b = parent.map.getBounds();
+				n = b.getNorthEast().lat();
+				s = b.getSouthWest().lat();
+				e = b.getNorthEast().lng();
+				w = b.getSouthWest().lng();
+				zoom = parent.map.getZoom();
+				lat = parent.map.getCenter().lat();
+				lng = parent.map.getCenter().lng();
+				tc = parent.document.getElementById("tipoCrime").value;
+				tv = parent.document.getElementById("tipoVitima").value;
+				tl = parent.document.getElementById("tipoLocal").value;
+				di = parent.document.getElementById("dataInicial").value.replace('/',',');
+				df = parent.document.getElementById("dataFinal").value.replace('/',',');
+				hi = parent.document.getElementById("filtroForm:horarioInicial").value;
+				hf = parent.document.getElementById("filtroForm:horarioFinal").value;
+				ec = parent.document.getElementById("filtroForm:entidadeCertificadora").value;
+				var isEntidadeCertificadoraSelecionada = parent.document.getElementById("filtroForm:crimeConfirmadoEntidadeCertificadora").checked;
+                if(isEntidadeCertificadoraSelecionada == false) {
+					parent.document.getElementById("filtroForm:entidadeCertificadora").disabled = true;
+					parent.document.getElementById("filtroForm:entidadeCertificadora").value="";					                                                  
+					ec = "";
+                 }
+				
+				
+				if (parent.document.getElementById("filtroForm:crimeConfirmadoPositivamente").checked == true )
+	 				cp = parent.document.getElementById("filtroForm:crimeConfirmadoPositivamente").value;
+			    else
+				    cp = "";
+				
+				document.getElementById("campoEmbedded").value = "<iframe src='http://www.wikicrimes.org/mapaEmbedded.html?zoom="+zoom+"&lat="+lat+"&lng="+lng+"&tc="+tc+"&tv="+tv+"&tl="+tl+"&di="+di.replace('/',',')+"&df="+df.replace('/',',')+"&hi="+ hi +"&hf="+ hf +"&ic=&ec="+ec+"&cp="+cp+"&n="+n+"&e="+e+"&w="+w+"&s="+s+"&lm="+lm+"&am="+am+"' width='"+lm.replace('px','')+"' height='"+am.replace('px','')+"' scrolling='no' frameborder='0'></iframe>";
+				
+				load(zoom,lat,lng,tc,tv,tl,di.replace('/',','),df.replace('/',','),hi,hf,'undefined',ec,'geradorEmbedded',cp,n,e,w,s);
+				document.getElementById("largura").disabled = true;
+				document.getElementById("altura").disabled = true;
+				document.getElementById("map").style.width="220px";
+				document.getElementById("map").style.height="150px";
+			}
+
+
+			function setaLarguraMapa(valor){
+				
+				if(parseInt(valor)<220)
+					map.hideControls();
+				else
+					map.showControls();
+				document.getElementById("map").style.width= valor+"px";
+				lm=valor+"px";
+				document.getElementById("campoEmbedded").value = "<iframe src='http://www.wikicrimes.org/mapaEmbedded.html?zoom="+zoom+"&lat="+lat+"&lng="+lng+"&tc="+tc+"&tv="+tv+"&tl="+tl+"&di="+di.replace('/',',')+"&df="+df.replace('/',',')+"&hi="+ hi +"&hf="+ hf +"&ic=&ec="+ec+"&cp="+cp+"&n="+n+"&e="+e+"&w="+w+"&s="+s+"&lm="+lm+"&am="+am+"' width='"+lm.replace('px','')+"' height='"+am.replace('px','')+"' frameborder='0' scrolling='no' ></iframe>";
+			}
+			function setaAlturaMapa(valor){
+				
+				if(parseInt(valor)<100)
+					map.hideControls();
+				else
+					map.showControls();
+				document.getElementById("map").style.height= valor+"px";
+				am=valor+"px";
+				document.getElementById("campoEmbedded").value = "<iframe src='http://www.wikicrimes.org/mapaEmbedded.html?zoom="+zoom+"&lat="+lat+"&lng="+lng+"&tc="+tc+"&tv="+tv+"&tl="+tl+"&di="+di.replace('/',',')+"&df="+df.replace('/',',')+"&hi="+ hi +"&hf="+ hf +"&ic=&ec="+ec+"&cp="+cp+"&n="+n+"&e="+e+"&w="+w+"&s="+s+"&lm="+lm+"&am="+am+"' width='"+lm.replace('px','')+"' height='"+am.replace('px','')+"' frameborder='0' scrolling='no'></iframe>";
+			}	 
+
+			function habilitaPersonalizar(element){
+				var valor = element.value;
+				if(valor=="per"){					
+					document.getElementById("largura").disabled = false;
+					document.getElementById("altura").disabled = false;
+					document.getElementById("map").style.width="418px";
+					document.getElementById("map").style.height="282px";
+					lm="418px";
+					am="282px";					
+				}else{										
+					document.getElementById("largura").disabled = true;
+					document.getElementById("altura").disabled = true;
+					if(valor=="peq"){
+						document.getElementById("map").style.width="220px";
+						document.getElementById("map").style.height="150px";
+						lm="220px";
+						am="150px";	
+					}
+					if(valor=="med"){
+						document.getElementById("map").style.width="300px";
+						document.getElementById("map").style.height="200px";
+						lm="300px";
+						am="200px";	
+					}
+					if(valor=="gra"){
+						document.getElementById("map").style.width="500px";
+						document.getElementById("map").style.height="300px";
+						lm="500px";
+						am="300px";	
+					}								
+				}
+				document.getElementById("campoEmbedded").value = "<iframe src='http://www.wikicrimes.org/mapaEmbedded.html?zoom="+zoom+"&lat="+lat+"&lng="+lng+"&tc="+tc+"&tv="+tv+"&tl="+tl+"&di="+di.replace('/',',')+"&df="+df.replace('/',',')+"&hi="+ hi +"&hf="+ hf +"&ic=&ec="+ec+"&cp="+cp+"&n="+n+"&e="+e+"&w="+w+"&s="+s+"&lm="+lm+"&am="+am+"' width='"+lm.replace('px','')+"' height='"+am.replace('px','')+"' frameborder='0' scrolling='no'></iframe>";						
+			}					
+			
+			/* ]]> */
+		</script>
+		
+	</head>	
+	<body onload="init();">
+		
+		
+		<f:view>
+			<f:loadBundle var="messages" basename="messages" />
+			<h:form id="FiltroForm">
+				<h:inputHidden value="#{filtroForm.zoomMapa}" />
+				
+								
+				<table align="center" id="tabelaConfigTam">
+					<tr>
+						<td colspan="4"><font style="font-size: 11px"> <h:outputText value="#{messages['geradorEmbedded.tamanho.do.mapa']}"  />:</font></td>
+					</tr>
+					
+					<tr>
+						<td colspan="4"> <input onclick="habilitaPersonalizar(this);" type="radio" checked="checked" value="peq" id="tMapa" name="tMapa"/><font style="font-size: 11px"> <h:outputText value="#{messages['geradorEmbedded.pequeno']}"  /> </font></td>
+					</tr>
+					
+					<tr>
+						<td colspan="4"><input onclick="habilitaPersonalizar(this);" type="radio" value="med" id="tMapa" name="tMapa"/><font style="font-size: 11px"> <h:outputText value="#{messages['geradorEmbedded.medio']}"  /> </font> </td>
+					</tr>
+					
+					<tr>
+						<td colspan="4"> <input onclick="habilitaPersonalizar(this);" type="radio" value="gra" id="tMapa" name="tMapa"/><font style="font-size: 11px"> <h:outputText value="#{messages['geradorEmbedded.grande']}"  /></font> </td>
+					</tr>
+					
+					<tr>
+						<td colspan="4"><input onclick="habilitaPersonalizar(this);" type="radio" value="per" id="tMapa" name="tMapa"/><font style="font-size: 11px"> <h:outputText value="#{messages['geradorEmbedded.personalizado']}"  /></font> </td>
+					</tr>
+					<tr>
+						<td><font style="font-size: 11px"> <h:outputText value="#{messages['geradorEmbedded.largura']}"  /> </font> </td> <td> <input type="text" onkeyup="setaLarguraMapa(this.value);" id="largura" size="4" value="418" name = "largura" /><font style="font-size: 11px">px</font> </td> <td><font style="font-size: 11px"> <h:outputText value="#{messages['geradorEmbedded.altura']}"  /></font> </td> <td> <input type="text" onblur="setaAlturaMapa(this.value);" id="altura" onkeyup="setaAlturaMapa(this.value);" size="4" value="282" name="altura" /><font style="font-size: 11px">px</font> </td>
+					</tr>
+					
+					<tr>	
+						<td align="center" colspan="4"><div id="map" style="width: 418px; height: 282px;border: 2px solid #2763a5;"> </div> </td>
+					</tr>
+					<tr>
+						<td colspan="4"> <font style="font-size: 11px"> <h:outputText value="#{messages['geradorEmbedded.copieIframe']}"  /> </font>	</td>
+					</tr>
+					<tr>
+						<td colspan="4"> <input type="text" id="campoEmbedded" readonly="readonly" onclick="this.select();" size="52" /> </td>
+					</tr>					
+				</table>
+				
+				
+			</h:form>			
+			
+		</f:view>	
+				
+	</body>	
+
+
+</html>

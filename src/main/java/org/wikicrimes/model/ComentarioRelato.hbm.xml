@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="org.wikicrimes.model.ComentarioRelato" table="TB_CRL_COMENTARIO" lazy="true">
+        <id name="idComentario" column="CRL_IDCOMENTARIO" unsaved-value="null">
+            <generator class="increment"/>
+        </id>
+        <property name="descComentario" length="500" column="CRL_DESC_COMENTARIO" type="java.lang.String" />
+        <property name="link" column="CRL_LINK" type="java.lang.String" />
+        <property name="embedLink" column="CRL_EMBED_LINK" type="java.lang.String" />
+        <property name="dataComentario" column="CRL_DATA_COMENTARIO" type="java.util.Date"/>       
+        <many-to-one name="relato" column="REL_IDRELATO" class="org.wikicrimes.model.Relato"/>
+        <many-to-one name="usuario" column="USU_IDUSUARIO" class="org.wikicrimes.model.Usuario"/>
+        <many-to-one name="usuarioRedeSocial" column="URS_IDUSUARIO_REDE_SOCIAL" class="org.wikicrimes.model.UsuarioRedeSocial"/>
+        <property name="idComentarioPai" column="CRL_IDCOMENTARIO_PAI" type="java.lang.Long"/>
+        
+       
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="org.wikicrimes.model.UsuarioCelular" table="TB_USC_USUARIO_CELULAR" lazy="true">
+        <id name="idUsuario" column="USC_IDUSUARIO_CELULAR" unsaved-value="null">
+            <generator class="increment"/>
+        </id>
+        <property name="email" column="USC_EMAIL" type="java.lang.String" unique="true"/>
+        <property name="telefoneCelular" column="USC_TELEFONE_CELULAR" type="java.lang.String" unique="true" not-null="true"/>     
+    </class>
+</hibernate-mapping>

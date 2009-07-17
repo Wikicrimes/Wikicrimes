@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd"
+	version="1.2">
+	<application>
+		<el-resolver>
+			org.springframework.web.jsf.el.SpringBeanFacesELResolver
+		</el-resolver>
+		<view-handler>com.sun.facelets.FaceletViewHandler</view-handler>
+		<resource-bundle>
+			<base-name>SystemMessages</base-name>
+			<var>msg</var>
+		</resource-bundle>
+		<locale-config>
+			<default-locale>en</default-locale>
+			<supported-locale>pt</supported-locale>
+			<supported-locale>en</supported-locale>
+		</locale-config>
+	</application>
+
+	<lifecycle>
+		<!-- 
+			<phase-listener>org.wikicrimes.view.listeners.MyPhaseListener</phase-listener>
+		-->
+		<phase-listener>
+			org.wikicrimes.view.listeners.LocalePhaseListener
+		</phase-listener>
+		<phase-listener>
+			org.wikicrimes.view.listeners.LoginPhaseListener
+		</phase-listener>
+	</lifecycle>
+
+	<!-- Converters -->
+	<converter>
+		<converter-id>converters.CpfConverter</converter-id>
+		<converter-class>
+			org.wikicrimes.view.converters.CpfConverter
+		</converter-class>
+	</converter>
+	<converter>
+		<converter-id>converters.WikiCrimesDataConverter</converter-id>
+		<converter-class>
+			org.wikicrimes.view.converters.WikiCrimesDataConverter
+		</converter-class>
+	</converter>
+	<converter>
+        <converter-id>converters.WikiSearchCrimesDataConverter</converter-id>
+        <converter-class>
+            org.wikicrimes.view.converters.WikiCrimesSearchDataConverter
+        </converter-class>
+    </converter>
+
+	<!-- Validators -->
+	<validator>
+		<validator-id>validators.CpfValidator</validator-id>
+		<validator-class>
+			org.wikicrimes.view.validators.CpfValidator
+		</validator-class>
+	</validator>
+	
+	<validator>
+		<validator-id>razoesCheck</validator-id>
+		<validator-class>org.wikicrimes.view.validators.RazaoCrimesValidator</validator-class>
+	</validator>
+
+	<!-- Managed Beans -->
+	<managed-bean>
+		<managed-bean-name>localeBean</managed-bean-name>
+		<managed-bean-class>
+			org.wikicrimes.view.LocaleBean
+		</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+
+	<managed-bean>
+		<managed-bean-name>usuarioBean</managed-bean-name>
+		<managed-bean-class>
+			org.wikicrimes.view.UsuarioBean
+		</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+		<managed-property>
+			<property-name>usuarioBusiness</property-name>
+			<value>#{usuarioBusiness}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>usuarioRedeSocialBusiness</property-name>
+			<value>#{usuarioRedeSocialBusiness}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>entidadeCertificadoraBusiness</property-name>
+			<value>#{eCBusiness}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>crimeBusiness</property-name>
+			<value>#{crimeBusiness}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>logBusiness</property-name>
+			<value>#{logBusiness}</value>
+		</managed-property>
+	</managed-bean>
+	
+	<managed-bean>
+		<managed-bean-name>crimeBean</managed-bean-name>
+		<managed-bean-class>
+			org.wikicrimes.view.CrimeBean
+		</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+		<managed-property>
+			<property-name>crimeBusiness</property-name>
+			<value>#{crimeBusiness}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>logBusiness</property-name>
+			<value>#{logBusiness}</value>
+		</managed-property>
+	</managed-bean>
+	
+	<managed-bean>
+		<managed-bean-name>relatoBean</managed-bean-name>
+		<managed-bean-class>
+			org.wikicrimes.view.RelatoBean
+		</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+		<managed-property>
+			<property-name>relatoBusiness</property-name>
+			<value>#{relatoBusiness}</value>
+		</managed-property>
+	</managed-bean>
+	
+	<managed-bean>
+		<managed-bean-name>geraChavesBean</managed-bean-name>
+		<managed-bean-class>
+			org.wikicrimes.view.GeraChavesBean
+		</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+		<managed-property>
+			<property-name>geraChavesBusiness</property-name>
+			<value>#{geraChavesBusiness}</value>
+		</managed-property>
+	</managed-bean>
+	
+	<managed-bean>
+		<managed-bean-name>entidadeCertificadoraBean</managed-bean-name>
+		<managed-bean-class>
+			org.wikicrimes.view.EntidadeCertificadoraBean
+		</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+		<managed-property>
+			<property-name>entidadeCertificadoraBusiness</property-name>
+			<value>#{eCBusiness}</value>
+		</managed-property>
+	</managed-bean>
+	
+	<managed-bean>
+		<managed-bean-name>crimeListBean</managed-bean-name>
+		<managed-bean-class>
+			org.wikicrimes.view.CrimeListBean
+		</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+	
+	<managed-bean>
+		<managed-bean-name>logBean</managed-bean-name>
+		<managed-bean-class>
+			org.wikicrimes.view.LogBean
+		</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+		<managed-property>
+			<property-name>logBusiness</property-name>
+			<value>#{logBusiness}</value>
+		</managed-property>
+	</managed-bean>
+	
+
+	<!-- Navigation -->
+	
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>enderecoCrimes</from-outcome>
+			<to-view-id>/enderecoCrimes.jspx</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>enderecoRelatos</from-outcome>
+			<to-view-id>/enderecoRelatos.jspx</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>consultaDominio</from-outcome>
+			<to-view-id>/consultaDominio.jspx</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>geradorChaves</from-outcome>
+			<to-view-id>/geradorChaves.jspx</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>crimesNaoEncontrados</from-outcome>
+			<to-view-id>/crimesNaoEncontrados.jspx</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>relatosNaoEncontrados</from-outcome>
+			<to-view-id>/relatosNaoEncontrados.jspx</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>mapa</from-outcome>
+			<to-view-id>/mapa.jspx</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>ecReg</from-outcome>
+			<to-view-id>/cadastroEC.jspx</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>entidadeCertificadoraEditar</from-outcome>
+			<to-view-id>/entidadeCertificadoraEditar.jspx</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+		
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>EC</from-outcome>
+			<to-view-id>/buscarEC.jspx</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>crimesEditar</from-outcome>
+			<to-view-id>/crimesEditar.jspx</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>crimes</from-outcome>
+			<to-view-id>/buscarCrimes.jspx</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>usuariosEditar</from-outcome>
+			<to-view-id>/usuariosEditar.jspx</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>usuarios</from-outcome>
+			<to-view-id>/buscarUsuarios.jspx</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>index</from-outcome>
+			<to-view-id>/index.jspx</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>ajuda</from-outcome>
+			<to-view-id>/ajuda.jspx</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>log</from-outcome>
+			<to-view-id>/listarLog.jspx</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>login</from-outcome>
+			<to-view-id>/login.jspx</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>logout</from-outcome>
+			<to-view-id>/logout.jspx</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+</faces-config>

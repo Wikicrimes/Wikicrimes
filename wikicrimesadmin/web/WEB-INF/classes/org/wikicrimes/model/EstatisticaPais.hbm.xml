@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="org.wikicrimes.model.EstatisticaPais" table="TB_EPA_ESTATISTICA_PAIS" lazy="true">
+        <id name="idEstatisticaPais" column="EPA_IDESTATISTICA_PAIS" unsaved-value="null">
+            <generator class="increment"/>
+        </id>
+        <property name="nome" column="EPA_NOME" type="java.lang.String" not-null="true"/>
+        <property name="sigla" column="EPA_SIGLA" type="java.lang.String"/>
+        <property name="quantidadeUsuarios" column="EPA_QTD_USUARIOS" type="java.lang.Long" not-null="true"/>
+        <property name="quantidadeCrimes" column="EPA_QTD_CRIMES" type="java.lang.Long" not-null="true"/>
+
+		<property name="quantidadeRoubos" column="EPA_QTD_ROUBOS" type="java.lang.Long" not-null="true"/>
+		<property name="qtdRouboPessoa" column="EPA_QTD_ROUBO_PESSOA" type="java.lang.Long" not-null="true"/>
+		<property name="qtdRouboPropriedade" column="EPA_QTD_ROUBO_PROPRIEDADE" type="java.lang.Long" not-null="true"/>
+		<property name="qtdTentativaRouboPessoa" column="EPA_QTD_TENTATIVA_ROUBO_PESSOA" type="java.lang.Long" not-null="true"/>
+		<property name="qtdTentativaRouboPropriedade" column="EPA_QTD_TENTATIVA_ROUBO_PROPRIEDADE" type="java.lang.Long" not-null="true"/>
+
+		<property name="qtdTentativaRoubo" column="EPA_QTD_TENTATIVA_ROUBO" type="java.lang.Long" not-null="true"/>
+		<property name="qtdTentativaFurto" column="EPA_QTD_TENTATIVA_FURTO" type="java.lang.Long" not-null="true"/>
+		
+		<property name="quantidadeFurtos" column="EPA_QTD_FURTO" type="java.lang.Long" not-null="true"/>
+		<property name="qtdFurtoPessoa" column="EPA_QTD_FURTO_PESSOA" type="java.lang.Long" not-null="true"/>
+		<property name="qtdFurtoPropriedade" column="EPA_QTD_FURTO_PROPRIEDADE" type="java.lang.Long" not-null="true"/>
+		<property name="qtdTentativaFurtoPessoa" column="EPA_QTD_TENTATIVA_FURTO_PESSOA" type="java.lang.Long" not-null="true"/>
+		<property name="qtdTentativaFurtoPropriedade" column="EPA_QTD_TENTATIVA_FURTO_PROPRIEDADE" type="java.lang.Long" not-null="true"/>
+
+		<property name="quantidadeOutros" column="EPA_QTD_OUTROS" type="java.lang.Long" not-null="true"/>
+		<property name="qtdOutroRixas" column="EPA_QTD_OUTRO_RIXAS" type="java.lang.Long" not-null="true"/>
+		<property name="qtdOutroViolenciaDomestica" column="EPA_QTD_OUTRO_VIOLENCIA_DOMESTICA" type="java.lang.Long" not-null="true"/>
+		<property name="qtdOutroAbusoAutoridade" column="EPA_QTD_OUTRO_ABUSO_AUTORIDADE" type="java.lang.Long" not-null="true"/>
+		<property name="qtdOutroHomicidio" column="EPA_QTD_OUTRO_HOMICIDIO" type="java.lang.Long" not-null="true"/>
+		<property name="qtdOutroTentativaHomicidio" column="EPA_QTD_OUTRO_TENTATIVA_HOMICIDIO" type="java.lang.Long" not-null="true"/>
+		<property name="qtdOutroLatrocinio" column="EPA_QTD_OUTRO_LATROCINIO" type="java.lang.Long" not-null="true"/>
+		
+		<property name="qtdTurnoUm" column="EPA_QTD_TURNO_UM" type="java.lang.Long" not-null="true"/>
+		<property name="qtdTurnoDois" column="EPA_QTD_TURNO_DOIS" type="java.lang.Long" not-null="true"/>
+		<property name="qtdTurnoTres" column="EPA_QTD_TURNO_TRES" type="java.lang.Long" not-null="true"/>
+		<property name="qtdTurnoQuatro" column="EPA_QTD_TURNO_QUATRO" type="java.lang.Long" not-null="true"/>
+		
+		<property name="latitude" column="EPA_LATITUDE" type="java.lang.Double" not-null="true"/>
+        <property name="longitude" column="EPA_LONGITUDE" type="java.lang.Double" not-null="true"/>
+        
+        <set name="estados" table="TB_EES_ESTATISTICA_ESTADO" >
+            <key><column name="EES_IDESTATISTICA_ESTADO" not-null="true" /></key>
+            <one-to-many class="org.wikicrimes.model.EstatisticaEstado"/>
+        </set>
+    </class>
+</hibernate-mapping>

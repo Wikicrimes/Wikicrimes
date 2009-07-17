@@ -3,7 +3,7 @@
 function carregarIdioma(idioma){
 	if( idioma == 'pt' ){
 		
-		mensagens['campo.requerido'] = 'campo requerido'
+		mensagens['campo.requerido'] = 'campo requerido!'
 		mensagens['campo.requerido.razao'] = 'você deve marcar pelo menos 1 razão e no máximo 4';
 		mensagens['data.invalida'] = 'Data inválida!';	
 		mensagens['titulo.kernel.map'] = 'Zonas Perigosas';

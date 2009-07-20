@@ -747,6 +747,10 @@
             <property-name>crimeService</property-name>
             <value>#{crimeService}</value>
         </managed-property>
+        <managed-property>
+            <property-name>usuarioService</property-name>
+            <value>#{usuarioService}</value>
+        </managed-property>
          <managed-property>
             <property-name>confirmacaoService</property-name>
             <value>#{confirmacaoService}</value>

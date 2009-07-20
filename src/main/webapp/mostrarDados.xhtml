@@ -74,9 +74,9 @@
 						<h:outputText value="#{message}" styleClass="message" />
 					</c:if>
 					
-					<c:if test="#{mostrarDadosForm.crime.usuario.idUsuario == usuario.nome}">	
+					<c:if test="#{mostrarDadosForm.crime.usuario.idUsuario == usuario.idUsuario}">	
 						<div style="width:100%; text-align:right">
-							<h:commandLink value="Edite este Crime"
+							<h:commandLink value="#{messages['mostrardados.edite.este.crime']}"
 									action="#{mostrarDadosForm.prepararEditarCrime}" >
 							
 								<f:setPropertyActionListener target="#{mostrarDadosForm.crimeEditar}"

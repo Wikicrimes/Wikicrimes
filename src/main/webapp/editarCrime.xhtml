@@ -59,13 +59,15 @@
 				<h:form id="mostrarDadosForm">
 					
 					
-					<c:if test="#{not empty message}">
+					<c:if test="#{(not empty message) and (message != messages['errors.embed.invaliado'])}">
 						<h:outputText value="#{message}" styleClass="message" />
 					</c:if>
-				
+					<h:outputText style="display: none" value="#{mostrarDadosForm.crimeEditar.usuario.idiomaPreferencial}" />
 					<!--  Dados Gerais -->
 					<t:panelGrid border="0" columns="2" style="text-align:left">
-						
+						<t:panelGroup colspan="2">	
+							<h:outputText style="font-size: 10px; text-align:left; font-style:italic;" value="#{messages['mostrarDadosForm.edicao.titulo']}"/>
+						</t:panelGroup>
 						<h:outputText value="#{messages['crime.tipoCrime']}"
 							style="vertical-align: text-top" />
 						<h:outputText value="#{messages[mostrarDadosForm.crimeEditar.tipoCrime.nome]}" />
@@ -159,12 +161,45 @@
 						</t:panelGroup>
 						<t:panelGroup colspan="2">
 							<h:inputText size="32" value="#{mostrarDadosForm.crimeEditar.embedNoticia}" />
+							<c:if test="#{not empty message}">
+								<c:if test="#{message == messages['errors.embed.invaliado'] }">
+									<h:outputText value="#{message}" styleClass="errorMessage" />
+								</c:if>
+					   		</c:if>
 						</t:panelGroup>						
-	
+						<t:panelGroup colspan="2">
+							<h:outputText value="#{messages['crime.confirmacoes.editar']}(*)"
+								style="vertical-align: text-top; font-size: 11px;" />
+						</t:panelGroup>						
+						
+						<t:panelGroup colspan="2">
+							<h:outputText value="#{messages['crime.email1']}"
+								style="vertical-align: text-top; font-size: 11px;" />
+						</t:panelGroup>						
+						
+						<t:panelGroup colspan="2">	
+							<h:inputText style="font-size: 11px; font-family: sans-serif;" value="#{mostrarDadosForm.email1}"
+								id="email1" size="40">
+								<t:validateEmail />
+							</h:inputText>
+						
+							<h:message styleClass="errorMessage" for="email1" />
+						</t:panelGroup>	
+						<t:panelGroup colspan="2">
+							<h:outputText value="#{messages['crime.email2']}"
+								style="vertical-align: text-top; font-size: 11px;" />
+						</t:panelGroup>		
+						<t:panelGroup colspan="2">	
+							<h:inputText style="font-size: 11px; font-family: sans-serif;" value="#{mostrarDadosForm.email2}"
+								id="email2" size="40">
+								<t:validateEmail />
+							</h:inputText>	
+							<h:message styleClass="errorMessage" for="email2" />
+						</t:panelGroup>
 						
 						<t:panelGroup colspan = "2">
 							<t:saveState value="#{mostrarDadosForm.crimeEditar}" />
-							<h:commandButton value="Atualizar Crime"
+							<h:commandButton value="#{messages['mostrarDados.botao.atualizar']}"
 						id="btnAtualizar" action="#{mostrarDadosForm.updateCrime}" styleClass="button" />
 						</t:panelGroup>	
 					</t:panelGrid>					

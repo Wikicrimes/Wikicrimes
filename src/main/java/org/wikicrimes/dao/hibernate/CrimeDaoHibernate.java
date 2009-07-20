@@ -3,10 +3,12 @@ package org.wikicrimes.dao.hibernate;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -409,11 +411,7 @@ public class CrimeDaoHibernate extends GenericCrudDaoHibernate implements
 				}});
 		  
 		return  crimes;
-	}
-    	
-	public List<Crime> find(Crime crime){
-		return this.getHibernateTemplate().findByExample(crime);
-	}
+	}	
 	
 	public List<Crime> pesquisarCrime(Crime crime){
 		String query = "from Crime c ";

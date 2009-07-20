@@ -1,6 +1,7 @@
 
 package org.wikicrimes.web;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
@@ -8,13 +9,16 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.wikicrimes.model.BaseObject;
 import org.wikicrimes.model.Confirmacao;
 import org.wikicrimes.model.Crime;
+import org.wikicrimes.model.TipoRegistro;
 import org.wikicrimes.model.Usuario;
 import org.wikicrimes.service.ConfirmacaoService;
 import org.wikicrimes.service.CrimeService;
@@ -434,6 +438,34 @@ public class MostrarDadosForm extends GenericForm {
 		
 
 		return returnPage;
+	}
+	
+	public List<SelectItem> getHorarioItens() {
+		List<SelectItem> itens = new ArrayList<SelectItem>();
+
+		Iterator<Horario> horarios = Horario.iterator();
+		while(horarios.hasNext()) {
+		    Horario horario = horarios.next();
+		    itens.add(new SelectItem(new Long(horario.ord()), horario.toString()));		    
+		}
+
+		return itens;
+	}
+	
+	public List<SelectItem> getTipoRegistroItens() {
+		List<SelectItem> itens = new ArrayList<SelectItem>();
+		List<BaseObject> result = crimeService.getTipoRegistroAll();
+		
+		
+		
+		for (int i = 0; i < result.size(); i++) {
+			TipoRegistro tipoRegistro = (TipoRegistro) result.get(i);
+			String id = tipoRegistro.getIdTipoRegistro().toString();
+			String nome = tipoRegistro.getNome();
+			itens.add(new SelectItem(id, getMessage(nome,"")));
+		}
+
+		return itens;
 	}
 	
 	public String updateCrime(){

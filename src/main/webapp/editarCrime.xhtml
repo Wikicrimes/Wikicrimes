@@ -20,7 +20,13 @@
 		<link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon" />
 		<link rel="stylesheet" type="text/css" href="./styles/wikicrimes.css" title="default" />		
 	
-		
+		<script type="text/javascript" src="./scripts/calendar.js"></script>
+		<script type="text/javascript" src="./scripts/calendar-setup.js"></script>	
+		<script type="text/javascript" src="./scripts/lang/calendar-en.js"></script>
+		<script type="text/javascript" src="./scripts/lang/#{messages['webapp.calendar']}"></script>	
+		<c:if test="#{messages['webapp.calendar'] == 'calendar-pt.js' }">
+			<script type="text/javascript" src="./scripts/lang/calendar-br.js"></script>	
+		</c:if>
 	</head>
 	
 	<body style="overflow-x: hidden">
@@ -92,27 +98,46 @@
 
 						<h:outputText value="#{messages['crime.data']}"
 							style="vertical-align: text-top" />
-						<h:outputText value="#{mostrarDadosForm.crimeEditar.data}"
-							converter="wikicrimes.WikiCrimesDataConverter" />
+						<t:panelGroup>
+							<h:message styleClass="errorMessage" for="data" />
+							<t:inputText style="font-size: 11px; font-family: sans-serif;" id="data" onkeyup="limpaData();" forceId="true" required="true" 
+									value="#{mostrarDadosForm.crimeEditar.data}" 
+									size="8">
+								<f:converter
+									converterId="wikicrimes.WikiSearchCrimesDataConverter" />
+							</t:inputText>
+							<t:graphicImage id="triggerData" forceId="true" value="/images/btns/btnCalendar.gif" style="display:inline; cursor:pointer;"/>
+						</t:panelGroup>
+						
 						<h:outputText value="#{messages['crime.horario']}"
 
 							style="vertical-align: text-top" />
-						<c:if test="#{mostrarDadosForm.crimeEditar.horario == 24 }">
-						<h:outputText value="#{messages['crime.horario.desconhecido']}" />
-						</c:if>
-						<c:if test="#{mostrarDadosForm.crimeEditar.horario != 24 }">
-						<h:outputText value="#{mostrarDadosForm.crimeEditar.horario}:00"/>
-						</c:if>
+						<h:selectOneListbox style="font-size: 11px; font-family: sans-serif;" value="#{mostrarDadosForm.crimeEditar.horario}" id="horario" size="1" required="true" >
+							<f:selectItems value="#{mostrarDadosForm.horarioItens}"/>
+							<f:selectItem itemLabel="#{messages['crime.horario.desconhecido']}" itemValue="24"/>							
 
-						<h:outputText value="#{messages['crime.tipoRegistro']}"
-							style="vertical-align: text-top" />
-						<h:outputText value="#{messages[mostrarDadosForm.crime.tipoRegistro.nome]}" />
-						<h:outputText value="#{messages['crime.mostra.descricao']}"
+						</h:selectOneListbox>
+						
+						<t:panelGroup colspan="2">
+							<h:outputText value="#{messages['crime.tipoRegistro']}"
 								style="vertical-align: text-top" />
+							</t:panelGroup>
+						<t:panelGroup colspan="2">	
+							<h:selectOneRadio value="#{mostrarDadosForm.crimeEditar.tipoRegistro.idTipoRegistro}"
+								id="tipoRegistro" required="true" style="font-size: 11px; font-family: sans-serif;">
+								<f:selectItems value="#{mostrarDadosForm.tipoRegistroItens}" />
+							</h:selectOneRadio>
+						</t:panelGroup>
+						<t:panelGroup colspan="2">
+							<h:outputText value="#{messages['crime.mostra.descricao']}"
+								style="vertical-align: text-top" />
+						</t:panelGroup>		
 						<c:if test="#{not empty usuario}">
-							<h:inputTextarea style="font-size: 11px; font-family: sans-serif;" value="#{mostrarDadosForm.crimeEditar.descricao}" id="descricao"
-							cols="34" rows="6" required="true" />
-							
+							<t:panelGroup colspan="2">
+								<h:message styleClass="errorMessage" for="descricao" />
+								<h:inputTextarea style="font-size: 11px; font-family: sans-serif;" value="#{mostrarDadosForm.crimeEditar.descricao}" id="descricao"
+								cols="34" rows="6" required="true" />
+							</t:panelGroup>	
 						</c:if>
 						<c:if test="#{empty usuario}">
 							<h:panelGroup>
@@ -123,40 +148,44 @@
 								<h:outputText style="font-size: 11px;" value=" #{messages['crime.mostra.descricaologin3']}" />
 							</h:panelGroup>
 						</c:if>
-						<c:if test="#{mostrarDadosForm.crimeEditar.linkNoticia != null and mostrarDadosForm.crimeEditar.linkNoticia != ''}">
+						<t:panelGroup colspan="2">
 							<h:outputText value="#{messages['mostrarinformacoes.linkrelacionado']}" />
-							<h:outputLink value="#{mostrarDadosForm.crimeEditar.linkNoticia}" target="_top"><h:outputText value="#{mostrarDadosForm.crimeEditar.linkNoticia}" /> </h:outputLink>
-						</c:if>	
-						<c:if test="#{mostrarDadosForm.crimeEditar.embedNoticia != null and mostrarDadosForm.crimeEditar.embedNoticia != ''}">
-							<t:panelGroup colspan="2">
+						</t:panelGroup>
+						<t:panelGroup colspan="2">
+							<h:inputText size="32" value="#{mostrarDadosForm.crimeEditar.linkNoticia}" />
+						</t:panelGroup>	
+						<t:panelGroup colspan="2">
 								<h:outputText value="#{messages['mostrarinformacoes.linkembed']} (Ex: youtube):" />
-							</t:panelGroup>
-							<t:panelGroup colspan="2">
-								<h:outputLink value="#{mostrarDadosForm.crimeEditar.embedNoticia}" />
-							</t:panelGroup>					
-						</c:if>
-
-						<h:outputText value="#{messages['crime.mostra.confirmacoesPositivas']}:"
-							style="vertical-align: text-top; color: blue;" />
-						<h:outputText style="color: blue;" value="#{mostrarDadosForm.crimeEditar.confirmacoesPositivas}" />						
-						<h:outputText value="#{messages['crime.mostra.confirmacoesNegativas']}:"
-							style="vertical-align: text-top; color: red;" />
-						<h:outputText style="color: red;" value="#{mostrarDadosForm.crimeEditar.confirmacoesNegativas}" />						
+						</t:panelGroup>
+						<t:panelGroup colspan="2">
+							<h:inputText size="32" value="#{mostrarDadosForm.crimeEditar.embedNoticia}" />
+						</t:panelGroup>						
+	
 						
-						<t:saveState value="#{mostrarDadosForm.crimeEditar}" />
 						<t:panelGroup colspan = "2">
+							<t:saveState value="#{mostrarDadosForm.crimeEditar}" />
 							<h:commandButton value="Atualizar Crime"
 						id="btnAtualizar" action="#{mostrarDadosForm.updateCrime}" styleClass="button" />
 						</t:panelGroup>	
-					</t:panelGrid>
-						
-					<h:outputLink style="text-align: right;" value="#"  onclick="parent.zoomIn('#{mostrarDadosForm.crimeEditar.chave}');">Zoom in  </h:outputLink>
-					<h:outputLink value="#"  onclick="parent.zoomOut('#{mostrarDadosForm.crimeEditar.chave}');">  Zoom out</h:outputLink>
-
+					</t:panelGrid>					
+				
 			</h:form>
 			
 			</t:panelGrid>
-		
+			<script type="text/javascript">
+				function limpaData(){
+					document.getElementById("data").value="";
+				}	
+				
+			    Calendar.setup(
+			    {
+			      inputField  : "data",         // ID of the input field
+			      ifFormat    : "#{messages['date.format.calendar']}",    // the date format
+			      button      : "triggerData",       // ID of the button
+			      weekNumbers : false
+			    }
+			  	);
+			</script>
 
 
 	</body>

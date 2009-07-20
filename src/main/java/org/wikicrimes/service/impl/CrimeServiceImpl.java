@@ -1,5 +1,6 @@
 package org.wikicrimes.service.impl;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -7,6 +8,7 @@ import java.util.Set;
 import javax.faces.context.FacesContext;
 
 import org.hibernate.Hibernate;
+import org.hibernate.LazyInitializationException;
 import org.wikicrimes.dao.CrimeDao;
 import org.wikicrimes.dao.EntidadeCertificadoraDao;
 import org.wikicrimes.dao.RazaoDao;
@@ -103,10 +105,35 @@ public class CrimeServiceImpl extends GenericCrudServiceImpl implements
 		 
 		return false;
 	}
-
 	
-
-		
+	public void update(Crime crime, Set<Confirmacao> confirmacoes, List<Razao> razoes){
+		update(crime);
+		Crime crimeTemp = new Crime();
+		crimeTemp.setConfirmacoes(confirmacoes);
+		crimeTemp.setTipoCrime(crime.getTipoCrime());
+		Hibernate.initialize(crime.getTipoLocal().getTipoVitima());
+		crimeTemp.setTipoLocal(crime.getTipoLocal());
+		crimeTemp.setTipoVitima(crime.getTipoVitima());
+	
+		Hibernate.initialize(crime.getUsuario());
+		crimeTemp.setUsuario(crime.getUsuario());
+		//crime.setConfirmacoes(confirmacoes);
+		for (Iterator<Confirmacao> iterator = confirmacoes.iterator(); iterator.hasNext();) {
+			Confirmacao conf = (Confirmacao) iterator.next();
+			super.update(conf);
+			
+			
+		}
+		for (Iterator<Razao> iterator = razoes.iterator(); iterator.hasNext();) {
+			Razao razao = (Razao) iterator.next();
+			CrimeRazao crimeRazao = new CrimeRazao();
+			crimeRazao.setRazao(razao);
+			crimeRazao.setCrime(crime);
+			super.update(crimeRazao);
+		}	
+		emailService.sendMailConfirmation(crimeTemp,FacesContext.getCurrentInstance().getViewRoot().getLocale().toString());
+	}
+	
 	public int getQuantidadeCrimesRegistrados(){
 		return crimeDao.getAll().size();
 	}

@@ -4,13 +4,14 @@ package org.wikicrimes.web;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import javax.faces.model.SelectItem;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
@@ -18,10 +19,12 @@ import org.apache.commons.logging.LogFactory;
 import org.wikicrimes.model.BaseObject;
 import org.wikicrimes.model.Confirmacao;
 import org.wikicrimes.model.Crime;
+import org.wikicrimes.model.Razao;
 import org.wikicrimes.model.TipoRegistro;
 import org.wikicrimes.model.Usuario;
 import org.wikicrimes.service.ConfirmacaoService;
 import org.wikicrimes.service.CrimeService;
+import org.wikicrimes.service.UsuarioService;
 import org.wikicrimes.util.Constantes;
 import org.wikicrimes.util.Horario;
 
@@ -34,8 +37,14 @@ public class MostrarDadosForm extends GenericForm {
 	private Crime crimeEditar;
 
 	private CrimeService crimeService;
+	
+	private UsuarioService usuarioService;
 
 	private Long idCrime;
+	
+	private String email1;
+	
+	private String email2;	
 	
 	private Confirmacao confirmacao;
 	
@@ -468,8 +477,84 @@ public class MostrarDadosForm extends GenericForm {
 		return itens;
 	}
 	
+	public boolean formataEmbedCrime(int inicio){
+		try{	
+			if(crime.getEmbedNoticia()!=null && !crime.getEmbedNoticia().equalsIgnoreCase("")){
+				String embed = crime.getEmbedNoticia();
+				int x = embed.indexOf("width=\"",inicio);
+				//System.out.println(x);
+				x+=7;
+				int y = embed.indexOf("\"",x);
+				String embedParte1 = embed.substring(0,x);
+				String embedParte2 = embed.substring(y,embed.length());
+				//System.out.println(embedParte2);
+				embed = embedParte1+330+embedParte2;
+				//System.out.println(embed);
+				
+				x = embed.indexOf("height=\"",x);
+				//System.out.println(x);
+				x+=8;
+				y = embed.indexOf("\"",x);
+				embedParte1 = embed.substring(0,x);
+				embedParte2 = embed.substring(y,embed.length());
+				//System.out.println(embedParte2);
+				embed = embedParte1+140+embedParte2;
+				//System.out.println(embed);
+				crime.setEmbedNoticia(embed);				
+				if(embed.indexOf("width=\"",x)!=-1)
+					formataEmbedCrime(x);
+				
+				return true;
+			}
+		}
+		catch (Exception e) {
+			return false;
+		}
+		return true;
+	}	
+	
 	public String updateCrime(){
-		crimeService.update(crimeEditar);
+		Set<Confirmacao> confirmacoes = new HashSet<Confirmacao>();
+		Confirmacao confirmacaoEditar = new Confirmacao();
+		if(crimeEditar.getEmbedNoticia()!=null && !crimeEditar.getEmbedNoticia().equalsIgnoreCase("")){	
+			if(!formataEmbedCrime(0)){
+				addMessage("errors.embed.invaliado","");
+				return null;
+			}
+		}	
+		if(email1!=null && !email1.equals("")){
+			Usuario usuarioConfirmacao = usuarioService.getUsuario(email1);
+			if (usuarioConfirmacao == null) {
+				confirmacaoEditar.setIndicacao(Constantes.SIM);
+				usuarioConfirmacao = usuarioService.retornaUsuarioConfirmacao(email1,crimeEditar.getUsuario().getIdiomaPreferencial());
+			
+			}
+			
+			confirmacaoEditar.setCrime(crimeEditar);
+			confirmacaoEditar.setIndicacaoEmail(Constantes.SIM);
+			confirmacaoEditar.setUsuario(usuarioConfirmacao);
+			confirmacoes.add(confirmacaoEditar);
+			//crimeEditar.getConfirmacoes().add(confirmacaoEditar);
+			
+		}
+		if(email2!=null && !email2.equals("")){
+			confirmacaoEditar = new Confirmacao();
+			Usuario usuarioConfirmacao = usuarioService.getUsuario(email2);
+			if (usuarioConfirmacao == null) {
+				confirmacaoEditar.setIndicacao(Constantes.SIM);
+				usuarioConfirmacao = usuarioService.retornaUsuarioConfirmacao(email2,crimeEditar.getUsuario().getIdiomaPreferencial());
+			
+			}
+			confirmacaoEditar.setCrime(crimeEditar);
+			confirmacaoEditar.setIndicacaoEmail(Constantes.SIM);
+			confirmacaoEditar.setUsuario(usuarioConfirmacao);
+			//crimeEditar.getConfirmacoes().add(confirmacaoEditar);
+			confirmacoes.add(confirmacaoEditar);
+		}
+		//crimeService.update(crimeEditar);
+		//crimeEditar.setConfirmacoes(confirmacoes);
+		crimeService.update(crimeEditar,confirmacoes, new ArrayList<Razao>());
+		addMessage("crime.atualizado.sucesso", "");
 		return null;
 	}
 
@@ -486,7 +571,29 @@ public class MostrarDadosForm extends GenericForm {
 	public void setCrimeEditar(Crime crimeEditar) {
 		this.crimeEditar = crimeEditar;
 	}
-	
-	
 
+	public String getEmail1() {
+		return email1;
+	}
+
+	public void setEmail1(String email1) {
+		this.email1 = email1;
+	}
+
+	public String getEmail2() {
+		return email2;
+	}
+
+	public void setEmail2(String email2) {
+		this.email2 = email2;
+	}
+
+	public UsuarioService getUsuarioService() {
+		return usuarioService;
+	}
+
+	public void setUsuarioService(UsuarioService usuarioService) {
+		this.usuarioService = usuarioService;
+	}
+	
 }

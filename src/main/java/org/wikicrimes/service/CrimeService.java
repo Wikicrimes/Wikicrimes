@@ -2,9 +2,11 @@ package org.wikicrimes.service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.wikicrimes.model.BaseObject;
 import org.wikicrimes.model.Comentario;
+import org.wikicrimes.model.Confirmacao;
 import org.wikicrimes.model.Crime;
 import org.wikicrimes.model.EntidadeCertificadora;
 import org.wikicrimes.model.Razao;
@@ -56,5 +58,6 @@ public interface CrimeService extends GenericCrudService {
 	public List<Crime> getCrimesMaisVistos();
 	public List<Crime> getCrimesMaisComentados();
 	public List<Crime> getCrimesMaisConfirmados();
+	public void update(Crime crime, Set<Confirmacao> confirmacoes, List<Razao> razoes);
 	
 }

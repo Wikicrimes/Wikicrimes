@@ -4,7 +4,7 @@
     "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    <class name="org.wikicrimes.model.TipoVitima" table="TB_TVI_TIPO_VITIMA" lazy="true">
+    <class name="org.wikicrimes.model.TipoVitima" table="TB_TVI_TIPO_VITIMA" lazy="false">
         <id name="idTipoVitima" column="TVI_IDTIPO_VITIMA" unsaved-value="null">
             <generator class="increment"/>
         </id>

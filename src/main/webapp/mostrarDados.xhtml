@@ -66,21 +66,31 @@
 			<div id="topoBalao"> <b>#{messages['mostrardados.titulo']}</b> </div>
 			
 			
-			<t:panelGrid border="0" style="font-size: 11px; font-family: sans-serif;" columns="1">
+			<t:panelGrid border="0" style="font-size: 11px; font-family: sans-serif; width:100%" columns="1">
 				<h:form id="mostrarDadosForm">
-				
+					<h:inputHidden required="true" value="#{mostrarDadosForm.crime.idCrime}" id="idCrime"/>
+					
 					<c:if test="#{not empty message}">
 						<h:outputText value="#{message}" styleClass="message" />
 					</c:if>
 					
-					
+					<c:if test="#{mostrarDadosForm.crime.usuario.idUsuario == usuario.nome}">	
+						<div style="width:100%; text-align:right">
+							<h:commandLink value="Edite este Crime"
+									action="#{mostrarDadosForm.prepararEditarCrime}" >
+							
+								<f:setPropertyActionListener target="#{mostrarDadosForm.crimeEditar}"
+									value="#{mostrarDadosForm.crime}"/>
+							</h:commandLink>	
+						</div>
+					</c:if>	
 					<!--  Dados Gerais -->
 					<t:panelGrid border="0" columns="2" style="text-align:left">
-
+						
 						<h:outputText value="#{messages['crime.tipoCrime']}"
 							style="vertical-align: text-top" />
 						<h:outputText value="#{messages[mostrarDadosForm.crime.tipoCrime.nome]}" />
-
+						
 						<h:outputText value="#{messages['crime.tipoVitima']}">
 							<c:if test="#{mostrarDadosForm.crime.tipoVitima == null and mostrarDadosForm.crime.tipoLocal.tipoVitima == null}">
 								<jsp:attribute name="style" value="visibility:hidden;" />
@@ -164,26 +174,15 @@
 						
 					<h:outputLink style="text-align: right;" value="#"  onclick="parent.zoomIn('#{mostrarDadosForm.crime.chave}');">Zoom in  </h:outputLink>
 					<h:outputLink value="#"  onclick="parent.zoomOut('#{mostrarDadosForm.crime.chave}');">  Zoom out</h:outputLink>
-				<t:saveState value="#{mostrarDadosForm.crime.idCrime}" />
-				
+					<t:saveState value="#{mostrarDadosForm.crime}" />
 <c:if test="#{not empty usuario}">
 	<h:outputText />
 				<br/><br/>
-				<h:inputHidden required="true" value="#{mostrarDadosForm.crime.idCrime}" id="idCrime"/>
+				
     <h:outputText value="#{messages['confirmacao.pergunta']}" style="vertical-align: text-top"/>
 				<h:outputText />
 				<br/><br/>
-				<t:saveState value="#{mostrarDadosForm.crime.horario}" />
-
-				<t:saveState value="#{mostrarDadosForm.crime.descricao}" />
-				<t:saveState value="#{mostrarDadosForm.crime.confirmacoesPositivas}" />
-				<t:saveState value="#{mostrarDadosForm.crime.confirmacoesNegativas}" />
-				<t:saveState value="#{mostrarDadosForm.crime.tipoRegistro}" />
-				<t:saveState value="#{mostrarDadosForm.crime.data}" />
-				<t:saveState value="#{mostrarDadosForm.crime.tipoCrime}" />
-				<t:saveState value="#{mostrarDadosForm.crime.dataHoraRegistro}" />
-				<t:saveState value="#{mostrarDadosForm.crime.tipoVitima}" />
-				<t:saveState value="#{mostrarDadosForm.crime.tipoLocal}" />
+				
 				<t:div style="align: center;">
                 	<h:commandButton style="font-size: 11px; font-family: sans-serif;" value="#{messages['webapp.btn.sim']} " id="btnSim" onclick="parent.displayMessage('./tipoConfirmacao.html?idCrime='+'#{mostrarDadosForm.crime.idCrime}'+ '&amp;p=true', 380, 200,'#{messages['confirmacao.pergunta.pq.motivo']}');return false;" styleClass="button"/>
    	            	<h:outputText value=" "/>
@@ -200,7 +199,7 @@
 					                	
 </c:if>
 
-
+			
 			</h:form>
 			
 			</t:panelGrid>

@@ -26,6 +26,8 @@ public class MostrarDadosForm extends GenericForm {
 	private final Log log = LogFactory.getLog(MostrarDadosForm.class);
 
 	private Crime crime = null;
+	
+	private Crime crimeEditar;
 
 	private CrimeService crimeService;
 
@@ -44,9 +46,7 @@ public class MostrarDadosForm extends GenericForm {
 	}
 
 	public MostrarDadosForm() {
-		crime = new Crime();
-		confirmacao = new Confirmacao();
-		confirmacao.setCrime(crime);
+		
 	}
 
 	public Crime getCrime() {
@@ -328,6 +328,12 @@ public class MostrarDadosForm extends GenericForm {
 		return null;
 	}
 	
+	public String prepararEditarCrime(){
+		HttpSession session = (HttpSession)facesContext.getExternalContext().getSession(false);
+		session.setAttribute("chaveEditarCrime", crimeEditar.getChave());
+		return "editarCrime";
+	}
+	
 	public String getEmbedded(){
 		HttpSession session = (HttpSession)facesContext.getExternalContext().getSession(false);
 		FiltroForm form = (FiltroForm)session.getAttribute("filtroForm");
@@ -392,12 +398,14 @@ public class MostrarDadosForm extends GenericForm {
 				if(form.getCrimeConfirmadoPositivamente())
 					crimesConfirmadosPositivamenteUrl = "true";
 			}
-			 	   		
-			return "lat="+crime.getLatitude()+"&lng="+crime.getLongitude()+"&tc="+tipoCrimeUrl+"&tv="+tipoVitimaUrl+"&tl="+tipoLocalUrl+"&di="+dataInicialUrl+"&df="+dataFinalUrl+"&hi="+horarioInicialUrl+"&hf="+horarioFinalUrl+"&ic="+crime.getChave()+"&ec="+entidadeCertificadoraUrl+"&cp="+crimesConfirmadosPositivamenteUrl;
+			if(crime!=null) 	   		
+				return "lat="+crime.getLatitude()+"&lng="+crime.getLongitude()+"&tc="+tipoCrimeUrl+"&tv="+tipoVitimaUrl+"&tl="+tipoLocalUrl+"&di="+dataInicialUrl+"&df="+dataFinalUrl+"&hi="+horarioInicialUrl+"&hf="+horarioFinalUrl+"&ic="+crime.getChave()+"&ec="+entidadeCertificadoraUrl+"&cp="+crimesConfirmadosPositivamenteUrl;
+			else
+				return "";  
 			
 		}
 		
-	}
+	}	
 	
 	public String getHorario() {
 		Long horario = getCrime().getHorario();
@@ -427,5 +435,26 @@ public class MostrarDadosForm extends GenericForm {
 
 		return returnPage;
 	}
+	
+	public String updateCrime(){
+		crimeService.update(crimeEditar);
+		return null;
+	}
+
+	public Crime getCrimeEditar() {
+		HttpSession session = (HttpSession)facesContext.getExternalContext().getSession(false);
+		String chaveEditar = (String)session.getAttribute("chaveEditarCrime");
+		if(chaveEditar != null && !chaveEditar.equalsIgnoreCase("")){
+			crimeEditar = crimeService.getCrime(chaveEditar);
+			session.removeAttribute("chaveEditarCrime");
+		}
+		return crimeEditar;
+	}
+
+	public void setCrimeEditar(Crime crimeEditar) {
+		this.crimeEditar = crimeEditar;
+	}
+	
+	
 
 }

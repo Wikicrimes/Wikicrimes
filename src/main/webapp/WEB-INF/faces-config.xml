@@ -351,6 +351,11 @@
 			<to-view-id>/blank.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
+		<navigation-case>
+			<from-outcome>editarCrime</from-outcome>
+			<to-view-id>/editarCrime.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
 	</navigation-rule>
 	
 	<navigation-rule>

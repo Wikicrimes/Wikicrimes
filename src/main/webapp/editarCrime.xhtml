@@ -59,10 +59,11 @@
 				<h:form id="mostrarDadosForm">
 					
 					
-					<c:if test="#{(not empty message) and (message != messages['errors.embed.invaliado'])}">
-						<h:outputText value="#{message}" styleClass="message" />
-					</c:if>
-					<h:outputText style="display: none" value="#{mostrarDadosForm.crimeEditar.usuario.idiomaPreferencial}" />
+						<c:if test="#{(not empty message) and (message != messages['errors.embed.invaliado'])}">
+							<h:outputText value="#{message}" styleClass="message" />
+						</c:if>
+						<h:outputText style="display: none" value="#{mostrarDadosForm.crimeEditar.usuario.idiomaPreferencial}" />
+					
 					<!--  Dados Gerais -->
 					<t:panelGrid border="0" columns="2" style="text-align:left">
 						<t:panelGroup colspan="2">	
@@ -142,7 +143,7 @@
 							</t:panelGroup>	
 						</c:if>
 						<c:if test="#{empty usuario}">
-							<h:panelGroup>
+							<h:panelGroup colspan="2">
 								<h:outputText style="font-size: 11px;" value="#{messages['crime.mostra.descricaologin1']}" />
 								<h:outputLink value="#" onclick="chamaModal();return false">
 									<h:outputText value="login" style="font-size:12px;font-weight:bold"/>

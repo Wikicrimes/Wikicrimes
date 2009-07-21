@@ -482,24 +482,17 @@ public class MostrarDadosForm extends GenericForm {
 			if(crimeEditar.getEmbedNoticia()!=null && !crimeEditar.getEmbedNoticia().equalsIgnoreCase("")){
 				String embed = crimeEditar.getEmbedNoticia();
 				int x = embed.indexOf("width=\"",inicio);
-				//System.out.println(x);
 				x+=7;
 				int y = embed.indexOf("\"",x);
 				String embedParte1 = embed.substring(0,x);
 				String embedParte2 = embed.substring(y,embed.length());
-				//System.out.println(embedParte2);
 				embed = embedParte1+330+embedParte2;
-				//System.out.println(embed);
-				
 				x = embed.indexOf("height=\"",x);
-				//System.out.println(x);
 				x+=8;
 				y = embed.indexOf("\"",x);
 				embedParte1 = embed.substring(0,x);
 				embedParte2 = embed.substring(y,embed.length());
-				//System.out.println(embedParte2);
 				embed = embedParte1+140+embedParte2;
-				//System.out.println(embed);
 				crimeEditar.setEmbedNoticia(embed);				
 				if(embed.indexOf("width=\"",x)!=-1)
 					formataEmbedCrime(x);

@@ -479,8 +479,8 @@ public class MostrarDadosForm extends GenericForm {
 	
 	public boolean formataEmbedCrime(int inicio){
 		try{	
-			if(crime.getEmbedNoticia()!=null && !crime.getEmbedNoticia().equalsIgnoreCase("")){
-				String embed = crime.getEmbedNoticia();
+			if(crimeEditar.getEmbedNoticia()!=null && !crimeEditar.getEmbedNoticia().equalsIgnoreCase("")){
+				String embed = crimeEditar.getEmbedNoticia();
 				int x = embed.indexOf("width=\"",inicio);
 				//System.out.println(x);
 				x+=7;
@@ -500,7 +500,7 @@ public class MostrarDadosForm extends GenericForm {
 				//System.out.println(embedParte2);
 				embed = embedParte1+140+embedParte2;
 				//System.out.println(embed);
-				crime.setEmbedNoticia(embed);				
+				crimeEditar.setEmbedNoticia(embed);				
 				if(embed.indexOf("width=\"",x)!=-1)
 					formataEmbedCrime(x);
 				

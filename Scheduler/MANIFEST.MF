@@ -1,4 +1,4 @@
 Manifest-Version: 1.0
-Class-Path: commons-email-1.1.jar mail.jar mysql-connector-java-3.1.12-bin.jar
+Class-Path: api/commons-email-1.1.jar api/mail.jar api/mysql-connector-java-3.1.12-bin.jar
 Main-Class: org.wikicrimes.main.Main
 

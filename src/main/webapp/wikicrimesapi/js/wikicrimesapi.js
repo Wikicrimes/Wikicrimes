@@ -81,7 +81,7 @@ function WikiCrimes(mapClient,variavelJQuery, idioma, filtroWikiCrimes, userWiki
 			dataInicialWikicrimes = filtroWikiCrimes.dtInicial;
 			dataFinalWikicrimes = filtroWikiCrimes.dtFinal;
 			tipoCrime = filtroWikiCrimes.tipoCrime;
-			tipoVitima = filtroWikiCrimes.tipoVitima;
+			tipoVitima = filtroWikiCrimes.subTipoCrime;
 		}		
 	}
 	
@@ -98,7 +98,7 @@ function WikiCrimesFilter(){
 	this.dtInicial = '';
 	this.dtFinal = '';
 	this.tipoCrime = '';
-	this.tipoVitima = '';
+	this.subTipoCrime = '';
 }
 
 function WikiCrimesUser(){

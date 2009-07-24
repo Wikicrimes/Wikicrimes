@@ -163,7 +163,7 @@ ComandosWikicrimes.prototype.initialize = function(mapWikiCrimes) {
 
 
 ComandosWikicrimes.prototype.getDefaultPosition = function() {
-  return new GControlPosition(G_ANCHOR_TOP_RIGHT, new GSize(10,16));
+  return new GControlPosition(G_ANCHOR_TOP_RIGHT, new GSize(10,36));
 }
 
 
@@ -267,7 +267,7 @@ ComandoFiltroWikicrimes.prototype.initialize = function(mapWikiCrimes) {
 
 
 ComandoFiltroWikicrimes.prototype.getDefaultPosition = function() {
-  return new GControlPosition(G_ANCHOR_TOP_RIGHT, new GSize(10,104));
+  return new GControlPosition(G_ANCHOR_TOP_RIGHT, new GSize(10,124));
 }
 
 
@@ -612,7 +612,7 @@ ComandoRegistroCrimeWikicrimes.prototype.initialize = function(mapWikiCrimes) {
 
 
 ComandoRegistroCrimeWikicrimes.prototype.getDefaultPosition = function() {
-  return new GControlPosition(G_ANCHOR_TOP_RIGHT, new GSize(10,104));
+  return new GControlPosition(G_ANCHOR_TOP_RIGHT, new GSize(10,124));
 }
 
 

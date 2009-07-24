@@ -154,21 +154,21 @@ public class FiltroForm extends GenericForm {
 		HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
 		String ip = request.getRemoteAddr();
 		if(!ip.equalsIgnoreCase("127.0.0.1") && !ip.equalsIgnoreCase("0:0:0:0:0:0:0:1")){
-		GeoData geo =GeoData.getInstance();
-		String pais =geo.getLookupService().getCountry(ip).getCode();
-		EstatisticaPais ep= this.estatisticaService.getEstatisticaPais(pais);
-		if (ep!=null && ep.getLatitude() != null && ep.getLongitude()!= null){
-				 this.latMapa=ep.getLatitude().toString();
-				 this.lngMapa =ep.getLongitude().toString();
-				 System.out.println("[" + new Date() + "] IP: " + ip + " :" + pais);
-			 
-		}
-		this.zoomMapa = "4";
-		if (latMapa==null || lngMapa==null){
-			System.err.println("[" + new Date() + "] NAO ENCONTRADA LAT LNG DO PAIS: " + geo.getLookupService().getCountry(ip).getName() + " " + pais );
-			 latMapa = "-14.235004";
-			 lngMapa = "-51.925280";
-		}
+			GeoData geo =GeoData.getInstance();
+			String pais =geo.getLookupService().getCountry(ip).getCode();
+			EstatisticaPais ep= this.estatisticaService.getEstatisticaPais(pais);
+			if (ep!=null && ep.getLatitude() != null && ep.getLongitude()!= null){
+					 this.latMapa=ep.getLatitude().toString();
+					 this.lngMapa =ep.getLongitude().toString();
+					 System.out.println("[" + new Date() + "] IP: " + ip + " :" + pais);
+				 
+			}
+			this.zoomMapa = "4";
+			if (latMapa==null || lngMapa==null){
+				System.err.println("[" + new Date() + "] NAO ENCONTRADA LAT LNG DO PAIS: " + geo.getLookupService().getCountry(ip).getName() + " " + pais );
+				 latMapa = "-14.235004";
+				 lngMapa = "-51.925280";
+			}
 
 		}
 	}

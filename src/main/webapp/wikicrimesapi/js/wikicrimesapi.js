@@ -1,5 +1,5 @@
 /* <![CDATA[ */
-var urlWikiCrimes = "http://localhost:8080/wikicrimes/"
+var urlWikiCrimes = "http://localhost:8081/wikicrimes/"
 	
 document.write("<script type='text/javascript' src='"+urlWikiCrimes+"wikicrimesapi/js/constantesWikiCrimesApi.js'></script>");
 document.write("<script type='text/javascript' src='"+urlWikiCrimes+"wikicrimesapi/js/language.js'></script>");
@@ -64,6 +64,8 @@ function WikiCrimes(mapClient,variavelJQuery, idioma, filtroWikiCrimes, userWiki
 			if(crimeWikiCrimes != null){
 				mapWikiCrimes.removeOverlay(crimeWikiCrimes);
 			}
+			document.getElementById('botaoRegistroCrimesWikiCrimes').innerHTML = "<div id='botaoRegistroCrimesWikiCrimes'><div onclick='mostraEscondeRegistroCrimeWikiCrimes();' class='botao'> "+mensagens['registrarCrime']+" </div></div>";
+			statusRegistroCrimesWikiCrimes='invisivel';
 		});		
 	}
 	

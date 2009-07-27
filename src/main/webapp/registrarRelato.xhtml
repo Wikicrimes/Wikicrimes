@@ -57,6 +57,22 @@
 					<div id="topoBalao"> <b>#{messages['crime.topo.relatodrogas']}</b> </div>
 					
 				</c:if>
+				<c:if test="#{relatoForm.relato.subTipoRelato == 3}">
+					<div id="topoBalao"> <b>#{messages['crime.topo.shebeen.location']}</b> </div>
+					
+				</c:if>
+				<c:if test="#{relatoForm.relato.subTipoRelato == 4}">
+					<div id="topoBalao"> <b>#{messages['crime.topo.alcohol.abuse']}</b> </div>
+					
+				</c:if>
+				<c:if test="#{relatoForm.relato.subTipoRelato == 5}">
+					<div id="topoBalao"> <b>#{messages['crime.topo.woman.abuse']}</b> </div>
+					
+				</c:if>
+				<c:if test="#{relatoForm.relato.subTipoRelato == 6}">
+					<div id="topoBalao"> <b>#{messages['crime.topo.child.abuse']}</b> </div>
+					
+				</c:if>
 
 				<h:outputText value="#{messages['relato.periodo']}(*)"
 					style="vertical-align: text-top; font-size: 11px;" />

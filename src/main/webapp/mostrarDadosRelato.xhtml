@@ -74,7 +74,7 @@
 				<h:form id="mostrarDadosForm">
 				<!--  Dados Gerais -->
 				<h:panelGrid border="0" columns="1" style="text-align:left">
-					<c:if test="#{mostrarDadosRelatoForm.relato.subTipoRelato == 1 or mostrarDadosRelatoForm.relato.subTipoRelato == 2}">
+					<c:if test="#{mostrarDadosRelatoForm.relato.subTipoRelato == 1 or mostrarDadosRelatoForm.relato.subTipoRelato == 2 or mostrarDadosRelatoForm.relato.subTipoRelato == 3 or mostrarDadosRelatoForm.relato.subTipoRelato == 4 or mostrarDadosRelatoForm.relato.subTipoRelato == 5 or mostrarDadosRelatoForm.relato.subTipoRelato == 6}">
 						<h:outputText value="#{messages['relato.tipoRelato']}" style="vertical-align: text-top" />
 						<h:panelGroup>
 						<c:if test="#{mostrarDadosRelatoForm.relato.subTipoRelato == 1}">
@@ -82,6 +82,18 @@
 						</c:if>					
 						<c:if test="#{mostrarDadosRelatoForm.relato.subTipoRelato == 2}">
 							<h:outputText value=" #{messages['relato.drogas']}"/>
+						</c:if>
+						<c:if test="#{mostrarDadosRelatoForm.relato.subTipoRelato == 3}">
+							<h:outputText value=" #{messages['menu.relato.shebeen.location']}"/>
+						</c:if>
+						<c:if test="#{mostrarDadosRelatoForm.relato.subTipoRelato == 4}">
+							<h:outputText value=" #{messages['menu.relato.alcohol.abuse']}"/>
+						</c:if>
+						<c:if test="#{mostrarDadosRelatoForm.relato.subTipoRelato == 5}">
+							<h:outputText value=" #{messages['menu.relato.woman.abuse']}"/>
+						</c:if>
+						<c:if test="#{mostrarDadosRelatoForm.relato.subTipoRelato == 6}">
+							<h:outputText value=" #{messages['menu.relato.child.abuse']}"/>
 						</c:if>
 						</h:panelGroup>
 					</c:if>						

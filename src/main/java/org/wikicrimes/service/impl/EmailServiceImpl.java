@@ -373,6 +373,14 @@ public class EmailServiceImpl extends GenericCrudServiceImpl implements
 							model.put("subTipoRelato", "Áreas Perigosas");
 						if(relato.getSubTipoRelato().equalsIgnoreCase("2"))
 							model.put("subTipoRelato", "Áreas com uso/tráfico de drogas");
+						if(relato.getSubTipoRelato().equalsIgnoreCase("3"))
+							model.put("subTipoRelato", "Bares Ilegais");
+						if(relato.getSubTipoRelato().equalsIgnoreCase("4"))
+							model.put("subTipoRelato", "Uso Excessivo de Álcool");
+						if(relato.getSubTipoRelato().equalsIgnoreCase("5"))
+							model.put("subTipoRelato", "Violência contra Mulher");
+						if(relato.getSubTipoRelato().equalsIgnoreCase("6"))
+							model.put("subTipoRelato", "Violência contra Criança");
 					if(confirmacao.getUsuario().getPerfil().getIdPerfil()== Perfil.CONVIDADO){
 						text = VelocityEngineUtils.mergeTemplateIntoString(
 					               velocityEngine, "org/wikicrimes/template-convidado-relato-confirmacao.vm", model);
@@ -387,7 +395,15 @@ public class EmailServiceImpl extends GenericCrudServiceImpl implements
 						if(relato.getSubTipoRelato().equalsIgnoreCase("1"))
 							model.put("subTipoRelato", "Danger Area");
 						if(relato.getSubTipoRelato().equalsIgnoreCase("2"))
-							model.put("subTipoRelato", "Areas with use/trafficking of drugs");
+							model.put("subTipoRelato", "Drug Abuse");
+						if(relato.getSubTipoRelato().equalsIgnoreCase("3"))
+							model.put("subTipoRelato", "Shebeen Location");
+						if(relato.getSubTipoRelato().equalsIgnoreCase("4"))
+							model.put("subTipoRelato", "Alcohol Abuse");
+						if(relato.getSubTipoRelato().equalsIgnoreCase("5"))
+							model.put("subTipoRelato", "Woman Abuse");
+						if(relato.getSubTipoRelato().equalsIgnoreCase("6"))
+							model.put("subTipoRelato", "Child Abuse");
 						message.setSubject("Denounce Confirmation - WikiCrimes.org");
 						if(confirmacao.getUsuario().getPerfil().getIdPerfil()== Perfil.CONVIDADO){
 							text = VelocityEngineUtils.mergeTemplateIntoString(

@@ -29,7 +29,8 @@
         <property name="estado" column="REL_ESTADO" type="java.lang.String" not-null="false"/>
         <property name="pais" column="REL_PAIS" type="java.lang.String" not-null="false"/>        
 		<property name="cep" column="REL_CEP" type="java.lang.String" length="9"/>        
-        <property name="dataHoraRegistro" column="REL_DATA_HORA_REGISTRO" type="java.util.Date"/>        
+        <property name="dataHoraRegistro" column="REL_DATA_HORA_REGISTRO" type="java.util.Date"/>  
+        <property name="idicacaoValida" column="CON_IDICACAO_VALIDA" type="java.lang.String"/>      
         <many-to-one name="usuarioRedeSocial" column="URS_IDUSUARIO_REDE_SOCIAL" class="org.wikicrimes.model.UsuarioRedeSocial" />       
         <many-to-one name="usuario" column="USU_IDUSUARIO" class="org.wikicrimes.model.Usuario" />
         <set name="razoes" table="TB_RLZ_RELATO_RAZAO" lazy="false">

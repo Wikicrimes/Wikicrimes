@@ -65,6 +65,8 @@ public class Relato extends BaseObject {
     
     private Set<RelatoRazao> razoes;
     
+    private String idicacaoValida;
+    
     public Long getQtdConfPositivas() {
 		return qtdConfPositivas;
 	}
@@ -263,6 +265,14 @@ public class Relato extends BaseObject {
 
 	public void setRazoes(Set<RelatoRazao> razoes) {
 		this.razoes = razoes;
+	}
+
+	public String getIdicacaoValida() {
+		return idicacaoValida;
+	}
+
+	public void setIdicacaoValida(String idicacaoValida) {
+		this.idicacaoValida = idicacaoValida;
 	}	
 	
 	

@@ -507,6 +507,9 @@ public class MostrarDadosForm extends GenericForm {
 	}	
 	
 	public String updateCrime(){
+		if (expirouSessao()) {			
+			return SESSAO_EXPIRADA;
+		}
 		Set<Confirmacao> confirmacoes = new HashSet<Confirmacao>();
 		Confirmacao confirmacaoEditar = new Confirmacao();
 		if(crimeEditar.getEmbedNoticia()!=null && !crimeEditar.getEmbedNoticia().equalsIgnoreCase("")){	

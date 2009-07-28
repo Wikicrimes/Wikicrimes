@@ -20,153 +20,27 @@
 		<link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon" />
 		<link rel="stylesheet" type="text/css" href="./styles/wikicrimes.css" title="default" />		
 	
-		<script type="text/javascript" src="./scripts/calendar.js"></script>
-		<script type="text/javascript" src="./scripts/calendar-setup.js"></script>	
-		<script type="text/javascript" src="./scripts/lang/calendar-en.js"></script>
-		<script type="text/javascript" src="./scripts/lang/#{messages['webapp.calendar']}"></script>	
-		<c:if test="#{messages['webapp.calendar'] == 'calendar-pt.js' }">
-			<script type="text/javascript" src="./scripts/lang/calendar-br.js"></script>	
-		</c:if>
+	
 	</head>
 	
 	<body style="overflow-x: hidden">
+	
 		
 		
-		<script type="text/javascript" src="scripts/wz_tooltip.js"></script>
-		<script type="text/javascript" src="scripts/tip_balloon.js"></script>
-		
-		<style type="text/css">
-
-			a:link, a:visited, a:active {
-			text-decoration: underline;
-			 background:#FFFFFF;
-			}
-			a:hover {
-			text-decoration: underline; 
-			 color:#000; 
-			background:#FFFFCC;
-			cursor: pointer; 
-			}
-
-	</style>
 			<f:loadBundle var="messages" basename="messages" />
 			
 			
 			<div id="topoBalao"> <b>#{messages['mostrardados.titulo']}</b> </div>
 			
-			
-			<t:panelGrid border="0" style="font-size: 11px; font-family: sans-serif; width:100%" columns="1">
-				<h:form id="mostrarDadosForm">
-					
-					
-						<c:if test="#{(not empty message) and (message != messages['errors.embed.invaliado'])}">
-							<h:outputText value="#{message}" styleClass="message" />
-						</c:if>
-						<h:outputText style="display: none" value="#{mostrarDadosForm.crimeEditar.usuario.idiomaPreferencial}" />
-					
-					<!--  Dados Gerais -->
-					<t:panelGrid border="0" columns="2" style="text-align:left">
-						<t:panelGroup colspan="2">	
-							<h:outputText style="font-size: 10px; text-align:left; font-style:italic;" value="#{messages['mostrarDadosForm.edicao.titulo']}"/>
-						</t:panelGroup>
-						<h:outputText value="#{messages['crime.tipoCrime']}"
-							style="vertical-align: text-top" />
-						<h:outputText value="#{messages[mostrarDadosForm.crimeEditar.tipoCrime.nome]}" />
-						
-						<h:outputText value="#{messages['crime.tipoVitima']}">
-							<c:if test="#{mostrarDadosForm.crimeEditar.tipoVitima == null and mostrarDadosForm.crimeEditar.tipoLocal.tipoVitima == null}">
-								<jsp:attribute name="style" value="visibility:hidden;" />
-							</c:if>
-						</h:outputText>
-					
-						<c:if test="#{mostrarDadosForm.crimeEditar.tipoVitima == null and mostrarDadosForm.crimeEditar.tipoLocal.tipoVitima != null}">
-						<h:outputText
-							value="#{messages[mostrarDadosForm.crimeEditar.tipoLocal.tipoVitima.nome]}"/>
-						</c:if>
-						<c:if test="#{mostrarDadosForm.crimeEditar.tipoVitima != null and mostrarDadosForm.crimeEditar.tipoLocal.tipoVitima != null}">
-						<h:outputText
-							value="#{messages[mostrarDadosForm.crimeEditar.tipoVitima.nome]}"/>
-						</c:if>
-
-						<h:outputText value="#{messages['crime.tipoLocal']}">
-							<c:if test="#{mostrarDadosForm.crimeEditar.tipoLocal == null}">
-								<jsp:attribute name="style" value="visibility:hidden;" />
-							</c:if>
-						</h:outputText>
-						<h:outputText value="#{messages[mostrarDadosForm.crimeEditar.tipoLocal.nome]}">
-							<c:if test="#{mostrarDadosForm.crimeEditar.tipoLocal == null}">
-								<jsp:attribute name="style" value="visibility:hidden;" />
-							</c:if>
-						</h:outputText>
-
-						<h:outputText value="#{messages['crime.data']}"
-							style="vertical-align: text-top" />
-						<t:panelGroup>
-							<h:message styleClass="errorMessage" for="data" />
-							<t:inputText style="font-size: 11px; font-family: sans-serif;" id="data" onkeyup="limpaData();" forceId="true" required="true" 
-									value="#{mostrarDadosForm.crimeEditar.data}" 
-									size="8">
-								<f:converter
-									converterId="wikicrimes.WikiSearchCrimesDataConverter" />
-							</t:inputText>
-							<t:graphicImage id="triggerData" forceId="true" value="/images/btns/btnCalendar.gif" style="display:inline; cursor:pointer;"/>
-						</t:panelGroup>
-						
-						<h:outputText value="#{messages['crime.horario']}"
-
-							style="vertical-align: text-top" />
-						<h:selectOneListbox style="font-size: 11px; font-family: sans-serif;" value="#{mostrarDadosForm.crimeEditar.horario}" id="horario" size="1" required="true" >
-							<f:selectItems value="#{mostrarDadosForm.horarioItens}"/>
-							<f:selectItem itemLabel="#{messages['crime.horario.desconhecido']}" itemValue="24"/>							
-						</h:selectOneListbox>
+			<h:form id="mostrarDadosForm">
+				<t:panelGrid border="0" style="font-size: 11px; font-family: sans-serif; width:100%" columns="2">
 						
 						<t:panelGroup colspan="2">
-							<h:outputText value="#{messages['crime.tipoRegistro']}"
-								style="vertical-align: text-top" />
-							</t:panelGroup>
-						<t:panelGroup colspan="2">	
-							<h:selectOneRadio value="#{mostrarDadosForm.crimeEditar.tipoRegistro.idTipoRegistro}"
-								id="tipoRegistro" required="true" style="font-size: 11px; font-family: sans-serif;">
-								<f:selectItems value="#{mostrarDadosForm.tipoRegistroItens}" />
-							</h:selectOneRadio>
-						</t:panelGroup>
-						<t:panelGroup colspan="2">
-							<h:outputText value="#{messages['crime.mostra.descricao']}"
-								style="vertical-align: text-top" />
-						</t:panelGroup>		
-						<c:if test="#{not empty usuario}">
-							<t:panelGroup colspan="2">
-								<h:message styleClass="errorMessage" for="descricao" />
-								<h:inputTextarea style="font-size: 11px; font-family: sans-serif;" value="#{mostrarDadosForm.crimeEditar.descricao}" id="descricao"
-								cols="34" rows="6" required="true" />
-							</t:panelGroup>	
-						</c:if>
-						<c:if test="#{empty usuario}">
-							<h:panelGroup colspan="2">
-								<h:outputText style="font-size: 11px;" value="#{messages['crime.mostra.descricaologin1']}" />
-								<h:outputLink value="#" onclick="chamaModal();return false">
-									<h:outputText value="login" style="font-size:12px;font-weight:bold"/>
-								</h:outputLink>
-								<h:outputText style="font-size: 11px;" value=" #{messages['crime.mostra.descricaologin3']}" />
-							</h:panelGroup>
-						</c:if>
-						<t:panelGroup colspan="2">
-							<h:outputText value="#{messages['mostrarinformacoes.linkrelacionado']}" />
-						</t:panelGroup>
-						<t:panelGroup colspan="2">
-							<h:inputText size="32" value="#{mostrarDadosForm.crimeEditar.linkNoticia}" />
+							<c:if test="#{(not empty message) and (message != messages['errors.embed.invaliado'])}">
+								<h:outputText value="#{message}" styleClass="message" />
+							</c:if>
 						</t:panelGroup>	
-						<t:panelGroup colspan="2">
-								<h:outputText value="#{messages['mostrarinformacoes.linkembed']} (Ex: youtube):" />
-						</t:panelGroup>
-						<t:panelGroup colspan="2">
-							<h:inputText size="32" value="#{mostrarDadosForm.crimeEditar.embedNoticia}" />
-							<c:if test="#{not empty message}">
-								<c:if test="#{message == messages['errors.embed.invaliado'] }">
-									<h:outputText value="#{message}" styleClass="errorMessage" />
-								</c:if>
-					   		</c:if>
-						</t:panelGroup>						
+						
 						<t:panelGroup colspan="2">
 							<h:outputText value="#{messages['crime.confirmacoes.editar']}(*)"
 								style="vertical-align: text-top; font-size: 11px;" />
@@ -201,26 +75,10 @@
 							<t:saveState value="#{mostrarDadosForm.crimeEditar}" />
 							<h:commandButton value="#{messages['mostrarDados.botao.atualizar']}"
 						id="btnAtualizar" action="#{mostrarDadosForm.updateCrime}" styleClass="button" />
-						</t:panelGroup>	
-					</t:panelGrid>					
-				
-			</h:form>
+						</t:panelGroup>		
 			
-			</t:panelGrid>
-			<script type="text/javascript">
-				function limpaData(){
-					document.getElementById("data").value="";
-				}	
-				
-			    Calendar.setup(
-			    {
-			      inputField  : "data",         // ID of the input field
-			      ifFormat    : "#{messages['date.format.calendar']}",    // the date format
-			      button      : "triggerData",       // ID of the button
-			      weekNumbers : false
-			    }
-			  	);
-			</script>
+				</t:panelGrid>
+			</h:form>
 
 
 	</body>

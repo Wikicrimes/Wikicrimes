@@ -22,6 +22,7 @@ public class Confirmacao extends BaseObject {
 	private Boolean indicacaoEmail;
 	private TipoConfirmacao tipoConfirmacao;
 	private String ip;
+	private String idicacaoValida;
 
 	public String getIp() {
 		return ip;
@@ -148,6 +149,15 @@ public class Confirmacao extends BaseObject {
 
 	public TipoConfirmacao getTipoConfirmacao() {
 		return tipoConfirmacao;
+	}
+
+	public String getIdicacaoValida() {
+		return idicacaoValida;
+	}
+
+	public void setIdicacaoValida(String idicacaoValida) {
+		this.idicacaoValida = idicacaoValida;
 	}	
+	
 	
 }

@@ -14,6 +14,7 @@ public class Confirmacao extends BaseObject {
 	private Boolean confirma;
 	private Date dataConfirmacao;
 	private Usuario usuario;
+	private Usuario usuarioIndica;
 	private UsuarioRedeSocial usuarioRedeSocial;
 	private String link;
 	private Boolean indicacao;
@@ -157,7 +158,14 @@ public class Confirmacao extends BaseObject {
 
 	public void setIdicacaoValida(String idicacaoValida) {
 		this.idicacaoValida = idicacaoValida;
+	}
+
+	public Usuario getUsuarioIndica() {
+		return usuarioIndica;
+	}
+
+	public void setUsuarioIndica(Usuario usuarioIndica) {
+		this.usuarioIndica = usuarioIndica;
 	}	
-	
 	
 }

@@ -17,6 +17,7 @@
 		<many-to-one name="entidadeCertificadora" column="ENTCER_IDENTIDADECERTIFICADORA" class="org.wikicrimes.model.EntidadeCertificadora"/>
 		<many-to-one name="tipoConfirmacao" column="TIPCON_IDTIPOCONFIRMACAO" class="org.wikicrimes.model.TipoConfirmacao"/>
         <many-to-one name="usuario" column="USU_IDUSUARIO" class="org.wikicrimes.model.Usuario"/>
+        <many-to-one name="usuarioIndica" column="USU_IDUSUARIO_INDICA" class="org.wikicrimes.model.Usuario"/>
         <many-to-one name="usuarioRedeSocial" column="URS_IDUSUARIO_REDE_SOCIAL" class="org.wikicrimes.model.UsuarioRedeSocial"/>
 	    <many-to-one name="crime" column="CRI_IDCRIME" class="org.wikicrimes.model.Crime"/>
     </class>

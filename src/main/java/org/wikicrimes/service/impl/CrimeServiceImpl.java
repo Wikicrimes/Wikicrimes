@@ -377,8 +377,12 @@ public class CrimeServiceImpl extends GenericCrudServiceImpl implements
 			Crime c= new Crime();
 			c.setChave(chave);
 			List<BaseObject> list =this.getDao().find(c);
+			c = (Crime)list.get(0);
+			Hibernate.initialize(c.getTipoCrime());
+			Hibernate.initialize(c.getUsuario());
+			Hibernate.initialize(c.getTipoVitima());
 			if (list.size() != 0)
-				return (Crime) list.get(0);
+				return c;
 			else
 				return null;
 		

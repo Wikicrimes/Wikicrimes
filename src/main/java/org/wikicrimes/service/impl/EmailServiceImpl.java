@@ -8,7 +8,6 @@ import java.util.ResourceBundle;
 
 import javax.faces.FactoryFinder;
 import javax.faces.application.ApplicationFactory;
-import javax.faces.context.FacesContext;
 import javax.mail.internet.MimeMessage;
 
 import org.apache.velocity.app.VelocityEngine;
@@ -220,6 +219,7 @@ public class EmailServiceImpl extends GenericCrudServiceImpl implements
 						bundle = ResourceBundle.getBundle(bundleName,new Locale(locale));
 						idiomaEmail=locale;
 					}
+					
 					String descricaoTipoCrime=bundle.getString(crime.getTipoCrime().getNome());
 					 String tipoVitima=bundle.getString(crime.getTipoLocal().getTipoVitima().getNome());
 					 String descricaoTipoVitima =bundle.getString(crime.getTipoVitima().getNome());

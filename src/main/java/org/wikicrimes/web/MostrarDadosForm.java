@@ -510,6 +510,7 @@ public class MostrarDadosForm extends GenericForm {
 		if (expirouSessao()) {			
 			return SESSAO_EXPIRADA;
 		}
+		Usuario usuarioLogado = (Usuario)facesContext.getExternalContext().getSessionMap().get("usuario");
 		Set<Confirmacao> confirmacoes = new HashSet<Confirmacao>();
 		Confirmacao confirmacaoEditar = new Confirmacao();
 		if(crimeEditar.getEmbedNoticia()!=null && !crimeEditar.getEmbedNoticia().equalsIgnoreCase("")){	
@@ -522,10 +523,12 @@ public class MostrarDadosForm extends GenericForm {
 			Usuario usuarioConfirmacao = usuarioService.getUsuario(email1);
 			if (usuarioConfirmacao == null) {
 				confirmacaoEditar.setIndicacao(Constantes.SIM);
-				usuarioConfirmacao = usuarioService.retornaUsuarioConfirmacao(email1,crimeEditar.getUsuario().getIdiomaPreferencial());
+				usuarioConfirmacao = usuarioService.retornaUsuarioConfirmacao(email1,usuarioLogado.getIdiomaPreferencial());
 			
 			}
 			
+			if(crimeEditar.getUsuario().getIdUsuario().equals(usuarioLogado.getIdUsuario()))
+				confirmacaoEditar.setUsuarioIndica(usuarioLogado);
 			confirmacaoEditar.setCrime(crimeEditar);
 			confirmacaoEditar.setIndicacaoEmail(Constantes.SIM);
 			confirmacaoEditar.setUsuario(usuarioConfirmacao);
@@ -538,9 +541,12 @@ public class MostrarDadosForm extends GenericForm {
 			Usuario usuarioConfirmacao = usuarioService.getUsuario(email2);
 			if (usuarioConfirmacao == null) {
 				confirmacaoEditar.setIndicacao(Constantes.SIM);
-				usuarioConfirmacao = usuarioService.retornaUsuarioConfirmacao(email2,crimeEditar.getUsuario().getIdiomaPreferencial());
+				usuarioConfirmacao = usuarioService.retornaUsuarioConfirmacao(email2,usuarioLogado.getIdiomaPreferencial());
 			
 			}
+			
+			if(crimeEditar.getUsuario().getIdUsuario().equals(usuarioLogado.getIdUsuario()))
+				confirmacaoEditar.setUsuarioIndica(usuarioLogado);
 			confirmacaoEditar.setCrime(crimeEditar);
 			confirmacaoEditar.setIndicacaoEmail(Constantes.SIM);
 			confirmacaoEditar.setUsuario(usuarioConfirmacao);

@@ -41,6 +41,7 @@
 							</c:if>
 						</t:panelGroup>	
 						
+						
 						<t:panelGroup colspan="2">
 							<h:outputText value="#{messages['crime.confirmacoes.editar']}(*)"
 								style="vertical-align: text-top; font-size: 11px;" />
@@ -69,6 +70,15 @@
 								<t:validateEmail />
 							</h:inputText>	
 							<h:message styleClass="errorMessage" for="email2" />
+						</t:panelGroup>
+						
+						<t:panelGroup colspan="2">
+							<h:outputText value="Escreva uma mensagem para a(s) pessoa(s) que você está indicando:"/>
+						</t:panelGroup>
+						<t:panelGroup colspan="2">
+							<h:message styleClass="errorMessage" for="descricao" />
+							<h:inputTextarea style="font-size: 11px; font-family: sans-serif;" value="#{mostrarDadosForm.mensagemConf}" id="descricao"
+							cols="38" rows="5" onkeyup="if(this.value.length>255){alert('erro');this.value = this.value.substring(0,255);}"/>
 						</t:panelGroup>
 						
 						<t:panelGroup colspan = "2">

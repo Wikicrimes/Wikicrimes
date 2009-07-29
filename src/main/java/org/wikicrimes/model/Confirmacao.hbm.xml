@@ -13,6 +13,7 @@
         <property name="dataConfirmacao" column="CON_DATA_CONFIRMACAO" type="java.util.Date"/>
         <property name="indicacaoEmail" column="CON_INDICACAO_EMAIL" type="java.lang.Boolean"/>
         <property name="ip" column="CON_IP" type="java.lang.String"/>
+        <property name="mensagem" column="CON_MENSAGEM" type="java.lang.String"/>
         <property name="idicacaoValida" column="CON_IDICACAO_VALIDA" type="java.lang.String"/>
 		<many-to-one name="entidadeCertificadora" column="ENTCER_IDENTIDADECERTIFICADORA" class="org.wikicrimes.model.EntidadeCertificadora"/>
 		<many-to-one name="tipoConfirmacao" column="TIPCON_IDTIPOCONFIRMACAO" class="org.wikicrimes.model.TipoConfirmacao"/>

@@ -35,6 +35,8 @@ public class MostrarDadosForm extends GenericForm {
 	private Crime crime = null;
 	
 	private Crime crimeEditar;
+	
+	private String mensagemConf;
 
 	private CrimeService crimeService;
 	
@@ -527,8 +529,9 @@ public class MostrarDadosForm extends GenericForm {
 			
 			}
 			
-			if(crimeEditar.getUsuario().getIdUsuario().equals(usuarioLogado.getIdUsuario()))
+			if(!crimeEditar.getUsuario().getEmail().equals(usuarioLogado.getEmail()))
 				confirmacaoEditar.setUsuarioIndica(usuarioLogado);
+			confirmacaoEditar.setMensagem(mensagemConf);
 			confirmacaoEditar.setCrime(crimeEditar);
 			confirmacaoEditar.setIndicacaoEmail(Constantes.SIM);
 			confirmacaoEditar.setUsuario(usuarioConfirmacao);
@@ -545,8 +548,9 @@ public class MostrarDadosForm extends GenericForm {
 			
 			}
 			
-			if(crimeEditar.getUsuario().getIdUsuario().equals(usuarioLogado.getIdUsuario()))
+			if(!crimeEditar.getUsuario().getEmail().equals(usuarioLogado.getEmail()))
 				confirmacaoEditar.setUsuarioIndica(usuarioLogado);
+			confirmacaoEditar.setMensagem(mensagemConf);
 			confirmacaoEditar.setCrime(crimeEditar);
 			confirmacaoEditar.setIndicacaoEmail(Constantes.SIM);
 			confirmacaoEditar.setUsuario(usuarioConfirmacao);
@@ -597,5 +601,12 @@ public class MostrarDadosForm extends GenericForm {
 	public void setUsuarioService(UsuarioService usuarioService) {
 		this.usuarioService = usuarioService;
 	}
-	
+
+	public String getMensagemConf() {
+		return mensagemConf;
+	}
+
+	public void setMensagemConf(String mensagemConf) {
+		this.mensagemConf = mensagemConf;
+	}	
 }

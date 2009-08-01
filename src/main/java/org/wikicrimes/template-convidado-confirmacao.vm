@@ -61,7 +61,7 @@ a:hover { text-decoration: none; }
 		<p class="repeaterTitle">Confirma&ccedil;&atilde;o de Crime - WikiCrimes.org</p>
 		
 				
-		<p>Ola,</p>
+		<p>Ol&aacute;,</p>
 
 	
 		<p>${usuario.primeiroNome} (${usuario.email}) &eacute; participante da comunidade de usu&aacute;rios do WikiCrimes <a href=http://www.wikicrimes.org> http://www.wikicrimes.org</a>, um projeto para compartilhar informa&ccedil;ões sobre crimes em um mapa digitalizado. Ele registrou um crime e lhe indicou para que voc&ecirc; tamb&eacute;m possa dar seu depoimento. </p>

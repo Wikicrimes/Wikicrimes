@@ -2,6 +2,7 @@ package org.wikicrimes.service.impl;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -191,15 +192,20 @@ public class EmailServiceImpl extends GenericCrudServiceImpl implements
 	  
 	
 	public void sendMailConfirmation(final Crime crime, final String locale) {
-
-		final Usuario usuario = crime.getUsuario();
+		
+		
 		 
 		
 		
 		for (final Confirmacao confirmacao : crime.getConfirmacoes()) {
 		
-			
-			
+			Usuario usuarioTemp;
+			if(confirmacao.getUsuarioIndica()!=null){
+				usuarioTemp = confirmacao.getUsuarioIndica();
+			}else{
+				usuarioTemp = crime.getUsuario();
+			}
+			final Usuario usuario = usuarioTemp;
 			
 			final MimeMessagePreparator preparator = new MimeMessagePreparator() {
 				public void prepare(MimeMessage mimeMessage) throws Exception {

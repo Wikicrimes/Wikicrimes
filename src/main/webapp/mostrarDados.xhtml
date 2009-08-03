@@ -75,13 +75,17 @@
 					</c:if>
 					
 					<c:if test="#{not empty usuario}">	
-						<div style="width:100%; text-align:right">
-							<h:commandLink value="#{messages['mostrardados.edite.este.crime']}"
+						<div style="width:100%; text-align:left">
+							<h:outputText value="#{messages['mostrar.dados.link.indicar.crime.clique']} "
+							style="font-size: 10px; text-align:left; font-style:italic;" />
+							<h:commandLink value="#{messages['novidades.wikicrimes.orkut.descricao3']}"
 									action="#{mostrarDadosForm.prepararEditarCrime}" >
 							
 								<f:setPropertyActionListener target="#{mostrarDadosForm.crimeEditar}"
 									value="#{mostrarDadosForm.crime}"/>
-							</h:commandLink>	
+							</h:commandLink>
+							<h:outputText value=" #{messages['mostrar.dados.link.indicar.crime']}"
+							style="font-size: 10px; text-align:left; font-style:italic;" />
 						</div>
 					</c:if>	
 					<!--  Dados Gerais -->

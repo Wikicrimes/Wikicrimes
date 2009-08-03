@@ -110,6 +110,7 @@ public class CrimeServiceImpl extends GenericCrudServiceImpl implements
 		update(crime);
 		Crime crimeTemp = new Crime();
 		crimeTemp.setDescricao(crime.getDescricao());
+		crimeTemp.setChave(crime.getChave());
 		crimeTemp.setConfirmacoes(confirmacoes);
 		crimeTemp.setTipoCrime(crime.getTipoCrime());
 		Hibernate.initialize(crime.getTipoLocal().getTipoVitima());

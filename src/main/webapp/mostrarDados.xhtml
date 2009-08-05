@@ -67,6 +67,7 @@
 			
 			
 			<t:panelGrid border="0" style="font-size: 11px; font-family: sans-serif; width:100%" columns="1">
+				
 				<h:form id="mostrarDadosForm">
 					<h:inputHidden required="true" value="#{mostrarDadosForm.crime.idCrime}" id="idCrime"/>
 					
@@ -87,6 +88,17 @@
 							<h:outputText value=" #{messages['mostrar.dados.link.indicar.crime']}"
 							style="font-size: 10px; text-align:left; font-style:italic;" />
 						</div>
+					</c:if>	
+					<c:if test="#{empty usuario}">	
+						<h:panelGroup>
+							<h:outputText style="font-size: 10px; text-align:left; font-style:italic;" value="#{messages['crime.mostra.descricaologin1']}" />
+							<h:outputLink value="#" onclick="chamaModal();return false">
+								<h:outputText value="login" style="font-size:11px;font-weight:bold; "/>
+							</h:outputLink>
+							<h:outputText style="font-size: 10px; text-align:left; font-style:italic;" value=" #{messages['mostrar.dados.link.indicar.crime']}" />
+							<br/>
+						</h:panelGroup>
+						
 					</c:if>	
 					<!--  Dados Gerais -->
 					<t:panelGrid border="0" columns="2" style="text-align:left">
@@ -207,7 +219,7 @@
 			</h:form>
 			
 			</t:panelGrid>
-			<table>
+			<table style="font-size: 11px; font-family: sans-serif;">
 				<tr align="left">
 					<td> #{messages['mostrardados.permalink']} (<a href="" onmouseover="Tip('#{messages['crime.mostra.permalink']}', BALLOON, true, ABOVE, true, OFFSETX, -100);"  >?</a>) </td>
 				</tr>

@@ -52,7 +52,7 @@
 
 	<f:view > <!-- > locale="#{facesContext.externalContext.request.locale}" -->
 			<f:loadBundle var="messages" basename="messages" />
-			<h:panelGrid border="0" columns="1" style="text-align:left">
+			<h:panelGrid border="0" columns="1" style="font-size: 11px; font-family: sans-serif;text-align:left">
 				<c:if test="#{crimeForm.crime.tipoCrime.idTipoCrime == 4 }">
 					<c:if test="#{crimeForm.crime.tipoVitima.idTipoVitima == 1}">
 						<div id="topoBalao"> <b>#{messages['crime.topo.roubopessoa']}</b> </div>

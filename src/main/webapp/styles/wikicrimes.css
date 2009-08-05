@@ -5,8 +5,8 @@
 	Estilos de tags
 */
 body,input {
-	font-family: Arial;
-	font-size: 12px;
+	font-size: 11px; 
+	font-family: sans-serif;
 }
 
 a, a:visited {

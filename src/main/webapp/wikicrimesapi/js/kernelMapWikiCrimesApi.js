@@ -120,7 +120,7 @@ function executaRequisicaoKernelMapWikiCrimes(url){
 			url+='&jsoncallback=?';
 			executaRequisicaoKernelMapWikiCrimes(url);
 		}else{
-			alert('remove');
+			//alert('remove');
 		}
 	});
 }

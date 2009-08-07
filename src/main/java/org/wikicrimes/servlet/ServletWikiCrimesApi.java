@@ -313,8 +313,7 @@ public class ServletWikiCrimesApi extends HttpServlet {
 			httpSession.setAttribute("southPixel",request.getParameter("southPixel"));
 			httpSession.setAttribute("eastPixel",request.getParameter("eastPixel"));
 			httpSession.setAttribute("westPixel",request.getParameter("westPixel"));
-			httpSession.setAttribute("width",request.getParameter("width"));
-			httpSession.setAttribute("southPixel",request.getParameter("southPixel"));
+			httpSession.setAttribute("width",request.getParameter("width"));			
 			httpSession.setAttribute("height",request.getParameter("height"));
 			httpSession.setAttribute("pontoXY",request.getParameter("pontoXY"));
 		}
@@ -339,13 +338,21 @@ public class ServletWikiCrimesApi extends HttpServlet {
 				heightTela = Integer.parseInt(request.getParameter("height"));
 				pontoXY = request.getParameter("pontoXY");
 			}else{
-				northPixel = (Integer)httpSession.getAttribute("northPixel");
-				southPixel = (Integer)httpSession.getAttribute("southPixel");
-				eastPixel = (Integer)httpSession.getAttribute("eastPixel");
-				westPixel = (Integer)httpSession.getAttribute("westPixel");
-				widthTela = (Integer)httpSession.getAttribute("widthTela");
-				heightTela = (Integer)httpSession.getAttribute("heightTela");
+				northPixel = Integer.parseInt((String)httpSession.getAttribute("northPixel"));
+				southPixel = Integer.parseInt((String)httpSession.getAttribute("southPixel"));
+				eastPixel = Integer.parseInt((String)httpSession.getAttribute("eastPixel"));
+				westPixel = Integer.parseInt((String)httpSession.getAttribute("westPixel"));
+				widthTela = Integer.parseInt((String)httpSession.getAttribute("width"));
+				heightTela = Integer.parseInt((String)httpSession.getAttribute("height"));
 				pontoXY = (String)httpSession.getAttribute("pontoXY");
+				httpSession.removeAttribute("northPixel");
+				httpSession.removeAttribute("southPixel");
+				httpSession.removeAttribute("eastPixel");
+				httpSession.removeAttribute("westPixel");
+				httpSession.removeAttribute("width");
+				httpSession.removeAttribute("height");
+				httpSession.removeAttribute("pontoXY");
+				
 			}
 			Util util = new Util();
 			util.tamXMatriz = (widthTela/Util.tamCelulaPixel);

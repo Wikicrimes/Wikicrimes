@@ -71,7 +71,7 @@ public class ServletWikiCrimesApi extends HttpServlet {
 		response.setDateHeader("Expires", 0);
 		response.setCharacterEncoding("iso-8859-1");
 		PrintWriter out = response.getWriter();
-		String acao = request.getParameter("acao");
+		String acao = request.getParameter("acao");	
 		
 		if(acao.equalsIgnoreCase("listaCrimes"))
 			acaoListaCrimes(request,response, out);
@@ -292,107 +292,147 @@ public class ServletWikiCrimesApi extends HttpServlet {
 		saida = new PrintWriter(outW, true);
 		JSONObject resposta = new JSONObject();
 		
+		String imagemDiretorioAleatorio = request.getParameter("imagem");
+		
+		
 		HttpSession httpSession = request.getSession();
 		ServletContext context = httpSession.getServletContext();
 		String realContextPath = context.getRealPath("//");
 		realContextPath += barra + "images" + barra + "KernelMap"+ barra; 
 	
-		String imagemDiretorioAleatorio = request.getParameter("imagem");
+		
 		//Verifica se a imagem já chegou no cliente
 		if(imagemDiretorioAleatorio != null){
 			Thread thread = new ThreadImage(realContextPath + imagemDiretorioAleatorio);
 			thread.start();
 			return;	
+		}		
+		String statusReq = request.getParameter("statusReq");
+		if(statusReq.equals("Pri")){
+			httpSession.setAttribute("northPixel",request.getParameter("northPixel"));
+			httpSession.setAttribute("southPixel",request.getParameter("southPixel"));
+			httpSession.setAttribute("eastPixel",request.getParameter("eastPixel"));
+			httpSession.setAttribute("westPixel",request.getParameter("westPixel"));
+			httpSession.setAttribute("width",request.getParameter("width"));
+			httpSession.setAttribute("southPixel",request.getParameter("southPixel"));
+			httpSession.setAttribute("height",request.getParameter("height"));
+			httpSession.setAttribute("pontoXY",request.getParameter("pontoXY"));
+		}
+		if(statusReq.equals("SegOuMais")||statusReq.equals("Ult")){
+			httpSession.setAttribute("pontoXY",(String)httpSession.getAttribute("pontoXY")+request.getParameter("pontoXY"));
 		}
 		
-		int northPixel = Integer.parseInt(request.getParameter("northPixel"));
-		int southPixel = Integer.parseInt(request.getParameter("southPixel"));
-		int eastPixel = Integer.parseInt(request.getParameter("eastPixel"));
-		int westPixel = Integer.parseInt(request.getParameter("westPixel"));
-		
-		Util util = new Util();
-		util.tamXMatriz = (Integer.parseInt(request.getParameter("width"))/Util.tamCelulaPixel);
-		util.tamYMatriz = (Integer.parseInt(request.getParameter("height"))/Util.tamCelulaPixel);	
-		//Instancia o algoritmo de desidade de kernel
-		MyMapKernel mapKernel = new MyMapKernel(util);
-		
-		
-		//Passa os limites da tela do wikicrimes
-		mapKernel.setXMax(eastPixel);
-		mapKernel.setXMin(westPixel); 
-		mapKernel.setYMax(southPixel);
-		mapKernel.setYMin(northPixel);
-		
-		
-		//Adiciona os crimes no algoritmo do mapa de kernel
-		Dados dados = mapKernel.getDados();
-		dados.limpaDados();
-		String pontoXY = request.getParameter("pontoXY");
-		String [] pontos = pontoXY.split("a");
-
-		for (String ponto : pontos){
-			if(!ponto.equalsIgnoreCase("")){
-				String coordenadas [] = ponto.split(",");
-				dados.adicionaPontoWiki(Integer.parseInt(coordenadas[1]), Integer.parseInt(coordenadas[0]));
+		if(statusReq.equals("PriUlt")||statusReq.equals("Ult")){
+			int northPixel;
+			int southPixel;
+			int eastPixel;
+			int westPixel;
+			int widthTela;
+			int heightTela;
+			String pontoXY;
+			if(statusReq.equals("PriUlt")){
+				northPixel = Integer.parseInt(request.getParameter("northPixel"));
+				southPixel = Integer.parseInt(request.getParameter("southPixel"));
+				eastPixel = Integer.parseInt(request.getParameter("eastPixel"));
+				westPixel = Integer.parseInt(request.getParameter("westPixel"));
+				widthTela = Integer.parseInt(request.getParameter("width"));
+				heightTela = Integer.parseInt(request.getParameter("height"));
+				pontoXY = request.getParameter("pontoXY");
+			}else{
+				northPixel = (Integer)httpSession.getAttribute("northPixel");
+				southPixel = (Integer)httpSession.getAttribute("southPixel");
+				eastPixel = (Integer)httpSession.getAttribute("eastPixel");
+				westPixel = (Integer)httpSession.getAttribute("westPixel");
+				widthTela = (Integer)httpSession.getAttribute("widthTela");
+				heightTela = (Integer)httpSession.getAttribute("heightTela");
+				pontoXY = (String)httpSession.getAttribute("pontoXY");
 			}
-		}
-		
-		
-		//Inicia o calculo da estimação de densidades de kernel
-		mapKernel.inicializaCalculo();
-		
-		//Id único para o nome da imagem
-		int idImage = 0;
-		
-		try {
-			semaphore.acquire();
-		
-			 ServletKernelMap.idImage++;
+			Util util = new Util();
+			util.tamXMatriz = (widthTela/Util.tamCelulaPixel);
+			util.tamYMatriz = (heightTela/Util.tamCelulaPixel);	
+			//Instancia o algoritmo de desidade de kernel
+			MyMapKernel mapKernel = new MyMapKernel(util);
 			
-			if( ServletKernelMap.idImage == 100){
-				 ServletKernelMap.idImage = 1;
-			}
 			
-			idImage = ServletKernelMap.idImage;
+			//Passa os limites da tela do wikicrimes
+			mapKernel.setXMax(eastPixel);
+			mapKernel.setXMin(westPixel); 
+			mapKernel.setYMax(southPixel);
+			mapKernel.setYMin(northPixel);
 			
-			semaphore.release();
 			
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-		}
+			//Adiciona os crimes no algoritmo do mapa de kernel
+			Dados dados = mapKernel.getDados();
+			dados.limpaDados();
 			
-		int numRandomico = getNumeroRandomico();
-		numRandomico += idImage;
-		
-		String fileName = "Img1.png";
-		realContextPath += numRandomico;
-		
-		File file = new File(realContextPath);
-		deleteDir(file);
-		file.mkdirs();	
-		
-		//Cria a imagem de fundo preto
-		mapKernel.criaImage(Integer.parseInt(request.getParameter("width")),Integer.parseInt(request.getParameter("height")),realContextPath + barra, fileName);
-		
-		//Retira o background e torna-o transparente
-		Image image = Transparent.makeColorTransparent(Toolkit.getDefaultToolkit().getImage(realContextPath + barra +fileName) , Color.black);
-		BufferedImage bufferedImage = Transparent.toBufferedImage(image);
-		
-		try {
-			Transparent.writeImageToJPG(new File(realContextPath + barra + "Img" + idImage + ".png"), bufferedImage);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+			String [] pontos = pontoXY.split("a");
 	
-		//Envia informações resultates para o cliente
-		resposta.put("topLeftX", mapKernel.getTopLeft().x);
-		resposta.put("topLeftY", mapKernel.getTopLeft().y);
-		resposta.put("bottomRightX", mapKernel.getBottomRight().x);
-		resposta.put("bottomRightY", mapKernel.getBottomRight().y);
-		resposta.put("idImage", idImage);
-		resposta.put("numRandomico", numRandomico);
-		resposta.put("nada", "NADA");
-
+			for (String ponto : pontos){
+				if(!ponto.equalsIgnoreCase("")){
+					String coordenadas [] = ponto.split(",");
+					dados.adicionaPontoWiki(Integer.parseInt(coordenadas[1]), Integer.parseInt(coordenadas[0]));
+				}
+			}
+			
+			
+			//Inicia o calculo da estimação de densidades de kernel
+			mapKernel.inicializaCalculo();
+			
+			//Id único para o nome da imagem
+			int idImage = 0;
+			
+			try {
+				semaphore.acquire();
+			
+				 ServletKernelMap.idImage++;
+				
+				if( ServletKernelMap.idImage == 100){
+					 ServletKernelMap.idImage = 1;
+				}
+				
+				idImage = ServletKernelMap.idImage;
+				
+				semaphore.release();
+				
+			} catch (InterruptedException e1) {
+				e1.printStackTrace();
+			}
+				
+			int numRandomico = getNumeroRandomico();
+			numRandomico += idImage;
+			
+			String fileName = "Img1.png";
+			realContextPath += numRandomico;
+			
+			File file = new File(realContextPath);
+			deleteDir(file);
+			file.mkdirs();	
+			
+			//Cria a imagem de fundo preto
+			mapKernel.criaImage(widthTela,heightTela,realContextPath + barra, fileName);
+			
+			//Retira o background e torna-o transparente
+			Image image = Transparent.makeColorTransparent(Toolkit.getDefaultToolkit().getImage(realContextPath + barra +fileName) , Color.black);
+			BufferedImage bufferedImage = Transparent.toBufferedImage(image);
+			
+			try {
+				Transparent.writeImageToJPG(new File(realContextPath + barra + "Img" + idImage + ".png"), bufferedImage);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		
+			//Envia informações resultates para o cliente
+			resposta.put("topLeftX", mapKernel.getTopLeft().x);
+			resposta.put("topLeftY", mapKernel.getTopLeft().y);
+			resposta.put("bottomRightX", mapKernel.getBottomRight().x);
+			resposta.put("bottomRightY", mapKernel.getBottomRight().y);
+			resposta.put("idImage", idImage);
+			resposta.put("numRandomico", numRandomico);
+			resposta.put("nada", "NADA");
+			resposta.put("statuRes", "concluido");
+		}else{
+			resposta.put("statuRes", "nadaAinda");
+		}
 		saida.print(request.getParameter("jsoncallback")+"("+resposta.toString()+")");
 		//saida.print(request.getParameter("jsoncallback")+"("+jsonArray.toString()+")");
 		saida.close();

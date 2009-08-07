@@ -42,14 +42,34 @@ function mapaDeKernelWikiCrimes(){
 	var idUsuarioMapaKernel = '';//retornaIdUsuario();  
 	var emailUsuarioMapaKernel = '';//retornaEmailUsuario();
 	var url = urlWikiCrimes + 'ServletWikiCrimesApi?acao=kernelMap&emailUsuarioMapaKernel=' + emailUsuarioMapaKernel + '&idUsuarioMapaKernel=' + idUsuarioMapaKernel + '&northPixel=' + northPixel + '&southPixel=' + southPixel + '&eastPixel=' + eastPixel + '&westPixel=' + westPixel + '&width='+ widthMapClienteWikiCrimes + '&height='+ heightMapClienteWikiCrimes +'&pontoXY=';
-	
+	var qtdCrimes = 0;
 	for (k in crimesAtuais){
+		qtdCrimes++;
+	}
+	var cont = 0;
+	for (k in crimesAtuais){
+		cont++;
 		var point = crimesAtuais[k].getPoint();
 		var pixel = mapWikiCrimes.getCurrentMapType().getProjection().fromLatLngToPixel(point, mapWikiCrimes.getZoom());
 		url+= pixel.y + "," + pixel.x + "a";
+		if(cont % 700 == 0 && qtdCrimes>700){
+			if(cont == 700){
+				url+='&statusReq=Pri';
+			}else{
+				url+='&statusReq=SegOuMais';
+			}
+			url+='&jsoncallback=?';
+			//document.write(url);
+			executaRequisicaoKernelMapWikiCrimes(url);
+			url = urlWikiCrimes + 'ServletWikiCrimesApi?acao=kernelMap&pontoXY=';
+		}
 	}
 	
 	url = url.substring(0,url.length-1)
+	if(qtdCrimes<=700)
+		url+='&statusReq=PriUlt';
+	else
+		url+='&statusReq=Ult';
 	url+='&jsoncallback=?';
 	//document.write(url);
 	executaRequisicaoKernelMapWikiCrimes(url);

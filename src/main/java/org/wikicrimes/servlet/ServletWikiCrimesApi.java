@@ -77,8 +77,14 @@ public class ServletWikiCrimesApi extends HttpServlet {
 			acaoListaCrimes(request,response, out);
 		if(acao.equalsIgnoreCase("registrarCrime"))		
 			registrarCrimes(request, response, out);
-		if(acao.equalsIgnoreCase("kernelMap"))
-			mapaDeKernel(request, response, out);
+		if(acao.equalsIgnoreCase("kernelMap")){
+			try {
+				mapaDeKernel(request, response, out);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}	
 			
 		
 		out.close();
@@ -287,7 +293,7 @@ public class ServletWikiCrimesApi extends HttpServlet {
 		saida.close();
 	}
 	
-	public void mapaDeKernel(HttpServletRequest request, HttpServletResponse response, PrintWriter outW){
+	public void mapaDeKernel(HttpServletRequest request, HttpServletResponse response, PrintWriter outW) throws InterruptedException{
 		PrintWriter saida = null;
 		saida = new PrintWriter(outW, true);
 		JSONObject resposta = new JSONObject();
@@ -315,10 +321,17 @@ public class ServletWikiCrimesApi extends HttpServlet {
 			httpSession.setAttribute("westPixel",request.getParameter("westPixel"));
 			httpSession.setAttribute("width",request.getParameter("width"));			
 			httpSession.setAttribute("height",request.getParameter("height"));
-			httpSession.setAttribute("pontoXY",request.getParameter("pontoXY"));
+			if(httpSession.getAttribute("pontoXY")!=null)
+				httpSession.setAttribute("pontoXY",httpSession.getAttribute("pontoXY")+request.getParameter("pontoXY"));
+			else	
+				httpSession.setAttribute("pontoXY",request.getParameter("pontoXY"));
 		}
 		if(statusReq.equals("SegOuMais")||statusReq.equals("Ult")){
-			httpSession.setAttribute("pontoXY",(String)httpSession.getAttribute("pontoXY")+request.getParameter("pontoXY"));
+			if(httpSession.getAttribute("pontoXY")!=null)
+				httpSession.setAttribute("pontoXY",httpSession.getAttribute("pontoXY")+request.getParameter("pontoXY"));
+			else
+				httpSession.setAttribute("pontoXY",request.getParameter("pontoXY"));
+				//httpSession.setAttribute("pontoXY",(String)httpSession.getAttribute("pontoXY")+request.getParameter("pontoXY"));
 		}
 		
 		if(statusReq.equals("PriUlt")||statusReq.equals("Ult")){
@@ -338,6 +351,12 @@ public class ServletWikiCrimesApi extends HttpServlet {
 				heightTela = Integer.parseInt(request.getParameter("height"));
 				pontoXY = request.getParameter("pontoXY");
 			}else{
+				if((String)httpSession.getAttribute("northPixel")==null|| ((String)httpSession.getAttribute("northPixel")).equals("")){
+					Thread.sleep(5000);
+				}
+				if((String)httpSession.getAttribute("northPixel")==null|| ((String)httpSession.getAttribute("northPixel")).equals("")){
+					Thread.sleep(10000);
+				}
 				northPixel = Integer.parseInt((String)httpSession.getAttribute("northPixel"));
 				southPixel = Integer.parseInt((String)httpSession.getAttribute("southPixel"));
 				eastPixel = Integer.parseInt((String)httpSession.getAttribute("eastPixel"));

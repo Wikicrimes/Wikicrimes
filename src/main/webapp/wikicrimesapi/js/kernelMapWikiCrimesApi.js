@@ -21,7 +21,7 @@ function habilitaDesabilitaMapaDeKernelWikiCrimes(){
 		}
 		podeCarregarCrimes = true;
 		GClusterer = new MarkerClusterer(mapWikiCrimes, GVetorMarcadores);
-		div.innerHTML = "<div onclick='habilitaDesabilitaMapaDeKernelWikiCrimes();' class='botao'> "+mensagens['titulo.kernel.map']+" </div>";	
+		div.innerHTML = "<div onclick='habilitaDesabilitaMapaDeKernelWikiCrimes();' class='botao'> <font style='color:white'>"+mensagens['titulo.kernel.map']+"</font> </div>";	
 	}
 }
 

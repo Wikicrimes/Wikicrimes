@@ -106,7 +106,7 @@ function mostraLimpaCrimesWikiCrimes(){
 		podeCarregarCrimes = false;
 		div.innerHTML = "<div onclick='mostraLimpaCrimesWikiCrimes();' class='botaoAtivado'> "+mensagens['limpar.crimes']+" </div>";
 	}else{
-		div.innerHTML = "<div onclick='mostraLimpaCrimesWikiCrimes();' class='botao'> "+mensagens['limpar.crimes']+" </div>";
+		div.innerHTML = "<div onclick='mostraLimpaCrimesWikiCrimes();' class='botao'> <font style='color:white'>"+mensagens['limpar.crimes']+"</font> </div>";
 		podeCarregarCrimes = true;
 		habilitaListagemCrimesWikiCrimes = true;
 		GEvent.trigger(mapWikiCrimes,'moveend');
@@ -131,10 +131,10 @@ function htmlComandosWikiCrimes(){
 	html+="     		<td align='center' colspan='4'> <div style='width:100%; height: 4px; border-top:1px solid #333333;'></div> </td>";
 	html+="         </tr>"	
 	html+="     	<tr>";
-	html+="     		<td> <div style='width:4px;'></div> </td><td align='center'><div id='botaoFiltroWikiCrimes'><div onclick='mostraEscondeFiltroWikiCrimes();' class='botao'> "+mensagens['filtrarCrimes']+" </div></div></td> <td> <div id='botaoRegistroCrimesWikiCrimes'><div onclick='mostraEscondeRegistroCrimeWikiCrimes();' class='botao'> "+mensagens['registrarCrime']+" </div></div></td><td> <div style='width:4px;'></div> </td>";
+	html+="     		<td> <div style='width:4px;'></div> </td><td align='center'><div id='botaoFiltroWikiCrimes'><div onclick='mostraEscondeFiltroWikiCrimes();' class='botao'> <font style='color:white'>"+mensagens['filtrarCrimes']+"</font> </div></div></td> <td> <div id='botaoRegistroCrimesWikiCrimes'><div onclick='mostraEscondeRegistroCrimeWikiCrimes();' class='botao'> <font style='color:white'>"+mensagens['registrarCrime']+"</font> </div></div></td><td> <div style='width:4px;'></div> </td>";
 	html+="         </tr>"
 	html+="     	<tr>";
-	html+="     		<td> <div style='width:4px;'></div> </td><td align='center'><div id='botaoMapaKernel'><div onclick='habilitaDesabilitaMapaDeKernelWikiCrimes();' class='botao'> "+mensagens['titulo.kernel.map']+" </div></div></td> <td> <div id='botaoLimparCrimesWikiCrimes'><div onclick='mostraLimpaCrimesWikiCrimes();' class='botao'> "+mensagens['limpar.crimes']+" </div></div> </td><td> <div style='width:4px;'></div> </td>";
+	html+="     		<td> <div style='width:4px;'></div> </td><td align='center'><div id='botaoMapaKernel'><div onclick='habilitaDesabilitaMapaDeKernelWikiCrimes();' class='botao'> <font style='color:white'>"+mensagens['titulo.kernel.map']+"</font> </div></div></td> <td> <div id='botaoLimparCrimesWikiCrimes'><div onclick='mostraLimpaCrimesWikiCrimes();' class='botao'> <font style='color:white'>"+mensagens['limpar.crimes']+"</font> </div></div> </td><td> <div style='width:4px;'></div> </td>";
 	html+="         </tr>"	
 	html+="     	<tr>";
 	html+="     		<td align='center' colspan='4'> <div style='width:100%; height: 4px;'></div> </td>";
@@ -183,10 +183,10 @@ function mostraEscondeFiltroWikiCrimes(){
 		statusFiltroWikiCrimes = 'invisivel';
 		mapWikiCrimes.removeControl(comandoFiltroWikiCrimes);
 
-		div.innerHTML = "<div id='botaoFiltroWikiCrimes'><div onclick='mostraEscondeFiltroWikiCrimes();' class='botao'> "+mensagens['filtrarCrimes']+" </div></div>";
+		div.innerHTML = "<div id='botaoFiltroWikiCrimes'><div onclick='mostraEscondeFiltroWikiCrimes();' class='botao'> <font style='color:white'>"+mensagens['filtrarCrimes']+"</font> </div></div>";
 	}
 	else{
-		document.getElementById('botaoRegistroCrimesWikiCrimes').innerHTML = "<div id='botaoRegistroCrimesWikiCrimes'><div onclick='mostraEscondeRegistroCrimeWikiCrimes();' class='botao'> "+mensagens['registrarCrime']+" </div></div>";
+		document.getElementById('botaoRegistroCrimesWikiCrimes').innerHTML = "<div id='botaoRegistroCrimesWikiCrimes'><div onclick='mostraEscondeRegistroCrimeWikiCrimes();' class='botao'> <font style='color:white'>"+mensagens['registrarCrime']+"</font> </div></div>";
 		statusFiltroWikiCrimes='visivel';
 		mapWikiCrimes.removeControl(comandoRegistroCrimeWikiCrimes);
 		statusRegistroCrimesWikiCrimes='invisivel';
@@ -287,14 +287,14 @@ function mostraEscondeRegistroCrimeWikiCrimes(){
 	if(statusRegistroCrimesWikiCrimes=='visivel'){
 		statusRegistroCrimesWikiCrimes = 'invisivel';
 		mapWikiCrimes.removeControl(comandoRegistroCrimeWikiCrimes);
-		div.innerHTML = "<div id='botaoRegistroCrimesWikiCrimes'><div onclick='mostraEscondeRegistroCrimeWikiCrimes();' class='botao'> "+mensagens['registrarCrime']+" </div></div>";
+		div.innerHTML = "<div id='botaoRegistroCrimesWikiCrimes'><div onclick='mostraEscondeRegistroCrimeWikiCrimes();' class='botao'> <font style='color:white'>"+mensagens['registrarCrime']+"</font> </div></div>";
 	}
 	else{		
 		statusRegistroCrimesWikiCrimes='visivel';
 		mapWikiCrimes.removeControl(comandoFiltroWikiCrimes);
 		statusFiltroWikiCrimes = 'invisivel';
 		mapWikiCrimes.addControl(comandoRegistroCrimeWikiCrimes);
-		document.getElementById('botaoFiltroWikiCrimes').innerHTML = "<div id='botaoFiltroWikiCrimes'><div onclick='mostraEscondeFiltroWikiCrimes();' class='botao'> "+mensagens['filtrarCrimes']+" </div></div>"
+		document.getElementById('botaoFiltroWikiCrimes').innerHTML = "<div id='botaoFiltroWikiCrimes'><div onclick='mostraEscondeFiltroWikiCrimes();' class='botao'> <font style='color:white'>"+mensagens['filtrarCrimes']+"</font> </div></div>"
 		div.innerHTML = "<div id='botaoRegistroCrimesWikiCrimes'><div onclick='mostraEscondeRegistroCrimeWikiCrimes();' class='botaoAtivado'> "+mensagens['registrarCrime']+" </div></div>";
 	}							
 }
@@ -351,7 +351,7 @@ function prepararPlotarEventoWikiCrimes(){
 	});
 	
 	eventoRigthClickMapWikiCrimes = GEvent.addListener(mapWikiCrimes,"singlerightclick",function(pixel,tile) {
-		document.getElementById('botaoRegistroCrimesWikiCrimes').innerHTML = "<div id='botaoRegistroCrimesWikiCrimes'><div onclick='mostraEscondeRegistroCrimeWikiCrimes();' class='botao'> "+mensagens['registrarCrime']+" </div></div>";
+		document.getElementById('botaoRegistroCrimesWikiCrimes').innerHTML = "<div id='botaoRegistroCrimesWikiCrimes'><div onclick='mostraEscondeRegistroCrimeWikiCrimes();' class='botao'> <font style='color:white'>"+mensagens['registrarCrime']+"</font> </div></div>";
 		statusRegistroCrimesWikiCrimes='invisivel';
 		GEvent.removeListener(eventoMouseMoveWikiCrimes);
 		GEvent.removeListener(eventoClickMapWikiCrimes);
@@ -526,7 +526,7 @@ function executaRequisicaoRegistrarCrime(descricao, lat, lng, razoes){
     var emailConf2 = document.getElementById('emailConfirmacaoWikiCrimes2').value;
     var url = urlWikiCrimes + 'ServletWikiCrimesApi?acao=registrarCrime&lat='+lat+'&lng='+lng+'&descricao='+descricao+'&razoes='+razoes+'&rcrime='+rcrime+'&polInfo='+polInfo+'&tipoVitima='+tipoVitima+'&tipoLocal='+tipoLocal+'&data='+data+'&hora='+horario+'&qtdV='+qtdVitimas+'&qtdC='+qtdCriminosos+'&tpa='+tipoArmaUsada+'&tipoCrime='+tipoCrime+'&emailUsuario='+usuarioSessaoWikiCrimes.email+'&emailConf1='+emailConf1+'&emailConf2='+emailConf2+'&jsoncallback=?'; 
     variavelGlobalJQuery.getJSON(url, false, function(data){		
-    	document.getElementById('botaoRegistroCrimesWikiCrimes').innerHTML = "<div id='botaoRegistroCrimesWikiCrimes'><div onclick='mostraEscondeRegistroCrimeWikiCrimes();' class='botao'> "+mensagens['registrarCrime']+" </div></div>";
+    	document.getElementById('botaoRegistroCrimesWikiCrimes').innerHTML = "<div id='botaoRegistroCrimesWikiCrimes'><div onclick='mostraEscondeRegistroCrimeWikiCrimes();' class='botao'> <font style='color:white'>"+mensagens['registrarCrime']+"</font> </div></div>";
     	statusRegistroCrimesWikiCrimes='invisivel';
     	if(data.resposta == 'ok'){			
 			crimeWikiCrimes.openInfoWindowHtml(mensagens['crime.registrado.sucesso']);

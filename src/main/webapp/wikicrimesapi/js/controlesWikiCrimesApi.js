@@ -114,18 +114,18 @@ function mostraLimpaCrimesWikiCrimes(){
 }
 
 function htmlComandosEscondidosWikiCrimes(){
-	var html = "<table cellpading='0' cellspacing='0' style='width:218px; padding:0px ;border:1px solid #333333; opacity: .84; -moz-opacity:0.84; filter: alpha(opacity=84); background-color:#F0F8FF;font-family:Arial, sans-serif;  font-size: 11px;'>";
+	var html = "<table cellpading='0' cellspacing='0' style='width:228px; padding:0px ;border:1px solid #333333; opacity: .84; -moz-opacity:0.84; filter: alpha(opacity=84); background-color:#F0F8FF;font-family:Arial, sans-serif;  font-size: 11px;'>";
 	html+="     	<tr>";
-	html+="     		<td> <div style='width:0.5px;'></div> </td> <td align='left' colspan='1'> <b >"+ "WikiCrimes" +"</b> </td> <td align='right' colspan='1'><img  width='12px' height='12px' src='"+urlWikiCrimes+"images/maximizar.png' onclick='mostraEscondeComandosWikiCrimes();' style='font-size: 12px;cursor: pointer;'/></td><td> <div style='width:0.5px;'></div> </td>";
+	html+="     		<td> <div style='width:0.5px;'></div> </td> <td align='left' colspan='1'><img width='13px' height='13px' src='"+urlWikiCrimes+"wikicrimesapi/img/logoWikiCrimesApi.png' /> <b >"+ "<font face='Georgia, Arial' color='#1C1C1C'>Wiki</font><font face='Georgia, Arial' color='#696969'>Crimes</font>" +"</b>  </td> <td align='right' colspan='1'><img  width='12px' height='12px' src='"+urlWikiCrimes+"images/maximizar.png' onclick='mostraEscondeComandosWikiCrimes();' style='font-size: 12px;cursor: pointer;'/></td><td> <div style='width:0.5px;'></div> </td>";
 	html+="         </tr>"				
 	html += "	</table>";
 	return html;
 }
 
 function htmlComandosWikiCrimes(){
-	var html = "<table cellpading='0' cellspacing='0' style='width:218px; padding:0px ;border:1px solid #333333; opacity: .84; -moz-opacity:0.84; filter: alpha(opacity=84); background-color:#F0F8FF;font-family:Arial, sans-serif;  font-size: 11px;'>";
+	var html = "<table cellpading='0' cellspacing='0' style='width:228px; padding:0px ;border:1px solid #333333; opacity: .84; -moz-opacity:0.84; filter: alpha(opacity=84); background-color:#F0F8FF;font-family:Arial, sans-serif;  font-size: 11px;'>";
 	html+="     	<tr>";
-	html+="     		<td> <div style='width:4px;'></div> </td><td align='left' colspan='1'> <b >"+ "WikiCrimes" +"</b> </td> <td align='right' colspan='1'> <img width='12px' height='12px' src='"+urlWikiCrimes+"images/maximizar.png' onclick='mostraEscondeComandosWikiCrimes();' style='font-size: 12px;cursor: pointer;'/> </td> <td> <div style='width:4px;'></div> </td>";
+	html+="     		<td> <div style='width:4px;'></div> </td><td align='left' colspan='1'><img width='13px' height='13px' src='"+urlWikiCrimes+"wikicrimesapi/img/logoWikiCrimesApi.png' /> <b >"+ "<font face='Georgia, Arial' color='#1C1C1C'>Wiki</font><font face='Georgia, Arial' color='#696969'>Crimes</font>" +"</b> </td> <td align='right' colspan='1'> <img width='12px' height='12px' src='"+urlWikiCrimes+"images/maximizar.png' onclick='mostraEscondeComandosWikiCrimes();' style='font-size: 12px;cursor: pointer;'/> </td> <td> <div style='width:4px;'></div> </td>";
 	html+="         </tr>"
 	html+="     	<tr>";
 	html+="     		<td align='center' colspan='4'> <div style='width:100%; height: 4px; border-top:1px solid #333333;'></div> </td>";

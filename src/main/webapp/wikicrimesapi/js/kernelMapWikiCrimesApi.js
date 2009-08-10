@@ -46,14 +46,15 @@ function mapaDeKernelWikiCrimes(){
 	for (k in crimesAtuais){
 		qtdCrimes++;
 	}
+	var qtdCriEnv = 200;
 	var cont = 0;
 	for (k in crimesAtuais){
 		cont++;
 		var point = crimesAtuais[k].getPoint();
 		var pixel = mapWikiCrimes.getCurrentMapType().getProjection().fromLatLngToPixel(point, mapWikiCrimes.getZoom());
 		url+= pixel.y + "," + pixel.x + "a";
-		if(cont % 400 == 0 && qtdCrimes>400){
-			if(cont == 400){
+		if(cont % qtdCriEnv == 0 && qtdCrimes>qtdCriEnv){
+			if(cont == qtdCriEnv){
 				url+='&statusReq=Pri';
 			}else{
 				url+='&statusReq=SegOuMais';
@@ -66,7 +67,7 @@ function mapaDeKernelWikiCrimes(){
 	}
 	
 	url = url.substring(0,url.length-1)
-	if(qtdCrimes<=400)
+	if(qtdCrimes<=qtdCriEnv)
 		url+='&statusReq=PriUlt';
 	else
 		url+='&statusReq=Ult';

@@ -64,7 +64,21 @@ a:hover { text-decoration: none; }
 		<p>Ol&aacute;,</p>
 
 	
-		<p>${usuario.primeiroNome} (${usuario.email}) &eacute; participante da comunidade de usu&aacute;rios do WikiCrimes <a href=http://www.wikicrimes.org> http://www.wikicrimes.org</a>, um projeto para compartilhar informa&ccedil;ões sobre crimes em um mapa digitalizado. Ele registrou um crime e lhe indicou para que voc&ecirc; tamb&eacute;m possa dar seu depoimento. </p>
+		<p>${usuario.primeiroNome} (${usuario.email}) &eacute; participante da comunidade de usu&aacute;rios do WikiCrimes <a href=http://www.wikicrimes.org> http://www.wikicrimes.org</a>, um projeto para compartilhar informa&ccedil;ões sobre crimes em um mapa digitalizado. Ele lhe indicou para que voc&ecirc; possa dar seu depoimento. </p>
+		#if(\$tituloMensagem)
+			<p>
+				${usuario.primeiroNome} ${tituloMensagem}<br/>
+				<table align="center">
+					<tr>
+						<td>
+							<div align="justify" style="width:300px">
+								<i>"${confirmacao.mensagem}"<i>
+							</div>
+						</td>	
+					</tr>
+				</table>
+			</p>
+		#end	
 <p> Clique <a href=http://www.wikicrimes.org/main.html?idcrime=${crime.chave}&idconf=${confirmacao.idConfirmacao}> aqui</a>(*) para visualizar o crime registrado diretamente em WikiCrimes e dar sua opini&atilde;o</p>
 	
 	<p> Informações do crime: </p>

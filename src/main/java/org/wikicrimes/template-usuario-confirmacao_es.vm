@@ -65,6 +65,22 @@ a:hover { text-decoration: none; }
 		<p>Tal como você,${usuario.primeiroNome} (${usuario.email}) é participante da comunidade de usuários do WikiCrimes <a href=http://www.wikicrimes.org> http://www.wikicrimes.org</a>.
 		</p>
 	       <p>Ele(a) registrou um relato de crime e lhe indicou para que você também possa dar seu depoimento.</p>
+	       
+	     #if(\$tituloMensagem)
+			<p>
+				${usuario.primeiroNome} ${tituloMensagem}<br/>
+				<table align="center">
+					<tr>
+						<td>
+							<div align="justify" style="width:300px">
+								<i>"${confirmacao.mensagem}"<i>
+							</div>
+						</td>	
+					</tr>
+				</table>
+			</p>
+		#end
+	       
 	       <p> Informações do crime: </p>
 	 <table>	
 			<tr> <td> Tipo da Ocorrência: </td> <td>${tipoCrime}</td> </tr>

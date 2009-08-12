@@ -64,6 +64,22 @@ a:hover { text-decoration: none; }
 	
 		<p>${usuario.primeiroNome} (${usuario.email}) è un membro della Comunità degli utenti di WikiCrimes <a href=http://www.wikicrimes.org> http://www.wikicrimes.org</a>, un progetto per condividere le informazioni sui reati in una mappa digital.</p>
 		<p>Lui/Lei ha segnalato un reato e adesso sta chiedendo la tua opinione. </p>
+
+		#if(\$tituloMensagem)
+			<p>
+				${usuario.primeiroNome} ${tituloMensagem}<br/>
+				<table align="center">
+					<tr>
+						<td>
+							<div align="justify" style="width:300px">
+								<i>"${confirmacao.mensagem}"<i>
+							</div>
+						</td>	
+					</tr>
+				</table>
+			</p>
+		#end
+		
 <p> Clicca <a href=http://www.wikicrimes.org/main.html?idcrime=${crime.chave}&idconf=${confirmacao.idConfirmacao}> qui</a>(*) per accedere direttamente al reato segnalato in WikiCrimes e dai la tua opinione.</p>
 	
 	<p> Informazioni da confermare: </p>

@@ -64,7 +64,23 @@ a:hover { text-decoration: none; }
 	
 		<p>Tal como você,${usuario.primeiroNome} (${usuario.email}) é participante da comunidade de usuários do WikiCrimes <a href=http://www.wikicrimes.org> http://www.wikicrimes.org</a>.
 		</p>
-	       <p>Ele(a) registrou um relato de crime e lhe indicou para que você também possa dar seu depoimento.</p>
+	       <p>Ele(a) lhe indicou para que você possa dar seu depoimento sobre um registro em WikiCrimes.</p>
+	       
+	      #if(\$tituloMensagem)
+			<p>
+				${usuario.primeiroNome} ${tituloMensagem}<br/>
+				<table align="center">
+					<tr>
+						<td>
+							<div align="justify" style="width:300px">
+								<i>"${confirmacao.mensagem}"<i>
+							</div>
+						</td>	
+					</tr>
+				</table>
+			</p>
+		#end
+	       
 	       <p> Informações do crime: </p>
 	 <table>	
 			<tr> <td> Tipo da Ocorrência: </td> <td>${tipoCrime}</td> </tr>
@@ -72,7 +88,7 @@ a:hover { text-decoration: none; }
 			<tr> <td> Descrição </td> <td>${crime.descricao}</td> </tr>
 
 	</table>
-<p> Clique <a href=http://www.wikicrimes.org/main.html?idcrime=${crime.chave}&idconf=${confirmacao.idConfirmacao}> aqui</a>(*) para visualizar o crime registrado diretamente em WikiCrimes e dar sua opinião.</p>
+<p> Clique <a href=http://www.wikicrimes.org/main.html?idcrime=${crime.chave}&idconf=${confirmacao.idConfirmacao}> aqui</a>(*) para visualizar o crime indicado diretamente em WikiCrimes e dar sua opinião.</p>
 
 		
 	<br>

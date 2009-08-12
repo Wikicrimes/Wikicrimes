@@ -59,11 +59,27 @@ a:hover { text-decoration: none; }
 		<p class="repeaterTitle">Crime Posting Confirmation - WikiCrimes.org</p>
 		
 				
-		<p>Ola,</p>
+		<p>Hi,</p>
 
 	
-		<p>${usuario.primeiroNome} (${usuario.email}) is a member of WikiCrimes' user comunity <a href=http://www.wikicrimes.org> http://www.wikicrimes.org</a>, a project to share information about crimes in a digitalized map. He/She reported a crime and now is asking for your opinion. </p>
-<p> Click <a href=http://www.wikicrimes.org/main.html?idcrime=${crime.chave}&idconf=${confirmacao.idConfirmacao}> here</a>(*) to directly access the reported crime in WikiCrimes and give your opinion.</p>
+		<p>${usuario.primeiroNome} (${usuario.email}) is a member of WikiCrimes' user comunity <a href=http://www.wikicrimes.org> http://www.wikicrimes.org</a>, a project to share information about crimes in a digitalized map. He/She indicated a crime and now is asking for your opinion. </p>
+		
+		#if(\$tituloMensagem)
+			<p>
+				${usuario.primeiroNome} ${tituloMensagem}<br/>
+				<table align="center">
+					<tr>
+						<td>
+							<div align="justify" style="width:300px">
+								<i>"${confirmacao.mensagem}"<i>
+							</div>
+						</td>	
+					</tr>
+				</table>
+			</p>
+		#end	
+
+<p> Click <a href=http://www.wikicrimes.org/main.html?idcrime=${crime.chave}&idconf=${confirmacao.idConfirmacao}> here</a>(*) to directly access the indicated crime in WikiCrimes and give your opinion.</p>
 	
 	<p> Information about the posting to be confirmed: </p>
 	 <table>	

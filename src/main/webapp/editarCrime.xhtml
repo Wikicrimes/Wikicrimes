@@ -78,7 +78,10 @@
 						<t:panelGroup colspan="2">
 							<h:message styleClass="errorMessage" for="descricao" />
 							<h:inputTextarea style="font-size: 11px; font-family: sans-serif;" value="#{mostrarDadosForm.mensagemConf}" id="descricao"
-							cols="38" rows="5" onkeyup="if(this.value.length>255){alert('Sua mensagem não pode ter mais que 255 caracteres');this.value = this.value.substring(0,255);}"/>
+							cols="38" rows="5">
+								<f:validateLength maximum="255" />
+							
+							</h:inputTextarea>
 						</t:panelGroup>
 						
 						<t:panelGroup colspan = "2">

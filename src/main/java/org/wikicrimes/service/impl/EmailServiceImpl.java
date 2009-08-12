@@ -243,6 +243,15 @@ public class EmailServiceImpl extends GenericCrudServiceImpl implements
 						model.put("tipoCrime", descricaoTipoVitima);
 					model.put("tipoVitima", tipoVitima);
 					model.put("confirmacao",confirmacao);
+					if(confirmacao.getMensagem()!=null && !confirmacao.getMensagem().equalsIgnoreCase("")){
+						if (idiomaEmail.equals("pt_BR") || idiomaEmail.equals("pt"))
+							model.put("tituloMensagem","deixou essa mensagem para você:");
+						else if (idiomaEmail.equals("it"))
+								model.put("tituloMensagem","lasciato questo messaggio per voi:");
+							else
+								model.put("tituloMensagem","left this message for you:");
+						
+					}
 					String text=null;
 					
 					if (idiomaEmail.equals("pt_BR") || idiomaEmail.equals("pt")){

@@ -359,6 +359,16 @@
 	</navigation-rule>
 	
 	<navigation-rule>
+		<from-view-id>/editarCrime.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/mostrarDados.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+	</navigation-rule>
+	
+	<navigation-rule>
 		<from-view-id>/tipoConfirmacao.xhtml</from-view-id>
 		<navigation-case>
 			<from-outcome>failure</from-outcome>

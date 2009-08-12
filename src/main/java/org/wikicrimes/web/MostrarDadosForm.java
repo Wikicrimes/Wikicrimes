@@ -65,6 +65,12 @@ public class MostrarDadosForm extends GenericForm {
 	}
 
 	public Crime getCrime() {
+		HttpSession session = (HttpSession)facesContext.getExternalContext().getSession(false);
+		String chaveEditar = (String)session.getAttribute("chaveCrimeEditado");
+		if(chaveEditar != null && !chaveEditar.equalsIgnoreCase("")){
+			crime = crimeService.getCrime(chaveEditar);
+			session.removeAttribute("chaveCrimeEditado");
+		}
 		return crime;
 	}
 
@@ -561,7 +567,9 @@ public class MostrarDadosForm extends GenericForm {
 		//crimeEditar.setConfirmacoes(confirmacoes);
 		crimeService.update(crimeEditar,confirmacoes, new ArrayList<Razao>());
 		addMessage("crime.atualizado.sucesso", "");
-		return null;
+		HttpSession session = (HttpSession)facesContext.getExternalContext().getSession(false);
+		session.setAttribute("chaveCrimeEditado", crimeEditar.getChave());
+		return "success";
 	}
 
 	public Crime getCrimeEditar() {

@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.wikicrimes.dao.ConfirmacaoDao;
 import org.wikicrimes.model.Confirmacao;
+import org.wikicrimes.model.Crime;
 import org.wikicrimes.model.TipoConfirmacao;
+import org.wikicrimes.model.Usuario;
 
 /**
  * 
@@ -37,6 +39,17 @@ public class ConfirmacaoDaoHibernate extends GenericCrudDaoHibernate implements
 			 return (TipoConfirmacao) result.get(0);
 		 else
 			 return null;
+	}
+	
+	public Boolean verificaSeJaIndicou(Crime c, String email){
+		String query = "from Confirmacao conf "+
+		"where conf.usuario.email like '"+email+"' and conf.crime.idCrime ="+c.getIdCrime();
+		
+		List<Confirmacao> result= getHibernateTemplate().find(query);
+		if(result.size()>0)
+			return true;
+		else
+			return false;
 	}
 
 	

@@ -45,4 +45,8 @@ public class ConfirmacaoServiceImpl extends GenericCrudServiceImpl implements
 	public TipoConfirmacao getTipoConfirmacao(Long id){
 		return ((ConfirmacaoDao) this.getDao()).getTipoConfirmacao(id);
 	}
+	
+	public Boolean verificaSeJaIndicou(Crime c, String email){
+		return ((ConfirmacaoDao) this.getDao()).verificaSeJaIndicou(c, email);
+	}
 }

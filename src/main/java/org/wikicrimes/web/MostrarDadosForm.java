@@ -518,6 +518,7 @@ public class MostrarDadosForm extends GenericForm {
 		if (expirouSessao()) {			
 			return SESSAO_EXPIRADA;
 		}
+			
 		Usuario usuarioLogado = (Usuario)facesContext.getExternalContext().getSessionMap().get("usuario");
 		Set<Confirmacao> confirmacoes = new HashSet<Confirmacao>();
 		Confirmacao confirmacaoEditar = new Confirmacao();
@@ -528,6 +529,10 @@ public class MostrarDadosForm extends GenericForm {
 			}
 		}	
 		if(email1!=null && !email1.equals("")){
+			if(confirmacaoService.verificaSeJaIndicou(crimeEditar, email1)){
+				addMessage("usuario.ja.indicado", email1);
+				return null;
+			}
 			Usuario usuarioConfirmacao = usuarioService.getUsuario(email1);
 			if (usuarioConfirmacao == null) {
 				confirmacaoEditar.setIndicacao(Constantes.SIM);
@@ -546,6 +551,10 @@ public class MostrarDadosForm extends GenericForm {
 			
 		}
 		if(email2!=null && !email2.equals("")){
+			if(confirmacaoService.verificaSeJaIndicou(crimeEditar, email2)){
+				addMessage("usuario.ja.indicado", email2);
+				return null;
+			}
 			confirmacaoEditar = new Confirmacao();
 			Usuario usuarioConfirmacao = usuarioService.getUsuario(email2);
 			if (usuarioConfirmacao == null) {

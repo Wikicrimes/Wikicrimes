@@ -35,12 +35,6 @@
 			<h:form id="mostrarDadosForm">
 				<t:panelGrid border="0" style="font-size: 11px; font-family: sans-serif; width:100%" columns="2">
 						
-						<t:panelGroup colspan="2">
-							<c:if test="#{(not empty message) and (message != messages['errors.embed.invaliado'])} and (message != messages['usuario.ja.indicado'])}">
-								<h:outputText value="#{message}" styleClass="message" />
-							</c:if>
-						</t:panelGroup>	
-						
 						
 						<t:panelGroup colspan="2">
 							<h:outputText value="#{messages['crime.confirmacoes.editar']}(*)"

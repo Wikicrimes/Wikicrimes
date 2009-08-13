@@ -518,7 +518,16 @@ public class MostrarDadosForm extends GenericForm {
 		if (expirouSessao()) {			
 			return SESSAO_EXPIRADA;
 		}
-			
+		
+		if(email1.equals("") && email2.equals("")){
+			addMessage("errors.email.confirmacao","");			
+			return null;
+		}
+		
+		if (email1.equals(email2) && !email1.equals("")){
+			addMessage("errors.email.confirmacao.iguais","");
+			return null;
+		}	
 		Usuario usuarioLogado = (Usuario)facesContext.getExternalContext().getSessionMap().get("usuario");
 		Set<Confirmacao> confirmacoes = new HashSet<Confirmacao>();
 		Confirmacao confirmacaoEditar = new Confirmacao();

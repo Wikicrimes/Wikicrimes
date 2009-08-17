@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 
 import javax.faces.FactoryFinder;
 import javax.faces.application.ApplicationFactory;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
@@ -114,6 +115,25 @@ public class GenericForm implements Form {
 				.getExternalContext().getSession(true);
 		session.removeAttribute("message");
 	}
+	
+	public void addMessageFaces(String key,String param,String formID){
+		ApplicationFactory factory = (ApplicationFactory) FactoryFinder
+		.getFactory(FactoryFinder.APPLICATION_FACTORY);
+		
+		String bundleName = factory.getApplication().getMessageBundle();
+		ResourceBundle messages = ResourceBundle.getBundle(bundleName,FacesContext.getCurrentInstance().getViewRoot().getLocale());
+
+		MessageFormat form = new MessageFormat(messages.getString(key));
+		String msg = form.format(new Object[] { param });
+		
+		//System.out.println(msg); OK - gera a mensagem
+		
+		FacesMessage fm = new FacesMessage();
+		fm.setSeverity(FacesMessage.SEVERITY_ERROR);
+		fm.setDetail(msg);//seta a msg
+		FacesContext.getCurrentInstance().addMessage(formID, fm);
+	}
+		
 	
 	public void addMessage(String key, String arg) {
 		// sure is a lot of work to get the named ResourceBundle in JSF, eh?

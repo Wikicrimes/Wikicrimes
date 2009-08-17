@@ -520,12 +520,12 @@ public class MostrarDadosForm extends GenericForm {
 		}
 		
 		if(email1.equals("") && email2.equals("")){
-			addMessage("errors.email.confirmacao","");			
+			addMessageFaces("errors.email.confirmacao", "","mostrarDadosForm");
 			return null;
 		}
 		
 		if (email1.equals(email2) && !email1.equals("")){
-			addMessage("errors.email.confirmacao.iguais","");
+			addMessageFaces("errors.email.confirmacao.iguais", "","mostrarDadosForm");
 			return null;
 		}	
 		Usuario usuarioLogado = (Usuario)facesContext.getExternalContext().getSessionMap().get("usuario");
@@ -533,13 +533,13 @@ public class MostrarDadosForm extends GenericForm {
 		Confirmacao confirmacaoEditar = new Confirmacao();
 		if(crimeEditar.getEmbedNoticia()!=null && !crimeEditar.getEmbedNoticia().equalsIgnoreCase("")){	
 			if(!formataEmbedCrime(0)){
-				addMessage("errors.embed.invaliado","");
+				addMessageFaces("errors.embed.invaliado","","mostrarDadosForm");
 				return null;
 			}
 		}	
 		if(email1!=null && !email1.equals("")){
 			if(confirmacaoService.verificaSeJaIndicou(crimeEditar, email1)){
-				addMessage("usuario.ja.indicado", email1);
+				addMessageFaces("usuario.ja.indicado", email1,"mostrarDadosForm");
 				return null;
 			}
 			Usuario usuarioConfirmacao = usuarioService.getUsuario(email1);
@@ -561,7 +561,7 @@ public class MostrarDadosForm extends GenericForm {
 		}
 		if(email2!=null && !email2.equals("")){
 			if(confirmacaoService.verificaSeJaIndicou(crimeEditar, email2)){
-				addMessage("usuario.ja.indicado", email2);
+				addMessageFaces("usuario.ja.indicado", email2,"mostrarDadosForm");
 				return null;
 			}
 			confirmacaoEditar = new Confirmacao();

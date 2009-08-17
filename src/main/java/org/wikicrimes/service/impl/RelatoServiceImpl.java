@@ -140,4 +140,15 @@ public class RelatoServiceImpl extends GenericCrudServiceImpl implements RelatoS
 		// TODO Auto-generated method stub
 		relatoDao.increntaNumConfirmacoes(relato,tipo);
 	}
+
+	@Override
+	public void update(Relato relato, Set<ConfirmacaoRelato> confirmacoes) {
+		// TODO Auto-generated method stub
+		update(relato);
+		for(ConfirmacaoRelato confirmacao:confirmacoes){
+			super.update(confirmacao);
+		}
+		relato.setConfirmacoes(confirmacoes);
+		emailService.sendMailConfirmation(relato, FacesContext.getCurrentInstance().getViewRoot().getLocale().toString());
+	}
 }

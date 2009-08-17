@@ -6,6 +6,7 @@ import org.hibernate.Hibernate;
 import org.wikicrimes.dao.ConfirmacaoDao;
 import org.wikicrimes.model.Confirmacao;
 import org.wikicrimes.model.Crime;
+import org.wikicrimes.model.Relato;
 import org.wikicrimes.model.TipoConfirmacao;
 import org.wikicrimes.service.ConfirmacaoService;
 
@@ -48,5 +49,9 @@ public class ConfirmacaoServiceImpl extends GenericCrudServiceImpl implements
 	
 	public Boolean verificaSeJaIndicou(Crime c, String email){
 		return ((ConfirmacaoDao) this.getDao()).verificaSeJaIndicou(c, email);
+	}
+	
+	public Boolean verificaSeJaIndicou(Relato r, String email){
+		return ((ConfirmacaoDao) this.getDao()).verificaSeJaIndicou(r, email);
 	}
 }

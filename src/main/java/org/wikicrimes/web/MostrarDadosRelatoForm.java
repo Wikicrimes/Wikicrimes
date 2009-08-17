@@ -3,14 +3,17 @@ package org.wikicrimes.web;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import javax.faces.FactoryFinder;
 import javax.faces.application.ApplicationFactory;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -20,8 +23,10 @@ import org.wikicrimes.model.Razao;
 import org.wikicrimes.model.Relato;
 import org.wikicrimes.model.Usuario;
 import org.wikicrimes.service.ConfirmacaoRelatoService;
+import org.wikicrimes.service.ConfirmacaoService;
 import org.wikicrimes.service.EmailService;
 import org.wikicrimes.service.RelatoService;
+import org.wikicrimes.service.UsuarioService;
 import org.wikicrimes.util.Constantes;
 
 public class MostrarDadosRelatoForm extends GenericForm {
@@ -29,10 +34,20 @@ public class MostrarDadosRelatoForm extends GenericForm {
 	private final Log log = LogFactory.getLog(MostrarDadosRelatoForm.class);
 
 	private Relato relato = null;
+	
+	private Relato relatoEditar = null;
 
 	private RelatoService relatoService;
 	
 	private EmailService emailService;
+	
+	private String email1,email2;
+	
+	private String mensagemConf;
+	
+	private UsuarioService usuarioService;
+	
+	private ConfirmacaoService confirmacaoService;
 
 	public EmailService getEmailService() {
 		return emailService;
@@ -68,6 +83,13 @@ public class MostrarDadosRelatoForm extends GenericForm {
 	}
 
 	public Relato getRelato() {
+		HttpSession session = (HttpSession)facesContext.getExternalContext().getSession(false);
+		String chaveEditar = (String)session.getAttribute("chaveRelato");
+		if(chaveEditar != null && !chaveEditar.equalsIgnoreCase("")){
+			relato = relatoService.getRelato(chaveEditar);
+			session.removeAttribute("chaveRelato");
+		}
+		
 		return relato;
 	}
 
@@ -144,6 +166,12 @@ public class MostrarDadosRelatoForm extends GenericForm {
 		return confirmaRelato();
 	}
 	
+	public String prepararEditarRelato(){
+		HttpSession session = (HttpSession)facesContext.getExternalContext().getSession(false);
+		session.setAttribute("chaveEditarRelato", relatoEditar.getChave());
+		return "editarRelato";
+	}
+	
 	protected String confirmaRelato() {
 		String returnPage = FAILURE;
 		
@@ -196,5 +224,143 @@ public class MostrarDadosRelatoForm extends GenericForm {
 
 		return returnPage;
 	}
+
+	public Relato getRelatoEditar() {
+		HttpSession session = (HttpSession)facesContext.getExternalContext().getSession(false);
+		String chaveEditar = (String)session.getAttribute("chaveEditarRelato");
+		if(chaveEditar != null && !chaveEditar.equalsIgnoreCase("")){
+			relatoEditar = relatoService.getRelato(chaveEditar);
+			session.removeAttribute("chaveEditarRelato");
+		}
+		
+		return relatoEditar;
+	}
+
+	public void setRelatoEditar(Relato relatoEditar) {
+		this.relatoEditar = relatoEditar;
+	}
+
+	public String getEmail1() {
+		return email1;
+	}
+
+	public void setEmail1(String email1) {
+		this.email1 = email1;
+	}
+
+	public String getEmail2() {
+		return email2;
+	}
+
+	public void setEmail2(String email2) {
+		this.email2 = email2;
+	}
+
+	public String getMensagemConf() {
+		return mensagemConf;
+	}
+
+	public void setMensagemConf(String mensagemConf) {
+		this.mensagemConf = mensagemConf;
+	}
 	
+	public String updateRelato(){
+		
+		if (expirouSessao()) {			
+			return SESSAO_EXPIRADA;
+		}
+		
+		Usuario usuarioLogado = (Usuario)facesContext.getExternalContext().getSessionMap().get("usuario");
+		Set<ConfirmacaoRelato> confirmacoes = new HashSet<ConfirmacaoRelato>();
+		ConfirmacaoRelato confirmacaoRelatoEditar = new ConfirmacaoRelato();
+		
+		//System.out.println("Email 1"+email1);
+		//System.out.println("Email 2"+email2);
+		
+		//validacao se os campos sao nulos
+		if(email2.equals("") && email1.equals("")){
+			addMessageFaces("emails.campos.vazios", "","mostrarDadosRelatoForm");
+			//addMessage("emails.campos.vazios","");
+			return null;
+		}
+		
+		//quando os dois campos tem emails iguais
+		if(email1.equalsIgnoreCase(email2)){
+			addMessageFaces("email.digitado.iguais", "","mostrarDadosRelatoForm");
+			//addMessage("emails.campos.vazios","");
+			return null;
+		}
+		
+		if(email1!=null && !email1.equals("")){
+			if(confirmacaoService.verificaSeJaIndicou(relatoEditar, email1)){
+				addMessageFaces("usuario.ja.indicado", email1,"mostrarDadosRelatoForm");
+				return null;
+			}
+			Usuario usuarioConfirmacao = usuarioService.getUsuario(email1);
+			if (usuarioConfirmacao == null) {
+				confirmacaoRelatoEditar.setIndicacao(Constantes.SIM);
+				usuarioConfirmacao = usuarioService.retornaUsuarioConfirmacao(email1,usuarioLogado.getIdiomaPreferencial());
+			
+			}
+			if(!relatoEditar.getUsuario().getEmail().equals(usuarioLogado.getEmail()))
+				confirmacaoRelatoEditar.setUsuario(usuarioLogado);
+			
+			confirmacaoRelatoEditar.setMensagem(mensagemConf);
+			confirmacaoRelatoEditar.setRelato(relatoEditar);
+			confirmacaoRelatoEditar.setIndicacaoEmail(Constantes.SIM);
+			confirmacaoRelatoEditar.setUsuario(usuarioConfirmacao);
+			confirmacoes.add(confirmacaoRelatoEditar);
+			//crimeEditar.getConfirmacoes().add(confirmacaoEditar);
+			
+		}
+		
+		if(email2!=null && !email2.equals("")){
+			if(confirmacaoService.verificaSeJaIndicou(relatoEditar, email2)){
+				addMessageFaces("usuario.ja.indicado", email2,"mostrarDadosRelatoForm");
+				return null;
+			}
+			confirmacaoRelatoEditar = new ConfirmacaoRelato();
+			Usuario usuarioConfirmacao = usuarioService.getUsuario(email2);
+			if (usuarioConfirmacao == null) {
+				confirmacaoRelatoEditar.setIndicacao(Constantes.SIM);
+				usuarioConfirmacao = usuarioService.retornaUsuarioConfirmacao(email2,usuarioLogado.getIdiomaPreferencial());
+			
+			}
+			
+			if(!relatoEditar.getUsuario().getEmail().equals(usuarioLogado.getEmail()))
+				confirmacaoRelatoEditar.setUsuario(usuarioLogado);
+			
+			confirmacaoRelatoEditar.setMensagem(mensagemConf);
+			confirmacaoRelatoEditar.setRelato(relatoEditar);
+			confirmacaoRelatoEditar.setIndicacaoEmail(Constantes.SIM);
+			confirmacaoRelatoEditar.setUsuario(usuarioConfirmacao);
+			//crimeEditar.getConfirmacoes().add(confirmacaoEditar);
+			confirmacoes.add(confirmacaoRelatoEditar);
+		}
+
+		relatoService.update(relatoEditar,confirmacoes);
+		addMessage("crime.atualizado.sucesso", "");
+		
+		HttpSession session = (HttpSession)facesContext.getExternalContext().getSession(false);
+		session.setAttribute("chaveRelato", relatoEditar.getChave());
+		
+		return "retornaDadosRelato";
+	}
+
+	public UsuarioService getUsuarioService() {
+		return usuarioService;
+	}
+
+	public void setUsuarioService(UsuarioService usuarioService) {
+		this.usuarioService = usuarioService;
+	}
+
+	public ConfirmacaoService getConfirmacaoService() {
+		return confirmacaoService;
+	}
+
+	public void setConfirmacaoService(ConfirmacaoService confirmacaoService) {
+		this.confirmacaoService = confirmacaoService;
+	}
+
 }

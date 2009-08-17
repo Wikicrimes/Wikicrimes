@@ -21,42 +21,45 @@
 		<link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon" />
 		<link rel="stylesheet" type="text/css" href="./styles/wikicrimes.css" title="default" />		
 	
-	
 	</head>
 	
 	<body style="overflow-x: hidden">
-	
-		
 		
 			<f:loadBundle var="messages" basename="messages" />
 			
+			<div id="topoBalao"> <b>#{messages['mostrardados.titulo']}</b> </div>		
 			
-			<div id="topoBalao"> <b>#{messages['mostrardados.titulo']}</b> </div>
-			
-			<a4j:form id="mostrarDadosForm">
+			<a4j:form id="mostrarDadosRelatoForm">
 			
 				<h:messages errorStyle="color: red" layout="list" tooltip="true" 
 				showDetail="true" showSummary="true"/>	
-				
+			
 				<t:panelGrid border="0" style="font-size: 11px; font-family: sans-serif; width:100%" columns="2">
 						
+						 <t:panelGroup colspan="2">
+							<c:if test="#{(not empty message) and (message != messages['errors.embed.invaliado'])} and (message != messages['usuario.ja.indicado'])}">
+								<h:outputText value="#{message}" styleClass="message" />
+							</c:if>
+						</t:panelGroup> 
+							
+						<t:panelGroup colspan="2">	
+							<c:if test="#{(not empty message)}">
+								<h:outputText value="#{message}" styleClass="errorMessage" />
+							</c:if>
+						</t:panelGroup>
 						
 						<t:panelGroup colspan="2">
 							<h:outputText value="#{messages['crime.confirmacoes.editar']}(*)"
 								style="vertical-align: text-top; font-size: 11px;" />
 						</t:panelGroup>						
-						<t:panelGroup colspan="2">	
-							<c:if test="#{(not empty message)}">
-								<h:outputText value="#{message}" styleClass="errorMessage" />
-							</c:if>
-						</t:panelGroup>	
+						
 						<t:panelGroup colspan="2">
 							<h:outputText value="#{messages['crime.email1']}"
 								style="vertical-align: text-top; font-size: 11px;" />
 						</t:panelGroup>						
 						
 						<t:panelGroup colspan="2">	
-							<h:inputText style="font-size: 11px; font-family: sans-serif;" value="#{mostrarDadosForm.email1}"
+							<h:inputText style="font-size: 11px; font-family: sans-serif;" value="#{mostrarDadosRelatoForm.email1}"
 								id="email1" size="40">
 								<t:validateEmail />
 							</h:inputText>
@@ -68,7 +71,7 @@
 								style="vertical-align: text-top; font-size: 11px;" />
 						</t:panelGroup>		
 						<t:panelGroup colspan="2">	
-							<h:inputText style="font-size: 11px; font-family: sans-serif;" value="#{mostrarDadosForm.email2}"
+							<h:inputText style="font-size: 11px; font-family: sans-serif;" value="#{mostrarDadosRelatoForm.email2}"
 								id="email2" size="40">
 								<t:validateEmail />
 							</h:inputText>	
@@ -78,24 +81,21 @@
 						<t:panelGroup colspan="2">
 							<h:outputText value="Escreva uma mensagem para a(s) pessoa(s) que você está indicando:"/>
 						</t:panelGroup>
+						
 						<t:panelGroup colspan="2">
-							<h:message styleClass="errorMessage" for="descricao" />
-							<h:inputTextarea style="font-size: 11px; font-family: sans-serif;" value="#{mostrarDadosForm.mensagemConf}" id="descricao"
-							cols="38" rows="5">
-								<f:validateLength maximum="255" />
-							
+							<!-- <h:message styleClass="errorMessage" for="descricao" /> --> 
+							<h:inputTextarea style="font-size: 11px; font-family: sans-serif;" value="#{mostrarDadosRelatoForm.mensagemConf}" id="descricao" cols="38" rows="5" >
+								<f:validateLength maximum="255"/>
 							</h:inputTextarea>
+							
 						</t:panelGroup>
 						
 						<t:panelGroup colspan = "2">
-							<t:saveState value="#{mostrarDadosForm.crimeEditar}" />
+							<t:saveState value="#{mostrarDadosRelatoForm.relatoEditar}" />
 							<h:commandButton value="#{messages['mostrarDados.botao.atualizar']}"
-						id="btnAtualizar" action="#{mostrarDadosForm.updateCrime}" styleClass="button" />
+						id="btnAtualizar" action="#{mostrarDadosRelatoForm.updateRelato}" styleClass="button" />
 						</t:panelGroup>		
-			
 				</t:panelGrid>
-			</a4j:form>
-
-
+			</a4j:form >
 	</body>
 </html>

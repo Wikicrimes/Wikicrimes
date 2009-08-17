@@ -381,6 +381,7 @@
 			<redirect />
 		</navigation-case>
 	</navigation-rule>
+	
 	<navigation-rule>
 		<from-view-id>/mostrarDadosRelato.xhtml</from-view-id>
 		<navigation-case>
@@ -391,6 +392,20 @@
 		<navigation-case>
 			<from-outcome>success</from-outcome>
 			<to-view-id>/blank.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>editarRelato</from-outcome>
+			<to-view-id>/editarRelato.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/editarRelato.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>retornaDadosRelato</from-outcome>
+			<to-view-id>/mostrarDadosRelato.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 	</navigation-rule>
@@ -782,12 +797,20 @@
             <value>#{relatoService}</value>
         </managed-property>
         <managed-property>
+            <property-name>usuarioService</property-name>
+            <value>#{usuarioService}</value>
+        </managed-property>
+        <managed-property>
             <property-name>confirmacaoRelatoService</property-name>
             <value>#{confirmacaoRelatoService}</value>
         </managed-property>
          <managed-property>
             <property-name>emailService</property-name>
             <value>#{emailService}</value>
+        </managed-property>
+        <managed-property>
+            <property-name>confirmacaoService</property-name>
+            <value>#{confirmacaoService}</value>
         </managed-property>
         <managed-property>
             <property-name>idRelato</property-name>

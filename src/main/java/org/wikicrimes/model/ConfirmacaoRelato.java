@@ -21,6 +21,7 @@ public class ConfirmacaoRelato extends BaseObject {
 	private Relato relato;
 	private Boolean indicacaoEmail;
 	private String ip;
+	private String mensagem;
 	
 	public String getIp() {
 		return ip;
@@ -139,5 +140,15 @@ public class ConfirmacaoRelato extends BaseObject {
 	public void setUsuarioRedeSocial(UsuarioRedeSocial usuarioRedeSocial) {
 		this.usuarioRedeSocial = usuarioRedeSocial;
 	}
+
+	public String getMensagem() {
+		return mensagem;
+	}
+
+	public void setMensagem(String mensagem) {
+		this.mensagem = mensagem;
+	}
+	
+	
 	
 }

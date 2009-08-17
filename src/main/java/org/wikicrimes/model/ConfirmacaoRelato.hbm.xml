@@ -12,6 +12,7 @@
         <property name="indicacao" column="CNR_INDICACAO" type="java.lang.Boolean"/>
         <property name="dataConfirmacao" column="CNR_DATA_CONFIRMACAO" type="java.util.Date"/>
         <property name="indicacaoEmail" column="CNR_INDICACAO_EMAIL" type="java.lang.Boolean"/>
+        <property name="mensagem" column="CNR_MENSAGEM" type="java.lang.String"/>
 		<many-to-one name="entidadeCertificadora" column="ENTCER_IDENTIDADECERTIFICADORA" class="org.wikicrimes.model.EntidadeCertificadora"/>
         <many-to-one name="usuario" column="USU_IDUSUARIO" class="org.wikicrimes.model.Usuario"/>
         <many-to-one name="usuarioRedeSocial" column="URS_IDUSUARIO_REDE_SOCIAL" class="org.wikicrimes.model.UsuarioRedeSocial"/>

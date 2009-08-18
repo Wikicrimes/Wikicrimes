@@ -519,6 +519,11 @@ public class MostrarDadosForm extends GenericForm {
 			return SESSAO_EXPIRADA;
 		}
 		
+		if(mensagemConf!=null && mensagemConf.length()>255){
+			addMessageFaces("mostrar.dados.textarea.tamanho.max", new Integer(255).toString(),"mostrarDadosForm");
+			return null;
+		}
+		
 		if(email1.equals("") && email2.equals("")){
 			addMessageFaces("errors.email.confirmacao", "","mostrarDadosForm");
 			return null;

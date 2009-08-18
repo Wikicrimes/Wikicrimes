@@ -25,8 +25,6 @@
 	</head>
 	
 	<body style="overflow-x: hidden">
-	
-		
 		
 			<f:loadBundle var="messages" basename="messages" />
 			
@@ -35,11 +33,10 @@
 			
 			<a4j:form id="mostrarDadosForm">
 			
-				<h:messages errorStyle="color: red" layout="list" tooltip="true" 
-				showDetail="true" showSummary="true"/>	
+				<h:messages errorStyle="color: red" layout="list" 
+				showDetail="true"/>	
 				
 				<t:panelGrid border="0" style="font-size: 11px; font-family: sans-serif; width:100%" columns="2">
-						
 						
 						<t:panelGroup colspan="2">
 							<h:outputText value="#{messages['crime.confirmacoes.editar']}(*)"
@@ -61,7 +58,6 @@
 								<t:validateEmail />
 							</h:inputText>
 						
-							<h:message styleClass="errorMessage" for="email1" />
 						</t:panelGroup>	
 						<t:panelGroup colspan="2">
 							<h:outputText value="#{messages['crime.email2']}"
@@ -72,19 +68,14 @@
 								id="email2" size="40">
 								<t:validateEmail />
 							</h:inputText>	
-							<h:message styleClass="errorMessage" for="email2" />
 						</t:panelGroup>
 						
 						<t:panelGroup colspan="2">
 							<h:outputText value="Escreva uma mensagem para a(s) pessoa(s) que você está indicando:"/>
 						</t:panelGroup>
 						<t:panelGroup colspan="2">
-							<h:message styleClass="errorMessage" for="descricao" />
 							<h:inputTextarea style="font-size: 11px; font-family: sans-serif;" value="#{mostrarDadosForm.mensagemConf}" id="descricao"
-							cols="38" rows="5">
-								<f:validateLength maximum="255" />
-							
-							</h:inputTextarea>
+							cols="38" rows="5"/>
 						</t:panelGroup>
 						
 						<t:panelGroup colspan = "2">

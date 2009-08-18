@@ -64,7 +64,6 @@
 								<t:validateEmail />
 							</h:inputText>
 						
-							<h:message styleClass="errorMessage" for="email1" />
 						</t:panelGroup>	
 						<t:panelGroup colspan="2">
 							<h:outputText value="#{messages['crime.email2']}"
@@ -75,7 +74,7 @@
 								id="email2" size="40">
 								<t:validateEmail />
 							</h:inputText>	
-							<h:message styleClass="errorMessage" for="email2" />
+							
 						</t:panelGroup>
 						
 						<t:panelGroup colspan="2">
@@ -84,9 +83,7 @@
 						
 						<t:panelGroup colspan="2">
 							<!-- <h:message styleClass="errorMessage" for="descricao" /> --> 
-							<h:inputTextarea style="font-size: 11px; font-family: sans-serif;" value="#{mostrarDadosRelatoForm.mensagemConf}" id="descricao" cols="38" rows="5" >
-								<f:validateLength maximum="255"/>
-							</h:inputTextarea>
+							<h:inputTextarea style="font-size: 11px; font-family: sans-serif;" value="#{mostrarDadosRelatoForm.mensagemConf}" id="descricao" cols="38" rows="5" />
 							
 						</t:panelGroup>
 						

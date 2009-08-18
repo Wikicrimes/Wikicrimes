@@ -274,8 +274,10 @@ public class MostrarDadosRelatoForm extends GenericForm {
 		Set<ConfirmacaoRelato> confirmacoes = new HashSet<ConfirmacaoRelato>();
 		ConfirmacaoRelato confirmacaoRelatoEditar = new ConfirmacaoRelato();
 		
-		//System.out.println("Email 1"+email1);
-		//System.out.println("Email 2"+email2);
+		if(mensagemConf!=null && mensagemConf.length()>255){
+			addMessageFaces("mostrar.dados.textarea.tamanho.max", new Integer(255).toString(),"mostrarDadosRelatoForm");
+			return null;
+		}
 		
 		//validacao se os campos sao nulos
 		if(email2.equals("") && email1.equals("")){

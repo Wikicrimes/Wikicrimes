@@ -1,124 +1,116 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<META HTTP-EQUIV="Content-Type"
-    CONTENT="text/html; charset=ISO-8859-1"> 
-	<title>WikiCrimes.org - Confirma&ccedil;&atilde;o de Crime</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>WikiCrimes.org - Confirma&ccedil;&atilde;o de Crime</title>
+<style type="text/css">
+<!--
+.style1 {font-family: Arial, Helvetica, sans-serif}
+.style3 {font-size: 24px}
+.style4 {font-family: Arial, Helvetica, sans-serif; font-size: 18px; }
+.style5 {font-size: 16px}
+.style6 {font-family: Arial, Helvetica, sans-serif; font-size: 16px; }
+-->
+</style>
 </head>
 
-<body bgcolor="#bae7fe" font-size="10px" leftmargin="0" topmargin="0" rightmargin="0" bottommargin="0" marginwidth="0" marginheight="0">
-
-<!-- CSS goes in <body> in case contents of <head> is stripped -->
-
-<style>
-body,td { color: #000000; font-size: 11px; line-height: 14px; font-family: Verdana, Arial, Helvetica, sans-serif; }
-p { font-size: 12px; margin-top : 5px; margin-bottom : 10px; line-height: 15px; font-family: Verdana, Arial, Helvetica, sans-serif; color: #333; }
-a { text-decoration: underline; color: #0062bd; }
-a:hover { text-decoration: none; }
-.repeaterTitle { color: #0158bc; font-size: 14px; font-weight: bold; padding-bottom:5px; margin-bottom: 20px; border-bottom: 1px solid #d9d9d9; }
-.footerText, .footerText a { color: #fff; }
-.topNote { font-size: 10px; color: #0a567e; padding: 10px 0 8px 0; }
-.topNote a { color: #023955; }
-.imgBorder { border: 5px solid #e2e2e2; }
-</style>
-
-<!-- The entire email is wrapped in a table to make sure the background color is displayed if it's stripped from the body tag -->
-
-<table width="100%" bgcolor="#bae7fe" cellpadding="0" cellspacing="0">
-<tr>
-<td valign="top" align="center">
-
-	<!-- Link to web-based version of this email -->
-
-	<table align="center" width="600" cellspacing="0" cellpadding="0" border="0">
-	<tr>
-		<td class="topNote"></td>
-
-	</tr>
-	</table>
-	
-	<!-- Header table -->
-	
-	<table align="center" width="600" cellspacing="0" cellpadding="0" border="0" bgcolor="#164886">
-	<tr>
-		<td><img src="http://www.wikicrimes.org/images/topemail.jpg" alt="WikiCrimes.org - Mapeando Crimes Colaborativamente" width="603" height="66"></td>
-	</tr>
-	</table>
-	
-	<!-- Content table -->
-
-	
-	<table align="center" width="600" cellspacing="0" cellpadding="0" border="0" bgcolor="ffffff">
-	<tr>
-		<td width="25"><img src="_space.gif" width="20" height="1" border="0"></td>	
-		<td width="550" valign="top">
-		
-		<br><br>
-		
-		<!-- Email Content -->
-		
-		<p class="repeaterTitle">Confirma&ccedil;&atilde;o de Crime - WikiCrimes.org</p>
-		
-				
-		<p>Ol&aacute;,</p>
-
-	
-		<p>${usuario.primeiroNome} (${usuario.email}) &eacute; participante da comunidade de usu&aacute;rios do WikiCrimes <a href=http://www.wikicrimes.org> http://www.wikicrimes.org</a>, um projeto para compartilhar informa&ccedil;ões sobre crimes em um mapa digitalizado. Ele lhe indicou para que voc&ecirc; possa dar seu depoimento. </p>
-		#if(\$tituloMensagem)
-			<p>
-				${usuario.primeiroNome} ${tituloMensagem}<br/>
-				<table align="center">
-					<tr>
-						<td>
-							<div align="justify" style="width:300px">
-								<i>"${confirmacao.mensagem}"<i>
-							</div>
-						</td>	
-					</tr>
-				</table>
-			</p>
+<body >
+<table align="center" width="678" border="0" cellpadding="1" cellspacing="1" bgcolor="#D7E4EC" >
+  <tr>
+    <td colspan="3"><img src="http://localhost:8081/wikicrimes/images/topo.png" alt="header" width="678" height="67" /></td>
+  </tr>
+  <tr>
+    <td width="22">&nbsp;</td>
+    <td width="643">&nbsp;</td>
+    <td width="7">&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td><span class="style6">Ol&aacute; </span><span class="style5">,</span></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td><span class="style5"></span></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td height="44">&nbsp;</td>
+    <td>
+	<div align="justify"><span class="style6">${usuario.primeiroNome} (${usuario.email}) pediu que voc&ecirc; desse sua contribui&ccedil;&atilde;o avaliando um 
+	registro(
+		#if($crime.tipoCrime.idTipoCrime ne 5)
+			${tipoCrime} a ${tipoVitima}
+		#end
+		#if($crime.tipoCrime.idTipoCrime eq 5)
+			${tipoCrime}
 		#end	
-<p> Clique <a href=http://www.wikicrimes.org/main.html?idcrime=${crime.chave}&idconf=${confirmacao.idConfirmacao}> aqui</a>(*) para visualizar o crime registrado diretamente em WikiCrimes e dar sua opini&atilde;o</p>
-	
-	<p> Informações do crime: </p>
-	 <table>	
-			<tr> <td> Tipo da Ocorr&ecirc;ncia: </td> <td>${crime.tipoCrime.descricao}</td> </tr>
-			<tr> <td> Subtipo</td> <td>${crime.tipoLocal.tipoVitima.descricao}</td> </tr>
-			<tr> <td> Descri&ccedil;&atilde;o </td> <td>${crime.descricao}</td> </tr>
-
-	</table>
-		<p> Aproveite para registrar-se em WikiCrimes e conhe&ccedil;a mais do projeto que vai permitir voc&ecirc; saber onde n&atilde;o &eacute; seguro! </p>
-	<br>
-		
-		<p class="repeaterTitle">Equipe do WikiCrimes.</p>
-		
-		
-		<br>
-		(*) Se não conseguir clicar no link, copie o endereço e cole-o na janela do seu navegador
-		</td>
-		<td width="25"><img src="" width="20" height="1" border="0"></td>	
-	</tr>
-	</table>
-	
-	<!-- Unsubscribe -->
-	
-	<table align="center" width="600" cellspacing="0" cellpadding="00" border="0" bgcolor="#CCFFFF">
-
-	<tr>
-		<td width="25"><img src="_space.gif" width="25" height="1" border="0"></td>	
-		<td width="225"><span class="footerText">Este email foi enviado para [${confirmacao.usuario.email}]<br><strong><unsubscribe></unsubscribe></strong>, caso <em>n&atilde;o</em> queira mais receber e-mails como este.</span></td>
-		<td width="225" align="right"><img src="/_space.gif" width="1" height="15" border="0"><br><span class="footerText"><strong><a href="#">WikiCrimes.org</a></strong><br>©2007-2009 Wikinova Soluções. Todos os Direitos Reservados<br></span><br><img src="/_space.gif" width="1" height="15" border="0"><br></td>
-
-		<td width="25"><img src="_space.gif" width="25" height="1" border="0"></td>	
-	</tr>
-	</table>
-	
-	<br><br>
-
-	</td>
-</tr>
+	) feito no sistema WikiCrimes:</span></div></td>
+    <td>&nbsp;</td>
+  </tr>
+#if($confirmacao.mensagem ne "")
+  <tr>
+    <td>&nbsp;</td>
+    <td><span class="style6">${usuario.primeiroNome}, refor&ccedil;a seu pedido dizendo:</span></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td height="80">&nbsp;</td>
+    <td align="right">
+	<p align="right" class="style1">
+		<div align="justify" style="width:300px">
+			"${confirmacao.mensagem}"
+		</div>
+	</p>
+    </td>
+    <td>&nbsp;</td>
+  </tr>
+#end
+  <tr>
+    <td>&nbsp;</td>
+    <td align="center"><a href="http://www.wikicrimes.org/main.html?idcrime=${crime.chave}&idconf=${confirmacao.idConfirmacao}"><img src="http://localhost:8081/wikicrimes/images/avalie.PNG" width="140" height="68" alt="avaliar" /></a></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td class="style1"><div align="justify">Clique no bot&atilde;o acima ou <span class="style3"><a href="http://www.wikicrimes.org/main.html?idcrime=${crime.chave}&idconf=${confirmacao.idConfirmacao}">aqui</a></span> para ver o registro na &iacute;ntegra e deixar sua avalia&ccedil;&atilde;o registrada. Sua avalia&ccedil;&atilde;o &eacute; fundamental para que o registro de [rementente] tenha credibilidade no sistema, por este motivo voc&ecirc; foi indicado para colaborar.</div></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td><p align="justify"><span class="style1">    WikiCrimes &eacute; um projeto de compartilhamento de informa&ccedil;&otilde;es sobre crimes e criminalidade em um mapa digitalizado. Para mais informa&ccedil;&otilde;es acesse <a href="http://www.wikicrimes .org">www.wikicrimes.org</a></span> </p>    </td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td class="style1"> Aproveite para registrar-se em WikiCrimes e conhe&ccedil;a mais do projeto que vai permitir voc&ecirc; saber onde n&atilde;o &eacute; seguro!	
+    </td>
+    <td>&nbsp;</td>
+  </tr>
+   <tr>
+    <td>&nbsp;</td>
+    <td class="style1"> 
+	<p>(*) Se n&atilde;o conseguir clicar no link, copie o endere&ccedil;o "http://www.wikicrimes.org/main.html?idcrime=${crime.chave}&idconf=${confirmacao.idConfirmacao}" e cole-o na janela do seu navegador</p>
+    </td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td><p class="style4">    Equipe Wikicrimes </p>    </td>
+    <td>&nbsp;</td>
+  </tr>
+  
 </table>
 
+<table align="center" width="678" border="0" cellpadding="1" cellspacing="1" bgcolor="whith">
+
+	<tr class="style1">
+		<td width="25"><img src="_space.gif" width="25" height="1" border="0"></td>	
+		<td width="225"><span class="footerText">Este email foi enviado para [${confirmacao.usuario.email}]<br><strong><unsubscribe></unsubscribe></strong>, caso <em>n&atilde;o</em> queira mais receber e-mails como este.</span></td>
+		<td width="225" align="right"><img src="/_space.gif" width="1" height="15" border="0"><br><span class="footerText"><strong><a href="#">WikiCrimes.org</a></strong><br>&copy;2007-2009 Wikinova Solu&ccedil;&otilde;es. Todos os Direitos Reservados<br></span><br><img src="/_space.gif" width="1" height="15" border="0"><br></td>
+
+		<td width="25"><img src="_space.gif" width="25" height="1" border="0"></td>	
+	</tr>
+</table>
 </body>
 </html>

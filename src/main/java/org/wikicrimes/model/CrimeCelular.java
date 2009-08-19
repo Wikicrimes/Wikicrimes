@@ -1,5 +1,7 @@
 package org.wikicrimes.model;
 
+import java.util.Date;
+
 
 public class CrimeCelular extends BaseObject {
 
@@ -20,7 +22,7 @@ public class CrimeCelular extends BaseObject {
 
 	private String data;
 	
-	private String dataHoraRegistro;
+	private Date dataHoraRegistro;
 	
 	private String descricao;
 	
@@ -76,11 +78,11 @@ public class CrimeCelular extends BaseObject {
 		this.usuarioCelular = usuarioCelular;
 	}
 		
-	public String getDataHoraRegistro() {
+	public Date getDataHoraRegistro() {
 		return dataHoraRegistro;
 	}
 
-	public void setDataHoraRegistro(String dataHoraRegistro) {
+	public void setDataHoraRegistro(Date dataHoraRegistro) {
 		this.dataHoraRegistro = dataHoraRegistro;
 	}
 

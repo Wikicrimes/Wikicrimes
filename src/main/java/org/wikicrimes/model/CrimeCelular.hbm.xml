@@ -13,7 +13,7 @@
         <property name="descricao" column="CRC_DESCRICAO" type="java.lang.String" not-null="true"/>
 	    <property name="data" column="CRC_DATA" type="java.lang.String"/>
         <property name="turno" column="CRC_TURNO" type="java.lang.String" not-null="true"/>
-        <property name="dataHoraRegistro" column="CRC_DATA_HORA_REGISTRO" type="java.lang.String"/>
+        <property name="dataHoraRegistro" column="CRC_DATA_HORA_REGISTRO" type="java.util.Date"/>
         <property name="tipoCrime" column="CRC_TIPO_CRIME" type="java.lang.String"/>
       	<property name="jaImportado" column="CRC_JA_IMPORTADO" type="java.lang.Long"/>
       	<many-to-one name="usuarioCelular" column="CRC_IDUSUARIO_CELULAR" class="org.wikicrimes.model.UsuarioCelular" />

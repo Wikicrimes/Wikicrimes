@@ -37,6 +37,7 @@ public class Usuario extends BaseObject {
 	private Set<UsuarioRedeSocial> redesSociais;
 	private String tutorAtivado;
 	private String emailAtivo;
+	private UsuarioCelular usuarioCelular;
 
 	public final static String TRUE = "1";
 	public final static String FALSE = "0";
@@ -267,8 +268,6 @@ public class Usuario extends BaseObject {
 	public void setTutorAtivado(String tutorAtivado) {
 		this.tutorAtivado = tutorAtivado;
 	}
-	
-	
 
 	public String getEmailAtivo() {
 		return emailAtivo;
@@ -276,6 +275,14 @@ public class Usuario extends BaseObject {
 
 	public void setEmailAtivo(String emailAtivo) {
 		this.emailAtivo = emailAtivo;
+	}	
+
+	public UsuarioCelular getUsuarioCelular() {
+		return usuarioCelular;
+	}
+
+	public void setUsuarioCelular(UsuarioCelular usuarioCelular) {
+		this.usuarioCelular = usuarioCelular;
 	}
 
 	@Override

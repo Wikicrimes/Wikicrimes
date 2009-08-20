@@ -57,18 +57,18 @@ public class ServletInterfaceComunicacao extends HttpServlet {
 	
 	public String tratarDadosCrime(String dadosCrime, GenericCrudDao genericCrudDao){		
 		String [] array = dadosCrime.split(";");
-		if( array.length == 11){
+		if( array.length == 12){
 			CrimeCelular crc = new CrimeCelular();
-			crc.setTipoCrime(array[0]+","+array[1]+","+array[2]+","+array[3]);
-			crc.setTurno(array[4]);
-			crc.setDescricao(array[5]);
-			crc.setLatitude(array[6]);
-			crc.setLongitude(array[7]);
-			crc.setData(array[8]+"_"+array[9]);
+			crc.setTipoCrime(array[0]+","+array[1]+","+array[2]+","+array[3]+","+array[4]);
+			crc.setTurno(array[5]);
+			crc.setDescricao(array[6]);
+			crc.setLatitude(array[7]);
+			crc.setLongitude(array[8]);
+			crc.setData(array[9]+"_"+array[10]);
 			crc.setDataHoraRegistro(new Date());
 			crc.setJaImportado(new Long(0));
 			UsuarioCelular usc = new UsuarioCelular();
-			usc.setTelefoneCelular(array[10]);
+			usc.setTelefoneCelular(array[11]);
 			List<BaseObject> usuarios = (List<BaseObject>) genericCrudDao.find(usc);
 			if( usuarios.size() == 0 ){
 				genericCrudDao.save(usc);

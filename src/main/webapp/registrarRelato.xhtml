@@ -73,6 +73,10 @@
 					<div id="topoBalao"> <b>#{messages['crime.topo.child.abuse']}</b> </div>
 					
 				</c:if>
+				<c:if test="#{relatoForm.relato.subTipoRelato == 7}">
+					<div id="topoBalao"> <b>#{messages['crime.topo.school.violence']}</b> </div>
+					
+				</c:if>
 
 				<h:outputText value="#{messages['relato.periodo']}(*)"
 					style="vertical-align: text-top; font-size: 11px;" />
@@ -102,35 +106,35 @@
 					<h:inputTextarea value="#{relatoForm.descricao}" id="descricao"
 						cols="66" rows="8" required="true" />
 				</h:panelGrid>
-
-				<h:panelGrid>
-					<c:if test="#{not empty message}">
-						<c:if test="#{message == messages['errors.razao'] }">
-							<h:outputText value="#{message}" styleClass="errorMessage" />
-						</c:if>
-				    </c:if>
-					<h:outputText value ="#{messages['razao.titulo']}(*)" />
-					<t:selectManyCheckbox layoutWidth="2" id="razoesCheck" layout="pageDirection" value="#{relatoForm.razoesSel}" onclick="enabledOutrasRazoes(this.value);">
-						<f:selectItems id="razoes" value="#{relatoForm.razoes}" />
-					</t:selectManyCheckbox>
-				</h:panelGrid>
-				
-				<h:panelGrid>
-					<h:outputText value ="#{messages['razao.outras.causas']}" />
-					<t:inputText id="txtRazaoOutros" forceId="true" value ="#{relatoForm.razaoOutros}" size="40"/>
-				</h:panelGrid>
-				<script type="text/javascript">
-					function enabledOutrasRazoes(code) {
-						var outrasRazoes = document.getElementById('txtRazaoOutros');
-						//Se opcao selecionada for outras (codigo 19)
-						if (code == 19) { 
-						 	outrasRazoes.readOnly = !outrasRazoes.readOnly ;
-						 	if (outrasRazoes.readOnly) outrasRazoes.value = ''; 
+				<c:if test="#{relatoForm.relato.subTipoRelato != 7}">
+					<h:panelGrid>
+						<c:if test="#{not empty message}">
+							<c:if test="#{message == messages['errors.razao'] }">
+								<h:outputText value="#{message}" styleClass="errorMessage" />
+							</c:if>
+					    </c:if>
+						<h:outputText value ="#{messages['razao.titulo']}(*)" />
+						<t:selectManyCheckbox layoutWidth="2" id="razoesCheck" layout="pageDirection" value="#{relatoForm.razoesSel}" onclick="enabledOutrasRazoes(this.value);">
+							<f:selectItems id="razoes" value="#{relatoForm.razoes}" />
+						</t:selectManyCheckbox>
+					</h:panelGrid>
+					
+					<h:panelGrid>
+						<h:outputText value ="#{messages['razao.outras.causas']}" />
+						<t:inputText id="txtRazaoOutros" forceId="true" value ="#{relatoForm.razaoOutros}" size="40"/>
+					</h:panelGrid>
+					<script type="text/javascript">
+						function enabledOutrasRazoes(code) {
+							var outrasRazoes = document.getElementById('txtRazaoOutros');
+							//Se opcao selecionada for outras (codigo 19)
+							if (code == 19) { 
+							 	outrasRazoes.readOnly = !outrasRazoes.readOnly ;
+							 	if (outrasRazoes.readOnly) outrasRazoes.value = ''; 
+							}
 						}
-					}
-					enabledOutrasRazoes(19);
-				</script>
-				
+						enabledOutrasRazoes(19);
+					</script>
+				</c:if>
 				<h:panelGrid>
 						<h:outputText value="#{messages['relato.confirmacoes']}(*)"
 							style="vertical-align: text-top; font-size: 11px;" />

@@ -51,6 +51,17 @@
 			<to-view-id>/usuarioForm.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
+	
+	<!-- 
+	<navigation-rule>
+		<from-view-id>/login.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>editarRelato</from-outcome>
+			<to-view-id>/editarRelato.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>  --> 
+	
 	<navigation-rule>
 		<navigation-case>
 			<from-outcome>sessao_expirada</from-outcome>
@@ -583,6 +594,10 @@
 			<value>#{param.idRelato}</value>
 		</managed-property>
 		<managed-property>
+			<property-name>chave</property-name>
+			<value>#{param.chave}</value>
+		</managed-property>
+		<managed-property>
 			<property-name>mensagemLogin</property-name>
 			<value>#{param.mensagemLogin}</value>
 		</managed-property>
@@ -590,7 +605,10 @@
 			<property-name>tipoRegistro</property-name>
 			<value>#{param.tipoRegistro}</value>
 		</managed-property>
-		   		
+		<managed-property>
+            <property-name>relatoIndicacao</property-name>
+            <value>#{param.relatoIndicacao}</value>
+        </managed-property>
 	</managed-bean>
 
 	<managed-bean>
@@ -816,6 +834,15 @@
             <property-name>idRelato</property-name>
             <value>#{param.idRelato}</value>
         </managed-property>
+        <managed-property>
+            <property-name>chave</property-name>
+            <value>#{param.chave}</value>
+        </managed-property>
+        <managed-property>
+            <property-name>relatoIndicacao</property-name>
+            <value>#{param.relatoIndicacao}</value>
+        </managed-property>
+        
     </managed-bean>    
     
     <managed-bean>

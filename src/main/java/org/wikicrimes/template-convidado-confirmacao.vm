@@ -17,7 +17,7 @@
 <body >
 <table align="center" width="678" border="0" cellpadding="1" cellspacing="1" bgcolor="#D7E4EC" >
   <tr>
-    <td colspan="3"><img src="http://localhost:8081/wikicrimes/images/topo.png" alt="header" width="678" height="67" /></td>
+    <td colspan="3"><img src="http://http://www.wikicrimes.org/images/topo.png" alt="header" width="678" height="67" /></td>
   </tr>
   <tr>
     <td width="22">&nbsp;</td>
@@ -68,7 +68,7 @@
 #end
   <tr>
     <td>&nbsp;</td>
-    <td align="center"><a href="http://www.wikicrimes.org/main.html?idcrime=${crime.chave}&idconf=${confirmacao.idConfirmacao}"><img src="http://localhost:8081/wikicrimes/images/avalie.PNG" width="140" height="68" alt="avaliar" /></a></td>
+    <td align="center"><a href="http://www.wikicrimes.org/main.html?idcrime=${crime.chave}&idconf=${confirmacao.idConfirmacao}"><img src="http://www.wikicrimes.org/images/avalie.PNG" width="140" height="68" alt="avaliar" /></a></td>
     <td>&nbsp;</td>
   </tr>
   <tr>

@@ -33,6 +33,10 @@
                  <value>org/wikicrimes/model/CrimeVitima.hbm.xml</value>
                  <value>org/wikicrimes/model/TipoArmaUsada.hbm.xml</value>
                  <value>org/wikicrimes/model/TipoCrime.hbm.xml</value>
+                 <value>org/wikicrimes/model/TipoAgressorRelato.hbm.xml</value>
+                 <value>org/wikicrimes/model/TipoReportRelato.hbm.xml</value>
+                 <value>org/wikicrimes/model/TipoConsequenciaRelato.hbm.xml</value>
+                 <value>org/wikicrimes/model/TipoViolenciaEscolaRelato.hbm.xml</value>
                  <value>org/wikicrimes/model/TipoLocal.hbm.xml</value>
                  <value>org/wikicrimes/model/TipoPapel.hbm.xml</value>
                  <value>org/wikicrimes/model/TipoRegistro.hbm.xml</value>

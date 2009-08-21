@@ -14,7 +14,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.wikicrimes.dao.GenericCrudDao;
 import org.wikicrimes.model.BaseObject;
-import org.wikicrimes.model.CrimeCelular;
+import org.wikicrimes.model.Relato;
 import org.wikicrimes.model.UsuarioCelular;
 
 public class ServletInterfaceComunicacao extends HttpServlet {
@@ -57,26 +57,49 @@ public class ServletInterfaceComunicacao extends HttpServlet {
 	
 	public String tratarDadosCrime(String dadosCrime, GenericCrudDao genericCrudDao){		
 		String [] array = dadosCrime.split(";");
-		if( array.length == 11){
-			CrimeCelular crc = new CrimeCelular();
-			crc.setTipoCrime(array[0]+","+array[1]+","+array[2]+","+array[3]+","+array[4]);
-			crc.setTurno(array[5]);
-			crc.setDescricao("");
-			crc.setLatitude(array[6]);
-			crc.setLongitude(array[7]);
-			crc.setData(array[8]+"_"+array[9]);
-			crc.setDataHoraRegistro(new Date());
-			crc.setJaImportado(new Long(0));
+		if( array.length == 10){
+			Relato relato = new Relato();
+			relato.setTipoRelato("7");
+			relato.setDescricao("");
+			relato.setLatitude(Double.parseDouble(array[5]));
+			relato.setLongitude(Double.parseDouble(array[6]));
+			Integer hora = Integer.parseInt(array[8]);
+			if(hora>=0 && hora<5){
+				relato.setMadrugada(true);
+				relato.setTarde(false);
+				relato.setNoite(false);
+				relato.setManha(false);
+			}
+			if(hora>=5 && hora<12){
+				relato.setMadrugada(false);
+				relato.setTarde(false);
+				relato.setNoite(false);
+				relato.setManha(true);
+			}
+			if(hora>=12 && hora<18){
+				relato.setMadrugada(false);
+				relato.setTarde(true);
+				relato.setNoite(false);
+				relato.setManha(false);
+			}
+			if(hora>18 && hora<=24){
+				relato.setMadrugada(false);
+				relato.setTarde(false);
+				relato.setNoite(true);
+				relato.setManha(false);
+			}
+			//crc.setData(array[7]+"_"+array[8]);
+			relato.setDataHoraRegistro(new Date());
 			UsuarioCelular usc = new UsuarioCelular();
-			usc.setTelefoneCelular(array[10]);
+			usc.setTelefoneCelular(array[9]);
 			List<BaseObject> usuarios = (List<BaseObject>) genericCrudDao.find(usc);
 			if( usuarios.size() == 0 ){
 				genericCrudDao.save(usc);
-				crc.setUsuarioCelular((UsuarioCelular)genericCrudDao.find(usc).get(0));
+				relato.setUsuarioCelular((UsuarioCelular)genericCrudDao.find(usc).get(0));
 			}else{
-				crc.setUsuarioCelular((UsuarioCelular)usuarios.get(0));
+				relato.setUsuarioCelular((UsuarioCelular)usuarios.get(0));
 			}
-			genericCrudDao.save(crc);
+			genericCrudDao.save(relato);		
 			
 			return "success -> report crime";
 		}else{

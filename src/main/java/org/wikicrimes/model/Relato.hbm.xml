@@ -33,6 +33,7 @@
         <property name="idicacaoValida" column="CON_IDICACAO_VALIDA" type="java.lang.String"/>      
         <many-to-one name="usuarioRedeSocial" column="URS_IDUSUARIO_REDE_SOCIAL" class="org.wikicrimes.model.UsuarioRedeSocial" />       
         <many-to-one name="usuario" column="USU_IDUSUARIO" class="org.wikicrimes.model.Usuario" />
+        <many-to-one name="usuarioCelular" column="USU_IDUSUARIO_CELULAR" class="org.wikicrimes.model.UsuarioCelular" />
         <set name="razoes" table="TB_RLZ_RELATO_RAZAO" lazy="false">
             <key><column name="RLZ_IDRELATO" not-null="true" /></key>
             <one-to-many class="org.wikicrimes.model.RelatoRazao"/>

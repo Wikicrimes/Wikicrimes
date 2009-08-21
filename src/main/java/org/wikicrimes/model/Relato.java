@@ -33,6 +33,8 @@ public class Relato extends BaseObject {
 	
 	private Usuario usuario;
 	
+	private UsuarioCelular usuarioCelular;
+	
 	private Double latitude;
 	
 	private Double longitude;
@@ -273,7 +275,14 @@ public class Relato extends BaseObject {
 
 	public void setIdicacaoValida(String idicacaoValida) {
 		this.idicacaoValida = idicacaoValida;
-	}	
-	
+	}
+
+	public UsuarioCelular getUsuarioCelular() {
+		return usuarioCelular;
+	}
+
+	public void setUsuarioCelular(UsuarioCelular usuarioCelular) {
+		this.usuarioCelular = usuarioCelular;
+	}
 	
 }

@@ -598,6 +598,10 @@
 			<value>#{param.chave}</value>
 		</managed-property>
 		<managed-property>
+			<property-name>chaveCr</property-name>
+			<value>#{param.chaveCr}</value>
+		</managed-property>
+		<managed-property>
 			<property-name>mensagemLogin</property-name>
 			<value>#{param.mensagemLogin}</value>
 		</managed-property>
@@ -801,6 +805,10 @@
         <managed-property>
             <property-name>idCrime</property-name>
             <value>#{param.idCrime}</value>
+        </managed-property>
+        <managed-property>
+            <property-name>chaveCr</property-name>
+            <value>#{param.chaveCr}</value>
         </managed-property>
     </managed-bean>
     

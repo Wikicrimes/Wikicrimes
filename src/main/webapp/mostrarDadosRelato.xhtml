@@ -109,7 +109,7 @@ a:hover {
 
 		<!--  Dados Gerais -->
 		<h:panelGrid border="0" columns="1" style="text-align:left">
-			<c:if test="#{mostrarDadosRelatoForm.relato.subTipoRelato == 1 or mostrarDadosRelatoForm.relato.subTipoRelato == 2 or mostrarDadosRelatoForm.relato.subTipoRelato == 3 or mostrarDadosRelatoForm.relato.subTipoRelato == 4 or mostrarDadosRelatoForm.relato.subTipoRelato == 5 or mostrarDadosRelatoForm.relato.subTipoRelato == 6 or mostrarDadosRelatoForm.relato.subTipoRelato == 7}">
+			<c:if test="#{mostrarDadosRelatoForm.relato.subTipoRelato == 1 or mostrarDadosRelatoForm.relato.subTipoRelato == 2 or mostrarDadosRelatoForm.relato.subTipoRelato == 3 or mostrarDadosRelatoForm.relato.subTipoRelato == 4 or mostrarDadosRelatoForm.relato.subTipoRelato == 5 or mostrarDadosRelatoForm.relato.subTipoRelato == 6}">
 				<h:outputText value="#{messages['relato.tipoRelato']}"
 					style="vertical-align: text-top" />
 				<h:panelGroup>
@@ -131,37 +131,37 @@ a:hover {
 					<c:if test="#{mostrarDadosRelatoForm.relato.subTipoRelato == 6}">
 						<h:outputText value=" #{messages['menu.relato.child.abuse']}" />
 					</c:if>
-					<c:if test="#{mostrarDadosRelatoForm.relato.subTipoRelato == 7}">
-						<h:outputText value=" #{messages['menu.relato.school.violence']}" />
-					</c:if>
+					
 				</h:panelGroup>
 			</c:if>
 
 			<h:outputText value="#{messages['relato.mostra.periodo']}"
 				style="vertical-align: text-top" />
-
-			<h:panelGrid columns="4">
-				<h:selectBooleanCheckbox
-					value="#{mostrarDadosRelatoForm.relato.madrugada}" disabled="true">
-					<h:outputText value="#{messages['relato.madrugada']}" />
-				</h:selectBooleanCheckbox>
-
-				<h:selectBooleanCheckbox
-					value="#{mostrarDadosRelatoForm.relato.manha}" disabled="true">
-					<h:outputText value="#{messages['relato.manha']}" />
-				</h:selectBooleanCheckbox>
-
-				<h:selectBooleanCheckbox
-					value="#{mostrarDadosRelatoForm.relato.tarde}" disabled="true">
-					<h:outputText value="#{messages['relato.tarde']}" />
-				</h:selectBooleanCheckbox>
-
-				<h:selectBooleanCheckbox
-					value="#{mostrarDadosRelatoForm.relato.noite}" disabled="true">
-					<h:outputText value="#{messages['relato.noite']}" />
-				</h:selectBooleanCheckbox>
-			</h:panelGrid>
-
+			
+			<c:if test="#{mostrarDadosRelatoForm.relato.madrugada or mostrarDadosRelatoForm.relato.manha or mostrarDadosRelatoForm.relato.tarde or mostrarDadosRelatoForm.relato.noite}">
+				<h:panelGrid columns="4">
+					<h:selectBooleanCheckbox
+						value="#{mostrarDadosRelatoForm.relato.madrugada}" disabled="true">
+						<h:outputText value="#{messages['relato.madrugada']}" />
+					</h:selectBooleanCheckbox>
+	
+					<h:selectBooleanCheckbox
+						value="#{mostrarDadosRelatoForm.relato.manha}" disabled="true">
+						<h:outputText value="#{messages['relato.manha']}" />
+					</h:selectBooleanCheckbox>
+	
+					<h:selectBooleanCheckbox
+						value="#{mostrarDadosRelatoForm.relato.tarde}" disabled="true">
+						<h:outputText value="#{messages['relato.tarde']}" />
+					</h:selectBooleanCheckbox>
+	
+					<h:selectBooleanCheckbox
+						value="#{mostrarDadosRelatoForm.relato.noite}" disabled="true">
+						<h:outputText value="#{messages['relato.noite']}" />
+					</h:selectBooleanCheckbox>
+				</h:panelGrid>
+			</c:if>
+			
 			<h:outputText value="#{messages['relato.mostra.descricao']}"
 				style="vertical-align: text-top" />
 
@@ -182,23 +182,22 @@ a:hover {
 				</h:panelGroup>
 			</c:if>
 			<br />
-			<c:if test="#{mostrarDadosRelatoForm.relato.subTipoRelato != 7}">
-				<h:outputText value="#{messages['razao.mostrarDados.titulo']}" />
+			<h:outputText value="#{messages['razao.mostrarDados.titulo']}" />
 	
-				<h:panelGrid>
-					<t:selectManyCheckbox layoutWidth="2" id="razoesCheck"
-						displayValueOnly="true" disabled="true" layout="pageDirection"
-						value="#{mostrarDadosRelatoForm.razoesSel}">
-						<f:selectItems id="razoes" value="#{mostrarDadosRelatoForm.razoes}" />
-					</t:selectManyCheckbox>
-				</h:panelGrid>
-	
-				<c:if
-					test="#{ mostrarDadosRelatoForm.relato.outraRazao != '' and mostrarDadosRelatoForm.relato.outraRazao != null}">
-					<h:outputText value="#{messages['razao.outras.causas']}" />
-					<h:outputText value="#{mostrarDadosRelatoForm.relato.outraRazao}" />
-				</c:if>
+			<h:panelGrid>
+				<t:selectManyCheckbox layoutWidth="2" id="razoesCheck"
+					displayValueOnly="true" disabled="true" layout="pageDirection"
+					value="#{mostrarDadosRelatoForm.razoesSel}">
+					<f:selectItems id="razoes" value="#{mostrarDadosRelatoForm.razoes}" />
+				</t:selectManyCheckbox>
+			</h:panelGrid>
+
+			<c:if
+				test="#{ mostrarDadosRelatoForm.relato.outraRazao != '' and mostrarDadosRelatoForm.relato.outraRazao != null}">
+				<h:outputText value="#{messages['razao.outras.causas']}" />
+				<h:outputText value="#{mostrarDadosRelatoForm.relato.outraRazao}" />
 			</c:if>
+			
 		</h:panelGrid>
 		<h:panelGrid border="0" columns="2" style="text-align:left">
 			<h:outputText

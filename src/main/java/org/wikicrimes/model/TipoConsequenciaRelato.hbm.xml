@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="org.wikicrimes.model.TipoConsequenciaRelato" table="TB_TCR_TIPO_CONSEQUENCIA_RELATO" lazy="true">
+        <id name="idTipoConsequenciaRelato" column="TCR_IDTIPO_CONSEQUENCIA_RELATO" unsaved-value="null">
+            <generator class="increment"/>
+        </id>
+        <property name="nome" column="TCR_NOME" type="java.lang.String" not-null="true"/>
+        <property name="descricao" column="TCR_DESCRICAO" type="java.lang.String"/>
+    </class>
+</hibernate-mapping>

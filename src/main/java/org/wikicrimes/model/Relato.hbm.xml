@@ -30,7 +30,11 @@
         <property name="pais" column="REL_PAIS" type="java.lang.String" not-null="false"/>        
 		<property name="cep" column="REL_CEP" type="java.lang.String" length="9"/>        
         <property name="dataHoraRegistro" column="REL_DATA_HORA_REGISTRO" type="java.util.Date"/>  
-        <property name="idicacaoValida" column="CON_IDICACAO_VALIDA" type="java.lang.String"/>      
+        <property name="idicacaoValida" column="CON_IDICACAO_VALIDA" type="java.lang.String"/> 
+        <many-to-one name="tipoViolenciaEscolaRelato" column="REL_IDTIPO_VIOLENCIA_ESCOLA_RELATO" class="org.wikicrimes.model.TipoViolenciaEscolaRelato" />
+        <many-to-one name="tipoAgressorRelato" column="REL_IDTIPO_AGRESSOR_RELATO" class="org.wikicrimes.model.TipoAgressorRelato" />
+        <many-to-one name="tipoReportRelato" column="REL_IDTIPO_REPORT_RELATO" class="org.wikicrimes.model.TipoReportRelato" />
+        <many-to-one name="tipoConsequenciaRelato" column="REL_IDTIPO_CONSEQUENCIA_RELATO" class="org.wikicrimes.model.TipoConsequenciaRelato" />     
         <many-to-one name="usuarioRedeSocial" column="URS_IDUSUARIO_REDE_SOCIAL" class="org.wikicrimes.model.UsuarioRedeSocial" />       
         <many-to-one name="usuario" column="USU_IDUSUARIO" class="org.wikicrimes.model.Usuario" />
         <many-to-one name="usuarioCelular" column="USU_IDUSUARIO_CELULAR" class="org.wikicrimes.model.UsuarioCelular" />

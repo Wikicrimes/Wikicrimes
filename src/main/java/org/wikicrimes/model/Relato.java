@@ -69,6 +69,14 @@ public class Relato extends BaseObject {
     
     private String idicacaoValida;
     
+    private TipoViolenciaEscolaRelato tipoViolenciaEscolaRelato;
+    
+    private TipoAgressorRelato tipoAgressorRelato;
+    
+    private TipoReportRelato tipoReportRelato;
+    
+    private TipoConsequenciaRelato tipoConsequenciaRelato;
+    
     public Long getQtdConfPositivas() {
 		return qtdConfPositivas;
 	}
@@ -284,5 +292,39 @@ public class Relato extends BaseObject {
 	public void setUsuarioCelular(UsuarioCelular usuarioCelular) {
 		this.usuarioCelular = usuarioCelular;
 	}
+
+	public TipoViolenciaEscolaRelato getTipoViolenciaEscolaRelato() {
+		return tipoViolenciaEscolaRelato;
+	}
+
+	public void setTipoViolenciaEscolaRelato(
+			TipoViolenciaEscolaRelato tipoViolenciaEscolaRelato) {
+		this.tipoViolenciaEscolaRelato = tipoViolenciaEscolaRelato;
+	}
+
+	public TipoAgressorRelato getTipoAgressorRelato() {
+		return tipoAgressorRelato;
+	}
+
+	public void setTipoAgressorRelato(TipoAgressorRelato tipoAgressorRelato) {
+		this.tipoAgressorRelato = tipoAgressorRelato;
+	}
+
+	public TipoReportRelato getTipoReportRelato() {
+		return tipoReportRelato;
+	}
+
+	public void setTipoReportRelato(TipoReportRelato tipoReportRelato) {
+		this.tipoReportRelato = tipoReportRelato;
+	}
+
+	public TipoConsequenciaRelato getTipoConsequenciaRelato() {
+		return tipoConsequenciaRelato;
+	}
+
+	public void setTipoConsequenciaRelato(
+			TipoConsequenciaRelato tipoConsequenciaRelato) {
+		this.tipoConsequenciaRelato = tipoConsequenciaRelato;
+	}	
 	
 }

@@ -26,7 +26,10 @@
 	/* <![CDATA[ */
 		function chamaModal(){
 			parent.displayMessage('./login.html?idRelato='+'#{mostrarDadosRelatoForm.relato.chave}', 300, 245,'Login');
-		}			
+		}	
+		function chamaModalIndicacao(){
+			parent.displayMessage('./login.html?chave='+'#{mostrarDadosRelatoForm.relato.chave}&amp;relatoIndicacao=ok', 300, 245,'Login');
+		}		
 		function detectBrowser()
 		{
 		var browser=navigator.appName;
@@ -99,7 +102,7 @@ a:hover {
 		<c:if test="#{empty usuario}">	
 		<h:panelGroup>
 				<h:outputText style="font-size: 10px; text-align:left; font-style:italic;" value="#{messages['crime.mostra.descricaologin1']}" />
-				<h:outputLink value="#" onclick="chamaModal();return false">
+				<h:outputLink value="#" onclick="chamaModalIndicacao();return false">
 					<h:outputText value="login" style="font-size:11px;font-weight:bold; "/>
 				</h:outputLink>
 				<h:outputText style="font-size: 10px; text-align:left; font-style:italic;" value=" #{messages['mostrar.dados.link.indicar.relato']}" />
@@ -131,7 +134,6 @@ a:hover {
 					<c:if test="#{mostrarDadosRelatoForm.relato.subTipoRelato == 6}">
 						<h:outputText value=" #{messages['menu.relato.child.abuse']}" />
 					</c:if>
-					
 				</h:panelGroup>
 			</c:if>
 
@@ -183,7 +185,7 @@ a:hover {
 			</c:if>
 			<br />
 			<h:outputText value="#{messages['razao.mostrarDados.titulo']}" />
-	
+
 			<h:panelGrid>
 				<t:selectManyCheckbox layoutWidth="2" id="razoesCheck"
 					displayValueOnly="true" disabled="true" layout="pageDirection"
@@ -197,7 +199,7 @@ a:hover {
 				<h:outputText value="#{messages['razao.outras.causas']}" />
 				<h:outputText value="#{mostrarDadosRelatoForm.relato.outraRazao}" />
 			</c:if>
-			
+
 		</h:panelGrid>
 		<h:panelGrid border="0" columns="2" style="text-align:left">
 			<h:outputText
@@ -250,10 +252,7 @@ a:hover {
 						style="vertical-align:middle; padding-bottom:5px;" />
 				</h:outputLink>
 
-
 			</t:div>
-
-
 		</c:if>
 
 

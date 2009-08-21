@@ -20,7 +20,7 @@
 		
 		<link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon" />
 		<link rel="stylesheet" type="text/css" href="./styles/wikicrimes.css" title="default" />		
-	
+
 	</head>
 	
 	<body style="overflow-x: hidden">
@@ -30,7 +30,9 @@
 			<div id="topoBalao"> <b>#{messages['mostrardados.titulo']}</b> </div>		
 			
 			<a4j:form id="mostrarDadosRelatoForm">
-			
+				
+				<h:inputHidden value="#{mostrarDadosRelatoForm.chave}" id="chave"/>
+				
 				<h:messages errorStyle="color: red" layout="list" tooltip="true" 
 				showDetail="true" showSummary="true"/>	
 			

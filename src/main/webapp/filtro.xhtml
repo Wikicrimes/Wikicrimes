@@ -608,6 +608,7 @@
 
 							 
 					function atualizaMapa(){
+						//alert('atualiza mapa');
 						zeraDezMais();
 						verificaFiltrosAplicados();
 						zeraEstatisticasRazoes();
@@ -1160,9 +1161,11 @@
 					function setaSubmeteuFiltro(){
 						acoesUsuario['filtrou'] = true;
 						submeteu = true;
-					}				      		
+					}	
+								      		
 					function submeteRequisicao(){
-					 		
+				     //alert("sub: "+submeteu);
+				     
 					 if (submeteu) {
 					 	submeteu=false;					 	
 					    tipoCrime = document.getElementById("tipoCrime").value;
@@ -1204,9 +1207,8 @@
 				            ignoraData="";
 
             			}
-
-					
 					}
+					
 					/*Função que habilita/desabilita a lista contendo as entidades certificadoras cadastradas*/
 								function habilitaListaEntidadeCertificadora(){
 									

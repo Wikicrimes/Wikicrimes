@@ -1718,7 +1718,6 @@
 			}
 			});
 			
-			
 			/**
 			*
 			*/
@@ -2057,7 +2056,21 @@
 				qtd_outros = 0;
 				qtd_denuncias = 0;
 				submeteRequisicao();
-				
+			}
+			
+			function mostrarRelatoMapaIndicado(chave){
+				idconf = null;
+				map.closeInfoWindow();
+				podeCarregarCrimes = false;			
+				idRelato=chave;
+				qtd_roubos = 0;
+				qtd_furtos = 0;
+				qtd_outros = 0;
+				qtd_denuncias = 0;	
+
+				//alert(chave);
+				var myHtml = "<iframe src='./editarRelato.html?chave=" + chave + "' width='400' height='150' frameborder='0'></iframe>";
+				crimesAtuais[chave].openInfoWindowHtml(myHtml, 600);
 			}
 			var statusLegenda='visivel';
 

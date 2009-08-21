@@ -27,6 +27,10 @@
 						id="idCrime" />
 				<h:inputHidden required="false" value="#{usuarioForm.idRelato}"
 						id="idRelato" />
+				<h:inputHidden required="false" value="#{usuarioForm.chave}"
+						id="chave" />
+				<h:inputHidden required="false" value="#{usuarioForm.relatoIndicacao}"
+						id="relatoIndicacao" />
 				<h:inputHidden required="false" value="#{usuarioForm.tipoRegistro}"
 						id="tipoRegistro" />		
 				<h:outputText  style="color: blue;" value="#{usuarioForm.mensagemLogin}"
@@ -62,6 +66,7 @@
 			<script>
 			/* <![CDATA[ */
 				if(#{usuario != null}){
+					
 					parent.document.getElementById("formReRenderLogin:btLoginSubmit").click();
 					parent.closeMessage();
 					var idCrime = document.getElementById("usuarioForm2:idCrime").value;
@@ -78,10 +83,20 @@
 						parent.mostrarCrimeMapa(idCrime);
 						temCrime = true;
 					}
+					
 					var idRelato = document.getElementById("usuarioForm2:idRelato").value;
 					if(idRelato != null && idRelato != ''){
-						parent.mostrarRelatoMapa(idRelato);
 						temRelato = true;
+						parent.mostrarRelatoMapa(idRelato);
+					}
+
+					var chave = document.getElementById("usuarioForm2:chave").value;
+					if(chave != null && chave != ''){
+						temRelato = true;
+						var relatoIndicacao = document.getElementById("usuarioForm2:relatoIndicacao").value;
+						if(relatoIndicacao=="ok"){
+							parent.mostrarRelatoMapaIndicado(chave);
+						}
 					}
 
 					var tipoRegistro = document.getElementById("usuarioForm2:tipoRegistro").value;
@@ -112,8 +127,7 @@
 						parent.tempDataMaisAntiga= new Date();
 						parent.atualizaMapa();
 						parent.podeCarregarCrimes=temp;
-					}	
-					
+					}
 				}
 			/* ]]> */		
 			</script>			

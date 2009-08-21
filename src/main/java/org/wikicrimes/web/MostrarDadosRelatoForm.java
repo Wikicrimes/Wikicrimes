@@ -45,6 +45,8 @@ public class MostrarDadosRelatoForm extends GenericForm {
 	
 	private String mensagemConf;
 	
+	private String chave;
+	
 	private UsuarioService usuarioService;
 	
 	private ConfirmacaoService confirmacaoService;
@@ -58,6 +60,8 @@ public class MostrarDadosRelatoForm extends GenericForm {
 	}
 
 	private Long idRelato;
+	
+	private String relatoIndicacao;
 	
 	private List<SelectItem> razoes = null;
 	
@@ -281,21 +285,21 @@ public class MostrarDadosRelatoForm extends GenericForm {
 		
 		//validacao se os campos sao nulos
 		if(email2.equals("") && email1.equals("")){
-			addMessageFaces("emails.campos.vazios", "","mostrarDadosRelatoForm");
+			addMessageFaces("errors.email.confirmacao", "","mostrarDadosRelatoForm");
 			//addMessage("emails.campos.vazios","");
 			return null;
 		}
 		
 		//quando os dois campos tem emails iguais
 		if(email1.equalsIgnoreCase(email2)){
-			addMessageFaces("email.digitado.iguais", "","mostrarDadosRelatoForm");
+			addMessageFaces("errors.email.confirmacao.iguais", "","mostrarDadosRelatoForm");
 			//addMessage("emails.campos.vazios","");
 			return null;
 		}
 		
 		if(email1!=null && !email1.equals("")){
 			if(confirmacaoService.verificaSeJaIndicou(relatoEditar, email1)){
-				addMessageFaces("usuario.ja.indicado", email1,"mostrarDadosRelatoForm");
+				addMessageFaces("usuario.ja.indicado.relato", email1,"mostrarDadosRelatoForm");
 				return null;
 			}
 			Usuario usuarioConfirmacao = usuarioService.getUsuario(email1);
@@ -318,7 +322,7 @@ public class MostrarDadosRelatoForm extends GenericForm {
 		
 		if(email2!=null && !email2.equals("")){
 			if(confirmacaoService.verificaSeJaIndicou(relatoEditar, email2)){
-				addMessageFaces("usuario.ja.indicado", email2,"mostrarDadosRelatoForm");
+				addMessageFaces("usuario.ja.indicado.relato", email2,"mostrarDadosRelatoForm");
 				return null;
 			}
 			confirmacaoRelatoEditar = new ConfirmacaoRelato();
@@ -365,4 +369,27 @@ public class MostrarDadosRelatoForm extends GenericForm {
 		this.confirmacaoService = confirmacaoService;
 	}
 
+	public String getRelatoIndicacao() {		
+		return relatoIndicacao;
+	}
+
+	public void setRelatoIndicacao(String relatoIndicacao) {
+		this.relatoIndicacao = relatoIndicacao;
+	}
+
+	public String getChave() {
+		return chave;
+	}
+
+	public void setChave(String chave) {
+		this.chave = chave;
+		if (chave != null && !chave.equals("")) {
+			relatoEditar = (Relato) relatoService.getRelato(chave);		
+			confirmacaoRelato.setRelato(relato);
+			List lst = relatoService.listarRazoesSelecionadas(relatoEditar);
+			for (Razao razaoSel : (List<Razao>)lst) {
+				razoesSel.add(razaoSel.getIdRazao().toString());
+			}
+		}
+	}
 }

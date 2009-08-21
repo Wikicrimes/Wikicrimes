@@ -29,6 +29,8 @@
 						id="idRelato" />
 				<h:inputHidden required="false" value="#{usuarioForm.chave}"
 						id="chave" />
+				<h:inputHidden required="false" value="#{usuarioForm.chaveCr}"
+						id="chaveCr" />
 				<h:inputHidden required="false" value="#{usuarioForm.relatoIndicacao}"
 						id="relatoIndicacao" />
 				<h:inputHidden required="false" value="#{usuarioForm.tipoRegistro}"
@@ -96,6 +98,17 @@
 						var relatoIndicacao = document.getElementById("usuarioForm2:relatoIndicacao").value;
 						if(relatoIndicacao=="ok"){
 							parent.mostrarRelatoMapaIndicado(chave);
+						}
+					}
+
+					var chaveCr = document.getElementById("usuarioForm2:chaveCr").value;
+					//alert(chaveCr);
+					if(chaveCr != null && chaveCr != ''){
+						temRelato = true;
+						var relatoIndicacao = document.getElementById("usuarioForm2:relatoIndicacao").value;
+						//alert(relatoIndicacao);
+						if(relatoIndicacao=="ok"){
+							parent.mostrarCrimeMapaIndicado(chaveCr);
 						}
 					}
 

@@ -28,10 +28,11 @@
 		
 			<f:loadBundle var="messages" basename="messages" />
 			
-			
 			<div id="topoBalao"> <b>#{messages['mostrardados.titulo']}</b> </div>
 			
 			<a4j:form id="mostrarDadosForm">
+			
+				<h:inputHidden value="#{mostrarDadosForm.chaveCr}" id="chaveCr"/>
 			
 				<h:messages errorStyle="color: red" layout="list" 
 				showDetail="true"/>	
@@ -86,7 +87,5 @@
 			
 				</t:panelGrid>
 			</a4j:form>
-
-
 	</body>
 </html>

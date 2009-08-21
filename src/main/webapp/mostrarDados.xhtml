@@ -34,7 +34,10 @@
 		}
 		function chamaModal(){
 			parent.displayMessage('./login.html?idCrime='+'#{mostrarDadosForm.crime.chave}', 300, 245,'Login');
-		}			
+		}
+		function chamaModalIndicacao(){
+			parent.displayMessage('./login.html?chaveCr='+'#{mostrarDadosForm.crime.chave}&amp;relatoIndicacao=ok', 300, 245,'Login');
+		}				
 		/* ]]> */
 	</script>	
 		
@@ -92,7 +95,7 @@
 					<c:if test="#{empty usuario}">	
 						<h:panelGroup>
 							<h:outputText style="font-size: 10px; text-align:left; font-style:italic;" value="#{messages['crime.mostra.descricaologin1']}" />
-							<h:outputLink value="#" onclick="chamaModal();return false">
+							<h:outputLink value="#" onclick="chamaModalIndicacao();return false">
 								<h:outputText value="login" style="font-size:11px;font-weight:bold; "/>
 							</h:outputLink>
 							<h:outputText style="font-size: 10px; text-align:left; font-style:italic;" value=" #{messages['mostrar.dados.link.indicar.crime']}" />

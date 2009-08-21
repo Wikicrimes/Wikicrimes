@@ -20,6 +20,7 @@ import org.wikicrimes.model.BaseObject;
 import org.wikicrimes.model.Confirmacao;
 import org.wikicrimes.model.Crime;
 import org.wikicrimes.model.Razao;
+import org.wikicrimes.model.Relato;
 import org.wikicrimes.model.TipoRegistro;
 import org.wikicrimes.model.Usuario;
 import org.wikicrimes.service.ConfirmacaoService;
@@ -46,8 +47,10 @@ public class MostrarDadosForm extends GenericForm {
 	
 	private String email1;
 	
-	private String email2;	
+	private String email2;
 	
+	private String chaveCr;
+
 	private Confirmacao confirmacao;
 	
 	public ConfirmacaoService confirmacaoService;
@@ -639,5 +642,17 @@ public class MostrarDadosForm extends GenericForm {
 
 	public void setMensagemConf(String mensagemConf) {
 		this.mensagemConf = mensagemConf;
-	}	
+	}
+	
+	public String getChaveCr() {
+		return chaveCr;
+	}
+
+	public void setChaveCr(String chaveCr) {
+		this.chaveCr = chaveCr;
+		if (chaveCr != null && !chaveCr.equals("")) {
+			crimeEditar = (Crime) crimeService.getCrime(chaveCr);
+		}
+	}
+
 }

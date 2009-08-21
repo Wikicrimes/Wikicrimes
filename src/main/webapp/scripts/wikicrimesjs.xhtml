@@ -2057,6 +2057,21 @@
 				qtd_denuncias = 0;
 				submeteRequisicao();
 			}
+
+			function mostrarCrimeMapaIndicado(chaveCr){
+				idconf = null;
+				map.closeInfoWindow();				
+				podeCarregarCrimes = false;
+				id=chaveCr;
+				qtd_roubos = 0;
+				qtd_furtos = 0;
+				qtd_outros = 0;
+				qtd_denuncias = 0;	
+
+				//alert(chave);
+				var myHtml = "<iframe src='./editarCrime.html?chaveCr=" + chaveCr + "' width='400' height='150' frameborder='0'></iframe>";
+				crimesAtuais[chaveCr].openInfoWindowHtml(myHtml, 600);
+			}
 			
 			function mostrarRelatoMapaIndicado(chave){
 				idconf = null;

@@ -48,7 +48,7 @@ public class UsuarioForm extends GenericForm {
 	private boolean concordaTermo = false;
 	private Integer vizualizarCrimeOpensocial;
 	
-	private String relatoIndicacao,chave;
+	private String relatoIndicacao,chave,chaveCr;
 
 	public ReCaptchaImpl getReCaptcha() {
 		return reCaptcha;
@@ -566,4 +566,11 @@ public class UsuarioForm extends GenericForm {
 		this.chave = chave;
 	}
 
+	public String getChaveCr() {
+		return chaveCr;
+	}
+
+	public void setChaveCr(String chaveCr) {
+		this.chaveCr = chaveCr;
+	}
 }

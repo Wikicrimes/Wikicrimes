@@ -59,7 +59,8 @@ public class ServletInterfaceComunicacao extends HttpServlet {
 		String [] array = dadosCrime.split(";");
 		if( array.length == 10){
 			Relato relato = new Relato();
-			relato.setTipoRelato("7");
+			relato.setTipoRelato("6");
+			relato.setSubTipoRelato("3");
 			relato.setDescricao("");
 			relato.setLatitude(Double.parseDouble(array[5]));
 			relato.setLongitude(Double.parseDouble(array[6]));

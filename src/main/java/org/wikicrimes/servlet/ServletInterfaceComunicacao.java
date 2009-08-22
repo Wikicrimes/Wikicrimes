@@ -15,6 +15,8 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.wikicrimes.dao.GenericCrudDao;
 import org.wikicrimes.model.BaseObject;
 import org.wikicrimes.model.Relato;
+import org.wikicrimes.model.TipoAgressorRelato;
+import org.wikicrimes.model.TipoConsequenciaRelato;
 import org.wikicrimes.model.TipoLocalizacaoRelato;
 import org.wikicrimes.model.TipoViolenciaEscolaRelato;
 import org.wikicrimes.model.UsuarioCelular;
@@ -110,6 +112,46 @@ public class ServletInterfaceComunicacao extends HttpServlet {
 				TipoLocalizacaoRelato tipoLocalizacaoRelato= new TipoLocalizacaoRelato();
 				tipoLocalizacaoRelato.setIdTipoLocalizacaoRelato(new Long(5));
 				relato.setTipoLocalizacaoRelato(tipoLocalizacaoRelato);
+			}
+			if(tipoAgressor.equals("a)")){
+				TipoAgressorRelato tipoAgressorRelato = new TipoAgressorRelato();
+				tipoAgressorRelato.setIdTipoAgressorRelato(new Long(1));
+				relato.setTipoAgressorRelato(tipoAgressorRelato);
+			}
+			if(tipoAgressor.equals("b)")){
+				TipoAgressorRelato tipoAgressorRelato = new TipoAgressorRelato();
+				tipoAgressorRelato.setIdTipoAgressorRelato(new Long(2));
+				relato.setTipoAgressorRelato(tipoAgressorRelato);
+			}
+			if(tipoAgressor.equals("c)")){
+				TipoAgressorRelato tipoAgressorRelato = new TipoAgressorRelato();
+				tipoAgressorRelato.setIdTipoAgressorRelato(new Long(3));
+				relato.setTipoAgressorRelato(tipoAgressorRelato);
+			}			
+			if(tipoAgressor.equals("d)")){
+				TipoAgressorRelato tipoAgressorRelato = new TipoAgressorRelato();
+				tipoAgressorRelato.setIdTipoAgressorRelato(new Long(4));
+				relato.setTipoAgressorRelato(tipoAgressorRelato);
+			}
+			if(tipoConsequencia.equals("1)")){
+				TipoConsequenciaRelato tipoConsequenciaRelato =new TipoConsequenciaRelato();
+				tipoConsequenciaRelato.setIdTipoConsequenciaRelato(new Long(1));
+				relato.setTipoConsequenciaRelato(tipoConsequenciaRelato);
+			}
+			if(tipoConsequencia.equals("2)")){
+				TipoConsequenciaRelato tipoConsequenciaRelato =new TipoConsequenciaRelato();
+				tipoConsequenciaRelato.setIdTipoConsequenciaRelato(new Long(2));
+				relato.setTipoConsequenciaRelato(tipoConsequenciaRelato);
+			}
+			if(tipoConsequencia.equals("3)")){
+				TipoConsequenciaRelato tipoConsequenciaRelato =new TipoConsequenciaRelato();
+				tipoConsequenciaRelato.setIdTipoConsequenciaRelato(new Long(3));
+				relato.setTipoConsequenciaRelato(tipoConsequenciaRelato);
+			}
+			if(tipoConsequencia.equals("4)")){
+				TipoConsequenciaRelato tipoConsequenciaRelato =new TipoConsequenciaRelato();
+				tipoConsequenciaRelato.setIdTipoConsequenciaRelato(new Long(4));
+				relato.setTipoConsequenciaRelato(tipoConsequenciaRelato);
 			}
 			relato.setTipoRelato("6");
 			relato.setSubTipoRelato("3");

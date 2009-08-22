@@ -77,6 +77,8 @@ public class Relato extends BaseObject {
     
     private TipoConsequenciaRelato tipoConsequenciaRelato;
     
+    private TipoLocalizacaoRelato tipoLocalizacaoRelato;
+    
     public Long getQtdConfPositivas() {
 		return qtdConfPositivas;
 	}
@@ -325,6 +327,13 @@ public class Relato extends BaseObject {
 	public void setTipoConsequenciaRelato(
 			TipoConsequenciaRelato tipoConsequenciaRelato) {
 		this.tipoConsequenciaRelato = tipoConsequenciaRelato;
-	}	
-	
+	}
+
+	public TipoLocalizacaoRelato getTipoLocalizacaoRelato() {
+		return tipoLocalizacaoRelato;
+	}
+
+	public void setTipoLocalizacaoRelato(TipoLocalizacaoRelato tipoLocalizacaoRelato) {
+		this.tipoLocalizacaoRelato = tipoLocalizacaoRelato;
+	}		
 }

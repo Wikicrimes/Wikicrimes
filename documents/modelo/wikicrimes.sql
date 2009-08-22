@@ -520,4 +520,35 @@ UPDATE TB_CRI_CRIME C SET C.CRI_QTD_COMENTARIOS =
 
 //verificar inconsistencias
 SELECT  t.cri_idcrime,count(*)  as quantidade, c.cri_confirmacoes_NEGATIVAS FROM tb_con_confirmacao t, tb_cri_crime c  where t.con_confirma=0 and t.cri_idcrime=c.cri_idcrime  group by t.cri_idcrime 
-		
+
+insert into tb_tve_tipo_violencia_escola_relato values(1,'tipo.violencia.relato.bullying', 'Bullying'),
+						(2, 'tipo.violencia.relato.assedio.sexual', 'Assédio Sexual'),
+						(3, 'tipo.violencia.relato.violencia.sexual', 'Violência Sexual'),
+						(4, 'tipo.violencia.relato.roubo', 'Roubo')
+
+insert into tb_tar_tipo_agressor_relato values (1,'tipo.agressor.relato.autor.unico.connhecido', 'Autor único e conhecido'),
+					(2,'tipo.agressor.relato.autor.unico.desconnhecido', 'Autor único e desconhecido'),
+					(3,'tipo.agressor.relato.gangue.conhecida', 'Gangue Conhecida'),
+					(4,'tipo.agressor.relato.gangue.desconhecida', 'Gangue Desconhecida')
+					
+					
+insert into tb_trr_tipo_report_relato values(1, 'tipo.report.relato.escola', 'Informou a Escola'),
+										(2,'tipo.report.relato.pais', 'Informou aos Pais'),
+										(3,'tipo.report.relato.escola.e.pais', 'Informou a Escola e aos Pais'),
+										(4,'tipo.report.relato.medico', 'Informou ao Médico'),
+										(5,'tipo.report.relato.policia', 'Informou a Polícia'),
+										(6,'tipo.report.relato.medico.e.policia', 'Informou ao Médico e a Polícia'),
+										(7,'tipo.report.relato.pais.e.medico', 'Informou aos Pais e ao Médico'),
+										(8,'tipo.report.relato.pais.medico.policia', 'Informou aos Pais, ao Médico e a Polícial'),
+										(9,'tipo.report.relato.ninguem',  'Não Informou a Niguem')
+										
+insert into tb_tcr_tipo_consequencia_relato values(1,'tipo.consequencia.relato.sem.lesao', 'Não houve lesão ou ameaça de roubo'),
+											(2,'tipo.consequencia.relato.ameaca.roubo', 'Houve ameaça pessoal e roubo'),
+											(3,'tipo.consequencia.relato.lesao.roubo', 'Houve lesão corporal e roubos'),
+											(4,'tipo.consequencia.relato.ameaca.lesao.roubo', 'Ameaça pessoal com lesão corporal e roubo')
+
+insert into tb_tlr_tipo_localizacao_relato values(1, 'tipo.localizacao.relato.escola', 'No prédio escolar'),
+												(2, 'tipo.localizacao.relato.arredores.escola', 'Nos arredores da escola'),
+												(3, 'tipo.localizacao.relato.banheiros.escola', 'Nos banheiros da escola'),
+												(4, 'tipo.localizacao.relato.caminho.escola', 'A caminho da escola'),
+												(5, 'tipo.localizacao.relato.voltando.escola', 'Voltado da escola')

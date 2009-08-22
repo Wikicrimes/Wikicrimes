@@ -15,6 +15,8 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.wikicrimes.dao.GenericCrudDao;
 import org.wikicrimes.model.BaseObject;
 import org.wikicrimes.model.Relato;
+import org.wikicrimes.model.TipoLocalizacaoRelato;
+import org.wikicrimes.model.TipoViolenciaEscolaRelato;
 import org.wikicrimes.model.UsuarioCelular;
 
 public class ServletInterfaceComunicacao extends HttpServlet {
@@ -58,7 +60,57 @@ public class ServletInterfaceComunicacao extends HttpServlet {
 	public String tratarDadosCrime(String dadosCrime, GenericCrudDao genericCrudDao){		
 		String [] array = dadosCrime.split(";");
 		if( array.length == 10){
+			String tipoViolenciaEscola = array[0];			
+			String tipoLocalizacao = array[1];
+			String tipoAgressor = array[2];
+			String tipoReport = array[3];
+			String tipoConsequencia = array[4];			
 			Relato relato = new Relato();
+			if(tipoViolenciaEscola.equals("1.")){
+				TipoViolenciaEscolaRelato tipoViolenciaEscolaRelato = new TipoViolenciaEscolaRelato();
+				tipoViolenciaEscolaRelato.setIdTipoViolenciaEscolaRelato(new Long(1));
+				relato.setTipoViolenciaEscolaRelato(tipoViolenciaEscolaRelato);
+			}
+			if(tipoViolenciaEscola.equals("2.")){
+				TipoViolenciaEscolaRelato tipoViolenciaEscolaRelato = new TipoViolenciaEscolaRelato();
+				tipoViolenciaEscolaRelato.setIdTipoViolenciaEscolaRelato(new Long(2));
+				relato.setTipoViolenciaEscolaRelato(tipoViolenciaEscolaRelato);
+			}
+			if(tipoViolenciaEscola.equals("3.")){
+				TipoViolenciaEscolaRelato tipoViolenciaEscolaRelato = new TipoViolenciaEscolaRelato();
+				tipoViolenciaEscolaRelato.setIdTipoViolenciaEscolaRelato(new Long(3));
+				relato.setTipoViolenciaEscolaRelato(tipoViolenciaEscolaRelato);
+			}
+			if(tipoViolenciaEscola.equals("4.")){
+				TipoViolenciaEscolaRelato tipoViolenciaEscolaRelato = new TipoViolenciaEscolaRelato();
+				tipoViolenciaEscolaRelato.setIdTipoViolenciaEscolaRelato(new Long(4));
+				relato.setTipoViolenciaEscolaRelato(tipoViolenciaEscolaRelato);
+			}
+			if(tipoLocalizacao.equals("1-")){
+				TipoLocalizacaoRelato tipoLocalizacaoRelato= new TipoLocalizacaoRelato();
+				tipoLocalizacaoRelato.setIdTipoLocalizacaoRelato(new Long(1));
+				relato.setTipoLocalizacaoRelato(tipoLocalizacaoRelato);
+			}
+			if(tipoLocalizacao.equals("2-")){
+				TipoLocalizacaoRelato tipoLocalizacaoRelato= new TipoLocalizacaoRelato();
+				tipoLocalizacaoRelato.setIdTipoLocalizacaoRelato(new Long(2));
+				relato.setTipoLocalizacaoRelato(tipoLocalizacaoRelato);
+			}
+			if(tipoLocalizacao.equals("3-")){
+				TipoLocalizacaoRelato tipoLocalizacaoRelato= new TipoLocalizacaoRelato();
+				tipoLocalizacaoRelato.setIdTipoLocalizacaoRelato(new Long(3));
+				relato.setTipoLocalizacaoRelato(tipoLocalizacaoRelato);
+			}
+			if(tipoLocalizacao.equals("4-")){
+				TipoLocalizacaoRelato tipoLocalizacaoRelato= new TipoLocalizacaoRelato();
+				tipoLocalizacaoRelato.setIdTipoLocalizacaoRelato(new Long(4));
+				relato.setTipoLocalizacaoRelato(tipoLocalizacaoRelato);
+			}
+			if(tipoLocalizacao.equals("5-")){
+				TipoLocalizacaoRelato tipoLocalizacaoRelato= new TipoLocalizacaoRelato();
+				tipoLocalizacaoRelato.setIdTipoLocalizacaoRelato(new Long(5));
+				relato.setTipoLocalizacaoRelato(tipoLocalizacaoRelato);
+			}
 			relato.setTipoRelato("6");
 			relato.setSubTipoRelato("3");
 			relato.setDescricao("");

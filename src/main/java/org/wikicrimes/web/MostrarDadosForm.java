@@ -580,7 +580,7 @@ public class MostrarDadosForm extends GenericForm {
 			
 			}
 			
-			if(!crimeEditar.getUsuario().getEmail().equals(usuarioLogado.getEmail()))
+			if(crimeEditar.getUsuario()==null || !crimeEditar.getUsuario().getEmail().equals(usuarioLogado.getEmail()))
 				confirmacaoEditar.setUsuarioIndica(usuarioLogado);
 			confirmacaoEditar.setMensagem(mensagemConf);
 			confirmacaoEditar.setCrime(crimeEditar);

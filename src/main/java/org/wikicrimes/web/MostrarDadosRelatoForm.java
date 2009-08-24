@@ -308,8 +308,8 @@ public class MostrarDadosRelatoForm extends GenericForm {
 				usuarioConfirmacao = usuarioService.retornaUsuarioConfirmacao(email1,usuarioLogado.getIdiomaPreferencial());
 			
 			}
-			if(!relatoEditar.getUsuario().getEmail().equals(usuarioLogado.getEmail()))
-				confirmacaoRelatoEditar.setUsuario(usuarioLogado);
+			if(relatoEditar.getUsuario()==null || !relatoEditar.getUsuario().getEmail().equals(usuarioLogado.getEmail()))
+				confirmacaoRelatoEditar.setUsuarioIndicado(usuarioLogado);
 			
 			confirmacaoRelatoEditar.setMensagem(mensagemConf);
 			confirmacaoRelatoEditar.setRelato(relatoEditar);

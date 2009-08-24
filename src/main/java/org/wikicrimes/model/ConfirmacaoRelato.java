@@ -14,6 +14,7 @@ public class ConfirmacaoRelato extends BaseObject {
 	private Boolean confirma;
 	private Date dataConfirmacao;
 	private Usuario usuario;
+	private Usuario usuarioIndicado;
 	private UsuarioRedeSocial usuarioRedeSocial;
 	private String link;
 	private Boolean indicacao;
@@ -148,7 +149,12 @@ public class ConfirmacaoRelato extends BaseObject {
 	public void setMensagem(String mensagem) {
 		this.mensagem = mensagem;
 	}
-	
-	
-	
+
+	public Usuario getUsuarioIndicado() {
+		return usuarioIndicado;
+	}
+
+	public void setUsuarioIndicado(Usuario usuarioIndicado) {
+		this.usuarioIndicado = usuarioIndicado;
+	}	
 }

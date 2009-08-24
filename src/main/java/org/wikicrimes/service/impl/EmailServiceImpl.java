@@ -3,6 +3,7 @@ package org.wikicrimes.service.impl;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -354,8 +355,19 @@ public class EmailServiceImpl extends GenericCrudServiceImpl implements
 	}
 
 	public void sendMailConfirmation(final Relato relato, final String locale) {
-
-		final Usuario usuario = relato.getUsuario();
+		Usuario usuarioTemp = null;
+		if(relato.getUsuario()!=null){
+			usuarioTemp = relato.getUsuario();
+		}	
+		else{
+			for (Iterator iterator = relato.getConfirmacoes().iterator(); iterator.hasNext();) {
+				ConfirmacaoRelato conf = (ConfirmacaoRelato) iterator.next();
+				usuarioTemp = conf.getUsuarioIndicado();
+			}
+		}
+		
+		
+		final Usuario usuario = usuarioTemp;
 		for (final ConfirmacaoRelato confirmacao : relato.getConfirmacoes()) {
 			
 			final MimeMessagePreparator preparator = new MimeMessagePreparator() {

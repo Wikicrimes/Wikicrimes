@@ -15,6 +15,7 @@
         <property name="mensagem" column="CNR_MENSAGEM" type="java.lang.String"/>
 		<many-to-one name="entidadeCertificadora" column="ENTCER_IDENTIDADECERTIFICADORA" class="org.wikicrimes.model.EntidadeCertificadora"/>
         <many-to-one name="usuario" column="USU_IDUSUARIO" class="org.wikicrimes.model.Usuario"/>
+        <many-to-one name="usuarioIndicado" column="USU_IDUSUARIO_INDICADO" class="org.wikicrimes.model.Usuario"/>
         <many-to-one name="usuarioRedeSocial" column="URS_IDUSUARIO_REDE_SOCIAL" class="org.wikicrimes.model.UsuarioRedeSocial"/>
 	    <many-to-one name="relato" column="REL_IDRELATO" class="org.wikicrimes.model.Relato"/>
     </class>

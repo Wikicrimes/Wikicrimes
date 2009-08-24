@@ -106,7 +106,7 @@
 	<tr class="style1">
 		<td width="25"><img src="_space.gif" width="25" height="1" border="0"></td>	
 		<td width="225"><span class="footerText">This email was sent to [${confirmacao.usuario.email}]<br><strong><unsubscribe></unsubscribe></strong>, in case you are <em>not</em> interested in receiving emails like this anymore.</span></td>
-		<td width="225" align="right"><img src="/_space.gif" width="1" height="15" border="0"><br><span class="footerText"><strong><a href="#">WikiCrimes.org</a></strong><br>&copy;2007-2009 Wikinova Solu&ccedil;&otilde;es. All Rights Reserved<br></span><br><img src="/_space.gif" width="1" height="15" border="0"><br></td>
+		<td width="225" align="right"><img src="/_space.gif" width="1" height="15" border="0"><br><span class="footerText"><strong><a href="#">WikiCrimes.org</a></strong><br>&copy;2007-2009 <a href="http://www.wikinova.com.br">Wikinova Solu&ccedil;&otilde;es</a>. All Rights Reserved<br></span><br><img src="/_space.gif" width="1" height="15" border="0"><br></td>
 
 		<td width="25"><img src="_space.gif" width="25" height="1" border="0"></td>	
 	</tr>

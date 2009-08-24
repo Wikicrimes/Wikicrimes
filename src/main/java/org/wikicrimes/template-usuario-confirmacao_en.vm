@@ -68,7 +68,7 @@
 #end
   <tr>
     <td>&nbsp;</td>
-    <td align="center"><a href="http://www.wikicrimes.org/main.html?idcrime=${crime.chave}&idconf=${confirmacao.idConfirmacao}"><img src="http://www.wikicrimes.org/images/avalie.PNG" width="140" height="68" alt="evaluate" /></a></td>
+    <td align="center"><a href="http://www.wikicrimes.org/main.html?idcrime=${crime.chave}&idconf=${confirmacao.idConfirmacao}"><img src="http://www.wikicrimes.org/images/avalie_en.PNG" width="140" height="68" alt="evaluate" /></a></td>
     <td>&nbsp;</td>
   </tr>
   <tr>

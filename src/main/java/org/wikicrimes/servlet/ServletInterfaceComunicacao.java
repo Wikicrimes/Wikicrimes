@@ -18,8 +18,10 @@ import org.wikicrimes.model.Relato;
 import org.wikicrimes.model.TipoAgressorRelato;
 import org.wikicrimes.model.TipoConsequenciaRelato;
 import org.wikicrimes.model.TipoLocalizacaoRelato;
+import org.wikicrimes.model.TipoReportRelato;
 import org.wikicrimes.model.TipoViolenciaEscolaRelato;
 import org.wikicrimes.model.UsuarioCelular;
+import org.wikicrimes.util.Cripto;
 
 public class ServletInterfaceComunicacao extends HttpServlet {
 	/**
@@ -46,15 +48,13 @@ public class ServletInterfaceComunicacao extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		
 		String dadosCrime = request.getParameter("dados_crime");
-		String dadosUsuario = request.getParameter("dados_usuario");
 		ctx = WebApplicationContextUtils.getWebApplicationContext(this
 				.getServletContext());
 		GenericCrudDao genericCrudDao = (GenericCrudDao) ctx
 		.getBean("opensocialDao");
 		if(dadosCrime != null && dadosCrime != "undefined" && !dadosCrime.equalsIgnoreCase(""))
 			out.print(tratarDadosCrime(dadosCrime, genericCrudDao));
-		if(dadosUsuario != null && dadosUsuario != "undefined" && !dadosUsuario.equalsIgnoreCase(""))
-			out.println(tratarDadosUsuario(dadosUsuario, genericCrudDao));
+		
 		
 		out.close();
 	}
@@ -88,6 +88,66 @@ public class ServletInterfaceComunicacao extends HttpServlet {
 				tipoViolenciaEscolaRelato.setIdTipoViolenciaEscolaRelato(new Long(4));
 				relato.setTipoViolenciaEscolaRelato(tipoViolenciaEscolaRelato);
 			}
+			
+			if(!tipoViolenciaEscola.equals("3.")){
+				if(tipoReport.equals("i)")){
+					TipoReportRelato tipoReportRelato = new TipoReportRelato();
+					tipoReportRelato.setIdTipoReportRelato(new Long(1));
+					relato.setTipoReportRelato(tipoReportRelato);					
+				}
+				if(tipoReport.equals("ii)")){
+					TipoReportRelato tipoReportRelato = new TipoReportRelato();
+					tipoReportRelato.setIdTipoReportRelato(new Long(2));
+					relato.setTipoReportRelato(tipoReportRelato);					
+				}
+				if(tipoReport.equals("iii)")){
+					TipoReportRelato tipoReportRelato = new TipoReportRelato();
+					tipoReportRelato.setIdTipoReportRelato(new Long(3));
+					relato.setTipoReportRelato(tipoReportRelato);					
+				}
+				if(tipoReport.equals("iv)")){
+					TipoReportRelato tipoReportRelato = new TipoReportRelato();
+					tipoReportRelato.setIdTipoReportRelato(new Long(9));
+					relato.setTipoReportRelato(tipoReportRelato);
+				}				
+			}else{
+				if(tipoReport.equals("i)")){
+					TipoReportRelato tipoReportRelato = new TipoReportRelato();
+					tipoReportRelato.setIdTipoReportRelato(new Long(4));
+					relato.setTipoReportRelato(tipoReportRelato);					
+				}
+				if(tipoReport.equals("ii)")){
+					TipoReportRelato tipoReportRelato = new TipoReportRelato();
+					tipoReportRelato.setIdTipoReportRelato(new Long(2));
+					relato.setTipoReportRelato(tipoReportRelato);					
+				}
+				if(tipoReport.equals("iii)")){
+					TipoReportRelato tipoReportRelato = new TipoReportRelato();
+					tipoReportRelato.setIdTipoReportRelato(new Long(5));
+					relato.setTipoReportRelato(tipoReportRelato);					
+				}
+				if(tipoReport.equals("iv)")){
+					TipoReportRelato tipoReportRelato = new TipoReportRelato();
+					tipoReportRelato.setIdTipoReportRelato(new Long(6));
+					relato.setTipoReportRelato(tipoReportRelato);
+				}
+				if(tipoReport.equals("v)")){
+					TipoReportRelato tipoReportRelato = new TipoReportRelato();
+					tipoReportRelato.setIdTipoReportRelato(new Long(7));
+					relato.setTipoReportRelato(tipoReportRelato);
+				}	
+				if(tipoReport.equals("vi)")){
+					TipoReportRelato tipoReportRelato = new TipoReportRelato();
+					tipoReportRelato.setIdTipoReportRelato(new Long(8));
+					relato.setTipoReportRelato(tipoReportRelato);
+				}
+				if(tipoReport.equals("vii)")){
+					TipoReportRelato tipoReportRelato = new TipoReportRelato();
+					tipoReportRelato.setIdTipoReportRelato(new Long(9));
+					relato.setTipoReportRelato(tipoReportRelato);
+				}
+			}
+			
 			if(tipoLocalizacao.equals("1-")){
 				TipoLocalizacaoRelato tipoLocalizacaoRelato= new TipoLocalizacaoRelato();
 				tipoLocalizacaoRelato.setIdTipoLocalizacaoRelato(new Long(1));
@@ -194,33 +254,14 @@ public class ServletInterfaceComunicacao extends HttpServlet {
 			}else{
 				relato.setUsuarioCelular((UsuarioCelular)usuarios.get(0));
 			}
+			genericCrudDao.save(relato);
+			relato.setChave(Cripto.criptografar(relato.getIdRelato().toString()+relato.getDataHoraRegistro().toString()));
 			genericCrudDao.save(relato);		
 			
 			return "success -> report crime";
 		}else{
 			return "failure -> report crime";
 		}	
-	}
+	}	
 	
-	public String tratarDadosUsuario(String dadosUsuario, GenericCrudDao genericCrudDao){
-		String [] array = dadosUsuario.split(";");
-		if( array.length == 2){
-			UsuarioCelular usc = new UsuarioCelular();
-			if(array[0] != null && !array[0].equalsIgnoreCase("")){	
-				usc.setEmail(array[0]);
-				if( genericCrudDao.find(usc).size() > 0 )
-					return "failure -> user email already exists";
-			}	
-			usc.setTelefoneCelular(array[1]);
-			usc.setEmail(null);
-			if(genericCrudDao.find(usc).size()>0)
-				return "failure -> user mobile phone already exists";
-			usc.setEmail(array[0]);
-			genericCrudDao.save(usc);
-			return "success -> register user";
-		}else{
-			return "failure -> register user";
-		}	
-		
-	}
 }

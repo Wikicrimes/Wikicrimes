@@ -108,7 +108,7 @@ Per ulteriori informazioni, visitare <a href="http://www.wikicrimes .org">www.wi
 	<tr class="style1">
 		<td width="25"><img src="_space.gif" width="25" height="1" border="0"></td>	
 		<td width="225"><span class="footerText">	
-Questa email &egrave; stata inviata a [${confirmacao.usuario.email}]<br><strong><unsubscribe></unsubscribe></strong>, se <em>non</em> desidera più ricevere email di questo tipo.</span></td>
+Questa email &egrave; stata inviata a [${confirmacao.usuario.email}]<br><strong><unsubscribe>Clicca qui</unsubscribe></strong>, se <em>non</em> desidera più ricevere email di questo tipo.</span></td>
 		<td width="225" align="right"><img src="/_space.gif" width="1" height="15" border="0"><br><span class="footerText"><strong><a href="#">WikiCrimes.org</a></strong><br>&copy;2007-2009 Wikinova Solu&ccedil;&otilde;es. Tutti i diritti riservati<br></span><br><img src="/_space.gif" width="1" height="15" border="0"><br></td>
 
 		<td width="25"><img src="_space.gif" width="25" height="1" border="0"></td>	

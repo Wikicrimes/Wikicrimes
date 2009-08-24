@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>WikiCrimes.org - Confirma&ccedil;&atilde;o de Crime</title>
+<title>WikiCrimes.org - Crime Confirmation</title>
 <style type="text/css">
 <!--
 .style1 {font-family: Arial, Helvetica, sans-serif}
@@ -17,7 +17,7 @@
 <body >
 <table align="center" width="678" border="0" cellpadding="1" cellspacing="1" bgcolor="#D7E4EC" >
   <tr>
-    <td colspan="3"><img src="http://localhost:8081/wikicrimes/images/topo.png" alt="header" width="678" height="67" /></td>
+    <td colspan="3"><img src="http://www.wikicrimes.org/images/topo.png" alt="header" width="678" height="67" /></td>
   </tr>
   <tr>
     <td width="22">&nbsp;</td>
@@ -26,7 +26,7 @@
   </tr>
   <tr>
     <td>&nbsp;</td>
-    <td><span class="style6">Ol&aacute; </span><span class="style5">,</span></td>
+    <td><span class="style6">Hi </span><span class="style5">,</span></td>
     <td>&nbsp;</td>
   </tr>
   <tr>
@@ -37,21 +37,21 @@
   <tr>
     <td height="44">&nbsp;</td>
     <td>
-	<div align="justify"><span class="style6">${usuario.primeiroNome} (${usuario.email}) pediu que voc&ecirc; desse sua contribui&ccedil;&atilde;o avaliando um 
-	registro(
+	<div align="justify"><span class="style6">${usuario.primeiroNome} (${usuario.email}) asked for you to give your contribution evaluating the posting  
+	(
 		#if($crime.tipoCrime.idTipoCrime ne 5)
 			${tipoCrime} a ${tipoVitima}
 		#end
 		#if($crime.tipoCrime.idTipoCrime eq 5)
 			${tipoCrime}
 		#end	
-	) feito no sistema WikiCrimes:</span></div></td>
+	) done in the WikiCrimes system:</span></div></td>
     <td>&nbsp;</td>
   </tr>
 #if($confirmacao.mensagem ne "")
   <tr>
     <td>&nbsp;</td>
-    <td><span class="style6">${usuario.primeiroNome}, refor&ccedil;a seu pedido dizendo:</span></td>
+    <td><span class="style6">${usuario.primeiroNome}, justifies his/her request saying:</span></td>
     <td>&nbsp;</td>
   </tr>
   <tr>
@@ -68,35 +68,35 @@
 #end
   <tr>
     <td>&nbsp;</td>
-    <td align="center"><a href="http://www.wikicrimes.org/main.html?idcrime=${crime.chave}&idconf=${confirmacao.idConfirmacao}"><img src="http://localhost:8081/wikicrimes/images/avalie.PNG" width="140" height="68" alt="avaliar" /></a></td>
+    <td align="center"><a href="http://www.wikicrimes.org/main.html?idcrime=${crime.chave}&idconf=${confirmacao.idConfirmacao}"><img src="http://www.wikicrimes.org/images/avalie.PNG" width="140" height="68" alt="evaluate" /></a></td>
     <td>&nbsp;</td>
   </tr>
   <tr>
     <td>&nbsp;</td>
-    <td class="style1"><div align="justify">Clique no bot&atilde;o acima ou <span class="style3"><a href="http://www.wikicrimes.org/main.html?idcrime=${crime.chave}&idconf=${confirmacao.idConfirmacao}">aqui</a></span> para ver o registro na &iacute;ntegra e deixar sua avalia&ccedil;&atilde;o registrada. Sua avalia&ccedil;&atilde;o &eacute; fundamental para que o registro de [rementente] tenha credibilidade no sistema, por este motivo voc&ecirc; foi indicado para colaborar.</div></td>
+    <td class="style1"><div align="justify">Click on the button above or <span class="style3"><a href="http://www.wikicrimes.org/main.html?idcrime=${crime.chave}&idconf=${confirmacao.idConfirmacao}">here</a></span> to see the complete posting and leave your evaluation registered. Your evaluation is fundamental so that the posting of  ${usuario.primeiroNome} has credibility in the system, for that reason you were indicated to colaborate.</div></td>
     <td>&nbsp;</td>
   </tr>
   <tr>
     <td>&nbsp;</td>
-    <td><p align="justify"><span class="style1">    WikiCrimes &eacute; um projeto de compartilhamento de informa&ccedil;&otilde;es sobre crimes e criminalidade em um mapa digitalizado. Para mais informa&ccedil;&otilde;es acesse <a href="http://www.wikicrimes .org">www.wikicrimes.org</a></span> </p>    </td>
+    <td><p align="justify"><span class="style1">    WikiCrimes is a project of crime information sharing in a digitilized map. For more information access <a href="http://www.wikicrimes .org">www.wikicrimes.org</a></span> </p>    </td>
     <td>&nbsp;</td>
   </tr>
   <tr>
     <td>&nbsp;</td>
-    <td class="style1"> Aproveite para registrar-se em WikiCrimes e conhe&ccedil;a mais do projeto que vai permitir voc&ecirc; saber onde n&atilde;o &eacute; seguro!	
+    <td class="style1"> Take this oportunity to register yourself as a user of WikiCrimes and know more about the project that gives you the information about were not is safe!	
     </td>
     <td>&nbsp;</td>
   </tr>
    <tr>
     <td>&nbsp;</td>
     <td class="style1"> 
-	<p>(*) Se n&atilde;o conseguir clicar no link, copie o endere&ccedil;o "http://www.wikicrimes.org/main.html?idcrime=${crime.chave}&idconf=${confirmacao.idConfirmacao}" e cole-o na janela do seu navegador</p>
+	<p>(*) In case you can not click on the link, copy the address "http://www.wikicrimes.org/main.html?idcrime=${crime.chave}&idconf=${confirmacao.idConfirmacao}" and paste it in the window of your browser</p>
     </td>
     <td>&nbsp;</td>
   </tr>
   <tr>
     <td>&nbsp;</td>
-    <td><p class="style4">    Equipe Wikicrimes </p>    </td>
+    <td><p class="style4">    Wikicrimes Team </p>    </td>
     <td>&nbsp;</td>
   </tr>
   
@@ -106,8 +106,8 @@
 
 	<tr class="style1">
 		<td width="25"><img src="_space.gif" width="25" height="1" border="0"></td>	
-		<td width="225"><span class="footerText">Este email foi enviado para [${confirmacao.usuario.email}]<br><strong><unsubscribe></unsubscribe></strong>, caso <em>n&atilde;o</em> queira mais receber e-mails como este.</span></td>
-		<td width="225" align="right"><img src="/_space.gif" width="1" height="15" border="0"><br><span class="footerText"><strong><a href="#">WikiCrimes.org</a></strong><br>&copy;2007-2009 Wikinova Solu&ccedil;&otilde;es. Todos os Direitos Reservados<br></span><br><img src="/_space.gif" width="1" height="15" border="0"><br></td>
+		<td width="225"><span class="footerText">This email was sent to [${confirmacao.usuario.email}]<br><strong><unsubscribe></unsubscribe></strong>, in case you are <em>not</em> interested in receiving emails like this anymore.</span></td>
+		<td width="225" align="right"><img src="/_space.gif" width="1" height="15" border="0"><br><span class="footerText"><strong><a href="#">WikiCrimes.org</a></strong><br>&copy;2007-2009 Wikinova Solu&ccedil;&otilde;es. All Rights Reserved<br></span><br><img src="/_space.gif" width="1" height="15" border="0"><br></td>
 
 		<td width="25"><img src="_space.gif" width="25" height="1" border="0"></td>	
 	</tr>

@@ -73,7 +73,7 @@
   </tr>
   <tr>
     <td>&nbsp;</td>
-    <td class="style1"><div align="justify">Clique no bot&atilde;o acima ou <span class="style3"><a href="http://www.wikicrimes.org/main.html?idcrime=${crime.chave}&idconf=${confirmacao.idConfirmacao}">aqui</a></span> para ver o registro na &iacute;ntegra e deixar sua avalia&ccedil;&atilde;o registrada. Sua avalia&ccedil;&atilde;o &eacute; fundamental para que o registro de [rementente] tenha credibilidade no sistema, por este motivo voc&ecirc; foi indicado para colaborar.</div></td>
+    <td class="style1"><div align="justify">Clique no bot&atilde;o acima ou <span class="style3"><a href="http://www.wikicrimes.org/main.html?idcrime=${crime.chave}&idconf=${confirmacao.idConfirmacao}">aqui</a></span> para ver o registro na &iacute;ntegra e deixar sua avalia&ccedil;&atilde;o registrada. Sua avalia&ccedil;&atilde;o &eacute; fundamental para que o registro de ${usuario.primeiroNome} tenha credibilidade no sistema, por este motivo voc&ecirc; foi indicado para colaborar.</div></td>
     <td>&nbsp;</td>
   </tr>
   <tr>

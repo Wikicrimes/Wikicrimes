@@ -248,7 +248,7 @@ public class EmailServiceImpl extends GenericCrudServiceImpl implements
 					if (idiomaEmail.equals("pt_BR") || idiomaEmail.equals("pt")){
 						message.setSubject("Confirmação de relato de crime - WikiCrimes.org");
 						//verifica se usuario ja e cadastrado
-					if(confirmacao.getUsuario().getPerfil().getIdPerfil()== Perfil.CONVIDADO){
+					if(confirmacao.getUsuario().getPerfil().getIdPerfil().equals(new Long(Perfil.CONVIDADO))){
 						text = VelocityEngineUtils.mergeTemplateIntoString(
 					               velocityEngine, "org/wikicrimes/template-convidado-confirmacao.vm", model);
 					}

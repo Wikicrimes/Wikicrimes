@@ -38,14 +38,12 @@
     <td height="44">&nbsp;</td>
     <td>
 	<div align="justify"><span class="style6">${usuario.primeiroNome} (${usuario.email}) asked for you to give your contribution evaluating the posting  
-	(
-		#if($crime.tipoCrime.idTipoCrime ne 5)
+	(#if($crime.tipoCrime.idTipoCrime ne 5)
 			${tipoCrime} a ${tipoVitima}
 		#end
 		#if($crime.tipoCrime.idTipoCrime eq 5)
 			${tipoCrime}
-		#end	
-	) done in the WikiCrimes system:</span></div></td>
+		#end) done in the WikiCrimes system:</span></div></td>
     <td>&nbsp;</td>
   </tr>
 #if($confirmacao.mensagem ne "")

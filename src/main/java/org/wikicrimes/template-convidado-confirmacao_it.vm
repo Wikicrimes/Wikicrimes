@@ -38,14 +38,12 @@
     <td height="44">&nbsp;</td>
     <td>
 	<div align="justify"><span class="style6">${usuario.primeiroNome} (${usuario.email}) le ha chiesto di dare il tuo contributo con la valutazione di un 
-record di (
-		#if($crime.tipoCrime.idTipoCrime ne 5)
+record di (#if($crime.tipoCrime.idTipoCrime ne 5)
 			${tipoCrime} a ${tipoVitima}
 		#end
 		#if($crime.tipoCrime.idTipoCrime eq 5)
 			${tipoCrime}
-		#end	
-	) fatto nel sistema WikiCrimes:</span></div></td>
+		#end) fatto nel sistema WikiCrimes:</span></div></td>
     <td>&nbsp;</td>
   </tr>
 #if($confirmacao.mensagem ne "")

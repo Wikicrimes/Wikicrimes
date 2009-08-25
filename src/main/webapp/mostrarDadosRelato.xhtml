@@ -69,9 +69,7 @@ a:hover {
 
 <f:loadBundle var="messages" basename="messages" />
 <h:form>
-			<c:if test="#{not empty message}">
-						<h:outputText value="#{message}" styleClass="message" />
-					</c:if>
+			
 					
 					<div style="width:100%; text-align:left">
 					<c:if test="#{not empty usuario}">	
@@ -95,6 +93,9 @@ a:hover {
 					
 					</h:form>
 <div id="topoBalao"><b>#{messages['mostrardados.relato.titulo']}</b></div>
+<c:if test="#{not empty message}">
+						<h:outputText value="#{message}" styleClass="message" />
+					</c:if>
 <h:panelGrid border="0"
 	style="font-size: 11px; font-family: sans-serif;" columns="1">
 	<h:form id="mostrarDadosForm">

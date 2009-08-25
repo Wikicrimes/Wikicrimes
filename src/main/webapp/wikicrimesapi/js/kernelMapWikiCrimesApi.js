@@ -14,8 +14,6 @@ function habilitaDesabilitaMapaDeKernelWikiCrimes(){
 			podeCarregarCrimes = false;
 			mapaDeKernelWikiCrimes();		
 			div.innerHTML = "<div onclick='habilitaDesabilitaMapaDeKernelWikiCrimes();' class='botaoAtivado'> "+mensagens['titulo.kernel.map']+" </div>";	
-								
-			
 		}else{
 			if(photoWikiCrimes!=null)
 				mapWikiCrimes.removeTPhoto(photoWikiCrimes);

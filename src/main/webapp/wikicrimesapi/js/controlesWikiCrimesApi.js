@@ -196,6 +196,7 @@ function mostraEscondeFiltroWikiCrimes(){
 		document.getElementById('tipo_crime').value = tipoCrimeWikiCrimes ;
 		alteraTipoVitima(tipoCrimeWikiCrimes);
 		document.getElementById('tipo_vitima').value = tipoVitimaWikiCrimes;
+		document.getElementById('emailUsuarioWikiCrimes').checked = getMeusCrimesWikiCrimes;
 		div.innerHTML = "<div id='botaoFiltroWikiCrimes'><div onclick='mostraEscondeFiltroWikiCrimes();' class='botaoAtivado'> "+mensagens['filtrarCrimes']+" </div></div>";
 	}							
 }

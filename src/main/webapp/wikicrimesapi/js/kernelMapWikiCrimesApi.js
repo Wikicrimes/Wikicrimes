@@ -2,27 +2,31 @@
 
 var photoWikiCrimes = null;
 var flagHabilitaDesabilitaMapaDeKernelWikiCrimes = false;
+var podeClicarBotaKernelMap = true;
 function habilitaDesabilitaMapaDeKernelWikiCrimes(){
-	var div = document.getElementById('botaoMapaKernel');	
-	flagHabilitaDesabilitaMapaDeKernelWikiCrimes = !flagHabilitaDesabilitaMapaDeKernelWikiCrimes;
-	if(flagHabilitaDesabilitaMapaDeKernelWikiCrimes){
-		GVetorMarcadores = [];
-		GClusterer.clearMarkers();
-		podeCarregarCrimes = false;
-		mapaDeKernelWikiCrimes();		
-		div.innerHTML = "<div onclick='habilitaDesabilitaMapaDeKernelWikiCrimes();' class='botaoAtivado'> "+mensagens['titulo.kernel.map']+" </div>";	
-							
-		
-	}else{
-		if(photoWikiCrimes!=null)
-			mapWikiCrimes.removeTPhoto(photoWikiCrimes);
-		for (k in crimesAtuais) {
-			GVetorMarcadores.push(crimesAtuais[k]);
+	if(podeClicarBotaKernelMap){		
+		var div = document.getElementById('botaoMapaKernel');	
+		flagHabilitaDesabilitaMapaDeKernelWikiCrimes = !flagHabilitaDesabilitaMapaDeKernelWikiCrimes;
+		if(flagHabilitaDesabilitaMapaDeKernelWikiCrimes){
+			podeClicarBotaKernelMap = false;
+			GVetorMarcadores = [];
+			GClusterer.clearMarkers();
+			podeCarregarCrimes = false;
+			mapaDeKernelWikiCrimes();		
+			div.innerHTML = "<div onclick='habilitaDesabilitaMapaDeKernelWikiCrimes();' class='botaoAtivado'> "+mensagens['titulo.kernel.map']+" </div>";	
+								
+			
+		}else{
+			if(photoWikiCrimes!=null)
+				mapWikiCrimes.removeTPhoto(photoWikiCrimes);
+			for (k in crimesAtuais) {
+				GVetorMarcadores.push(crimesAtuais[k]);
+			}
+			podeCarregarCrimes = true;
+			GClusterer = new MarkerClusterer(mapWikiCrimes, GVetorMarcadores);
+			div.innerHTML = "<div onclick='habilitaDesabilitaMapaDeKernelWikiCrimes();' class='botao'> <font style='color:white'>"+mensagens['titulo.kernel.map']+"</font> </div>";	
 		}
-		podeCarregarCrimes = true;
-		GClusterer = new MarkerClusterer(mapWikiCrimes, GVetorMarcadores);
-		div.innerHTML = "<div onclick='habilitaDesabilitaMapaDeKernelWikiCrimes();' class='botao'> <font style='color:white'>"+mensagens['titulo.kernel.map']+"</font> </div>";	
-	}
+	}	
 }
 
 function mapaDeKernelWikiCrimes(){
@@ -114,8 +118,8 @@ function executaRequisicaoKernelMapWikiCrimes(url){
 			photoWikiCrimes.anchorBottomRight = new GLatLng(lat2,lon2);
 	
 			mapWikiCrimes.addTPhoto(photoWikiCrimes);
-	  		
-	  		//document.getElementById("loadingKernelMap").style.visibility='hidden';
+			podeClicarBotaKernelMap = true;
+			//document.getElementById("loadingKernelMap").style.visibility='hidden';
 	  		
 			//Manda confirma��o para apagar a imagem no servidor
 			url = urlWikiCrimes + 'ServletWikiCrimesApi?acao=kernelMap&imagem=' + numRandomico;

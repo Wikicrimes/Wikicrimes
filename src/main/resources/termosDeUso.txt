@@ -1,37 +1,45 @@
 Caro USUÁRIO, leia, por favor, atentamente as condições abaixo estipuladas para que você possa usufruir dos serviços prestados pelo site e lembre-se que ao utilizá-los, você estará declarando ter ciência do presente Termos e Condições de Uso do Site e estará concordando com todas as suas cláusulas e condições.
-Caso você não concorde com qualquer disposição destes Termos e Condições de Uso, por favor, não se registre em WikiCrimes para mapear crimes.
+Qualquer tipo de utilização do site WikiCrimes, mesmo sem registro, só é consentida somente com a aceitação destes Termos e Condições de Uso.
+Os Termos e Condições de Uso são regidos pelas leis da República Federativa do Brasil, sem consideração a qualquer disposição sobre conflito de leis.
+Caso você não concorde com qualquer disposição destes Termos e Condições de Uso, você não deve se registrar e nem fazer qualquer tipo de uso do site WikiCrimes nem de suas informações.
+Você não tem permissão de acesso ao WikiCrimes ao menos que concorde com os Termos e Condições de Uso abaixo mencionadas.
+
 
 1. Dos Serviços
 
-1.1     WikiCrimes é proprietário e titular exclusivo dos
-direitos do site www.wikicrimes.org e também do domínio www.wikicrimes.com site este que disponibiliza uma ferramenta para registro e de crimes ocorridos em uma certa região geográfica. 
-1.1.1 A qualquer momento poderão ser incluídas novas ferramentas, serviços e atividades no site bem como excluídas as já existentes, sem qualquer aviso prévio ao USUÁRIO.
+1.1     WikiCrimes é marca mista registrada pelo INPI - Instituto Nacional da Propriedade Industrial sendo WIKINOVA Soluções Inovadoras LTDA, a pessoa jurídica proprietária e titular exclusiva dos
+direitos do site WikiCrimes, de sua marca e de seus domínios www.wikicrimes.org e www.wikicrimes.com 
 
-1.1.2 Toda e qualquer nova ferramenta ou atividade incluída no Wikicrimes, estará, automaticamente, vinculada e subordinada a todos os termos e condições do presente contrato.
+1.2   O principal objetivo do site é disponibilizar uma ferramenta colaborativa para registro e consulta de crimes ocorridos em uma certa região geográfica.
+ 
+1.2.1 A qualquer momento poderão ser incluídas novas ferramentas, serviços e atividades no site bem como excluídas as já existentes, sem qualquer aviso prévio ao USUÁRIO.
+
+
+1.2.2 Toda e qualquer nova ferramenta ou atividade incluída no Wikicrimes, estará, automaticamente, vinculada e subordinada a todos os termos e condições do presente contrato.
+
+1.3	WikiCrimes envida seus melhores esforços para verificar que todas as informações coletadas, compiladas e divulgadas em seu site e que versem sobre crimes retratem com a maior precisão possível a realidade, assim entendida como sendo a opinião dos usuários sobre esses registros de crimes. Todavia, WikiCrimes não pode garantir, nem garante, a veracidade dessas informações, responsabilizando-se apenas pelo processo de coleta e tratamento estatístico dos dados, submetidos ao WikiCrimes voluntariamente por usuários ou entidades certificadoras parceiras. WikiCrimes não se responsabiliza pelas opiniões daqueles que comentam em registros de crimes nem pelos danos ou perdas por eles causados estando restritos sua atuação e seus serviços à compilação e ao tratamento estatístico dos dados, e não pelos dados em si mesmos.
+
+
 
 2. Quem pode utilizar os serviços
 
-2.1     Os serviços estão disponíveis a qualquer pessoa física ou jurídica 
-Nacional ou estrangeira, submetendo-se estas últimas, desde já, à legislação brasileira.
+2.1     Os serviços estão disponíveis a qualquer pessoa física ou jurídica nacional ou estrangeira, submetendo-se à legislação brasileira. USUÁRIO e a Wikinova Soluções Inovadoras Ltda concordam em submeter-se à competência única e exclusiva dos tribunais localizados no Brasil.
 
 
 3. Da Utilização do Site
 
-3.1     Wikicrimes é um site de utilidade pública e dessa forma,
-seus serviços são inteiramente gratuitos para os USUÁRIOS. Através dele o USUÁRIO poderá utilizar a ferramenta de pesquisa para consultar onde há crimes numa determinada região geográfica. 
-3.2     Para a utilização da ferramenta de pesquisa do site, não é
-necessário o cadastramento do USUÁRIO no site, porém, para as demais atividades como registrar um crime ou confirmá-lo o cadastro é obrigatório.
+3.1     Wikicrimes é um site de utilidade pública e dessa forma, seus serviços são inteiramente gratuitos para os USUÁRIOS. Através dele o USUÁRIO poderá utilizar a ferramenta de pesquisa para consultar onde há registro de crimes na base de dados do WikiCrimes em uma determinada região geográfica. 
+
+3.2     Para a utilização da ferramenta de pesquisa do site, não é necessário o cadastramento do USUÁRIO no site, porém, para as demais atividades como registrar um crime ou confirmá-lo o cadastro é obrigatório. WikiCrimes se reserva no direito de exigir cadastro, sem AVISO PRÉVIO, para outras funcionalidades as quais poderá vir a disponibilizar ou até mesmo que já existem.
+
 
 4. Do Cadastro do Usuário
 
-4.1     Quando necessário o cadastro no site, o USUÁRIO deverá
-manifestar o seu consentimento com o presente Termos e Condições de Uso do Site eletronicamente, clicando no botão "eu concordo".
+4.1     Quando necessário o cadastro no site, o USUÁRIO deverá manifestar o seu consentimento com o presente Termos e Condições de Uso do Site eletronicamente, clicando no botão "eu concordo".
 
-4.2     Com a concordância expressa do USUÁRIO, caberá a este efetivar
-o seu cadastramento no site Wikicrimes. Fornecendo nos campos específicos, todas as informações solicitadas para que então possa ser iniciada a livre utilização das ferramentas do Wikicrimes.
+4.2     Com a concordância expressa do USUÁRIO, caberá a este efetivar o seu cadastramento no site Wikicrimes. Fornecendo nos campos específicos, todas as informações solicitadas para que então possa ser iniciada a livre utilização das ferramentas do Wikicrimes.
 
-4.3     Ao se cadastrar, o USUÁRIO deverá escolher um nome de usuário
-("login")que devera ser seu e-mail e uma senha secreta, os quais serão pessoais e intransferíveis e garantirão o acesso do USUÁRIO ao site do Wikicrimes, sendo possível navegar e participar das atividades em seu nome, acessar e alterar todas as suas informações pessoais e cadastros.
+4.3     Ao se cadastrar, o USUÁRIO deverá escolher um nome de usuário ("login") que deverá ser seu e-mail e uma senha secreta, os quais serão pessoais e intransferíveis e garantirão o acesso do USUÁRIO ao site do Wikicrimes, sendo possível navegar e participar das atividades em seu nome, acessar e alterar todas as suas informações pessoais e cadastros.
 
 4.3.1 É de inteira responsabilidade do USUÁRIO manter a senha em sigilo, sendo o único e exclusivo responsável por toda atividade realizada com a sua conta, para o que é necessário digitar sua senha secreta. O uso do nome de usuário e senha é imprescindível para a utilização de alguns serviços do site.
 
@@ -42,37 +50,33 @@ o seu cadastramento no site Wikicrimes. Fornecendo nos campos específicos, todas
 (a) notificar imediatamente o Wikicrimes por escrito, sobre qualquer suspeita ou conhecimento de uso não autorizado da sua senha, dados cadastrais, conta ou qualquer outra quebra de segurança; e
 (b) sair de sua conta de usuário ao final de cada sessão e assegurar que esta não seja acessada por terceiros não autorizados. O Wikicrimes não será responsável por qualquer perda ou dano decorrente do descumprimento do disposto nesta cláusula por parte do USUÁRIO.
 
-4.4     O USUÁRIO deverá registrar-se em formulário específico de
-cadastro, fornecendo informações verdadeiras, exatas e atuais sobre si mesmo, bem como deverá conservar e atualizar referidas informações imediatamente sempre que houver qualquer mudança dos dados, a fim de mantê-los verdadeiros, exatos e atuais.
+4.4     O USUÁRIO deverá registrar-se em formulário específico de cadastro, fornecendo informações verdadeiras, exatas e atuais sobre si mesmo, bem como deverá conservar e atualizar referidas informações imediatamente sempre que houver qualquer mudança dos dados, a fim de mantê-los verdadeiros, exatos e atuais.
 
-4.5     Para o cadastramento no site, é expressamente proibida a
-criação de conta em nome de terceiros. O USUÁRIO se compromete a informar seu próprio endereço eletrônico a ser utilizado para o recebimento de mensagens advindas de seu cadastro.
+4.5     Para o cadastramento no site, é expressamente proibida a criação de conta em nome de terceiros. O USUÁRIO se compromete a informar seu próprio endereço eletrônico a ser utilizado para o recebimento de mensagens advindas de seu cadastro.
 
-4.6     Será de total e única responsabilidade do USUÁRIO quaisquer
-prejuízos decorridos pelo acesso não desejado, por terceiros, às informações inseridas e/ou disponibilizadas no site do Wikicrimes.
+4.6     Será de total e única responsabilidade do USUÁRIO quaisquer prejuízos decorridos pelo acesso não desejado, por terceiros, às informações inseridas e/ou disponibilizadas no site do Wikicrimes.
 
-4.7     O Wikicrimes compromete-se a não utilizar as informações
-cadastrais fornecidas pelo USUÁRIO para a realização de quaisquer atividades ilícitas, mas somente para aquelas expressamente permitidas pela legislação brasileira e/ou pelo presente instrumento.
+4.7     Wikicrimes compromete-se a não utilizar as informações cadastrais fornecidas pelo USUÁRIO para a realização de quaisquer atividades ilícitas, mas somente para aquelas expressamente permitidas pela legislação brasileira e/ou pelo presente instrumento.
 
-4.8     O USUÁRIO poderá autorizar Wikicrimes por meio de campos
-específicos no site, a locar o seu e-mail ou cadastro pessoal para terceiros, de determinado ramo de atividade escolhido pelo próprio USUÁRIO, para o recebimento de correspondências físicas e/ou eletrônicas (e-mail).
+4.8     WikiCrimes fica desde já autorizado a usar e divulgar todo conteúdo referente a ocorrências criminais criadas pelo USUARIO, com exceção à dados pessoais como e-mail, prenome, sobrenome e quaisquer outros que possibilitem a identificação do USUÁRIO.
 
-4.9     O Wikicrimes fica desde já autorizado a usar e divulgar todo
-conteúdo referente a ocorrências criminais criadas pelo USUARIO.
+4.9    Todos e quaisquer dados ou informações fornecidas pelo USUÁRIO ao Wikicrimes, só poderão ser imediatamente reveladas por este em cumprimento à ordem judicial.
 
-4.10    Todos e quaisquer dados ou informações fornecidas pelo USUÁRIO
-A Wikicrimes, poderão ser imediatamente reveladas por este em cumprimento à ordem judicial ou administrativa.
+4.10	O endereço IP (Internet Protocol) do computador do USUÁRIO será gravado por medida de segurança;
+
+4.11	WikiCrimes compromete-se que o e-mail do USUÁRIO cadastrado não será enviado, cedido, emprestado ou vendido para nenhuma lista de e-mails seja ela pública ou não. 
+
+4.12	Ao optar por receber newsletter, o USUÁRIO deverá estar ciente que receberá e-mails periódicos contendo: notícias, atualizações de versões, pesquisas e outras assuntos relacionados ao WikiCrimes;
+
 
 5. Da Propriedade Intelectual e da Responsabilidade pelas Informações
 
-5.1     Todo material e serviço encontrado nas páginas do Wikicrimes (textos, imagens, áudio, tecnologia, logotipos, slogans, marcas, expressões de propaganda, domínios, nomes comerciais, obras intelectuais), bem como os softwares que viabilizam as atividades, são de exclusiva propriedade de Wikicrimes, que detém todos os direitos autorais, licenciamentos e direitos de propriedade, marca ou patente a eles relativos. Qualquer violação dos direitos de propriedade pelo USUÁRIO resultará na sua responsabilidade, direta e pessoal, pelos atos praticados, nos termos da lei e com a aplicação das sanções cabíveis cíveis e criminais.
+5.1     Todo material e serviço encontrado nas páginas do WikiCrimes (textos, imagens, áudio, tecnologia, logotipos, slogans, marcas, expressões de propaganda, domínios, nomes comerciais, obras intelectuais), bem como os softwares que viabilizam as atividades, são de exclusiva propriedade de WikiNova Soluções Inovadoras Ltda, que detém todos os direitos autorais, licenciamentos e direitos de propriedade, marca ou patente a eles relativos. Qualquer violação dos direitos de propriedade pelo USUÁRIO resultará na sua responsabilidade, direta e pessoal, pelos atos praticados, nos termos da lei e com a aplicação das sanções cabíveis cíveis e criminais.
 
-5.2     O USUÁRIO se compromete a não reproduzir, duplicar, copiar ou
-explorar os serviços prestados, softwares utilizados e/ou materiais disponibilizados pelo Wikicrimes para quaisquer fins não expressamente autorizados no presente termo, sem sua autorização por escrito.
+5.2     O USUÁRIO se compromete a não reproduzir, duplicar, copiar ou explorar os serviços prestados, softwares utilizados e/ou materiais disponibilizados pelo WikiCrimes para quaisquer fins não expressamente autorizados no presente termo, sem sua autorização por escrito.
 
-5.3     O USUÁRIO declara-se plenamente ciente de que não são de
-responsabilidade ou autoria do Wikicrimes, sob nenhuma hipótese:
-(i) as informações postadas no Wikicrimes juntamente com suas possíveis confirmações registradas no site.
+5.3     O USUÁRIO declara-se plenamente ciente de que não são de responsabilidade ou autoria do WikiCrimes, sob nenhuma hipótese:
+(i) as informações de crimes postadas no Wikicrimes juntamente com suas possíveis confirmações registradas no site.
 
 5.4     Nenhuma responsabilidade, de nenhuma espécie, seja ela de
 acessibilidade, veracidade, legalidade do conteúdo ou outra qualquer, poderá ser imputada a Wikicrimes, quando o USUÁRIO, por meio do site, adentrar-se em sites ou links de propriedade, administração e/ou controle de terceiros, tais como patrocinadores, parceiros, prestadores de serviços em geral, demais usuários, etc., os quais serão os únicos e exclusivos responsáveis.
@@ -83,8 +87,7 @@ incluídos pelo USUÁRIO em qualquer página do Wikicrimes, será de plena e total r
 5.6     O USUÁRIO não poderá incluir comentários ilícitos no site do
 Wikicrimes, de forma a atribuir a alguém a prática de crime, imputar a alguém fato ofensivo à sua reputação, e, ofender alguém atentando contra sua dignidade ou decoro.
 
-5.7     Ao utilizar o serviço do Wikicrimes, o USUÁRIO deverá
-pautar suas opiniões e comentários em conformidade com a lei e a moral, não podendo usar o serviço para:
+5.7     Ao utilizar o serviço do Wikicrimes, o USUÁRIO deverá pautar suas opiniões e comentários em conformidade com a lei e a moral, não podendo usar o serviço para:
 
 (a) submeter, postar, ou transmitir por qualquer meio, conteúdo que seja difamatório, calunioso, injurioso, abusivo, vulgar, obsceno, ou que de qualquer forma atente contra a moral e os bons costumes;
 (b) submeter, postar ou transmitir por qualquer meio, conteúdo que infrinja ou viole direitos de terceiros, incluídos direitos da personalidade e de propriedade intelectual;
@@ -93,20 +96,17 @@ pautar suas opiniões e comentários em conformidade com a lei e a moral, não pode
 (e) submeter, postar ou transmitir por quaisquer meio, protestos, manifestações política ou religiosa, pirâmides, esquemas, spams, etc.; e
 (f) submeter, postar ou transmitir por qualquer meio, conteúdo que seja contrário à lei.
 
-5.8     Wikicrimes não endossa as opiniões e comentários
-ofensivos e duvidosos dos USUÁRIOS, mal intencionado, conseqüentemente, garantir a exatidão, a qualidade, ou a confiabilidade das opiniões de pessoas que utilizam o site para denegrir a imagem de alguém,onde sempre que detectada será retirada do Wikicrimes a qualquer momento.
+5.8     WikiCrimes não endossa as opiniões e comentários ofensivos e duvidosos de USUÁRIOS mal intencionados e, conseqüentemente, não garante a exatidão, a qualidade, ou a confiabilidade das opiniões de pessoas que utilizam o site para denegrir a imagem de alguém,onde sempre que detectada será retirada do WikiCrimes a qualquer momento e sem qualquer aviso prévio.
 
-5.9    Caso chegue ao conhecimento do Wikicrimes qualquer violação
-às condições acima, fica o USUÁRIO ciente de que poderá ter suas opiniões editadas a fim de descaracterizar qualquer das condutas acima elencadas. A referida edição poderá ocorrer a qualquer momento a partir do conhecimento do Wikicrimes e sem a prévia notificação ao USUÁRIO. Fica certo que a opinião não poderá ter seu valor alterado, mas tão somente editada com o intuito de descaracterizar textos que estejam em desacordo com a lei e a moral.
+5.9    Caso chegue ao conhecimento do WikiCrimes qualquer violação
+às condições acima, fica o USUÁRIO ciente de que poderá ter suas opiniões editadas a fim de descaracterizar qualquer das condutas acima elencadas. A referida edição poderá ocorrer a qualquer momento a partir do conhecimento do WikiCrimes e sem a prévia notificação ao USUÁRIO. Fica certo que a opinião não poderá ter seu valor alterado, mas tão somente editada com o intuito de descaracterizar textos que estejam em desacordo com a lei e a moral.
 
 5.10   O USUÁRIO declara-se ciente e concorda que, ao transmitir e/ou
-enviar a Wikicrimes qualquer material, informação e/ou dados, estará automaticamente cedendo os direitos de uso e divulgação do mesmo a Wikicrimes e seus demais usuários, que poderão acessá-los livremente.
+enviar a WikiCrimes qualquer material, informação e/ou dados, estará automaticamente cedendo os direitos de uso e divulgação do mesmo a Wikicrimes e seus demais usuários, que poderão acessá-los livremente.
 
-5.11    Caso Wikicrimes venha a ser responsabilizado, demandado
-judicial ou administrativamente, ou de qualquer forma inquirido pela veiculação ou uso indevido ou não autorizado de materiais, informações e/ou dados de propriedade e titularidade de terceiros, o USUÁRIO, como único responsável por sua remessa ao Wikicrimes, Será chamado para responder às acusações ou indagações perante o reclamante, devendo, se o caso, ressarci-lo integralmente pelas perdas e danos daí decorrentes.
+5.11    Caso WikiCrimes venha a ser responsabilizado, demandado judicialmente, ou de qualquer forma inquirido pela veiculação ou uso indevido ou não autorizado de materiais, informações e/ou dados de propriedade e titularidade de terceiros, o USUÁRIO, como único responsável por sua remessa ao Wikicrimes, Será chamado para responder às acusações ou indagações perante o reclamante, devendo, se o caso, ressarci-lo integralmente pelas perdas e danos daí decorrentes.
 
-5.12    Wikicrimes não se responsabiliza em nenhuma hipótese, e
-o USUÁRIO assume de forma integral o risco, de algum outro usuário e/ou terceiro copiar as informações que tenham sido enviadas e/ou inseridas no site, para outros fins, mesmo que ilícitos, alheios ou não às atividades de Wikicrimes.
+5.12    WikiCrimes não se responsabiliza em nenhuma hipótese, o fato de algum outro usuário e/ou terceiro copiar as informações que tenham sido enviadas e/ou inseridas no site, para outros fins, mesmo que ilícitos, alheios ou não às atividades de WikiCrimes.
 
 5.13    O USUÁRIO que encaminhar qualquer material para inserção no
 site, será obrigado perante Wikicrimes a responder perante terceiros por toda e qualquer responsabilidade do mesmo oriunda, de qualquer natureza, seja ela financeira, patrimonial, autoral ou moral.
@@ -119,68 +119,62 @@ enviado pelo USUÁRIO a Wikicriems não poderá jamais ter conteúdo obsceno, precon
 (a) utilizar-se das atividades do Wikicrimes para fins comerciais, mediante o envio de publicidade, correspondências institucionais, malas diretas, propagandas ou qualquer outro material de natureza semelhante; e
 (b) enviar quaisquer espécies de arquivos e/ou material com vírus que possam causar danos ao software/hardware Wikicrimes e/ou demais usuários.
 
+5.16	WikiCrimes se reserva ao direito de excluir de seu banco de dados um ou mais registros tanto de crimes como de cadastros de qualquer USUÁRIO quando achar necessário.
+
 6. Da Ausência de Responsabilidade Wikicrimes
 
 6.1     Wikicrimes envidará seus melhores esforços para manter o
 site acessível de forma constante, ininterrupta e isenta de quaisquer erros, no entanto, não será responsável por danos decorrentes de falha ou interrupção na prestação dos serviços. O USUÁRIO reconhece e aceita, que Wikicrimes também não será responsável:
 
-(a) pela impossibilidade de acesso ao site pó r falha de comunicação com o mesmo decorrente de: (i) quaisquer defeitos ou inadequação dos equipamentos utilizados pelo USUÁRIO para acessar o Wikicrimes, incluindo, mas não se limitando, aos softwares, hardwares, sistemas de processamento e quaisquer conexões de rede;
+(a) pela impossibilidade de acesso ao site por falha de comunicação com o mesmo decorrente de: (i) quaisquer defeitos ou inadequação dos equipamentos utilizados pelo USUÁRIO para acessar o Wikicrimes, incluindo, mas não se limitando, aos softwares, hardwares, sistemas de processamento e quaisquer conexões de rede;
 (ii) inabilidade do USUÁRIO para operação dos seus equipamentos; (iii) falta de compreensão das instruções contidas no Wikicrimes; (iv) falhas na rede mundial de computadores (Internet) e provedores; (v) falhas nos sistemas, softwares e/ou hardwares do Wikicrimes; (vi) interrupções propositais realizadas pelo Wikicrimes por quaisquer motivos; (vii) interrupção das atividades do site; e (viii) caso fortuito ou força maior;
 
 (b) por quaisquer prejuízos causados por gravação realizada pelo USUÁRIO (download) para os seus equipamentos próprios, de quaisquer arquivos eletrônicos existentes ou disponibilizados no site, quer pelo Wikicrimes, quer por outros usuários, quer por terceiros;
 
 (c) por quaisquer prejuízos resultantes de, ou relacionados a, qualquer dos serviços ou trabalhos apresentados pelos anunciantes e/ou patrocinadores ou parceiros do Wikicrimes, tais como anúncios e promoções veiculados (inclusive, mas sem limitação, prejuízos resultantes do descumprimento pelos anunciantes e/ou patrocinadores ou parceiros das disposições aplicáveis pelo Código de Defesa do Consumidor), que serão de única responsabilidade dos mesmos;
 
-   1. por quaisquer prejuízos advindos ao USUÁRIO pela utilização indevida e/ou dolosa por terceiros, dos materiais, dados pessoais e cadastrais fornecidos por aquele, que forem veiculados no Wikicriems na forma descrita e prevista no presente contrato;
-
-
+(d) por quaisquer prejuízos advindos ao USUÁRIO pela utilização indevida e/ou dolosa por terceiros, dos materiais, dados pessoais e cadastrais fornecidos por aquele, que forem veiculados no Wikicriems na forma descrita e prevista no presente contrato;
 
 (e) por quaisquer prejuízos decorrentes da utilização indevida do nome de usuário e senha por terceiros;
 
-(f) por eventual inviabilidade técnica de efetivo envio de informações ao Wikicrime por impossibilidade de acesso ou falha de comunicação atribuível ao site ou ainda, por falhas ordinárias ou extraordinárias, principalmente aquelas que possam resultar em perda de dados e informações previamente obtidas e armazenadas, fluxo de informações a serem obtidas, manutenção do cadastro do USUÁRIO junto a Wikicrimes, bem como por interrupções momentâneas ou definitivas nos serviços;
+(f) por eventual inviabilidade técnica de efetivo envio de informações ao WikiCrimes por impossibilidade de acesso ou falha de comunicação atribuível ao site ou ainda, por falhas ordinárias ou extraordinárias, principalmente aquelas que possam resultar em perda de dados e informações previamente obtidas e armazenadas, fluxo de informações a serem obtidas, manutenção do cadastro do USUÁRIO junto a Wikicrimes, bem como por interrupções momentâneas ou definitivas nos serviços;
 
-   1. por danos civis ou criminais decorrentes da publicação e exposição de materiais visuais, auditivos ou textuais, inseridos no site Wikicrimes por usuários, sendo certo que a responsabilidade é integralmente do USUÁRIO que as enviou;
+(g) por danos civis ou criminais decorrentes da publicação e exposição de materiais visuais, auditivos ou textuais, inseridos no site Wikicrimes por usuários, sendo certo que a responsabilidade é integralmente do USUÁRIO que as enviou;
 
+(h) por atos de má-fé de terceiros que promovam a invasão do programa do WikiCrimes, tais como hackers, que acessem os dados cadastrais e pessoais fornecidos pelo USUÁRIO e que se utilizem ilicitamente dos mesmos para quaisquer fins. WikiCrimes declara ter os cuidados razoáveis para evitar a invasão do sistema, mas não se responsabiliza e não pode se responsabilizar, pela inviolabilidade do mesmo;
 
+(i) pela perda de dados e/ou informações eventualmente gravados pelo USUÁRIO no banco de dados de WikiCrimes, seja por rescisão do contrato, seja por falha de sistema. Wikicriems não se obriga, ainda, a manter e/ou realizar qualquer espécie de 'back-up' dos materiais e dados fornecidos pelo USUÁRIO; e
 
-   1. por atos de má-fé de terceiros que promovam a invasão do programa do Wikicrimes, tais como hackers, que acessem os dados cadastrais e pessoais fornecidos pelo USUÁRIO e que se utilizem ilicitamente dos mesmos para quaisquer fins. Wikicriems declara ter os cuidados razoáveis para evitar a invasão do sistema, mas não se responsabiliza e não pode se responsabilizar, pela inviolabilidade do mesmo;
-   1. pela perda de dados e/ou informações eventualmente gravados pelo USUÁRIO no banco de dados de Wikicrimes, seja por rescisão do contrato, seja por falha de sistema. Wikicriems não se obriga, ainda, a manter e/ou realizar qualquer espécie de 'back-up' dos materiais e dados fornecidos pelo USUÁRIO; e
-
-
-
-   1. pela inadimplência do USUÁRIO às normas da lei ou do presente, que gere prejuízos a terceiros e/ou a outros usuários.
+(j) pela inadimplência do USUÁRIO às normas da lei ou do presente, que gere prejuízos a terceiros e/ou a outros usuários.
 
 7. Do Prazo, Rescisão e Modificação de Cláusulas
 
-7.1     O presente contrato vigorará por tempo indeterminado ou
-durante o período em que Wikicrimes estiver disponibilizando os seus serviços via internet. Wikicrimes, no entanto, reserva-se o direito de, a qualquer momento, sem qualquer ônus ou aviso prévio, encerrar suas atividades ou limitar o uso de seus serviços.
+7.1     O presente contrato vigorará por tempo indeterminado ou durante o período em que WikiCrimes estiver disponibilizando os seus serviços via internet. Wikicrimes, no entanto, reserva-se o direito de, a qualquer momento, sem qualquer ônus ou aviso prévio, encerrar suas atividades ou limitar o uso de seus serviços.
 
-7.2     Wikicrimes reserva-se o direito de bloquear o acesso e
-rescindir de imediato, sem aviso prévio, a prestação dos serviços, toda vez que, a seu exclusivo critério, entender que há indícios de utilização fraudulenta ou ilícita do site Wikicrimes pelo USUÁRIO. Inclui-se na presente situação, entre outras, quaisquer indícios (a critério único e subjetivo de Wikicrimes) de que o USUÁRIO fraudou ou infringiu o sistema de segurança do site.
+7.2     WikiCrimes reserva-se o direito de bloquear o acesso e rescindir de imediato, sem aviso prévio, a prestação dos serviços, toda vez que, a seu exclusivo critério, entender que há indícios de utilização fraudulenta ou ilícita do site Wikicrimes pelo USUÁRIO. Inclui-se na presente situação, entre outras, quaisquer indícios (a critério único e subjetivo de Wikicrimes) de que o USUÁRIO fraudou ou infringiu o sistema de segurança do site.
 
-7.2.1 Também poderá Wikicrimes rescindir de imediato a prestação dos serviços do site, impedindo inclusive o recadastramento do USUÁRIO que tiver de qualquer maneira agido contra a moral, ética, bons costumes, lei, disposições deste termo ou, ainda, que tenha sido expulso do site Wikicrimes.
+7.2.1	Também poderá Wikicrimes rescindir de imediato a prestação dos serviços do site, impedindo inclusive o recadastramento do USUÁRIO que tiver de qualquer maneira agido contra a moral, ética, bons costumes, lei, disposições deste termo ou, ainda, que tenha sido expulso do site Wikicrimes.
 
-7.3     Em todos os casos de cessação da prestação dos serviços
-previstos no presente instrumento, seja por decisão do USUÁRIO ou de Wikicrimes, seja por expulsão do USUÁRIO do site Wikicriems, ou pelo encerramento das atividades do Wikicrimes, as informações, imagens, textos, arquivos e quaisquer dados referentes ao USUÁRIO serão perdidos em sua totalidade, não cabendo a este qualquer espécie de indenização ou compensação.
+7.3     Em todos os casos de cessação da prestação dos serviços previstos no presente instrumento, seja por decisão do USUÁRIO ou de Wikicrimes, seja por expulsão do USUÁRIO do site Wikicriems, ou pelo encerramento das atividades do Wikicrimes, as informações, imagens, textos, arquivos e quaisquer dados referentes ao USUÁRIO serão perdidos em sua totalidade, não cabendo a este qualquer espécie de indenização ou compensação.
 
 7.3.1 O USUÁRIO declara-se ciente e concorda que, após o término da prestação dos serviços, suas informações, opiniões, textos, dados e/ou quaisquer materiais por ele encaminhados ao site Wikicrimes
-poderão permanecer no site e ser utilizados pelo Wikicrimes, sem quaisquer ônus para o Wikicriems, com a permanência da sujeição desses materiais aos termos do presente instrumento por prazo indeterminado, ou até que o USUÁRIO desligado do Wikicrimes solicite expressamente a sua retirada do site.
+poderão permanecer no site e ser utilizados pelo Wikicrimes, sem quaisquer ônus para o Wikicrimes, com a permanência da sujeição desses materiais aos termos do presente instrumento por prazo indeterminado, ou até que o USUÁRIO desligado do Wikicrimes solicite expressamente a sua retirada do site.
 
-7.4     Wikicrimes reserva-se, ainda, o direito de, a qualquer
-momento, alterar o disposto neste instrumento. Caso o USUÁRIO continue utilizando os serviços do Wikicrimes após a elaboração dos novos Termos e Condições de Uso do Site, este terá prosseguimento normal, estando configurada a sua aceitação pelo USUÁRIO.
+7.4     WikiCrimes reserva-se, ainda, o direito de, a qualquer
+momento, alterar o disposto neste instrumento. Caso o USUÁRIO continue utilizando os serviços do WikiCrimes após a elaboração dos novos Termos e Condições de Uso do Site, este terá prosseguimento normal, estando configurada a sua aceitação pelo USUÁRIO.
 
-7.4.1 Caso o USUÁRIO não concorde com qualquer disposição da nova versão dos Termos e Condições de Uso do Site, este deverá encaminhar a notificação a Wikicrimes, informando sobre o seu interesse em não continuar utilizando os serviços do site, ficando vedado o seu acesso.
+7.4.1 Caso o USUÁRIO não concorde com qualquer disposição da nova versão dos Termos e Condições de Uso do Site, este deverá encaminhar a notificação a WikiCrimes, informando sobre o seu interesse em não continuar utilizando os serviços do site, ficando vedado o seu acesso.
 
 9. Das Condições Gerais
 
-9.1     O USUÁRIO, ao utilizar os serviços de Wikicriems aceita
+9.1     O USUÁRIO, ao utilizar os serviços de Wikicrimes aceita
 expressamente todas as cláusulas do presente instrumento, bem como as atividades que existem e que venham a existir no site Wikicrimes, reconhecendo-as como inocentes, saudáveis, de boa-fé e não-ofensivas, aceitando suas regras, instruções e condições constantes do próprio site, de forma absoluta e irrestrita, garantindo que não se sentirá de qualquer forma ultrajado, ofendido ou prejudicado pelas mesmas.
 
 9.2     Os serviços de responsabilidade de terceiros e/ou ofertados
 por esses, tais como serviços de telecomunicações, provedor (Internet paga), entre outros que possam ser encontrados no site do Wikicrimes, deverão ser pagos diretamente aos terceiros prestadores de serviços, não cabendo a Wikicrimes nenhuma responsabilidade sobre a cobrança e/ou qualidade dos mesmos.
 
 
-9.9     Para uma maior segurança do Wikicrimes e dos usuários, é
+9.3     Para uma maior segurança do Wikicrimes e dos usuários, é
 necessário que o USUÁRIO esteja atento aos seguintes pontos:
 
 (a) Nunca forneça sua senha a terceiros. Ela é pessoal e intransferível;
@@ -189,8 +183,12 @@ necessário que o USUÁRIO esteja atento aos seguintes pontos:
 (d) a transmissão de vírus se dá através de e-mails que solicitam a digitação de senhas, ou que possuam informações de cobrança ou contêm arquivo anexado com vírus. Esteja atento e caso desconfie da procedência do e-mail, não o abra; e
 (e) a transmissão de vírus e de programas destrutivos que podem fazer com que o seu computador divulgue informações pessoais, também se dá comumente através do download de arquivos infectados. Portanto, se você não conhece quem os enviou ou caso você não o tenha solicitado, não efetue o download.
 
+
 10. Da Lei Aplicável e Foro
 
 10.1    As presentes condições são regidas única e exclusivamente
 pelas leis da República Federativa do Brasil e qualquer discussão judicial que surja tendo por base sua interpretação ou aplicação deverá ser julgado por tribunais brasileiros, estando desde logo eleito o foro da cidade de Fortaleza, Estado do Ceará, por mais privilegiado que outro seja ou possa vir a ser.
+
+Questionamentos ou comentários a respeito desses Termos de Uso devem ser enviados diretamento para nós através do e-mail faleconosco@wikicrimes.org 
+
 

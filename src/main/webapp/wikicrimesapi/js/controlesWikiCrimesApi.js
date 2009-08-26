@@ -403,7 +403,7 @@ function htmlTelaRegistroCrimesWikiCrimes(){
 	html+="     	<tr>";
 	html+="     		<td align='center' colspan='4'> <div style='width:100%; height: 6px;'></div> </td>";
 	html+="         </tr>";
-	html+="<tr><td colspan = '4'> <input type='hidden' id='tipoCrime' value='"+tipoCrimeRegistro+"'> <input type='hidden' id='tipoVitima' value='"+tipoVitimaRegistro+"'> <input style='font-family: Arial, Helvetica, sans-serif; font-size: 10px;	font-weight: bold; margin: 1; padding: 1; background-color: #6da6e2; color: white;	border: 1px solid #2763a5;' onclick='validaFormRegistroCrimeWikiCrime();' type='button' value='"+mensagens['registrar']+"'/> </td></tr>";				
+	html+="<tr><td colspan = '4'> <input type='hidden' id='tipoCrime' value='"+tipoCrimeRegistro+"'> <input type='hidden' id='tipoVitima' value='"+tipoVitimaRegistro+"'> <input style='font-family: Arial, Helvetica, sans-serif; font-size: 10px;	font-weight: bold; margin: 1; padding: 1; background-color: #6da6e2; color: white;	border: 1px solid #2763a5;' id='botaoRegistrarCrimeWikiCrimes' onclick='validaFormRegistroCrimeWikiCrime();' type='button' value='"+mensagens['registrar']+"'/> </td></tr>";				
 	html+="</table></div>";
 	return html;
 }
@@ -509,8 +509,10 @@ function validaFormRegistroCrimeWikiCrime(){
 	}
 		
 	
-	if(passouNaValidacao)		
-		executaRequisicaoRegistrarCrime(document.getElementById('desc_alerta').value,crimeWikiCrimes.getLatLng().lat(),crimeWikiCrimes.getLatLng().lng(),razoes);
+	if(passouNaValidacao){		
+		document.getElementById('botaoRegistrarCrimeWikiCrimes').disabled = true;
+		executaRequisicaoRegistrarCrime(document.getElementById('desc_alerta').value,crimeWikiCrimes.getLatLng().lat(),crimeWikiCrimes.getLatLng().lng(),razoes);	
+	}	
 }
 
 function executaRequisicaoRegistrarCrime(descricao, lat, lng, razoes){

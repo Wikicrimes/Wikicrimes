@@ -48,13 +48,15 @@ public class ServletInterfaceComunicacao extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		
 		String dadosCrime = request.getParameter("dados_crime");
+		String dadosUsuario = request.getParameter("dados_usuario");
 		ctx = WebApplicationContextUtils.getWebApplicationContext(this
 				.getServletContext());
 		GenericCrudDao genericCrudDao = (GenericCrudDao) ctx
 		.getBean("opensocialDao");
 		if(dadosCrime != null && dadosCrime != "undefined" && !dadosCrime.equalsIgnoreCase(""))
 			out.print(tratarDadosCrime(dadosCrime, genericCrudDao));
-		
+		if(dadosUsuario != null && dadosUsuario != "undefined" && !dadosUsuario.equalsIgnoreCase(""))
+			out.println(tratarDadosUsuario(dadosUsuario, genericCrudDao));
 		
 		out.close();
 	}
@@ -262,6 +264,28 @@ public class ServletInterfaceComunicacao extends HttpServlet {
 		}else{
 			return "failure -> report crime";
 		}	
-	}	
+	}
+	
+	public String tratarDadosUsuario(String dadosUsuario, GenericCrudDao genericCrudDao){
+		String [] array = dadosUsuario.split(";");
+		if( array.length == 2){
+			UsuarioCelular usc = new UsuarioCelular();
+			if(array[0] != null && !array[0].equalsIgnoreCase("")){	
+				usc.setEmail(array[0]);
+				if( genericCrudDao.find(usc).size() > 0 )
+					return "failure -> user email already exists";
+			}	
+			usc.setTelefoneCelular(array[1]);
+			usc.setEmail(null);
+			if(genericCrudDao.find(usc).size()>0)
+				return "failure -> user mobile phone already exists";
+			usc.setEmail(array[0]);
+			genericCrudDao.save(usc);
+			return "success -> register user";
+		}else{
+			return "failure -> register user";
+		}	
+		
+	}
 	
 }

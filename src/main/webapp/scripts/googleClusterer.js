@@ -744,7 +744,7 @@ ClusterMarker_.prototype.initialize = function (map) {
 	  map.getPane(G_MAP_FLOAT_PANE).appendChild(tooltip);
 	  
 	  // Configura texto e posicionamento da tooltip
-	  tooltip.innerHTML = '<div class="tooltip"><strong><center><nobr>' + qtdMarker + ' ' + agrupadorToolTipText + '</center></strong><br /><img src="http://chart.apis.google.com/chart?cht=p&chd=t:' + ((TRoubo/qtdMarker)*100).toFixed(2) + ',' + ((TFurto/qtdMarker)*100).toFixed(2) + ',' + ((TDenuncia/qtdMarker)*100).toFixed(2) + ',' + ((TOutro/qtdMarker)*100).toFixed(2) + '&chs=200x70&chdl=Roubo (' + TRoubo + ')|Furtos (' + TFurto + ')|Denuncias (' + TDenuncia + ')|Outros (' + TOutro + ')&chco=A52A2A|0066FF|006600|FF9933&chf=bg,s,65432100"/></div>';
+	  tooltip.innerHTML = '<div class="tooltip"><strong><center><nobr>' + qtdMarker + ' ' + agrupadorToolTipText + '</center></strong><br /><img src="http://chart.apis.google.com/chart?cht=p&chd=t:' + ((TRoubo/qtdMarker)*100).toFixed(2) + ',' + ((TFurto/qtdMarker)*100).toFixed(2) + ',' + ((TDenuncia/qtdMarker)*100).toFixed(2) + ',' + ((TOutro/qtdMarker)*100).toFixed(2) + '&chs=200x70&chdl=' + rouboText + '(' + TRoubo + ')|' + furtoText +  '(' + TFurto + ')|' + denunciaText +'(' + TDenuncia + ')|' + outrosText + '(' + TOutro + ')&chco=A52A2A|0066FF|006600|FF9933&chf=bg,s,65432100"/></div>';
 	  
 	  var agrupadorPos = map.fromLatLngToDivPixel(latlng);
 	  posicaoToolTip = new GControlPosition(G_ANCHOR_TOP_LEFT, new GSize((agrupadorPos.x + (agrupadorW - 7)), agrupadorPos.y - agrupadorH));

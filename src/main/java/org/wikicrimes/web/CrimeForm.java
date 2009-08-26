@@ -558,6 +558,7 @@ public class CrimeForm extends GenericForm {
 				//seta que essa confirmacao foi indicada por email
 				confirmacao.setIndicacaoEmail(Constantes.SIM);
 				confirmacao.setUsuario(usuarioConfirmacao);
+				confirmacao.setMensagem("");
 				confirmacoes.add(confirmacao);
 				digitouEmail = true;
 			}
@@ -573,8 +574,8 @@ public class CrimeForm extends GenericForm {
 				}
 				//seta que essa confirmacao foi indicada por email
 				confirmacao.setIndicacaoEmail(Constantes.SIM);
-
 				confirmacao.setUsuario(usuarioConfirmacao);
+				confirmacao.setMensagem("");
 				confirmacoes.add(confirmacao);
 				digitouEmail = true;
 			}
@@ -590,6 +591,7 @@ public class CrimeForm extends GenericForm {
 				//seta que essa confirmacao foi indicada por email
 				confirmacao.setIndicacaoEmail(Constantes.SIM);
 				confirmacao.setUsuario(usuarioConfirmacao);
+				confirmacao.setMensagem("");
 				confirmacoes.add(confirmacao);
 				digitouEmail = true;
 			}
@@ -605,6 +607,7 @@ public class CrimeForm extends GenericForm {
 				//seta que essa confirmacao foi indicada por email
 				confirmacao.setIndicacaoEmail(Constantes.SIM);
 				confirmacao.setUsuario(usuarioConfirmacao);
+				confirmacao.setMensagem("");
 				confirmacoes.add(confirmacao);
 				digitouEmail = true;
 			}
@@ -620,6 +623,7 @@ public class CrimeForm extends GenericForm {
 				//seta que essa confirmacao foi indicada por email
 				confirmacao.setIndicacaoEmail(Constantes.SIM);
 				confirmacao.setUsuario(usuarioConfirmacao);
+				confirmacao.setMensagem("");
 				confirmacoes.add(confirmacao);
 				digitouEmail = true;
 			}
@@ -635,6 +639,7 @@ public class CrimeForm extends GenericForm {
 				//seta que essa confirmacao foi indicada por email
 				confirmacao.setIndicacaoEmail(Constantes.SIM);
 				confirmacao.setUsuario(usuarioConfirmacao);
+				confirmacao.setMensagem("");
 				confirmacoes.add(confirmacao);
 				digitouEmail = true;
 			}

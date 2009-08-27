@@ -75,6 +75,8 @@ public class Relato extends BaseObject {
     
     private TipoReportRelato tipoReportRelato;
     
+    private TipoBemRoubadoRelato tipoBemRoubadoRelato;
+    
     private TipoConsequenciaRelato tipoConsequenciaRelato;
     
     private TipoLocalizacaoRelato tipoLocalizacaoRelato;
@@ -335,5 +337,14 @@ public class Relato extends BaseObject {
 
 	public void setTipoLocalizacaoRelato(TipoLocalizacaoRelato tipoLocalizacaoRelato) {
 		this.tipoLocalizacaoRelato = tipoLocalizacaoRelato;
-	}		
+	}
+
+	public TipoBemRoubadoRelato getTipoBemRoubadoRelato() {
+		return tipoBemRoubadoRelato;
+	}
+
+	public void setTipoBemRoubadoRelato(TipoBemRoubadoRelato tipoBemRoubadoRelato) {
+		this.tipoBemRoubadoRelato = tipoBemRoubadoRelato;
+	}	
+	
 }

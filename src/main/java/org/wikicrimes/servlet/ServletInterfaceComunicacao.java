@@ -16,6 +16,7 @@ import org.wikicrimes.dao.GenericCrudDao;
 import org.wikicrimes.model.BaseObject;
 import org.wikicrimes.model.Relato;
 import org.wikicrimes.model.TipoAgressorRelato;
+import org.wikicrimes.model.TipoBemRoubadoRelato;
 import org.wikicrimes.model.TipoConsequenciaRelato;
 import org.wikicrimes.model.TipoLocalizacaoRelato;
 import org.wikicrimes.model.TipoReportRelato;
@@ -97,22 +98,22 @@ public class ServletInterfaceComunicacao extends HttpServlet {
 					relato.setTipoAgressorRelato(tipoAgressorRelato);
 				}
 				
-				if(tipoConsequencia.equals("1)")){
+				if(tipoConsequencia.equals("1")){
 					TipoConsequenciaRelato tipoConsequenciaRelato =new TipoConsequenciaRelato();
 					tipoConsequenciaRelato.setIdTipoConsequenciaRelato(new Long(1));
 					relato.setTipoConsequenciaRelato(tipoConsequenciaRelato);
 				}
-				if(tipoConsequencia.equals("2)")){
+				if(tipoConsequencia.equals("2")){
 					TipoConsequenciaRelato tipoConsequenciaRelato =new TipoConsequenciaRelato();
 					tipoConsequenciaRelato.setIdTipoConsequenciaRelato(new Long(2));
 					relato.setTipoConsequenciaRelato(tipoConsequenciaRelato);
 				}
-				if(tipoConsequencia.equals("3)")){
+				if(tipoConsequencia.equals("3")){
 					TipoConsequenciaRelato tipoConsequenciaRelato =new TipoConsequenciaRelato();
 					tipoConsequenciaRelato.setIdTipoConsequenciaRelato(new Long(3));
 					relato.setTipoConsequenciaRelato(tipoConsequenciaRelato);
 				}
-				if(tipoConsequencia.equals("4)")){
+				if(tipoConsequencia.equals("4")){
 					TipoConsequenciaRelato tipoConsequenciaRelato =new TipoConsequenciaRelato();
 					tipoConsequenciaRelato.setIdTipoConsequenciaRelato(new Long(4));
 					relato.setTipoConsequenciaRelato(tipoConsequenciaRelato);
@@ -243,7 +244,7 @@ public class ServletInterfaceComunicacao extends HttpServlet {
 							.setIdTipoLocalizacaoRelato(new Long(1));
 					relato.setTipoLocalizacaoRelato(tipoLocalizacaoRelato);
 				}
-				if (tipoLocalizacao.equals("-")) {
+				if (tipoLocalizacao.equals("2")) {
 					TipoLocalizacaoRelato tipoLocalizacaoRelato = new TipoLocalizacaoRelato();
 					tipoLocalizacaoRelato
 							.setIdTipoLocalizacaoRelato(new Long(2));
@@ -411,11 +412,39 @@ public class ServletInterfaceComunicacao extends HttpServlet {
 				TipoViolenciaEscolaRelato tipoViolenciaEscolaRelato = new TipoViolenciaEscolaRelato();
 				tipoViolenciaEscolaRelato.setIdTipoViolenciaEscolaRelato(new Long(4));
 				relato.setTipoViolenciaEscolaRelato(tipoViolenciaEscolaRelato);
-				//String tipoAgressor = array[1];
+				String tipoBemRoubado = array[1];
 				String tipoConsequencia = array[2];				
 				String tipoReport = array[3];
 				String tipoLocalizacao = array[4];				
 			
+				
+				if(tipoBemRoubado.equals("1")){
+					TipoBemRoubadoRelato tipoBemRoubadoRelato =new TipoBemRoubadoRelato();
+					tipoBemRoubadoRelato.setIdTipoBemRoubadoRelato(new Long(1));
+					relato.setTipoBemRoubadoRelato(tipoBemRoubadoRelato);
+				}
+				if(tipoBemRoubado.equals("2")){
+					TipoBemRoubadoRelato tipoBemRoubadoRelato =new TipoBemRoubadoRelato();
+					tipoBemRoubadoRelato.setIdTipoBemRoubadoRelato(new Long(2));
+					relato.setTipoBemRoubadoRelato(tipoBemRoubadoRelato);
+				}
+				if(tipoBemRoubado.equals("3")){
+					TipoBemRoubadoRelato tipoBemRoubadoRelato =new TipoBemRoubadoRelato();
+					tipoBemRoubadoRelato.setIdTipoBemRoubadoRelato(new Long(3));
+					relato.setTipoBemRoubadoRelato(tipoBemRoubadoRelato);
+				}
+				
+				if(tipoBemRoubado.equals("4")){
+					TipoBemRoubadoRelato tipoBemRoubadoRelato =new TipoBemRoubadoRelato();
+					tipoBemRoubadoRelato.setIdTipoBemRoubadoRelato(new Long(4));
+					relato.setTipoBemRoubadoRelato(tipoBemRoubadoRelato);
+				}
+				
+				if(tipoBemRoubado.equals("5")){
+					TipoBemRoubadoRelato tipoBemRoubadoRelato =new TipoBemRoubadoRelato();
+					tipoBemRoubadoRelato.setIdTipoBemRoubadoRelato(new Long(5));
+					relato.setTipoBemRoubadoRelato(tipoBemRoubadoRelato);
+				}
 				
 				if(tipoConsequencia.equals("1")){
 					TipoConsequenciaRelato tipoConsequenciaRelato =new TipoConsequenciaRelato();

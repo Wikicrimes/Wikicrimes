@@ -558,4 +558,10 @@ insert into tb_tar_tipo_agressor_relato values(5,'tipo.agressor.relato.professor
 					      (7,'tipo.agressor.relato.desconhecido','Desconhecido')
 					    
 insert into tb_trr_tipo_report_relato values(10,'tipo.report.relato.escola.medico','Informou a Escola e ao Médico'),
-					    (11,'tipo.report.relato.escola.medico.policia','Informou a Escola, ao Medico e a Policia')					      
+					    (11,'tipo.report.relato.escola.medico.policia','Informou a Escola, ao Medico e a Policia')
+
+insert into tb_tbr_tipo_bem_roubado_relato values(1,'tipo.bem.roubado.celular','Celular'),
+						 (2,'tipo.bem.roubado.mp3','Mp3'),
+						 (3,'tipo.bem.roubado.outro.aparelho','Outro Equipamento'),
+						 (4,'tipo.bem.roubado.dinheiro','Dinheiro'),
+						 (5,'tipo.bem.roubado.comida','Comida')					    

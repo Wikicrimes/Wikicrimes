@@ -64,157 +64,437 @@ public class ServletInterfaceComunicacao extends HttpServlet {
 	public String tratarDadosCrime(String dadosCrime, GenericCrudDao genericCrudDao){		
 		String [] array = dadosCrime.split(";");
 		if( array.length == 10){
-			String tipoViolenciaEscola = array[0];			
-			String tipoLocalizacao = array[1];
-			String tipoAgressor = array[2];
-			String tipoReport = array[3];
-			String tipoConsequencia = array[4];			
+			String tipoViolenciaEscola = array[0];				
 			Relato relato = new Relato();
-			if(tipoViolenciaEscola.equals("1.")){
+			if(tipoViolenciaEscola.equals("1")){					
+				String tipoAgressor = array[1];
+				String tipoConsequencia = array[2];				
+				String tipoReport = array[3];
+				String tipoLocalizacao = array[4];	
+				
 				TipoViolenciaEscolaRelato tipoViolenciaEscolaRelato = new TipoViolenciaEscolaRelato();
 				tipoViolenciaEscolaRelato.setIdTipoViolenciaEscolaRelato(new Long(1));
 				relato.setTipoViolenciaEscolaRelato(tipoViolenciaEscolaRelato);
-			}
-			if(tipoViolenciaEscola.equals("2.")){
-				TipoViolenciaEscolaRelato tipoViolenciaEscolaRelato = new TipoViolenciaEscolaRelato();
-				tipoViolenciaEscolaRelato.setIdTipoViolenciaEscolaRelato(new Long(2));
-				relato.setTipoViolenciaEscolaRelato(tipoViolenciaEscolaRelato);
-			}
-			if(tipoViolenciaEscola.equals("3.")){
-				TipoViolenciaEscolaRelato tipoViolenciaEscolaRelato = new TipoViolenciaEscolaRelato();
-				tipoViolenciaEscolaRelato.setIdTipoViolenciaEscolaRelato(new Long(3));
-				relato.setTipoViolenciaEscolaRelato(tipoViolenciaEscolaRelato);
-			}
-			if(tipoViolenciaEscola.equals("4.")){
-				TipoViolenciaEscolaRelato tipoViolenciaEscolaRelato = new TipoViolenciaEscolaRelato();
-				tipoViolenciaEscolaRelato.setIdTipoViolenciaEscolaRelato(new Long(4));
-				relato.setTipoViolenciaEscolaRelato(tipoViolenciaEscolaRelato);
-			}
-			
-			if(!tipoViolenciaEscola.equals("3.")){
-				if(tipoReport.equals("i)")){
+				
+				if(tipoAgressor.equals("1")){
+					TipoAgressorRelato tipoAgressorRelato = new TipoAgressorRelato();
+					tipoAgressorRelato.setIdTipoAgressorRelato(new Long(1));
+					relato.setTipoAgressorRelato(tipoAgressorRelato);
+				}				
+				if(tipoAgressor.equals("2")){
+					TipoAgressorRelato tipoAgressorRelato = new TipoAgressorRelato();
+					tipoAgressorRelato.setIdTipoAgressorRelato(new Long(3));
+					relato.setTipoAgressorRelato(tipoAgressorRelato);
+				}			
+				if(tipoAgressor.equals("3")){
+					TipoAgressorRelato tipoAgressorRelato = new TipoAgressorRelato();
+					tipoAgressorRelato.setIdTipoAgressorRelato(new Long(4));
+					relato.setTipoAgressorRelato(tipoAgressorRelato);
+				}
+				if(tipoAgressor.equals("4")){
+					TipoAgressorRelato tipoAgressorRelato = new TipoAgressorRelato();
+					tipoAgressorRelato.setIdTipoAgressorRelato(new Long(1));
+					relato.setTipoAgressorRelato(tipoAgressorRelato);
+				}
+				
+				if(tipoConsequencia.equals("1)")){
+					TipoConsequenciaRelato tipoConsequenciaRelato =new TipoConsequenciaRelato();
+					tipoConsequenciaRelato.setIdTipoConsequenciaRelato(new Long(1));
+					relato.setTipoConsequenciaRelato(tipoConsequenciaRelato);
+				}
+				if(tipoConsequencia.equals("2)")){
+					TipoConsequenciaRelato tipoConsequenciaRelato =new TipoConsequenciaRelato();
+					tipoConsequenciaRelato.setIdTipoConsequenciaRelato(new Long(2));
+					relato.setTipoConsequenciaRelato(tipoConsequenciaRelato);
+				}
+				if(tipoConsequencia.equals("3)")){
+					TipoConsequenciaRelato tipoConsequenciaRelato =new TipoConsequenciaRelato();
+					tipoConsequenciaRelato.setIdTipoConsequenciaRelato(new Long(3));
+					relato.setTipoConsequenciaRelato(tipoConsequenciaRelato);
+				}
+				if(tipoConsequencia.equals("4)")){
+					TipoConsequenciaRelato tipoConsequenciaRelato =new TipoConsequenciaRelato();
+					tipoConsequenciaRelato.setIdTipoConsequenciaRelato(new Long(4));
+					relato.setTipoConsequenciaRelato(tipoConsequenciaRelato);
+				}
+				
+				if(tipoReport.equals("1")){
+					TipoReportRelato tipoReportRelato = new TipoReportRelato();
+					tipoReportRelato.setIdTipoReportRelato(new Long(9));
+					relato.setTipoReportRelato(tipoReportRelato);					
+				}
+				if(tipoReport.equals("2")){
+					TipoReportRelato tipoReportRelato = new TipoReportRelato();
+					tipoReportRelato.setIdTipoReportRelato(new Long(2));
+					relato.setTipoReportRelato(tipoReportRelato);					
+				}
+				if(tipoReport.equals("3")){
 					TipoReportRelato tipoReportRelato = new TipoReportRelato();
 					tipoReportRelato.setIdTipoReportRelato(new Long(1));
 					relato.setTipoReportRelato(tipoReportRelato);					
 				}
-				if(tipoReport.equals("ii)")){
-					TipoReportRelato tipoReportRelato = new TipoReportRelato();
-					tipoReportRelato.setIdTipoReportRelato(new Long(2));
-					relato.setTipoReportRelato(tipoReportRelato);					
-				}
-				if(tipoReport.equals("iii)")){
+				if(tipoReport.equals("4")){
 					TipoReportRelato tipoReportRelato = new TipoReportRelato();
 					tipoReportRelato.setIdTipoReportRelato(new Long(3));
-					relato.setTipoReportRelato(tipoReportRelato);					
+					relato.setTipoReportRelato(tipoReportRelato);
+				}	
+				if(tipoReport.equals("5")){
+					TipoReportRelato tipoReportRelato = new TipoReportRelato();
+					tipoReportRelato.setIdTipoReportRelato(new Long(5));
+					relato.setTipoReportRelato(tipoReportRelato);
 				}
-				if(tipoReport.equals("iv)")){
+				
+				if (tipoLocalizacao.equals("1")) {
+					TipoLocalizacaoRelato tipoLocalizacaoRelato = new TipoLocalizacaoRelato();
+					tipoLocalizacaoRelato
+							.setIdTipoLocalizacaoRelato(new Long(1));
+					relato.setTipoLocalizacaoRelato(tipoLocalizacaoRelato);
+				}
+				if (tipoLocalizacao.equals("2")) {
+					TipoLocalizacaoRelato tipoLocalizacaoRelato = new TipoLocalizacaoRelato();
+					tipoLocalizacaoRelato
+							.setIdTipoLocalizacaoRelato(new Long(2));
+					relato.setTipoLocalizacaoRelato(tipoLocalizacaoRelato);
+				}
+				if (tipoLocalizacao.equals("3")) {
+					TipoLocalizacaoRelato tipoLocalizacaoRelato = new TipoLocalizacaoRelato();
+					tipoLocalizacaoRelato
+							.setIdTipoLocalizacaoRelato(new Long(3));
+					relato.setTipoLocalizacaoRelato(tipoLocalizacaoRelato);
+				}
+				if (tipoLocalizacao.equals("4")) {
+					TipoLocalizacaoRelato tipoLocalizacaoRelato = new TipoLocalizacaoRelato();
+					tipoLocalizacaoRelato
+							.setIdTipoLocalizacaoRelato(new Long(4));
+					relato.setTipoLocalizacaoRelato(tipoLocalizacaoRelato);
+				}
+				if (tipoLocalizacao.equals("5")) {
+					TipoLocalizacaoRelato tipoLocalizacaoRelato = new TipoLocalizacaoRelato();
+					tipoLocalizacaoRelato
+							.setIdTipoLocalizacaoRelato(new Long(5));
+					relato.setTipoLocalizacaoRelato(tipoLocalizacaoRelato);
+				}
+			}
+			if(tipoViolenciaEscola.equals("2")){
+				String tipoAgressor = array[1];
+				String tipoReport = array[2];
+				String tipoLocalizacao = array[3];	
+				
+				TipoViolenciaEscolaRelato tipoViolenciaEscolaRelato = new TipoViolenciaEscolaRelato();
+				tipoViolenciaEscolaRelato.setIdTipoViolenciaEscolaRelato(new Long(2));
+				relato.setTipoViolenciaEscolaRelato(tipoViolenciaEscolaRelato);
+			
+				if(tipoAgressor.equals("1")){
+					TipoAgressorRelato tipoAgressorRelato = new TipoAgressorRelato();
+					tipoAgressorRelato.setIdTipoAgressorRelato(new Long(5));
+					relato.setTipoAgressorRelato(tipoAgressorRelato);
+				}				
+				if(tipoAgressor.equals("2")){
+					TipoAgressorRelato tipoAgressorRelato = new TipoAgressorRelato();
+					tipoAgressorRelato.setIdTipoAgressorRelato(new Long(6));
+					relato.setTipoAgressorRelato(tipoAgressorRelato);
+				}			
+				if(tipoAgressor.equals("3")){
+					TipoAgressorRelato tipoAgressorRelato = new TipoAgressorRelato();
+					tipoAgressorRelato.setIdTipoAgressorRelato(new Long(1));
+					relato.setTipoAgressorRelato(tipoAgressorRelato);
+				}
+				if(tipoAgressor.equals("4")){
+					TipoAgressorRelato tipoAgressorRelato = new TipoAgressorRelato();
+					tipoAgressorRelato.setIdTipoAgressorRelato(new Long(7));
+					relato.setTipoAgressorRelato(tipoAgressorRelato);
+				}
+				if(tipoAgressor.equals("5")){
+					TipoAgressorRelato tipoAgressorRelato = new TipoAgressorRelato();
+					tipoAgressorRelato.setIdTipoAgressorRelato(new Long(4));
+					relato.setTipoAgressorRelato(tipoAgressorRelato);
+				}
+				
+				
+				if(tipoReport.equals("1")){
 					TipoReportRelato tipoReportRelato = new TipoReportRelato();
 					tipoReportRelato.setIdTipoReportRelato(new Long(9));
-					relato.setTipoReportRelato(tipoReportRelato);
-				}				
-			}else{
-				if(tipoReport.equals("i)")){
-					TipoReportRelato tipoReportRelato = new TipoReportRelato();
-					tipoReportRelato.setIdTipoReportRelato(new Long(4));
 					relato.setTipoReportRelato(tipoReportRelato);					
 				}
-				if(tipoReport.equals("ii)")){
+				if(tipoReport.equals("2")){
 					TipoReportRelato tipoReportRelato = new TipoReportRelato();
 					tipoReportRelato.setIdTipoReportRelato(new Long(2));
 					relato.setTipoReportRelato(tipoReportRelato);					
 				}
-				if(tipoReport.equals("iii)")){
+				if(tipoReport.equals("3")){
 					TipoReportRelato tipoReportRelato = new TipoReportRelato();
-					tipoReportRelato.setIdTipoReportRelato(new Long(5));
+					tipoReportRelato.setIdTipoReportRelato(new Long(1));
 					relato.setTipoReportRelato(tipoReportRelato);					
 				}
-				if(tipoReport.equals("iv)")){
+				if(tipoReport.equals("4")){
+					TipoReportRelato tipoReportRelato = new TipoReportRelato();
+					tipoReportRelato.setIdTipoReportRelato(new Long(3));
+					relato.setTipoReportRelato(tipoReportRelato);
+				}	
+				if(tipoReport.equals("5")){
+					TipoReportRelato tipoReportRelato = new TipoReportRelato();
+					tipoReportRelato.setIdTipoReportRelato(new Long(5));
+					relato.setTipoReportRelato(tipoReportRelato);
+				}
+				
+				if (tipoLocalizacao.equals("1")) {
+					TipoLocalizacaoRelato tipoLocalizacaoRelato = new TipoLocalizacaoRelato();
+					tipoLocalizacaoRelato
+							.setIdTipoLocalizacaoRelato(new Long(1));
+					relato.setTipoLocalizacaoRelato(tipoLocalizacaoRelato);
+				}
+				if (tipoLocalizacao.equals("-")) {
+					TipoLocalizacaoRelato tipoLocalizacaoRelato = new TipoLocalizacaoRelato();
+					tipoLocalizacaoRelato
+							.setIdTipoLocalizacaoRelato(new Long(2));
+					relato.setTipoLocalizacaoRelato(tipoLocalizacaoRelato);
+				}
+				if (tipoLocalizacao.equals("3")) {
+					TipoLocalizacaoRelato tipoLocalizacaoRelato = new TipoLocalizacaoRelato();
+					tipoLocalizacaoRelato
+							.setIdTipoLocalizacaoRelato(new Long(3));
+					relato.setTipoLocalizacaoRelato(tipoLocalizacaoRelato);
+				}
+				if (tipoLocalizacao.equals("4")) {
+					TipoLocalizacaoRelato tipoLocalizacaoRelato = new TipoLocalizacaoRelato();
+					tipoLocalizacaoRelato
+							.setIdTipoLocalizacaoRelato(new Long(4));
+					relato.setTipoLocalizacaoRelato(tipoLocalizacaoRelato);
+				}
+				if (tipoLocalizacao.equals("5")) {
+					TipoLocalizacaoRelato tipoLocalizacaoRelato = new TipoLocalizacaoRelato();
+					tipoLocalizacaoRelato
+							.setIdTipoLocalizacaoRelato(new Long(5));
+					relato.setTipoLocalizacaoRelato(tipoLocalizacaoRelato);
+				}
+			}
+			if(tipoViolenciaEscola.equals("3")){
+				String tipoAgressor = array[1];
+				String tipoConsequencia = array[2];				
+				String tipoReport = array[3];
+				String tipoLocalizacao = array[4];	
+				
+				TipoViolenciaEscolaRelato tipoViolenciaEscolaRelato = new TipoViolenciaEscolaRelato();
+				tipoViolenciaEscolaRelato.setIdTipoViolenciaEscolaRelato(new Long(3));
+				relato.setTipoViolenciaEscolaRelato(tipoViolenciaEscolaRelato);
+				
+				if(tipoAgressor.equals("1")){
+					TipoAgressorRelato tipoAgressorRelato = new TipoAgressorRelato();
+					tipoAgressorRelato.setIdTipoAgressorRelato(new Long(5));
+					relato.setTipoAgressorRelato(tipoAgressorRelato);
+				}				
+				if(tipoAgressor.equals("2")){
+					TipoAgressorRelato tipoAgressorRelato = new TipoAgressorRelato();
+					tipoAgressorRelato.setIdTipoAgressorRelato(new Long(6));
+					relato.setTipoAgressorRelato(tipoAgressorRelato);
+				}			
+				if(tipoAgressor.equals("3")){
+					TipoAgressorRelato tipoAgressorRelato = new TipoAgressorRelato();
+					tipoAgressorRelato.setIdTipoAgressorRelato(new Long(1));
+					relato.setTipoAgressorRelato(tipoAgressorRelato);
+				}
+				if(tipoAgressor.equals("4")){
+					TipoAgressorRelato tipoAgressorRelato = new TipoAgressorRelato();
+					tipoAgressorRelato.setIdTipoAgressorRelato(new Long(7));
+					relato.setTipoAgressorRelato(tipoAgressorRelato);
+				}
+				if(tipoAgressor.equals("5")){
+					TipoAgressorRelato tipoAgressorRelato = new TipoAgressorRelato();
+					tipoAgressorRelato.setIdTipoAgressorRelato(new Long(4));
+					relato.setTipoAgressorRelato(tipoAgressorRelato);
+				}
+				
+				if(tipoConsequencia.equals("1)")){
+					TipoConsequenciaRelato tipoConsequenciaRelato =new TipoConsequenciaRelato();
+					tipoConsequenciaRelato.setIdTipoConsequenciaRelato(new Long(1));
+					relato.setTipoConsequenciaRelato(tipoConsequenciaRelato);
+				}
+				if(tipoConsequencia.equals("2)")){
+					TipoConsequenciaRelato tipoConsequenciaRelato =new TipoConsequenciaRelato();
+					tipoConsequenciaRelato.setIdTipoConsequenciaRelato(new Long(2));
+					relato.setTipoConsequenciaRelato(tipoConsequenciaRelato);
+				}
+				if(tipoConsequencia.equals("3)")){
+					TipoConsequenciaRelato tipoConsequenciaRelato =new TipoConsequenciaRelato();
+					tipoConsequenciaRelato.setIdTipoConsequenciaRelato(new Long(3));
+					relato.setTipoConsequenciaRelato(tipoConsequenciaRelato);
+				}
+				if(tipoConsequencia.equals("4)")){
+					TipoConsequenciaRelato tipoConsequenciaRelato =new TipoConsequenciaRelato();
+					tipoConsequenciaRelato.setIdTipoConsequenciaRelato(new Long(4));
+					relato.setTipoConsequenciaRelato(tipoConsequenciaRelato);
+				}
+				
+				if(tipoReport.equals("1")){//NOT REPOSTED
+					TipoReportRelato tipoReportRelato = new TipoReportRelato();
+					tipoReportRelato.setIdTipoReportRelato(new Long(9));
+					relato.setTipoReportRelato(tipoReportRelato);					
+				}
+				if(tipoReport.equals("2")){//Pais
+					TipoReportRelato tipoReportRelato = new TipoReportRelato();
+					tipoReportRelato.setIdTipoReportRelato(new Long(2));
+					relato.setTipoReportRelato(tipoReportRelato);					
+				}
+				if(tipoReport.equals("3")){//Escola
+					TipoReportRelato tipoReportRelato = new TipoReportRelato();
+					tipoReportRelato.setIdTipoReportRelato(new Long(1));
+					relato.setTipoReportRelato(tipoReportRelato);					
+				}
+				if(tipoReport.equals("4")){//Policia
+					TipoReportRelato tipoReportRelato = new TipoReportRelato();
+					tipoReportRelato.setIdTipoReportRelato(new Long(5));
+					relato.setTipoReportRelato(tipoReportRelato);
+				}	
+				if(tipoReport.equals("5")){//Medico
+					TipoReportRelato tipoReportRelato = new TipoReportRelato();
+					tipoReportRelato.setIdTipoReportRelato(new Long(4));
+					relato.setTipoReportRelato(tipoReportRelato);
+				}
+				if(tipoReport.equals("6")){//Medico e Policia
 					TipoReportRelato tipoReportRelato = new TipoReportRelato();
 					tipoReportRelato.setIdTipoReportRelato(new Long(6));
 					relato.setTipoReportRelato(tipoReportRelato);
 				}
-				if(tipoReport.equals("v)")){
+				if(tipoReport.equals("7")){//Pais e Medico
 					TipoReportRelato tipoReportRelato = new TipoReportRelato();
 					tipoReportRelato.setIdTipoReportRelato(new Long(7));
 					relato.setTipoReportRelato(tipoReportRelato);
-				}	
-				if(tipoReport.equals("vi)")){
+				}
+				if(tipoReport.equals("8")){//Escola e Medico 
+					TipoReportRelato tipoReportRelato = new TipoReportRelato();
+					tipoReportRelato.setIdTipoReportRelato(new Long(10));
+					relato.setTipoReportRelato(tipoReportRelato);
+				}
+				if(tipoReport.equals("9")){//Pai, medico e policia
 					TipoReportRelato tipoReportRelato = new TipoReportRelato();
 					tipoReportRelato.setIdTipoReportRelato(new Long(8));
 					relato.setTipoReportRelato(tipoReportRelato);
 				}
-				if(tipoReport.equals("vii)")){
+				if(tipoReport.equals("10")){//Pai, medico e policia
 					TipoReportRelato tipoReportRelato = new TipoReportRelato();
-					tipoReportRelato.setIdTipoReportRelato(new Long(9));
+					tipoReportRelato.setIdTipoReportRelato(new Long(11));
 					relato.setTipoReportRelato(tipoReportRelato);
 				}
+				
+				if (tipoLocalizacao.equals("1")) {
+					TipoLocalizacaoRelato tipoLocalizacaoRelato = new TipoLocalizacaoRelato();
+					tipoLocalizacaoRelato
+							.setIdTipoLocalizacaoRelato(new Long(1));
+					relato.setTipoLocalizacaoRelato(tipoLocalizacaoRelato);
+				}
+				if (tipoLocalizacao.equals("2")) {
+					TipoLocalizacaoRelato tipoLocalizacaoRelato = new TipoLocalizacaoRelato();
+					tipoLocalizacaoRelato
+							.setIdTipoLocalizacaoRelato(new Long(2));
+					relato.setTipoLocalizacaoRelato(tipoLocalizacaoRelato);
+				}
+				if (tipoLocalizacao.equals("3")) {
+					TipoLocalizacaoRelato tipoLocalizacaoRelato = new TipoLocalizacaoRelato();
+					tipoLocalizacaoRelato
+							.setIdTipoLocalizacaoRelato(new Long(3));
+					relato.setTipoLocalizacaoRelato(tipoLocalizacaoRelato);
+				}
+				if (tipoLocalizacao.equals("4")) {
+					TipoLocalizacaoRelato tipoLocalizacaoRelato = new TipoLocalizacaoRelato();
+					tipoLocalizacaoRelato
+							.setIdTipoLocalizacaoRelato(new Long(4));
+					relato.setTipoLocalizacaoRelato(tipoLocalizacaoRelato);
+				}
+				if (tipoLocalizacao.equals("5")) {
+					TipoLocalizacaoRelato tipoLocalizacaoRelato = new TipoLocalizacaoRelato();
+					tipoLocalizacaoRelato
+							.setIdTipoLocalizacaoRelato(new Long(5));
+					relato.setTipoLocalizacaoRelato(tipoLocalizacaoRelato);
+				}
 			}
+			if(tipoViolenciaEscola.equals("4")){
+				TipoViolenciaEscolaRelato tipoViolenciaEscolaRelato = new TipoViolenciaEscolaRelato();
+				tipoViolenciaEscolaRelato.setIdTipoViolenciaEscolaRelato(new Long(4));
+				relato.setTipoViolenciaEscolaRelato(tipoViolenciaEscolaRelato);
+				//String tipoAgressor = array[1];
+				String tipoConsequencia = array[2];				
+				String tipoReport = array[3];
+				String tipoLocalizacao = array[4];				
 			
-			if(tipoLocalizacao.equals("1-")){
-				TipoLocalizacaoRelato tipoLocalizacaoRelato= new TipoLocalizacaoRelato();
-				tipoLocalizacaoRelato.setIdTipoLocalizacaoRelato(new Long(1));
-				relato.setTipoLocalizacaoRelato(tipoLocalizacaoRelato);
-			}
-			if(tipoLocalizacao.equals("2-")){
-				TipoLocalizacaoRelato tipoLocalizacaoRelato= new TipoLocalizacaoRelato();
-				tipoLocalizacaoRelato.setIdTipoLocalizacaoRelato(new Long(2));
-				relato.setTipoLocalizacaoRelato(tipoLocalizacaoRelato);
-			}
-			if(tipoLocalizacao.equals("3-")){
-				TipoLocalizacaoRelato tipoLocalizacaoRelato= new TipoLocalizacaoRelato();
-				tipoLocalizacaoRelato.setIdTipoLocalizacaoRelato(new Long(3));
-				relato.setTipoLocalizacaoRelato(tipoLocalizacaoRelato);
-			}
-			if(tipoLocalizacao.equals("4-")){
-				TipoLocalizacaoRelato tipoLocalizacaoRelato= new TipoLocalizacaoRelato();
-				tipoLocalizacaoRelato.setIdTipoLocalizacaoRelato(new Long(4));
-				relato.setTipoLocalizacaoRelato(tipoLocalizacaoRelato);
-			}
-			if(tipoLocalizacao.equals("5-")){
-				TipoLocalizacaoRelato tipoLocalizacaoRelato= new TipoLocalizacaoRelato();
-				tipoLocalizacaoRelato.setIdTipoLocalizacaoRelato(new Long(5));
-				relato.setTipoLocalizacaoRelato(tipoLocalizacaoRelato);
-			}
-			if(tipoAgressor.equals("a)")){
-				TipoAgressorRelato tipoAgressorRelato = new TipoAgressorRelato();
-				tipoAgressorRelato.setIdTipoAgressorRelato(new Long(1));
-				relato.setTipoAgressorRelato(tipoAgressorRelato);
-			}
-			if(tipoAgressor.equals("b)")){
-				TipoAgressorRelato tipoAgressorRelato = new TipoAgressorRelato();
-				tipoAgressorRelato.setIdTipoAgressorRelato(new Long(2));
-				relato.setTipoAgressorRelato(tipoAgressorRelato);
-			}
-			if(tipoAgressor.equals("c)")){
-				TipoAgressorRelato tipoAgressorRelato = new TipoAgressorRelato();
-				tipoAgressorRelato.setIdTipoAgressorRelato(new Long(3));
-				relato.setTipoAgressorRelato(tipoAgressorRelato);
-			}			
-			if(tipoAgressor.equals("d)")){
-				TipoAgressorRelato tipoAgressorRelato = new TipoAgressorRelato();
-				tipoAgressorRelato.setIdTipoAgressorRelato(new Long(4));
-				relato.setTipoAgressorRelato(tipoAgressorRelato);
-			}
-			if(tipoConsequencia.equals("1)")){
-				TipoConsequenciaRelato tipoConsequenciaRelato =new TipoConsequenciaRelato();
-				tipoConsequenciaRelato.setIdTipoConsequenciaRelato(new Long(1));
-				relato.setTipoConsequenciaRelato(tipoConsequenciaRelato);
-			}
-			if(tipoConsequencia.equals("2)")){
-				TipoConsequenciaRelato tipoConsequenciaRelato =new TipoConsequenciaRelato();
-				tipoConsequenciaRelato.setIdTipoConsequenciaRelato(new Long(2));
-				relato.setTipoConsequenciaRelato(tipoConsequenciaRelato);
-			}
-			if(tipoConsequencia.equals("3)")){
-				TipoConsequenciaRelato tipoConsequenciaRelato =new TipoConsequenciaRelato();
-				tipoConsequenciaRelato.setIdTipoConsequenciaRelato(new Long(3));
-				relato.setTipoConsequenciaRelato(tipoConsequenciaRelato);
-			}
-			if(tipoConsequencia.equals("4)")){
-				TipoConsequenciaRelato tipoConsequenciaRelato =new TipoConsequenciaRelato();
-				tipoConsequenciaRelato.setIdTipoConsequenciaRelato(new Long(4));
-				relato.setTipoConsequenciaRelato(tipoConsequenciaRelato);
-			}
+				
+				if(tipoConsequencia.equals("1")){
+					TipoConsequenciaRelato tipoConsequenciaRelato =new TipoConsequenciaRelato();
+					tipoConsequenciaRelato.setIdTipoConsequenciaRelato(new Long(1));
+					relato.setTipoConsequenciaRelato(tipoConsequenciaRelato);
+				}
+				if(tipoConsequencia.equals("2")){
+					TipoConsequenciaRelato tipoConsequenciaRelato =new TipoConsequenciaRelato();
+					tipoConsequenciaRelato.setIdTipoConsequenciaRelato(new Long(2));
+					relato.setTipoConsequenciaRelato(tipoConsequenciaRelato);
+				}
+				if(tipoConsequencia.equals("3")){
+					TipoConsequenciaRelato tipoConsequenciaRelato =new TipoConsequenciaRelato();
+					tipoConsequenciaRelato.setIdTipoConsequenciaRelato(new Long(3));
+					relato.setTipoConsequenciaRelato(tipoConsequenciaRelato);
+				}
+				if(tipoConsequencia.equals("4")){
+					TipoConsequenciaRelato tipoConsequenciaRelato =new TipoConsequenciaRelato();
+					tipoConsequenciaRelato.setIdTipoConsequenciaRelato(new Long(4));
+					relato.setTipoConsequenciaRelato(tipoConsequenciaRelato);
+				}
+				
+				if(tipoReport.equals("1")){
+					TipoReportRelato tipoReportRelato = new TipoReportRelato();
+					tipoReportRelato.setIdTipoReportRelato(new Long(9));
+					relato.setTipoReportRelato(tipoReportRelato);					
+				}
+				if(tipoReport.equals("2")){
+					TipoReportRelato tipoReportRelato = new TipoReportRelato();
+					tipoReportRelato.setIdTipoReportRelato(new Long(2));
+					relato.setTipoReportRelato(tipoReportRelato);					
+				}
+				if(tipoReport.equals("3")){
+					TipoReportRelato tipoReportRelato = new TipoReportRelato();
+					tipoReportRelato.setIdTipoReportRelato(new Long(1));
+					relato.setTipoReportRelato(tipoReportRelato);					
+				}
+				if(tipoReport.equals("4")){
+					TipoReportRelato tipoReportRelato = new TipoReportRelato();
+					tipoReportRelato.setIdTipoReportRelato(new Long(3));
+					relato.setTipoReportRelato(tipoReportRelato);
+				}	
+				if(tipoReport.equals("5")){
+					TipoReportRelato tipoReportRelato = new TipoReportRelato();
+					tipoReportRelato.setIdTipoReportRelato(new Long(5));
+					relato.setTipoReportRelato(tipoReportRelato);
+				}
+				
+				if (tipoLocalizacao.equals("1")) {
+					TipoLocalizacaoRelato tipoLocalizacaoRelato = new TipoLocalizacaoRelato();
+					tipoLocalizacaoRelato
+							.setIdTipoLocalizacaoRelato(new Long(1));
+					relato.setTipoLocalizacaoRelato(tipoLocalizacaoRelato);
+				}
+				if (tipoLocalizacao.equals("2")) {
+					TipoLocalizacaoRelato tipoLocalizacaoRelato = new TipoLocalizacaoRelato();
+					tipoLocalizacaoRelato
+							.setIdTipoLocalizacaoRelato(new Long(2));
+					relato.setTipoLocalizacaoRelato(tipoLocalizacaoRelato);
+				}
+				if (tipoLocalizacao.equals("3")) {
+					TipoLocalizacaoRelato tipoLocalizacaoRelato = new TipoLocalizacaoRelato();
+					tipoLocalizacaoRelato
+							.setIdTipoLocalizacaoRelato(new Long(3));
+					relato.setTipoLocalizacaoRelato(tipoLocalizacaoRelato);
+				}
+				if (tipoLocalizacao.equals("4")) {
+					TipoLocalizacaoRelato tipoLocalizacaoRelato = new TipoLocalizacaoRelato();
+					tipoLocalizacaoRelato
+							.setIdTipoLocalizacaoRelato(new Long(4));
+					relato.setTipoLocalizacaoRelato(tipoLocalizacaoRelato);
+				}
+				if (tipoLocalizacao.equals("5")) {
+					TipoLocalizacaoRelato tipoLocalizacaoRelato = new TipoLocalizacaoRelato();
+					tipoLocalizacaoRelato
+							.setIdTipoLocalizacaoRelato(new Long(5));
+					relato.setTipoLocalizacaoRelato(tipoLocalizacaoRelato);
+				}
+			}		
 			relato.setTipoRelato("6");
 			relato.setSubTipoRelato("3");
 			relato.setDescricao("");

@@ -552,3 +552,10 @@ insert into tb_tlr_tipo_localizacao_relato values(1, 'tipo.localizacao.relato.es
 												(3, 'tipo.localizacao.relato.banheiros.escola', 'Nos banheiros da escola'),
 												(4, 'tipo.localizacao.relato.caminho.escola', 'A caminho da escola'),
 												(5, 'tipo.localizacao.relato.voltando.escola', 'Voltado da escola')
+
+insert into tb_tar_tipo_agressor_relato values(5,'tipo.agressor.relato.professor','Professor'),
+					      (6,'tipo.agressor.relato.estudante','Estudante'),
+					      (7,'tipo.agressor.relato.desconhecido','Desconhecido')
+					    
+insert into tb_trr_tipo_report_relato values(10,'tipo.report.relato.escola.medico','Informou a Escola e ao Médico'),
+					    (11,'tipo.report.relato.escola.medico.policia','Informou a Escola, ao Medico e a Policia')					      

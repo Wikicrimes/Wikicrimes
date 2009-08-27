@@ -36,6 +36,7 @@
                  <value>org/wikicrimes/model/TipoAgressorRelato.hbm.xml</value>
                  <value>org/wikicrimes/model/TipoLocalizacaoRelato.hbm.xml</value>
                  <value>org/wikicrimes/model/TipoReportRelato.hbm.xml</value>
+                 <value>org/wikicrimes/model/TipoBemRoubadoRelato.hbm.xml</value>
                  <value>org/wikicrimes/model/TipoConsequenciaRelato.hbm.xml</value>
                  <value>org/wikicrimes/model/TipoViolenciaEscolaRelato.hbm.xml</value>
                  <value>org/wikicrimes/model/TipoLocal.hbm.xml</value>

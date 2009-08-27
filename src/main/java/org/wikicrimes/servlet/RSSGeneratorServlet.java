@@ -115,13 +115,25 @@ public class RSSGeneratorServlet extends HttpServlet {
 		
 		Document document = DocumentHelper.createDocument();
         Element root = document.addElement( "rss" ).addAttribute("version", "2.0");
+        root.addAttribute("xmlns:atom", "http://www.w3.org/2005/Atom");
         
+      //Criar linha:  <atom:link href="http://rss.terra.com.br/0,,EI1,00.xml" rel="self" type="application/rss+xml" />
         Element channel = root.addElement( "channel" );
+        Element atom = channel.addElement("atom:link", "http://www.w3.org/2005/Atom"); 
+        atom.addAttribute("href", BASE_URL+"/rss");
+        atom.addAttribute("rel","self");
+        atom.addAttribute("type","application/rss+xml");
+
+       
+
+        
         channel.addElement("title").addText("Wikicrimes - "+bundle.getString("rss.titulo"));
         channel.addElement("link").addText(BASE_URL);
         Element img = channel.addElement("image");
         img.addElement("title").addText("Wikicrimes - "+bundle.getString("rss.titulo"));
         img.addElement("url").addText(BASE_URL+"/images/logo.jpg");
+
+     
         
         int i = 1;
         for (Iterator it=crimes.iterator(); it.hasNext(); ++i) {
@@ -150,9 +162,13 @@ public class RSSGeneratorServlet extends HttpServlet {
         	descCrime.append("(").append(format.format(crime.getData())).append(") ");
         	
         	Element item = channel.addElement("item");
-        	item.addElement("title").addText(descCrime.toString());
+        	item.addElement("title").addCDATA(descCrime.toString());
+        	//<pubDate>Wed, 26 Aug 2009 19:23:00 -0300</pubDate>
+        	item.addElement("pubDate").addText(crime.getDataHoraRegistro().toGMTString()); 
         	item.addElement("link").addText(BASE_URL+"/main.html?idcrime="+crime.getChave());
-        	item.addElement("description").addText(crime.getDescricao());
+          	item.addElement("guid").addText(BASE_URL+"/main.html?idcrime="+crime.getChave());     
+        	item.addElement("description").addCDATA(crime.getDescricao());
+        	item.addElement("category").addCDATA(crime.getTipoCrime().getNome());
         }
         
         return document;

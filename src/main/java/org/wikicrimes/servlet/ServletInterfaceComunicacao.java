@@ -305,22 +305,22 @@ public class ServletInterfaceComunicacao extends HttpServlet {
 					relato.setTipoAgressorRelato(tipoAgressorRelato);
 				}
 				
-				if(tipoConsequencia.equals("1)")){
+				if(tipoConsequencia.equals("1")){
 					TipoConsequenciaRelato tipoConsequenciaRelato =new TipoConsequenciaRelato();
 					tipoConsequenciaRelato.setIdTipoConsequenciaRelato(new Long(1));
 					relato.setTipoConsequenciaRelato(tipoConsequenciaRelato);
 				}
-				if(tipoConsequencia.equals("2)")){
+				if(tipoConsequencia.equals("2")){
 					TipoConsequenciaRelato tipoConsequenciaRelato =new TipoConsequenciaRelato();
 					tipoConsequenciaRelato.setIdTipoConsequenciaRelato(new Long(2));
 					relato.setTipoConsequenciaRelato(tipoConsequenciaRelato);
 				}
-				if(tipoConsequencia.equals("3)")){
+				if(tipoConsequencia.equals("3")){
 					TipoConsequenciaRelato tipoConsequenciaRelato =new TipoConsequenciaRelato();
 					tipoConsequenciaRelato.setIdTipoConsequenciaRelato(new Long(3));
 					relato.setTipoConsequenciaRelato(tipoConsequenciaRelato);
 				}
-				if(tipoConsequencia.equals("4)")){
+				if(tipoConsequencia.equals("4")){
 					TipoConsequenciaRelato tipoConsequenciaRelato =new TipoConsequenciaRelato();
 					tipoConsequenciaRelato.setIdTipoConsequenciaRelato(new Long(4));
 					relato.setTipoConsequenciaRelato(tipoConsequenciaRelato);

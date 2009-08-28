@@ -1,14 +1,16 @@
 package org.wikicrimes.dao.hibernate;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -27,7 +29,9 @@ import org.wikicrimes.model.TipoVitima;
  */
 public class CrimeDaoHibernate extends GenericCrudDaoHibernate implements
 		CrimeDao {
-
+	
+	private final double RAIO_TERRA_KM=6378.137;
+	
 	public CrimeDaoHibernate() {
 		setEntity(Crime.class);
 	}
@@ -470,5 +474,85 @@ public class CrimeDaoHibernate extends GenericCrudDaoHibernate implements
 		
 	}	
 	
+	//by Philipp
+	public Map <String,Integer> contaCrimesArea(double latitude, double longitude, double raio){
+		Map <String,Integer> mapa = new HashMap<String, Integer>();
+		
+		String sqlSemViolencia = "SELECT count(*) as contador,tipo.tcr_descricao as descricao FROM tb_cri_crime as tcc inner join tb_tcr_tipo_crime as tipo on tipo.tcr_idtipo_crime=tcc.tcr_idtipo_crime and ("+RAIO_TERRA_KM+" * ACOS( (SIN(PI()* "+latitude+" /180)*SIN(PI() * tcc.cri_latitude/180)) + (COS(PI()* "+latitude+" /180)*cos(PI()*tcc.cri_latitude/180)*COS(PI() * tcc.cri_longitude/180-PI()* "+longitude+" /180))) < "+raio+") and tcc.cri_status=0 group by tipo.tcr_descricao";
+		
+		String sqlViolencia = "select tttv.tvi_descricao as descricao, count(*) as contador from tb_tvi_tipo_vitima as tttv inner join (SELECT tipo.tcr_descricao as descricao,tipo.tcr_idtipo_crime as tipo,tcc.tvi_idtipo_vitima as idVitima FROM tb_cri_crime as tcc inner join tb_tcr_tipo_crime as tipo on tipo.tcr_idtipo_crime=tcc.tcr_idtipo_crime and ("+RAIO_TERRA_KM+" * ACOS( (SIN(PI()* "+latitude+" /180)*SIN(PI() * tcc.cri_latitude/180)) + (COS(PI()* "+latitude+" /180)*cos(PI()*tcc.cri_latitude/180)*COS(PI() * tcc.cri_longitude/180-PI()* "+longitude+" /180))) < "+raio+") and tcc.cri_status=0 and tipo.tcr_idtipo_crime = 5) as crime on tttv.tvi_idtipo_vitima = idVitima group by tttv.tvi_descricao";
 
+		//usa essa URL de teste...
+		//http://localhost:8080/wikicrimes/CrimeRatioServlet?lat=-3.72927166&long=-38.51398944&raio=1.25
+		
+		Session session = getHibernateTemplate().getSessionFactory().openSession();//abre a secao do hibernate
+		
+		//e trabalha normalmente atraves da conex do BD
+		Connection connect = session.connection();
+		
+		try {
+			Statement ps = connect.createStatement();
+			ResultSet rs = ps.executeQuery(sqlSemViolencia);
+			
+			while(rs.next()){
+				String desc = rs.getString("descricao");
+				if(desc.equalsIgnoreCase("furto") || desc.equalsIgnoreCase("tentativa de furto")){
+					Integer quant = mapa.get("Furto");
+					if(quant!=null){
+						quant+=new Integer(rs.getString("contador")).intValue();
+						mapa.put("Furto", quant);
+					}else{
+						mapa.put("Furto", new Integer(rs.getString("contador")).intValue());
+					}
+				}
+				if(desc.equalsIgnoreCase("roubo") || desc.equalsIgnoreCase("tentativa de roubo")){
+					Integer quant = mapa.get("Roubo");
+					if(quant!=null){
+						quant+=new Integer(rs.getString("contador")).intValue();
+						mapa.put("Roubo", quant);
+					}else{
+						mapa.put("Roubo", new Integer(rs.getString("contador")).intValue());
+					}
+				}
+			}
+			
+			rs.close();
+			
+			rs = ps.executeQuery(sqlViolencia);
+			while(rs.next()){
+				String desc = rs.getString("descricao");
+				
+				if(desc.equalsIgnoreCase("homícidio") || desc.equalsIgnoreCase("tentativa de homicídio")){
+					Integer quant = mapa.get("Homicídio");
+					if(quant != null){
+						quant+=new Integer(rs.getString("contador")).intValue();
+						mapa.put("Homicídio",quant);
+					}else{
+						mapa.put("Homicídio", new Integer(rs.getString("contador")).intValue());
+					}
+				}else{
+					if(desc.equalsIgnoreCase("latrocinio")){
+						mapa.put("Latrocinio", new Integer(rs.getString("contador")).intValue());
+					}else{
+						Integer quant = mapa.get("Outros");
+						if(quant != null){
+							quant+=new Integer(rs.getString("contador")).intValue();
+							mapa.put("Outros",quant);
+						}else{
+							mapa.put("Outros", new Integer(rs.getString("contador")).intValue());
+						}
+					}
+				}
+			}
+			
+			rs.close();
+			ps.close();
+			connect.close();
+			session.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		 
+		return mapa;
+	}
 }

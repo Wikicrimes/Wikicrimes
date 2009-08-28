@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.wikicrimes.model.BaseObject;
-import org.wikicrimes.model.Comentario;
 import org.wikicrimes.model.Confirmacao;
 import org.wikicrimes.model.Crime;
 import org.wikicrimes.model.EntidadeCertificadora;
@@ -59,5 +58,7 @@ public interface CrimeService extends GenericCrudService {
 	public List<Crime> getCrimesMaisComentados();
 	public List<Crime> getCrimesMaisConfirmados();
 	public void update(Crime crime, Set<Confirmacao> confirmacoes, List<Razao> razoes);
+	
+	public Map<String,Integer> numeroCrimesArea(double latitude, double longitude, double raio);
 	
 }

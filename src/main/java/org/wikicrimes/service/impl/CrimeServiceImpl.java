@@ -8,7 +8,6 @@ import java.util.Set;
 import javax.faces.context.FacesContext;
 
 import org.hibernate.Hibernate;
-import org.hibernate.LazyInitializationException;
 import org.wikicrimes.dao.CrimeDao;
 import org.wikicrimes.dao.EntidadeCertificadoraDao;
 import org.wikicrimes.dao.RazaoDao;
@@ -448,7 +447,8 @@ public class CrimeServiceImpl extends GenericCrudServiceImpl implements
 		// TODO Auto-generated method stub
 		return crimeDao.getCrimesMaisConfirmados();
 	}
-
-
 	
+	public Map<String,Integer> numeroCrimesArea(double latitude, double longitude, double raio){
+		return crimeDao.contaCrimesArea(latitude, longitude, raio);
+	}
 }

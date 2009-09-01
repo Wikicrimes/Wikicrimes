@@ -365,8 +365,7 @@
 				
 				<t:panelGroup style="width: 100%">
 					<table cellpadding="0" cellspacing="0">
-						<c:if test="#{filtroForm.pais == 'ZA' or usuario.pais == 'ZA'}">
-							<tr>
+						<tr>
 								<td>																	
 									<select style="font-size: 12px" id="comboTipoRelato" onchange="setaTipoVitimaTipoCrime(6,this.value);">
 										<option value=""> #{messages['usuario.Selecione']} </option>
@@ -380,17 +379,7 @@
 									
 								</td>						
 							</tr>
-						</c:if>
-						<c:if test="#{filtroForm.pais != 'ZA' and usuario.pais != 'ZA'}">								
-							<tr>
-								<td>								
-									<input type='radio' name='tipoRelato' onclick='setaTipoVitimaTipoCrime(6,1);'> </input>#{messages['menu.relato.areasperigosas']}
-								</td>
-								<td>
-									<input type='radio' name='tipoRelato' onclick='setaTipoVitimaTipoCrime(6,2);'> </input> #{messages['menu.relato.drogas']}
-								</td>
-							</tr>		
-						</c:if>	
+					
 					</table>
 				</t:panelGroup>
 				

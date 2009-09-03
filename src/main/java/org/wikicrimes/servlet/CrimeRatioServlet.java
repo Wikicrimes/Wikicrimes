@@ -88,7 +88,7 @@ public class CrimeRatioServlet extends HttpServlet {
 		sbXML.append("<furto>"+mapa.get("Furto")+"</furto>");
 		sbXML.append("<roubo>"+mapa.get("Roubo")+"</roubo>");
 		sbXML.append("<latrocinio>"+mapa.get("Latrocinio")+"</latrocinio>");
-		sbXML.append("<hominicidio>"+mapa.get("Homicídio")+"</hominicidio>");
+		sbXML.append("<homicidio>"+mapa.get("Homicídio")+"</homicidio>");
 		sbXML.append("<outros>"+mapa.get("Outros")+"</outros>");
 		sbXML.append("</crimes>");
 		

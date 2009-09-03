@@ -270,7 +270,17 @@
 		<servlet-name>ServletRotaSegura</servlet-name>
 		<url-pattern>/ServletRotaSegura</url-pattern>
 	</servlet-mapping>
-	
+
+	<servlet>
+		<servlet-name>CrimeRatioServlet</servlet-name>
+		<servlet-class>org.wikicrimes.servlet.CrimeRatioServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>CrimeRatioServlet</servlet-name>
+		<url-pattern>/CrimeRatioServlet</url-pattern>
+	</servlet-mapping>
+
 	<servlet>
 		<servlet-name>RSSGeneratorServlet</servlet-name>
 		<servlet-class>org.wikicrimes.servlet.RSSGeneratorServlet</servlet-class>

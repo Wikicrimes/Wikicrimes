@@ -41,6 +41,8 @@ public class RelatoForm extends GenericForm {
 	public String subTipoRelato;
 	public Double latitude;
 	public Double longitude;
+	
+	private String mensagemConf="";
 
 	public UsuarioService usuarioService;	
 	
@@ -199,6 +201,7 @@ public class RelatoForm extends GenericForm {
 			//seta que essa confirmacao foi indicada por email
 			confirmacao.setIndicacaoEmail(Constantes.SIM);
 			confirmacao.setUsuario(usuarioConfirmacao);
+			confirmacao.setMensagem(mensagemConf);
 			confirmacoes.add(confirmacao);
 			digitouEmail = true;
 		}
@@ -215,6 +218,7 @@ public class RelatoForm extends GenericForm {
 			confirmacao.setIndicacaoEmail(Constantes.SIM);
 
 			confirmacao.setUsuario(usuarioConfirmacao);
+			confirmacao.setMensagem(mensagemConf);
 			confirmacoes.add(confirmacao);
 			digitouEmail = true;
 		}
@@ -229,6 +233,7 @@ public class RelatoForm extends GenericForm {
 			}
 			//seta que essa confirmacao foi indicada por email
 			confirmacao.setIndicacaoEmail(Constantes.SIM);
+			confirmacao.setMensagem(mensagemConf);
 			confirmacao.setUsuario(usuarioConfirmacao);
 			confirmacoes.add(confirmacao);
 			digitouEmail = true;
@@ -244,6 +249,7 @@ public class RelatoForm extends GenericForm {
 			}
 			//seta que essa confirmacao foi indicada por email
 			confirmacao.setIndicacaoEmail(Constantes.SIM);
+			confirmacao.setMensagem(mensagemConf);
 			confirmacao.setUsuario(usuarioConfirmacao);
 			confirmacoes.add(confirmacao);
 			digitouEmail = true;
@@ -259,6 +265,7 @@ public class RelatoForm extends GenericForm {
 			}
 			//seta que essa confirmacao foi indicada por email
 			confirmacao.setIndicacaoEmail(Constantes.SIM);
+			confirmacao.setMensagem(mensagemConf);
 			confirmacao.setUsuario(usuarioConfirmacao);
 			confirmacoes.add(confirmacao);
 			digitouEmail = true;
@@ -274,6 +281,7 @@ public class RelatoForm extends GenericForm {
 			}
 			//seta que essa confirmacao foi indicada por email
 			confirmacao.setIndicacaoEmail(Constantes.SIM);
+			confirmacao.setMensagem(mensagemConf);
 			confirmacao.setUsuario(usuarioConfirmacao);
 			confirmacoes.add(confirmacao);
 			digitouEmail = true;
@@ -513,5 +521,13 @@ public class RelatoForm extends GenericForm {
 
 	public void setRazaoOutros(String razaoOutros) {
 		this.razaoOutros = razaoOutros;
+	}
+
+	public String getMensagemConf() {
+		return mensagemConf;
+	}
+
+	public void setMensagemConf(String mensagemConf) {
+		this.mensagemConf = mensagemConf;
 	}	
 }

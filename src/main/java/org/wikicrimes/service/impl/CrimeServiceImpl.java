@@ -81,19 +81,28 @@ public class CrimeServiceImpl extends GenericCrudServiceImpl implements
 
 		if (getDao().save(crime)) {
 				crime.setChave(Cripto.criptografar(crime.getIdCrime().toString()+crime.getDataHoraRegistro().toString()));
+				if(crime.getUsuario().getPerfil().getIdPerfil().equals(new Long(6))){
+					crime.setConfirmacoesPositivas(new Long(1));
+				}
 				getDao().save(crime);
 				//se nao for certificador enviar emails para as indicacoes
 			//	if (!crime.getUsuario().getPerfil().equals(Perfil.CERTIFICADOR)){
 					Set<Confirmacao> confirmacoes = crime.getConfirmacoes();					
 					if(confirmacoes!=null){
 						for (Confirmacao confirmacao : confirmacoes) {
-							confirmacao.setCrime(crime);	
+						
+							confirmacao.setCrime(crime);
+							if(crime.getUsuario().getPerfil().getIdPerfil().equals(new Long(6))){
+								confirmacao.setConfirma(true);								
+							}
 							confirmacaoService.insert(confirmacao);
 						}
-						if(crime.getRegistradoPelaApi()!=null && !crime.getRegistradoPelaApi().equalsIgnoreCase("1"))
-							emailService.sendMailConfirmation(crime,FacesContext.getCurrentInstance().getViewRoot().getLocale().toString());
-						else{
-							emailService.sendMailConfirmation(crime,crime.getUsuario().getIdiomaPreferencial());
+						if(!crime.getUsuario().getPerfil().getIdPerfil().equals(new Long(6))){
+							if(crime.getRegistradoPelaApi()!=null && !crime.getRegistradoPelaApi().equalsIgnoreCase("1"))
+								emailService.sendMailConfirmation(crime,FacesContext.getCurrentInstance().getViewRoot().getLocale().toString());
+							else{
+								emailService.sendMailConfirmation(crime,crime.getUsuario().getIdiomaPreferencial());
+							}
 						}
 							
 					}	

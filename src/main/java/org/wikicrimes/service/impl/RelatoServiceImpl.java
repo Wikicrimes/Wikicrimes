@@ -58,6 +58,9 @@ public class RelatoServiceImpl extends GenericCrudServiceImpl implements RelatoS
 
 		if (getDao().save(relato)) {
 			relato.setChave(Cripto.criptografar(relato.getIdRelato().toString()+relato.getDataHoraRegistro().toString()));
+			if(relato.getUsuario().getPerfil().getIdPerfil().equals(new Long(6))){
+				relato.setQtdConfPositivas(new Long(1));
+			}
 			getDao().save(relato);
 
 			for (Razao razao : razoes) {
@@ -69,11 +72,15 @@ public class RelatoServiceImpl extends GenericCrudServiceImpl implements RelatoS
 			
 			Set<ConfirmacaoRelato> confirmacoes = relato.getConfirmacoes();
 			for (ConfirmacaoRelato confirmacao : confirmacoes) {
-				confirmacao.setRelato(relato);	
+				confirmacao.setRelato(relato);
+				if(relato.getUsuario().getPerfil().getIdPerfil().equals(new Long(6))){
+					confirmacao.setConfirma(true);								
+				}
 				confirmacaoService.insert(confirmacao);
 			}
-			emailService.sendMailConfirmation(relato,FacesContext.getCurrentInstance().getViewRoot().getLocale().toString());			
-			
+			if(!relato.getUsuario().getPerfil().getIdPerfil().equals(new Long(6))){
+				emailService.sendMailConfirmation(relato,FacesContext.getCurrentInstance().getViewRoot().getLocale().toString());			
+			}
 			return true;
 		}		
 

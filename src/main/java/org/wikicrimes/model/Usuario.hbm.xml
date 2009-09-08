@@ -17,7 +17,8 @@
         <property name="cidade" column="USU_CIDADE" type="java.lang.String"/>
         <property name="idiomaPreferencial" column="USU_IDIOMA" type="java.lang.String" length="2"/>
         <property name="receberNewsletter" column="USU_RECEBER_NEWSLETTER" type="java.lang.String" length="1"/>
-        <property name="tutorAtivado" column="USU_TUTOR_ATIVADO" type="java.lang.String" length="1"/>        
+        <property name="tutorAtivado" column="USU_TUTOR_ATIVADO" type="java.lang.String" length="1"/>
+        <property name="confAutomatica" column="USU_CONF_AUTOMATICA" type="java.lang.Boolean" length="1"/>                
         <property name="estado" column="USU_ESTADO" type="java.lang.String"/>
         <property name="pais" column="USU_PAIS" type="java.lang.String" not-null="false"/>
         <property name="aniversario" column="USU_ANIVERSARIO" type="java.util.Date"/>

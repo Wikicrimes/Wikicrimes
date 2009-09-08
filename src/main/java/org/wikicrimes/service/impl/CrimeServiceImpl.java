@@ -81,7 +81,7 @@ public class CrimeServiceImpl extends GenericCrudServiceImpl implements
 
 		if (getDao().save(crime)) {
 				crime.setChave(Cripto.criptografar(crime.getIdCrime().toString()+crime.getDataHoraRegistro().toString()));
-				if(crime.getUsuario().getPerfil().getIdPerfil().equals(new Long(6))){
+				if(crime.getUsuario().getConfAutomatica()){
 					crime.setConfirmacoesPositivas(new Long(1));
 				}
 				getDao().save(crime);
@@ -92,12 +92,12 @@ public class CrimeServiceImpl extends GenericCrudServiceImpl implements
 						for (Confirmacao confirmacao : confirmacoes) {
 						
 							confirmacao.setCrime(crime);
-							if(crime.getUsuario().getPerfil().getIdPerfil().equals(new Long(6))){
+							if(crime.getUsuario().getConfAutomatica()){
 								confirmacao.setConfirma(true);								
 							}
 							confirmacaoService.insert(confirmacao);
 						}
-						if(!crime.getUsuario().getPerfil().getIdPerfil().equals(new Long(6))){
+						if(!crime.getUsuario().getConfAutomatica()){
 							if(crime.getRegistradoPelaApi()!=null && !crime.getRegistradoPelaApi().equalsIgnoreCase("1"))
 								emailService.sendMailConfirmation(crime,FacesContext.getCurrentInstance().getViewRoot().getLocale().toString());
 							else{

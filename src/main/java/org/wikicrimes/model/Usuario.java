@@ -38,6 +38,7 @@ public class Usuario extends BaseObject {
 	private String tutorAtivado;
 	private String emailAtivo;
 	private UsuarioCelular usuarioCelular;
+	private Boolean confAutomatica;
 
 	public final static String TRUE = "1";
 	public final static String FALSE = "0";
@@ -283,6 +284,14 @@ public class Usuario extends BaseObject {
 
 	public void setUsuarioCelular(UsuarioCelular usuarioCelular) {
 		this.usuarioCelular = usuarioCelular;
+	}	
+
+	public Boolean getConfAutomatica() {
+		return confAutomatica;
+	}
+
+	public void setConfAutomatica(Boolean confAutomatica) {
+		this.confAutomatica = confAutomatica;
 	}
 
 	@Override

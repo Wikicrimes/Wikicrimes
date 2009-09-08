@@ -455,6 +455,10 @@
 						</h:inputText>	
 						<h:message styleClass="errorMessage" for="email6" />
 						
+						<h:outputText value="#{messages['mensagem.pessoas.que.esta.indicando']}:"/>
+						<h:inputTextarea style="font-size: 11px; font-family: sans-serif;" value="#{crimeForm.mensagemConf}" id="descricaoMensagem"
+							cols="38" rows="5"/>
+						
 					</h:panelGrid>
 
 					<h:commandButton value="#{messages['crime.btn.registrar']}"

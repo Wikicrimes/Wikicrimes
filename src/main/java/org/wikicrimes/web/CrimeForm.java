@@ -67,6 +67,8 @@ public class CrimeForm extends GenericForm {
 	private String email5=null;
 	
 	private String email6=null;
+	
+	private String mensagemConf = "";
 
 	private List tipoVitimaItens;
 
@@ -558,7 +560,7 @@ public class CrimeForm extends GenericForm {
 				//seta que essa confirmacao foi indicada por email
 				confirmacao.setIndicacaoEmail(Constantes.SIM);
 				confirmacao.setUsuario(usuarioConfirmacao);
-				confirmacao.setMensagem("");
+				confirmacao.setMensagem(mensagemConf);
 				confirmacoes.add(confirmacao);
 				digitouEmail = true;
 			}
@@ -575,7 +577,7 @@ public class CrimeForm extends GenericForm {
 				//seta que essa confirmacao foi indicada por email
 				confirmacao.setIndicacaoEmail(Constantes.SIM);
 				confirmacao.setUsuario(usuarioConfirmacao);
-				confirmacao.setMensagem("");
+				confirmacao.setMensagem(mensagemConf);
 				confirmacoes.add(confirmacao);
 				digitouEmail = true;
 			}
@@ -591,7 +593,7 @@ public class CrimeForm extends GenericForm {
 				//seta que essa confirmacao foi indicada por email
 				confirmacao.setIndicacaoEmail(Constantes.SIM);
 				confirmacao.setUsuario(usuarioConfirmacao);
-				confirmacao.setMensagem("");
+				confirmacao.setMensagem(mensagemConf);
 				confirmacoes.add(confirmacao);
 				digitouEmail = true;
 			}
@@ -607,7 +609,7 @@ public class CrimeForm extends GenericForm {
 				//seta que essa confirmacao foi indicada por email
 				confirmacao.setIndicacaoEmail(Constantes.SIM);
 				confirmacao.setUsuario(usuarioConfirmacao);
-				confirmacao.setMensagem("");
+				confirmacao.setMensagem(mensagemConf);
 				confirmacoes.add(confirmacao);
 				digitouEmail = true;
 			}
@@ -623,7 +625,7 @@ public class CrimeForm extends GenericForm {
 				//seta que essa confirmacao foi indicada por email
 				confirmacao.setIndicacaoEmail(Constantes.SIM);
 				confirmacao.setUsuario(usuarioConfirmacao);
-				confirmacao.setMensagem("");
+				confirmacao.setMensagem(mensagemConf);
 				confirmacoes.add(confirmacao);
 				digitouEmail = true;
 			}
@@ -639,7 +641,7 @@ public class CrimeForm extends GenericForm {
 				//seta que essa confirmacao foi indicada por email
 				confirmacao.setIndicacaoEmail(Constantes.SIM);
 				confirmacao.setUsuario(usuarioConfirmacao);
-				confirmacao.setMensagem("");
+				confirmacao.setMensagem(mensagemConf);
 				confirmacoes.add(confirmacao);
 				digitouEmail = true;
 			}
@@ -1219,6 +1221,14 @@ public class CrimeForm extends GenericForm {
 
 	public void setRazoes(List<SelectItem> razoes) {
 		this.razoes = razoes;
+	}
+
+	public String getMensagemConf() {
+		return mensagemConf;
+	}
+
+	public void setMensagemConf(String mensagemConf) {
+		this.mensagemConf = mensagemConf;
 	}
 
 }

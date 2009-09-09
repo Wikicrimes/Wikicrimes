@@ -564,4 +564,9 @@ insert into tb_tbr_tipo_bem_roubado_relato values(1,'tipo.bem.roubado.celular','
 						 (2,'tipo.bem.roubado.mp3','Mp3'),
 						 (3,'tipo.bem.roubado.outro.aparelho','Outro Equipamento'),
 						 (4,'tipo.bem.roubado.dinheiro','Dinheiro'),
-						 (5,'tipo.bem.roubado.comida','Comida')					    
+						 (5,'tipo.bem.roubado.comida','Comida')		
+						 
+						 
+update tb_usu_usuario set usu_email = concat(usu_idusuario,'@wikicrimes.org'),
+			  usu_primeiro_nome = concat(usu_idusuario,'nome'),
+			  usu_ultimo_nome = concat(usu_idusuario,'ultimo_nome')						 

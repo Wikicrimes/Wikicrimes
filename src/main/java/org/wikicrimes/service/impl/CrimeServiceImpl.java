@@ -26,6 +26,7 @@ import org.wikicrimes.model.CrimeVitima;
 import org.wikicrimes.model.EntidadeCertificadora;
 import org.wikicrimes.model.Razao;
 import org.wikicrimes.model.TipoArmaUsada;
+import org.wikicrimes.model.TipoConfirmacao;
 import org.wikicrimes.model.TipoCrime;
 import org.wikicrimes.model.TipoLocal;
 import org.wikicrimes.model.TipoPapel;
@@ -82,7 +83,7 @@ public class CrimeServiceImpl extends GenericCrudServiceImpl implements
 		if (getDao().save(crime)) {
 				crime.setChave(Cripto.criptografar(crime.getIdCrime().toString()+crime.getDataHoraRegistro().toString()));
 				if(crime.getUsuario().getConfAutomatica()){
-					crime.setConfirmacoesPositivas(new Long(1));
+					crime.setConfirmacoesPositivas(new Long(1));					
 				}
 				getDao().save(crime);
 				//se nao for certificador enviar emails para as indicacoes
@@ -93,7 +94,10 @@ public class CrimeServiceImpl extends GenericCrudServiceImpl implements
 						
 							confirmacao.setCrime(crime);
 							if(crime.getUsuario().getConfAutomatica()){
-								confirmacao.setConfirma(true);								
+								confirmacao.setConfirma(true);
+								TipoConfirmacao tipCon = new TipoConfirmacao();
+								tipCon.setIdTipoConfirmacao(new Long(1));
+								confirmacao.setTipoConfirmacao(tipCon);
 							}
 							confirmacaoService.insert(confirmacao);
 						}

@@ -200,7 +200,7 @@ public class UsuarioForm extends GenericForm {
 			getUsuario().setLat(new Double(lat));
 			getUsuario().setLng(new Double(lng));
 			getUsuario().setDataHoraRegistro(new Date());
-
+			getUsuario().setConfAutomatica(false);
 			if (service.insert(getUsuario())) {
 				// addMessage("usuario.registrado", args );
 				addMessage("usuario.registrado", getUsuario().getEmail()

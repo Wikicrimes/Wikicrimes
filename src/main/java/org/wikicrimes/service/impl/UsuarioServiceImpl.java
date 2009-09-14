@@ -142,6 +142,7 @@ public class UsuarioServiceImpl extends GenericCrudServiceImpl implements
 		usuario.setSenha("guest");
 		usuario.setIdiomaPreferencial(idioma);
 		usuario.setPerfil(new Perfil(Perfil.CONVIDADO));
+		usuario.setConfAutomatica(false);
 		this.getDao().save(usuario);
 		return usuario;
 		

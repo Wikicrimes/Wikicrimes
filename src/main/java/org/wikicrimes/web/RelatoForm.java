@@ -21,6 +21,12 @@ import org.wikicrimes.model.BaseObject;
 import org.wikicrimes.model.ConfirmacaoRelato;
 import org.wikicrimes.model.Razao;
 import org.wikicrimes.model.Relato;
+import org.wikicrimes.model.TipoAgressorRelato;
+import org.wikicrimes.model.TipoBemRoubadoRelato;
+import org.wikicrimes.model.TipoConsequenciaRelato;
+import org.wikicrimes.model.TipoLocalizacaoRelato;
+import org.wikicrimes.model.TipoReportRelato;
+import org.wikicrimes.model.TipoViolenciaEscolaRelato;
 import org.wikicrimes.model.Usuario;
 import org.wikicrimes.service.RelatoService;
 import org.wikicrimes.service.UsuarioService;
@@ -60,6 +66,23 @@ public class RelatoForm extends GenericForm {
 	
 	public RelatoForm()  {
 		relato = new Relato();
+		relato.setTipoViolenciaEscolaRelato(new TipoViolenciaEscolaRelato());
+		relato.setTipoConsequenciaRelato(new TipoConsequenciaRelato());
+		relato.setTipoAgressorRelato(new TipoAgressorRelato());
+		relato.setTipoBemRoubadoRelato(new TipoBemRoubadoRelato());
+		relato.setTipoLocalizacaoRelato(new TipoLocalizacaoRelato());
+		relato.setTipoReportRelato(new TipoReportRelato());
+		
+	}
+	
+	public String mostrarTipoAgressor(){
+		if(relato.getTipoAgressorRelato().getIdTipoAgressorRelato()!=null){
+			relato.getTipoAgressorRelato().setIdTipoAgressorRelato(null);
+			relato.getTipoReportRelato().setIdTipoReportRelato(null);
+			relato.getTipoBemRoubadoRelato().setIdTipoBemRoubadoRelato(null);
+			relato.getTipoConsequenciaRelato().setIdTipoConsequenciaRelato(null);			
+		}
+		return null;
 	}
 
 	public Relato getRelato() {
@@ -313,6 +336,38 @@ public class RelatoForm extends GenericForm {
 			relato.setConfirmacoes(confirmacoes);
 			
 			if (usuario != null) {
+				if(relato.getTipoBemRoubadoRelato().getIdTipoBemRoubadoRelato()!=null && !relato.getTipoBemRoubadoRelato().getIdTipoBemRoubadoRelato().equals(new Long(-1))){
+					relato.setTipoBemRoubadoRelato((TipoBemRoubadoRelato)service.find(relato.getTipoBemRoubadoRelato()).get(relato.getTipoBemRoubadoRelato().getIdTipoBemRoubadoRelato().intValue()-1));
+				}else if(relato.getTipoBemRoubadoRelato().getIdTipoBemRoubadoRelato()==null){
+					relato.setTipoBemRoubadoRelato(null);
+				}
+				if(relato.getTipoViolenciaEscolaRelato().getIdTipoViolenciaEscolaRelato()!=null && !relato.getTipoViolenciaEscolaRelato().getIdTipoViolenciaEscolaRelato().equals(new Long(-1))){
+					relato.setTipoViolenciaEscolaRelato((TipoViolenciaEscolaRelato)service.find(relato.getTipoViolenciaEscolaRelato()).get(relato.getTipoViolenciaEscolaRelato().getIdTipoViolenciaEscolaRelato().intValue()-1));
+				}else if(relato.getTipoViolenciaEscolaRelato().getIdTipoViolenciaEscolaRelato()==null){
+					relato.setTipoViolenciaEscolaRelato(null);
+				}
+				if(relato.getTipoAgressorRelato().getIdTipoAgressorRelato()!=null && !relato.getTipoAgressorRelato().getIdTipoAgressorRelato().equals(new Long(-1))){
+					relato.setTipoAgressorRelato((TipoAgressorRelato)service.find(relato.getTipoAgressorRelato()).get(relato.getTipoAgressorRelato().getIdTipoAgressorRelato().intValue()-1));
+				}else if(relato.getTipoAgressorRelato().getIdTipoAgressorRelato()==null){
+					relato.setTipoAgressorRelato(null);
+				}
+				if(relato.getTipoConsequenciaRelato().getIdTipoConsequenciaRelato()!=null && !relato.getTipoConsequenciaRelato().getIdTipoConsequenciaRelato().equals(new Long(-1))){
+					relato.setTipoConsequenciaRelato((TipoConsequenciaRelato)service.find(relato.getTipoConsequenciaRelato()).get(relato.getTipoConsequenciaRelato().getIdTipoConsequenciaRelato().intValue()-1));
+				}else if(relato.getTipoConsequenciaRelato().getIdTipoConsequenciaRelato()==null){
+					relato.setTipoConsequenciaRelato(null);
+				}
+				if(relato.getTipoLocalizacaoRelato().getIdTipoLocalizacaoRelato()!=null && !relato.getTipoLocalizacaoRelato().getIdTipoLocalizacaoRelato().equals(new Long(-1))){
+					relato.setTipoLocalizacaoRelato((TipoLocalizacaoRelato)service.find(relato.getTipoLocalizacaoRelato()).get(relato.getTipoLocalizacaoRelato().getIdTipoLocalizacaoRelato().intValue()-1));
+				}else if(relato.getTipoLocalizacaoRelato().getIdTipoLocalizacaoRelato()==null){
+					relato.setTipoLocalizacaoRelato(null);
+				}
+				if(relato.getTipoReportRelato().getIdTipoReportRelato()!=null && !relato.getTipoReportRelato().getIdTipoReportRelato().equals(new Long(-1))){
+					relato.setTipoReportRelato((TipoReportRelato)service.find(relato.getTipoReportRelato()).get(relato.getTipoReportRelato().getIdTipoReportRelato().intValue()-1));
+				}else if(relato.getTipoReportRelato().getIdTipoReportRelato()==null){
+					relato.setTipoReportRelato(null);
+				}
+				
+				
 				relato.setUsuario(usuario);
 				relato.setIp(this.getIp());
 				relato.setTipoRelato(tipoRelato);
@@ -522,7 +577,7 @@ public class RelatoForm extends GenericForm {
 	public void setRazaoOutros(String razaoOutros) {
 		this.razaoOutros = razaoOutros;
 	}
-
+	
 	public String getMensagemConf() {
 		return mensagemConf;
 	}

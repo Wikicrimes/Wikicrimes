@@ -305,7 +305,7 @@ public class Relato extends BaseObject {
 			TipoViolenciaEscolaRelato tipoViolenciaEscolaRelato) {
 		this.tipoViolenciaEscolaRelato = tipoViolenciaEscolaRelato;
 	}
-
+	
 	public TipoAgressorRelato getTipoAgressorRelato() {
 		return tipoAgressorRelato;
 	}

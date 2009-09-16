@@ -461,7 +461,7 @@ public class CrimeServiceImpl extends GenericCrudServiceImpl implements
 		return crimeDao.getCrimesMaisConfirmados();
 	}
 	
-	public Map<String,Integer> numeroCrimesArea(double latitude, double longitude, double raio){
-		return crimeDao.contaCrimesArea(latitude, longitude, raio);
+	public Map<String,Integer> numeroCrimesArea(double latitude, double longitude, double raio,long dataIni, long dataFim){
+		return crimeDao.contaCrimesArea(latitude, longitude, raio,dataIni, dataFim);
 	}
 }

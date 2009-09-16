@@ -59,6 +59,6 @@ public interface CrimeService extends GenericCrudService {
 	public List<Crime> getCrimesMaisConfirmados();
 	public void update(Crime crime, Set<Confirmacao> confirmacoes, List<Razao> razoes);
 	
-	public Map<String,Integer> numeroCrimesArea(double latitude, double longitude, double raio);
+	public Map<String,Integer> numeroCrimesArea(double latitude, double longitude, double raio,long dataIni, long dataFim);
 	
 }

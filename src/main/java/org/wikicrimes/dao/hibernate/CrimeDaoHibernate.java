@@ -475,12 +475,12 @@ public class CrimeDaoHibernate extends GenericCrudDaoHibernate implements
 	}	
 	
 	//by Philipp
-	public Map <String,Integer> contaCrimesArea(double latitude, double longitude, double raio){
+	public Map <String,Integer> contaCrimesArea(double latitude, double longitude, double raio,long dataIni, long dataFim){
 		Map <String,Integer> mapa = new HashMap<String, Integer>();
 		
-		String sqlSemViolencia = "SELECT count(*) as contador,tipo.tcr_descricao as descricao FROM tb_cri_crime as tcc inner join tb_tcr_tipo_crime as tipo on tipo.tcr_idtipo_crime=tcc.tcr_idtipo_crime and ("+RAIO_TERRA_KM+" * ACOS( (SIN(PI()* "+latitude+" /180)*SIN(PI() * tcc.cri_latitude/180)) + (COS(PI()* "+latitude+" /180)*cos(PI()*tcc.cri_latitude/180)*COS(PI() * tcc.cri_longitude/180-PI()* "+longitude+" /180))) < "+raio+") and tcc.cri_status=0 group by tipo.tcr_descricao";
+		String sqlSemViolencia = "SELECT count(*) as contador,tipo.tcr_descricao as descricao FROM tb_cri_crime as tcc inner join tb_tcr_tipo_crime as tipo on tipo.tcr_idtipo_crime=tcc.tcr_idtipo_crime and ("+RAIO_TERRA_KM+" * ACOS( (SIN(PI()* "+latitude+" /180)*SIN(PI() * tcc.cri_latitude/180)) + (COS(PI()* "+latitude+" /180)*cos(PI()*tcc.cri_latitude/180)*COS(PI() * tcc.cri_longitude/180-PI()* "+longitude+" /180))) < "+raio+") and tcc.cri_status=0 and (tcc.cri_data>="+new java.sql.Date(dataIni)+" and tcc.cri_data<="+new java.sql.Date(dataFim)+") group by tipo.tcr_descricao";
 		
-		String sqlViolencia = "select tttv.tvi_descricao as descricao, count(*) as contador from tb_tvi_tipo_vitima as tttv inner join (SELECT tipo.tcr_descricao as descricao,tipo.tcr_idtipo_crime as tipo,tcc.tvi_idtipo_vitima as idVitima FROM tb_cri_crime as tcc inner join tb_tcr_tipo_crime as tipo on tipo.tcr_idtipo_crime=tcc.tcr_idtipo_crime and ("+RAIO_TERRA_KM+" * ACOS( (SIN(PI()* "+latitude+" /180)*SIN(PI() * tcc.cri_latitude/180)) + (COS(PI()* "+latitude+" /180)*cos(PI()*tcc.cri_latitude/180)*COS(PI() * tcc.cri_longitude/180-PI()* "+longitude+" /180))) < "+raio+") and tcc.cri_status=0 and tipo.tcr_idtipo_crime = 5) as crime on tttv.tvi_idtipo_vitima = idVitima group by tttv.tvi_descricao";
+		String sqlViolencia = "select tttv.tvi_descricao as descricao, count(*) as contador from tb_tvi_tipo_vitima as tttv inner join (SELECT tipo.tcr_descricao as descricao,tipo.tcr_idtipo_crime as tipo,tcc.tvi_idtipo_vitima as idVitima FROM tb_cri_crime as tcc inner join tb_tcr_tipo_crime as tipo on tipo.tcr_idtipo_crime=tcc.tcr_idtipo_crime and ("+RAIO_TERRA_KM+" * ACOS( (SIN(PI()* "+latitude+" /180)*SIN(PI() * tcc.cri_latitude/180)) + (COS(PI()* "+latitude+" /180)*cos(PI()*tcc.cri_latitude/180)*COS(PI() * tcc.cri_longitude/180-PI()* "+longitude+" /180))) < "+raio+") and tcc.cri_status=0 and tipo.tcr_idtipo_crime = 5 and (tcc.cri_data>="+new java.sql.Date(dataIni)+" and tcc.cri_data<="+new java.sql.Date(dataFim)+")) as crime on tttv.tvi_idtipo_vitima = idVitima group by tttv.tvi_descricao";
 
 		//usa essa URL de teste...
 		//http://localhost:8080/wikicrimes/CrimeRatioServlet?lat=-3.72927166&long=-38.51398944&raio=1.25

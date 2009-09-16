@@ -42,11 +42,13 @@ public class CrimeRatioServlet extends HttpServlet {
 			double latitude = Double.parseDouble(request.getParameter("lat"));
 			double longitude = Double.parseDouble(request.getParameter("long"));
 			double raio = Double.parseDouble(request.getParameter("raio"));
+			long dataIni = Long.parseLong(request.getParameter("dIni"));
+			long dataFim = Long.parseLong(request.getParameter("dFim"));
 			
 			ApplicationContext springContext = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
 			CrimeService crimeService = (CrimeService)springContext.getBean("crimeService");
 			
-			Map <String,Integer> mapa = crimeService.numeroCrimesArea(latitude, longitude, raio);
+			Map <String,Integer> mapa = crimeService.numeroCrimesArea(latitude, longitude, raio,dataIni,dataFim);
 			
 			parsingToXML(mapa,response);
 			

@@ -193,11 +193,12 @@ public class RelatoForm extends GenericForm {
 			return returnPage= SESSAO_EXPIRADA;
 		}
 
-		
-		if (!madrugada && !manha && !tarde && !noite) {
-			addMessage("errors.periodo","");
-			return null;
-		}
+		if(!relato.getSubTipoRelato().equalsIgnoreCase("6")){
+			if (!madrugada && !manha && !tarde && !noite) {
+				addMessage("errors.periodo","");
+				return null;
+			}
+		}	
 		
 		Usuario usuario = (Usuario) this.getSessionScope().get("usuario");
 		//verifica se um dos emails e o proprio email de quem registrou o crime
@@ -343,7 +344,7 @@ public class RelatoForm extends GenericForm {
 				}
 				if(relato.getTipoViolenciaEscolaRelato().getIdTipoViolenciaEscolaRelato()!=null && !relato.getTipoViolenciaEscolaRelato().getIdTipoViolenciaEscolaRelato().equals(new Long(-1))){
 					relato.setTipoViolenciaEscolaRelato((TipoViolenciaEscolaRelato)service.find(relato.getTipoViolenciaEscolaRelato()).get(relato.getTipoViolenciaEscolaRelato().getIdTipoViolenciaEscolaRelato().intValue()-1));
-				}else if(relato.getTipoViolenciaEscolaRelato().getIdTipoViolenciaEscolaRelato()==null){
+				}else if(relato.getTipoViolenciaEscolaRelato().getIdTipoViolenciaEscolaRelato()==null || relato.getTipoViolenciaEscolaRelato().getIdTipoViolenciaEscolaRelato().equals(new Long(-1))){
 					relato.setTipoViolenciaEscolaRelato(null);
 				}
 				if(relato.getTipoAgressorRelato().getIdTipoAgressorRelato()!=null && !relato.getTipoAgressorRelato().getIdTipoAgressorRelato().equals(new Long(-1))){
@@ -499,12 +500,13 @@ public class RelatoForm extends GenericForm {
 			String bundleName = factory.getApplication().getMessageBundle();
 			ResourceBundle bundle = ResourceBundle.getBundle(bundleName,FacesContext.getCurrentInstance().getViewRoot().getLocale());
 				
-			for (Iterator iterator = razoesBanco.iterator(); iterator.hasNext();) {
+			for (Iterator<BaseObject> iterator = razoesBanco.iterator(); iterator.hasNext();) {
 				Razao r = (Razao) iterator.next();
-				//11 12 13 14, 18 (A pedido do Vasco nao utilizar essas causas)
+				//9 11 12 13 14 16 18 (A pedido do Vasco nao utilizar essas causas)
 				//Tire as opcoes, proximidade, impunidade, pistolagem, omissão de testemunhas e crime passional .
-				if (r.getIdRazao().intValue() < 11 || r.getIdRazao().intValue() > 14 && r.getIdRazao().intValue() != 18)
-					razoes.add(new SelectItem(r.getIdRazao().toString(),bundle.getString(r.getNome())));
+				if (r.getIdRazao().intValue() != 18 && r.getIdRazao().intValue() != 16 && r.getIdRazao().intValue() != 9 && (r.getIdRazao().intValue() < 11 || r.getIdRazao().intValue() > 14)){
+					razoes.add(new SelectItem(r.getIdRazao().toString(),bundle.getString(r.getNome())));					
+				}				
 			}
 		}
 		return razoes;

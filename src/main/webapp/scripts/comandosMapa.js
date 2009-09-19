@@ -62,7 +62,7 @@ ComandoMao.prototype.setButtonStyle_ = function(button) {
   button.style.width = "7.42em";
   button.style.height = "2.68em";
   button.style.cursor = "pointer";
-  button.style.backgroundImage = "url('./images/comandoMao.png')";
+  button.style.backgroundImage = "url('./images/comandoMao_"+localeWikiCrimes+".png')";
 }
 
 function ComandoFiltro() {
@@ -111,7 +111,7 @@ ComandoFiltro.prototype.setButtonStyle_ = function(button) {
   button.style.width = "7.42em";
   button.style.height = "2.68em";
   button.style.cursor = "pointer";
-  button.style.backgroundImage = "url('./images/comandoFiltro.png')";
+  button.style.backgroundImage = "url('./images/comandoFiltro_"+localeWikiCrimes+".png')";
 }
 
 function ComandoFiltroSelecionado() {
@@ -157,7 +157,7 @@ ComandoFiltroSelecionado.prototype.setButtonStyle_ = function(button) {
 	  button.style.width = "7.42em";
 	  button.style.height = "2.68em";
 	  button.style.cursor = "pointer";
-	  button.style.backgroundImage = "url('./images/comandoFiltroSel.png')";
+	  button.style.backgroundImage = "url('./images/comandoFiltroSel_"+localeWikiCrimes+".png')";
 	}
 
 //Comando dentro do mapa para marcar uma area
@@ -211,7 +211,7 @@ ComandoMarcadorDeArea.prototype.setButtonStyle_ = function(button) {
   button.style.width = "7.42em";
   button.style.height = "2.68em";
   button.style.cursor = "pointer";
-  button.style.backgroundImage = "url('./images/comandoArea.png')";
+  button.style.backgroundImage = "url('./images/comandoArea_"+localeWikiCrimes+".png')";
 }
 
 //Comando dentro do mapa para mover
@@ -260,7 +260,7 @@ ComandoMaoSelecionado.prototype.setButtonStyle_ = function(button) {
   button.style.width = "7.42em";
   button.style.height = "2.68em";
   button.style.cursor = "pointer";
-  button.style.backgroundImage = "url('./images/comandoMaoSel.png')";
+  button.style.backgroundImage = "url('./images/comandoMaoSel_"+localeWikiCrimes+".png')";
 }
 
 
@@ -309,7 +309,7 @@ ComandoMarcadorDeAreaSelecionado.prototype.setButtonStyle_ = function(button) {
   button.style.width = "7.42em";
   button.style.height = "2.68em";
   button.style.cursor = "pointer";
-  button.style.backgroundImage = "url('./images/comandoAreaSel.png')";
+  button.style.backgroundImage = "url('./images/comandoAreaSel_"+localeWikiCrimes+".png')";
 }
 
 
@@ -414,7 +414,7 @@ ComandoKernel.prototype.setButtonStyle_ = function(button) {
   button.style.width = "7.42em";
   button.style.height = "2.68em";
   button.style.cursor = "pointer";
-  button.style.backgroundImage = "url('./images/comandoKernel.png')";
+  button.style.backgroundImage = "url('./images/comandoKernel_"+localeWikiCrimes+".png')";
 }
 
 function ComandoKernelSelecionado() {
@@ -468,7 +468,7 @@ ComandoKernelSelecionado.prototype.setButtonStyle_ = function(button) {
 	  button.style.width = "7.42em";
 	  button.style.height = "2.68em";
 	  button.style.cursor = "pointer";
-	  button.style.backgroundImage = "url('./images/comandoKernelSel.png')";
+	  button.style.backgroundImage = "url('./images/comandoKernelSel_"+localeWikiCrimes+".png')";
 }
 
 

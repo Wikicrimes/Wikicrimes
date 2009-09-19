@@ -17,7 +17,7 @@
 
     <property environment="env"/>
     <property name="cargo.server" value="tomcat6x"/>
-    <property name="server.home" value="/home/carlos/Programas/tomcat6/"/>
+    <property name="server.home" value="/home/engcon/Programas/tomcat6/"/>
     <property name="deploy.dir" value="${server.home}/webapps"/>
 
     <typedef resource="org/apache/maven/artifact/ant/antlib.xml" uri="urn:maven-artifact-ant">

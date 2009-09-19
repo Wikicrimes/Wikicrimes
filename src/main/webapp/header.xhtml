@@ -155,45 +155,95 @@
 				var comandoControleMaoSelecionado = new ComandoMaoSelecionado();
 				var comandoControleMarcadorDeArea = new ComandoMarcadorDeArea();
 				var comandoControleMarcadorDeAreaSelecionado = new ComandoMarcadorDeAreaSelecionado();
-				var comandoControleEmbed = new ComandoEmbed();	
-				var comandoControleEmbedSelecionado = new ComandoEmbedSelecionado();
+				//var comandoControleEmbed = new ComandoEmbed();	
+				//var comandoControleEmbedSelecionado = new ComandoEmbedSelecionado();
+				var comandoControleFiltro = new ComandoFiltro();	
+				var comandoControleFiltroSelecionado = new ComandoFiltroSelecionado();
+				var comandoControleKernel = new ComandoKernel();
+				var comandoControleKernelSelecionado = new ComandoKernelSelecionado();
 				function selecionarComando(mapa, comando){
 						mapa.removeControl(comandoControleMao);
 						mapa.removeControl(comandoControleMaoSelecionado);
 						mapa.removeControl(comandoControleMarcadorDeArea);
 						mapa.removeControl(comandoControleMarcadorDeAreaSelecionado);
-						mapa.removeControl(comandoControleEmbed);
-						mapa.removeControl(comandoControleEmbedSelecionado);
-						if(comando=='mao'){					
+						//mapa.removeControl(comandoControleEmbed);
+						//mapa.removeControl(comandoControleEmbedSelecionado);
+						mapa.removeControl(comandoControleFiltro);
+						mapa.removeControl(comandoControleFiltroSelecionado);
+						mapa.removeControl(comandoControleKernel);
+						mapa.removeControl(comandoControleKernelSelecionado);
+
+						
+						if(comando=='filtro'){					
 							mapa.addControl(comandoControleMarcadorDeArea);
-							mapa.addControl(comandoControleMaoSelecionado);
+							mapa.addControl(comandoControleMao);
+							mapa.addControl(comandoControleKernel);
+							mapa.addControl(comandoControleFiltroSelecionado);
 							if(#{usuario.perfil.nome == 'CERTIFICADOR'}||#{usuario.perfil.nome == 'ADMINISTRADOR'}){
-								if(#{usuario.entidadeCertificadora.idEntidadeCertificadora != 12})
-									mapa.addControl(comandoControleEmbed);
+								if(#{usuario.entidadeCertificadora.idEntidadeCertificadora != 12}){
+									//mapa.addControl(comandoControleEmbed);
+								}	
+									
 							}
 						}
-						if(comando == 'area'){					
+
+						if(comando=='kernel'){					
+							mapa.addControl(comandoControleMarcadorDeArea);
+							mapa.addControl(comandoControleMao);
+							mapa.addControl(comandoControleFiltro);
+							mapa.addControl(comandoControleKernelSelecionado);
+							if(#{usuario.perfil.nome == 'CERTIFICADOR'}||#{usuario.perfil.nome == 'ADMINISTRADOR'}){
+								if(#{usuario.entidadeCertificadora.idEntidadeCertificadora != 12}){
+									//mapa.addControl(comandoControleEmbed);
+								}	
+							}
+						}
+						
+						if(comando=='mao'){											
+							mapa.addControl(comandoControleMarcadorDeArea);
+							mapa.addControl(comandoControleMaoSelecionado);
+							mapa.addControl(comandoControleKernel);
+							mapa.addControl(comandoControleFiltro);
+							if(#{usuario.perfil.nome == 'CERTIFICADOR'}||#{usuario.perfil.nome == 'ADMINISTRADOR'}){
+								if(#{usuario.entidadeCertificadora.idEntidadeCertificadora != 12}){
+									//mapa.addControl(comandoControleEmbed);
+								}	
+							}
+						}
+						if(comando == 'area'){
+							document.getElementById("divTelaFiltro").style.visibility = "hidden";					
 							mapa.addControl(comandoControleMarcadorDeAreaSelecionado);
 							mapa.addControl(comandoControleMao);
+							mapa.addControl(comandoControleKernel);
+							mapa.addControl(comandoControleFiltro);
 							if(#{usuario.perfil.nome == 'CERTIFICADOR'}||#{usuario.perfil.nome == 'ADMINISTRADOR'}){
-								if(#{usuario.entidadeCertificadora.idEntidadeCertificadora != 12})
-									mapa.addControl(comandoControleEmbed);
+								if(#{usuario.entidadeCertificadora.idEntidadeCertificadora != 12}){
+									//mapa.addControl(comandoControleEmbed);
+								}	
 							}
 						}
 						if(comando == 'nenhum'){
+							document.getElementById("divTelaFiltro").style.visibility = "hidden";
 							mapa.addControl(comandoControleMarcadorDeArea);
 							mapa.addControl(comandoControleMao);
+							mapa.addControl(comandoControleKernel);
+							mapa.addControl(comandoControleFiltro);
 							if(#{usuario.perfil.nome == 'CERTIFICADOR'}||#{usuario.perfil.nome == 'ADMINISTRADOR'}){
-								if(#{usuario.entidadeCertificadora.idEntidadeCertificadora != 12})
-									mapa.addControl(comandoControleEmbed);
+								if(#{usuario.entidadeCertificadora.idEntidadeCertificadora != 12}){
+									//mapa.addControl(comandoControleEmbed);
+								}	
 							}
 						}
 						if(comando == 'embed'){
+							document.getElementById("divTelaFiltro").style.visibility = "hidden";
 							mapa.addControl(comandoControleMarcadorDeArea);
 							mapa.addControl(comandoControleMao);
+							mapa.addControl(comandoControleKernel);
+							mapa.addControl(comandoControleFiltro);
 							if(#{usuario.perfil.nome == 'CERTIFICADOR'}||#{usuario.perfil.nome == 'ADMINISTRADOR'}){
-								if(#{usuario.entidadeCertificadora.idEntidadeCertificadora != 12})
-									mapa.addControl(comandoControleEmbedSelecionado);
+								if(#{usuario.entidadeCertificadora.idEntidadeCertificadora != 12}){
+									//mapa.addControl(comandoControleEmbed);
+								}	
 							}
 						}
 						

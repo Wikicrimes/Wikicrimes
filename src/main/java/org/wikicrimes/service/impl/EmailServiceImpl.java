@@ -567,7 +567,7 @@ public class EmailServiceImpl extends GenericCrudServiceImpl implements
 					model.put("usuario",usuario);
 					model.put("confirmacao",confirmacao);
 					model.put("relato",relato);
-					if(confirmacao.getIndicacaoEmail())
+					if(confirmacao.getIndicacaoEmail() != null && confirmacao.getIndicacaoEmail())
 						model.put("usuarioEmailouNome","(" + confirmacao.getUsuario().getEmail() +")");
 					else
 						model.put("usuarioEmailouNome",usuarioTexto);

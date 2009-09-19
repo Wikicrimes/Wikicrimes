@@ -186,8 +186,8 @@ public class FiltroForm extends GenericForm {
 		for (Iterator<Crime> iterator = dezMais.iterator(); iterator
 				.hasNext();) {
 			Crime crime = (Crime) iterator.next();
-			if (crime.getDescricao().length() > 15)
-				crime.setDescricao(crime.getDescricao().substring(0, 15)
+			if (crime.getDescricao().length() > 10)
+				crime.setDescricao(crime.getDescricao().substring(0, 10)
 						+ "...");
 			else
 				crime.setDescricao(crime.getDescricao().substring(0,
@@ -206,8 +206,8 @@ public class FiltroForm extends GenericForm {
 		for (Iterator<Crime> iterator = dezMais.iterator(); iterator
 				.hasNext();) {
 			Crime crime = (Crime) iterator.next();
-			if (crime.getDescricao().length() > 15)
-				crime.setDescricao(crime.getDescricao().substring(0, 15)
+			if (crime.getDescricao().length() > 10)
+				crime.setDescricao(crime.getDescricao().substring(0, 10)
 						+ "...");
 			else
 				crime.setDescricao(crime.getDescricao().substring(0,
@@ -226,8 +226,8 @@ public class FiltroForm extends GenericForm {
 		for (Iterator<Crime> iterator = dezMais.iterator(); iterator
 				.hasNext();) {
 			Crime crime = (Crime) iterator.next();
-			if (crime.getDescricao().length() > 15)
-				crime.setDescricao(crime.getDescricao().substring(0, 15)
+			if (crime.getDescricao().length() > 10)
+				crime.setDescricao(crime.getDescricao().substring(0, 10)
 						+ "...");
 			else
 				crime.setDescricao(crime.getDescricao().substring(0,

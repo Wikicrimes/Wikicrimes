@@ -67,6 +67,7 @@
 				var hibrido = '#{messages["webapp.nome.mapa.hibrido"]}';
 				var terreno = '#{messages["webapp.nome.mapa.terreno"]}';
 				var kernelLabel = '#{messages["webapp.nome.mapa.zonasquentes"]}';
+				var textoEmbedMapaWikiCrimes = '#{messages["texto.embed.mapa.wikicrimes"]}';
 				var earth ="3D";
 				/*var mapa = "Map";
 				var satelite = "Satellite";
@@ -1390,11 +1391,12 @@
 				map.addControl(new LegendaWikicrimes());
 				map.disableScrollWheelZoom();
 			//*********************** Kernel Map INICIO ****************************	
-				map.addControl(new KernelMapTypeControl());
+				//map.addControl(new KernelMapTypeControl());
 			//*********************** Kernel Map FIM ****************************	
 			//*********************** ROTAS SEGURAS INICIO ****************************
 				//controleMenu(map);
 			//*********************** ROTAS SEGURAS FIM ****************************
+				map.addControl(new ComandoEmbed());
 				
 				//mostraComandosLogado(map);
 				selecionarComando(map, 'mao');
@@ -1918,7 +1920,11 @@
   				if(msg == "botoes.title.mover")
   					document.getElementById("msgHintComandoMapa").innerHTML = '#{messages["botoes.title.mover"]}';
   				if(msg == "embedded.hint.comando.mapa")
-  					document.getElementById("msgHintComandoMapa").innerHTML = '#{messages["embedded.hint.comando.mapa"]}';		
+  					document.getElementById("msgHintComandoMapa").innerHTML = '#{messages["embedded.hint.comando.mapa"]}';
+				if(msg == "tutor.texto.filtro")
+					document.getElementById("msgHintComandoMapa").innerHTML = '#{messages["tutor.texto.filtro"]}';
+				if(	msg== "tutor.ajuda.hots.spots")
+					document.getElementById("msgHintComandoMapa").innerHTML = '#{messages["tutor.ajuda.hots.spots"]}';		
 			}
 			
 			function removeHintComandosMapa(){
@@ -2115,7 +2121,7 @@
 			}
 
 			function htmlLegendaEscondida(){
-				var html = "<table cellpading='0' cellspacing='0' style='width:100px; padding:4px ;border:1px solid #333333; opacity: .75; -moz-opacity:0.75; filter: alpha(opacity=75); background-color:#F0F8FF;font-family:Arial, sans-serif;  font-size: 11px;'>";
+				var html = "<table cellpading='0' cellspacing='0' style='width:100px; padding:4px ;border:1px solid #333333; opacity: .99; -moz-opacity:0.99; filter: alpha(opacity=99); background-color:white;font-family:Arial, sans-serif;  font-size: 11px;'>";
 				html+="     	<tr>";
 				html+="     		<td align='center' colspan='2'> <b>"+ "#{messages['wikicrimes.legenda.mapa']}" +"</b> <img width='12px' height='12px' src='./images/maximizar.png' onclick='mostraEscondeLeganda();' style='font-size: 12px;cursor: pointer;'/></td>";
 				html+="         </tr>"				
@@ -2124,7 +2130,7 @@
 			}
 
 			function htmlLegenda(){
-				var html = "<table cellpading='0' cellspacing='0' style='width:100px; padding:4px ;border:1px solid #333333; opacity: .75; -moz-opacity:0.75; filter: alpha(opacity=75); background-color:#F0F8FF;font-family:Arial, sans-serif;  font-size: 11px;'>";
+				var html = "<table cellpading='0' cellspacing='0' style='width:100px; padding:4px ;border:1px solid #333333; opacity: .99; -moz-opacity:0.99; filter: alpha(opacity=99); background-color:white;font-family:Arial, sans-serif;  font-size: 11px;'>";
 				html+="     	<tr>";
 				html+="     		<td align='center' colspan='2'> <b >"+ "#{messages['wikicrimes.legenda.mapa']}" +"</b> <img width='12px' height='12px' src='./images/maximizar.png' onclick='mostraEscondeLeganda();' style='font-size: 12px;cursor: pointer;'/> </td>";
 				html+="         </tr>"

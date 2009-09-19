@@ -174,13 +174,13 @@ public class ServletManipuladorTXT extends HttpServlet {
 					}
 				}	
 				linha += "|" +razoesTexto;
-				String desc15Letras = "";
-				if (crime.getDescricao().length() > 15)
-					desc15Letras = crime.getDescricao().substring(0, 15)
+				String desc10Letras = "";
+				if (crime.getDescricao().length() > 10)
+					desc10Letras = crime.getDescricao().substring(0, 10)
 							+ "...";
 				else
-					desc15Letras=crime.getDescricao().substring(0,crime.getDescricao().length());
-				linha += "|"+ desc15Letras.replaceAll("\\|", "").replaceAll("\\\n", "");
+					desc10Letras=crime.getDescricao().substring(0,crime.getDescricao().length());
+				linha += "|"+ desc10Letras.replaceAll("\\|", "").replaceAll("\\\n", "");
 				linha += "|" +crime.getVisualizacoes();
 				linha += "|" +crime.getQtdComentarios();
 				linha += "|" +crime.getConfirmacoesPositivas();

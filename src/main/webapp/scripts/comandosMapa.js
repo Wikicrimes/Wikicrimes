@@ -3,7 +3,7 @@ var estaRegistrandoArea = false;
 function ComandoMao() {
 }
 ComandoMao.prototype = new GControl();
-
+var kernelEnable = false;
 ComandoMao.prototype.initialize = function(map) {
   var container = document.createElement("div");
 
@@ -15,17 +15,29 @@ ComandoMao.prototype.initialize = function(map) {
   	if(!estaDesenhandoArea){
   		selecionarComando(map, 'mao');
 		setPodeRegistrar(false, 0);
-		removerPoligono();		
-	}	
+		removerPoligono();
+	}
+  	document.getElementById("divTelaFiltro").style.visibility = "hidden";
+  	if(!aindaCarregando){
+  		if(kernelEnable){	
+  			mostraCrimesAgrupador();
+			selecionarComando(map, 'mao');
+			kernelEnable = false;
+			apagaMapaKernel();
+			mostraMarcadores();
+			podeCarregarCrimes=true;
+  		}	
+		
+	}  
 		//document.getElementById("divExplicaMarcarArea").style.visibility = "hidden"; 
   });
   
   GEvent.addDomListener(maoDiv, "mouseover", function() {
-  		mostraHintComandosMapa("botoes.title.mover", "138px", "72px");
+  		
   });
   
   GEvent.addDomListener(maoDiv, "mouseout", function() {  		
-  		removeHintComandosMapa();
+  		
   });
      
   map.getContainer().appendChild(container);
@@ -47,12 +59,106 @@ ComandoMao.prototype.setButtonStyle_ = function(button) {
   //button.style.padding = "2px";
   //button.style.marginBottom = "3px";
   //button.style.textAlign = "center";
-  button.style.width = "2.52em";
-  button.style.height = "2.52em";
+  button.style.width = "7.42em";
+  button.style.height = "2.68em";
   button.style.cursor = "pointer";
   button.style.backgroundImage = "url('./images/comandoMao.png')";
 }
 
+function ComandoFiltro() {
+}
+ComandoFiltro.prototype = new GControl();
+
+ComandoFiltro.prototype.initialize = function(map) {
+  var container = document.createElement("div");
+
+  var filtroDiv = document.createElement("div");
+  this.setButtonStyle_(filtroDiv);
+  container.appendChild(filtroDiv);
+  filtroDiv.appendChild(document.createTextNode(""));
+  GEvent.addDomListener(filtroDiv, "click", function() {
+	  selecionarComando(map, 'filtro');
+	  document.getElementById("divTelaFiltro").style.visibility = "visible";
+  });
+  
+  GEvent.addDomListener(filtroDiv, "mouseover", function() {
+  		mostraHintComandosMapa("tutor.texto.filtro", "178px", "134px");
+  });
+  
+  GEvent.addDomListener(filtroDiv, "mouseout", function() {  		
+  		removeHintComandosMapa();
+  });
+     
+  map.getContainer().appendChild(container);
+  return container;
+}
+
+
+ComandoFiltro.prototype.getDefaultPosition = function() {
+  return new GControlPosition(G_ANCHOR_TOP_LEFT, new GSize(80,40));
+}
+
+
+ComandoFiltro.prototype.setButtonStyle_ = function(button) {
+  //button.style.textDecoration = "underline";
+ // button.style.color = "#0000cc";
+  //button.style.backgroundColor = "white";
+  //button.style.font = "small Arial";
+  //button.style.border = "1px solid black";
+  //button.style.padding = "2px";
+  //button.style.marginBottom = "3px";
+  //button.style.textAlign = "center";
+  button.style.width = "7.42em";
+  button.style.height = "2.68em";
+  button.style.cursor = "pointer";
+  button.style.backgroundImage = "url('./images/comandoFiltro.png')";
+}
+
+function ComandoFiltroSelecionado() {
+}
+ComandoFiltroSelecionado.prototype = new GControl();
+
+ComandoFiltroSelecionado.prototype.initialize = function(map) {
+  var container = document.createElement("div");
+
+  var filtroDiv = document.createElement("div");
+  this.setButtonStyle_(filtroDiv);
+  container.appendChild(filtroDiv);
+  filtroDiv.appendChild(document.createTextNode(""));
+  GEvent.addDomListener(filtroDiv, "click", function() {  		
+		selecionarComando(map, 'mao');
+		document.getElementById("divTelaFiltro").style.visibility = "hidden";
+  });
+  GEvent.addDomListener(filtroDiv, "mouseover", function() {
+	  mostraHintComandosMapa("tutor.texto.filtro", "178px", "134px");
+  });
+  
+  GEvent.addDomListener(filtroDiv, "mouseout", function() {  		
+  		removeHintComandosMapa();
+  });    
+  map.getContainer().appendChild(container);
+  return container;
+}
+
+
+ComandoFiltroSelecionado.prototype.getDefaultPosition = function() {
+  return new GControlPosition(G_ANCHOR_TOP_LEFT, new GSize(80,40));
+}
+
+ComandoFiltroSelecionado.prototype.setButtonStyle_ = function(button) {
+	  //button.style.textDecoration = "underline";
+	 // button.style.color = "#0000cc";
+	  //button.style.backgroundColor = "white";
+	  //button.style.font = "small Arial";
+	  //button.style.border = "1px solid black";
+	  //button.style.padding = "2px";
+	  //button.style.marginBottom = "3px";
+	  //button.style.textAlign = "center";
+	  button.style.width = "7.42em";
+	  button.style.height = "2.68em";
+	  button.style.cursor = "pointer";
+	  button.style.backgroundImage = "url('./images/comandoFiltroSel.png')";
+	}
 
 //Comando dentro do mapa para marcar uma area
 function ComandoMarcadorDeArea() {
@@ -67,16 +173,16 @@ ComandoMarcadorDeArea.prototype.initialize = function(map) {
   container.appendChild(marcarAreaDiv);
   marcarAreaDiv.appendChild(document.createTextNode(""));
   GEvent.addDomListener(marcarAreaDiv, "click", function() {
-  	//if(!estaRegistrandoArea){
+  	if(!estaRegistrandoArea){
   		
 	  	//selecionarComando(map, 'area');	   
 	    registrarArea1();
-	//}    
+	}    
     //var label = new ELabel(polyListArea.getVertex(0), '<div style="background-color:#ffffff;border:1px solid blue;color:blue;width:120px;height:14px"> Marque os pontos de sua area no mapa </div>', null, new GSize(6,-10), 75);
   });
   
   GEvent.addDomListener(marcarAreaDiv, "mouseover", function() {
-  		mostraHintComandosMapa("webapp.area.erro.info.hint.area", "138px", "100px");
+  		mostraHintComandosMapa("webapp.area.erro.info.hint.area", "138px", "268px");
   });
   
   GEvent.addDomListener(marcarAreaDiv, "mouseout", function() {  		
@@ -89,7 +195,7 @@ ComandoMarcadorDeArea.prototype.initialize = function(map) {
 
 
 ComandoMarcadorDeArea.prototype.getDefaultPosition = function() {
-  return new GControlPosition(G_ANCHOR_TOP_LEFT, new GSize(112,7));
+  return new GControlPosition(G_ANCHOR_TOP_LEFT, new GSize(170,7));
 }
 
 
@@ -102,8 +208,8 @@ ComandoMarcadorDeArea.prototype.setButtonStyle_ = function(button) {
   //button.style.padding = "2px";
   //button.style.marginBottom = "3px";
   //button.style.textAlign = "center";
-  button.style.width = "2.52em";
-  button.style.height = "2.52em";
+  button.style.width = "7.42em";
+  button.style.height = "2.68em";
   button.style.cursor = "pointer";
   button.style.backgroundImage = "url('./images/comandoArea.png')";
 }
@@ -126,11 +232,11 @@ ComandoMaoSelecionado.prototype.initialize = function(map) {
 		removerPoligono();		 
   });
   GEvent.addDomListener(maoDiv, "mouseover", function() {
-  		mostraHintComandosMapa("botoes.title.mover", "138px", "72px");
+  		
   });
   
   GEvent.addDomListener(maoDiv, "mouseout", function() {  		
-  		removeHintComandosMapa();
+  		
   });    
   map.getContainer().appendChild(container);
   return container;
@@ -151,8 +257,8 @@ ComandoMaoSelecionado.prototype.setButtonStyle_ = function(button) {
   //button.style.padding = "2px";
   //button.style.marginBottom = "3px";
   //button.style.textAlign = "center";
-  button.style.width = "2.52em";
-  button.style.height = "2.52em";
+  button.style.width = "7.42em";
+  button.style.height = "2.68em";
   button.style.cursor = "pointer";
   button.style.backgroundImage = "url('./images/comandoMaoSel.png')";
 }
@@ -174,7 +280,7 @@ ComandoMarcadorDeAreaSelecionado.prototype.initialize = function(map) {
     //startShape();
   });
   GEvent.addDomListener(marcarAreaDiv, "mouseover", function() {
-  		mostraHintComandosMapa("webapp.area.erro.info.hint.area", "138px", "100px");
+  		mostraHintComandosMapa("webapp.area.erro.info.hint.area", "138px", "268px");
   });
   
   GEvent.addDomListener(marcarAreaDiv, "mouseout", function() {  		
@@ -187,7 +293,7 @@ ComandoMarcadorDeAreaSelecionado.prototype.initialize = function(map) {
 
 
 ComandoMarcadorDeAreaSelecionado.prototype.getDefaultPosition = function() {
-  return new GControlPosition(G_ANCHOR_TOP_LEFT, new GSize(112,7));
+  return new GControlPosition(G_ANCHOR_TOP_LEFT, new GSize(170,7));
 }
 
 
@@ -200,61 +306,12 @@ ComandoMarcadorDeAreaSelecionado.prototype.setButtonStyle_ = function(button) {
   //button.style.padding = "2px";
   //button.style.marginBottom = "3px";
   //button.style.textAlign = "center";
-  button.style.width = "2.52em";
-  button.style.height = "2.52em";
+  button.style.width = "7.42em";
+  button.style.height = "2.68em";
   button.style.cursor = "pointer";
   button.style.backgroundImage = "url('./images/comandoAreaSel.png')";
 }
 
-//Comando dentro do mapa para gerarEmbed
-function ComandoEmbedSelecionado() {
-}
-ComandoEmbedSelecionado.prototype = new GControl();
-
-ComandoEmbedSelecionado.prototype.initialize = function(map) {
-  var container = document.createElement("div");
-
-  var embedDiv = document.createElement("div");
-  this.setButtonStyle_(embedDiv);
-  container.appendChild(embedDiv);
-  embedDiv.appendChild(document.createTextNode(""));
-  GEvent.addDomListener(embedDiv, "click", function() {
-	  removeHintComandosMapa();
-	  gerarEmbedded();
-    selecionarComando(map, 'mao');
-  });
-  GEvent.addDomListener(embedDiv, "mouseover", function() {
-  		mostraHintComandosMapa("embedded.hint.comando.mapa", "138px", "134px");
-  });
-  
-  GEvent.addDomListener(embedDiv, "mouseout", function() {  		
-  		removeHintComandosMapa();
-  });    
-
-  map.getContainer().appendChild(container);
-  return container;
-}
-
-
-ComandoEmbedSelecionado.prototype.getDefaultPosition = function() {
-  return new GControlPosition(G_ANCHOR_TOP_LEFT, new GSize(144,7));
-}
-
-
-ComandoEmbedSelecionado.prototype.setButtonStyle_ = function(button) {
-  //button.style.textDecoration = "underline";
- // button.style.color = "#0000cc";
-  //button.style.backgroundColor = "white";
-  //button.style.font = "small Arial";
-  //button.style.border = "1px solid black";
-  //button.style.padding = "2px";
-  //button.style.marginBottom = "3px";
-  //button.style.textAlign = "center";
-  button.style.width = "2.52em";
-  button.style.height = "2.52em";
-  button.style.cursor = "pointer";
-  button.style.backgroundImage = "url('./images/comandoEmbedSel.png')";
-}
 
 //Comando dentro do mapa para gerarEmbed
 function ComandoEmbed() {
@@ -267,19 +324,17 @@ ComandoEmbed.prototype.initialize = function(map) {
   var embedDiv = document.createElement("div");
   this.setButtonStyle_(embedDiv);
   container.appendChild(embedDiv);
-  embedDiv.appendChild(document.createTextNode(""));
+  embedDiv.appendChild(document.createTextNode(textoEmbedMapaWikiCrimes));
   GEvent.addDomListener(embedDiv, "click", function() {
-	 removeHintComandosMapa();
-	 selecionarComando(map, 'embed');
-     gerarEmbedded(); 
+	 gerarEmbedded(); 
      selecionarComando(map, 'mao');
   });
   GEvent.addDomListener(embedDiv, "mouseover", function() {
-  		mostraHintComandosMapa("embedded.hint.comando.mapa", "138px", "134px");
+  
   });
   
   GEvent.addDomListener(embedDiv, "mouseout", function() {  		
-  		removeHintComandosMapa();
+  
   });    
 
   map.getContainer().appendChild(container);
@@ -288,11 +343,66 @@ ComandoEmbed.prototype.initialize = function(map) {
 
 
 ComandoEmbed.prototype.getDefaultPosition = function() {
-  return new GControlPosition(G_ANCHOR_TOP_LEFT, new GSize(144,7));
+  return new GControlPosition(G_ANCHOR_TOP_RIGHT, new GSize(32,28));
 }
 
 
 ComandoEmbed.prototype.setButtonStyle_ = function(button) {
+  button.style.textDecoration = "underline";
+  //button.style.color = "#0000cc";
+  button.style.backgroundColor = "white";
+  button.style.border = "1px solid black";
+  button.style.padding = "2px";
+  button.style.marginBottom = "3px";
+  button.style.textAlign = "center";
+ 
+  button.style.cursor = "pointer";
+  //button.style.backgroundImage = "url('./images/comandoEmbed.png')";
+}
+
+function ComandoKernel() {
+}
+ComandoKernel.prototype = new GControl();
+
+ComandoKernel.prototype.initialize = function(map) {
+  var container = document.createElement("div");
+
+  var kernelDiv = document.createElement("div");
+  this.setButtonStyle_(kernelDiv);
+  container.appendChild(kernelDiv);
+  kernelDiv.appendChild(document.createTextNode(""));
+  GEvent.addDomListener(kernelDiv, "click", function() {	 
+	  if(!aindaCarregando){
+		  	selecionarComando(map, 'kernel');
+		  	limpaCrimesAgrupador();
+		  	document.getElementById("divTelaFiltro").style.visibility = "hidden";
+		  	kernelEnable = true;
+		  	document.getElementById("loadingKernelMap").style.visibility='visible';		
+		  	aindaCarregando = true;
+		  	podeCarregarCrimes=false;
+		  	window.setTimeout(constroiMapaKernel,1);  	
+	  }
+  });
+  
+  GEvent.addDomListener(kernelDiv, "mouseover", function() {
+	  mostraHintComandosMapa("tutor.ajuda.hots.spots", "138px", "268px");
+  });
+  
+  GEvent.addDomListener(kernelDiv, "mouseout", function() {  		
+	  removeHintComandosMapa();
+  });
+     
+  map.getContainer().appendChild(container);
+  return container;
+}
+
+
+ComandoKernel.prototype.getDefaultPosition = function() {
+  return new GControlPosition(G_ANCHOR_TOP_LEFT, new GSize(170,40));
+}
+
+
+ComandoKernel.prototype.setButtonStyle_ = function(button) {
   //button.style.textDecoration = "underline";
  // button.style.color = "#0000cc";
   //button.style.backgroundColor = "white";
@@ -301,10 +411,64 @@ ComandoEmbed.prototype.setButtonStyle_ = function(button) {
   //button.style.padding = "2px";
   //button.style.marginBottom = "3px";
   //button.style.textAlign = "center";
-  button.style.width = "2.52em";
-  button.style.height = "2.52em";
+  button.style.width = "7.42em";
+  button.style.height = "2.68em";
   button.style.cursor = "pointer";
-  button.style.backgroundImage = "url('./images/comandoEmbed.png')";
+  button.style.backgroundImage = "url('./images/comandoKernel.png')";
+}
+
+function ComandoKernelSelecionado() {
+}
+ComandoKernelSelecionado.prototype = new GControl();
+
+ComandoKernelSelecionado.prototype.initialize = function(map) {
+  var container = document.createElement("div");
+
+  var kernelDiv = document.createElement("div");
+  this.setButtonStyle_(kernelDiv);
+  container.appendChild(kernelDiv);
+  kernelDiv.appendChild(document.createTextNode(""));
+  GEvent.addDomListener(kernelDiv, "click", function() {  		
+		
+		if(!aindaCarregando){
+			mostraCrimesAgrupador();
+			selecionarComando(map, 'mao');
+			kernelEnable = false;
+			apagaMapaKernel();
+			mostraMarcadores();
+			podeCarregarCrimes=true;
+			//alert('disable');
+		}  
+  });
+  GEvent.addDomListener(kernelDiv, "mouseover", function() {
+	  mostraHintComandosMapa("tutor.ajuda.hots.spots", "138px", "268px");
+  });
+  
+  GEvent.addDomListener(kernelDiv, "mouseout", function() {  		
+	  removeHintComandosMapa();
+  });    
+  map.getContainer().appendChild(container);
+  return container;
+}
+
+
+ComandoKernelSelecionado.prototype.getDefaultPosition = function() {
+  return new GControlPosition(G_ANCHOR_TOP_LEFT, new GSize(170,40));
+}
+
+ComandoKernelSelecionado.prototype.setButtonStyle_ = function(button) {
+	  //button.style.textDecoration = "underline";
+	 // button.style.color = "#0000cc";
+	  //button.style.backgroundColor = "white";
+	  //button.style.font = "small Arial";
+	  //button.style.border = "1px solid black";
+	  //button.style.padding = "2px";
+	  //button.style.marginBottom = "3px";
+	  //button.style.textAlign = "center";
+	  button.style.width = "7.42em";
+	  button.style.height = "2.68em";
+	  button.style.cursor = "pointer";
+	  button.style.backgroundImage = "url('./images/comandoKernelSel.png')";
 }
 
 

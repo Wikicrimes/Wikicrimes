@@ -14,30 +14,48 @@
 
 <head>
 
-<meta http-equiv="Cache-Control" content="no-store" />
-<meta http-equiv="Pragma" content="no-cache" />
-<meta http-equiv="Expires" content="0" />
-<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
-
-<script type="text/javascript"
-	src="http://www.google.com/jsapi?key=ABQIAAAAg4v-Pz31X7RpxlFPsEIYsRTFxkwrVf99uCE-DFDYzwuulB3IQBTEtjQzYCPUvNslNNQOJKHac-ipqw"></script>
-
-<script type="text/javascript" src="./scripts/gfeedfetcher.js"></script>
-
-<script type="text/javascript" src="./scripts/gajaxticker.js"></script>
-
-<script type="text/javascript" src="./scripts/util.js"></script>
-<script type="text/javascript" src="./scripts/calendar.js"></script>
-<script type="text/javascript" src="./scripts/calendar-setup.js"></script>
-<script type="text/javascript" src="./scripts/googleClusterer.js"></script>
-<script type="text/javascript" src="./scripts/lang/calendar-en.js"></script>
-<script type="text/javascript"
-	src="./scripts/lang/#{messages['webapp.calendar']}"></script>
-<c:if test="#{messages['webapp.calendar'] == 'calendar-pt.js' }">
-	<script type="text/javascript" src="./scripts/lang/calendar-br.js"></script>
-</c:if>
-
-<script type="text/javascript">
+	<meta http-equiv="Cache-Control" content="no-store" />
+	<meta http-equiv="Pragma" content="no-cache" />
+	<meta http-equiv="Expires" content="0" />
+	<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+	
+	<script type="text/javascript"
+		src="http://www.google.com/jsapi?key=ABQIAAAAg4v-Pz31X7RpxlFPsEIYsRTFxkwrVf99uCE-DFDYzwuulB3IQBTEtjQzYCPUvNslNNQOJKHac-ipqw"></script>
+	
+	<script type="text/javascript" src="./scripts/gfeedfetcher.js"></script>
+	
+	<script type="text/javascript" src="./scripts/gajaxticker.js"></script>
+	
+	<script type="text/javascript" src="./scripts/util.js"></script>
+	<script type="text/javascript" src="./scripts/calendar.js"></script>
+	<script type="text/javascript" src="./scripts/calendar-setup.js"></script>
+	<script type="text/javascript" src="./scripts/googleClusterer.js"></script>
+	<script type="text/javascript" src="./scripts/lang/calendar-en.js"></script>
+	<script type="text/javascript"
+		src="./scripts/lang/#{messages['webapp.calendar']}"></script>
+	<c:if test="#{messages['webapp.calendar'] == 'calendar-pt.js' }">
+		<script type="text/javascript" src="./scripts/lang/calendar-br.js"></script>
+	</c:if>
+	<style>
+		#divTelaFiltro {
+				position: absolute;
+				top: 142px;
+				left: 36%;				
+				text-align: center;				
+				margin-left: auto;
+				margin-right: auto;
+				z-index: 99;
+				opacity: .95;
+				-moz-opacity:0.95;
+				filter: alpha(opacity=95);
+				color:#000000;
+				font-family:helvetica,verdana,sans;
+				font-size:12px;
+				visibility:hidden;
+				background-color:#ffffff;				
+			}
+	</style>
+	<script type="text/javascript">
         /* <![CDATA[ */
           
 			var linhas;
@@ -174,7 +192,7 @@
 				}
 				else {
 					dwr.util.addOptions('tipoLocalNew', tpLocalPrimLinha);
-					$('tipoLocalNew').style.display = 'none';
+					$('tipoLocalNew').style.display = 'inline';
 				}
 			}
 			
@@ -296,48 +314,255 @@
 		<h:inputHidden id="zoomMapa" value="#{filtroForm.zoomMapa}" />
 		<h:inputHidden id="latMapa" value="#{filtroForm.latMapa}" />
 		<h:inputHidden id="lngMapa" value="#{filtroForm.lngMapa}" />
-
-		<!-- Pesquisa -->
-		<rich:simpleTogglePanel id="togglePanelPesquisa"
-			bodyClass="filtrosSimpleTogglePanelBodyPesquisa"
-			headerClass="panelHeaderFiltro" opened="true" switchType="client"
-			label="#{messages['titulo.pesquisaCrimes']}" style="width:100%">
-			<h:panelGrid border="0" columns="1" cellpadding="1" cellspacing="0"
-				style="margin:0px">
-				<!--				<h:outputText value="#{messages['crime.filtro.titulo']}"
-					style="vertical-align: text-top; font-size:11px; " /> -->
-
-				<t:selectOneMenu style="font-size:10px;"
-					value="#{filtroForm.tipoCrime}" required="false" id="tipoCrime"
-					forceId="true" onchange="changeTipoVitima();">
-					<f:selectItem itemLabel="#{messages['filtro.option.todosCrimes']}"
-						itemValue="0" />
-					<f:selectItem itemLabel="#{messages['filtro.option.furto']}"
-						itemValue="3" />
-					<f:selectItem itemLabel="#{messages['filtro.option.roubo']}"
-						itemValue="4" />
-					<f:selectItem
-						itemLabel="#{messages['filtro.option.tentativaFurto']}"
-						itemValue="2" />
-					<f:selectItem
-						itemLabel="#{messages['filtro.option.tentativaRoubo']}"
-						itemValue="1" />
-					<f:selectItem itemLabel="#{messages['filtro.option.violencia']}"
-						itemValue="5" />
-				</t:selectOneMenu>
-				<h:outputText value="" />
-				<select style="font-size: 10px;" id="tipoVitimaNew"
-					onchange="dwr.util.setValue('tipoVitima', dwr.util.getValue(this.id)); changeTipoLocal();">
-				</select>
-				<h:outputText value="" />
-				<select style="font-size: 10px;" id="tipoLocalNew"
-					onchange="dwr.util.setValue('tipoLocal', dwr.util.getValue(this.id));">
-				</select>
-			</h:panelGrid>
-
-
-
-			<script type="text/javascript"><!--
+		<div id="divTelaFiltro">
+			<!-- Pesquisa -->
+			<rich:panel style="width:300px" id="panelFiltro" header="#{messages['titulo.pesquisaCrimes']}">
+				<t:panelGrid border="0" columns="2" cellpadding="1" cellspacing="1"
+					style="margin:0px;text-align:left;align:left">
+					<t:panelGroup colspan="2">
+						<h:outputText value="#{messages['estatisticas.area.visivel.tipo.crime']}:"/>
+					</t:panelGroup>
+					<t:selectOneMenu style="font-size:10px;"
+						value="#{filtroForm.tipoCrime}" required="false" id="tipoCrime"
+						forceId="true" onchange="changeTipoVitima();">
+						<f:selectItem itemLabel="#{messages['filtro.option.todosCrimes']}"
+							itemValue="0" />
+						<f:selectItem itemLabel="#{messages['filtro.option.furto']}"
+							itemValue="3" />
+						<f:selectItem itemLabel="#{messages['filtro.option.roubo']}"
+							itemValue="4" />
+						<f:selectItem
+							itemLabel="#{messages['filtro.option.tentativaFurto']}"
+							itemValue="2" />
+						<f:selectItem
+							itemLabel="#{messages['filtro.option.tentativaRoubo']}"
+							itemValue="1" />
+						<f:selectItem itemLabel="#{messages['filtro.option.violencia']}"
+							itemValue="5" />
+					</t:selectOneMenu>
+					<h:panelGroup border="0" >	
+						<select style="font-size: 10px;" id="tipoVitimaNew"
+							onchange="dwr.util.setValue('tipoVitima', dwr.util.getValue(this.id)); changeTipoLocal();">
+						</select>
+					</h:panelGroup>
+					<t:panelGroup colspan="2">
+						<h:outputText value="#{messages['estatisticas.area.visivel.tipo.local']}:"/>
+					</t:panelGroup>	
+					<t:panelGroup colspan="2" border="0" >						
+						<select style="font-size: 10px;" id="tipoLocalNew"
+							onchange="dwr.util.setValue('tipoLocal', dwr.util.getValue(this.id));">
+						</select>
+					</t:panelGroup>
+				</t:panelGrid>	
+				<t:panelGrid border="0" columns="3" cellpadding="1" cellspacing="1"
+					style="margin:0px;text-align:left;align:left">
+					<t:panelGroup colspan="3">	
+						<h:outputText value="#{messages['crime.filtro.periodo']}:"
+							style="font-size:11px;" />
+					</t:panelGroup>		
+					<h:outputText value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
+					<h:panelGroup border="0">
+						<t:inputText id="dataInicial" onkeyup="limpaDataInicial();" forceId="true"
+							value="#{filtroForm.dataInicial}" style="font-size:10px;"
+							size="10">
+							<f:converter
+								converterId="wikicrimes.WikiSearchCrimesDataConverter" />
+						</t:inputText>
+						<t:graphicImage id="triggerINI" forceId="true"
+							value="/images/btns/btnCalendar.gif"
+							style="display:inline; cursor:pointer;" />
+						<h:outputText value="#{messages['filtro.label.acrase']}"
+							style="font-size:11px;" />
+					</h:panelGroup>				
+					<h:panelGroup border="0" >
+						<t:inputText id="dataFinal" forceId="true" onkeyup="limpaDataFinal();"
+							value="#{filtroForm.dataFinal}" style="font-size:10px;" size="10">
+							<f:converter
+								converterId="wikicrimes.WikiSearchCrimesDataConverter" />
+						</t:inputText>
+						<t:graphicImage id="triggerDF" forceId="true"
+							value="/images/btns/btnCalendar.gif"
+							style="display:inline; cursor:pointer;" />
+					</h:panelGroup>
+				</t:panelGrid>					
+				<!-- Filtros Avançados -->
+				<t:panelGrid border="0" columns="3" cellpadding="1" cellspacing="1"
+						style="margin:0px;text-align:left;align:left">
+						<t:panelGroup colspan="3">
+							<h:outputText value="#{messages['crime.filtro.horario']}:"
+								style="font-size:11px;" />
+						</t:panelGroup>		
+	
+						<h:outputText value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
+						<h:panelGroup border="0">
+							<h:selectOneMenu value="#{filtroForm.horarioInicial}"
+								style="font-size:10px;" id="horarioInicial">
+								<f:selectItem itemLabel="#{messages['filtro.btn.qualquer']}"
+									itemValue="-1" />
+								<f:selectItems value="#{filtroForm.horarioItens}" />
+							</h:selectOneMenu>
+	
+							<h:outputText value="#{messages['filtro.label.acrase']}"
+								style="font-size:11px;" />
+						</h:panelGroup>
+						<h:selectOneMenu value="#{filtroForm.horarioFinal}"
+							style="font-size:10px; " id="horarioFinal">
+							<f:selectItem itemLabel="#{messages['filtro.btn.qualquer']}"
+								itemValue="-1" />
+							<f:selectItems value="#{filtroForm.horarioItens}" />
+						</h:selectOneMenu>
+				</t:panelGrid>		
+	
+				<t:panelGrid border="0" cellpadding="1" cellspacing="1" style="margin:0px;text-align:left;align:left">
+						<h:outputText value="#{messages['crime.filtro.certificacao']}:"
+							style="vertical-align: text-top; font-size:11px;" />
+						<h:panelGrid border="0" columns="2" cellpadding="0" cellspacing="0">
+	
+							<h:selectBooleanCheckbox
+								value="#{filtroForm.crimeConfirmadoPositivamente}"
+								id="crimeConfirmadoPositivamente" style="font-size:11px;">
+							</h:selectBooleanCheckbox>
+	
+							<h:outputText
+								value="#{messages['crime.filtro.option.certificadoPositivamente']}"
+								style="font-size:10px;" />
+	
+							<h:selectBooleanCheckbox id="crimeConfirmadoEntidadeCertificadora"
+								value="#{filtroForm.crimeConfirmadoEntCer}"
+								style="font-size:11px;"
+								onclick="habilitaListaEntidadeCertificadora();">
+							</h:selectBooleanCheckbox>
+	
+							<h:outputText
+								value="#{messages['crime.filtro.option.entidadeCertificadora']}"
+								style="font-size:10px;" />
+						</h:panelGrid>
+						<h:selectOneMenu
+							style="font-size:10px"
+							value="#{filtroForm.entidadeCertificadora}"
+							id="entidadeCertificadora">
+							<f:selectItems value="#{filtroForm.entidadeCertificadoraItens}" />
+						</h:selectOneMenu>
+						<!-- FIM Filtro por nível de confiabilidade  -->
+						<!-- Inserção de um código javaScript para resolução dos problemas com a propriedade disable do componente "selectOneMenu"-->
+						<script type="text/javascript">
+							
+								var isEntidadeCertificadoraSelecionada = document.getElementById("filtroForm:crimeConfirmadoEntidadeCertificadora").checked;
+								if(isEntidadeCertificadoraSelecionada == false) {
+									document.getElementById("filtroForm:entidadeCertificadora").disabled = true;
+									document.getElementById("filtroForm:entidadeCertificadora").itemValue = "";
+									}
+							</script>
+						<!-- update vazio somente para gravar na sessao os parametros do mapa (lat,lng,zoom) -->
+	
+					
+				</t:panelGrid>
+			
+				<h:panelGrid border="0" columns="2"	>
+	
+					<a4j:commandButton value="#{messages['filtro.btn.atualizar']}"
+						id="btnAtualizar" action="#{filtroForm.update}" styleClass="button"
+						onclick="getUserMapConfig(); limpaUrl();setaSubmeteuFiltro();atualizaMapa();" />
+	
+					<a4j:commandButton value="#{messages['faleconosco.cancelar']}"
+						id="btnCancelar" onclick="document.getElementById('divTelaFiltro').style.visibility = 'hidden';selecionarComando(map, 'mao');//comentado pq esse era o limpar filtro. limpaUrl();limpaFiltro(); return false;"
+						styleClass="button" />
+				</h:panelGrid>
+			</rich:panel>
+		</div>	
+		<!-- Fim da Pesquisa -->	
+		
+		<rich:simpleTogglePanel id="togglePanelDezMais"
+					bodyClass="filtrosSimpleTogglePanelBodyPesquisa" 
+					headerClass="panelHeaderFiltro" opened="true" switchType="client"
+					label="#{messages['cinco.mais.titulo']}" style="width:160px;">
+					<t:panelGroup style="width: 100%; font-size: 10px; font-family: sans-serif;">
+						<table width="100%" cellpadding="0" cellspacing="0" align="center">
+							<tr>
+								<td align="center"> <select size="3" style="font-size: 10px; font-family: sans-serif;" id="tipoDezMaisSelecao" onchange="getDezMaisGeralMapa(this.value);"> <option selected="selected" value="1"> <h:outputText value="#{messages['cinco.mais.vistos']}" /> </option> <option value="2"> <h:outputText value="#{messages['cinco.mais.comentados']}" /> </option> <option value="3"> <h:outputText value="#{messages['cinco.mais.confirmados']}" /> </option>  </select> </td>
+							</tr>
+						</table>
+					</t:panelGroup>		
+				
+					<script><!--
+					/*	<![CDATA[ */
+					function getDezMaisGeralMapa(tipo){
+						if(tipo!=undefined)
+							tipoDezMais = tipo;
+						var eMapa = document.getElementById("op_dez_mais1").checked;
+						if(!eMapa){
+							if(tipoDezMais == '1')
+								document.getElementById("filtroForm:btSubmitVistos").click();
+							if(tipoDezMais == '2')
+								document.getElementById("filtroForm:btSubmitComentados").click();
+							if(tipoDezMais == '3')
+								document.getElementById("filtroForm:btSubmitConfirmados").click();
+								
+						}else{
+							
+							mostraListaDezMais();
+						}							
+					}	
+						
+					/* ]]> */			
+				--></script>
+					<hr />
+					<t:panelGrid align="center" style="width: 100%; font-size: 9px; font-family: sans-serif;"
+						cellpadding="0" cellspacing="0" columns="2">
+						<t:panelGroup>
+							<input checked="checked" type="radio" id="op_dez_mais" name="op_dez_mais"  value="1" onclick="getDezMaisGeralMapa();"/> <h:outputText value="#{messages['tipo.dez.mais.geral']}" />
+						</t:panelGroup>
+						<t:panelGroup>
+							<input type="radio" id="op_dez_mais1" name="op_dez_mais" value="2" onclick="getDezMaisGeralMapa();" /> <h:outputText value="#{messages['tipo.dez.mais.mapa']}" />
+						</t:panelGroup>
+					</t:panelGrid>
+					<t:panelGroup id="painelDezMaisListagem" style="width: 100%">	
+						<t:panelGrid 
+							style="font-size: 10.6px; font-family: sans-serif;" width="100%"
+							columns="2" cellpadding="1" cellspacing="1">
+							<c:forEach var="dezMaisIter" items="#{filtroForm.dezMais}">
+								<t:panelGroup>
+									<div style="cursor: pointer;"
+										onclick="mostrarCrimeMapa('#{dezMaisIter.chave}','#{dezMaisIter.latitude}', '#{dezMaisIter.longitude}');"
+										class="moldura">
+										<h:outputText value="#{dezMaisIter.idCrime}" />
+									</div>
+								</t:panelGroup>
+								<t:panelGroup >
+									<a onclick="mostrarCrimeMapa('#{dezMaisIter.chave}','#{dezMaisIter.latitude}', '#{dezMaisIter.longitude}');"
+										style="cursor: pointer;"><h:outputText
+												value="#{dezMaisIter.descricao}" />								
+									</a>
+								</t:panelGroup>
+							</c:forEach>
+						</t:panelGrid>
+					</t:panelGroup>	
+				</rich:simpleTogglePanel>				
+				<!-- Fim das Estatísticas -->
+				
+				<div style="width:160px; height:240px">
+					<script type="text/javascript"><!--
+						google_ad_client = "pub-6186265227572284";
+						/* WikiCrimes 120x240, criado 19/09/09 */
+						google_ad_slot = "2936037165";
+						google_ad_width = 120;
+						google_ad_height = 240;
+						//-->
+						</script>
+						<script type="text/javascript"
+						src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+					</script>
+				</div>
+				
+				<a4j:commandButton id="btSubmitVistos" style="display: none" immediate="true" reRender="painelDezMaisListagem"
+										action="#{filtroForm.dezMaisVistos}"/>
+				<a4j:commandButton id="btSubmitComentados" style="display: none" immediate="true" reRender="painelDezMaisListagem"
+										action="#{filtroForm.dezMaisComentados}"/>
+				<a4j:commandButton id="btSubmitConfirmados" style="display: none" immediate="true" reRender="painelDezMaisListagem"
+										action="#{filtroForm.dezMaisConfirmados}"/>												
+				
+		
+		<script type="text/javascript"><!--
 		/*	<![CDATA[ */	   
 				
 					
@@ -1135,27 +1360,20 @@
    	                		 i=0;
    	                		 totalCrimes=0;
 				      		while (i < linhas.length-1){
-				      		     		var dadosCrimeLinha = linhas[i].split("|");
-						            	var sigla = dadosCrimeLinha[0];
-						            	var qtd = dadosCrimeLinha[1];
-						            	var lat = dadosCrimeLinha[2];
-	   					           		 var long = dadosCrimeLinha[3];
+		      		     		var dadosCrimeLinha = linhas[i].split("|");
+				            	var sigla = dadosCrimeLinha[0];
+				            	var qtd = dadosCrimeLinha[1];
+				            	var lat = dadosCrimeLinha[2];
+  					           	var long = dadosCrimeLinha[3];
 
-	   					           		 totalCrimes+=parseInt(qtd);
-	   					                  // Cria o marcador
-						                var marcador = createMarkerGroup(new GLatLng(lat, long),sigla + ' (' + qtd + ')');
+  					           	totalCrimes+=parseInt(qtd);
+  					                  // Cria o marcador
+				                var marcador = createMarkerGroup(new GLatLng(lat, long),sigla + ' (' + qtd + ')');
 								      	// Adiciona o marcador ao mapa
-									mgr.addMarker(marcador,2,6);
+								mgr.addMarker(marcador,2,6);
 								
-									//gmarkers.put(idCrime,marcador);
-						      		i++
-						      		}
-   			 				//var temp =	document.getElementById("quantidadeCrimesEncontrados").value;
- 				        	//document.getElementById("quantidadeCrimesEncontrados").value = totalCrimes + " " + temp;	
-			      				
-				      			//	verificaPermalink();
-        	                	
-        	                	
+						      	i++
+						     }        	                	
 			      		}
 
 					function setaSubmeteuFiltro(){
@@ -1166,286 +1384,61 @@
 					function submeteRequisicao(){
 				     //alert("sub: "+submeteu);
 				     
-					 if (submeteu) {
-					 	submeteu=false;					 	
-					    tipoCrime = document.getElementById("tipoCrime").value;
-					    tipoVitima = document.getElementById("tipoVitima").value;  
-					    tipoLocal = document.getElementById("tipoLocal").value;
-					    dataInicial = document.getElementById("dataInicial").value.split("/");
-					    dataFinal = document.getElementById("dataFinal").value.split("/");
-					    horarioInicial = document.getElementById("filtroForm:horarioInicial").value;
-					    horarioFinal = document.getElementById("filtroForm:horarioFinal").value;
-				        entidadeCertificadora = document.getElementById("filtroForm:entidadeCertificadora").value;
-					    var isEntidadeCertificadoraSelecionada = document.getElementById("filtroForm:crimeConfirmadoEntidadeCertificadora").checked;
-                        if(isEntidadeCertificadoraSelecionada == false) {
-							document.getElementById("filtroForm:entidadeCertificadora").disabled = true;
-							document.getElementById("filtroForm:entidadeCertificadora").value="";                                                     
-							entidadeCertificadora = "-1"; 
-                        }
-   					   if (document.getElementById("filtroForm:crimeConfirmadoPositivamente").checked == true )
-	   					    confirmadosPositivamente = document.getElementById("filtroForm:crimeConfirmadoPositivamente").value;
-					    else
-						    confirmadosPositivamente = "";
-					 
-					    }
+						if (submeteu) {
+						 	submeteu=false;					 	
+						    tipoCrime = document.getElementById("tipoCrime").value;
+						    tipoVitima = document.getElementById("tipoVitima").value;  
+						    tipoLocal = document.getElementById("tipoLocal").value;
+						    dataInicial = document.getElementById("dataInicial").value.split("/");
+						    dataFinal = document.getElementById("dataFinal").value.split("/");
+						    horarioInicial = document.getElementById("filtroForm:horarioInicial").value;
+						    horarioFinal = document.getElementById("filtroForm:horarioFinal").value;
+					        entidadeCertificadora = document.getElementById("filtroForm:entidadeCertificadora").value;
+						    var isEntidadeCertificadoraSelecionada = document.getElementById("filtroForm:crimeConfirmadoEntidadeCertificadora").checked;
+	                        if(isEntidadeCertificadoraSelecionada == false) {
+								document.getElementById("filtroForm:entidadeCertificadora").disabled = true;
+								document.getElementById("filtroForm:entidadeCertificadora").value="";                                                     
+								entidadeCertificadora = "-1"; 
+	                        }
+	   					    if (document.getElementById("filtroForm:crimeConfirmadoPositivamente").checked == true )
+		   					    confirmadosPositivamente = document.getElementById("filtroForm:crimeConfirmadoPositivamente").value;
+						    else
+							    confirmadosPositivamente = "";
+						 
+						}
 					    var b = map.getBounds();
 						var north = b.getNorthEast().lat();
-						  var south = b.getSouthWest().lat();
-						  var east = b.getNorthEast().lng();
-						  var west = b.getSouthWest().lng();
-
-					  /*  if (id){//verifica se e permalink. se for seta zoom para nao entrar nos agrupadores
-   					    	atualiza=false; //seta atualiza false para no evento zoom end outra requisicao nao ser aberta
-					    	map.setZoom(7); 
-
-							
-					    	}*/
-					    
+						var south = b.getSouthWest().lat();
+						var east = b.getNorthEast().lng();
+						var west = b.getSouthWest().lng();
+						
 					    if(validaPeriodoData()) {
 						   	constroiRequisicao('ServletManipuladorTXT?tc='+tipoCrime+'&tv='+tipoVitima+'&tl='+document.getElementById("tipoLocal").value+'&di='+dataInicial+'&df='+dataFinal+'&hi='+horarioInicial+'&hf='+horarioFinal +  '&z=' + map.getZoom()+ '&ic=' + id+ '&ec=' + entidadeCertificadora + '&cp=' + confirmadosPositivamente + '&n=' +north+ '&s=' +south+
-            '&e=' +east + '&w='+west + '&id=' + ignoraData +'&rl='+idRelato);
+            				'&e=' +east + '&w='+west + '&id=' + ignoraData +'&rl='+idRelato);
 				            ignoraData="";
 
             			}
 					}
 					
 					/*Função que habilita/desabilita a lista contendo as entidades certificadoras cadastradas*/
-								function habilitaListaEntidadeCertificadora(){
-									
-									var listaHabilitada = document.getElementById("filtroForm:entidadeCertificadora").disabled;
-									if(listaHabilitada == true){
-										document.getElementById("filtroForm:entidadeCertificadora").disabled = false;
-  										 document.getElementById("filtroForm:entidadeCertificadora").selectedIndex = 1;
-  										 }
-									else {
-									 document.getElementById("filtroForm:entidadeCertificadora").disabled = true;
-									 document.getElementById("filtroForm:entidadeCertificadora").selectedIndex = 0;
+					function habilitaListaEntidadeCertificadora(){
+						
+						var listaHabilitada = document.getElementById("filtroForm:entidadeCertificadora").disabled;
+						if(listaHabilitada == true){
+							document.getElementById("filtroForm:entidadeCertificadora").disabled = false;
+									 document.getElementById("filtroForm:entidadeCertificadora").selectedIndex = 1;
+									 }
+						else {
+						 document.getElementById("filtroForm:entidadeCertificadora").disabled = true;
+						 document.getElementById("filtroForm:entidadeCertificadora").selectedIndex = 0;
 
-									}
-									 
-								}
+						}
+						 
+					}
 
 
 				/* ]]> */			
-				--></script>
-
-			<h:outputText value="#{messages['crime.filtro.periodo']}:"
-				style="font-size:11px;" />
-			<h:panelGrid border="0" columns="1">
-
-				<h:panelGroup border="0" columns="3">
-					<t:inputText id="dataInicial" onkeyup="limpaDataInicial();" forceId="true"
-						value="#{filtroForm.dataInicial}" style="font-size:10px;"
-						size="10">
-						<f:converter
-							converterId="wikicrimes.WikiSearchCrimesDataConverter" />
-					</t:inputText>
-					<t:graphicImage id="triggerINI" forceId="true"
-						value="/images/btns/btnCalendar.gif"
-						style="display:inline; cursor:pointer;" />
-					<h:outputText value="#{messages['filtro.label.acrase']}"
-						style="font-size:11px;" />
-				</h:panelGroup>
-
-				<h:panelGroup border="0" columns="2">
-					<t:inputText id="dataFinal" forceId="true" onkeyup="limpaDataFinal();"
-						value="#{filtroForm.dataFinal}" style="font-size:10px;" size="10">
-						<f:converter
-							converterId="wikicrimes.WikiSearchCrimesDataConverter" />
-					</t:inputText>
-					<t:graphicImage id="triggerDF" forceId="true"
-						value="/images/btns/btnCalendar.gif"
-						style="display:inline; cursor:pointer;" />
-				</h:panelGroup>
-
-			</h:panelGrid>
-			<!-- Filtros Avançados -->
-			<rich:simpleTogglePanel id="togglePanelFiltroAvancado"
-				bodyClass="filtrosSimpleTogglePanelBodyFiltroAvancado"
-				onexpand="SimpleTogglePanelManager.toggleOnClient(event,'filtroForm:togglePanelFiltroAvancado');"
-				oncollapse="SimpleTogglePanelManager.toggleOnClient(event,'filtroForm:togglePanelFiltroAvancado');"
-				headerClass="panelHeader" opened="false" switchType="client"
-				style="width:158px;">
-				<!--  label="#{messages['crime.filtro.avancado']}"> -->
-
-				<f:facet name="header">
-					<h:panelGroup>
-						<h:outputText value="#{messages['crime.filtro.avancado']}" />
-					
-					</h:panelGroup>
-				</f:facet>
-
-				<h:panelGrid border="0" columns="1" cellpadding="2" cellspacing="2"
-					style="margin:0px;">
-
-					<h:outputText value="#{messages['crime.filtro.horario']}:"
-						style="font-size:11px;" />
-
-
-					<h:panelGroup border="0" columns="2">
-						<h:selectOneMenu value="#{filtroForm.horarioInicial}"
-							style="font-size:10px;" id="horarioInicial">
-							<f:selectItem itemLabel="#{messages['filtro.btn.qualquer']}"
-								itemValue="-1" />
-							<f:selectItems value="#{filtroForm.horarioItens}" />
-						</h:selectOneMenu>
-
-						<h:outputText value="#{messages['filtro.label.acrase']}"
-							style="font-size:11px;" />
-					</h:panelGroup>
-					<h:selectOneMenu value="#{filtroForm.horarioFinal}"
-						style="font-size:10px; " id="horarioFinal">
-						<f:selectItem itemLabel="#{messages['filtro.btn.qualquer']}"
-							itemValue="-1" />
-						<f:selectItems value="#{filtroForm.horarioItens}" />
-					</h:selectOneMenu>
-
-					<!-- Filtro por nível de confiabilidade  -->
-					<h:outputText value="#{messages['crime.filtro.certificacao']}:"
-						style="vertical-align: text-top; font-size:11px;" />
-					<h:panelGrid border="0" columns="2" cellpadding="0" cellspacing="0">
-
-						<h:selectBooleanCheckbox
-							value="#{filtroForm.crimeConfirmadoPositivamente}"
-							id="crimeConfirmadoPositivamente" style="font-size:11px;">
-						</h:selectBooleanCheckbox>
-
-						<h:outputText
-							value="#{messages['crime.filtro.option.certificadoPositivamente']}"
-							style="font-size:10px;" />
-
-						<h:selectBooleanCheckbox id="crimeConfirmadoEntidadeCertificadora"
-							value="#{filtroForm.crimeConfirmadoEntCer}"
-							style="font-size:11px;"
-							onclick="habilitaListaEntidadeCertificadora();">
-						</h:selectBooleanCheckbox>
-
-						<h:outputText
-							value="#{messages['crime.filtro.option.entidadeCertificadora']}"
-							style="font-size:10px;" />
-					</h:panelGrid>
-					<h:selectOneMenu
-						style="font-size:10px"
-						value="#{filtroForm.entidadeCertificadora}"
-						id="entidadeCertificadora">
-						<f:selectItems value="#{filtroForm.entidadeCertificadoraItens}" />
-					</h:selectOneMenu>
-					<!-- FIM Filtro por nível de confiabilidade  -->
-					<!-- Inserção de um código javaScript para resolução dos problemas com a propriedade disable do componente "selectOneMenu"-->
-					<script type="text/javascript">
-						
-							var isEntidadeCertificadoraSelecionada = document.getElementById("filtroForm:crimeConfirmadoEntidadeCertificadora").checked;
-							if(isEntidadeCertificadoraSelecionada == false) {
-								document.getElementById("filtroForm:entidadeCertificadora").disabled = true;
-								document.getElementById("filtroForm:entidadeCertificadora").itemValue = "";
-								}
-						</script>
-					<!-- update vazio somente para gravar na sessao os parametros do mapa (lat,lng,zoom) -->
-
-				</h:panelGrid>
-
-		
-				<!-- Fim dos Filtros Avançados -->
-			</rich:simpleTogglePanel>
-			<h:panelGrid border="0" columns="2"	>
-
-				<a4j:commandButton value="#{messages['filtro.btn.atualizar']}"
-					id="btnAtualizar" action="#{filtroForm.update}" styleClass="button"
-					onclick="getUserMapConfig(); limpaUrl();setaSubmeteuFiltro();atualizaMapa();" />
-
-				<a4j:commandButton value="#{messages['filtro.btn.limpar']}"
-					id="btnLimpar" onclick="limpaUrl();limpaFiltro(); return false;"
-					styleClass="button" />
-			</h:panelGrid>
-	</rich:simpleTogglePanel>
-		<!-- Fim da Pesquisa -->
-		<!-- Estatísticas -->
-				<rich:simpleTogglePanel id="togglePanelRss"
-			bodyClass="filtrosSimpleTogglePanelBodyPesquisa"
-			headerClass="panelHeaderFiltro" opened="true" switchType="client"
-			label="#{messages['novidades.title']}" style="width:100%;">
-			
-			<div align="center"><a target="_blank"
-							href="http://www.orkut.com.br/Main#AppInfo.aspx?appUrl=http%3A%2F%2Fwww.wikicrimes.org%2Fgadget%2Fwikicrimes.xml&amp;objs=&amp;sn=&amp;ref=SR"><img src="./images/img_propaganda.PNG" /></a><br/>
-			<h:outputText value="#{messages['novidades.wikicrimes.orkut.descricao1']}" /><h:outputText /><br/> 
-			</div>
-		</rich:simpleTogglePanel>
-				<rich:simpleTogglePanel id="togglePanelDezMais"
-					bodyClass="filtrosSimpleTogglePanelBodyPesquisa" 
-					headerClass="panelHeaderFiltro" opened="true" switchType="client"
-					label="#{messages['cinco.mais.titulo']}" style="width:100%;">
-					<t:panelGroup style="width: 100%; font-size: 10px; font-family: sans-serif;">
-						<table width="100%" cellpadding="0" cellspacing="0" align="center">
-							<tr>
-								<td align="center"> <select size="3" style="font-size: 10px; font-family: sans-serif;" id="tipoDezMaisSelecao" onchange="getDezMaisGeralMapa(this.value);"> <option selected="selected" value="1"> <h:outputText value="#{messages['cinco.mais.vistos']}" /> </option> <option value="2"> <h:outputText value="#{messages['cinco.mais.comentados']}" /> </option> <option value="3"> <h:outputText value="#{messages['cinco.mais.confirmados']}" /> </option>  </select> </td>
-							</tr>
-						</table>
-					</t:panelGroup>		
-				
-					<script><!--
-					/*	<![CDATA[ */
-					function getDezMaisGeralMapa(tipo){
-						if(tipo!=undefined)
-							tipoDezMais = tipo;
-						var eMapa = document.getElementById("op_dez_mais1").checked;
-						if(!eMapa){
-							if(tipoDezMais == '1')
-								document.getElementById("filtroForm:btSubmitVistos").click();
-							if(tipoDezMais == '2')
-								document.getElementById("filtroForm:btSubmitComentados").click();
-							if(tipoDezMais == '3')
-								document.getElementById("filtroForm:btSubmitConfirmados").click();
-								
-						}else{
-							
-							mostraListaDezMais();
-						}							
-					}	
-						
-					/* ]]> */			
-				--></script>
-					<hr />
-					<t:panelGrid align="center" style="width: 100%; font-size: 9px; font-family: sans-serif;"
-						cellpadding="0" cellspacing="0" columns="2">
-						<t:panelGroup>
-							<input checked="checked" type="radio" id="op_dez_mais" name="op_dez_mais"  value="1" onclick="getDezMaisGeralMapa();"/> <h:outputText value="#{messages['tipo.dez.mais.geral']}" />
-						</t:panelGroup>
-						<t:panelGroup>
-							<input type="radio" id="op_dez_mais1" name="op_dez_mais" value="2" onclick="getDezMaisGeralMapa();" /> <h:outputText value="#{messages['tipo.dez.mais.mapa']}" />
-						</t:panelGroup>
-					</t:panelGrid>
-					<t:panelGroup id="painelDezMaisListagem" style="width: 100%">	
-						<t:panelGrid 
-							style="font-size: 11px; font-family: sans-serif;" width="100%"
-							columns="2" cellpadding="1" cellspacing="1">
-							<c:forEach var="dezMaisIter" items="#{filtroForm.dezMais}">
-								<t:panelGroup>
-									<div style="cursor: pointer;"
-										onclick="mostrarCrimeMapa('#{dezMaisIter.chave}','#{dezMaisIter.latitude}', '#{dezMaisIter.longitude}');"
-										class="moldura">
-										<h:outputText value="#{dezMaisIter.idCrime}" />
-									</div>
-								</t:panelGroup>
-								<t:panelGroup >
-									<a onclick="mostrarCrimeMapa('#{dezMaisIter.chave}','#{dezMaisIter.latitude}', '#{dezMaisIter.longitude}');"
-										style="cursor: pointer;"><h:outputText
-												value="#{dezMaisIter.descricao}" />								
-									</a>
-								</t:panelGroup>
-							</c:forEach>
-						</t:panelGrid>
-					</t:panelGroup>	
-				</rich:simpleTogglePanel>
-				<!-- Fim das Estatísticas -->
-		<!--  inicio rss feed reader -->
-
-		<a4j:commandButton id="btSubmitVistos" style="display: none" immediate="true" reRender="painelDezMaisListagem"
-								action="#{filtroForm.dezMaisVistos}"/>
-		<a4j:commandButton id="btSubmitComentados" style="display: none" immediate="true" reRender="painelDezMaisListagem"
-								action="#{filtroForm.dezMaisComentados}"/>
-		<a4j:commandButton id="btSubmitConfirmados" style="display: none" immediate="true" reRender="painelDezMaisListagem"
-								action="#{filtroForm.dezMaisConfirmados}"/>												
-						
+				--></script>				
 	</h:form>
 </h:panelGrid>
 

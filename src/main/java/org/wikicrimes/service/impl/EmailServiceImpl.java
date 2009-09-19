@@ -1,5 +1,5 @@
 package org.wikicrimes.service.impl;
-
+ 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -98,7 +98,7 @@ public class EmailServiceImpl extends GenericCrudServiceImpl implements
 		           	    Map model= new HashMap();
 						model.put("usuario",usuario);
 						if (idiomaEmail.equals("pt_BR") || idiomaEmail.equals("pt")){
-							message.setSubject("ConfirmaÁ„o de Cadastro - WikiCrimes.org");
+							message.setSubject("Confirma√ß√£o de Cadastro - WikiCrimes.org");
 						 text = VelocityEngineUtils.mergeTemplateIntoString(
 					               velocityEngine, "org/wikicrimes/template-cadastro-confirmacao.vm", model);
 						}
@@ -160,7 +160,7 @@ public class EmailServiceImpl extends GenericCrudServiceImpl implements
 		           	    Map model= new HashMap();
 						model.put("usuario",crime.getUsuario());
 						if (locale.equals("pt_BR") || locale.equals("pt")){
-							message.setSubject("AlteraÁıes no registro de seu crime - WikiCrimes.org");
+							message.setSubject("Altera√ß√µes no registro de seu crime - WikiCrimes.org");
 						 text = VelocityEngineUtils.mergeTemplateIntoString(
 					               velocityEngine, "org/wikicrimes/template-mudancas-crime.vm", model);
 						}
@@ -247,7 +247,7 @@ public class EmailServiceImpl extends GenericCrudServiceImpl implements
 					String text=null;
 					
 					if (idiomaEmail.equals("pt_BR") || idiomaEmail.equals("pt")){
-						message.setSubject("ConfirmaÁ„o de relato de crime - WikiCrimes.org");
+						message.setSubject("Confirma√ß√£o de relato de crime - WikiCrimes.org");
 						//verifica se usuario ja e cadastrado
 					if(confirmacao.getUsuario().getPerfil().getIdPerfil().equals(new Long(Perfil.CONVIDADO))){
 						text = VelocityEngineUtils.mergeTemplateIntoString(
@@ -320,7 +320,7 @@ public class EmailServiceImpl extends GenericCrudServiceImpl implements
 							else
 								idiomaEmail=locale;
 							if (idiomaEmail.equals("pt_BR") || idiomaEmail.equals("pt")){
-							message.setSubject("RecuperaÁ„o de Senha - WikiCrimes.org");
+							message.setSubject("Recupera√ß√£o de Senha - WikiCrimes.org");
 							text = VelocityEngineUtils.mergeTemplateIntoString(
 						               velocityEngine, "org/wikicrimes/template-recupera-senha.vm", model);
 							} else if (idiomaEmail.equals("it")){
@@ -385,20 +385,20 @@ public class EmailServiceImpl extends GenericCrudServiceImpl implements
 					String text=null;
 					
 					if (locale.equals("pt_BR") || locale.equals("pt")){
-						message.setSubject("ConfirmaÁ„o de Den˙ncia - WikiCrimes.org");
+						message.setSubject("Confirma√ß√£o de Den√∫ncia - WikiCrimes.org");
 						//verifica se usuario ja e cadastrado
 						if(relato.getSubTipoRelato().equalsIgnoreCase("1"))
-							model.put("subTipoRelato", "¡reas Perigosas");
+							model.put("subTipoRelato", "√Åreas Perigosas");
 						if(relato.getSubTipoRelato().equalsIgnoreCase("2"))
-							model.put("subTipoRelato", "¡reas com uso/tr·fico de drogas");
+							model.put("subTipoRelato", "√Åreas com uso/tr√°fico de drogas");
 						if(relato.getSubTipoRelato().equalsIgnoreCase("3"))
 							model.put("subTipoRelato", "Bares Ilegais");
 						if(relato.getSubTipoRelato().equalsIgnoreCase("4"))
-							model.put("subTipoRelato", "Uso Excessivo de ¡lcool");
+							model.put("subTipoRelato", "Uso Excessivo de √Ålcool");
 						if(relato.getSubTipoRelato().equalsIgnoreCase("5"))
-							model.put("subTipoRelato", "ViolÍncia contra Mulher");
+							model.put("subTipoRelato", "Viol√™ncia contra Mulher");
 						if(relato.getSubTipoRelato().equalsIgnoreCase("6"))
-							model.put("subTipoRelato", "ViolÍncia contra CrianÁa");
+							model.put("subTipoRelato", "Viol√™ncia contra Crian√ßa");
 					if(confirmacao.getUsuario().getPerfil().getIdPerfil()== Perfil.CONVIDADO){
 						text = VelocityEngineUtils.mergeTemplateIntoString(
 					               velocityEngine, "org/wikicrimes/template-convidado-relato-confirmacao.vm", model);
@@ -441,7 +441,7 @@ public class EmailServiceImpl extends GenericCrudServiceImpl implements
 				Thread t = new Thread() {
 					public void run() {
 						mailSender.send(preparator);
-						System.out.println("[" + new Date() + "] Email de Confirmacao de Den˙ncia registrado por " + usuario.getEmail() + " para " + confirmacao.getUsuario().getEmail());
+						System.out.println("[" + new Date() + "] Email de Confirmacao de Den√∫ncia registrado por " + usuario.getEmail() + " para " + confirmacao.getUsuario().getEmail());
 					}
 				};
 				t.start();
@@ -494,7 +494,7 @@ public class EmailServiceImpl extends GenericCrudServiceImpl implements
 					else
 						model.put("usuarioEmailouNome",usuarioTexto);
 					if (!positiva)
-						model.put("nao", " n„o ");
+						model.put("nao", " n√£o ");
 					else
 						model.put("nao", " ");
 					if(crime.getTipoCrime().getIdTipoCrime() != 5)
@@ -504,7 +504,7 @@ public class EmailServiceImpl extends GenericCrudServiceImpl implements
 					String text=null;
 					
 					if (idiomaEmail.equals("pt_BR") || idiomaEmail.equals("pt")){
-						message.setSubject("NotificaÁ„o sobre seu relato de crime - WikiCrimes.org");
+						message.setSubject("Notifica√ß√£o sobre seu relato de crime - WikiCrimes.org");
 							text = VelocityEngineUtils.mergeTemplateIntoString(
 					               velocityEngine, "org/wikicrimes/template-notificacao-confirmacao.vm", model);
 					}
@@ -527,7 +527,7 @@ public class EmailServiceImpl extends GenericCrudServiceImpl implements
 				Thread t = new Thread() {
 					public void run() {
 						mailSender.send(preparator);
-						System.out.println("[" + new Date() + "] Email de NotificaÁ„o de confirmacao de Crime por " + confirmacao.getUsuario().getEmail() + " para " + usuario.getEmail());
+						System.out.println("[" + new Date() + "] Email de Notifica√ß√£o de confirmacao de Crime por " + confirmacao.getUsuario().getEmail() + " para " + usuario.getEmail());
 					}
 				};
 				t.start();
@@ -572,13 +572,13 @@ public class EmailServiceImpl extends GenericCrudServiceImpl implements
 					else
 						model.put("usuarioEmailouNome",usuarioTexto);
 					if (!positiva)
-						model.put("nao", " n„o ");
+						model.put("nao", " n√£o ");
 					else
 						model.put("nao", " ");
 					String text=null;
 					
 					if (idiomaEmail.equals("pt_BR") || idiomaEmail.equals("pt")){
-						message.setSubject("NotificaÁ„o sobre sua den˙ncia - WikiCrimes.org");
+						message.setSubject("Notifica√ß√£o sobre sua den√∫ncia - WikiCrimes.org");
 							text = VelocityEngineUtils.mergeTemplateIntoString(
 					               velocityEngine, "org/wikicrimes/template-notificacao-relato.vm", model);
 					}
@@ -596,7 +596,7 @@ public class EmailServiceImpl extends GenericCrudServiceImpl implements
 				Thread t = new Thread() {
 					public void run() {
 						mailSender.send(preparator);
-						System.out.println("[" + new Date() + "] Email de NotificaÁ„o de confirmacao de Relato por " + confirmacao.getUsuario().getEmail() + " para " + usuario.getEmail());
+						System.out.println("[" + new Date() + "] Email de Notifica√ß√£o de confirmacao de Relato por " + confirmacao.getUsuario().getEmail() + " para " + usuario.getEmail());
 					}
 				};
 				t.start();
@@ -661,7 +661,7 @@ public class EmailServiceImpl extends GenericCrudServiceImpl implements
 					String text=null;
 					
 					if (idiomaEmail.equals("pt_BR") || idiomaEmail.equals("pt")){
-						message.setSubject("Coment·rios sobre seu relato de crime - WikiCrimes.org");
+						message.setSubject("Coment√°rios sobre seu relato de crime - WikiCrimes.org");
 							text = VelocityEngineUtils.mergeTemplateIntoString(
 					               velocityEngine, "org/wikicrimes/template-notificacao-comentario.vm", model);
 					}
@@ -689,7 +689,7 @@ public class EmailServiceImpl extends GenericCrudServiceImpl implements
 				Thread t = new Thread() {
 					public void run() {
 						mailSender.send(preparator);
-						System.out.println("[" + new Date() + "] Email de NotificaÁ„o de coment·rio de " + comentario.getUsuario().getEmail() + " enviado para " + usuario.getEmail());
+						System.out.println("[" + new Date() + "] Email de Notifica√ß√£o de coment√°rio de " + comentario.getUsuario().getEmail() + " enviado para " + usuario.getEmail());
 					}
 				};
 				t.start();

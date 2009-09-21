@@ -28,7 +28,25 @@
 				filter: alpha(opacity=85);
 				color:#0000CD;
 				font-family:helvetica,verdana,sans;
+				font-size:12px;
+			}
+			#loadingPequeno {
+				position: absolute;
+				top: 268px;
+				left: 38%;
+				text-align: center;
+				padding: 0.6em;
+				margin-left: auto;
+				margin-right: auto;
+				z-index: 99;
+				opacity: .99;
+				-moz-opacity:0.99;
+				filter: alpha(opacity=99);
+				font-family:helvetica,verdana,sans;
 				font-size:14px;
+				visibility: hidden;
+				background-color: white;
+				border: 2px solid #4674b9;	
 			}
 			#divPesquisaGenerica {
 				position: absolute;
@@ -46,7 +64,7 @@
 			}
 			#divTelaEscolhaRegistroTipoCrime {
 				position: absolute;
-				top: 180px;
+				top: 220px;
 				left: 34%;				
 				text-align: center;				
 				margin-left: auto;
@@ -98,7 +116,7 @@
 			#loadingKernelMap {
 				position: absolute;
 				top: 35%;
-				left: 25%;
+				left: 30%;
 				text-align: center;
 				padding: 2em;
 				margin-left: auto;
@@ -339,6 +357,7 @@
 					<input name="btnMarcarMapa" id="btnMarcarMapa" style="font-size: 11px; visibility : hidden;" class="button" type="button" value="#{messages['marcar.no.mapa']}" onclick="marcarCrimeMapa(true);desabilitaBtn('btnMarcarMapa');" />
 					<input style="font-size: 11px;" class="button" type="button" value="#{messages['faleconosco.cancelar']}" onclick="fechaDivTelaEscolhaRegistroTipoCrime();desabilitaBtn('btnMarcarMapa');"/>
 					<script>
+						try{escondeCarregandoPequeno()}catch(e){};
 						contNumRenderRegistroCrime++;
 						if(contNumRenderRegistroCrime > 1)
 							document.getElementById("divTelaEscolhaRegistroTipoCrime").style.visibility = 'visible';
@@ -388,6 +407,7 @@
 					<input style="font-size: 11px;" class="button" type="button" value="#{messages['marcar.no.mapa']}" onclick="marcarCrimeMapa(false);"/>
 					<input style="font-size: 11px;" class="button" type="button" value="#{messages['faleconosco.cancelar']}" onclick="fechaDivTelaEscolhaRegistroTipoDenuncia();"/>
 					<script>
+						try{escondeCarregandoPequeno()}catch(e){};
 						contNumRenderRegistroDenuncia++;
 						if(contNumRenderRegistroDenuncia > 1)
 							document.getElementById("divTelaEscolhaRegistroTipoDenuncia").style.visibility = 'visible';
@@ -468,6 +488,10 @@
 		</rich:panel>
 	</div>
 	
+	<div id="loadingPequeno" >
+		<h:outputText value="#{messages['porfavor.espere']}"/><br/>
+		<img src="./images/loading.gif"/>
+	</div>
 	
 	
 	<div id="loadingKernelMap" >

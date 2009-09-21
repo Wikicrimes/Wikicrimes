@@ -462,7 +462,7 @@
 	
 					<a4j:commandButton value="#{messages['filtro.btn.atualizar']}"
 						id="btnAtualizar" action="#{filtroForm.update}" styleClass="button"
-						onclick="getUserMapConfig(); limpaUrl();setaSubmeteuFiltro();atualizaMapa();" />
+						onclick="document.getElementById('divTelaFiltro').style.visibility = 'hidden';selecionarComando(map, 'mao'); getUserMapConfig(); limpaUrl();setaSubmeteuFiltro();atualizaMapa();" />
 	
 					<a4j:commandButton value="#{messages['faleconosco.cancelar']}"
 						id="btnCancelar" onclick="document.getElementById('divTelaFiltro').style.visibility = 'hidden';selecionarComando(map, 'mao');//comentado pq esse era o limpar filtro. limpaUrl();limpaFiltro(); return false;"
@@ -472,11 +472,8 @@
 		</div>	
 		<!-- Fim da Pesquisa -->	
 		
-		<rich:simpleTogglePanel id="togglePanelDezMais"
-					bodyClass="filtrosSimpleTogglePanelBodyPesquisa" 
-					headerClass="panelHeaderFiltro" opened="true" switchType="client"
-					label="#{messages['cinco.mais.titulo']}" style="width:160px;">
-					<t:panelGroup style="width: 100%; font-size: 10px; font-family: sans-serif;">
+		<rich:panel id="togglePanelDezMais"	header="#{messages['cinco.mais.titulo']}" style="width:160px;">
+					<t:panelGroup style="width: 100%; font-size: 10px; font-family: sans-serif;padding:1em;">
 						<table width="100%" cellpadding="0" cellspacing="0" align="center">
 							<tr>
 								<td align="center"> <select size="3" style="font-size: 10px; font-family: sans-serif;" id="tipoDezMaisSelecao" onchange="getDezMaisGeralMapa(this.value);"> <option selected="selected" value="1"> <h:outputText value="#{messages['cinco.mais.vistos']}" /> </option> <option value="2"> <h:outputText value="#{messages['cinco.mais.comentados']}" /> </option> <option value="3"> <h:outputText value="#{messages['cinco.mais.confirmados']}" /> </option>  </select> </td>
@@ -516,9 +513,9 @@
 							<input type="radio" id="op_dez_mais1" name="op_dez_mais" value="2" onclick="getDezMaisGeralMapa();" /> <h:outputText value="#{messages['tipo.dez.mais.mapa']}" />
 						</t:panelGroup>
 					</t:panelGrid>
-					<t:panelGroup id="painelDezMaisListagem" style="width: 100%">	
+					<t:panelGroup id="painelDezMaisListagem" style="width: 100%;">	
 						<t:panelGrid 
-							style="font-size: 10.6px; font-family: sans-serif;" width="100%"
+							style="font-size: 10.6px; font-family: sans-serif; padding:1em;" width="100%"
 							columns="2" cellpadding="1" cellspacing="1">
 							<c:forEach var="dezMaisIter" items="#{filtroForm.dezMais}">
 								<t:panelGroup>
@@ -537,7 +534,7 @@
 							</c:forEach>
 						</t:panelGrid>
 					</t:panelGroup>	
-				</rich:simpleTogglePanel>				
+				</rich:panel>				
 				<!-- Fim das Estatísticas -->
 				<br/>
 				<div style="width:160px; height:240px">
@@ -631,7 +628,7 @@
 						acoesUsuario['massa_dados_filtrados'] = total_marcadores;
 					}	
 					alertarTutorDeAcaoDoUsuario(acoesUsuario,"");
-					
+					escondeCarregandoPequeno();
 					
 				}
 
@@ -1413,6 +1410,7 @@
 						var west = b.getSouthWest().lng();
 						
 					    if(validaPeriodoData()) {
+					    	mostrarCarregandoPequeno();
 						   	constroiRequisicao('ServletManipuladorTXT?tc='+tipoCrime+'&tv='+tipoVitima+'&tl='+document.getElementById("tipoLocal").value+'&di='+dataInicial+'&df='+dataFinal+'&hi='+horarioInicial+'&hf='+horarioFinal +  '&z=' + map.getZoom()+ '&ic=' + id+ '&ec=' + entidadeCertificadora + '&cp=' + confirmadosPositivamente + '&n=' +north+ '&s=' +south+
             				'&e=' +east + '&w='+west + '&id=' + ignoraData +'&rl='+idRelato);
 				            ignoraData="";

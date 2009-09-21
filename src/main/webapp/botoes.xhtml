@@ -139,6 +139,7 @@
 				}
 				
 				function mostraDivTelaEscolhaRegistroTipoCrime(){
+					mostrarCarregandoPequeno();
 					document.getElementById("formReRenderRegistroCrimes:btRegistroCrimeSubmit").click();	
 					setPodeRegistrar(false, 0);
 					fechaDivTelaEscolhaRegistroTipoDenuncia();
@@ -149,6 +150,7 @@
 				}
 
 				function mostraDivTelaEscolhaRegistroTipoDenuncia(){
+					mostrarCarregandoPequeno();
 					document.getElementById("formReRenderRegistroDenuncia:btRegistroDenunciaSubmit").click();
 					setPodeRegistrar(false, 0);
 					fechaDivTelaEscolhaRegistroTipoCrime();

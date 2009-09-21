@@ -8,10 +8,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.stream.FactoryConfigurationError;
+import javax.xml.stream.XMLStreamException;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.wikicrimes.service.CrimeService;
+import org.wikicrimes.service.GoogleEnderecoService;
+import org.wikicrimes.util.GoogleMapsData;
 /**
  * Tendo uma coordenada de lat e long, vc pegara todos os crimes de um dado raio
  * passado... Obj gerar uma circunferencia virtual que mapei esses pontos...retorna um dado no formato XML!
@@ -22,6 +26,7 @@ import org.wikicrimes.service.CrimeService;
 public class CrimeRatioServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 3220671688900369774L;
+	private GoogleEnderecoService ges = new GoogleEnderecoService();
 
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse resp)
@@ -39,11 +44,41 @@ public class CrimeRatioServlet extends HttpServlet {
 	
 	private void contaCrimesArea(HttpServletRequest request,HttpServletResponse response){
 		try{
-			double latitude = Double.parseDouble(request.getParameter("lat"));
-			double longitude = Double.parseDouble(request.getParameter("long"));
+			
+			String serv = request.getParameter("serv");
+			
+			if(serv != null && serv.equalsIgnoreCase("disp")){
+				return;
+			}
+			
+			String latStr = request.getParameter("lat"),longStr = request.getParameter("long");
+			String end = request.getParameter("end");
+			
+			double latitude = 0.0;
+			double longitude = 0.0;
+			
+			if(latStr.equalsIgnoreCase("vaz") && longStr.equalsIgnoreCase("vaz")){
+				GoogleMapsData coord = ges.consultaRuaURL(end);
+				
+				latitude=coord.getLatitude();
+				longitude=coord.getLongitude();
+				
+			}else{
+				//a lat existe
+				latitude = Double.parseDouble(latStr);
+				longitude = Double.parseDouble(longStr);
+				
+			}
+			
+			/*
+			System.out.println("End: "+end);
+			System.out.println("Lat: "+latitude);
+			System.out.println("long: "+longitude);*/
+			
 			double raio = Double.parseDouble(request.getParameter("raio"));
 			long dataIni = Long.parseLong(request.getParameter("dIni"));
 			long dataFim = Long.parseLong(request.getParameter("dFim"));
+			
 			
 			ApplicationContext springContext = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
 			CrimeService crimeService = (CrimeService)springContext.getBean("crimeService");
@@ -55,23 +90,30 @@ public class CrimeRatioServlet extends HttpServlet {
 			System.out.println(mapa);
 			
 		}catch(NumberFormatException e){
-			
-			StringBuilder error = new StringBuilder();
-			error.append("<?xml version='1.0' encoding='UTF-8'?>");
-			error.append("<crimes>");
-			error.append("<errors>Error</errors>");
-			error.append("</crimes>");
-			
-			PrintWriter out;
-			try {
-				out = response.getWriter();
-				out.println(error.toString());
-				out.close();
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
+			errorXML(response);
 		} catch (IOException e) {
-			e.printStackTrace();
+			errorXML(response);
+		} catch (XMLStreamException e) {
+			errorXML(response);
+		} catch (FactoryConfigurationError e) {
+			errorXML(response);
+		}
+	}
+	
+	private void errorXML(HttpServletResponse response){
+		StringBuilder error = new StringBuilder();
+		error.append("<?xml version='1.0' encoding='UTF-8'?>");
+		error.append("<crimes>");
+		error.append("<errors>Error</errors>");
+		error.append("</crimes>");
+		
+		PrintWriter out;
+		try {
+			out = response.getWriter();
+			out.println(error.toString());
+			out.close();
+		} catch (IOException e1) {
+			e1.printStackTrace();
 		}
 	}
 	

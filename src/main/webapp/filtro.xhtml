@@ -515,7 +515,7 @@
 					</t:panelGrid>
 					<t:panelGroup id="painelDezMaisListagem" style="width: 100%;">	
 						<t:panelGrid 
-							style="font-size: 10.6px; font-family: sans-serif; padding:1em;" width="100%"
+							style="font-size: 10.6px; font-family: sans-serif; padding-left:1.5em; padding-right:1.5em;padding-top:1em;padding-bottom:1em;" width="100%"
 							columns="2" cellpadding="1" cellspacing="1">
 							<c:forEach var="dezMaisIter" items="#{filtroForm.dezMais}">
 								<t:panelGroup>
@@ -536,21 +536,21 @@
 					</t:panelGroup>	
 				</rich:panel>				
 				<!-- Fim das Estatísticas -->
-				<br/>
-				<div style="width:160px; height:240px">
-					<script type="text/javascript"><!--
-						google_ad_client = "pub-6186265227572284";
-						/* WikiCrimes 120x240, criado 19/09/09 */
-						google_ad_slot = "2936037165";
-						google_ad_width = 120;
-						google_ad_height = 240;
-						//-->
+				<rich:panel style="width:160px; height:268px;" header="#{messages['modal.publicidade']}">
+					<div style="padding:6px;">
+						<script type="text/javascript"><!--
+							google_ad_client = "pub-6186265227572284";
+							/* WikiCrimes 120x240, criado 19/09/09 */
+							google_ad_slot = "2936037165";
+							google_ad_width = 120;
+							google_ad_height = 240;
+							//-->
+							</script>
+							<script type="text/javascript"
+							src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 						</script>
-						<script type="text/javascript"
-						src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-					</script>
-				</div>
-				
+					</div>
+				</rich:panel>
 				<a4j:commandButton id="btSubmitVistos" style="display: none" immediate="true" reRender="painelDezMaisListagem"
 										action="#{filtroForm.dezMaisVistos}"/>
 				<a4j:commandButton id="btSubmitComentados" style="display: none" immediate="true" reRender="painelDezMaisListagem"
@@ -934,7 +934,7 @@
 					function mostraListaDezMais(){
 						var eMapa = document.getElementById("op_dez_mais1").checked;
 						if(eMapa){
-							var html = "<table width='100%' >";
+							var html = "<table style='padding-left:1.5em; padding-right:1.5em;padding-top:1em;padding-bottom:1em;' width='100%' >";
 							
 							if(tipoDezMais == '1'){
 								for (k in arrayMaisVistos){

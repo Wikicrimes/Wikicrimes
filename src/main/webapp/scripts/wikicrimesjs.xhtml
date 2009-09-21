@@ -215,7 +215,13 @@
 				}	
 			}
 
-			
+			function mostrarCarregandoPequeno(){
+				document.getElementById("loadingPequeno").style.visibility="visible";
+			}
+
+			function escondeCarregandoPequeno(){
+				document.getElementById("loadingPequeno").style.visibility="hidden";
+			}
 
 			function plotaEnderecoMap(response) {
 				if (!response || response.Status.code != 200) {

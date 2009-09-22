@@ -429,7 +429,7 @@ ComandoKernelSelecionado.prototype.initialize = function(map) {
   container.appendChild(kernelDiv);
   kernelDiv.appendChild(document.createTextNode(""));
   GEvent.addDomListener(kernelDiv, "click", function() {  		
-		
+	    removeHintComandosMapa();
 		if(!aindaCarregando){
 			mostraCrimesAgrupador();
 			selecionarComando(map, 'mao');

@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
-import java.net.URLDecoder;
 
 import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLEventReader;
@@ -21,28 +20,60 @@ public class GoogleEnderecoService {
 		URL googleService = new URL("http://maps.google.com/maps/geo?q=" + url + "&output=xml&key=ABQIAAAAFMKMB22peYEk-DnRBRjxZhRk8R8qbs4FIOFRgqzDQO3UVKhx7BTRb8DofYsZ7bJrhTwSbePuBeOFBQ");
         URLConnection googleConnection = googleService.openConnection();
         GoogleMapsData coor = processaDadoRequisicao(new InputStreamReader(googleConnection.getInputStream()));
-        //System.out.println(url);//para R. João Cordeiro tah dando uma lat e long errada!!!
 		return coor;
 	}
 	
-	private GoogleMapsData processaDadoRequisicao(InputStreamReader isr) throws IOException, XMLStreamException, FactoryConfigurationError{
-		GoogleMapsData coordenada = new GoogleMapsData();
+	public GoogleMapsData consultaRuaCoordenadas(String coordenadas) throws IOException, XMLStreamException, FactoryConfigurationError{
+		URL googleService = new URL("http://maps.google.com/maps/geo?q=" + coordenadas + "&output=xml&key=ABQIAAAAFMKMB22peYEk-DnRBRjxZhRk8R8qbs4FIOFRgqzDQO3UVKhx7BTRb8DofYsZ7bJrhTwSbePuBeOFBQ");
+        URLConnection googleConnection = googleService.openConnection();
+        
+        return processaDadoRequisicaoEndereco(new InputStreamReader(googleConnection.getInputStream()));
+	}
+	
+	private GoogleMapsData processaDadoRequisicaoEndereco(InputStreamReader isr) throws IOException, XMLStreamException, FactoryConfigurationError{
+		GoogleMapsData gDados = new GoogleMapsData();
 		
 		XMLEventReader leitor = XMLInputFactory.newInstance().createXMLEventReader(isr);
 		while(leitor.hasNext()){
 			XMLEvent evento = leitor.nextEvent();
 			if(evento.isStartElement()){
+				if(evento.asStartElement().getName().getLocalPart().equalsIgnoreCase("ThoroughfareName")){
+					evento = leitor.nextEvent();
+					String str = evento.asCharacters().getData();
+					
+					gDados.setEndereco(str);
+					break;
+				}
+			}
+		}
+		return gDados;
+	}
+	
+	private GoogleMapsData processaDadoRequisicao(InputStreamReader isr) throws IOException, XMLStreamException, FactoryConfigurationError{
+		GoogleMapsData gDados = new GoogleMapsData();
+		
+		XMLEventReader leitor = XMLInputFactory.newInstance().createXMLEventReader(isr);
+		while(leitor.hasNext()){
+			XMLEvent evento = leitor.nextEvent();
+			if(evento.isStartElement()){
+				if(evento.asStartElement().getName().getLocalPart().equalsIgnoreCase("ThoroughfareName")){
+					evento = leitor.nextEvent();
+					String str = evento.asCharacters().getData();
+					gDados.setEndereco(str);
+					continue;//volta pro while
+				}
 				if(evento.asStartElement().getName().getLocalPart().equalsIgnoreCase("coordinates")){
 					evento = leitor.nextEvent();
 					String str = evento.asCharacters().getData();
 					
 					String vetor[] = str.split(",");
 					
-					coordenada.setLongitude(Double.parseDouble(vetor[0]));
-					coordenada.setLatitude(Double.parseDouble(vetor[1]));
+					gDados.setLongitude(Double.parseDouble(vetor[0]));
+					gDados.setLatitude(Double.parseDouble(vetor[1]));
+					break;
 				}
 			}
 		}
-		return coordenada;
+		return gDados;
 	}
 }

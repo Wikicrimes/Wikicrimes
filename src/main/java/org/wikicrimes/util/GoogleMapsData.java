@@ -2,6 +2,7 @@ package org.wikicrimes.util;
 
 public class GoogleMapsData {
 	private double latitude,longitude;
+	private String endereco;
 
 	public GoogleMapsData() {
 		latitude=longitude=0;
@@ -27,5 +28,14 @@ public class GoogleMapsData {
 	public void setLongitude(double longitude) {
 		this.longitude = longitude;
 	}
+
+	public String getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(String endereco) {
+		this.endereco = endereco;
+	}
+	
 	
 }

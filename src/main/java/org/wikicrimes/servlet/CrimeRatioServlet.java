@@ -45,6 +45,9 @@ public class CrimeRatioServlet extends HttpServlet {
 	private void contaCrimesArea(HttpServletRequest request,HttpServletResponse response){
 		try{
 			
+			//QUANDO SE SETA O ENDERECO DAR UM ERROR
+			//org.wikicrimes.service.GoogleEnderecoService.processaDadoRequisicao(GoogleEnderecoService.java:65)
+			
 			String serv = request.getParameter("serv");
 			
 			if(serv != null && serv.equalsIgnoreCase("disp")){
@@ -62,12 +65,13 @@ public class CrimeRatioServlet extends HttpServlet {
 				
 				latitude=coord.getLatitude();
 				longitude=coord.getLongitude();
+				end=coord.getEndereco();
 				
 			}else{
 				//a lat existe
 				latitude = Double.parseDouble(latStr);
 				longitude = Double.parseDouble(longStr);
-				
+				end = ges.consultaRuaCoordenadas(latitude+","+longitude).getEndereco();
 			}
 			
 			/*
@@ -85,9 +89,11 @@ public class CrimeRatioServlet extends HttpServlet {
 			
 			Map <String,Integer> mapa = crimeService.numeroCrimesArea(latitude, longitude, raio,dataIni,dataFim);
 			
-			parsingToXML(mapa,response);
+			parsingToXML(mapa,response,end);
 			
-			System.out.println(mapa);
+			
+			//System.out.println(mapa);
+			//System.out.println(end);
 			
 		}catch(NumberFormatException e){
 			errorXML(response);
@@ -117,24 +123,26 @@ public class CrimeRatioServlet extends HttpServlet {
 		}
 	}
 	
-	private void parsingToXML(Map <String,Integer> mapa,HttpServletResponse response) throws IOException{
+	private void parsingToXML(Map <String,Integer> mapa,HttpServletResponse response,String end) throws IOException{
 		
 		response.setContentType("text/xml; charset=iso-8859-1");
 		response.setHeader("Pragma", "no-cache");
 		response.setHeader("Cache-Control", "no-cache");
 		response.setDateHeader("Expires", 0);
-		response.setCharacterEncoding("iso-8859-1");
+		//response.setCharacterEncoding("iso-8859-1");
+		response.setCharacterEncoding("UTF-8");
 		
 		StringBuilder sbXML = new StringBuilder();
 		
 		sbXML.append("<?xml version='1.0' encoding='UTF-8'?>");
-		sbXML.append("<crimes>");
-		sbXML.append("<furto>"+mapa.get("Furto")+"</furto>");
-		sbXML.append("<roubo>"+mapa.get("Roubo")+"</roubo>");
-		sbXML.append("<latrocinio>"+mapa.get("Latrocinio")+"</latrocinio>");
-		sbXML.append("<homicidio>"+mapa.get("Homicídio")+"</homicidio>");
-		sbXML.append("<outros>"+mapa.get("Outros")+"</outros>");
-		sbXML.append("</crimes>");
+		sbXML.append("<cr>");
+		sbXML.append("<f>"+mapa.get("Furto")+"</f>");
+		sbXML.append("<r>"+mapa.get("Roubo")+"</r>");
+		sbXML.append("<latr>"+mapa.get("Latrocinio")+"</latr>");
+		sbXML.append("<ho>"+mapa.get("Homicídio")+"</ho>");
+		sbXML.append("<ou>"+mapa.get("Outros")+"</ou>");
+		sbXML.append("<en>"+end+"</en>");
+		sbXML.append("</cr>");
 		
 		PrintWriter out = response.getWriter();
 		out.println(sbXML.toString());

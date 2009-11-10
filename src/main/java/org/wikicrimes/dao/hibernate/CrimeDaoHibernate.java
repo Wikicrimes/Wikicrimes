@@ -563,8 +563,6 @@ public class CrimeDaoHibernate extends GenericCrudDaoHibernate implements
 
 	@Override
 	public boolean realizaAtivacao(String codApp) {
-		//criacao da chave!
-		//System.out.println("key rand: "+Cripto.criptografar("666"+new Date().getTime()));
 		
 		//pesquisa o usuario que possui esse cod de aplicativo
 		Usuario usuario = new Usuario();

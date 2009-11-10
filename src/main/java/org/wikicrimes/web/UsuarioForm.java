@@ -1,5 +1,7 @@
 package org.wikicrimes.web;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -21,6 +23,7 @@ import org.wikicrimes.model.Perfil;
 import org.wikicrimes.model.Usuario;
 import org.wikicrimes.service.EmailService;
 import org.wikicrimes.service.UsuarioService;
+import org.wikicrimes.util.Cripto;
 
 public class UsuarioForm extends GenericForm {
 	private final Log log = LogFactory.getLog(UsuarioForm.class);
@@ -572,5 +575,41 @@ public class UsuarioForm extends GenericForm {
 
 	public void setChaveCr(String chaveCr) {
 		this.chaveCr = chaveCr;
+	}
+	
+	public String comprarAppMobile(){
+		try {
+			//ele tem q tah logado!!
+			if(usuario.getIdUsuario()!=null){
+				modificaXMLApp();
+				empacotaJar();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	private void empacotaJar() throws IOException, InterruptedException{
+		Process jar = new ProcessBuilder ("cd /root && ant -Dnome="+id+new Date().getTime()+".jar dist").start();
+        jar.waitFor();
+	}
+	
+	private void modificaXMLApp() throws IOException{
+		//System.out.println("ID: "+usuario.getIdUsuario());
+		File file = new File("/root/WikicrimesMobileLite/util/file/config.xml");
+
+        StringBuilder sbStr = new StringBuilder();
+
+        sbStr=sbStr.append("<?xml version='1.0' encoding='iso-8859-1'?>");
+        sbStr=sbStr.append("<app>");
+        sbStr=sbStr.append("<id>"+Cripto.criptografar(id+new Date().getTime())+"</id>");
+        sbStr=sbStr.append("</app>");
+
+        FileWriter fw = new FileWriter(file,false);
+        fw.write(sbStr.toString());
+        fw.close();
 	}
 }

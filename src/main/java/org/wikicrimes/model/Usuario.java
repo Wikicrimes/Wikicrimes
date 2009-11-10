@@ -39,6 +39,8 @@ public class Usuario extends BaseObject {
 	private String emailAtivo;
 	private UsuarioCelular usuarioCelular;
 	private Boolean confAutomatica;
+	private Integer mobileAppAtivacao;
+	private String mobileAppID;
 
 	public final static String TRUE = "1";
 	public final static String FALSE = "0";
@@ -292,6 +294,22 @@ public class Usuario extends BaseObject {
 
 	public void setConfAutomatica(Boolean confAutomatica) {
 		this.confAutomatica = confAutomatica;
+	}
+	
+	public Integer getMobileAppAtivacao(){
+		return mobileAppAtivacao;
+	}
+	
+	public String getMobileAppID(){
+		return mobileAppID;
+	}
+	
+	public void setMobileAppAtivacao(Integer mobileAppAtivacao){
+		this.mobileAppAtivacao=mobileAppAtivacao;
+	}
+	
+	public void setMobileAppID(String mobileAppID){
+		this.mobileAppID=mobileAppID;
 	}
 
 	@Override

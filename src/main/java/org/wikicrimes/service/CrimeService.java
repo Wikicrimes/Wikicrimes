@@ -61,4 +61,6 @@ public interface CrimeService extends GenericCrudService {
 	
 	public Map<String,Integer> numeroCrimesArea(double latitude, double longitude, double raio,long dataIni, long dataFim);
 	
+	public boolean realizaAtivacao(String codApp);
+	
 }

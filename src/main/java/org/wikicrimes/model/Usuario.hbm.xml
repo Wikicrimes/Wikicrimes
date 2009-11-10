@@ -31,6 +31,10 @@
         <property name="dataHoraAlteracao" column="USU_DATA_HORA_ALTERACAO" type="java.util.Date"/>
         <property name="ipAlteracao" column="USU_IP_ALTERACAO" type="java.lang.String"/>
         <property name="emailAtivo" column="USU_EMAIL_ATIVO" type="java.lang.String"/>
+        
+        <property name="mobileAppID" column="USU_MOBILE_APP_ID" type="java.lang.String"/>
+        <property name="mobileAppAtivacao" column="USU_MOBILE_APP_ATIVACAO" type="java.lang.Integer"/>
+        
         <many-to-one name="perfil" column="USU_IDPERFIL" class="org.wikicrimes.model.Perfil" />
         <many-to-one name="usuarioCelular" column="USU_IDUSUARIO_CELULAR" class="org.wikicrimes.model.UsuarioCelular" />
         <many-to-one name="entidadeCertificadora" column="USU_IDENTIDADECERTIFICADORA" class="org.wikicrimes.model.EntidadeCertificadora"/>

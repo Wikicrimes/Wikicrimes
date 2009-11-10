@@ -464,4 +464,9 @@ public class CrimeServiceImpl extends GenericCrudServiceImpl implements
 	public Map<String,Integer> numeroCrimesArea(double latitude, double longitude, double raio,long dataIni, long dataFim){
 		return crimeDao.contaCrimesArea(latitude, longitude, raio,dataIni, dataFim);
 	}
+
+	@Override
+	public boolean realizaAtivacao(String codApp) {
+		return crimeDao.realizaAtivacao(codApp);
+	}
 }

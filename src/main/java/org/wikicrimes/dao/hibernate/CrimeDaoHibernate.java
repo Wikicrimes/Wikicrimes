@@ -23,6 +23,8 @@ import org.wikicrimes.model.EntidadeCertificadora;
 import org.wikicrimes.model.TipoCrime;
 import org.wikicrimes.model.TipoLocal;
 import org.wikicrimes.model.TipoVitima;
+import org.wikicrimes.model.Usuario;
+import org.wikicrimes.util.Cripto;
 
 /**
  * 
@@ -557,5 +559,35 @@ public class CrimeDaoHibernate extends GenericCrudDaoHibernate implements
 		}
 		 
 		return mapa;
+	}
+
+	@Override
+	public boolean realizaAtivacao(String codApp) {
+		//criacao da chave!
+		//System.out.println("key rand: "+Cripto.criptografar("666"+new Date().getTime()));
+		
+		//pesquisa o usuario que possui esse cod de aplicativo
+		Usuario usuario = new Usuario();
+		usuario.setMobileAppID(codApp);
+		
+		//consulta o usuario
+		List<BaseObject> listBase = super.find(usuario);
+		
+		if(listBase==null || listBase.isEmpty()){
+			return false;
+		}
+		
+		Usuario user = (Usuario) listBase.get(0);
+		
+		//tento ativacao zero entao se ativa senao bloqueia o uso
+		if(user.getMobileAppAtivacao()==0){
+			
+			user.setMobileAppAtivacao(1);
+			super.save(user);
+			
+			return true;
+		}else{
+			return false;
+		}
 	}
 }

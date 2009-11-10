@@ -45,12 +45,24 @@ public class CrimeRatioServlet extends HttpServlet {
 	private void contaCrimesArea(HttpServletRequest request,HttpServletResponse response){
 		try{
 			
-			//QUANDO SE SETA O ENDERECO DAR UM ERROR
-			//org.wikicrimes.service.GoogleEnderecoService.processaDadoRequisicao(GoogleEnderecoService.java:65)
+			ApplicationContext springContext = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
+			CrimeService crimeService = (CrimeService)springContext.getBean("crimeService");
 			
 			String serv = request.getParameter("serv");
+			String id = request.getParameter("id");
 			
+			//verifica se o user foi autenticado ignora o resto do metodo!
 			if(serv != null && serv.equalsIgnoreCase("disp")){
+				if(id != null){
+					//falta fazer
+					boolean ativado=crimeService.realizaAtivacao(id);
+					
+					if(ativado){
+						parsingToXML(response,"pha");//servico ativo 'liberado'
+					}else{
+						parsingToXML(response,"phd");//servico desativado 'trava'
+					}
+				}
 				return;
 			}
 			
@@ -74,26 +86,15 @@ public class CrimeRatioServlet extends HttpServlet {
 				end = ges.consultaRuaCoordenadas(latitude+","+longitude).getEndereco();
 			}
 			
-			/*
-			System.out.println("End: "+end);
-			System.out.println("Lat: "+latitude);
-			System.out.println("long: "+longitude);*/
-			
 			double raio = Double.parseDouble(request.getParameter("raio"));
 			long dataIni = Long.parseLong(request.getParameter("dIni"));
 			long dataFim = Long.parseLong(request.getParameter("dFim"));
 			
 			
-			ApplicationContext springContext = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
-			CrimeService crimeService = (CrimeService)springContext.getBean("crimeService");
-			
 			Map <String,Integer> mapa = crimeService.numeroCrimesArea(latitude, longitude, raio,dataIni,dataFim);
 			
 			parsingToXML(mapa,response,end);
 			
-			
-			//System.out.println(mapa);
-			//System.out.println(end);
 			
 		}catch(NumberFormatException e){
 			errorXML(response);
@@ -108,7 +109,7 @@ public class CrimeRatioServlet extends HttpServlet {
 	
 	private void errorXML(HttpServletResponse response){
 		StringBuilder error = new StringBuilder();
-		error.append("<?xml version='1.0' encoding='UTF-8'?>");
+		error.append("<?xml version='1.0' encoding='iso-8859-1'?>");
 		error.append("<crimes>");
 		error.append("<errors>Error</errors>");
 		error.append("</crimes>");
@@ -121,6 +122,26 @@ public class CrimeRatioServlet extends HttpServlet {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
+	}
+	
+	private void parsingToXML(HttpServletResponse response,String disp) throws IOException{
+		
+		response.setContentType("text/xml; charset=iso-8859-1");
+		response.setHeader("Pragma", "no-cache");
+		response.setHeader("Cache-Control", "no-cache");
+		response.setDateHeader("Expires", 0);
+		response.setCharacterEncoding("UTF-8");
+		
+		StringBuilder sbXML = new StringBuilder();
+		
+		sbXML.append("<?xml version='1.0' encoding='UTF-8'?>");
+		sbXML.append("<cr>");
+		sbXML.append("<a>"+disp+"</a>");
+		sbXML.append("</cr>");
+		
+		PrintWriter out = response.getWriter();
+		out.println(sbXML.toString());
+		out.close();
 	}
 	
 	private void parsingToXML(Map <String,Integer> mapa,HttpServletResponse response,String end) throws IOException{

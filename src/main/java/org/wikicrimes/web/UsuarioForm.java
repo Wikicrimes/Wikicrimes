@@ -1,8 +1,10 @@
 package org.wikicrimes.web;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -579,9 +581,15 @@ public class UsuarioForm extends GenericForm {
 	
 	public String comprarAppMobile(){
 		try {
+			
+			String key=Cripto.criptografar(id+new Date().getTime());
 			//ele tem q tah logado!!
 			if(usuario.getIdUsuario()!=null){
-				modificaXMLApp();
+				modificaXMLApp(key);
+				
+				//faz a persistencia no banco
+				salvarChave(key);
+				
 				empacotaJar();
 			}
 		} catch (IOException e) {
@@ -592,12 +600,31 @@ public class UsuarioForm extends GenericForm {
 		return null;
 	}
 	
-	private void empacotaJar() throws IOException, InterruptedException{
-		Process jar = new ProcessBuilder ("cd /root && ant -Dnome="+id+new Date().getTime()+".jar dist").start();
-        jar.waitFor();
+	private void salvarChave(String key){
+		Usuario user = (Usuario)service.get(usuario.getIdUsuario());
+		user.setMobileAppID(key);
+		user.setMobileAppAtivacao(0);
+		
+		service.update(user);
 	}
 	
-	private void modificaXMLApp() throws IOException{
+	private void empacotaJar() throws IOException, InterruptedException{
+		Process jar = Runtime.getRuntime().exec("ant -find /root/build.xml -Dnome="+"Wikicrimes_"+usuario.getIdUsuario()+new Date().getTime()+".jar dist");
+		
+		//ver o estado do processo
+		
+		BufferedReader reader = new BufferedReader(new InputStreamReader(jar.getInputStream()));
+		String line=null;
+		
+		System.out.println("Houve Compra de um Jar...");
+		while((line = reader.readLine()) != null){
+			System.out.println(new String(line));
+		}
+		
+		//jar.destroy();
+	}
+	
+	private void modificaXMLApp(String str) throws IOException{
 		//System.out.println("ID: "+usuario.getIdUsuario());
 		File file = new File("/root/WikicrimesMobileLite/util/file/config.xml");
 
@@ -605,7 +632,7 @@ public class UsuarioForm extends GenericForm {
 
         sbStr=sbStr.append("<?xml version='1.0' encoding='iso-8859-1'?>");
         sbStr=sbStr.append("<app>");
-        sbStr=sbStr.append("<id>"+Cripto.criptografar(id+new Date().getTime())+"</id>");
+        sbStr=sbStr.append("<id>"+str+"</id>");
         sbStr=sbStr.append("</app>");
 
         FileWriter fw = new FileWriter(file,false);

@@ -18,6 +18,7 @@
 			<supported-locale>pt</supported-locale>		
 			<supported-locale>es</supported-locale>
 			<supported-locale>it</supported-locale>
+			<supported-locale>fr</supported-locale>
 		</locale-config>
 		<message-bundle>messages</message-bundle>
 	</application>

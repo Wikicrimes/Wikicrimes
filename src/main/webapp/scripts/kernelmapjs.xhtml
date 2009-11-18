@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC
+"-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+	
+	<f:loadBundle var="messages" basename="messages" />
+	<script type="text/javascript"><!-- 
+	/* <![CDATA[ */
+			
+			var arrayCrimesLatLng = new Array();
+			var index = 0;
+		    var zoomKernel;
+		    var photo = new TPhoto();
+			var northPixel;
+			var southPixel;
+			var eastPixel;
+			var westPixel;
+			
+			var mapa =  '#{messages["webapp.nome.mapa.default"]}';
+			var satelite = '#{messages["webapp.nome.mapa.satelite"]}';
+			var hibrido = '#{messages["webapp.nome.mapa.hibrido"]}';
+			var terreno = '#{messages["webapp.nome.mapa.terreno"]}';
+			var kernelLabel = '#{messages["webapp.nome.mapa.zonasquentes"]}';
+			var earth ="3D";
+			var textoEmbedMapaWikiCrimes = '#{messages["texto.embed.mapa.wikicrimes"]}';
+			var localeWikiCrimes = '#{messages["webapp.locale"]}'
+			
+		    var aindaCarregando = false;
+		    var me;
+		    var kernelLayer;
+		    var kernelDiv;	
+				
+			function KernelLayer(map, opt_opts) {
+			  var me = this;
+			  me.map = map;  
+			}
+			
+			KernelLayer.prototype.enable = function() {
+			  	if(!aindaCarregando){
+				  	this.enabled = true;
+				  	document.getElementById("loadingKernelMap").style.visibility='visible';		
+				  	aindaCarregando = true;
+				  	podeCarregarCrimes=false;
+				  	window.setTimeout(constroiMapaKernel,1);  	
+			  	}
+			}
+			
+			KernelLayer.prototype.disable = function() {
+				if(!aindaCarregando){
+					this.enabled = false;
+					apagaMapaKernel();
+					mostraMarcadores();
+					podeCarregarCrimes=true;
+				}  
+			}
+			
+			KernelLayer.prototype.getEnabled = function() {
+			  return this.enabled;
+			}
+			
+			function crimeKernelMap(lng, lat, crimeMarker){
+				this.lng = lng;
+				this.lat = lat;
+				this.crimeMarker = crimeMarker;
+			}
+			
+			function zeraArrayCrimes(){
+				arrayCrimesLatLng = new Array();
+				index = 0;	
+				apagaMapaKernel();
+				desabilitaBotaoKernel();
+			}
+			
+			function desabilitaBotaoKernel(){
+				if (me != null && me.kernelLayer != null){
+					me.kernelLayer.disable();
+					me.toggleButton_(kernelDiv.firstChild, me.kernelLayer.getEnabled());
+					aindaCarregando = false;		
+				}
+			}
+			
+			function apagaMapaKernel(){
+				map.removeTPhoto(photo);
+			}
+			
+			function constroiMapaKernel(){
+				var bounds = map.getBounds();
+				var url = constroiURLMapaKernel(bounds);
+				constroiRequisicaoKernelMap(url);
+				carregaKernelMap(bounds);
+			}
+			
+			function constroiURLMapaKernel(bounds){
+				//alert('Teste 1');
+				jaMostrouAjudaHotSpot = true;
+				
+				//Passa os limites para pixel
+				northPixel = map.getCurrentMapType().getProjection().fromLatLngToPixel(bounds.getNorthEast(), map.getZoom()).y;
+				southPixel = map.getCurrentMapType().getProjection().fromLatLngToPixel(bounds.getSouthWest(), map.getZoom()).y;
+				eastPixel = map.getCurrentMapType().getProjection().fromLatLngToPixel(bounds.getNorthEast(), map.getZoom()).x;
+				westPixel = map.getCurrentMapType().getProjection().fromLatLngToPixel(bounds.getSouthWest(), map.getZoom()).x;
+				//alert(northPixel + "," + southPixel + "," + eastPixel + "," + westPixel);
+					
+				//Adiciona os parametros da requisição
+				var url = '';  	
+				url = 'northPixel=' + northPixel + '&southPixel=' + southPixel + '&eastPixel=' + eastPixel + '&westPixel=' + westPixel;
+				//url += '&north=' + north + '&south=' + south + '&east=' + east + '&west=' + west;
+
+				url += '&pontoXY=';
+				var arrayCrimesPixel = convertLatLngParaPixel();
+				//Monta os parametros da requisiï¿½ï¿½o contendo todos os crimes clicados na tela
+				for (i = 0; i < arrayCrimesPixel.length; i++){
+					//Crimes sï¿½o adicionados como strings separados por "a" e os latlng separados por ","
+					url += arrayCrimesPixel[i].lng + "," + arrayCrimesPixel[i].lat + "a";
+				}
+				url = url.substring(0, url.length-2);
+
+				getTamMapClienteWikiCrimes(); 	      		
+		      	url +='&width='+widthMapClienteWikiCrimes+'&height='+heightMapClienteWikiCrimes;
+
+				return url;
+			}
+			
+			function escondeMarcadores(){
+				for (i = 0; i < arrayCrimesLatLng.length; i++){
+					arrayCrimesLatLng[i].crimeMarker.hide();
+				}
+			}
+			
+			function mostraMarcadores(){
+				for (i = 0; i < arrayCrimesLatLng.length; i++){
+					arrayCrimesLatLng[i].crimeMarker.show();
+				}
+			}
+
+			function limpaCrimesAgrupador(){
+				// Google Agrupadores: Limpa agrupadores quando mapa de kernel Ã© chamado. 
+				GVetorMarcadores = [];
+				GClusterer.resetViewport();
+				GClusterer.clearMarkers();		
+			}
+
+			function mostraCrimesAgrupador(){
+				for (k in crimesAtuais) {
+					GVetorMarcadores.push(crimesAtuais[k]);
+			 	} 	
+				GClusterer = new MarkerClusterer(map, GVetorMarcadores);
+				//setTimeout(atualizaMapa, 1000);
+			}		
+			
+			function convertLatLngParaPixel(){
+			
+				//Apaga o array de pixel
+				arrayCrimesPixel = new Array();	
+				
+				//recupera o zoom atual
+				zoomKernel = map.getZoom();
+				
+				var j = 0;
+				for (i = 0; i < arrayCrimesLatLng.length; i++){
+					//Convete o latlng em pixel
+					var sw = map.getCurrentMapType().getProjection().fromLatLngToPixel(new GLatLng(arrayCrimesLatLng[i].lat, arrayCrimesLatLng[i].lng), zoomKernel);
+					
+					arrayCrimesLatLng[i].crimeMarker.hide();
+					
+					pontoXPixel = sw.y; //Longitude (x)
+					pontoYPixel = sw.x; //Latitude (y)
+
+					//Só os crimes exibidos na tela atual								
+					if(westPixel <= pontoYPixel && eastPixel >= pontoYPixel && northPixel <= pontoXPixel && southPixel >= pontoXPixel){
+						arrayCrimesPixel[j] = new crimeKernelMap(pontoXPixel, pontoYPixel);
+						j = j + 1;
+					}
+				}	
+				return arrayCrimesPixel;
+			}
+
+			var widthMapClienteWikiCrimes;
+			var heightMapClienteWikiCrimes;
+			function getTamMapClienteWikiCrimes(){
+				var b = map.getBounds();
+				var north = b.getNorthEast().lat();
+				var south = b.getSouthWest().lat();
+				var east = b.getNorthEast().lng();
+				var west = b.getSouthWest().lng();	
+
+				var northPixel = map.getCurrentMapType().getProjection().fromLatLngToPixel(b.getNorthEast(), map.getZoom()).y;
+				var southPixel = map.getCurrentMapType().getProjection().fromLatLngToPixel(b.getSouthWest(), map.getZoom()).y;
+				var eastPixel = map.getCurrentMapType().getProjection().fromLatLngToPixel(b.getNorthEast(), map.getZoom()).x;
+				var westPixel = map.getCurrentMapType().getProjection().fromLatLngToPixel(b.getSouthWest(), map.getZoom()).x;
+				widthMapClienteWikiCrimes = (eastPixel - westPixel);
+				heightMapClienteWikiCrimes = (southPixel - northPixel);
+			}
+
+			function constroiRequisicaoKernelMap(url) {
+				//alert("constroiRequisicaoRotaSegura(), url=\n" + url);
+				//alert("contrev: " + contrev);
+			     http_request = GXmlHttp.create();
+			     if (http_request.overrideMimeType) {
+			        http_request.overrideMimeType('text/xml');
+			     }
+			     //Espera retorno do servidor
+			     http_request.open('POST', 'ServletKernelMap', false);
+				 http_request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+				 http_request.send(url);
+			}
+			
+			function carregaKernelMap(bounds){
+				if (http_request.readyState == 4) {
+					if (http_request.status == 200) {
+
+						removeHintComandosMapa();
+					
+						//Recupera a resposta
+						var documento = http_request.responseText;
+						
+						//Separa a resposta em "n" linhas
+						var linhas = documento.split("\n");
+
+						north = bounds.getNorthEast().lat();
+						south = bounds.getSouthWest().lat();
+						east = bounds.getNorthEast().lng();
+						west = bounds.getSouthWest().lng();
+						
+						var imagePath = linhas[1];
+						//alert(north + "," + south + "," + east + "," + west);			
+								
+						if (map.getZoom() == zoomKernel){
+							exibeImagemMapaKernel(imagePath, north, west, south, east);
+					  		
+					  		aindaCarregando = false;
+					  		
+					  	}
+					}
+				}
+			}
+							 
+			function exibeImagemMapaKernel(imagePath, lat1, lon1, lat2, lon2){
+				photo = new TPhoto();
+				photo.id = 'addphoto';
+
+				photo.src = '.' + imagePath;
+//				/*teste: sem salvar arquivo*/photo.src = "ServletKernelMap?imagem=true"; (comentar as 2 linhas do fim)
+				photo.percentOpacity = 50;
+				photo.anchorTopLeft = new GLatLng(lat1,lon1);
+				photo.anchorBottomRight = new GLatLng(lat2,lon2);
+		  		map.addTPhoto(photo);
+		  		document.getElementById("loadingKernelMap").style.visibility='hidden';
+		  		
+				//Manda confirmacao para apagar a imagem no servidor
+				url = 'imagem=true';
+				constroiRequisicaoKernelMap(url);
+			}
+			
+
+    /* ]]> */
+    --></script>	
+
+</html>

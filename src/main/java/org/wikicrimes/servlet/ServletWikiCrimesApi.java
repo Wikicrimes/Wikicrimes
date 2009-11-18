@@ -2,6 +2,8 @@ package org.wikicrimes.servlet;
 
 import java.awt.Color;
 import java.awt.Image;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -13,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -20,6 +23,7 @@ import java.util.concurrent.Semaphore;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,12 +45,11 @@ import org.wikicrimes.model.Usuario;
 import org.wikicrimes.service.CrimeService;
 import org.wikicrimes.service.UsuarioService;
 import org.wikicrimes.util.Constantes;
-import org.wikicrimes.util.kernelMap.Dados;
-import org.wikicrimes.util.kernelMap.MyMapKernel;
-import org.wikicrimes.util.kernelMap.ThreadImage;
-import org.wikicrimes.util.kernelMap.Transparent;
-import org.wikicrimes.util.kernelMap.Util;
+import org.wikicrimes.util.kernelMap.KernelMap;
+import org.wikicrimes.util.kernelMap.Ponto;
 import org.wikicrimes.web.FiltroForm;
+
+import static org.wikicrimes.servlet.ServletKernelMap.*;
 
 public class ServletWikiCrimesApi extends HttpServlet {
 	/**
@@ -298,8 +301,6 @@ public class ServletWikiCrimesApi extends HttpServlet {
 		saida = new PrintWriter(outW, true);
 		JSONObject resposta = new JSONObject();
 		
-		String imagemDiretorioAleatorio = request.getParameter("imagem");
-		
 		
 		HttpSession httpSession = request.getSession();
 		ServletContext context = httpSession.getServletContext();
@@ -308,9 +309,10 @@ public class ServletWikiCrimesApi extends HttpServlet {
 	
 		
 		//Verifica se a imagem já chegou no cliente
-		if(imagemDiretorioAleatorio != null){
-			Thread thread = new ThreadImage(realContextPath + imagemDiretorioAleatorio);
-			thread.start();
+		if(request.getParameter("imagem") != null){
+//			Thread thread = new ThreadImage(realContextPath + imagemDiretorioAleatorio);
+//			thread.start();
+			KernelImageFilesManager.deletaImagens(httpSession);
 			return;	
 		}		
 		String statusReq = request.getParameter("statusReq");
@@ -373,87 +375,18 @@ public class ServletWikiCrimesApi extends HttpServlet {
 				httpSession.removeAttribute("pontoXY");
 				
 			}
-			Util util = new Util();
-			util.tamXMatriz = (widthTela/Util.tamCelulaPixel);
-			util.tamYMatriz = (heightTela/Util.tamCelulaPixel);	
-			//Instancia o algoritmo de desidade de kernel
-			MyMapKernel mapKernel = new MyMapKernel(util);
+			Rectangle limitesPixel = new Rectangle(westPixel, northPixel, widthTela, heightTela);
 			
+			//calcula o mapa de kernel e gera a imagem
+			KernelMap mapKernel = new KernelMap(GRID_NODE, BANDWIDTH, limitesPixel, getPoints(pontoXY)) ;
+			String imagePath = KernelImageFilesManager.criarImagem(mapKernel, httpSession);
 			
-			//Passa os limites da tela do wikicrimes
-			mapKernel.setXMax(eastPixel);
-			mapKernel.setXMin(westPixel); 
-			mapKernel.setYMax(southPixel);
-			mapKernel.setYMin(northPixel);
-			
-			
-			//Adiciona os crimes no algoritmo do mapa de kernel
-			Dados dados = mapKernel.getDados();
-			dados.limpaDados();
-			
-			String [] pontos = pontoXY.split("a");
-	
-			for (String ponto : pontos){
-				if(!ponto.equalsIgnoreCase("")){
-					String coordenadas [] = ponto.split(",");
-					dados.adicionaPontoWiki(Integer.parseInt(coordenadas[1]), Integer.parseInt(coordenadas[0]));
-				}
-			}
-			
-			
-			//Inicia o calculo da estimação de densidades de kernel
-			mapKernel.inicializaCalculo();
-			
-			//Id único para o nome da imagem
-			int idImage = 0;
-			
-			try {
-				semaphore.acquire();
-			
-				 ServletKernelMap.idImage++;
-				
-				if( ServletKernelMap.idImage == 100){
-					 ServletKernelMap.idImage = 1;
-				}
-				
-				idImage = ServletKernelMap.idImage;
-				
-				semaphore.release();
-				
-			} catch (InterruptedException e1) {
-				e1.printStackTrace();
-			}
-				
-			int numRandomico = getNumeroRandomico();
-			numRandomico += idImage;
-			
-			String fileName = "Img1.png";
-			realContextPath += numRandomico;
-			
-			File file = new File(realContextPath);
-			deleteDir(file);
-			file.mkdirs();	
-			
-			//Cria a imagem de fundo preto
-			mapKernel.criaImage(widthTela,heightTela,realContextPath + barra, fileName);
-			
-			//Retira o background e torna-o transparente
-			Image image = Transparent.makeColorTransparent(Toolkit.getDefaultToolkit().getImage(realContextPath + barra +fileName) , Color.black);
-			BufferedImage bufferedImage = Transparent.toBufferedImage(image);
-			
-			try {
-				Transparent.writeImageToJPG(new File(realContextPath + barra + "Img" + idImage + ".png"), bufferedImage);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		
 			//Envia informações resultates para o cliente
-			resposta.put("topLeftX", mapKernel.getTopLeft().x);
-			resposta.put("topLeftY", mapKernel.getTopLeft().y);
-			resposta.put("bottomRightX", mapKernel.getBottomRight().x);
-			resposta.put("bottomRightY", mapKernel.getBottomRight().y);
-			resposta.put("idImage", idImage);
-			resposta.put("numRandomico", numRandomico);
+			resposta.put("topLeftX", westPixel);
+			resposta.put("topLeftY", northPixel);
+			resposta.put("bottomRightX", eastPixel);
+			resposta.put("bottomRightY", southPixel);
+			resposta.put("imagePath", imagePath);
 			resposta.put("nada", "NADA");
 			resposta.put("statuRes", "concluido");
 		}else{
@@ -464,23 +397,4 @@ public class ServletWikiCrimesApi extends HttpServlet {
 		saida.close();
 	}
 	
-	private int getNumeroRandomico() {		
-		Random randomGenerator = new Random();
-		return randomGenerator.nextInt(100000000);
-	}
-
-	public boolean deleteDir(File dir) {
-        if (dir.isDirectory()) {
-            String[] children = dir.list();
-            for (int i=0; i<children.length; i++) {
-                boolean success = deleteDir(new File(dir, children[i]));
-                if (!success) {
-                    return false;
-                }
-            }
-        }
-    
-        // The directory is now empty so delete it
-        return dir.delete();
-    }	
 }

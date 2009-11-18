@@ -270,6 +270,16 @@
 		<servlet-name>ServletRotaSegura</servlet-name>
 		<url-pattern>/ServletRotaSegura</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>TesteCenariosRotas</servlet-name>
+		<servlet-class>org.wikicrimes.util.kernelMap.testes.TesteCenariosRotas</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>TesteCenariosRotas</servlet-name>
+		<url-pattern>/TesteCenariosRotas</url-pattern>
+	</servlet-mapping>
 
 	<servlet>
 		<servlet-name>CrimeRatioServlet</servlet-name>

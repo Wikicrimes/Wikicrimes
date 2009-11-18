@@ -1,105 +1,132 @@
 package org.wikicrimes.util.kernelMap;
 
+import java.awt.Point;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
+ * Segmento de reta que compoe parte de uma rota
  * 
  * @author Mairon
  *
  */
 
 public class SegmentoReta {
-	private int inicioRotaPixelX;
-	private int inicioRotaPixelY;
-	private int fimRotaPixelX;
-	private int fimRotaPixelY;
+	private Ponto inicio;
+	private Ponto fim;
 	
-	private String [] CodigoInicio = new String[2];
-	private String [] CodigoFim = new String[2];
-	
-	public SegmentoReta(int inicioRotaPixelX, int inicioRotaPixelY,
-			int fimRotaPixelX, int fimRotaPixelY) {
-		this.inicioRotaPixelX = inicioRotaPixelX;
-		this.inicioRotaPixelY = inicioRotaPixelY;
-		this.fimRotaPixelX = fimRotaPixelX;
-		this.fimRotaPixelY = fimRotaPixelY;
+	public SegmentoReta(Ponto inicio, Ponto fim){
+		this.inicio = inicio;
+		this.fim = fim;
 	}
 	
-	public void codificaPontosExtremos(int bordaCima, int bordaBaixo, int bordaEsq, int bordaDir){
-		
-		//Zera os cófigos
-		CodigoInicio[0] = "";
-		CodigoInicio[1] = "";
-		CodigoFim[0] = "";
-		CodigoFim[1] = "";
-		
-		//Estremidade Inicio
-		if (inicioRotaPixelX > bordaCima){
-			CodigoInicio[0] = Util.CIMA;
-		}else if (inicioRotaPixelX < bordaBaixo){
-			CodigoInicio[0] = Util.BAIXO;
-		}
-		if (inicioRotaPixelY < bordaEsq){
-			CodigoInicio[1] = Util.ESQ;
-		}else if(inicioRotaPixelY > bordaDir){
-			CodigoInicio[1] = Util.DIR;
-		}
-		
-		//Estremidade Fim
-		if (fimRotaPixelX > bordaCima){
-			CodigoFim[0] = Util.CIMA;
-		}else if (fimRotaPixelX < bordaBaixo){
-			CodigoFim[0] = Util.BAIXO;
-		}
-		if (fimRotaPixelY < bordaEsq){
-			CodigoFim[1] = Util.ESQ;
-		}else if(fimRotaPixelY > bordaDir){
-			CodigoFim[1] = Util.DIR;
-		}
-			
-		/*Codificar(P)
-		se P está acima
-		então Cp = {acima}
-		senão se P está abaixo
-		então Cp = {abaixo}
-		
-		se P está a esquerda
-		então Cp = Cp UNIAO {esq}
-		senão se P está a direita
-		então Cp = Cp UNIAO {dir}*/
+	public SegmentoReta(int x1, int y1, int x2, int y2) {
+		this.inicio = new Ponto(x1, y1);
+		this.fim = new Ponto(x2, y2);
 	}
 	
-	//Verifica caso de o pedaço de rota estar totalmente fora da janela
-	public boolean isCasoTrivial(){
-		if(CodigoInicio[0].equalsIgnoreCase(CodigoFim[0])){
-			return true;
-		}
-		if(CodigoInicio[1].equalsIgnoreCase(CodigoFim[1])){
-			return true;
-		}
-		return false;
+	public SegmentoReta(Point ponto1, Point ponto2){
+		this(new Ponto(ponto1), new Ponto(ponto2));
 	}
 	
-	public int getInicioRotaPixelX() {
-		return inicioRotaPixelX;
+	
+	/**
+	 * Um segmento de reta da origem até o fim de uma rota
+	 */
+	public SegmentoReta(Rota rota){
+		this(rota.getInicio(), rota.getFim());
 	}
-	public void setInicioRotaPixelX(int inicioRotaPixelX) {
-		this.inicioRotaPixelX = inicioRotaPixelX;
+	
+	
+	/**
+	 * Corrdenada do início deste segmento de reta
+	 */
+	public Ponto getInicio(){
+		return inicio;
 	}
-	public int getInicioRotaPixelY() {
-		return inicioRotaPixelY;
+	/**
+	 * Corrdenada do fim deste segmento de reta
+	 */
+	public Ponto getFim(){
+		return fim;
 	}
-	public void setInicioRotaPixelY(int inicioRotaPixelY) {
-		this.inicioRotaPixelY = inicioRotaPixelY;
+
+	public double getComprimento(){
+		double quadradoCateto1 = Math.pow((getFim().getX() - getInicio().getX()), 2);
+		double quadradoCateto2 = Math.pow((getFim().getY() - getInicio().getY()), 2);
+		return Math.sqrt( quadradoCateto1 + quadradoCateto2 );
 	}
-	public int getFimRotaPixelX() {
-		return fimRotaPixelX;
+	
+	public List<Ponto> getPontos(){
+		List<Ponto> pontos = new ArrayList<Ponto>();
+		pontos.add(getInicio());
+		pontos.add(getFim());
+		return pontos;
 	}
-	public void setFimRotaPixelX(int fimRotaPixelX) {
-		this.fimRotaPixelX = fimRotaPixelX;
+	
+	/**
+	 * Inverte o X e Y dos pontos deste SegmentoReta para gerar um novo. Obs: Não troca do início pelo fim. 
+	 */
+	public SegmentoReta invertido(){
+		return new SegmentoReta(getInicio().invertido(), getFim().invertido());
 	}
-	public int getFimRotaPixelY() {
-		return fimRotaPixelY;
+	
+	public SegmentoReta rotacionado(double angulo){
+		return new SegmentoReta(getInicio().rotacionado(angulo), getFim().rotacionado(angulo));
 	}
-	public void setFimRotaPixelY(int fimRotaPixelY) {
-		this.fimRotaPixelY = fimRotaPixelY;
-	}	
+	
+	public double getAngulo(){
+		double tg = getCoefA();
+		double angulo = Math.atan(tg);
+		angulo += Math.PI/2; //pra variar entre 0 e PI, em vez de -PI/2 e PI/2
+		if(getInicio().getX() < getFim().getX())
+			return angulo;
+		else
+			return angulo + Math.PI; //+180 graus, pq o fim ta antes do inicio 
+	}
+	
+	/**
+	 * O coeficiente A da equação da reta. A tangente do ângulo.
+	 */
+	public double getCoefA(){
+		double catetoAdj = this.getFim().getX() - this.getInicio().getX();
+		double catetoOposto = this.getFim().getY() - this.getInicio().getY();
+		return catetoOposto/catetoAdj; 
+	}
+	
+	/**
+	 * O coeficiente B (termo independente) da equação da reta.
+	 */
+	public double getCoefB(){
+		int x1 = getInicio().x;
+		int x2 = getFim().x;
+		int y1 = getInicio().y;
+		int y2 = getFim().y;
+		double numerador = (x2*y1 - x1*y2);
+		double denominador = (x2 - x1); 
+		if(denominador != 0)
+			return numerador/denominador;
+		else
+			return (numerador>0)? Double.POSITIVE_INFINITY : Double.NEGATIVE_INFINITY;
+	}
+	
+	@Override
+	public String toString() {
+		return getInicio() + "a" + getFim();
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof SegmentoReta){
+			SegmentoReta segm = (SegmentoReta)obj;
+			return this.getInicio().equals(segm.getInicio()) && this.getFim().equals(segm.getFim());
+		}else{
+			return false;
+		}
+	}
+	
+	@Override
+	public int hashCode() {
+		return getInicio().hashCode() + getFim().hashCode();
+	}
 }

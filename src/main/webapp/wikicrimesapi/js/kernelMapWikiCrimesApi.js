@@ -81,9 +81,10 @@ function mapaDeKernelWikiCrimes(){
 
 function executaRequisicaoKernelMapWikiCrimes(url){
 	variavelGlobalJQuery.getJSON(url, false, function(data){
-		if(data.numRandomico!=null && data.numRandomico!= undefined){
-			var numRandomico = data.numRandomico;
-			var idImage = data.idImage;
+		if(data.imagePath!=null && data.imagePath!= undefined){
+			//var numRandomico = data.numRandomico;
+			var imagePath = data.imagePath;
+			
 			
 			//Converte pixel para latlng. Lembrete: GPoint(lat, lng)
 			var sw1 = mapWikiCrimes.getCurrentMapType().getProjection().fromPixelToLatLng(new GPoint(data.topLeftX,data.topLeftY), mapWikiCrimes.getZoom(), true);
@@ -105,7 +106,7 @@ function executaRequisicaoKernelMapWikiCrimes(url){
 			photoWikiCrimes.id = 'addphoto';
 			//photo.id = id;
 			
-			photoWikiCrimes.src = urlWikiCrimes + 'images/KernelMap/'+ numRandomico + '/Img' + idImage + '.png';
+			photoWikiCrimes.src = urlWikiCrimes + imagePath;
 			
 			//photo.src = './images/KernelMap/' + idUsuarioMapaKernel +'@'+ emailUsuarioMapaKernel + '/Img' + idImage + '.png';
 			//photo.src = '${contextPath}/Img2.png';			
@@ -120,7 +121,7 @@ function executaRequisicaoKernelMapWikiCrimes(url){
 			//document.getElementById("loadingKernelMap").style.visibility='hidden';
 	  		
 			//Manda confirma��o para apagar a imagem no servidor
-			url = urlWikiCrimes + 'ServletWikiCrimesApi?acao=kernelMap&imagem=' + numRandomico;
+			url = urlWikiCrimes + 'ServletWikiCrimesApi?acao=kernelMap&imagem=true';
 			url+='&jsoncallback=?';
 			executaRequisicaoKernelMapWikiCrimes(url);
 		}else{

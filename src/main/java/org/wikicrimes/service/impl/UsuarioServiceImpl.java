@@ -204,5 +204,10 @@ public class UsuarioServiceImpl extends GenericCrudServiceImpl implements
 		// TODO Auto-generated method stub
 		return usuarioDao.getAreas(u);
 	}
+
+	@Override
+	public Usuario getUsuarioKey(String key) {
+		return usuarioDao.getUsuarioKey(key);
+	}
 	
 }

@@ -13,4 +13,5 @@ public interface UsuarioDao extends GenericCrudDao {
 	public List<BaseObject> filter(Map parameters);
 	public List<BaseObject> getUsuariosConfirmados();	
 	public List<AreaObservacao> getAreas(Usuario u);
+	public Usuario getUsuarioKey(String key);
 }

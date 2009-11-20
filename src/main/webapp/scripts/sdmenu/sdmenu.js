@@ -4,7 +4,7 @@ function SDMenu(id) {
 	this.menu = document.getElementById(id);
 	this.submenus = this.menu.getElementsByTagName("div");
 	this.remember = true;
-	this.speed = 3;
+	this.speed = 2;
 	this.markCurrent = true;
 	this.oneSmOnly = false;
 }

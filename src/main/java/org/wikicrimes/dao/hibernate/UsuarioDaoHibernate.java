@@ -130,6 +130,24 @@ public List<BaseObject> filter(final Map parameters) {
 
 		return getHibernateTemplate().find(query);
 	}
+
+	@Override
+	public Usuario getUsuarioKey(String key) {
+		Usuario usuario = new Usuario();
+		usuario.setMobileAppID(key);
+		
+		List list= getHibernateTemplate().findByExample(usuario);
+		
+		if (list!=null && !list.isEmpty()){
+			Usuario user = (Usuario) list.get(0);
+			user.setCountAtividadeMobile(user.getCountAtividadeMobile()+1);
+			//getHibernateTemplate().update(user);
+			return user;
+		 }else{
+			 return null;
+		 }
+		
+	}
 	
 
 }

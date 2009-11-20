@@ -41,6 +41,7 @@ public class Usuario extends BaseObject {
 	private Boolean confAutomatica;
 	private Integer mobileAppAtivacao;
 	private String mobileAppID;
+	private Long countAtividadeMobile;
 
 	public final static String TRUE = "1";
 	public final static String FALSE = "0";
@@ -323,6 +324,14 @@ public class Usuario extends BaseObject {
 		} catch (InvocationTargetException e) {
 			return null;
 		}
+	}
+
+	public Long getCountAtividadeMobile() {
+		return countAtividadeMobile;
+	}
+
+	public void setCountAtividadeMobile(Long countAtividadeMobile) {
+		this.countAtividadeMobile = countAtividadeMobile;
 	}
 
 }

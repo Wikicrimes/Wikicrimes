@@ -34,6 +34,7 @@
         
         <property name="mobileAppID" column="USU_MOBILE_APP_ID" type="java.lang.String"/>
         <property name="mobileAppAtivacao" column="USU_MOBILE_APP_ATIVACAO" type="java.lang.Integer"/>
+        <property name="countAtividadeMobile" column="USU_MOBILE_COUNT_ATIVIDADE" type="java.lang.Long"/>
         
         <many-to-one name="perfil" column="USU_IDPERFIL" class="org.wikicrimes.model.Perfil" />
         <many-to-one name="usuarioCelular" column="USU_IDUSUARIO_CELULAR" class="org.wikicrimes.model.UsuarioCelular" />

@@ -590,26 +590,32 @@ public class UsuarioForm extends GenericForm {
 				//faz a persistencia no banco
 				salvarChave(key);
 				
-				empacotaJar();
+				String nomeArq="wikicrimes_"+usuario.getIdUsuario()+new Date().getTime()+".jar";
+				empacotaJar(nomeArq);
+				
+				HttpSession session = (HttpSession)facesContext.getExternalContext().getSession(false);
+				session.setAttribute("nomeArq","http://200.19.188.105:5151/wikicrimes/app/"+nomeArq);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		return null;
+		System.gc();
+		return "link";
 	}
 	
 	private void salvarChave(String key){
 		Usuario user = (Usuario)service.get(usuario.getIdUsuario());
 		user.setMobileAppID(key);
 		user.setMobileAppAtivacao(0);
+		user.setCountAtividadeMobile((long)0);
 		
 		service.update(user);
 	}
 	
-	private void empacotaJar() throws IOException, InterruptedException{
-		Process jar = Runtime.getRuntime().exec("ant -find /root/build.xml -Dnome="+"Wikicrimes_"+usuario.getIdUsuario()+new Date().getTime()+".jar dist");
+	private void empacotaJar(String nome) throws IOException, InterruptedException{
+		Process jar = Runtime.getRuntime().exec("ant -find /root/build.xml -Dnome="+nome+" dist");
 		
 		//ver o estado do processo
 		

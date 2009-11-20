@@ -13,8 +13,10 @@ import javax.xml.stream.XMLStreamException;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+import org.wikicrimes.model.Usuario;
 import org.wikicrimes.service.CrimeService;
 import org.wikicrimes.service.GoogleEnderecoService;
+import org.wikicrimes.service.UsuarioService;
 import org.wikicrimes.util.GoogleMapsData;
 /**
  * Tendo uma coordenada de lat e long, vc pegara todos os crimes de um dado raio
@@ -47,6 +49,7 @@ public class CrimeRatioServlet extends HttpServlet {
 			
 			ApplicationContext springContext = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
 			CrimeService crimeService = (CrimeService)springContext.getBean("crimeService");
+			UsuarioService usuarioService = (UsuarioService)springContext.getBean("usuarioService");
 			
 			String serv = request.getParameter("serv");
 			String id = request.getParameter("id");
@@ -90,11 +93,16 @@ public class CrimeRatioServlet extends HttpServlet {
 			long dataIni = Long.parseLong(request.getParameter("dIni"));
 			long dataFim = Long.parseLong(request.getParameter("dFim"));
 			
-			
+			//manda pro crimeService...
 			Map <String,Integer> mapa = crimeService.numeroCrimesArea(latitude, longitude, raio,dataIni,dataFim);
 			
+			//conta as requisicoes feita pelo usuario, esse obj retornado jah vem contado...
+			Usuario user = usuarioService.getUsuarioKey(id);//traz o id
+			if(user!=null){
+				usuarioService.update(user);
+			}
+			//monta o xml de resposta
 			parsingToXML(mapa,response,end);
-			
 			
 		}catch(NumberFormatException e){
 			errorXML(response);

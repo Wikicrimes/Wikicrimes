@@ -581,6 +581,7 @@ public class CrimeDaoHibernate extends GenericCrudDaoHibernate implements
 		if(user.getMobileAppAtivacao()==0){
 			
 			user.setMobileAppAtivacao(1);
+			user.setCountAtividadeMobile((long)0);
 			super.save(user);
 			
 			return true;

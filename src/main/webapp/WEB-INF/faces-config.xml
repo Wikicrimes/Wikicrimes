@@ -53,6 +53,27 @@
 		</navigation-case>
 	</navigation-rule>
 	
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>baixar</from-outcome>
+			<to-view-id>/formularioDownloadWikiMobile.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>instrucoes</from-outcome>
+			<to-view-id>/paginaDownloadWikiMobile.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>termoUso</from-outcome>
+			<to-view-id>/termoUsoWikiMobile.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
 	<!-- 
 	<navigation-rule>
 		<from-view-id>/login.xhtml</from-view-id>
@@ -70,6 +91,7 @@
 			<redirect />
 		</navigation-case>
 	</navigation-rule>
+	
 	<navigation-rule>
 		<navigation-case>
 			<from-outcome>estatistica</from-outcome>

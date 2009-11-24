@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC
+"-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+<head>
+<title>WikiCrimes Mobile Beta</title>
+<meta http-equiv="Content-Language" content="pt-br"></meta>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</meta>
+<link rel="shortcut icon" href="images/favicon.ico"
+	type="image/x-icon" />
+	
+	<script type="text/javascript">
+		
+		function mostraTermoUsoWikicrimesMobile(){
+			//mostrarCarregandoPequeno();
+			document.getElementById("formDM:btDownloadMobile").click();
+		}
+		
+ 	</script>
+	
+</head>
+
+<body>
+<c:if test="#{!empty usuario}">	
+<table border="0" width="100%" height="100%">
+	<!-- MSTableType="nolayout" -->
+	<tr>
+		<td height="46" width="15%">&nbsp;</td>
+		<td height="46" width="70%">
+		<p align="center"><font face="Calibri" size="5"><a
+			name="inicio"></a></font></p>
+		<img border="0" src="images/logo2.png" width="770" height="112" /></td>
+		<td height="46" width="15%">&nbsp;</td>
+	</tr>
+	<tr>
+		<td height="441" width="15%">&nbsp;</td>
+		<td height="441" width="70%">
+		<p align="justify"><font face="Calibri" size="4"><br />
+		Vai estacionar o carro, fazer uma caminhada ou marcar um encontro e
+		deseja saber se o local&nbsp; é seguro? Descubra isso a partir do seu
+		celular. Baixe o programa&nbsp; WikiCrimes Mobile em seu celular e
+		saiba a qualquer momento e em qualquer lugar onde não é seguro.</font></p>
+		<p align="justify"><font face="Calibri" size="4">Descubra:</font></p>
+		<p align="justify"><b><font face="Calibri" size="4">&nbsp;&nbsp;
+		1) <a href="#O que é">O que é WikiCrimes Mobile?</a></font></b></p>
+		<p align="justify"><b><font face="Calibri" size="4">&nbsp;&nbsp;
+		2) <a href="#o que é necessário para instalar">O que é necessário
+		para ter WikiCrimes Mobile em meu celular?</a></font></b></p>
+		<p align="justify"><b><font face="Calibri" size="4">&nbsp;&nbsp;
+		3) <a href="#como instalar">Como instalar a aplicação WikiCrimes
+		Mobile em meu celular?</a></font></b></p>
+		<p align="justify"><b><font face="Calibri" size="4">&nbsp;&nbsp;
+		4) <a href="#compatibilidade">O WikiCrimes Mobile é compatível com
+		o meu Celular?</a></font></b></p>
+		<p align="justify"><b><font face="Calibri" size="4">&nbsp;&nbsp;
+		5) <a href="#como funciona">Como funciona o serviço WikiCrimes
+		Mobile?</a></font></b></p>
+		<p align="justify">&nbsp;</p>
+		<p align="justify"><b><font face="Calibri" size="4">&nbsp;&nbsp;
+		6) <h:outputLink value="#" onclick="mostraTermoUsoWikicrimesMobile();return false;">
+				<h:outputText value="Termo de uso"/>
+		   </h:outputLink> 
+		   
+		</font></b></p>
+		<p align="justify">&nbsp;</p>
+		
+			<a name="baixar"> 
+			<h:form id="baixarApp" method="post">
+				<p align="center"><h:commandButton id="btDw"
+					image="images/index.1.jpg" name="submit"
+					action="#{usuarioForm.preencheFormularioDonwload}" /></p>
+			</h:form>
+			</a>
+			
+			<h:form id="formDM">
+				<h:commandButton id="btDownloadMobile" action="#{usuarioForm.mostraTermoUso}" style="display: none"/>
+			</h:form>
+			
+		<p align="center">&nbsp;</p>
+		<p align="justify">&nbsp;</p>
+		<p align="justify"><b><font face="Calibri" size="6"><a
+			name="O que é"> </a>1) O que &eacute; WikiCrimes Mobile?</font></b></p>
+		<p align="justify"><font face="Calibri" size="4">WikiCrimes
+		Mobile é uma aplicação para celulares que rodem aplicações JAVA (MIDP
+		2.0/CLDC 1.1). A aplicação oferece um serviço que informa ao usuário
+		os crimes de uma localidade permitindo-o avaliar se a área é ou não
+		segura (vide imagem a seguir). O serviço é prestado a partir da base
+		de dados do sistema de registro colaborativo de crimes WikiCrimes.org
+		(<a href="http://www.wikicrimes.org">www.wikicrimes.org</a>). É
+		importante ressaltar que para cada consulta é efetuada uma conexão com
+		a internet e o envio e recebimento de dados do servidor de WikiCrimes.
+		Dependendo do plano/contrato que você tenha com a sua operadora, este
+		acesso e transmissão de dados pode incidir em custos. O custo médio
+		para utilizar o aplicativo fazendo uma consulta a base de dados do
+		WikiCrimes.org através de conexão Wap GPRS varia entre R$ 0,02 (dois
+		centavos de Real) e R$ 0,05 (cinco centavos de Real). Estes valores
+		foram calculados para um celular pré-pago da operadora Oi-Ceará. Se o
+		seu celular acessar pontos de acessos WiFi de rede sem fio o custo das
+		consultas será zero. Sugerimos uma consulta a base de dado do
+		WikiCrimes.org (<a href="http://www.wikicrimes.org">www.wikicrimes.org</a>)
+		para verificar se a área que você deseja pesquisar possui um bom
+		índice de colaboração e portanto uma boa quantidade de crimes
+		cadastrados.</font></p>
+		<p align="center"><img border="0" src="images/passo%206.png" width="305"
+			height="664" /></p>
+		<p align="justify"><a href="#inicio"> <img border="0"
+			src="images/back.png" width="64" height="64" align="left" /></a></p>
+		<p align="center">&nbsp;</p>
+		<p align="center">&nbsp;</p>
+		<p align="center">&nbsp;</p>
+		<p align="justify"><b><font face="Calibri" size="6"> <a
+			name="o que é necessário para instalar"></a>2) O que é necessário
+		para ter WikiCrimes Mobile?</font></b></p>
+		<p align="justify"><font face="Calibri" size="4"> Para <a
+			href="#baixar">baixar</a> e instalar WikiCrimes Mobile você deverá preencher um formulário
+			 e poderá utilizar quantas vezes e por quanto tempo
+		quiser. Entretanto a aplicação só poderá ser instalada uma única vez
+		já que utiliza uma chave de acesso. Após o preenchimento do formulário seu navegador
+		será redirecionado para a página de download onde você poderá baixar o
+		WikiCrimes Mobile para seu computador e posteriormente copiar o
+		aplicativo para o seu celular. Lembre-se que dependendo do tipo de conexão que seu celular
+		possui com a internet você irá pagar pelo download do aplicativo.</font></p>
+		<p align="justify"><a href="#inicio"> <img border="0"
+			src="images/back.png" width="64" height="64" align="left" /></a></p>
+		<p align="justify">&nbsp;</p>
+		<p align="justify">&nbsp;</p>
+		<p align="justify">&nbsp;</p>
+		<p align="justify"><b><font face="Calibri" size="6"> <a
+			name="como instalar"></a>3) Como instalar a aplicação em meu celular?
+		</font></b></p>
+		<p align="justify"><font face="Calibri" size="4">Uma vez
+		tendo <a href="#baixar">pago</a> R$ 5,00 seu navegador será redirecionado
+		para a página de download do WikiCrimes Mobile. Uma vez nessa página
+		você poderá baixar o aplicativo para o seu computador e posteriormente
+		copia-lo para o seu celular, ou baixar ele diretamente pelo celular.
+		Na maioria dos celulares a instalação é automatica uma vez que o seu
+		celular detecta que vc está baixando ou copiando um aplicativo JAVA,
+		podendo a aplicação ser instalada na pasta de Jogos do seu celular ou
+		em minhas aplicações dependendo do celular. Outros aparelhos requerem
+		que seja utilizado um software que foi distribuído pelo fabricante
+		para instalação de aplicativos JAVA. Neste caso deve-se baixar o
+		aplicativo WikiCrimes Mobile para o seu desktop e apartir do software
+		distribuído pelo fabricante realizar a inslação do mesmo em seu
+		celular. Note que é um requisito para a instalação do WikiCrimes
+		Mobile que seu celular execute aplicativos JAVA (J2ME MIDP 2.0/CLDC
+		1.1).</font></p>
+		<p align="justify"><a href="#inicio"> <img border="0"
+			src="images/back.png" width="64" height="64" align="left" /></a></p>
+		<p align="justify">&nbsp;</p>
+		<p align="justify">&nbsp;</p>
+		<p align="justify">&nbsp;</p>
+		<p align="justify"><b><font face="Calibri" size="6"> <a
+			name="compatibilidade"></a>4) O WikiCrimes Mobile é compatível com o
+		meu Celular? </font></b></p>
+		<p align="justify"><font face="Calibri" size="4">O seu
+		celular deve ser capaz de executar aplicativos JAVA (J2ME MIDP
+		2.0/CLDC 1.1 ou melhor configuração). Você pode verificar a
+		configuração JAVA no próprio celular, nomanual do celular ou <a
+			href="#baixar">baixar</a> um aplicativo gratuitamente que verificará se o
+		seu celular é conpatível com o WikiCrimes Mobile. Testamos o
+		WikiCrimes Mobile nos seguintes celulares: Nokia N80, Nokia N95, Nokia
+		3600, Nokia 2630, Nokia 6124 e Sony Ericsson W870i. Não é necessário
+		que o seu celular possua GPS mas se possuir o WikiCrimes Mobile vai
+		utiliza-lo para obter as coordenadas do local onde você se encontrará
+		no momento da consulta a base de dados do WikiCrimes.org (<a
+			href="http://www.wikicrimes.org">www.wikicrimes.org</a>). </font></p>
+		<p align="justify"><a href="#inicio"> <img border="0"
+			src="images/back.png" width="64" height="64" align="left" /></a></p>
+		<p align="justify">&nbsp;</p>
+		<p align="justify">&nbsp;</p>
+		<p align="justify">&nbsp;</p>
+		<p align="justify"><b><font face="Calibri" size="6" style="">
+		<a name="como funciona"></a>5) Como funciona o serviço WikiCrimes
+		Mobile?</font></b></p>
+		<p align="justify"><font face="Calibri" size="4">Estas
+		imagens são ilustrativas pois as fontes e tamanhos aqui
+		apresentados,&nbsp; podem variar dependendo do modelo do celular no
+		qual a aplicação será instalada. </font></p>
+		<p align="justify"><font face="Calibri" size="4"><b>1º
+		passo ) </b>Uma vez instalado (<a href="d">como instalar?</a>) WikiCrimes
+		Mobile em seu celular, selecione a aplicação a partir do menu de
+		aplicações em seu celular.</font></p>
+		<p align="center"><img border="0" src="images/passo%201.png" width="305"
+			height="664" /></p>
+		<p align="left"><font face="Calibri" size="4"><b>2º
+		Passo )</b> Selecione o serviço <font color="#FFFFFF"> <span
+			style="background-color: #000000">&nbsp;AQUI É SEGURO? </span> </font>.</font></p>
+		<p align="center"><img border="0" src="images/passo_3.png" width="305"
+			height="664" /></p>
+		<p align="left"><font face="Calibri" size="4"><b>3º
+		Passo)</b> Selecione o período de análise dos crimes. </font></p>
+		<p align="center"><img border="0" src="images/passo%204.png" width="305"
+			height="664" /></p>
+		<p align="left"><font size="4" face="Calibri"><b>4º
+		Passo)</b> Caso seu celular tenha o serviço de GPS ativo, seu celular
+		identificará sua posição geográfica e essa etapa ocorrerá
+		automaticamente não sendo necessário a exibição da tela a seguir. Caso
+		a tela apareça em seu celular,&nbsp; você deverá informar o local
+		(rua/avenida... e número aproximado) para o qual deseja obter a
+		informação. </font></p>
+		<p align="center"><img border="0" src="images/passo%205.png" width="305"
+			height="664" /></p>
+		<p align="left"><font face="Calibri" size="4"><b>5º
+		Passo)</b> WikiCrimes Mobile lhe informará para o período selecionado e a
+		área identificada / informada os crimes ocorridos (roubos, furtos,
+		homicídios e outros tipos de crime) em um raio de 500 m do ponto
+		identificado / informado.</font></p>
+		<p align="center"><img border="0" src="images/passo%206.png" width="305"
+			height="664" /></p>
+		<p align="center"><a href="#inicio"> <img border="0"
+			src="images/back.png" width="64" height="64" align="left" /></a></p>
+		<p align="justify">&nbsp;</p>
+		<p align="justify">&nbsp;</p>
+		</td>
+		<td height="441" width="15%">&nbsp;</td>
+	</tr>
+	<tr>
+		<td height="39" width="15%">&nbsp;</td>
+		<td height="39" width="70%">&nbsp;</td>
+		<td height="39" width="15%">&nbsp;</td>
+	</tr>
+</table>
+</c:if>
+
+<c:if test="#{empty usuario}">
+Faça o login no sistema
+</c:if>
+
+</body>
+
+</html>

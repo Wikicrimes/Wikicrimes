@@ -122,6 +122,10 @@
 			<h:form id="formReRenderLogin">
 				<a4j:commandButton id="btLoginSubmit" reRender="pesquisaGenerica, painelPrincipaLoginLogout" style="display: none" />
 			</h:form>
+			<h:form id="formDownloadMobile">
+				<h:commandButton id="btInstrucoesMobile" action="#{usuarioForm.mostraPaginaInstrucoes}" style="display: none"/>
+			</h:form>
+			
 			<script>
 			/* <![CDATA[ */
 				function usuarioEstaLogado(){				

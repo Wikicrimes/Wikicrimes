@@ -39,9 +39,13 @@ public class Usuario extends BaseObject {
 	private String emailAtivo;
 	private UsuarioCelular usuarioCelular;
 	private Boolean confAutomatica;
+	
+	
 	private Integer mobileAppAtivacao;
 	private String mobileAppID;
 	private Long countAtividadeMobile;
+	private String celularModel,quantoTempoUsaAppCelular;
+	private Boolean usaInternetCelular;
 
 	public final static String TRUE = "1";
 	public final static String FALSE = "0";
@@ -332,6 +336,30 @@ public class Usuario extends BaseObject {
 
 	public void setCountAtividadeMobile(Long countAtividadeMobile) {
 		this.countAtividadeMobile = countAtividadeMobile;
+	}
+
+	public String getCelularModel() {
+		return celularModel;
+	}
+
+	public void setCelularModel(String celularModel) {
+		this.celularModel = celularModel;
+	}
+
+	public String getQuantoTempoUsaAppCelular() {
+		return quantoTempoUsaAppCelular;
+	}
+
+	public void setQuantoTempoUsaAppCelular(String quantoTempoUsaAppCelular) {
+		this.quantoTempoUsaAppCelular = quantoTempoUsaAppCelular;
+	}
+
+	public Boolean getUsaInternetCelular() {
+		return usaInternetCelular;
+	}
+
+	public void setUsaInternetCelular(Boolean usaInternetCelular) {
+		this.usaInternetCelular = usaInternetCelular;
 	}
 
 }

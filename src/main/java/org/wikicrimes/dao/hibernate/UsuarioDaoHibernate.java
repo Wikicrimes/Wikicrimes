@@ -148,6 +148,4 @@ public List<BaseObject> filter(final Map parameters) {
 		 }
 		
 	}
-	
-
 }

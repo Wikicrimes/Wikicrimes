@@ -2,17 +2,25 @@ package org.wikicrimes.web;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import net.tanesha.recaptcha.ReCaptchaImpl;
@@ -21,6 +29,7 @@ import net.tanesha.recaptcha.ReCaptchaResponse;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.wikicrimes.model.BaseObject;
 import org.wikicrimes.model.Perfil;
 import org.wikicrimes.model.Usuario;
 import org.wikicrimes.service.EmailService;
@@ -54,6 +63,19 @@ public class UsuarioForm extends GenericForm {
 	private Integer vizualizarCrimeOpensocial;
 	
 	private String relatoIndicacao,chave,chaveCr;
+	
+	private String celularModel,quantoTempoUsaAppCelular;
+	private boolean usaInternetCelular;
+	
+	private Map<String,String> periodoSelecaoUsoCelular=null;
+	{
+		periodoSelecaoUsoCelular=new HashMap<String,String>(5);
+		periodoSelecaoUsoCelular.put("3m", "3 meses");
+		periodoSelecaoUsoCelular.put("6m", "6 meses");
+		periodoSelecaoUsoCelular.put("1a", "1 ano");
+		periodoSelecaoUsoCelular.put("3a", "3 anos");
+		periodoSelecaoUsoCelular.put("m5a","mais de 5 anos");
+	}
 
 	public ReCaptchaImpl getReCaptcha() {
 		return reCaptcha;
@@ -579,7 +601,67 @@ public class UsuarioForm extends GenericForm {
 		this.chaveCr = chaveCr;
 	}
 	
-	public String comprarAppMobile(){
+	//faz parte do mobile
+	
+	public String getCelularModel() {
+		return celularModel;
+	}
+
+	public void setCelularModel(String celularModel) {
+		this.celularModel = celularModel;
+	}
+
+	public String getQuantoTempoUsaAppCelular() {
+		return quantoTempoUsaAppCelular;
+	}
+
+	public void setQuantoTempoUsaAppCelular(String quantoTempoUsaAppCelular) {
+		this.quantoTempoUsaAppCelular = quantoTempoUsaAppCelular;
+	}
+
+	public boolean isUsaInternetCelular() {
+		return usaInternetCelular;
+	}
+
+	public void setUsaInternetCelular(boolean usaInternetCelular) {
+		this.usaInternetCelular = usaInternetCelular;
+	}
+
+	//metodo da pagina princ para dentro do sistema de dl
+	public String mostraPaginaInstrucoes(){
+		return "instrucoes";
+	}
+	
+	public String preencheFormularioDonwload(){
+		Usuario user = (Usuario)service.get(usuario.getIdUsuario());
+		if(user.getMobileAppID()!=null && !user.getMobileAppID().equalsIgnoreCase("")){
+			try {
+				enviaDownload("wikicrimes_"+user.getMobileAppID()+".jar");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return "";
+		}
+		return "baixar";
+	}
+	
+	public String mostraTermoUso(){
+		return "termoUso";
+	}
+	
+	public String realizaDown(){
+		Usuario user = (Usuario)service.get(usuario.getIdUsuario());
+		if(user.getMobileAppID()!=null && !user.getMobileAppID().equalsIgnoreCase("")){
+			try {
+				enviaDownload("wikicrimes_"+user.getMobileAppID()+".jar");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return "";
+		}
+		
+		String nomeArq=null;
+		
 		try {
 			
 			String key=Cripto.criptografar(id+new Date().getTime());
@@ -588,28 +670,53 @@ public class UsuarioForm extends GenericForm {
 				modificaXMLApp(key);
 				
 				//faz a persistencia no banco
-				salvarChave(key);
+				salvarDadosBD(key);
 				
-				String nomeArq="wikicrimes_"+usuario.getIdUsuario()+new Date().getTime()+".jar";
+				nomeArq="wikicrimes_"+key+".jar";
+				
 				empacotaJar(nomeArq);
 				
-				HttpSession session = (HttpSession)facesContext.getExternalContext().getSession(false);
-				session.setAttribute("nomeArq","http://200.19.188.105:5151/wikicrimes/app/"+nomeArq);
+				enviaDownload(nomeArq);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		System.gc();
-		return "link";
+		
+		return "";
 	}
 	
-	private void salvarChave(String key){
+	private void enviaDownload(String nomeArq) throws IOException{
+		HttpServletResponse resp = (HttpServletResponse)FacesContext.getCurrentInstance().getExternalContext().getResponse();
+		resp.setContentType("application/jar");   
+		resp.setHeader("Content-Disposition", "inline; filename="+nomeArq ); 
+		
+		FacesContext fc = FacesContext.getCurrentInstance();  
+		ServletContext sc = (ServletContext) fc.getExternalContext().getContext();  
+		String realpath = sc.getRealPath(File.separator+"app");
+		
+		File file = new File(realpath+File.separator+nomeArq);
+		byte vet[] = new byte[(int)file.length()];
+		FileInputStream fis = new FileInputStream(file);
+		fis.read(vet);
+		
+		OutputStream os = resp.getOutputStream();
+		os.write(vet);
+		os.flush();
+		
+		FacesContext.getCurrentInstance().responseComplete();
+	}
+	
+	private void salvarDadosBD(String key){
 		Usuario user = (Usuario)service.get(usuario.getIdUsuario());
 		user.setMobileAppID(key);
 		user.setMobileAppAtivacao(0);
 		user.setCountAtividadeMobile((long)0);
+		
+		user.setCelularModel(celularModel);
+		user.setUsaInternetCelular(usaInternetCelular);
+		user.setQuantoTempoUsaAppCelular(periodoSelecaoUsoCelular.get(quantoTempoUsaAppCelular));
 		
 		service.update(user);
 	}
@@ -626,11 +733,9 @@ public class UsuarioForm extends GenericForm {
 		while((line = reader.readLine()) != null){
 			System.out.println(new String(line));
 		}
-		
-		//jar.destroy();
 	}
 	
-	private void modificaXMLApp(String str) throws IOException{
+	private void modificaXMLApp(String newKey) throws IOException{
 		//System.out.println("ID: "+usuario.getIdUsuario());
 		File file = new File("/root/WikicrimesMobileLite/util/file/config.xml");
 
@@ -638,7 +743,7 @@ public class UsuarioForm extends GenericForm {
 
         sbStr=sbStr.append("<?xml version='1.0' encoding='iso-8859-1'?>");
         sbStr=sbStr.append("<app>");
-        sbStr=sbStr.append("<id>"+str+"</id>");
+        sbStr=sbStr.append("<id>"+newKey+"</id>");
         sbStr=sbStr.append("</app>");
 
         FileWriter fw = new FileWriter(file,false);

@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Ant-Version: Apache Ant 1.7.1
+Created-By: 14.2-b01 (Sun Microsystems Inc.)
+MIDlet-1: WikiCrimes Mobile,/util/image/Mobile.PNG,sys.WikiCrimesMobil
+ eLiteMIDlet
+MIDlet-Vendor: Wikicrimes
+MIDlet-Name: Wikicrimes Aqui é Seguro
+MIDlet-Version: 1.03
+MicroEdition-Configuration: CLDC-1.1
+MicroEdition-Profile: MIDP-2.0
+

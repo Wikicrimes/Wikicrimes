@@ -1,0 +1,13 @@
+<project name="Hello" default="clean" basedir=".">
+	<property name="dist" value="dist"/>
+
+	<!-- Package Preverifed classes, resources and MANIFEST file -->
+	<target name="dist">
+	<mkdir dir="/home/philipp/tomcat6/webapps/wikicrimes/app"/>
+
+	<jar destfile="/home/philipp/tomcat6/webapps/wikicrimes/app/${nome}"
+	manifest="WikicrimesMobileLite/META-INF/MANIFEST.MF">
+	<fileset dir="WikicrimesMobileLite"/>
+	</jar>
+	</target>
+</project>

@@ -46,7 +46,7 @@
 			required="true" requiredMessage="Digite um celular valido"/>
 			<h:message for="modelCell" errorClass="erros" style="color:red"/>
 			
-			<p align="justify"><font face="Calibri" size="4">Quanto tempo você utiliza aplicações no celular?</font></p>
+			<p align="justify"><font face="Calibri" size="4">Há quanto tempo você utiliza aplicações no celular?</font></p>
 			<h:selectOneMenu id="timeUse" value="#{usuarioForm.quantoTempoUsaAppCelular}" title="Selecione um periodo">
 			  <f:selectItem id="si1" itemLabel="3 meses" itemValue="3m" />
 			  <f:selectItem id="si2" itemLabel="6 meses" itemValue="6m" />
@@ -56,7 +56,11 @@
 			</h:selectOneMenu>
 			
 			<p align="justify"><font face="Calibri" size="4">Você usa internet no celular?</font></p>
-			<h:selectBooleanCheckbox value="#{usuarioForm.usaInternetCelular}" />
+			
+			<h:selectOneMenu value="#{usuarioForm.usaInternetCelular}" title="Selecione um periodo">
+			  <f:selectItem itemLabel="sim" itemValue="true" />
+			  <f:selectItem itemLabel="não" itemValue="false" />			 
+			</h:selectOneMenu>
 			
 			<p align="justify">&nbsp;</p>
 			<p align="justify">&nbsp;</p>

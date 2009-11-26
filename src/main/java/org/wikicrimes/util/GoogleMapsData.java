@@ -61,7 +61,7 @@ public class GoogleMapsData {
 		this.endereco = removeAcentos(endereco);
 	}
 	
-	public String removeAcentos(final String s){
+	private String removeAcentos(final String s){
          StringBuffer sb = new StringBuffer();
          for (int i = 0; i < s.length(); ++i) {
              char ch = s.charAt (i);

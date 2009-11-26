@@ -1,31 +1,37 @@
 package org.wikicrimes.util;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class GoogleMapsData {
 	private double latitude,longitude;
 	private String endereco;
 
 	private String acentuado = "çÇáéíóúıÁÉÍÓÚİàèìòùÀÈÌÒÙãõñäëïöüÿÄËÏÖÜÃÕÑâêîôûÂÊÎÔÛ";
     private String semAcento = "cCaeiouyAEIOUYaeiouAEIOUaonaeiouyAEIOUAONaeiouAEIOU";
-    private char[] tabela;
+    
+    private int tamanhoVetor=256;
+    private Map<Character, Character> tabelaMudanca;
 	
 	public GoogleMapsData() {
-		latitude=longitude=0;
-		inicializaTabela();
+		this(0, 0);
 	}
 	
 	public GoogleMapsData(double latitude, double longitude) {
 		this.latitude = latitude;
 		this.longitude = longitude;
+		tabelaMudanca = new HashMap<Character, Character>();
+		
 		inicializaTabela();
 	}
 	
 	private void inicializaTabela(){
-		tabela = new char[256];
-        for (int i = 0; i < tabela.length; ++i) {
-            tabela [i] = (char) i;
+        for (int i = 0; i < tamanhoVetor; ++i) {
+            tabelaMudanca.put((char) i, (char) i);
         }
         for (int i = 0; i < acentuado.length(); ++i) {
-            tabela [acentuado.charAt(i)] = semAcento.charAt(i);
+        	Character ch = tabelaMudanca.remove((char)acentuado.charAt(i));
+        	tabelaMudanca.put(ch, (char)semAcento.charAt(i));
         }
         semAcento=acentuado=null;
         System.gc();
@@ -55,12 +61,12 @@ public class GoogleMapsData {
 		this.endereco = removeAcentos(endereco);
 	}
 	
-	private String removeAcentos(final String s){
-        StringBuffer sb = new StringBuffer();
+	public String removeAcentos(final String s){
+         StringBuffer sb = new StringBuffer();
          for (int i = 0; i < s.length(); ++i) {
              char ch = s.charAt (i);
-             if (ch < 256) {
-                 sb.append (tabela [ch]);
+             if (ch < tamanhoVetor) {
+                 sb.append (tabelaMudanca.get(ch));
              } else {
                  sb.append (ch);
              }

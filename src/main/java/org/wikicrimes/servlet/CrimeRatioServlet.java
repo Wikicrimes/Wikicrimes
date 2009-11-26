@@ -106,17 +106,29 @@ public class CrimeRatioServlet extends HttpServlet {
 			
 		}catch(NumberFormatException e){
 			errorXML(response);
+			e.printStackTrace();
 		} catch (IOException e) {
 			errorXML(response);
+			e.printStackTrace();
 		} catch (XMLStreamException e) {
 			errorXML(response);
+			e.printStackTrace();
 		} catch (FactoryConfigurationError e) {
 			errorXML(response);
+			e.printStackTrace();
 		}
 	}
 	
 	private void errorXML(HttpServletResponse response){
+		
+		response.setContentType("text/xml; charset=iso-8859-1");
+		response.setHeader("Pragma", "no-cache");
+		response.setHeader("Cache-Control", "no-cache");
+		response.setDateHeader("Expires", 0);
+		response.setCharacterEncoding("UTF-8");
+		
 		StringBuilder error = new StringBuilder();
+		
 		error.append("<?xml version='1.0' encoding='iso-8859-1'?>");
 		error.append("<crimes>");
 		error.append("<errors>Error</errors>");

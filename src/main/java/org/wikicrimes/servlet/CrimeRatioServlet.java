@@ -46,7 +46,7 @@ public class CrimeRatioServlet extends HttpServlet {
 	
 	private void contaCrimesArea(HttpServletRequest request,HttpServletResponse response){
 		try{
-			System.out.println("celular!!");
+			
 			ApplicationContext springContext = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
 			CrimeService crimeService = (CrimeService)springContext.getBean("crimeService");
 			UsuarioService usuarioService = (UsuarioService)springContext.getBean("usuarioService");
@@ -104,16 +104,7 @@ public class CrimeRatioServlet extends HttpServlet {
 			//monta o xml de resposta
 			parsingToXML(mapa,response,end);
 			
-		}catch(NumberFormatException e){
-			errorXML(response);
-			e.printStackTrace();
-		} catch (IOException e) {
-			errorXML(response);
-			e.printStackTrace();
-		} catch (XMLStreamException e) {
-			errorXML(response);
-			e.printStackTrace();
-		} catch (FactoryConfigurationError e) {
+		}catch(Exception e){
 			errorXML(response);
 			e.printStackTrace();
 		}
@@ -139,7 +130,7 @@ public class CrimeRatioServlet extends HttpServlet {
 			out = response.getWriter();
 			out.println(error.toString());
 			out.close();
-		} catch (IOException e1) {
+		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
 	}

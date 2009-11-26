@@ -46,7 +46,7 @@ public class CrimeRatioServlet extends HttpServlet {
 	
 	private void contaCrimesArea(HttpServletRequest request,HttpServletResponse response){
 		try{
-			
+			System.out.println("celular!!");
 			ApplicationContext springContext = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
 			CrimeService crimeService = (CrimeService)springContext.getBean("crimeService");
 			UsuarioService usuarioService = (UsuarioService)springContext.getBean("usuarioService");

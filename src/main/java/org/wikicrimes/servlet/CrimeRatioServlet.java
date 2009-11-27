@@ -8,6 +8,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.stream.FactoryConfigurationError;
+import javax.xml.stream.XMLStreamException;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -87,21 +89,31 @@ public class CrimeRatioServlet extends HttpServlet {
 				end = ges.consultaRuaCoordenadas(latitude+","+longitude).getEndereco();
 			}
 			
-			double raio = Double.parseDouble(request.getParameter("raio"));
-			long dataIni = Long.parseLong(request.getParameter("dIni"));
-			long dataFim = Long.parseLong(request.getParameter("dFim"));
-			
-			//manda pro crimeService...
-			Map <String,Integer> mapa = crimeService.numeroCrimesArea(latitude, longitude, raio,dataIni,dataFim);
-			
-			//conta as requisicoes feita pelo usuario, esse obj retornado jah vem contado...
-			Usuario user = usuarioService.getUsuarioKey(id);//traz o id
-			if(user!=null){
-				usuarioService.update(user);
+			if(end==null){
+				errorXML(response);
+			}else{
+				double raio = Double.parseDouble(request.getParameter("raio"));
+				long dataIni = Long.parseLong(request.getParameter("dIni"));
+				long dataFim = Long.parseLong(request.getParameter("dFim"));
+				
+				//manda pro crimeService...
+				Map <String,Integer> mapa = crimeService.numeroCrimesArea(latitude, longitude, raio,dataIni,dataFim);
+				
+				//conta as requisicoes feita pelo usuario, esse obj retornado jah vem contado...
+				Usuario user = usuarioService.getUsuarioKey(id);//traz o id
+				if(user!=null){
+					usuarioService.update(user);
+				}
+				//monta o xml de resposta
+				parsingToXML(mapa,response,end);
 			}
-			//monta o xml de resposta
-			parsingToXML(mapa,response,end);
 			
+		}catch(IOException e){
+			errorXML(response);
+		}catch(XMLStreamException e){
+			errorXML(response);
+		}catch(FactoryConfigurationError e){
+			errorXML(response);
 		}catch(Exception e){
 			errorXML(response);
 			e.printStackTrace();

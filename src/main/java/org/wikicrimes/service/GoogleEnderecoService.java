@@ -1,17 +1,20 @@
 package org.wikicrimes.service;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
+import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
 
 import org.wikicrimes.util.GoogleMapsData;
 
 public class GoogleEnderecoService {
-	public GoogleMapsData consultaRuaURL(String url) throws Exception{
+	public GoogleMapsData consultaRuaURL(String url) throws IOException, XMLStreamException, FactoryConfigurationError{
 		url = url.replace(' ', '+');
 		
 		URL googleService = new URL("http://maps.google.com/maps/geo?q=" + url + "&output=xml&key=ABQIAAAAFMKMB22peYEk-DnRBRjxZhRk8R8qbs4FIOFRgqzDQO3UVKhx7BTRb8DofYsZ7bJrhTwSbePuBeOFBQ");
@@ -21,7 +24,7 @@ public class GoogleEnderecoService {
 		return coor;
 	}
 	
-	public GoogleMapsData consultaRuaCoordenadas(String coordenadas) throws Exception{
+	public GoogleMapsData consultaRuaCoordenadas(String coordenadas) throws IOException, XMLStreamException, FactoryConfigurationError{
 		URL googleService = new URL("http://maps.google.com/maps/geo?q=" + coordenadas + "&output=xml&key=ABQIAAAAFMKMB22peYEk-DnRBRjxZhRk8R8qbs4FIOFRgqzDQO3UVKhx7BTRb8DofYsZ7bJrhTwSbePuBeOFBQ");
 		
         URLConnection googleConnection = googleService.openConnection();
@@ -30,7 +33,7 @@ public class GoogleEnderecoService {
         return coor;
 	}
 	
-	private GoogleMapsData processaDadoRequisicaoEndereco(InputStream isr) throws Exception{
+	private GoogleMapsData processaDadoRequisicaoEndereco(InputStream isr) throws XMLStreamException, FactoryConfigurationError{
 		GoogleMapsData gDados = new GoogleMapsData();
 		
 		XMLEventReader leitor = XMLInputFactory.newInstance().createXMLEventReader(isr);
@@ -50,7 +53,7 @@ public class GoogleEnderecoService {
 		return gDados;
 	}
 	
-	private GoogleMapsData processaDadoRequisicao(InputStream isr) throws Exception{
+	private GoogleMapsData processaDadoRequisicao(InputStream isr) throws XMLStreamException, FactoryConfigurationError{
 		GoogleMapsData gDados = new GoogleMapsData();
 			
 		XMLEventReader leitor = XMLInputFactory.newInstance().createXMLEventReader(isr);

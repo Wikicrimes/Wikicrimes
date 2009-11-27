@@ -1,6 +1,6 @@
 package org.wikicrimes.service;
 
-import java.io.InputStreamReader;
+import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -16,28 +16,27 @@ public class GoogleEnderecoService {
 		
 		URL googleService = new URL("http://maps.google.com/maps/geo?q=" + url + "&output=xml&key=ABQIAAAAFMKMB22peYEk-DnRBRjxZhRk8R8qbs4FIOFRgqzDQO3UVKhx7BTRb8DofYsZ7bJrhTwSbePuBeOFBQ");
 		
-		System.out.println("http://maps.google.com/maps/geo?q=" + url + "&output=xml&key=ABQIAAAAFMKMB22peYEk-DnRBRjxZhRk8R8qbs4FIOFRgqzDQO3UVKhx7BTRb8DofYsZ7bJrhTwSbePuBeOFBQ");
-		
         URLConnection googleConnection = googleService.openConnection();
-        GoogleMapsData coor = processaDadoRequisicao(new InputStreamReader(googleConnection.getInputStream()));
+        GoogleMapsData coor = processaDadoRequisicao(googleConnection.getInputStream());
 		return coor;
 	}
 	
 	public GoogleMapsData consultaRuaCoordenadas(String coordenadas) throws Exception{
 		URL googleService = new URL("http://maps.google.com/maps/geo?q=" + coordenadas + "&output=xml&key=ABQIAAAAFMKMB22peYEk-DnRBRjxZhRk8R8qbs4FIOFRgqzDQO3UVKhx7BTRb8DofYsZ7bJrhTwSbePuBeOFBQ");
-		System.out.println("http://maps.google.com/maps/geo?q=" + coordenadas + "&output=xml&key=ABQIAAAAFMKMB22peYEk-DnRBRjxZhRk8R8qbs4FIOFRgqzDQO3UVKhx7BTRb8DofYsZ7bJrhTwSbePuBeOFBQ");
 		
         URLConnection googleConnection = googleService.openConnection();
         
-        return processaDadoRequisicaoEndereco(new InputStreamReader(googleConnection.getInputStream()));
+        GoogleMapsData coor = processaDadoRequisicaoEndereco(googleConnection.getInputStream()); 
+        return coor;
 	}
 	
-	private GoogleMapsData processaDadoRequisicaoEndereco(InputStreamReader isr) throws Exception{
+	private GoogleMapsData processaDadoRequisicaoEndereco(InputStream isr) throws Exception{
 		GoogleMapsData gDados = new GoogleMapsData();
 		
 		XMLEventReader leitor = XMLInputFactory.newInstance().createXMLEventReader(isr);
 		while(leitor.hasNext()){
 			XMLEvent evento = leitor.nextEvent();
+			
 			if(evento.isStartElement()){
 				if(evento.asStartElement().getName().getLocalPart().equalsIgnoreCase("ThoroughfareName")){
 					evento = leitor.nextEvent();
@@ -51,12 +50,13 @@ public class GoogleEnderecoService {
 		return gDados;
 	}
 	
-	private GoogleMapsData processaDadoRequisicao(InputStreamReader isr) throws Exception{
+	private GoogleMapsData processaDadoRequisicao(InputStream isr) throws Exception{
 		GoogleMapsData gDados = new GoogleMapsData();
-		
+			
 		XMLEventReader leitor = XMLInputFactory.newInstance().createXMLEventReader(isr);
 		while(leitor.hasNext()){
 			XMLEvent evento = leitor.nextEvent();
+			
 			if(evento.isStartElement()){
 				if(evento.asStartElement().getName().getLocalPart().equalsIgnoreCase("ThoroughfareName")){
 					evento = leitor.nextEvent();

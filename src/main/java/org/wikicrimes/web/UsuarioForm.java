@@ -3,12 +3,10 @@ package org.wikicrimes.web;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,7 +27,6 @@ import net.tanesha.recaptcha.ReCaptchaResponse;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.wikicrimes.model.BaseObject;
 import org.wikicrimes.model.Perfil;
 import org.wikicrimes.model.Usuario;
 import org.wikicrimes.service.EmailService;
@@ -64,13 +61,13 @@ public class UsuarioForm extends GenericForm {
 	
 	private String relatoIndicacao,chave,chaveCr;
 	
-	private String celularModel,quantoTempoUsaAppCelular;
+	private String celularModel,quantoTempoUsaAppCelular,loginMobile,senhaMobile;
 	private boolean usaInternetCelular;
 	
 	private Map<String,String> periodoSelecaoUsoCelular=null;
 	{
-		periodoSelecaoUsoCelular=new HashMap<String,String>(5);
-		periodoSelecaoUsoCelular.put("3m", "3 meses");
+		periodoSelecaoUsoCelular=new HashMap<String,String>(6);
+		periodoSelecaoUsoCelular.put("nc", "Nunca Usei");
 		periodoSelecaoUsoCelular.put("6m", "6 meses");
 		periodoSelecaoUsoCelular.put("1a", "1 ano");
 		periodoSelecaoUsoCelular.put("3a", "3 anos");
@@ -601,7 +598,7 @@ public class UsuarioForm extends GenericForm {
 		this.chaveCr = chaveCr;
 	}
 	
-	//faz parte do mobile
+	//faz parte do sistema mobile!!!
 	
 	public String getCelularModel() {
 		return celularModel;
@@ -626,11 +623,43 @@ public class UsuarioForm extends GenericForm {
 	public void setUsaInternetCelular(boolean usaInternetCelular) {
 		this.usaInternetCelular = usaInternetCelular;
 	}
+	
+	public String getLoginMobile() {
+		return loginMobile;
+	}
+
+	public void setLoginMobile(String loginMobile) {
+		this.loginMobile = loginMobile;
+	}
+
+	public String getSenhaMobile() {
+		return senhaMobile;
+	}
+
+	public void setSenhaMobile(String senhaMobile) {
+		this.senhaMobile = senhaMobile;
+	}
 
 	//metodo da pagina princ para dentro do sistema de dl
 	public String mostraPaginaInstrucoes(){
 		return "instrucoes";
 	}
+	
+	/*
+	 * TODO
+	//faz parte da ação do login mobile!
+	public String realizaLoginMobile(){
+		Usuario user = new Usuario();
+		user.setSenha(senhaMobile);
+		user.setEmail(loginMobile);
+		
+		//verifica se pode fazer login assim e como vai fazer o tratamento do
+		setUsuario(user);
+		login();
+		
+		return "termoUso";
+		
+	}*/
 	
 	public String preencheFormularioDonwload(){
 		Usuario user = (Usuario)service.get(usuario.getIdUsuario());

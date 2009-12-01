@@ -41,13 +41,14 @@
 		Antes de baixar a aplicação, precisa preencher os dados abaixo.</font></p>
 
 		<h:form id="fazDownload" method="post">
-			<p align="justify"><font face="Calibri" size="4">Qual o modelo do seu celular?</font></p>
+			<p align="justify"><font face="Calibri" size="4">Qual o modelo/marca do seu celular?</font></p>
 			<h:inputText id="modelCell" value="#{usuarioForm.celularModel}" 
 			required="true" requiredMessage="Digite um celular valido"/>
 			<h:message for="modelCell" errorClass="erros" style="color:red"/>
 			
 			<p align="justify"><font face="Calibri" size="4">Há quanto tempo você utiliza aplicações no celular?</font></p>
 			<h:selectOneMenu id="timeUse" value="#{usuarioForm.quantoTempoUsaAppCelular}" title="Selecione um periodo">
+			  <f:selectItem id="si0" itemLabel="Nunca Usei" itemValue="nc" />
 			  <f:selectItem id="si1" itemLabel="3 meses" itemValue="3m" />
 			  <f:selectItem id="si2" itemLabel="6 meses" itemValue="6m" />
 			  <f:selectItem id="si3" itemLabel="1 ano" itemValue="1a" />
@@ -55,7 +56,7 @@
 			  <f:selectItem id="si5" itemLabel="mais de 5 anos" itemValue="m5a" />
 			</h:selectOneMenu>
 			
-			<p align="justify"><font face="Calibri" size="4">Você usa internet no celular?</font></p>
+			<p align="justify"><font face="Calibri" size="4">Você sempre usou internet no celular?</font></p>
 			
 			<h:selectOneMenu value="#{usuarioForm.usaInternetCelular}" title="Selecione um periodo">
 			  <f:selectItem itemLabel="sim" itemValue="true" />

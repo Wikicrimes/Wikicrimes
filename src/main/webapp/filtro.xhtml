@@ -570,34 +570,26 @@
 			</div>
 		</rich:panel>
 
-		<!-- Wikicrimes Mobile -->
-		<c:if test="#{!empty usuario}">	
-		<rich:panel style="width:160px; height:138px;"
+			
+		<rich:panel id="divMobile" style="width:160px; height:138px;"
 			header="#{messages['modal.wikicrimes.mobile']}">
 			<div style="padding: 6px;">
 			<h:form id="UserCompraForm">
 					<img src="./images/wikcrimesMobileSmall.png" /><br/>
-					<h:outputLink value="#" onclick="mostraDivBaixarWikicrimesMobile();return false;">
+					<c:if test="#{!empty usuario}">
+						<a href="./paginaDownloadWikiMobile.html" target="_blank">
 						<h:outputText style="font-size:10px" value="#{messages['modal.wikicrimes.mobile.msg']}" />
-					</h:outputLink> 
+						</a>
+					</c:if>	
+					<c:if test="#{empty usuario}">	
+						<h:outputLink value="#" onclick="displayMessage(\'./login.html?mensagemLogin=#{messages['modal.wikicrimes.mobile.login.msg']}&amp;tipoRegistro=4\', 300, 245,'Login');return false">
+							<h:outputText style="font-size:10px" value="#{messages['modal.wikicrimes.mobile.msg']}" />
+						</h:outputLink>
+					</c:if>	 
 			</h:form>
 			</div>
 		</rich:panel>
-		</c:if>
 		
-		<c:if test="#{empty usuario}">
-		<rich:panel style="width:160px; height:138px;"
-			header="#{messages['modal.wikicrimes.mobile']}">
-			<div style="padding: 6px;">
-			<h:form id="UserCompraForm">
-					<img src="./images/wikcrimesMobileSmall.png" /><br/>
-					<h:outputLink value="#" onclick="displayMessage(\'./login.html?mensagemLogin=#{messages['modal.wikicrimes.mobile.login.msg']}&amp;tipoRegistro=4\', 300, 245,'Login');return false">
-						<h:outputText style="font-size:10px" value="#{messages['modal.wikicrimes.mobile.msg']}" />
-					</h:outputLink> 
-			</h:form>
-			</div>
-		</rich:panel>
-		</c:if>
 
 		<a4j:commandButton id="btSubmitVistos" style="display: none"
 			immediate="true" reRender="painelDezMaisListagem"
@@ -616,7 +608,9 @@
 				/*Link do download do mobile*/
 				function mostraDivBaixarWikicrimesMobile(){
 					//mostrarCarregandoPequeno();
-					document.getElementById("formDownloadMobile:btInstrucoesMobile").click();
+					//document.getElementById("formDownloadMobile:btInstrucoesMobile").click();
+					closeMessage();
+					window.open("./paginaDownloadWikiMobile.html");
 				}
 					
 				makeCombos();

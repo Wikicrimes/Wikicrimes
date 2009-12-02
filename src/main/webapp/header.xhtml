@@ -67,7 +67,7 @@
 							</td>
 							<td>|</td>
 							<td>
-								<a4j:commandLink value=" Logout " reRender="pesquisaGenerica, painelPrincipaLoginLogout" action="#{usuarioForm.logout}" 
+								<a4j:commandLink value=" Logout " reRender="pesquisaGenerica, painelPrincipaLoginLogout, divMobile" action="#{usuarioForm.logout}" 
 									immediate="true" />
 							</td>
 							<td>|</td>				
@@ -120,7 +120,7 @@
 				<a4j:commandButton id="btDesabilitaTutor" action="#{filtroForm.desabilitaTutor}" style="display: none" />
 			</h:form>
 			<h:form id="formReRenderLogin">
-				<a4j:commandButton id="btLoginSubmit" reRender="pesquisaGenerica, painelPrincipaLoginLogout" style="display: none" />
+				<a4j:commandButton id="btLoginSubmit" reRender="pesquisaGenerica, painelPrincipaLoginLogout,divMobile" style="display: none" />
 			</h:form>
 			<h:form id="formDownloadMobile">
 				<h:commandButton id="btInstrucoesMobile" action="#{usuarioForm.mostraPaginaInstrucoes}" style="display: none"/>

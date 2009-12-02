@@ -662,6 +662,10 @@ public class UsuarioForm extends GenericForm {
 	}*/
 	
 	public String preencheFormularioDonwload(){
+		if (expirouSessao()) {
+			
+			return SESSAO_EXPIRADA;
+		}
 		Usuario user = (Usuario)service.get(usuario.getIdUsuario());
 		if(user.getMobileAppID()!=null && !user.getMobileAppID().equalsIgnoreCase("")){
 			try {
@@ -679,6 +683,10 @@ public class UsuarioForm extends GenericForm {
 	}
 	
 	public String realizaDown(){
+		if (expirouSessao()) {
+			
+			return SESSAO_EXPIRADA;
+		}
 		Usuario user = (Usuario)service.get(usuario.getIdUsuario());
 		if(user.getMobileAppID()!=null && !user.getMobileAppID().equalsIgnoreCase("")){
 			try {
@@ -738,16 +746,19 @@ public class UsuarioForm extends GenericForm {
 	}
 	
 	private void salvarDadosBD(String key){
-		Usuario user = (Usuario)service.get(usuario.getIdUsuario());
-		user.setMobileAppID(key);
-		user.setMobileAppAtivacao(0);
-		user.setCountAtividadeMobile((long)0);
+		if (!expirouSessao()) {			
 		
-		user.setCelularModel(celularModel);
-		user.setUsaInternetCelular(usaInternetCelular);
-		user.setQuantoTempoUsaAppCelular(periodoSelecaoUsoCelular.get(quantoTempoUsaAppCelular));
-		
-		service.update(user);
+			Usuario user = (Usuario)service.get(usuario.getIdUsuario());
+			user.setMobileAppID(key);
+			user.setMobileAppAtivacao(0);
+			user.setCountAtividadeMobile((long)0);
+			
+			user.setCelularModel(celularModel);
+			user.setUsaInternetCelular(usaInternetCelular);
+			user.setQuantoTempoUsaAppCelular(periodoSelecaoUsoCelular.get(quantoTempoUsaAppCelular));
+			
+			service.update(user);
+		}	
 	}
 	
 	private void empacotaJar(String nome) throws IOException, InterruptedException{

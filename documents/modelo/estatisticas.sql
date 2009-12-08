@@ -248,7 +248,7 @@ create trigger estatisticasInsert before insert on tb_cri_crime
  for each row
 begin
 	if new.cri_pais is not null and new.cri_estado is not null and new.cri_cidade is not null and new.cri_pais <> '' and new.cri_estado <> '' and new.cri_cidade <> '' then
-    call estatisticasUpdate(new.cri_pais,new.cri_estado,new.cri_cidade,new.tcr_idtipo_crime,new.tvi_idtipo_vitima,new.cri_horario);
+    call updateEstatisticas(new.cri_pais,new.cri_estado,new.cri_cidade,new.tcr_idtipo_crime,new.tvi_idtipo_vitima,new.cri_horario);
 	end if;
 end
 ---------
@@ -261,7 +261,7 @@ create trigger estatisticasUpdate before update on tb_cri_crime
 for each row
 begin
 	if old.cri_pais is null and old.cri_estado is null and old.cri_cidade is null and new.cri_pais is not null and new.cri_estado is not null and new.cri_cidade is not null and new.cri_pais <> '' and new.cri_estado <> '' and new.cri_cidade <> '' then
-   		call estatisticasUpdate(new.cri_pais,new.cri_estado,new.cri_cidade,new.tcr_idtipo_crime,new.tvi_idtipo_vitima,new.cri_horario);
+   		call updateEstatisticas(new.cri_pais,new.cri_estado,new.cri_cidade,new.tcr_idtipo_crime,new.tvi_idtipo_vitima,new.cri_horario);
 	end if;
 end
 ----------

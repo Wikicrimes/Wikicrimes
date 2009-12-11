@@ -98,7 +98,7 @@ public class EmailServiceImpl extends GenericCrudServiceImpl implements
 		           	    Map model= new HashMap();
 						model.put("usuario",usuario);
 						if (idiomaEmail.equals("pt_BR") || idiomaEmail.equals("pt")){
-							message.setSubject("Confirma√ß√£o de Cadastro - WikiCrimes.org");
+							message.setSubject("ConfirmaÁ„o de Cadastro - WikiCrimes.org");
 						 text = VelocityEngineUtils.mergeTemplateIntoString(
 					               velocityEngine, "org/wikicrimes/template-cadastro-confirmacao.vm", model);
 						}
@@ -494,7 +494,7 @@ public class EmailServiceImpl extends GenericCrudServiceImpl implements
 					else
 						model.put("usuarioEmailouNome",usuarioTexto);
 					if (!positiva)
-						model.put("nao", " n√£o ");
+						model.put("nao", " n„o ");
 					else
 						model.put("nao", " ");
 					if(crime.getTipoCrime().getIdTipoCrime() != 5)
@@ -572,7 +572,7 @@ public class EmailServiceImpl extends GenericCrudServiceImpl implements
 					else
 						model.put("usuarioEmailouNome",usuarioTexto);
 					if (!positiva)
-						model.put("nao", " n√£o ");
+						model.put("nao", " n„o ");
 					else
 						model.put("nao", " ");
 					String text=null;

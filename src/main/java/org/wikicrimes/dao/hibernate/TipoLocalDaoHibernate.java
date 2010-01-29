@@ -20,7 +20,7 @@ public class TipoLocalDaoHibernate extends GenericCrudDaoHibernate implements
 	String query = "from TipoLocal tipoLocal ";
 
 	if (idTipoVitima != null) {
-	    query += "where tipoLocal.tipoVitima.idTipoVitima = " + idTipoVitima;
+	    query += "where tipoLocal.tipoVitima.idTipoVitima = " + idTipoVitima + "order by descricao";
 	}
 
 	return getHibernateTemplate().find(query);

@@ -571,3 +571,5 @@ update tb_usu_usuario set usu_email = concat(usu_idusuario,'@wikicrimes.org'),
 			  usu_primeiro_nome = concat(usu_idusuario,'nome'),
 			  usu_ultimo_nome = concat(usu_idusuario,'ultimo_nome'),
 			  usu_senha = 'guest';
+			  
+insert into tb_tlo_tipo_local values(17,2,'tipolocalpropriedade.carga','carga');			  

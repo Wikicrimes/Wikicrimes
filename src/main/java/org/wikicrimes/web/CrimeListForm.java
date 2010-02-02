@@ -1,19 +1,10 @@
 package org.wikicrimes.web;
 
-import org.apache.commons.beanutils.BeanComparator;
-import org.apache.commons.collections.comparators.ReverseComparator;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.wikicrimes.model.Usuario;
-import org.wikicrimes.model.Crime;
 import org.wikicrimes.service.CrimeService;
-import org.wikicrimes.web.BeanDateComparator;
-
-import java.io.Serializable;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
 
 public class CrimeListForm extends GenericForm {
     private CrimeService crimeService;

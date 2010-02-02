@@ -2,12 +2,9 @@ package org.wikicrimes.dao.hibernate;
 
 import java.util.List;
 
-import org.hibernate.Query;
-import org.hibernate.Session;
 import org.wikicrimes.dao.EstatisticaCidadeDao;
 import org.wikicrimes.model.EstatisticaCidade;
 import org.wikicrimes.model.EstatisticaEstado;
-import org.wikicrimes.model.EstatisticaPais;
 
 public class EstatisticaCidadeDaoHibernate extends GenericCrudDaoHibernate
 		implements EstatisticaCidadeDao {

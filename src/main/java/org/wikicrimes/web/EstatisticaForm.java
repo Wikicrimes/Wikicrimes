@@ -3,31 +3,24 @@
  */
 package org.wikicrimes.web;
 
-import org.apache.commons.beanutils.BeanComparator;
-import org.apache.commons.collections.comparators.ReverseComparator;
-
-import org.wikicrimes.model.EstatisticaCidade;
-import org.wikicrimes.model.EstatisticaEstado;
-import org.wikicrimes.model.EstatisticaPais;
-import org.wikicrimes.model.Usuario;
-import org.wikicrimes.model.Crime;
-import org.wikicrimes.service.CrimeService;
-import org.wikicrimes.service.EstatisticaService;
-import org.wikicrimes.web.BeanDateComparator;
-
-import java.io.Serializable;
-import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Locale;
-import java.util.Map;
 
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.beanutils.BeanComparator;
+import org.apache.commons.collections.comparators.ReverseComparator;
+import org.wikicrimes.model.EstatisticaCidade;
+import org.wikicrimes.model.EstatisticaEstado;
+import org.wikicrimes.model.EstatisticaPais;
+import org.wikicrimes.service.CrimeService;
+import org.wikicrimes.service.EstatisticaService;
 
 /**
  * Form de consultas a tabela de crimes para geração da página de estatisticas

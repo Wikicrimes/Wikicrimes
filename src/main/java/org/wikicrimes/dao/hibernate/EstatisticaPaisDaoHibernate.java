@@ -1,9 +1,9 @@
 package org.wikicrimes.dao.hibernate;
 
-import org.wikicrimes.dao.EstatisticaPaisDao;
-import org.wikicrimes.model.EstatisticaEstado;
-import org.wikicrimes.model.EstatisticaPais;
 import java.util.List;
+
+import org.wikicrimes.dao.EstatisticaPaisDao;
+import org.wikicrimes.model.EstatisticaPais;
 
 public class EstatisticaPaisDaoHibernate extends GenericCrudDaoHibernate
 		implements EstatisticaPaisDao {

@@ -1,10 +1,10 @@
 package org.wikicrimes.util;
 
-import java.util.Map;
+import java.io.InvalidObjectException;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.io.Serializable;
-import java.io.InvalidObjectException;
+import java.util.Map;
 
 public final class Horario implements Comparable, Serializable {
     private static int size = 0;

@@ -2,7 +2,6 @@ package org.wikicrimes.dao;
 
 import java.util.List;
 
-import org.wikicrimes.model.EstatisticaCidade;
 import org.wikicrimes.model.EstatisticaEstado;
 import org.wikicrimes.model.EstatisticaPais;
 

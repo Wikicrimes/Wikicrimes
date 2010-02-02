@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hibernate.Hibernate;
 import org.wikicrimes.model.BaseObject;
 import org.wikicrimes.model.Comentario;
 import org.wikicrimes.model.Confirmacao;

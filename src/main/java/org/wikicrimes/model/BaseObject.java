@@ -2,9 +2,6 @@ package org.wikicrimes.model;
 
 import java.io.Serializable;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
-
 /**
  * Base class for Model objects.  This is basically for the toString method.
  *

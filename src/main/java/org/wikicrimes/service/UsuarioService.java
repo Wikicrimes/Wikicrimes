@@ -7,7 +7,7 @@ import org.springframework.core.io.Resource;
 import org.wikicrimes.model.AreaObservacao;
 import org.wikicrimes.model.BaseObject;
 import org.wikicrimes.model.Usuario;
-import org.wikicrimes.model.UsuarioRedeSocial;;
+import org.wikicrimes.model.UsuarioRedeSocial;
 
 public interface UsuarioService extends GenericCrudService {
 

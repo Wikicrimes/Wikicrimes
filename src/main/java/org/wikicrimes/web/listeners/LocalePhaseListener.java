@@ -7,7 +7,8 @@ import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 import javax.servlet.http.Cookie;
-import org.wikicrimes.util.*;
+
+import org.wikicrimes.util.CookiesHelper;
 
 public class LocalePhaseListener implements PhaseListener{
 	private static final long serialVersionUID = -257630463765246905L;

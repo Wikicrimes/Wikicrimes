@@ -1,6 +1,5 @@
 package org.wikicrimes.model;
 
-import java.util.Set;
 
 public class EstatisticaCidade extends BaseObject {
 	

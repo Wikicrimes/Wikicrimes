@@ -20,15 +20,19 @@
 
 package com.maxmind.geoip;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.lang.*;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.StringTokenizer;
 
-import java.util.*;
-
-import javax.naming.*;
-import javax.naming.directory.*;
+import javax.naming.NamingException;
+import javax.naming.directory.Attributes;
+import javax.naming.directory.DirContext;
+import javax.naming.directory.InitialDirContext;
 
 
 /**

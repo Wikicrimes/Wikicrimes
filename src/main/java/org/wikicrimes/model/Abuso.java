@@ -1,7 +1,6 @@
 package org.wikicrimes.model;
 
 import java.util.Date;
-import org.wikicrimes.model.Relato;
 
 
 public class Abuso extends BaseObject {

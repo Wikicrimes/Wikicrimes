@@ -2,7 +2,6 @@ package org.wikicrimes.service.impl;
 
 import org.hibernate.Hibernate;
 import org.wikicrimes.dao.ConfirmacaoRelatoDao;
-import org.wikicrimes.model.Confirmacao;
 import org.wikicrimes.model.ConfirmacaoRelato;
 import org.wikicrimes.service.ConfirmacaoRelatoService;
 

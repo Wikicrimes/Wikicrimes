@@ -3,9 +3,7 @@
  */
 package org.wikicrimes.web;
 
-import org.wikicrimes.service.CrimeService;
 import org.wikicrimes.service.EmailService;
-import org.wikicrimes.service.impl.EmailServiceImpl;
 
 /**
  * @author Marcos de Oliveira

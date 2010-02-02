@@ -1,8 +1,8 @@
 package org.wikicrimes.dao;
 
-import org.wikicrimes.model.User;
-
 import java.util.List;
+
+import org.wikicrimes.model.User;
 
 
 public interface UserDao extends Dao {

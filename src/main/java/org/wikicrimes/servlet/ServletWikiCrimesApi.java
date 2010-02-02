@@ -1,12 +1,10 @@
 package org.wikicrimes.servlet;
 
-import java.awt.Color;
-import java.awt.Image;
-import java.awt.Point;
+import static org.wikicrimes.servlet.ServletKernelMap.BANDWIDTH;
+import static org.wikicrimes.servlet.ServletKernelMap.GRID_NODE;
+import static org.wikicrimes.servlet.ServletKernelMap.getPoints;
+
 import java.awt.Rectangle;
-import java.awt.Toolkit;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
@@ -15,15 +13,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.Semaphore;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -46,10 +41,7 @@ import org.wikicrimes.service.CrimeService;
 import org.wikicrimes.service.UsuarioService;
 import org.wikicrimes.util.Constantes;
 import org.wikicrimes.util.kernelMap.KernelMap;
-import org.wikicrimes.util.kernelMap.Ponto;
 import org.wikicrimes.web.FiltroForm;
-
-import static org.wikicrimes.servlet.ServletKernelMap.*;
 
 public class ServletWikiCrimesApi extends HttpServlet {
 	/**

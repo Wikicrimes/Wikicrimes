@@ -21,12 +21,8 @@ import org.wikicrimes.model.CrimeRazao;
 import org.wikicrimes.model.EstatisticaEstado;
 import org.wikicrimes.model.Relato;
 import org.wikicrimes.model.RelatoRazao;
-import org.wikicrimes.model.TipoCrime;
-import org.wikicrimes.model.TipoVitima;
 import org.wikicrimes.service.CrimeService;
 import org.wikicrimes.web.FiltroForm;
-
-import sun.reflect.ReflectionFactory.GetReflectionFactoryAction;
 
 public class ServletManipuladorTXT extends HttpServlet {
 

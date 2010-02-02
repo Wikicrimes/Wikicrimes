@@ -24,7 +24,6 @@ import org.wikicrimes.model.TipoCrime;
 import org.wikicrimes.model.TipoLocal;
 import org.wikicrimes.model.TipoVitima;
 import org.wikicrimes.model.Usuario;
-import org.wikicrimes.util.Cripto;
 
 /**
  * 

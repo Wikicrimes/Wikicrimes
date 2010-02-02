@@ -6,8 +6,6 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.List;
 
-import org.wikicrimes.util.kernelMap.testes.TesteCenariosRotas;
-
 
 public class KernelMap {
 

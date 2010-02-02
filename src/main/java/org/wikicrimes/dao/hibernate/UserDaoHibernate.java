@@ -1,11 +1,11 @@
 package org.wikicrimes.dao.hibernate;
 
+import java.util.List;
+
 import org.springframework.orm.ObjectRetrievalFailureException;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.wikicrimes.dao.UserDao;
 import org.wikicrimes.model.User;
-
-import java.util.List;
 
 
 /**

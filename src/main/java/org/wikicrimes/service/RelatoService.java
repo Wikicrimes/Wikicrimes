@@ -5,9 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.wikicrimes.model.BaseObject;
-import org.wikicrimes.model.Confirmacao;
 import org.wikicrimes.model.ConfirmacaoRelato;
-import org.wikicrimes.model.Crime;
 import org.wikicrimes.model.Razao;
 import org.wikicrimes.model.Relato;
 

@@ -1,6 +1,5 @@
 package org.wikicrimes.servlet;
 
-import java.awt.Rectangle;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;

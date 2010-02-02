@@ -3,7 +3,6 @@ package org.wikicrimes.dao.hibernate;
 import java.util.List;
 
 import org.wikicrimes.dao.EstatisticaEstadoDao;
-import org.wikicrimes.model.EstatisticaCidade;
 import org.wikicrimes.model.EstatisticaEstado;
 import org.wikicrimes.model.EstatisticaPais;
 

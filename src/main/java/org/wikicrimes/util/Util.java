@@ -3,11 +3,6 @@ package org.wikicrimes.util;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.ResourceBundle;
-
-import javax.faces.FactoryFinder;
-import javax.faces.application.ApplicationFactory;
-import javax.faces.context.FacesContext;
 
 public class Util {
 

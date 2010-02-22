@@ -1,5 +1,6 @@
 package org.wikicrimes.web;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 import javax.faces.FactoryFinder;
@@ -941,6 +943,34 @@ public class FiltroForm extends GenericForm {
 
 	public void setPais(String pais) {
 		this.pais = pais;
+	}
+	
+	public Map<String, String> getMapaParametros(){
+		Map<String, String> map = new HashMap<String, String>();
+		
+		if(tipoCrime != null && tipoCrime != 0)
+			map.put("tipoCrime", tipoCrime.toString());
+		if(tipoVitima != null && tipoVitima != 0)
+			map.put("tipoVitima", tipoVitima.toString());
+		if(tipoLocal != null && tipoLocal != 0)
+			map.put("tipoLocal", tipoLocal.toString());
+		
+		DateFormat df = new SimpleDateFormat("dd,MM,yyyy");
+		if(dataInicial != null)
+			map.put("dataInicial", df.format(dataInicial));
+		if(dataFinal != null)
+			map.put("dataFinal", df.format(dataFinal));
+		if(horarioInicial != null && horarioInicial != -1)
+			map.put("horarioInicial", horarioInicial.toString());
+		if(horarioFinal != null && horarioFinal != -1)
+			map.put("horarioFinal", horarioFinal.toString());
+		
+		if(entidadeCertificadora != null && entidadeCertificadora != 0 )
+			map.put("entidadeCertificadora", entidadeCertificadora.toString());
+		if(crimeConfirmadoPositivamente != null && crimeConfirmadoPositivamente != false)
+			map.put("confirmadoPositivamente", crimeConfirmadoPositivamente.toString());
+		
+		return map;
 	}
 	
 }

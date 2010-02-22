@@ -67,12 +67,16 @@
 			
 			<script>
 			/* <![CDATA[ */
-				if(#{usuario != null}){				
+								
+				//console.log('login.xhtml, 1');
+				if(#{usuario != null}){
+					//console.log('login.xhtml, 2');				
 					var tipoRegistro = document.getElementById("usuarioForm2:tipoRegistro").value;
 					if(tipoRegistro=='4'){
 						parent.mostraDivBaixarWikicrimesMobile();						
 					}
 					if( tipoRegistro != '4' ){
+						//console.log('login.xhtml, 3');
 						parent.document.getElementById("formReRenderLogin:btLoginSubmit").click();
 						parent.closeMessage();
 						var idCrime = document.getElementById("usuarioForm2:idCrime").value;
@@ -130,8 +134,22 @@
 					  		parent.estaRegistrandoArea = true;
 					  		parent.startShape();
 							temTipoRegistro = true;
-						}					
-	
+						}
+
+						//*********************** AREAS RISCO INICIO ****************************
+						//login disparado pelo click em uma Area Risco 
+						//vindo de "areasRisco.xhtml", q chamou o metodo "loginCasoPrecise" em "header.xhtml"
+						if(tipoRegistro=='5'){ 
+							//console.log('login.xhtml, 4');							
+							exibirJanelaAreaRisco('Editar');
+							//console.log('login.xhtml, 6');
+						}
+
+						//exibir as areas de risco deste usuario (ao logar de qualquer forma)
+						//console.log('login.xhtml, 7');
+						exibirMinhasAreas();
+						//console.log('login.xhtml, 9');
+						//*********************** AREAS RISCO FIM ****************************
 						
 						if(!temCrime && !temRelato && !temTipoRegistro){
 							var latLng = new parent.GLatLng(#{empty usuario.lat ? 1111.111 : usuario.lat} ,#{empty usuario.lng ? 1111.111 : usuario.lng});
@@ -145,11 +163,11 @@
 							parent.atualizaMapa();
 							parent.podeCarregarCrimes=temp;
 						}
-					}	
 						
+					}	
 				}
 			/* ]]> */		
-			</script>			
+			</script>
 		</h:panelGrid>			
 	</body>
 </html>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC
+"-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:jsp="http://java.sun.com/JSP/Page" >
+	
+<head>
+	<meta http-equiv="Cache-Control" content="no-store" />
+	<meta http-equiv="Pragma" content="no-cache" />
+	<meta http-equiv="Expires" content="0" />
+	<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+	<title>WikiCrimes</title>
+	
+	<style type="text/css">
+	body{
+		text-align: center;
+	}
+	h3{
+		font-family: calibri;
+		color: firebrick;
+	}
+	p{
+		font-size: smaller;
+		font-weight: bold;
+		color: black;
+	}
+	#logo{
+		border: none;
+	}
+	#div{
+		margin: auto;
+	}
+	#mapa{
+		margin-top: -10px;
+		border: firebrick solid;
+	}
+	#aviso{
+		width: 2em;
+		height: 2em;
+		margin-bottom: -10px;
+		margin-right: 5px;
+	}
+	</style>
+</head>
+			
+<body>
+	<f:loadBundle var="messages" basename="messages" />
+		
+	<div id="div" >
+	<p> <a href="http://wikicrimes.org" target="_blank"> <img id="logo" src="#{messages['areasrisco.imagem.logo']}" /> </a> </p>
+	
+	<h3> <img id="aviso" src="images/warning_grande2.png" /> #{messages['areasrisco.imagem.titulo']} </h3>
+	
+	<p> <img id="mapa" src="ServletImagemMapa?acao=pegaImagem&amp;id=#{param.id}" /> </p>
+	
+	<p>
+		#{imagemMapa.nomeUsuario} #{messages['areasrisco.imagem.texto']} <br/>
+		<img src="images/baloes/vermelho.png" /> #{imagemMapa.numFurtos} #{messages['comum.roubos']}, 
+		<img src="images/baloes/novoMarcadorAzul.png" /> #{imagemMapa.numFurtos} #{messages['comum.furtos']} #{messages['comum.e']} 
+		<img src="images/baloes/novoMarcadorLaranja.png" /> #{imagemMapa.numOutros} #{messages['comum.outros']} <br/> 
+		#{messages['webapp.carregando.periodo']} #{imagemMapa.dataIni} #{messages['comum.a']} #{imagemMapa.dataFin}.
+	</p>
+	
+	<p> #{messages['areasrisco.imagem.detalhes']} <a href="http://wikicrimes.org" target="_blank" > wikicrimes.org </a> </p>
+	
+	</div>
+			
+</body>
+</html>

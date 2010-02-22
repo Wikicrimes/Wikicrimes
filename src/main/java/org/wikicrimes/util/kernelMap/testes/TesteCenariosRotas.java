@@ -35,6 +35,7 @@ public class TesteCenariosRotas extends HttpServlet{
 	private static Map<String,String> result = new HashMap<String, String>();
 	private static Map<String,String> param;
 	
+	/*teste*/
 	public static void main(String[] args) {
 		setResult("numCrimes", 4);
 		setResult("distReta", 2);
@@ -43,8 +44,9 @@ public class TesteCenariosRotas extends HttpServlet{
 		setResult("distIni", 1);
 		setResult("distFin", 5);
 		salvar();
-		screenshot();
+		screenshot(1000);
 	}
+	/*teste*/
 	
 	//escrever resultados no arquivo
 	public static void setResult(String key, Object value){
@@ -96,20 +98,24 @@ public class TesteCenariosRotas extends HttpServlet{
 	//ler cenário do txt e passar pro javascript
 	private static int cont = 0;
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
 		
 		PrintWriter out = resp.getWriter();
 		
-		if(req.getParameter("cenario") != null){
-			out.write(getStringCenario());
-		
-		}else if(req.getParameter("param") != null){
-			screenshot();
-			cont++;
-			param = getMapParam();
-			if(param == null){
-				out.write("fim");
-				cont = 0;
+		String acao = req.getParameter("acao"); 
+		if(acao != null){
+			if(acao.equals("cenario")){
+				out.write(getStringCenario());
+			
+			}else if(acao.equals("param")){
+				screenshot(0);
+				screenshot(1000);
+				screenshot(2000);
+				cont++;
+				param = getMapParam();
+				if(param == null){
+					out.write("fim");
+					cont = 0;
+				}
 			}
 		}
 		
@@ -180,11 +186,11 @@ public class TesteCenariosRotas extends HttpServlet{
 	
 	
 	
-	public static void screenshot(){
+	public static void screenshot(int milis){
 		try {
 			
 			//espera um poquim pra rota verde aparecer
-			Thread.sleep(1000);
+			Thread.sleep(milis);
 			
 			//screenshot
 	        Robot robot = new Robot();

@@ -681,6 +681,14 @@
 					}	
 					alertarTutorDeAcaoDoUsuario(acoesUsuario,"");
 					escondeCarregandoPequeno();
+
+//*********************** Kernel Map INICIO ****************************
+//recalcula o mapa de kernel sempre q recarregar os crimes (ao mover o mapa ou alterar o zoom)
+					if(kernelEnable){
+						apagaMapaKernel();
+				  		constroiMapaKernel();
+					}
+//*********************** Kernel Map FIM ****************************
 					
 				}
 
@@ -967,20 +975,21 @@
 								
 						
 					function atualizaEstatisticasRazoes(razoesTexto){
-						var arrayRazoesOcorrencia = razoesTexto.split(",");
-						if(arrayRazoesOcorrencia[0] != undefined && arrayRazoesOcorrencia[0] != null && arrayRazoesOcorrencia[0] != ''){
-							arrayEstatisticasQtd[parseInt(arrayRazoesOcorrencia[0])]++;
+						if(razoesTexto){ //obs: ver pq ta vindo undefined as vezes, não devia
+							var arrayRazoesOcorrencia = razoesTexto.split(",");
+							if(arrayRazoesOcorrencia[0] != undefined && arrayRazoesOcorrencia[0] != null && arrayRazoesOcorrencia[0] != ''){
+								arrayEstatisticasQtd[parseInt(arrayRazoesOcorrencia[0])]++;
+							}
+							if(arrayRazoesOcorrencia[1] != undefined && arrayRazoesOcorrencia[1] != null && arrayRazoesOcorrencia[1] != ''){
+								arrayEstatisticasQtd[parseInt(arrayRazoesOcorrencia[1])]++;	
+							}		
+							if(arrayRazoesOcorrencia[2] != undefined && arrayRazoesOcorrencia[2] != null && arrayRazoesOcorrencia[2] != ''){
+								arrayEstatisticasQtd[parseInt(arrayRazoesOcorrencia[2])]++;	
+							}		
+							if(arrayRazoesOcorrencia[3] != undefined && arrayRazoesOcorrencia[3] != null && arrayRazoesOcorrencia[3] != ''){
+								arrayEstatisticasQtd[parseInt(arrayRazoesOcorrencia[3])]++;
+							}
 						}
-						if(arrayRazoesOcorrencia[1] != undefined && arrayRazoesOcorrencia[1] != null && arrayRazoesOcorrencia[1] != ''){
-							arrayEstatisticasQtd[parseInt(arrayRazoesOcorrencia[1])]++;	
-						}		
-						if(arrayRazoesOcorrencia[2] != undefined && arrayRazoesOcorrencia[2] != null && arrayRazoesOcorrencia[2] != ''){
-							arrayEstatisticasQtd[parseInt(arrayRazoesOcorrencia[2])]++;	
-						}		
-						if(arrayRazoesOcorrencia[3] != undefined && arrayRazoesOcorrencia[3] != null && arrayRazoesOcorrencia[3] != ''){
-							arrayEstatisticasQtd[parseInt(arrayRazoesOcorrencia[3])]++;
-						}		
-								
 					}
 					var tipoDezMais = '1';
 					function mostraListaDezMais(){
@@ -1358,16 +1367,18 @@
 		   					                  // Cria o marcador
 							                var marcador = createMarkerId(new GLatLng(lat, long),idTipoCrime,idCrime2,dataCrime);
 							                
-							                
 											//mgr.addMarker(marcador,2);
 	
-	//*********************** Kernel Map INICIO ****************************
+											crimesAtuais[idCrime]=marcador;
+					//*********************** Kernel Map INICIO ****************************
+					//coleta os eventos pra serem mantados pro servlet q gera o mapa de kernel
+					//o if é pra não deixar plotar os marcadores qd o mapa de kernel estiver ligado
 											arrayCrimesLatLng[index] = new crimeKernelMap(long, lat, marcador);
 											++index;
-	//*********************** Kernel Map FIM ****************************	   
-											crimesAtuais[idCrime]=marcador;
+											if(!kernelEnable)
+					//*********************** Kernel Map FIM ****************************	   
 											// Google Agrupadores: Preenchendo Vetor de marcadores
-											GVetorMarcadores.push(marcador);
+												GVetorMarcadores.push(marcador);
 											
 										}
 						            		
@@ -1399,9 +1410,14 @@
 				      			 * Google Agrupadores: Plotando Agrupadores
 				      			 *
 				      			 */
-				      			GClusterer.clearMarkers();
-								GClusterer = new MarkerClusterer(map, GVetorMarcadores);
-				      			
+  		//*********************** Kernel Map INICIO ****************************
+  		//não deixar plotar os marcadores qd o mapa de kernel estiver ligado
+				      			if(!kernelEnable)
+		//*********************** Kernel Map FIM ****************************
+					      		{				      				
+				      				GClusterer.clearMarkers(); 
+									GClusterer = new MarkerClusterer(map, GVetorMarcadores);
+				      			}
 			      		}						
 					  
 					   function plotaEstados() {

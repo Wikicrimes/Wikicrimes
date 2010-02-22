@@ -68,17 +68,29 @@
 							<td>|</td>
 							<td>
 								<a4j:commandLink value=" Logout " reRender="pesquisaGenerica, painelPrincipaLoginLogout, divMobile" action="#{usuarioForm.logout}" 
-									immediate="true" />
+									immediate="true" onclick="onLogout()" />
 							</td>
 							<td>|</td>				
 								
-									<td>				
-										<h:outputLink value="#" onclick="displayMessage('./listarAreas.html', 420, 200,'#{messages['webapp.area.titulo.minhasareas']}');return false">
-											<h:outputText value=" #{messages['webapp.area.titulo.minhasareas']} "
-												title="#{messages['webapp.area.titulo.minhasareas']}" />
-										</h:outputLink>
-									</td>
-									<td>|</td>
+							<td>				
+								<h:outputLink value="#" onclick="displayMessage('./listarAreas.html', 420, 200,'#{messages['webapp.area.titulo.minhasareas']}');return false">
+									<h:outputText value=" #{messages['webapp.area.titulo.minhasareas']} "
+										title="#{messages['webapp.area.titulo.minhasareas']}" />
+								</h:outputLink>
+							</td>
+							<td>|</td>
+									
+					<!--*********************** AREAS RISCO INICIO ****************************-->
+					<!--TESTE: forma provisoria de exibir as areas de risco->					
+							<td>				
+								<h:outputLink value="#" onclick="toggleExibirMinhasAreas();return false">
+									<h:outputText value="#{messages['areasrisco.header']}"
+										title="Areas de Risco" />
+								</h:outputLink>
+							</td>
+							<td>|</td>
+					<!-*********************** AREAS RISCO FIM ****************************-->
+								
 								
 							<td>				
 								<h:outputLink value="#" onclick="displayMessage('./listarCrimes.html', 800, 350,'#{messages['usuario.denuncias']}');return false">
@@ -128,6 +140,23 @@
 			
 			<script>
 			/* <![CDATA[ */
+				
+				function loginCasoPrecise(tipo, msg){
+					var precisaLogin = #{usuario == null}; 
+					if(precisaLogin)
+						displayMessage('./login.html?mensagemLogin=' + msg + '&amp;'+
+								'tipoRegistro='+tipo,300, 245,'Login');
+					return precisaLogin;
+				}
+
+				function onLogout(){
+		//*********************** AREAS RISCO INICIO ****************************
+		//pra esconder as areas de risco do usuario q fez logoff e 
+		//forcar de carregar areas novamente qd o proximo usuario q fizer login 					
+					limparMinhasAreas();
+		//*********************** AREAS RISCO FIM ****************************
+				}
+			
 				function usuarioEstaLogado(){				
 					if(#{usuario != null})
 						return true;
@@ -165,7 +194,10 @@
 				var comandoControleFiltroSelecionado = new ComandoFiltroSelecionado();
 				var comandoControleKernel = new ComandoKernel();
 				var comandoControleKernelSelecionado = new ComandoKernelSelecionado();
-				function selecionarComando(mapa, comando){
+				function selecionarComando(mapa, comando, off){
+
+						//alert('comando: ' + comando + ', off:' + off);
+
 						mapa.removeControl(comandoControleMao);
 						mapa.removeControl(comandoControleMaoSelecionado);
 						mapa.removeControl(comandoControleMarcadorDeArea);
@@ -174,28 +206,33 @@
 						//mapa.removeControl(comandoControleEmbedSelecionado);
 						mapa.removeControl(comandoControleFiltro);
 						mapa.removeControl(comandoControleFiltroSelecionado);
-						mapa.removeControl(comandoControleKernel);
-						mapa.removeControl(comandoControleKernelSelecionado);
+						//mapa.removeControl(comandoControleKernel);
+						//mapa.removeControl(comandoControleKernelSelecionado);
 
 						
 						if(comando=='filtro'){					
 							mapa.addControl(comandoControleMarcadorDeArea);
 							mapa.addControl(comandoControleMao);
-							mapa.addControl(comandoControleKernel);
+							//mapa.addControl(comandoControleKernel);
 							mapa.addControl(comandoControleFiltroSelecionado);
 							if(#{usuario.perfil.nome == 'CERTIFICADOR'}||#{usuario.perfil.nome == 'ADMINISTRADOR'}){
 								if(#{usuario.entidadeCertificadora.idEntidadeCertificadora != 12}){
 									//mapa.addControl(comandoControleEmbed);
 								}	
-									
 							}
 						}
 
-						if(comando=='kernel'){					
+						if(comando=='kernel'){
+							if(off){
+								mapa.removeControl(comandoControleKernelSelecionado);
+								mapa.addControl(comandoControleKernel);
+							}else{
+								mapa.removeControl(comandoControleKernel);
+								mapa.addControl(comandoControleKernelSelecionado);
+							}
 							mapa.addControl(comandoControleMarcadorDeArea);
 							mapa.addControl(comandoControleMao);
 							mapa.addControl(comandoControleFiltro);
-							mapa.addControl(comandoControleKernelSelecionado);
 							if(#{usuario.perfil.nome == 'CERTIFICADOR'}||#{usuario.perfil.nome == 'ADMINISTRADOR'}){
 								if(#{usuario.entidadeCertificadora.idEntidadeCertificadora != 12}){
 									//mapa.addControl(comandoControleEmbed);
@@ -206,7 +243,8 @@
 						if(comando=='mao'){											
 							mapa.addControl(comandoControleMarcadorDeArea);
 							mapa.addControl(comandoControleMaoSelecionado);
-							mapa.addControl(comandoControleKernel);
+							if(!kernelEnable)
+								mapa.addControl(comandoControleKernel);
 							mapa.addControl(comandoControleFiltro);
 							if(#{usuario.perfil.nome == 'CERTIFICADOR'}||#{usuario.perfil.nome == 'ADMINISTRADOR'}){
 								if(#{usuario.entidadeCertificadora.idEntidadeCertificadora != 12}){
@@ -218,7 +256,7 @@
 							document.getElementById("divTelaFiltro").style.visibility = "hidden";					
 							mapa.addControl(comandoControleMarcadorDeAreaSelecionado);
 							mapa.addControl(comandoControleMao);
-							mapa.addControl(comandoControleKernel);
+							//mapa.addControl(comandoControleKernel);
 							mapa.addControl(comandoControleFiltro);
 							if(#{usuario.perfil.nome == 'CERTIFICADOR'}||#{usuario.perfil.nome == 'ADMINISTRADOR'}){
 								if(#{usuario.entidadeCertificadora.idEntidadeCertificadora != 12}){

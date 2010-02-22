@@ -420,6 +420,11 @@ public class GrafoRotas {
 		public Iterator<Ponto> iterator() {
 			throw new UnsupportedOperationException();
 		}
+		
+		@Override
+		public String toString() {
+			return new ArrayList<Ponto>(this).toString();
+		}
 	}
 	
 }

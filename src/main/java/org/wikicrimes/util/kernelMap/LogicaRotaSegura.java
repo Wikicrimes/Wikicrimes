@@ -225,10 +225,10 @@ public class LogicaRotaSegura {
 		Rectangle bounds = kernel.getBounds();
 		double[][] densidade = kernel.getDensidadeGrid();
 		
-		int xIni = (int)((segm.getInicio().x - bounds.x) / kernel.gridNode); //coluna na matriz de densidades onde se encontra o ponto inicial do segmento
-		int yIni = (int)((segm.getInicio().y - bounds.y) / kernel.gridNode); //linha do ponto inicial
-		int xFim = (int)((segm.getFim().x - bounds.x) / kernel.gridNode); //coluna do ponto final
-		int yFim = (int)((segm.getFim().y - bounds.y) / kernel.gridNode); //linhado ponto final
+		int xIni = (int)((segm.getInicio().x - bounds.x) / kernel.nodeSize); //coluna na matriz de densidades onde se encontra o ponto inicial do segmento
+		int yIni = (int)((segm.getInicio().y - bounds.y) / kernel.nodeSize); //linha do ponto inicial
+		int xFim = (int)((segm.getFim().x - bounds.x) / kernel.nodeSize); //coluna do ponto final
+		int yFim = (int)((segm.getFim().y - bounds.y) / kernel.nodeSize); //linhado ponto final
 		if(xIni>xFim){ int aux=xIni; xIni=xFim; xFim=aux;}
 		if(yIni>yFim){ int aux=yIni; yIni=yFim; yFim=aux;}
 		
@@ -289,7 +289,7 @@ public class LogicaRotaSegura {
 		
 		Rectangle bounds = kernel.getBounds();
 		double[][] dens = kernel.getDensidadeGrid();
-		int node = kernel.gridNode;
+		int node = kernel.nodeSize;
 		
 		//limita o intervalo de células que participarão do cálculo
 		int xIni = (int)((segm.getInicio().x - bounds.x) / node); //coluna na matriz de densidades onde se encontra o ponto inicial do segmento

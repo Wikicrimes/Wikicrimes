@@ -28,31 +28,57 @@ public class KernelImageFilesManager {
 	/**
 	 * Deleta o diretório e imagens (de Mapa de Kernel) relacionados a uma única sessão 
 	 */
-	public static void deletaImagens(HttpSession sessao){
+	public static void deletaImagem(HttpSession sessao){
 		String imagePath = realImagePath(sessao);
 		File dir = new File(imagePath);
-		deleta(dir);
+		deletaArquivo(dir);
 	}
 	
 	/**
 	 * Deleta um diretório qualquer contendo imagens PNG.
 	 */
-	private static void deleta(final File dir){
+	private static void deletaArquivo(final File dir){
 		//obs: a deleção é agendade para alguns segundos mais tarde
 		//pra corrigir um bug q acontecia ocasionalmente de a imagem ser deletada antes de ser exibida
+		
 		TimerTask task = 
 			new TimerTask(){
 			public void run() {
 				
 				File[] files = dir.listFiles();
-				if(files != null)
-				for(File file : files){
-					if(file.getName().endsWith(".png")); //segurança, pra n deletar outras coisas 
-					file.delete();
+				if(files != null){
+					
+					//encontra o arquivo com menor numero X "ImgX.png"
+					File menorFile = null;
+					int menor = Integer.MAX_VALUE;
+					for(File file : files){
+						String nome = file.getName();
+						int num = Integer.valueOf( nome.substring(3, nome.length()-4) );
+						if(num < menor){
+							menor = num;
+							menorFile = file;
+						}
+					}
+					
+					//deleta o arquivo (de menor numero)
+					//if(menorFile.getName().endsWith(".png")) //segurança, pra n deletar outras coisas 
+					menorFile.delete();
 				}
-				dir.delete();
+				
+				//deleta o diretório se tiver ficado vazio
+				new Timer().schedule(deletaDir, 10000);
 				
 			}
+			
+			TimerTask deletaDir = 
+				new TimerTask(){
+				public void run() {
+					//deleta só se tiver ficado vazio
+					File[] files = dir.listFiles();
+					if(files != null && files.length == 0)
+						dir.delete();
+				}
+			};
 		};
 		
 		new Timer().schedule(task, 10000);
@@ -90,5 +116,5 @@ public class KernelImageFilesManager {
 	private static String relativeImagePath(HttpSession sessao){
 		return PATH + sessao.getId() + "/";
 	}
-
+	
 }

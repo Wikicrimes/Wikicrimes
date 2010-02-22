@@ -52,8 +52,7 @@ public class ServletManipuladorTXT extends HttpServlet {
 		FiltroForm filtroForm = (FiltroForm) sessao.getAttribute("filtroForm");
 		String tipoCrime = request.getParameter("tc");
 		String tipoVitima = request.getParameter("tv");
-		String tipoLocal = request.getParameter("tl"); // Data - Ex.:
-		// 01,01,2008
+		String tipoLocal = request.getParameter("tl"); // Data - Ex.: 01,01,2008
 		String dataInicial = request.getParameter("di");
 		String dataFinal = request.getParameter("df"); // Horario - Ex.: 5
 		String horarioInicial = request.getParameter("hi");

@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.wikicrimes.util.kernelMap.KernelMap;
+import org.wikicrimes.util.kernelMap.KernelMapRenderer;
 import org.wikicrimes.util.kernelMap.Ponto;
 import org.wikicrimes.util.kernelMap.testes.TesteCenariosRotas;
 
@@ -27,115 +28,108 @@ import org.wikicrimes.util.kernelMap.testes.TesteCenariosRotas;
  * 
  * @author victor
  */
+@SuppressWarnings("serial")
 public class ServletKernelMap extends HttpServlet {
 	
-	final static String IMAGE_PATH = "IMAGE_PATH"; //endereço da imagem de mapa de kernel
-	final static String IMAGEM_KERNEL = "IMAGEM_KERNEL"; //endereço da imagem de mapa de kernel
+	final static String IMAGEM_KERNEL = "IMAGEM_KERNEL"; //imagem renderizada do mapa de kernel
+	final static String DENSIDADES = "DENSIDADES"; //matriz de densidades do mapa de kernel
+	final static String KERNEL = "KERNEL"; //objeto MapaKernel
 	
 	public final static int GRID_NODE = 5;
 	public final static int BANDWIDTH = 30;
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		HttpSession sessao = request.getSession();
 		
-		String imagem = request.getParameter("imagem");//só a requisição pra deletar imagens tem este parâmetro
-		if(imagem == null){
-			//requisição pra calcular o mapa de kernel e criar imagens
-			Rectangle bounds = getLimitesPixel(request);
-			gerarKernelMap(bounds, request);
-			escreverResposta(request,response);
-//			/*teste: sem salvar arquivo*/escreverResposta2(request, response);
-		}else{
-			//requisição pra deletar as imagens
-			KernelImageFilesManager.deletaImagens(request.getSession());
-//			/*teste: sem salvar arquivo*/enviarImagem(request, response);
+//		/*teste*/System.out.println(request.getParameterMap().keySet() + " - pontoXY:" + request.getParameter("pontoXY"));
+		
+		String acao = request.getParameter("acao");
+		if(acao != null)
+		if(acao.equals("geraKernel")){
+			//calcular o mapa de kernel e criar imagens
+			gerarKernelMap(request);
+		}else if(acao.equals("pegaImagem")){
+			RenderedImage imagem = (RenderedImage)sessao.getAttribute(IMAGEM_KERNEL);
+			if(imagem != null)
+				enviarImagem(response, imagem);
+		}else if(acao.equals("pegaInfo")){
+			KernelMap kernel = (KernelMap)sessao.getAttribute(KERNEL);
+			double[][] dens = kernel.getDensidadeGrid();
+			enviarInfo(request, response, dens);
 		}
+		
 	}
 	
-	public KernelMap gerarKernelMap(Rectangle bounds, HttpServletRequest request) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		doPost(req, resp);
+	}
+	
+	private static void gerarKernelMap(HttpServletRequest request) throws ServletException, IOException {
 		///*teste*/long ini = System.currentTimeMillis();
 		HttpSession sessao = request.getSession();
+		Rectangle bounds = getLimitesPixel(request);
+		int zoom = getZoom(request);
+//		/*teste*/System.out.println("zoom: " + zoom);
 		
 		//extrai informação dos parâmetros de requisição
 		List<Point> pontos = getPoints(request);
+		/*teste*/TesteCenariosRotas.setResult("numCrimes", pontos.size());
 		
 		//calcula as densidades
 		KernelMap kernel = new KernelMap(GRID_NODE, BANDWIDTH, bounds, pontos);
+		sessao.setAttribute(KERNEL, kernel);
 //		/*teste*/System.out.println(kernel);
 		/*teste*/TesteCenariosRotas.setResult("densMedia", kernel.getMediaDens());
-		/*teste*/TesteCenariosRotas.setResult("densMax", kernel.getMaiorDensidade());
+		/*teste*/TesteCenariosRotas.setResult("densMax", kernel.getMaxDens());
 		
-		//renderiza a imagem e salva em arquivo
-		String imagePath = KernelImageFilesManager.criarImagem(kernel, sessao);
-		sessao.setAttribute(IMAGE_PATH, imagePath);
-		/*teste: sem salvar arquivo
+//		/*teste*/long fim = System.currentTimeMillis();
+//		/*teste*/System.out.println("TEMPO da geração do mapa de kernel: " + (fim-ini));
+		
 		KernelMapRenderer kRend = new KernelMapRenderer(kernel);
-		RenderedImage imagem = (RenderedImage)kRend.pintaKernel();
-		sessao.setAttribute("IMAGEM_KERNEL", imagem);
-		 */
-		
-		///*teste*/long fim = System.currentTimeMillis();
-		///*teste*/System.out.println("TEMPO da geração do mapa de kernel: " + (fim-ini));
-		
-		return kernel;
+//		RenderedImage imagem = (zoom > 10)? (RenderedImage)kRend.pintaKernel() : (RenderedImage)kRend.pintaKernel(true);
+		RenderedImage imagem = (RenderedImage)kRend.pintaKernel(zoom);
+		sessao.setAttribute(IMAGEM_KERNEL, imagem);
+//		/*teste*/KernelImageFilesManager.criarImagem(kernel, request.getSession()); //teste pra ver pq a imagem n aparece as vezes
 	}
 	
-	private void escreverResposta(HttpServletRequest request, HttpServletResponse response) throws IOException{
-		//escreve a resposta da requisição
-		String imagePath = (String)request.getSession().getAttribute(IMAGE_PATH);
-		Rectangle bounds = getLimitesPixel(request);
-		
-		PrintWriter out = response.getWriter();
-		out.print(bounds.x + "," + bounds.y + "," +  	 //bounds
-				(bounds.x + bounds.width) + "," + (bounds.y + bounds.height) + "\n" +
-				imagePath + "\n"); //caminho da imagem do mapa de kernel
-		out.close();
-	}
-	
-	/*teste: sem salvar arquivo*/
-	private void escreverResposta2(HttpServletRequest request, HttpServletResponse response) throws IOException{
-		//escreve a resposta da requisição
-		Rectangle bounds = getLimitesPixel(request);
-		
-		PrintWriter out = response.getWriter();
-		out.print(bounds.x + "," + bounds.y + "," +  	 //bounds
-				(bounds.x + bounds.width) + "," + (bounds.y + bounds.height) + "\n");
-		out.close();
-	}
-	private void enviarImagem(HttpServletRequest request, HttpServletResponse response) throws IOException{
-		//manda imagem gerada pelo KernelMapRenderer
-		response.setContentType("image/jpg");
+	public static void enviarImagem(HttpServletResponse response, RenderedImage imagem) throws IOException{
+		//manda a imagem gerada pelo KernelMapRenderer
+		response.setContentType("image/png");
 		OutputStream out = response.getOutputStream();
-		HttpSession sessao = request.getSession();
-		RenderedImage imagem = (RenderedImage)sessao.getAttribute(IMAGEM_KERNEL);
-		ImageIO.write(imagem, "JPG", out);
+		ImageIO.write(imagem, "PNG", out);
 	}
-	/*fim teste: sem salvar arquivo*/
 	
-//	private void escreverResposta2(HttpServletResponse response, HttpServletRequest request) throws IOException{
-//		Rectangle bounds = getLimitesPixel(request);
-//		List<Point> pontos = getPoints(request);
-//		
-//		KernelMapCalc kCalc = new KernelMapCalc(5, 30);
-//		double[][] dens = kCalc.calcDensidade(pontos, bounds);
-//		KernelMapRenderer kRend = new KernelMapRenderer(bounds, kCalc);
-//		RenderedImage image = (RenderedImage)kRend.pintaKernel(dens);
-//		
-//		//escreve a resposta da requisição
-//		response.setContentType("image/jpeg");
-//		OutputStream out = response.getOutputStream();
-//		ImageIO.write(image, "JPG", out);
-//		out.flush();
-//	}
-	
-//	private List<Ponto> getPontos(ServletRequest request){
-//		String pontosStr = request.getParameter("pontoXY");
-//		List<Ponto> pontos = new LinkedList<Ponto>();
-//		for(String pontoStr : pontosStr.split("a")){
-//			pontos.add(new Ponto(pontoStr).invertido());  //FIXME invertida pq em algum momento posterior isto está sendo invertido novamente
-//		}
-//		return pontos;
-//	}
+	public static void enviarInfo(HttpServletRequest request, HttpServletResponse response, double[][] dens) throws IOException{
+		//manda a matriz de densidades gerada pelo KernelMap
+		response.setContentType("text/plain");
+		PrintWriter out = response.getWriter();
+		
+		//nodeSize
+		out.println(GRID_NODE);
+		out.println(BANDWIDTH);
+
+		//estatisticas
+		if(request.getSession().getAttribute(KERNEL) instanceof KernelMap){
+			KernelMap kernel = (KernelMap)request.getSession().getAttribute(KERNEL);
+			out.println(kernel.getMaxDens());
+			out.println(kernel.getMediaDens());
+			out.println(0); //TODO calcular o minimo 
+		}else{
+			out.println("\n\n\n");
+		}
+		
+		//grid
+		if(dens != null)
+			for(double[] coluna : dens){
+				for(double d : coluna){
+					out.print(d + ",");
+				}
+				out.println();
+			}
+		out.close();
+	}
 	
 	public static List<Point> getPoints(ServletRequest request){
 		String pontosStr = request.getParameter("pontoXY");
@@ -144,7 +138,7 @@ public class ServletKernelMap extends HttpServlet {
 	
 	public static List<Point> getPoints(String pontosStr){
 		List<Point> pontos = new LinkedList<Point>();
-		if(pontosStr.isEmpty())
+		if(pontosStr == null || pontosStr.isEmpty())
 			return pontos;
 		for(String pontoStr : pontosStr.split("a")){
 			pontos.add(new Ponto(pontoStr).invertido());  //FIXME desfazendo a inversão q foi feita lá no JavaScript
@@ -152,15 +146,38 @@ public class ServletKernelMap extends HttpServlet {
 		return pontos;
 	}
 	
+//	private List<Ponto> getPontos(ServletRequest request){
+//	String pontosStr = request.getParameter("pontoXY");
+//	List<Ponto> pontos = new LinkedList<Ponto>();
+//	for(String pontoStr : pontosStr.split("a")){
+//		pontos.add(new Ponto(pontoStr).invertido());  //FIXME invertida pq em algum momento posterior isto está sendo invertido novamente
+//	}
+//	return pontos;
+//}
+	
 	public static Rectangle getLimitesPixel(ServletRequest request){
+		//obs: width = east-west não funciona no caso em q a emenda do mapa está aparecendo na tela (a linha entre Japão e EUA) 
+		//width seria negativo já q west>east
+		//por isso o width e o height estão sendo calculado no javascript, usando as coordenadas do centro da tela
+		String northStr = request.getParameter("northPixel");
+//		String southStr = request.getParameter("southPixel");
+//		String eastStr = request.getParameter("eastPixel");
+		String westStr = request.getParameter("westPixel");
+		String widthStr = request.getParameter("width");
+		String heightStr = request.getParameter("height");
 		try{
-			int north = Integer.parseInt(request.getParameter("northPixel"));
-			int south = Integer.parseInt(request.getParameter("southPixel"));
-			int east = Integer.parseInt(request.getParameter("eastPixel"));
-			int west = Integer.parseInt(request.getParameter("westPixel"));
-			return new Rectangle(west, north, east-west, south-north);
+			int north = Integer.parseInt(northStr);
+//			int south = Integer.parseInt(southStr);
+//			int east = Integer.parseInt(eastStr);
+			int west = Integer.parseInt(westStr);
+			int width = Integer.parseInt(widthStr);
+			int height = Integer.parseInt(heightStr);
+			return new Rectangle(west, north, width, height);
 		}catch(NumberFormatException e){
-			throw new AssertionError("parametro faltando no getLimitesPixel");
+//			throw new AssertionError("parametro faltando no getLimitesPixel. " +
+//					"northPixel: " + northStr + ", southPixel: " + southStr + ", eastPixel: " + eastStr + ", westPixel: " + westStr );
+			throw new AssertionError("parametro faltando no getLimitesPixel. " +
+					"northPixel: " + northStr + ", westPixel: " + westStr + ", width: " + widthStr + ", height: " + heightStr);
 		}
 	}
 	
@@ -172,5 +189,16 @@ public class ServletKernelMap extends HttpServlet {
 //		return new Rectangle(west, north, east-west, south-north);
 //	}
 	
+	/**
+	 * obs: O zoom do GoogleMaps varia de 0 a 19. Zero é o mais de longe. 
+	 */
+	public static int getZoom(ServletRequest request){
+		String zoomStr = request.getParameter("zoom");
+		try{
+			return Integer.parseInt(zoomStr);
+		}catch(NumberFormatException e){
+			throw new AssertionError("problema com o parametro \"zoom\" na requisição. zoom: " + zoomStr);
+		}
+	}
 }
 	

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="org.wikicrimes.model.ImagemMapa" table="TB_ARI_IMAGEM_MAPA" lazy="true">
+        
+        <id name="idImagemMapa" column="ID" unsaved-value="null">
+            <generator class="increment"/>
+        </id>
+        <property name="token" column="TOKEN" type="java.lang.String" not-null="false"/>
+        <many-to-one name="centro" column="CENTRO" class="org.wikicrimes.model.PontoLatLng"/>
+        <property name="zoom" column="ZOOM"/>
+        <property name="width" column="WIDTH"/>
+        <property name="height" column="height"/>
+        <list name="poligono" table="TB_ARI_IMAGEM_MAPA_PONTO" lazy="false" >
+        	<key column="ID_IMAGEM" />
+        	<index column="INDICE" />
+        	<many-to-many column="ID_PONTO" class="org.wikicrimes.model.PontoLatLng" />
+        </list>
+        <property name="north" column="north"/>
+        <property name="south" column="south"/>
+        <property name="west" column="west"/>
+        <property name="east" column="east"/>
+        <map name="filtro" table="TB_ARI_IMAGEM_MAPA_FILTRO" lazy="false" >
+        	<key column="ID" />
+        	<index column="CHAVE" type="java.lang.String" />
+        	<element  column="VALOR" type="java.lang.String" />
+        </map>
+        <many-to-one name="usuario" column="ID_USUARIO"/>
+        <property name="dataHoraRegistro" column="DATA_HORA_REGISTRO"/>
+
+    </class>
+</hibernate-mapping>

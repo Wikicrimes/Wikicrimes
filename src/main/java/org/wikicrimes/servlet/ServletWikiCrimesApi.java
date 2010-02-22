@@ -2,9 +2,12 @@ package org.wikicrimes.servlet;
 
 import static org.wikicrimes.servlet.ServletKernelMap.BANDWIDTH;
 import static org.wikicrimes.servlet.ServletKernelMap.GRID_NODE;
+import static org.wikicrimes.servlet.ServletKernelMap.IMAGEM_KERNEL;
+import static org.wikicrimes.servlet.ServletKernelMap.enviarImagem;
 import static org.wikicrimes.servlet.ServletKernelMap.getPoints;
 
 import java.awt.Rectangle;
+import java.awt.image.RenderedImage;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
@@ -17,7 +20,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Semaphore;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -41,6 +43,7 @@ import org.wikicrimes.service.CrimeService;
 import org.wikicrimes.service.UsuarioService;
 import org.wikicrimes.util.Constantes;
 import org.wikicrimes.util.kernelMap.KernelMap;
+import org.wikicrimes.util.kernelMap.KernelMapRenderer;
 import org.wikicrimes.web.FiltroForm;
 
 public class ServletWikiCrimesApi extends HttpServlet {
@@ -65,24 +68,39 @@ public class ServletWikiCrimesApi extends HttpServlet {
 		response.setHeader("Cache-Control", "no-cache");
 		response.setDateHeader("Expires", 0);
 		response.setCharacterEncoding("iso-8859-1");
-		PrintWriter out = response.getWriter();
-		String acao = request.getParameter("acao");	
+		HttpSession sessao = request.getSession();
+		String acao = request.getParameter("acao");
 		
-		if(acao.equalsIgnoreCase("listaCrimes"))
-			acaoListaCrimes(request,response, out);
-		if(acao.equalsIgnoreCase("registrarCrime"))		
-			registrarCrimes(request, response, out);
-		if(acao.equalsIgnoreCase("kernelMap")){
-			try {
-				mapaDeKernel(request, response, out);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}	
+//		/*teste*/System.out.println("acao: " + acao);
+		if(acao.equalsIgnoreCase("pegaImagem")){
+			RenderedImage imagem = (RenderedImage)sessao.getAttribute(IMAGEM_KERNEL);
+//			sessao.removeAttribute(IMAGEM_KERNEL);
+			if(imagem != null)
+				enviarImagem(response, imagem);
+		}else{
+		
+			PrintWriter out = response.getWriter();
 			
-		
-		out.close();
+			if(acao.equalsIgnoreCase("listaCrimes"))
+				acaoListaCrimes(request,response, out);
+			else if(acao.equalsIgnoreCase("registrarCrime"))		
+				registrarCrimes(request, response, out);
+			/*else if(acao.equalsIgnoreCase("kernelMap")){
+				try {
+					mapaDeKernel(request, response, out);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}*/
+			else if(acao.equalsIgnoreCase("geraKernel")){
+				//calcular o mapa de kernel e criar imagens
+//				Rectangle bounds = getLimitesPixel(request);
+				gerarKernelMap(request, response, out);
+			}
+			
+			out.close();
+		}
 	}
 	
 	public void registrarCrimes(HttpServletRequest request, HttpServletResponse response, PrintWriter out){
@@ -288,6 +306,7 @@ public class ServletWikiCrimesApi extends HttpServlet {
 		saida.close();
 	}
 	
+	/*
 	public void mapaDeKernel(HttpServletRequest request, HttpServletResponse response, PrintWriter outW) throws InterruptedException{
 		PrintWriter saida = null;
 		saida = new PrintWriter(outW, true);
@@ -301,10 +320,10 @@ public class ServletWikiCrimesApi extends HttpServlet {
 	
 		
 		//Verifica se a imagem já chegou no cliente
-		if(request.getParameter("imagem") != null){
+		if(request.getParameter("deletaImagem") != null){
 //			Thread thread = new ThreadImage(realContextPath + imagemDiretorioAleatorio);
 //			thread.start();
-			KernelImageFilesManager.deletaImagens(httpSession);
+			KernelImageFilesManager.deletaImagem(httpSession);
 			return;	
 		}		
 		String statusReq = request.getParameter("statusReq");
@@ -372,6 +391,9 @@ public class ServletWikiCrimesApi extends HttpServlet {
 			//calcula o mapa de kernel e gera a imagem
 			KernelMap mapKernel = new KernelMap(GRID_NODE, BANDWIDTH, limitesPixel, getPoints(pontoXY)) ;
 			String imagePath = KernelImageFilesManager.criarImagem(mapKernel, httpSession);
+//			KernelMapRenderer kRend = new KernelMapRenderer(mapKernel);
+//			RenderedImage imagem = (RenderedImage)kRend.pintaKernel();
+//			httpSession.setAttribute(IMAGEM_KERNEL, imagem);
 			
 			//Envia informações resultates para o cliente
 			resposta.put("topLeftX", westPixel);
@@ -388,5 +410,128 @@ public class ServletWikiCrimesApi extends HttpServlet {
 		//saida.print(request.getParameter("jsoncallback")+"("+jsonArray.toString()+")");
 		saida.close();
 	}
+	*/
 	
+	
+	private static void gerarKernelMap(HttpServletRequest request, HttpServletResponse response, PrintWriter outW) throws IOException{
+		KernelMap mapKernel = null;
+		PrintWriter saida = null;
+		saida = new PrintWriter(outW, true);
+		JSONObject resposta = new JSONObject();
+		HttpSession httpSession = request.getSession();
+
+		/*debug
+		System.out.println("request parameter - northPixel: " + request.getParameter("northPixel") + 
+				", westPixel: " + request.getParameter("westPixel") +
+				", southPixel: " + request.getParameter("southPixel") + 
+				", eastPixel: " + request.getParameter("eastPixel") + 
+				", width: " + request.getParameter("width") + 
+				", height: " + request.getParameter("height"));
+		System.out.println("session attribute - northPixel: " + httpSession.getAttribute("northPixel") + 
+				", westPixel: " + httpSession.getAttribute("northPixel") +
+				", southPixel: " + httpSession.getAttribute("southPixel") + 
+				", eastPixel: " + httpSession.getAttribute("eastPixel") + 
+				", width: " + httpSession.getAttribute("width") + 
+				", height: " + httpSession.getAttribute("height"));
+		/*fim debug*/
+		
+		String statusReq = request.getParameter("statusReq");
+		if(statusReq.equals("Pri")){
+			httpSession.setAttribute("northPixel",request.getParameter("northPixel"));
+			httpSession.setAttribute("southPixel",request.getParameter("southPixel"));
+			httpSession.setAttribute("eastPixel",request.getParameter("eastPixel"));
+			httpSession.setAttribute("westPixel",request.getParameter("westPixel"));
+			httpSession.setAttribute("width",request.getParameter("width"));			
+			httpSession.setAttribute("height",request.getParameter("height"));
+			if(httpSession.getAttribute("pontoXY")!=null)
+				httpSession.setAttribute("pontoXY",httpSession.getAttribute("pontoXY")+request.getParameter("pontoXY"));
+			else	
+				httpSession.setAttribute("pontoXY",request.getParameter("pontoXY"));
+		}
+		if(statusReq.equals("SegOuMais")||statusReq.equals("Ult")){
+			if(httpSession.getAttribute("pontoXY")!=null)
+				httpSession.setAttribute("pontoXY",httpSession.getAttribute("pontoXY")+request.getParameter("pontoXY"));
+			else
+				httpSession.setAttribute("pontoXY",request.getParameter("pontoXY"));
+				//httpSession.setAttribute("pontoXY",(String)httpSession.getAttribute("pontoXY")+request.getParameter("pontoXY"));
+		}
+		
+		if(statusReq.equals("PriUlt")||statusReq.equals("Ult")){
+			int northPixel;
+			int southPixel;
+			int eastPixel;
+			int westPixel;
+			int widthTela;
+			int heightTela;
+			String pontoXY;
+			if(statusReq.equals("PriUlt")){
+				northPixel = Integer.parseInt(request.getParameter("northPixel"));
+				southPixel = Integer.parseInt(request.getParameter("southPixel"));
+				eastPixel = Integer.parseInt(request.getParameter("eastPixel"));
+				westPixel = Integer.parseInt(request.getParameter("westPixel"));
+				widthTela = Integer.parseInt(request.getParameter("width"));
+				heightTela = Integer.parseInt(request.getParameter("height"));
+				pontoXY = request.getParameter("pontoXY");
+			}else{
+				try{
+					if((String)httpSession.getAttribute("northPixel")==null|| ((String)httpSession.getAttribute("northPixel")).equals("")){
+						Thread.sleep(5000);
+					}
+					if((String)httpSession.getAttribute("northPixel")==null|| ((String)httpSession.getAttribute("northPixel")).equals("")){
+						Thread.sleep(10000);
+					}
+				}catch(InterruptedException e){
+					
+				}
+				northPixel = Integer.parseInt((String)httpSession.getAttribute("northPixel"));
+				southPixel = Integer.parseInt((String)httpSession.getAttribute("southPixel"));
+				eastPixel = Integer.parseInt((String)httpSession.getAttribute("eastPixel"));
+				westPixel = Integer.parseInt((String)httpSession.getAttribute("westPixel"));
+				widthTela = Integer.parseInt((String)httpSession.getAttribute("width"));
+				heightTela = Integer.parseInt((String)httpSession.getAttribute("height"));
+				pontoXY = (String)httpSession.getAttribute("pontoXY");
+				httpSession.removeAttribute("northPixel");
+				httpSession.removeAttribute("southPixel");
+				httpSession.removeAttribute("eastPixel");
+				httpSession.removeAttribute("westPixel");
+				httpSession.removeAttribute("width");
+				httpSession.removeAttribute("height");
+				httpSession.removeAttribute("pontoXY");
+				
+			}
+			Rectangle limitesPixel = new Rectangle(westPixel, northPixel, widthTela, heightTela);
+			
+			//calcula o mapa de kernel e gera a imagem
+			mapKernel = new KernelMap(GRID_NODE, BANDWIDTH, limitesPixel, getPoints(pontoXY)) ;
+			
+			//Envia informações resultates para o cliente
+			resposta.put("topLeftX", westPixel);
+			resposta.put("topLeftY", northPixel);
+			resposta.put("bottomRightX", eastPixel);
+			resposta.put("bottomRightY", southPixel);
+			resposta.put("nada", "NADA");
+			resposta.put("statuRes", "concluido");
+			poeImagemNaSessao(mapKernel, httpSession);
+		}else{
+			resposta.put("statuRes", "nadaAinda");
+		}
+		saida.print(request.getParameter("jsoncallback")+"("+resposta.toString()+")");
+		//saida.print(request.getParameter("jsoncallback")+"("+jsonArray.toString()+")");
+		saida.close();
+		
+	}
+	
+	/*teste*/static int cont;
+	private static void poeImagemNaSessao(KernelMap mapKernel, HttpSession httpSession) throws IOException{
+		if(mapKernel != null){
+			KernelMapRenderer kRend = new KernelMapRenderer(mapKernel);
+			RenderedImage imagem = (RenderedImage)kRend.pintaKernel();
+			httpSession.setAttribute(IMAGEM_KERNEL, imagem);
+	//		/*teste*/System.out.println(kernel);
+	//		/*teste*/System.out.println("bounds: " + bounds);
+	//		/*teste*/System.out.println("parameterNames: " + request.getParameterMap().keySet());
+	//		/*teste*/System.out.println("pontoXY: " + request.getParameter("pontos"));
+//			/*teste*/ImageIO.write(imagem, "PNG", new File("/home/victor/Desktop/teste/" + ++cont + ".png"));
+		}
+	}
 }

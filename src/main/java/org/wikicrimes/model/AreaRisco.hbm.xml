@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="org.wikicrimes.model.AreaRisco" table="TB_ARI_AREA_RISCO" >
+        
+        <id name="idAreaRisco" column="ID" unsaved-value="null">
+            <generator class="increment"/>
+        </id>
+        <list name="vertices" table="TB_ARI_AREA_RISCO_PONTO" lazy="false" >
+        	<key column="ID_AREA" />
+        	<index column="INDICE" />
+        	<many-to-many column="ID_PONTO" class="org.wikicrimes.model.PontoLatLng" />
+        </list>
+        <many-to-one name="usuario" column="ID_USUARIO" class="org.wikicrimes.model.Usuario" lazy="false" />
+        <property name="nome" column="NOME" />
+        <property name="dataHoraRegistro" column="DATA_HORA_REGISTRO"/>
+
+    </class>
+</hibernate-mapping>

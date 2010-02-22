@@ -27,7 +27,7 @@
 	</script>
 	<script type="text/javascript"><!-- 
 	/* <![CDATA[ */
-			
+		const googleMapsKey = "ABQIAAAAg4v-Pz31X7RpxlFPsEIYsRTazo9qQMtEEaWMpOq8Zpopb9nT3RT_PrvaAoazyXGxX2pPie38TEPKIQ";	
 			
 		if (GBrowserIsCompatible()) {
 			//*********************** Area INICIO ****************************
@@ -469,6 +469,7 @@
 				//map.addControl(new KernelMapTypeControl());
 			//*********************** Kernel Map FIM ****************************	
 			//*********************** ROTAS SEGURAS INICIO ****************************
+			//menu popup pra desenvolvimento, c testes pra rota segura, etc
 				//controleMenu(map);
 			//*********************** ROTAS SEGURAS FIM ****************************
 				map.addControl(new ComandoEmbed());
@@ -596,8 +597,7 @@
 						
 						if(map.getZoom() >= 15) showDivComment();
 						else hideDivComment();
-					 	
-				  }
+				  	}
 				});
 				
 				GEvent.addListener(map, "zoomend", function (overlay, latLng) {
@@ -605,13 +605,7 @@
 					alertarTutorDeAcaoDoUsuario(acoesUsuario,"zoom_map");
 					if(map.getZoom() >= 15) showDivComment();
 					else hideDivComment();
-			//*********************** Kernel Map INICIO ****************************
-					apagaMapaKernel();
-			  		desabilitaBotaoKernel();
-			  		document.getElementById("loadingKernelMap").style.visibility='hidden';
-			//*********************** Kernel Map FIM ****************************
 					//GEvent.trigger(map,"moveend");
-		
 				});
 				
 				GEvent.addListener(map, "dragend", function (overlay, latLng) {
@@ -1111,6 +1105,10 @@
 			}	
 
 			function mostrarCrimeMapa(chave,lat, lng){
+//********************************** KERNEL MAP INICIO *********************************************
+				if(kernelEnable)
+					desativaMapaKernel();
+//********************************** KERNEL MAP FIM ************************************************				
 				idconf = null;
 				map.closeInfoWindow();				
 				podeCarregarCrimes = false;
@@ -1182,6 +1180,11 @@
 				else{
 					statusLegenda='visivel';
 					wikicrimesDiv.innerHTML = htmlLegenda();
+		//*********************** Kernel Map INICIO ****************************
+		//corrigir o bug qd esconde e mostra a legenda do kernel e os numeros zeravam
+					if(kernelEnable)
+						atualizaLegendaKernel();
+		//*********************** Kernel Map FIM ****************************
 				}							
 			}
 
@@ -1205,6 +1208,16 @@
 			}
 
 			function htmlLegenda(){
+		//*********************** Kernel Map INICIO ****************************
+		//mostrar a legenda do mapa de kernel, se ele tiver ligado
+				if(kernelEnable)
+					return htmlLegendaKernel();
+				else
+		//*********************** Kernel Map FIM ****************************
+					return htmlLegendaMarcadores();
+			}
+
+			function htmlLegendaMarcadores(){
 				var html = "<table cellpading='0' cellspacing='0' style='width:100px; padding:4px ;border:1px solid #333333; opacity: .99; -moz-opacity:0.99; filter: alpha(opacity=99); background-color:white;font-family:Arial, sans-serif;  font-size: 11px;'>";
 				html+="     	<tr>";
 				html+="     		<td align='center' colspan='2'> <b >"+ "#{messages['wikicrimes.legenda.mapa']}" +"</b> <img width='12px' height='12px' src='./images/maximizar.png' onclick='mostraEscondeLeganda();' style='font-size: 12px;cursor: pointer;'/> </td>";
@@ -1256,8 +1269,23 @@
 			  //button.style.height = "3.8em";
 			  //button.style.cursor = "pointer";
 			  //button.style.backgroundImage = "url('./images/logoWikicrimesEmbedded.PNG')";
-			}		
+			}
+
+			function requisicaoTexto(servletName, params){
+				http_request = GXmlHttp.create();
+				if (http_request.overrideMimeType) 
+				     http_request.overrideMimeType('text/xml');
+				http_request.open('POST', servletName, false);
+				http_request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+				http_request.send(params);
 				
+				if (http_request.readyState == 4 && http_request.status == 200)
+					return http_request.responseText;
+				else
+					return null;
+			}
+
+
 	    /* ]]> */
 	    --></script>	
 

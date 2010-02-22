@@ -121,6 +121,20 @@
 		<property name="razaoDao" ref="razaoDao" />		
 	</bean>
 	
+	<bean id="imagemMapaService"
+		class="org.wikicrimes.service.impl.ImagemMapaServiceImpl">
+		<property name="dao" ref="imagemMapaDao" />
+		<property name="imagemMapaDao" ref="imagemMapaDao" />
+		<property name="pontoLatLngDao" ref="pontoLatLngDao" />			
+	</bean>
+	
+	<bean id="areaRiscoService"
+		class="org.wikicrimes.service.impl.AreaRiscoServiceImpl">
+		<property name="dao" ref="areaRiscoDao" />
+		<property name="areaRiscoDao" ref="areaRiscoDao" />	
+		<property name="pontoLatLngDao" ref="pontoLatLngDao" />	
+	</bean>
+	
 	<bean id="relatoService"
 		class="org.wikicrimes.service.impl.RelatoServiceImpl">
 		<property name="dao" ref="relatoDao" />

@@ -262,6 +262,26 @@
 	</servlet-mapping>
 	
 	<servlet>
+		<servlet-name>ServletImagemMapa</servlet-name>
+		<servlet-class>org.wikicrimes.servlet.ServletImagemMapa</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>ServletImagemMapa</servlet-name>
+		<url-pattern>/ServletImagemMapa</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>ServletAreasRisco</servlet-name>
+		<servlet-class>org.wikicrimes.servlet.ServletAreasRisco</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>ServletAreasRisco</servlet-name>
+		<url-pattern>/ServletAreasRisco</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
 		<servlet-name>ServletRotaSegura</servlet-name>
 		<servlet-class>org.wikicrimes.servlet.ServletRotaSegura</servlet-class>
 	</servlet>

@@ -1,6 +1,6 @@
 /* <![CDATA[ */
-var urlWikiCrimes = "http://www.wikicrimes.org/"
-	
+var urlWikiCrimes = "http://localhost:8080/wikicrimes/"
+//var urlWikiCrimes = "http://www.wikicrimes.org/"
 document.write("<script type='text/javascript' src='"+urlWikiCrimes+"wikicrimesapi/js/constantesWikiCrimesApi.js'></script>");
 document.write("<script type='text/javascript' src='"+urlWikiCrimes+"wikicrimesapi/js/language.js'></script>");
 document.write("<script type='text/javascript' src='"+urlWikiCrimes+"wikicrimesapi/js/utilWikiCrimesApi.js'></script>");

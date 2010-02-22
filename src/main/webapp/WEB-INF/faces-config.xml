@@ -919,7 +919,23 @@
             <value>#{param.subTipoRelato}</value>
         </managed-property>        
 	</managed-bean>
-
- 
+	
+	<managed-bean>
+		<managed-bean-name>imagemMapa</managed-bean-name>
+		<managed-bean-class>org.wikicrimes.web.ImagemMapaForm</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+		<managed-property>
+            <property-name>imagemMapaService</property-name>
+            <value>#{imagemMapaService}</value>
+        </managed-property>
+        <managed-property>
+            <property-name>crimeService</property-name>
+            <value>#{crimeService}</value>
+        </managed-property>
+        <managed-property>
+			<property-name>id</property-name>
+			<value>#{param.id}</value>
+		</managed-property>
+	</managed-bean>
 
 </faces-config>

@@ -14,666 +14,542 @@
 	<script type="text/javascript"><!-- 
 	/* <![CDATA[ */
 			
-			var contextmenu;
-			var clickedPixel;
-			
-			var dirn1 = new GDirections();
-		    var dirn2 = new GDirections();
-		    var dirn3 = new GDirections();
-		    var dirnRotaSegura = new GDirections();
-		
-		    var rotafirstpoint = true;
-		    var rotagmarkers = [];
-		    var rotagpolys = [];
-		    var rotalastindex = 0;
-		    var rotaMarcadores = new Array();
-		    var rotaMarcadoresIndice = 0;
-		    var rotaSegura = new Array();
-		    var rotaNumMarcadores = 0;
-		    var rotaSeguraPolyline;
-		    var rotaSeguraMarcador = [];
-
-		    var rotaLoadListener; //pra chamar o "revisaRota()" só dpois q terminar de fazer o "loadFromWaypoints"
-			var contrev=0; //contagem de revisões
-
-
-			function controleMenu(map){
-				// === create the context menu div ===
-				contextmenu = document.createElement("div");
-				contextmenu.style.visibility="hidden";
-				contextmenu.style.background="#ffffff";
-				contextmenu.style.border="1px solid #8888FF";
-			
-				contextmenu.innerHTML = '<a class="menu" href="javascript:adicionaPontoOrigem()"><div class="contextMenu">&nbsp;&nbsp;Ponto Origem&nbsp;&nbsp;</div></a>'
-								+ '<a class="menu" href="javascript:adicionaPontoDestino()"><div class="contextMenu">&nbsp;&nbsp;Ponto Destino&nbsp;&nbsp;</div></a>'				
-								+ '<a class="menu" href="javascript:tiraCrimes()"><div class="contextMenu">&nbsp;&nbsp;Tira Crimes&nbsp;&nbsp;</div></a>'
-								+ '<a class="menu" href="javascript:colocaCrimes()"><div class="contextMenu">&nbsp;&nbsp;Mostra Crimes&nbsp;&nbsp;</div></a>'
-								+ '<a class="menu" href="javascript:calculaRotaSegura()"><div class="contextMenu">&nbsp;&nbsp;Rota Segura&nbsp;&nbsp;</div></a>'
-								+ '<a class="menu" href="javascript:removeRotas()"><div class="contextMenu">&nbsp;&nbsp;Remove Rotas&nbsp;&nbsp;</div></a>'
-								+ '<a class="menu" href="javascript:teste()"><div class="contextMenu">&nbsp;&nbsp;Teste&nbsp;&nbsp;</div></a>'
-								+ '<a class="menu" href="javascript:infoCenario()"><div class="contextMenu">&nbsp;&nbsp;TesteInfo&nbsp;&nbsp;</div></a>'
-								;
-		
-				map.getContainer().appendChild(contextmenu);
-			
-				// === listen for singlerightclick ===
-				GEvent.addListener(map,"singlerightclick",function(pixel,tile) {
-					// store the "pixel" info in case we need it later
-					// adjust the context menu location if near an egde
-					// create a GControlPosition
-					// apply it to the context menu, and make the context menu visible
-					clickedPixel = pixel;
-					var x=pixel.x;
-					var y=pixel.y;
-					if (x > map.getSize().width - 120) { x = map.getSize().width - 120 }
-					if (y > map.getSize().height - 100) { y = map.getSize().height - 100 }
-					var pos = new GControlPosition(G_ANCHOR_TOP_LEFT, new GSize(x,y));  
-					pos.apply(contextmenu);
-					contextmenu.style.visibility = "visible";
-				});
-			}
-			
-		      // === functions that perform the context menu options ===
-		      function zoomInM() {
-		        // perform the requested operation
-		        map.zoomIn();
-		        // hide the context menu now that it has been used
-		        contextmenu.style.visibility="hidden";
-		      }      
-		      function zoomOutM() {
-		        // perform the requested operation
-		        map.zoomOut();
-		        // hide the context menu now that it has been used
-		        contextmenu.style.visibility="hidden";
-		      }      
-		      function zoomInHereM() {
-		        // perform the requested operation
-		        var point = map.fromContainerPixelToLatLng(clickedPixel)
-		        map.zoomIn(point,true);
-		        // hide the context menu now that it has been used
-		        contextmenu.style.visibility="hidden";
-		      }      
-		      function zoomOutHereM() {
-		        // perform the requested operation
-		        var point = map.fromContainerPixelToLatLng(clickedPixel)
-		        map.setCenter(point,map.getZoom()-1); // There is no map.zoomOut() equivalent
-		        // hide the context menu now that it has been used
-		        contextmenu.style.visibility="hidden";
-		      }      
-		      function centreMapHereM() {
-		        // perform the requested operation
-		        var point = map.fromContainerPixelToLatLng(clickedPixel)
-		        map.setCenter(point);
-		        // hide the context menu now that it has been used
-		        contextmenu.style.visibility="hidden";
-		      }
-		      
-			function tiraCrimes(){
-				escondeMarcadores();
-				 // hide the context menu now that it has been used
-		        contextmenu.style.visibility="hidden";
-			}
-			
-			function colocaCrimes(){
-				mostraMarcadores();				
-				 // hide the context menu now that it has been used
-		        contextmenu.style.visibility="hidden";
-			}
-		
-			
-			function adicionaPontoOrigem() {
-				if (rotaNumMarcadores == 0){
-				
-			        // perform the requested operation
-			        var point = map.fromContainerPixelToLatLng(clickedPixel); 
-			        
-			        //teste
-			        //point = new GLatLng(-3.7539489189294803, -38.55033874511719);
-			        
-			        if (rotafirstpoint) {
-			            dirn1.loadFromWaypoints([point.toUrlValue(6),point.toUrlValue(6)],{getPolyline:true});
-			        } else {
-			            dirn1.loadFromWaypoints([rotagmarkers[rotagmarkers.length-1].getPoint(),point.toUrlValue(6)],{getPolyline:true});
-			        }
-		       	}
-		        
-		        
-		        // hide the context menu now that it has been used
-		        contextmenu.style.visibility="hidden";
-		      }    
-		      
-		      function adicionaPontoDestino() {
-				if (rotaNumMarcadores == 1){
-				
-					
-			        // perform the requested operation
-			        var point = map.fromContainerPixelToLatLng(clickedPixel); 
-			        
-			        //teste
-			        //point = new GLatLng(-3.7608006145354813, -38.540382385253906);
-			        
-			        if (rotafirstpoint) {
-			            dirn1.loadFromWaypoints([point.toUrlValue(6),point.toUrlValue(6)],{getPolyline:true});
-			        } else {
-			            dirn1.loadFromWaypoints([rotagmarkers[rotagmarkers.length-1].getPoint(),point.toUrlValue(6)],{getPolyline:true});
-			        }
-		       	}
-		        
-		        
-		        // hide the context menu now that it has been used
-		        contextmenu.style.visibility="hidden";
-		      }
-		      
-		      function removeRotas() {
-			    /*map.removeOverlay(dirn1.getPolyline());
-			    map.removeOverlay(dirn2.getPolyline());
-			    map.removeOverlay(dirn3.getPolyline());
-			    map.removeOverlay(dirnRotaSegura.getPolyline());*/
-			    
-			    
-			    for(i = 0; i < rotagmarkers.length; i++){
-			  		map.removeOverlay(rotagmarkers[i]);
-			  	}
-			  	
-			  	for(i = 0; i < rotagpolys.length; i++){
-			  		map.removeOverlay(rotagpolys[i]);
-			  	}
-			  	
-			  	for(i = 0; i < rotaSeguraMarcador.length; i++){
-			  		map.removeOverlay(rotaSeguraMarcador[i]);
-			  	}
-
-			  	try{
-				  	map.removeOverlay(rotaSeguraPolyline);
-			  	}catch(e){
-					//rotaSeguraPolyline undefined pq nao foi criada nenhuma rota segura ainda
-				}
-			  	
-			  	rotafirstpoint = true;  
-			  	rotagmarkers = [];
-			    rotagpolys = [];
-			    rotalastindex = 0;
-			    romoveMardadoresDaGPolyline();
-			    rotaSegura = new Array();
-			    rotaNumMarcadores = 0;
-			    
-			    // hide the context menu now that it has been used
-		        contextmenu.style.visibility="hidden";
-		      }
-		      
-		      
-		      
-		      function calculateDistance() {
-		        var dist = 0;
-		        for (var i=0; i<rotagpolys.length; i++) {
-		          dist+=rotagpolys[i].Distance();
-		        }
-		        //document.getElementById("distance").innerHTML="Path length: "+(dist/1000).toFixed(2)+" km. "+(dist/1609.344).toFixed(2)+" miles.";
-		      }
-		
-		      // == when the load event completes, plot the point on the street ==
-		      GEvent.addListener(dirn1,"load", function() {
-		        // snap to last vertex in the polyline
-		        var n = dirn1.getPolyline().getVertexCount();
-				
-				//alert("rotaMarcadoresIndice: " + rotaMarcadoresIndice);
-				
-		        
-		        //mostrar todos os pontos da rota original
-				/*for(i = 0; i < n; i++){
-					var latlng = dirn1.getPolyline().getVertex(i);
-					var marcador = new GMarker(latlng);
-					map.addOverlay(marcador);
-				}*/
-				
-				
-		        var p=dirn1.getPolyline().getVertex(n-1);
-		        var marker;
-		        if (rotaNumMarcadores == 0){
-		        	marker=new GMarker(p, {draggable:true, icon: G_START_ICON});
-		        }else{
-		        	marker=new GMarker(p, {draggable:true, icon: G_END_ICON});
-		        }
-		        		        
-		        GEvent.addListener(marker, "dragend", function() {
-		          rotalastindex = marker.MyIndex;
-		          var point = marker.getPoint();
-		          if (rotalastindex > 0) {
-		            // recalculate the polyline preceding this point
-		            dirn2.loadFromWaypoints([rotagmarkers[rotalastindex-1].getPoint(),point.toUrlValue(6)],{getPolyline:true});
-		          }
-		          if (rotalastindex < (rotagmarkers.length-1)) {
-		            // recalculate the polyline following this point
-		            dirn3.loadFromWaypoints([point.toUrlValue(6),rotagmarkers[rotalastindex+1].getPoint()],{getPolyline:true});
-		          }
-		        });
-		        map.addOverlay(marker);
-		        rotaNumMarcadores++;
-		        // store the details
-		        marker.MyIndex=rotagmarkers.length;
-		        rotagmarkers.push(marker);
-		        if (!rotafirstpoint) {
-		          map.addOverlay(dirn1.getPolyline());
-		          rotagpolys.push(dirn1.getPolyline());
-		          calculateDistance();
-		        }
-		        rotafirstpoint = false;
-		        
-				var numRotas = dirn1.getNumRoutes();
-				var groute = dirn1.getRoute(0);
-				var numSteps = groute.getNumSteps();
-				var numGeocodes = dirn1.getNumGeocodes();
-				var teste;
-				
-				romoveMardadoresDaGPolyline();
-				adicionaRotaMarcadores();
-				
-		      });
-		
-		      // == move the polyline preceding this point ==
-		      GEvent.addListener(dirn2,"load", function() {
-		        // snap to last vertex in the polyline
-		        var n = dirn2.getPolyline().getVertexCount();
-		        var p=dirn2.getPolyline().getVertex(n-1);
-		        rotagmarkers[rotalastindex].setPoint(p);
-		        // remove the old polyline
-		        map.removeOverlay(rotagpolys[rotalastindex-1]);
-		        
-		        // add the new polyline
-		        map.addOverlay(dirn2.getPolyline());
-		        rotagpolys[rotalastindex-1] = (dirn2.getPolyline());
-		        calculateDistance();
-		        
-		        //Remove os marcadores do GPolyline removido
-		        romoveMardadoresDaGPolyline();		        
-		        adicionaRotaMarcadores();
-		      });
-		
-		      // == move the polyline following this point ==
-		      GEvent.addListener(dirn3,"load", function() {
-		        // snap to first vertex in the polyline
-		        var p=dirn3.getPolyline().getVertex(0);
-		        rotagmarkers[rotalastindex].setPoint(p);
-		        // remove the old polyline
-		        map.removeOverlay(rotagpolys[rotalastindex]);
-		        
-		        // add the new polyline
-		        map.addOverlay(dirn3.getPolyline());
-		        rotagpolys[rotalastindex] = (dirn3.getPolyline());
-		        calculateDistance();
-		        
-		        
-		        
-		       	//Remove os marcadores do GPolyline removido
-		        romoveMardadoresDaGPolyline();		        
-		        adicionaRotaMarcadores();
-		      });
-		      
-		      // == move the polyline following this point ==
-		      GEvent.addListener(dirnRotaSegura,"load", function() {
-				
-				//alert('dirnRotaSegura');
-		        
-		         var points = []; 
-                 var gpolylineRota = dirnRotaSegura.getPolyline();
-                 for (var i = 0; i < gpolylineRota.getVertexCount(); i++) { 
-                  points[i] = gpolylineRota.getVertex(i); 
-                 } 
-                 var mypoly = new GPolyline(points, "#00ff00", 3, 1); 
-                
-                rotaSeguraPolyline = mypoly; 
-                
-                 // add the new polyline
-                 map.addOverlay(mypoly); 
-		         
-		         //map.addOverlay(dirnRotaSegura.getPolyline());
-		      });
-		      
-		      
-			
-			  
-			  function romoveMardadoresDaGPolyline() {
-			  	  for(i = 0; i < rotaMarcadores.length; i++){
-			  	  		map.removeOverlay(rotaMarcadores[i]);
-			  	  }
-			  	  
-			  	  rotaMarcadoresIndice = 0;  	  			  
-			  }
-			  
-			  function adicionaRotaMarcadores(){			  	
-			  	for(i = 0; i < rotagpolys.length; i++){
-			  		var n = rotagpolys[i].getVertexCount();
-			  		for(j = 0; j < n - 1; j++){
-				  		var latlng = rotagpolys[i].getVertex(j);
-						var marcador = new GMarker(latlng);
-						rotaMarcadores[rotaMarcadoresIndice] = marcador;
-						rotaMarcadoresIndice++;
-						//if (j != 0)
-							//map.addOverlay(marcador);
-			  		}
-			  		
-					//Adiciona um ï¿½ltimo ponto
-			  		if(i == rotagpolys.length - 1){
-			  			var latlng = rotagpolys[i].getVertex(n - 1);
-						var marcador = new GMarker(latlng);
-						rotaMarcadores[rotaMarcadoresIndice] = marcador;
-						rotaMarcadoresIndice++;
-						//map.addOverlay(marcador);
-			  		}
-			  	}
-			  }
-			  
-			  //loglog
-		      GEvent.addListener(dirn1,"error", function() {
-		        GLog.write("Failed: "+dirn1.getStatus().code);
-		      });
-		      GEvent.addListener(dirn2,"error", function() {
-		        GLog.write("Failed: "+dirn2.getStatus().code);
-		      });
-		      GEvent.addListener(dirn3,"error", function() {
-		        GLog.write("Failed: "+dirn3.getStatus().code);
-		      });		      
-		      GEvent.addListener(dirnRotaSegura,"error", function() {
-			    //GLog.write("Failed: "+dirnRotaSegura.getStatus().code);
-				var str = "Failed: ";
-				str += dirnRotaSegura.getStatus().code;
-				str += "\nrotasegura: ";
-				if(typeof(rotasegura) == 'undefined'){
-					str += "undefined";
-				}else{
-			        for(var i=0; i<rotasegura.length; i++){
-			        	str += rotasegura.lat() + ", " + rotasegura.lng() + "a";
-			        }
-				}
-		        GLog.write(str);
-				avisaServletDeErro(dirnRotaSegura.getStatus().code);
-		      });
-		      
-
-		      function calculaRotaSegura() {
-					//hide the context menu now that it has been used
-					contextmenu.style.visibility="hidden";
-
-					contrev = 0;
-					var bounds = map.getBounds();
-					var url = constroiURLMapaKernel(bounds);
-					url += constroiURLRota();
-					constroiRequisicaoRotaSegura(url);
-					//carregaKernelMapParaRotas();
-					recebeRespostaRotaSegura(bounds);
-		      }
-
-		      function constroiURLRota(){
-			      var url = "&rotas=";
-			      	for(i = 0; i < rotaMarcadoresIndice; i++){
-			      		var latlng = rotaMarcadores[i].getLatLng();
-			      		var gpoint = map.getCurrentMapType().getProjection().fromLatLngToPixel(latlng, map.getZoom());
-			      		url += gpoint.y + ',' + gpoint.x + 'a';
-			      	}
-			      	url = url.substring(0, url.length-1); //tira o 'a' do final
-
-		      		return url;
-		      }
-
-		      function constroiURLRota2(){
-			      	var url = "&rotas=";
-					var polyline = dirnRotaSegura.getPolyline();
-					var vertices = polyline.getVertexCount();
-					
-					for(var i=0; i<vertices; i++){
-						var latlng = polyline.getVertex(i);
-						var point = map.getCurrentMapType().getProjection().fromLatLngToPixel(latlng, map.getZoom());
-						url += point.y + ',' + point.x + 'a';
-					}
-			      	url = url.substring(0, url.length-1); //tira o 'a' do final
-			      	return url;
-		      }
-		      
-		      function constroiRequisicaoRotaSegura(url) {
-		    	  //alert("constroiRequisicaoRotaSegura(), url=\n" + url);
-		    	  //alert("contrev: " + contrev);
-			      http_request = GXmlHttp.create();
-			      if (http_request.overrideMimeType) {
-			         http_request.overrideMimeType('text/xml');
-			      }
-				 
-			      //Espera retorno do servidor
-			     http_request.open('POST', 'ServletRotaSegura', false);
-				 http_request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-				 //http_request.onreadystatechange = carregaKernelMap;
-				 http_request.send(url);
-			  }
-			  
-			/*function carregaKernelMapParaRotas(){
-				
-					if (http_request.readyState == 4) {
-						if (http_request.status == 200) {
-						
-							//Recupera a resposta
-							var documento = http_request.responseText;
-							//alert('documento, no metodo carregaKernelMapParaRotas():\n' + documento);
-							
-							//Separa a resposta em "n" linhas
-							var linhas = documento.split("\n");
-				
-				
-							if (linhas[3] != "fim"){
-								
-								limpaRotaAnterior();
-								
-								//Recupera de cada linha os: lat, lng e a cor em hexa 
-								var linha0 = linhas[0].split(",");
-								var linha1 = linhas[1].split(",");
-								
-								//Converte pixel para latlng. Lembrete: GPoint(lat, lng)
-								var sw1 = map.getCurrentMapType().getProjection().fromPixelToLatLng(new GPoint(linha0[0],linha0[1]), zoomKernel, true);
-								var sw2 = map.getCurrentMapType().getProjection().fromPixelToLatLng(new GPoint(linha1[0],linha1[1]), zoomKernel, true);
-								
-								//Recupara os latlong da resposta da requisicao						
-								var lon1 = sw1.lng();
-								var lat1 = sw1.lat();
-								
-								//Recupara os latlong da resposta da requisicao						
-								var lon2 = sw2.lng();
-								var lat2 = sw2.lat();
-								
-								var imagePath = linhas[2];
-								var marcadoresRota = linhas[3].split("a");
-								
-//								var idImage = linhas[2];
-//								var numRandomico = linhas[3];
-//								var marcadoresRota = linhas[4].split("a");
-								
-										
-								if (map.getZoom() == zoomKernel){
-									
-									if(!photo.isAdded){
-										apagaMapaKernel();
-										exibeImagemMapaKernel(imagePath,lat1, lon1, lat2, lon2);
-									}
-							  		
-								  	//Plota os marcadores de resposta -> Nova Rota
-									for(z = 0; z < marcadoresRota.length; z++){
-										var marcadorRota = marcadoresRota[z].split(",");
-										
-										//Converte pixel para latlng. Lembrete: GPoint(lat, lng)
-										var swRota = map.getCurrentMapType().getProjection().fromPixelToLatLng(new GPoint(marcadorRota[1], marcadorRota[0]), zoomKernel, true);
-										
-										var lonRota = swRota.lng();
-										var latRota = swRota.lat();
-										
-										var marcador = new GMarker(new GLatLng(latRota, lonRota));
-										//Nï¿½o mostra o primeiro e o ultimo marcador pois sao origem e destino
-										if (z != 0 && z != marcadoresRota.length - 1){
-											map.addOverlay(marcador);
-										}
-										rotaSeguraMarcador[z] = marcador;
-										
-										//Adiciona os pontos da rota segura
-										rotaSegura[z] = new GLatLng(latRota, lonRota);
-																												
-									}
-									
-									//dirnRotaSegura.loadFromWaypoints( [new GLatLng(-3.72647,-38.535748),new GLatLng(-3.733665,-38.529224)],{getPolyline:true});
-									dirnRotaSegura.loadFromWaypoints(rotaSegura ,{getPolyline:true});
-									
-									
-									if(contrev > 10){
-//										alert("pausa");
-										alert("fim, nao conseguiu uma rota boa depois de 10 iteracoes");
-										contrev=0;
-									}else{ 
-										rotaLoadListener = GEvent.addListener(dirnRotaSegura,"load", revisaRota);
-										//revisa a rota, 
-										//o listener é pq so pode acessar a rota depois q o "loadFromWaypoints" acima for concluído 
-									}
-									
-							  		aindaCarregando = false;
-							  		
-							  	}
-							}else{
-								//limpaMarcadores();
-								alert("fim, tentativas para a rota="+contrev);
-								contrev=0;
-							}
-						}
-					}
-				}
-
-				function revisaRota(){
-					contrev++;
-					GEvent.removeListener(rotaLoadListener);
-					//alert("revisaRota()");
-
-					var url = constroiURLMapaKernel();
-					
-			      	//inclui a candidata a rota segura atual na url da requisição, pra verificar se está ok
-					url += "&rotas=";
-					var polyline = dirnRotaSegura.getPolyline();
-					var vertices = polyline.getVertexCount();
-					
-					for(var i=0; i<vertices; i++){
-						var latlng = polyline.getVertex(i);
-						var point = map.getCurrentMapType().getProjection().fromLatLngToPixel(latlng, map.getZoom());
-						url += point.y + ',' + point.x + 'a';
-					}
-			      	url = url.substring(0, url.length-1); //tira o 'a' do final
-			      	url += "&contRevisao="+contrev;
-
-				    //faz a requisição e recebe a resposta
-			      	constroiRequisicaoRotaSegura(url);
-			      	carregaKernelMapParaRotas();
-				}*/
-				
-				function limpaRotaAnterior(){
-
-					limpaMarcadores();
-					
-					//remove rota (as linhas verdes)
-					try{
-						map.removeOverlay(rotaSeguraPolyline);
-					}catch(e){ 
-						//na primeira vez nao tem rota ainda 
-					}
-				    
-				    rotaSegura = new Array();
-				}
-				
-				function limpaMarcadores(){
-					//remove marcadores
-					for(i = 0; i < rotaSeguraMarcador.length; i++){
-			    		map.removeOverlay(rotaSeguraMarcador[i]);
-				  	}
-				}
-
-
-				//==============estrategia nova: construir rota passo a passo
-
-				function recebeRespostaRotaSegura(bounds){
-					//alert('recebeRespostaRotaSegura(), readyState: ' + http_request.readyState + ', status: ' + http_request.status);
-					contrev++;
-					if (http_request.readyState == 4 && http_request.status == 200) {
-						limpaRotaAnterior();
-						var documento = http_request.responseText;
-						//alert('documento, no metodo recebeRespostaRotaSegura():\n' + documento);
-						var marcadoresRota = null;
-						var linhas = documento.split("\n");
-						if(linhas.length == 3){
- 							//primeira resposta
-							north = bounds.getNorthEast().lat();
-							south = bounds.getSouthWest().lat();
-							east = bounds.getNorthEast().lng();
-							west = bounds.getSouthWest().lng();
-
-							var imagePath = linhas[1];
-							if(!photo.isAdded){
-								apagaMapaKernel();
-								exibeImagemMapaKernel(imagePath, north, west, south, east);
-							}
-							marcadoresRota = linhas[2].split("a");
-						}else{
-							marcadoresRota = linhas[0].split("a");
-						}
-
-						for(z = 0; z < marcadoresRota.length; z++){
-							var marcadorRota = marcadoresRota[z].split(",");
-							var swRota = map.getCurrentMapType().getProjection().fromPixelToLatLng(new GPoint(marcadorRota[1], marcadorRota[0]), zoomKernel, true);
-							var lonRota = swRota.lng();
-							var latRota = swRota.lat();
-							var marcador = new GMarker(new GLatLng(latRota, lonRota));
-							if (z != 0 && z != marcadoresRota.length - 1){
-								map.addOverlay(marcador);
-							}
-							rotaSeguraMarcador[z] = marcador;
-							rotaSegura[z] = new GLatLng(latRota, lonRota);
-						}
-
-						//teste
-						//var str = '';
-						//for(i=0; i<rotaSegura.length; i++){
-						//	str+= rotaSegura[i] + ', ';
-						//}
-						//alert('rotaSegura: ' + str);
-						//teste
-						
-						//alert('rota: ' + rotaSegura);
-						dirnRotaSegura.loadFromWaypoints(rotaSegura ,{getPolyline:true});
-							
-						if(linhas[1] != "fim"){
-							rotaLoadListener = GEvent.addListener(dirnRotaSegura,"load", enviaRotaProServletEEsperaResposta);
-							//o listener é pq so pode acessar a rota depois q o "loadFromWaypoints" acima for concluído
-						}else{
- 							//última resposta, não se comunica mais com o servlet
- 							//alert("fim, respostas do GoogleMaps="+contrev);
-
- 							/*teste*/
- 							continuaTeste();
- 							/*teste*/
-						}
-					}
-				}
-
-				function enviaRotaProServletEEsperaResposta(){
-					GEvent.removeListener(rotaLoadListener);
-					var url = constroiURLRota2();
-					url += "&contRevisao="+contrev;
-					url = url.substring(1,url.length); //tirar o & do comeco
-					constroiRequisicaoRotaSegura(url);
-					recebeRespostaRotaSegura(null);
-				}
-
-
-				function avisaServletDeErro(msgErro){
-					constroiRequisicaoRotaSegura("erro=" + msgErro);
-				}
-					
-		
-
-
-////////////////TESTE/////////////////
+	var contextmenu;
+	var clickedPixel;
 	
+	var dirn1 = new GDirections();
+    var dirn2 = new GDirections();
+    var dirn3 = new GDirections();
+    var dirnRotaSegura = new GDirections();
 
+    var rotafirstpoint = true;
+    var rotagmarkers = [];
+    var rotagpolys = [];
+    var rotalastindex = 0;
+    var rotaMarcadores = new Array();
+    var rotaMarcadoresIndice = 0;
+    var rotaSegura = new Array();
+    var rotaNumMarcadores = 0;
+    var rotaSeguraPolyline;
+    var rotaSeguraMarcador = [];
+
+	function controleMenu(map){
+		// === create the context menu div ===
+		contextmenu = document.createElement("div");
+		contextmenu.style.visibility="hidden";
+		contextmenu.style.background="#ffffff";
+		contextmenu.style.border="1px solid #8888FF";
+	
+		contextmenu.innerHTML = '<a class="menu" href="javascript:adicionaPontoOrigem()"><div class="contextMenu">&nbsp;&nbsp;Ponto Origem&nbsp;&nbsp;</div></a>'
+						+ '<a class="menu" href="javascript:adicionaPontoDestino()"><div class="contextMenu">&nbsp;&nbsp;Ponto Destino&nbsp;&nbsp;</div></a>'				
+						+ '<a class="menu" href="javascript:tiraCrimes()"><div class="contextMenu">&nbsp;&nbsp;Limpa Crimes&nbsp;&nbsp;</div></a>'
+						+ '<a class="menu" href="javascript:colocaCrimes()"><div class="contextMenu">&nbsp;&nbsp;Mostra Crimes&nbsp;&nbsp;</div></a>'
+						+ '<a class="menu" href="javascript:calculaRotaSegura()"><div class="contextMenu">&nbsp;&nbsp;Calcula Rota Segura&nbsp;&nbsp;</div></a>'
+						+ '<a class="menu" href="javascript:removeRotas()"><div class="contextMenu">&nbsp;&nbsp;Limpa Rotas&nbsp;&nbsp;</div></a>'
+						+ '<a class="menu" href="javascript:mostraCenario()"><div class="contextMenu">&nbsp;&nbsp;Posicionar Cenario&nbsp;&nbsp;</div></a>'
+						+ '<a class="menu" href="javascript:infoCenario()"><div class="contextMenu">&nbsp;&nbsp;Info Cenario&nbsp;&nbsp;</div></a>'
+						+ '<a class="menu" href="javascript:teste()"><div class="contextMenu">&nbsp;&nbsp;Teste&nbsp;&nbsp;</div></a>'
+						;
+
+		map.getContainer().appendChild(contextmenu);
+	
+		// === listen for singlerightclick ===
+		GEvent.addListener(map,"singlerightclick",function(pixel,tile) {
+			// store the "pixel" info in case we need it later
+			// adjust the context menu location if near an egde
+			// create a GControlPosition
+			// apply it to the context menu, and make the context menu visible
+			clickedPixel = pixel;
+			var x=pixel.x;
+			var y=pixel.y;
+			if (x > map.getSize().width - 120) { x = map.getSize().width - 120 }
+			if (y > map.getSize().height - 100) { y = map.getSize().height - 100 }
+			var pos = new GControlPosition(G_ANCHOR_TOP_LEFT, new GSize(x,y));  
+			pos.apply(contextmenu);
+			contextmenu.style.visibility = "visible";
+		});
+	}
+	
+      // === functions that perform the context menu options ===
+      function zoomInM() {
+        // perform the requested operation
+        map.zoomIn();
+        // hide the context menu now that it has been used
+        contextmenu.style.visibility="hidden";
+      }      
+      function zoomOutM() {
+        // perform the requested operation
+        map.zoomOut();
+        // hide the context menu now that it has been used
+        contextmenu.style.visibility="hidden";
+      }      
+      function zoomInHereM() {
+        // perform the requested operation
+        var point = map.fromContainerPixelToLatLng(clickedPixel)
+        map.zoomIn(point,true);
+        // hide the context menu now that it has been used
+        contextmenu.style.visibility="hidden";
+      }      
+      function zoomOutHereM() {
+        // perform the requested operation
+        var point = map.fromContainerPixelToLatLng(clickedPixel)
+        map.setCenter(point,map.getZoom()-1); // There is no map.zoomOut() equivalent
+        // hide the context menu now that it has been used
+        contextmenu.style.visibility="hidden";
+      }      
+      function centreMapHereM() {
+        // perform the requested operation
+        var point = map.fromContainerPixelToLatLng(clickedPixel)
+        map.setCenter(point);
+        // hide the context menu now that it has been used
+        contextmenu.style.visibility="hidden";
+      }
+      
+	function tiraCrimes(){
+		escondeMarcadores();
+		 // hide the context menu now that it has been used
+        contextmenu.style.visibility="hidden";
+	}
+	
+	function colocaCrimes(){
+		mostraMarcadores();				
+		 // hide the context menu now that it has been used
+        contextmenu.style.visibility="hidden";
+	}
+
+	
+	function adicionaPontoOrigem() {
+		if (rotaNumMarcadores == 0){
+		
+	        // perform the requested operation
+	        var point = map.fromContainerPixelToLatLng(clickedPixel); 
+	        
+	        //teste
+	        //point = new GLatLng(-3.7539489189294803, -38.55033874511719);
+	        
+	        if (rotafirstpoint) {
+	            dirn1.loadFromWaypoints([point.toUrlValue(6),point.toUrlValue(6)],{getPolyline:true});
+	        } else {
+	            dirn1.loadFromWaypoints([rotagmarkers[rotagmarkers.length-1].getPoint(),point.toUrlValue(6)],{getPolyline:true});
+	        }
+       	}
+        
+        
+        // hide the context menu now that it has been used
+        contextmenu.style.visibility="hidden";
+      }    
+      
+      function adicionaPontoDestino() {
+		if (rotaNumMarcadores == 1){
+		
+			
+	        // perform the requested operation
+	        var point = map.fromContainerPixelToLatLng(clickedPixel); 
+	        
+	        //teste
+	        //point = new GLatLng(-3.7608006145354813, -38.540382385253906);
+	        
+	        if (rotafirstpoint) {
+	            dirn1.loadFromWaypoints([point.toUrlValue(6),point.toUrlValue(6)],{getPolyline:true});
+	        } else {
+	            dirn1.loadFromWaypoints([rotagmarkers[rotagmarkers.length-1].getPoint(),point.toUrlValue(6)],{getPolyline:true});
+	        }
+       	}
+        
+        
+        // hide the context menu now that it has been used
+        contextmenu.style.visibility="hidden";
+      }
+      
+      function removeRotas() {
+	    /*map.removeOverlay(dirn1.getPolyline());
+	    map.removeOverlay(dirn2.getPolyline());
+	    map.removeOverlay(dirn3.getPolyline());
+	    map.removeOverlay(dirnRotaSegura.getPolyline());*/
+	    
+	    
+	    for(i = 0; i < rotagmarkers.length; i++){
+	  		map.removeOverlay(rotagmarkers[i]);
+	  	}
+	  	
+	  	for(i = 0; i < rotagpolys.length; i++){
+	  		map.removeOverlay(rotagpolys[i]);
+	  	}
+	  	
+	  	for(i = 0; i < rotaSeguraMarcador.length; i++){
+	  		map.removeOverlay(rotaSeguraMarcador[i]);
+	  	}
+
+	  	try{
+		  	map.removeOverlay(rotaSeguraPolyline);
+	  	}catch(e){
+			//rotaSeguraPolyline undefined pq nao foi criada nenhuma rota segura ainda
+		}
+	  	
+	  	rotafirstpoint = true;  
+	  	rotagmarkers = [];
+	    rotagpolys = [];
+	    rotalastindex = 0;
+	    romoveMardadoresDaGPolyline();
+	    rotaSegura = new Array();
+	    rotaNumMarcadores = 0;
+	    
+	    // hide the context menu now that it has been used
+        contextmenu.style.visibility="hidden";
+      }
+      
+      
+      
+      function calculateDistance() {
+        var dist = 0;
+        for (var i=0; i<rotagpolys.length; i++) {
+          dist+=rotagpolys[i].Distance();
+        }
+        //document.getElementById("distance").innerHTML="Path length: "+(dist/1000).toFixed(2)+" km. "+(dist/1609.344).toFixed(2)+" miles.";
+      }
+
+      // == when the load event completes, plot the point on the street ==
+      GEvent.addListener(dirn1,"load", function() {
+        // snap to last vertex in the polyline
+        var n = dirn1.getPolyline().getVertexCount();
+		
+		//console.log("rotaMarcadoresIndice: " + rotaMarcadoresIndice);
+		
+        
+        //mostrar todos os pontos da rota original
+		/*for(i = 0; i < n; i++){
+			var latlng = dirn1.getPolyline().getVertex(i);
+			var marcador = new GMarker(latlng);
+			map.addOverlay(marcador);
+		}*/
+		
+		
+        var p=dirn1.getPolyline().getVertex(n-1);
+        var marker;
+        if (rotaNumMarcadores == 0){
+        	marker=new GMarker(p, {draggable:true, icon: G_START_ICON});
+        }else{
+        	marker=new GMarker(p, {draggable:true, icon: G_END_ICON});
+        }
+        		        
+        GEvent.addListener(marker, "dragend", function() {
+          rotalastindex = marker.MyIndex;
+          var point = marker.getPoint();
+          if (rotalastindex > 0) {
+            // recalculate the polyline preceding this point
+            dirn2.loadFromWaypoints([rotagmarkers[rotalastindex-1].getPoint(),point.toUrlValue(6)],{getPolyline:true});
+          }
+          if (rotalastindex < (rotagmarkers.length-1)) {
+            // recalculate the polyline following this point
+            dirn3.loadFromWaypoints([point.toUrlValue(6),rotagmarkers[rotalastindex+1].getPoint()],{getPolyline:true});
+          }
+        });
+        map.addOverlay(marker);
+        rotaNumMarcadores++;
+        // store the details
+        marker.MyIndex=rotagmarkers.length;
+        rotagmarkers.push(marker);
+        if (!rotafirstpoint) {
+          map.addOverlay(dirn1.getPolyline());
+          rotagpolys.push(dirn1.getPolyline());
+          calculateDistance();
+        }
+        rotafirstpoint = false;
+        
+		var numRotas = dirn1.getNumRoutes();
+		var groute = dirn1.getRoute(0);
+		var numSteps = groute.getNumSteps();
+		var numGeocodes = dirn1.getNumGeocodes();
+		var teste;
+		
+		romoveMardadoresDaGPolyline();
+		adicionaRotaMarcadores();
+		
+      });
+
+      // == move the polyline preceding this point ==
+      GEvent.addListener(dirn2,"load", function() {
+        // snap to last vertex in the polyline
+        var n = dirn2.getPolyline().getVertexCount();
+        var p=dirn2.getPolyline().getVertex(n-1);
+        rotagmarkers[rotalastindex].setPoint(p);
+        // remove the old polyline
+        map.removeOverlay(rotagpolys[rotalastindex-1]);
+        
+        // add the new polyline
+        map.addOverlay(dirn2.getPolyline());
+        rotagpolys[rotalastindex-1] = (dirn2.getPolyline());
+        calculateDistance();
+        
+        //Remove os marcadores do GPolyline removido
+        romoveMardadoresDaGPolyline();		        
+        adicionaRotaMarcadores();
+      });
+
+      // == move the polyline following this point ==
+      GEvent.addListener(dirn3,"load", function() {
+        // snap to first vertex in the polyline
+        var p=dirn3.getPolyline().getVertex(0);
+        rotagmarkers[rotalastindex].setPoint(p);
+        // remove the old polyline
+        map.removeOverlay(rotagpolys[rotalastindex]);
+        
+        // add the new polyline
+        map.addOverlay(dirn3.getPolyline());
+        rotagpolys[rotalastindex] = (dirn3.getPolyline());
+        calculateDistance();
+        
+        
+        
+       	//Remove os marcadores do GPolyline removido
+        romoveMardadoresDaGPolyline();		        
+        adicionaRotaMarcadores();
+      });
+      
+      // == move the polyline following this point ==
+      GEvent.addListener(dirnRotaSegura,"load", function() {
+         var points = []; 
+         var gpolylineRota = dirnRotaSegura.getPolyline();
+         for (var i = 0; i < gpolylineRota.getVertexCount(); i++) { 
+          points[i] = gpolylineRota.getVertex(i); 
+         } 
+         var mypoly = new GPolyline(points, "#00ff00", 3, 1); 
+        
+        rotaSeguraPolyline = mypoly; 
+        
+         // add the new polyline
+         map.addOverlay(mypoly); 
+         
+         //map.addOverlay(dirnRotaSegura.getPolyline());
+      });
+      
+      
+	
+	  
+	  function romoveMardadoresDaGPolyline() {
+	  	  for(i = 0; i < rotaMarcadores.length; i++){
+	  	  		map.removeOverlay(rotaMarcadores[i]);
+	  	  }
+	  	  
+	  	  rotaMarcadoresIndice = 0;  	  			  
+	  }
+	  
+	  function adicionaRotaMarcadores(){			  	
+	  	for(i = 0; i < rotagpolys.length; i++){
+	  		var n = rotagpolys[i].getVertexCount();
+	  		for(j = 0; j < n - 1; j++){
+		  		var latlng = rotagpolys[i].getVertex(j);
+				var marcador = new GMarker(latlng);
+				rotaMarcadores[rotaMarcadoresIndice] = marcador;
+				rotaMarcadoresIndice++;
+				//if (j != 0)
+					//map.addOverlay(marcador);
+	  		}
+	  		
+			//Adiciona um ï¿½ltimo ponto
+	  		if(i == rotagpolys.length - 1){
+	  			var latlng = rotagpolys[i].getVertex(n - 1);
+				var marcador = new GMarker(latlng);
+				rotaMarcadores[rotaMarcadoresIndice] = marcador;
+				rotaMarcadoresIndice++;
+				//map.addOverlay(marcador);
+	  		}
+	  	}
+	  }
+	  
+	  //loglog
+      GEvent.addListener(dirn1,"error", function() {
+        GLog.write("Failed: "+dirn1.getStatus().code);
+      });
+      GEvent.addListener(dirn2,"error", function() {
+        GLog.write("Failed: "+dirn2.getStatus().code);
+      });
+      GEvent.addListener(dirn3,"error", function() {
+        GLog.write("Failed: "+dirn3.getStatus().code);
+      });		      
+      GEvent.addListener(dirnRotaSegura,"error", function() {
+			//console.log('erro no dirnRotaSegura');
+		    //GLog.write("Failed: "+dirnRotaSegura.getStatus().code);
+			/*var str = "Failed: ";
+			str += dirnRotaSegura.getStatus().code;
+			str += "\nrotasegura: ";
+			if(typeof(rotasegura) == 'undefined'){
+				str += "undefined";
+			}else{
+		        for(var i=0; i<rotasegura.length; i++){
+		        	str += rotasegura.lat() + ", " + rotasegura.lng() + "a";
+		        }
+			}
+	        GLog.write(str);*/
+	        
+	        if(calculandoRota){
+		        var req = enviaRequisicaoRotaSegura(); //avisa o servlet enviando uma com o código do erro
+				recebeRespostaRotaSegura(req);
+	        }
+      });
+      
+
+      function calculaRotaSegura() {
+    	  	calculandoRota = true;
+			//hide the context menu now that it has been used
+			contextmenu.style.visibility="hidden";
+			contrev = 0;
+			//TODO garantir qo mapa de kernel teja ativado
+			var url = constroiURLRotaPrimeiraVez();
+			 	  	//url += boundsUrlParam();
+			var req = enviaRequisicaoRotaSegura(url);
+			recebeRespostaRotaSegura(req);
+      }
+
+      function constroiURLRotaPrimeiraVez(){
+	      var url = "&rotas=";
+	      	for(i = 0; i < rotaMarcadoresIndice; i++){
+	      		var latlng = rotaMarcadores[i].getLatLng();
+	      		var gpoint = map.getCurrentMapType().getProjection().fromLatLngToPixel(latlng, map.getZoom());
+	      		url += gpoint.y + ',' + gpoint.x + 'a';
+	      	}
+	      	url = url.substring(0, url.length-1); //tira o 'a' do final
+
+      		return url;
+      }
+
+      function constroiURLRota(){
+	      	var url = "&rotas=";
+			var polyline = dirnRotaSegura.getPolyline();
+			var vertices = polyline.getVertexCount();
+			
+			for(var i=0; i<vertices; i++){
+				var latlng = polyline.getVertex(i);
+				var point = map.getCurrentMapType().getProjection().fromLatLngToPixel(latlng, map.getZoom());
+				url += point.y + ',' + point.x + 'a';
+			}
+	      	url = url.substring(0, url.length-1); //tira o 'a' do final
+	      	return url;
+      }
+      
+      function enviaRequisicaoRotaSegura(params) {
+
+      	//parametros q sempre são enviados
+		var url = "status=" + dirnRotaSegura.getStatus().code + 
+	  	   		  "&contRevisao=" + contrev; 
+    	  
+		//parametros adicionais
+		if(params) 
+			url += params;
+
+        //constroi requisição e envia
+    	//console.log("enviaRequisicaoRotaSegura(), url: " + url);
+    	//console.log("contrev: " + contrev);
+	    var http_request = GXmlHttp.create();
+	    if (http_request.overrideMimeType)
+	         http_request.overrideMimeType('text/xml');
+		 
+	    http_request.open('POST', 'ServletRotaSegura', false);
+		http_request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+		//http_request.onreadystatechange = carregaKernelMap;
+		http_request.send(url);
+		return http_request; 
+	  }
+		
+		function limpaRotaAnterior(){
+
+			limpaMarcadores();
+			
+			//remove rota (as linhas verdes)
+			try{
+				map.removeOverlay(rotaSeguraPolyline);
+			}catch(e){ 
+				//na primeira vez nao tem rota ainda 
+			}
+		    
+		    rotaSegura = new Array();
+		}
+		
+		function limpaMarcadores(){
+			//remove marcadores
+			for(i = 0; i < rotaSeguraMarcador.length; i++){
+	    		map.removeOverlay(rotaSeguraMarcador[i]);
+		  	}
+		}
+
+		//******************************************************************
+		//estrategia nova: construir rota passo a passo
+		
+		var rotaLoadListener; //pra chamar o "revisaRota()" só dpois q terminar de fazer o "loadFromWaypoints"
+		var contrev=0; //contagem de revisões
+		var calculandoRota;
+
+		function recebeRespostaRotaSegura(http_request){
+			var bounds = map.getBounds();
+			//console.log('recebeRespostaRotaSegura(), readyState: ' + http_request.readyState + ', status: ' + http_request.status);
+			contrev++;
+			if (http_request.readyState == 4 && http_request.status == 200) {
+				limpaRotaAnterior();
+				var documento = http_request.responseText;
+				//console.log('documento, no metodo recebeRespostaRotaSegura():' + documento);
+				var linhas = documento.split("\n");
+
+				if(linhas[0] != 'erro'){ 
+					//carrega rota no GoogleMaps
+					var marcadoresRota = linhas[0].split("a");
+	
+					for(z = 0; z < marcadoresRota.length; z++){
+						var marcadorRota = marcadoresRota[z].split(",");
+						var swRota = map.getCurrentMapType().getProjection().fromPixelToLatLng(new GPoint(marcadorRota[1], marcadorRota[0]), zoomKernel, true);
+						var lonRota = swRota.lng();
+						var latRota = swRota.lat();
+						var marcador = new GMarker(new GLatLng(latRota, lonRota));
+						if (z != 0 && z != marcadoresRota.length - 1){
+							map.addOverlay(marcador);
+						}
+						rotaSeguraMarcador[z] = marcador;
+						rotaSegura[z] = new GLatLng(latRota, lonRota);
+					}
+
+					if(linhas[1] != "fim"){
+						//console.log('chama enviaRotaProServletEEsperaResposta, linhas[1]: ' + linhas[1]);
+						rotaLoadListener = GEvent.addListener(dirnRotaSegura,"load", enviaRotaProServletEEsperaResposta); 
+						//o listener é pq so pode acessar a rota depois q o "loadFromWaypoints" acima for concluído
+					}
+					
+					dirnRotaSegura.loadFromWaypoints(rotaSegura ,{getPolyline:true});
+				}
+				
+				if(linhas[1] == "fim"){
+					//última resposta, não se comunica mais com o servlet
+					calculandoRota = false;
+					//console.log("fim, respostas do GoogleMaps="+contrev);
+					//console.log('continuaTeste(), documento: ' + documento);
+					
+					/*teste*/if(testeCalcRotas)
+					/*teste*/	continuaTeste();
+				}
+			}
+		}
+
+		function enviaRotaProServletEEsperaResposta(){
+			GEvent.removeListener(rotaLoadListener);
+			if(calculandoRota){
+				//console.log('enviaRotaProServletEEseraResposta()');
+				var url = constroiURLRota();
+				var req = enviaRequisicaoRotaSegura(url);
+				recebeRespostaRotaSegura(req);
+			}
+		}
+
+
+
+
+		//******************************************************************
+		//TESTE
+	
+		var testeCalcRotas;
+		
 		function infoCenario(){
+
+			if(!dirn1)
+				alert('o cenário precisa ter origem e destino');
+			
 			var origem = dirn1.getPolyline().getVertex(0);
 			var destino = dirn1.getPolyline().getVertex(dirn1.getPolyline().getVertexCount()-1);
 			var centro = map.getCenter();
@@ -689,23 +565,38 @@
 					"\ndataFim: " + dataFim );
 
 			contextmenu.style.visibility="hidden";
-		} 
+		}
+
+		function mostraCenario(){
+			//posiciona o GoogleMaps de acordo com o cenário fornecido pelo servidor
+			posicionaCenario(pegaCenario());
+		}
 
 		function teste(){
+			//faz cálculos de rota sucessivos segundo instruções do servidor e registra resultados
+			testeCalcRotas = true;
+			var cenario = pegaCenario();
+			posicionaCenario(cenario);
+			setTimeout(ativaMapaKernel,3000);
+			setTimeout(calculaRotaSegura,8000);
+		}
 
+		function pegaCenario(){
+			//pega um cenário fornecido pelo servidor
+			
 			http_request = GXmlHttp.create();
 		    if (http_request.overrideMimeType) {
 		       http_request.overrideMimeType('text/xml');
 		    }
 		    http_request.open('POST', 'TesteCenariosRotas', false);
 			http_request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-			http_request.send('cenario');
+			http_request.send('acao=cenario');
 
 			if (http_request.readyState == 4 && http_request.status == 200) {
 				var resposta = http_request.responseText;
 				var cenario = resposta.split("\t");
 
-				var param = {
+				var cenario = {
 						centroX : Number(cenario[2]),
 						centroY : Number(cenario[3]),
 						zoom : Number(cenario[4]),
@@ -716,23 +607,25 @@
 					    dataIni : cenario[9],
 						dataFim : cenario[10]
 				}
-				posicionaCenario(param);
 
-				setTimeout(calculaRotaSegura,3000);
+				return cenario;
 			}
 		}
 
-		function posicionaCenario(param){
-
-			var centro = new GLatLng(param.centroX, param.centroY);
-			var zoom = param.zoom;
-			var origem = new GLatLng(param.origemX, param.origemY); 
-		    var destino = new GLatLng(param.destinoX, param.destinoY);
-		    var dataIni = param.dataIni;
-			var dataFim = param.dataFim;
+		function posicionaCenario(cenario){
+			//posiciona o GoogleMaps de acordo com o cenário
+			
+			if(!cenario) return;
+			
+			var centro = new GLatLng(cenario.centroX, cenario.centroY);
+			var zoom = cenario.zoom;
+			var origem = new GLatLng(cenario.origemX, cenario.origemY); 
+		    var destino = new GLatLng(cenario.destinoX, cenario.destinoY);
+		    var dataIni = cenario.dataIni;
+			var dataFim = cenario.dataFim;
 
 			//viewport (centro e zoom)
-			map.setCenter(centro, zoom); //zoom vai de 2 a 17
+			map.setCenter(centro, zoom); //zoom vai de 2 a 17  (ou é 0 a 19?)
 
 			//rota (origem e destino)
 			removeRotas();
@@ -761,21 +654,25 @@
 		}
 
 		function continuaTeste(){
-			http_request = GXmlHttp.create();
+			//console.log('continuaTeste(), inicio');
+			var http_request = GXmlHttp.create();
 		    if (http_request.overrideMimeType) {
 		       http_request.overrideMimeType('text/xml');
 		    }
 		    http_request.open('POST', 'TesteCenariosRotas', false);
 			http_request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-			http_request.send('param');
+			http_request.send('acao=param');
 
 			if (http_request.readyState == 4 && http_request.status == 200) {
 				var resposta = http_request.responseText;
+				//console.log('continuaTeste(), resposta: ' + resposta);
 
-				if(resposta != 'fim')
+				if(resposta != 'fim'){
 					setTimeout(calculaRotaSegura,3000);
-				else
-					alert('fim testes');
+				}else{
+					testeCalcRotas = false;
+					console.log('fim testes');
+				}
 			}
 		}
 

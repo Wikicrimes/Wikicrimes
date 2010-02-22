@@ -1,5 +1,4 @@
 /* <![CDATA[ */
-
 var photoWikiCrimes = null;
 var flagHabilitaDesabilitaMapaDeKernelWikiCrimes = false;
 var podeClicarBotaKernelMap = true;
@@ -28,22 +27,25 @@ function habilitaDesabilitaMapaDeKernelWikiCrimes(){
 }
 
 function mapaDeKernelWikiCrimes(){
-	var b = mapWikiCrimes.getBounds();
-	var north = b.getNorthEast().lat();
-	var south = b.getSouthWest().lat();
-	var east = b.getNorthEast().lng();
-	var west = b.getSouthWest().lng();
 	
-	getTamMapClienteWikiCrimes();
+//	var b = mapWikiCrimes.getBounds();
+//	var north = b.getNorthEast().lat();
+//	var south = b.getSouthWest().lat();
+//	var east = b.getNorthEast().lng();
+//	var west = b.getSouthWest().lng();
+	
+//	getTamMapClienteWikiCrimes();
 	
 	//Passa os limites para pixel
-	var northPixel = mapWikiCrimes.getCurrentMapType().getProjection().fromLatLngToPixel(b.getNorthEast(), mapWikiCrimes.getZoom()).y;
-	var southPixel = mapWikiCrimes.getCurrentMapType().getProjection().fromLatLngToPixel(b.getSouthWest(), mapWikiCrimes.getZoom()).y;
-	var eastPixel = mapWikiCrimes.getCurrentMapType().getProjection().fromLatLngToPixel(b.getNorthEast(), mapWikiCrimes.getZoom()).x;
-	var westPixel = mapWikiCrimes.getCurrentMapType().getProjection().fromLatLngToPixel(b.getSouthWest(), mapWikiCrimes.getZoom()).x;
-	var idUsuarioMapaKernel = '';//retornaIdUsuario();  
-	var emailUsuarioMapaKernel = '';//retornaEmailUsuario();
-	var url = urlWikiCrimes + 'ServletWikiCrimesApi?acao=kernelMap&emailUsuarioMapaKernel=' + emailUsuarioMapaKernel + '&idUsuarioMapaKernel=' + idUsuarioMapaKernel + '&northPixel=' + northPixel + '&southPixel=' + southPixel + '&eastPixel=' + eastPixel + '&westPixel=' + westPixel + '&width='+ widthMapClienteWikiCrimes + '&height='+ heightMapClienteWikiCrimes +'&pontoXY=';
+//	var northPixel = mapWikiCrimes.getCurrentMapType().getProjection().fromLatLngToPixel(b.getNorthEast(), mapWikiCrimes.getZoom()).y;
+//	var southPixel = mapWikiCrimes.getCurrentMapType().getProjection().fromLatLngToPixel(b.getSouthWest(), mapWikiCrimes.getZoom()).y;
+//	var eastPixel = mapWikiCrimes.getCurrentMapType().getProjection().fromLatLngToPixel(b.getNorthEast(), mapWikiCrimes.getZoom()).x;
+//	var westPixel = mapWikiCrimes.getCurrentMapType().getProjection().fromLatLngToPixel(b.getSouthWest(), mapWikiCrimes.getZoom()).x;
+//	var idUsuarioMapaKernel = '';//retornaIdUsuario();  
+//	var emailUsuarioMapaKernel = '';//retornaEmailUsuario();
+//	var url = urlWikiCrimes + 'ServletWikiCrimesApi?acao=kernelMap&emailUsuarioMapaKernel=' + emailUsuarioMapaKernel + '&idUsuarioMapaKernel=' + idUsuarioMapaKernel + '&northPixel=' + northPixel + '&southPixel=' + southPixel + '&eastPixel=' + eastPixel + '&westPixel=' + westPixel + '&width='+ widthMapClienteWikiCrimes + '&height='+ heightMapClienteWikiCrimes +'&pontoXY=';
+//	var url = urlWikiCrimes + 'ServletWikiCrimesApi?acao=geraKernel&northPixel=' + northPixel + '&southPixel=' + southPixel + '&eastPixel=' + eastPixel + '&westPixel=' + westPixel + '&width='+ widthMapClienteWikiCrimes + '&height='+ heightMapClienteWikiCrimes +'&pontoXY=';
+	var url = urlWikiCrimes + 'ServletWikiCrimesApi?acao=geraKernel' + boundsUrlParam(mapWikiCrimes) +'&pontoXY=';
 	var qtdCrimes = 0;
 	for (k in crimesAtuais){
 		qtdCrimes++;
@@ -64,7 +66,8 @@ function mapaDeKernelWikiCrimes(){
 			url+='&jsoncallback=?';
 			//document.write(url);
 			executaRequisicaoKernelMapWikiCrimes(url);
-			url = urlWikiCrimes + 'ServletWikiCrimesApi?acao=kernelMap&pontoXY=';
+//			url = urlWikiCrimes + 'ServletWikiCrimesApi?acao=kernelMap&pontoXY=';
+			url = urlWikiCrimes + 'ServletWikiCrimesApi?acao=geraKernel&pontoXY=';
 		}
 	}
 	
@@ -75,30 +78,68 @@ function mapaDeKernelWikiCrimes(){
 		url+='&statusReq=Ult';
 	url+='&jsoncallback=?';
 	//document.write(url);
+//	console.log(url);
 	executaRequisicaoKernelMapWikiCrimes(url);
 
 }
 
+function boundsUrlParam(map){
+	var bounds = map.getBounds();
+	var proj = map.getCurrentMapType().getProjection();
+	var zoom = map.getZoom();
+	
+	//Passa os limites para pixel
+	northPixel = proj.fromLatLngToPixel(bounds.getNorthEast(), zoom).y;
+	southPixel = proj.fromLatLngToPixel(bounds.getSouthWest(), zoom).y;
+	eastPixel = proj.fromLatLngToPixel(bounds.getNorthEast(), zoom).x;
+	westPixel = proj.fromLatLngToPixel(bounds.getSouthWest(), zoom).x;
+	//alert(northPixel + "," + southPixel + "," + eastPixel + "," + westPixel);
+
+	var str = '&northPixel=' + northPixel + '&southPixel=' + southPixel + '&eastPixel=' + eastPixel + '&westPixel=' + westPixel;
+	//url += '&north=' + north + '&south=' + south + '&east=' + east + '&west=' + west;
+
+	
+	width = (eastPixel - westPixel);
+	height = (southPixel - northPixel);
+
+	//considera a possibilidade de o west > east (ou north > south), qd a emenda do mapa ta no meio do bounds
+	var centro = bounds.getCenter();
+	var centroPixel = proj.fromLatLngToPixel(centro, zoom);
+	if(width < 0){
+		if(centroPixel.x < westPixel)
+			width = 2*westPixel-centroPixel.x;
+		else
+			width = 2*centroPixel.x-eastPixel;
+	}
+	if(height < 0){
+		if(centroPixel.y < southPixel)
+			height = 2*southPixel-centroPixel.y;
+		else
+			height = 2*centroPixel.y-northPixel;
+	}
+		      		
+  	str +='&width='+width+'&height='+height;
+
+  	return str;
+}
+
 function executaRequisicaoKernelMapWikiCrimes(url){
 	variavelGlobalJQuery.getJSON(url, false, function(data){
-		if(data.imagePath!=null && data.imagePath!= undefined){
+//		if(data.imagePath!=null && data.imagePath!= undefined){
 			//var numRandomico = data.numRandomico;
-			var imagePath = data.imagePath;
-			
+			//var imagePath = data.imagePath;
+//		console.log('statuRes: ' + data.statuRes);
+		if(data.statuRes == "concluido"){
 			
 			//Converte pixel para latlng. Lembrete: GPoint(lat, lng)
 			var sw1 = mapWikiCrimes.getCurrentMapType().getProjection().fromPixelToLatLng(new GPoint(data.topLeftX,data.topLeftY), mapWikiCrimes.getZoom(), true);
 			var sw2 = mapWikiCrimes.getCurrentMapType().getProjection().fromPixelToLatLng(new GPoint(data.bottomRightX,data.bottomRightY), mapWikiCrimes.getZoom(), true);
 			
 			//Recupara os latlong da resposta da requisicao						
-	
-		
 			var lon1 = sw1.lng();
 			var lat1 = sw1.lat();
 			
 			//Recupara os latlong da resposta da requisicao						
-	
-		
 			var lon2 = sw2.lng();
 			var lat2 = sw2.lat();
 			
@@ -106,28 +147,32 @@ function executaRequisicaoKernelMapWikiCrimes(url){
 			photoWikiCrimes.id = 'addphoto';
 			//photo.id = id;
 			
-			photoWikiCrimes.src = urlWikiCrimes + imagePath;
+//			photoWikiCrimes.src = urlWikiCrimes + imagePath;
+//			photoWikiCrimes.src = urlWikiCrimes + "ServletWikiCrimesApi?acao=pegaImagem&nocache=" + new Date();
+			photoWikiCrimes.src = urlWikiCrimes + "ServletWikiCrimesApi?acao=pegaImagem&jsoncallback=?&data=" + new Date();
 			
 			//photo.src = './images/KernelMap/' + idUsuarioMapaKernel +'@'+ emailUsuarioMapaKernel + '/Img' + idImage + '.png';
 			//photo.src = '${contextPath}/Img2.png';			
 			//photo.src = '${pageContext.request.contextPath}/Img2.png';
 			//photo.src = 'images/TesteM.png';
-			photoWikiCrimes.percentOpacity = 50;
+//			photoWikiCrimes.percentOpacity = 50;
 			photoWikiCrimes.anchorTopLeft = new GLatLng(lat1,lon1);
 			photoWikiCrimes.anchorBottomRight = new GLatLng(lat2,lon2);
 	
 			mapWikiCrimes.addTPhoto(photoWikiCrimes);
+//			console.log('addTPhoto');
 			podeClicarBotaKernelMap = true;
 			//document.getElementById("loadingKernelMap").style.visibility='hidden';
 	  		
 			//Manda confirma��o para apagar a imagem no servidor
-			url = urlWikiCrimes + 'ServletWikiCrimesApi?acao=kernelMap&imagem=true';
-			url+='&jsoncallback=?';
-			executaRequisicaoKernelMapWikiCrimes(url);
-		}else{
+//			url = urlWikiCrimes + 'ServletWikiCrimesApi?acao=kernelMap&deletaImagem=true';
+//			url+='&jsoncallback=?';
+//			executaRequisicaoKernelMapWikiCrimes(url);
+		}/*else{
 			//alert('remove');
-		}
-	});
+		}*/
+	}
+	);
 }
 
 

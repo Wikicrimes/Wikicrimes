@@ -20,14 +20,8 @@ ComandoMao.prototype.initialize = function(map) {
   	document.getElementById("divTelaFiltro").style.visibility = "hidden";
   	if(!aindaCarregando){
   		if(kernelEnable){	
-  			mostraCrimesAgrupador();
-			selecionarComando(map, 'mao');
-			kernelEnable = false;
-			apagaMapaKernel();
-			mostraMarcadores();
-			podeCarregarCrimes=true;
+  			desativaMapaKernel();
   		}	
-		
 	}  
 		//document.getElementById("divExplicaMarcarArea").style.visibility = "hidden"; 
   });
@@ -371,17 +365,11 @@ ComandoKernel.prototype.initialize = function(map) {
   this.setButtonStyle_(kernelDiv);
   container.appendChild(kernelDiv);
   kernelDiv.appendChild(document.createTextNode(""));
-  GEvent.addDomListener(kernelDiv, "click", function() {	 
-	  if(!aindaCarregando){
-		  	selecionarComando(map, 'kernel');
-		  	limpaCrimesAgrupador();
-		  	document.getElementById("divTelaFiltro").style.visibility = "hidden";
-		  	kernelEnable = true;
-		  	document.getElementById("loadingKernelMap").style.visibility='visible';		
-		  	aindaCarregando = true;
-		  	podeCarregarCrimes=false;
-		  	window.setTimeout(constroiMapaKernel,1);  	
-	  }
+  GEvent.addDomListener(kernelDiv, "click", function() {
+//*********************** Kernel Map INICIO ****************************
+//clique no botao pra ativar o mapa de kernel
+	  ativaMapaKernel();
+//*********************** Kernel Map FIM ****************************
   });
   
   GEvent.addDomListener(kernelDiv, "mouseover", function() {
@@ -428,17 +416,11 @@ ComandoKernelSelecionado.prototype.initialize = function(map) {
   this.setButtonStyle_(kernelDiv);
   container.appendChild(kernelDiv);
   kernelDiv.appendChild(document.createTextNode(""));
-  GEvent.addDomListener(kernelDiv, "click", function() {  		
-	    removeHintComandosMapa();
-		if(!aindaCarregando){
-			mostraCrimesAgrupador();
-			selecionarComando(map, 'mao');
-			kernelEnable = false;
-			apagaMapaKernel();
-			mostraMarcadores();
-			podeCarregarCrimes=true;
-			//alert('disable');
-		}  
+  GEvent.addDomListener(kernelDiv, "click", function() {  	
+//*********************** Kernel Map INICIO ****************************
+//clique no botao pra desativar o mapa de kernel
+		desativaMapaKernel();  
+//*********************** Kernel Map FIM ****************************
   });
   GEvent.addDomListener(kernelDiv, "mouseover", function() {
 	  mostraHintComandosMapa("tutor.ajuda.hots.spots", "138px", "268px");

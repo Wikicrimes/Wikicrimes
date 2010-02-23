@@ -112,7 +112,12 @@ public class ServletOpensocial extends HttpServlet {
 		OpensocialService opensocialService = (OpensocialService) ctx
 				.getBean("opensocialService");
 		String acao = request.getParameter("acao");
-		String resposta = verificaCertificado(request);
+		String resposta = "";
+		if(request.getParameter("dominioRedeSocial")==null || request.getParameter("dominioRedeSocial").equals("ning.com")){
+			resposta = "permitir";
+		}else{
+			resposta = verificaCertificado(request);
+		}
 		if(resposta.equalsIgnoreCase("permitir")){
 			resposta = "";
 			if (acao.equals("faleConosco")) {
@@ -577,7 +582,8 @@ public class ServletOpensocial extends HttpServlet {
 				try {
 					setUp();
 					RedeSocial rs = new RedeSocial();
-					rs.setIdRedeSocial(new Long(1));
+					rs.setDominioRedeSocial(dominioRedesocial);
+					rs = (RedeSocial) opensocialService.getBaseObjects(rs).get(0);
 					UsuarioRedeSocial urs = new UsuarioRedeSocial();
 					urs.setRedeSocial(rs);
 					urs.setIdUsuarioDentroRedeSocial(idUsuarioRedeSocial);
@@ -585,7 +591,7 @@ public class ServletOpensocial extends HttpServlet {
 							.getUsuarioRedeSocial(urs);
 					urs = list.get(0);
 					List<RepasseRelato> repasses = opensocialService.getRelatos(
-							new Long(1), urs);
+							rs.getIdRedeSocial(), urs);
 					int cont = 0;
 					boolean eRelato = false;
 					for (RepasseRelato repasse : repasses) {
@@ -661,7 +667,8 @@ public class ServletOpensocial extends HttpServlet {
 							.parseInt(vizualizarCrimeOpensocial));
 	
 					RedeSocial redeSocial = new RedeSocial();
-					redeSocial.setIdRedeSocial(new Long(1));
+					redeSocial.setDominioRedeSocial(dominioRedesocial);
+					redeSocial = (RedeSocial) opensocialService.getBaseObjects(redeSocial).get(0);
 					urs.setRedeSocial(redeSocial);
 					urs.setUsuario(usuario);
 					urs.setDataHoraRegistro(new Date());
@@ -726,12 +733,12 @@ public class ServletOpensocial extends HttpServlet {
 											+ new Date()
 											+ "] "
 											+ usuarioPesquisado.getEmail()
-											+ " esta usando a app do wikicrimes no opensocial");
+											+ " esta usando a app do wikicrimes no "+dominioRedesocial);
 							resposta = "registrado";
 							resposta += ";" + usuarioPesquisado.getLat();
 							resposta += ";" + usuarioPesquisado.getLng();
 						} else {
-							resposta = "registrado_orkut";
+							resposta = "registrado_rede_social";
 							resposta += ";" + ursResult.get(0).getCidade();
 							resposta += ";" + ursResult.get(0).getPais();							
 							System.out
@@ -739,7 +746,7 @@ public class ServletOpensocial extends HttpServlet {
 											+ new Date()
 											+ "] "
 											+ idUsuarioRedesocial
-											+ " esta usando a app do wikicrimes no opensocial");
+											+ " esta usando a app do wikicrimes no "+dominioRedesocial);
 						}
 						resposta += ";" + ursResult.get(0).getAtivarTutor();
 					} else {
@@ -856,7 +863,8 @@ public class ServletOpensocial extends HttpServlet {
 				UsuarioRedeSocial urs = new UsuarioRedeSocial();
 				RedeSocial rs = new RedeSocial();
 				rs.setDominioRedeSocial(dominioRedesocial);
-				rs.setIdRedeSocial(new Long(1));
+				rs.setDominioRedeSocial(dominioRedesocial);
+				rs = (RedeSocial) opensocialService.getBaseObjects(rs).get(0);
 				urs.setIdUsuarioDentroRedeSocial(idUsuarioRedesocial);
 				urs.setVisualizarCrimes(1);
 				urs.setCidade(cidade);
@@ -919,7 +927,8 @@ public class ServletOpensocial extends HttpServlet {
 				String amigos = request.getParameter("amigos");
 				String[] arrayAmigos = amigos.split(";");
 				RedeSocial rs = new RedeSocial();
-				rs.setIdRedeSocial(new Long(1));
+				rs.setDominioRedeSocial(dominioRedesocial);
+				rs = (RedeSocial) opensocialService.getBaseObjects(rs).get(0);
 				UsuarioRedeSocial usuRedSocial = new UsuarioRedeSocial();
 				usuRedSocial.setRedeSocial(rs);
 				usuRedSocial.setIdUsuarioDentroRedeSocial(idUsuarioRedesocial);
@@ -962,7 +971,8 @@ public class ServletOpensocial extends HttpServlet {
 				String amigos = request.getParameter("amigos");
 				String[] arrayAmigos = amigos.split(";");
 				RedeSocial rs = new RedeSocial();
-				rs.setIdRedeSocial(new Long(1));
+				rs.setDominioRedeSocial(dominioRedesocial);
+				rs = (RedeSocial) opensocialService.getBaseObjects(rs).get(0);
 				UsuarioRedeSocial usuRedSocial = new UsuarioRedeSocial();
 				usuRedSocial.setRedeSocial(rs);
 				usuRedSocial.setIdUsuarioDentroRedeSocial(idUsuarioRedesocial);

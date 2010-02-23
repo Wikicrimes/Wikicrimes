@@ -22,6 +22,7 @@ function carregarAmigos(dataResponse) {
 	var endereco =usuario.getField(opensocial.Person.Field.ADDRESSES);
 	usuarioRedeSocial.idUsuario = usuario.getId();
 	usuarioRedeSocial.nome = usuario.getDisplayName();
+	usuarioRedeSocial.linkPerfil = usuario.getField(opensocial.Person.Field.PROFILE_URL)
 	usuarioRedeSocial.idRedeSocial = opensocial.getEnvironment().getDomain();
 	try{	
 		usuarioRedeSocial.cidade = endereco[0].getField('locality');
@@ -47,11 +48,14 @@ function carregarAmigos(dataResponse) {
 
 //Executa requisição para recuperar os crimes do banco
 function executaRequisicaoListagem() {
+	
 	var b = map.getBounds();
-       var north = b.getNorthEast().lat();
+	
+	var north = b.getNorthEast().lat();
 	var south = b.getSouthWest().lat();
 	var east = b.getNorthEast().lng();
 	var west = b.getSouthWest().lng();
+	
 	var params = {};
 	params[gadgets.io.RequestParameters.AUTHORIZATION] = gadgets.io.AuthorizationType.SIGNED;
 	params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.DOM;				
@@ -91,25 +95,23 @@ function respostaRequisicaoVerificarRegistro(obj){
 		
 	var resposta = responseText.split(";");					
 	if(resposta[0]=='registrado'){
-		montaTelaApp(resposta[1],resposta[2],13);  			
+		montaTelaApp(resposta[1],resposta[2],16);  			
     }
-	if(resposta[0]=='registrado_orkut'){
-		if (!geocoder)
-			geocoder = new GClientGeocoder();
- 		geocoder.getLocations(resposta[1] + "," + resposta[2],function (response) { 
-			if (!response || response.Status.code != 200) {
-	 	   		return false;
-	   		}
-	   		else {
-	    		place = response.Placemark[0];
-	        	usuarioRedeSocial.latitude=place.Point.coordinates[1];
-		        usuarioRedeSocial.longitude=place.Point.coordinates[0];
-	
-		    }
-	 		montaTelaApp(usuarioRedeSocial.latitude,usuarioRedeSocial.longitude,13);				   			
-		}); 			
+	if(resposta[0]=='registrado_rede_social'){
+		if (!geocoder) {						
+			geocoder = new google.maps.Geocoder();
+		}
+		geocoder.geocode( { 'address': resposta[1] + "," + resposta[2]}, function(results, status) {
+			 if (status == google.maps.GeocoderStatus.OK) {				
+		         usuarioRedeSocial.latitude=results[0].geometry.location.lat();
+			     usuarioRedeSocial.longitude=results[0].geometry.location.lng();
+			     montaTelaApp(usuarioRedeSocial.latitude,usuarioRedeSocial.longitude,16);
+			} else {
+				return false;
+			}
+		});	
     }
-	if(resposta[0]=='registrado'||resposta[0]=='registrado_orkut'){
+	if(resposta[0]=='registrado'||resposta[0]=='registrado_rede_social'){
 		if(resposta[3]=="0"){
 			tutorEstaAtivado = false;
 		}
@@ -233,7 +235,7 @@ function repostaRequisicaoRealizaLogin(obj){
 	var resposta = responseText.split(";");	
 						
 	if(resposta[0]=='valido'){
-   		montaTelaApp(resposta[1],resposta[2],13);			   			
+   		montaTelaApp(resposta[1],resposta[2],16);			   			
    	}
    	if(resposta[0]=='invalido'){
    		document.getElementById("content_erro").innerHTML = prefs.getMsg("login.senha.invalido"); 
@@ -269,7 +271,7 @@ function respostaRequisicaoRegistraUsuarioOrkut(obj){
 	
 	var resposta = responseText.split(";");										
 	if(resposta[0]=='registrado'){
-	montaTelaApp(usuarioRedeSocial.latitude,usuarioRedeSocial.longitude,13);				   			
+	montaTelaApp(usuarioRedeSocial.latitude,usuarioRedeSocial.longitude,16);				   			
    	}
    	if(resposta[0]=='ja_registrado'){
    		document.getElementById("content_erro").innerHTML = 'usuario ja registrado'; 
@@ -303,7 +305,7 @@ function respostaRequisicaoRegistraUsuarioWikiCrimes(obj){
 	
 	var resposta = responseText.split(";");										
 	if(resposta[0]=='registrado'){
-		montaTelaApp(usuarioRedeSocial.latitude,usuarioRedeSocial.longitude,13);				   			
+		montaTelaApp(usuarioRedeSocial.latitude,usuarioRedeSocial.longitude,16);				   			
    	}
    	if(resposta[0]=='email_existente'){
    		document.getElementById("content_erro").innerHTML = 'E-mail ja consta em nossa base. Esqueceu sua senha?'; 
@@ -344,7 +346,6 @@ function executaRequisicaoRegistrarAlertaCrime(descricao, lat, lng, razoes){
 }
 
 function repostaRequisicaoRegistrarAlertaCrime(obj){
-	tutorEstaAtivado = true;
 	var responseText = obj.data.getElementsByTagName("dados").item(0).getAttribute("texto");
 	polInfo="1";
 	rcrime="1";	
@@ -404,7 +405,6 @@ function executaRequisicaoRegistrarAlerta(descricao, lat, lng, razoes){
 }
 
 function repostaRequisicaoRegistrarAlerta(obj){
-	tutorEstaAtivado = true;
 	var responseText = obj.data.getElementsByTagName("dados").item(0).getAttribute("texto");
 	
 	if(responseText == "nao_permitir"){
@@ -413,11 +413,11 @@ function repostaRequisicaoRegistrarAlerta(obj){
 	}
 	
 	if(responseText=='ok'){
-			auxRegistrouAlerta = true;	
-			marcadorAlertaAmigos.closeInfoWindow();
+			auxRegistrouAlerta = true;
 			mostrarMensagem('success', prefs.getMsg("alerta.registrado"),true);
 			executaRequisicaoRelatosMaisRecentes();
 			addToActivityStream(1);
+			infowindow.close();
 	}
 	
 }

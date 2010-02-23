@@ -10,10 +10,10 @@ function constroiHtml(amigo){
 
 //função que constroi o html da tela de registro de alerta			
 function constroiHtmlAlerta(){
-	var html_alerta="<div style='width:400; height:200px ;overflow: auto;'><div id='topoAlerta'> <b> "+prefs.getMsg("titulo.registrar.alerta")+" </b> </div> <br/> <br/> <table style='font-family:Arial, sans-serif;  font-size: 11px;'>";
+	var html_alerta="<div style='width:100%; height:150px ;overflow: auto;'><div id='topoAlerta'> <b> "+prefs.getMsg("titulo.registrar.alerta")+" </b> </div> <br/> <br/> <table style='font-family:Arial, sans-serif;  font-size: 11px;'>";
 	html_alerta+="<tr> <td colspan = '4' > <b> "+prefs.getMsg("desc.alerta")+":(*) </b> </td>  </tr>";
 	html_alerta+="<tr> <td colspan = '4' > <div style='color:red;' id = 'erroDesc'> </div> </td>  </tr>";
-	html_alerta+="<tr><td colspan = '4'> <TEXTAREA NAME='desc_alerta' id='desc_alerta' style='font-size: 12px; border: 1px solid #2763a5;' COLS='48' ROWS='6'></TEXTAREA> </td></tr>";
+	html_alerta+="<tr><td colspan = '4'> <TEXTAREA NAME='desc_alerta' id='desc_alerta' style='font-size: 12px; border: 1px solid #2763a5;' COLS='40' ROWS='6'></TEXTAREA> </td></tr>";
 	html_alerta+="<tr> <td colspan = '4'> <b>"+prefs.getMsg("em.que.turno.ocorre")+":(*)</b> </td>  </tr>";
 	html_alerta+="<tr> <td colspan = '4' > <div style='color:red;' id = 'erroTurno'> </div> </td>  </tr>";
 	html_alerta+="<tr> <td> <input type='checkbox' id='cMadrugada' name='cMadrugada'/> </td> <td> "+prefs.getMsg("madrugada")+" </td> <td> <input type='checkbox' id='cManha' name='cManha'/> </td> <td> "+prefs.getMsg("manha")+"</td> </tr>";
@@ -462,7 +462,7 @@ function conteudoInstallApp(){
 
 function conteudoPerfil(){
 	 
-	var conteudo ='<table style="font-family:Arial, sans-serif;  font-size: 11px;" cellpadding="0" cellspacing="0" >';
+	var conteudo ='<table align="center" style="font-family:Arial, sans-serif;  font-size: 11px;" cellpadding="0" cellspacing="0" >';
         	
 	conteudo+='			<tr>';
 	conteudo+='				<td colspan="1" align="left"><img width="150px" height="50px" id="img_logo"';
@@ -480,7 +480,7 @@ function conteudoPerfil(){
 	conteudo+='			<tr>';
 	conteudo+='				<td colspan="2">';
 	conteudo+='				<div id="map"';
-	conteudo+='				style="width: 500px; height: 200px; border: 2px solid #2763a5;"></div>';
+	conteudo+='				style="width: 500px; height: 340px; border: 2px solid #2763a5;"></div>';
 	conteudo+='				</td>';				
 	conteudo+='			</tr>';				
     conteudo+='		</table>';
@@ -500,7 +500,7 @@ function conteudoLegenda(){
 	conteudo += "			<td align='center'> <img width='12px' height='21px' src='"+linkAplication+"/images/baloes/laranja.png'/> </td> <td colspan='1'> "+prefs.getMsg("outros_text")+ "</td>";
 	conteudo += "		</tr>";
 	conteudo += "		<tr>";
-	conteudo += "			<td align='center'> <img width='22px' height='26px' src='"+linkAplication+"/images/baloes/relato.gif'/> </td> <td colspan='1'> "+prefs.getMsg("denuncia_text")+ " </td>";
+	conteudo += "			<td align='center'> <img width='12px' height='21px' src='"+linkAplication+"/images/baloes/novoMarcadorVerde.png'/> </td> <td colspan='1'> "+prefs.getMsg("denuncia_text")+ " </td>";
 	conteudo += "		</tr>";
 	conteudo += "	</table>";
 	return conteudo;
@@ -515,12 +515,11 @@ function mostrarImagemTipoAlerta(tipoAlerta){
 	if(tipoAlerta == "5")
 		html += '<img width=12px height=21px src='+ linkAplication+'images/widget/laranja.png' +' />';
 	if(tipoAlerta == "6")
-		html += '<img width=22px height=26px src='+ linkAplication+'images/baloes/relato.gif' +' />';
+		html += '<img width=12px height=21px src='+ linkAplication+'images/baloes/novoMarcadorVerde.png' +' />';
 	return html;
 }
 
-
-function conteudoCanvas(){
+function conteudoCanvasOrkut(){
     	
 	var conteudo = '<div align="center" id="divModal" ></div><table style="font-family:Arial, sans-serif;  font-size: 11px;" cellpadding="1" cellspacing="1" >';		          	
 	conteudo+='			<tr>';					
@@ -538,7 +537,7 @@ function conteudoCanvas(){
 	conteudo+='				</td>';				
 	conteudo+='				<td align="left" colspan="1">';					
 	conteudo+='					<div align="left" id="registro_alerta" align="center" style="width: 200px; height: 36px;" >'; 
-	conteudo+='						<br><img title="'+prefs.getMsg("hint.alertarAmigos")+'" onclick="mostraDivSelecaoAlerta(\'410px\',\'280px\',constroiTelaEscolhaTipoAlerta());" align="left" style="cursor: pointer;border: 1px solid #2763a5" src="'+linkAplication+prefs.getMsg("imagem.registrar.relato")+'" />';	
+	conteudo+='						<br><img title="'+prefs.getMsg("hint.alertarAmigos")+'" onclick="mostraDivSelecaoAlerta(\'410px\',\'220px\',constroiTelaEscolhaTipoAlerta());" align="left" style="cursor: pointer;border: 1px solid #2763a5" src="'+linkAplication+prefs.getMsg("imagem.registrar.relato")+'" />';	
 	conteudo+='					</div>';
 	conteudo+='				</td>';
 	conteudo+='				<td colspan="1">';					
@@ -560,9 +559,61 @@ function conteudoCanvas(){
 	conteudo+='				</td>';
 	conteudo+='				<td valign="top" colspan="2">';
 	conteudo+='					<div id="map"';
-	conteudo+='					style="width: 500px; height: 400px;border: 1px solid #2763a5"></div>';									
+	conteudo+='					style="width: 500px; height: 400px;border: 1px solid #2763a5; display:block;"></div>';
+	conteudo+='					<div id="div_sobre_mapa"';
+	conteudo+='					style="width: 500px; height: 400px;border: 1px solid #2763a5; display:none; background-color:gray"></div>';
 	conteudo+='					<div id="registro_alerta" align="center"  >'; 
 	conteudo+='					<br> | <a style="color : #6da6e2; cursor: pointer;" onclick="mostrarModalFaleConosco();"> <b>'+prefs.getMsg("fale.conosco")+'</b> </a> | <a style="color : #6da6e2; cursor: pointer;" onclick="window.open (\''+linkAplication+'\', \'Wikicrimes\',\'location=1,status=1,scrollbars=1,menubar=1,resizable=1\');"> <b>'+prefs.getMsg("registrar.crimes")+'</b> </a> | <a style="color : #6da6e2; cursor: pointer;" onclick="convideSeusAmigos()"> <b> '+prefs.getMsg("convidar.amigos")+' </b> </a> | <a style="color : #6da6e2; cursor: pointer;" onclick="mostrarModalConfiguracoes();"> <b> '+prefs.getMsg("canvas.configuracoes")+' </b> </a> |';	
+	conteudo+='					</div>';
+	conteudo+='				</td>';				
+	conteudo+='			</tr>';				
+    conteudo+='		</table>';
+    return conteudo;
+}
+
+function conteudoCanvasNing(){
+	
+	var conteudo = '<div align="center" id="divModal" ></div><table style="font-family:Arial, sans-serif;  font-size: 11px;" cellpadding="1" cellspacing="1" >';		          	
+	conteudo+='			<tr>';					
+	conteudo+='				<td colspan="3">';					
+	conteudo+='				</td>';
+	conteudo+='			</tr>';
+	conteudo+='			<tr>';					
+	conteudo+='				<td colspan="3">';					
+	conteudo+='					<div id="mens_info" align="center" ></div>';					
+	conteudo+='				</td>';
+	conteudo+='			</tr>';
+	conteudo+='			<tr>';
+	conteudo+='				<td colspan="1" align="left"> <img id="img_logo"';
+	conteudo+='					src="'+linkAplication+'images/widget/wikicrimesPerfil.PNG'+'" />';						
+	conteudo+='				</td>';				
+	conteudo+='				<td align="left" colspan="1">';					
+	conteudo+='					<div align="left" id="registro_alerta" align="center" style="width: 100px; height: 36px;" >'; 
+	conteudo+='						<img title="'+prefs.getMsg("hint.alertarAmigos")+'" onclick="mostraDivSelecaoAlerta(\'388px\',\'148px\',constroiTelaEscolhaTipoAlerta());" align="left" style="cursor: pointer;border: 1px solid #2763a5" src="'+linkAplication+prefs.getMsg("imagem.registrar.relato")+'" />';	
+	conteudo+='					</div>';
+	conteudo+='				</td>';
+	conteudo+='				<td colspan="1">';					
+	conteudo+='					<div id="pesquisa_mapa" align="center" style="width: 100%; height: 36px;" >'; 
+	conteudo+='						<input title="" align="center" type="text" id="pesquisa" name="pesquisa" style="width:50%;font-size: 12px; border: 1px solid #2763a5;" onkeypress="return submitEnter(event);"/><input type="button" id="botao_pesquisar" onclick="showLocal();" style="font-family: Arial, Helvetica, sans-serif; font-size: 10px;	font-weight: bold; margin: 1; padding: 1; background-color: #6da6e2; color: white;	border: 1px solid #2763a5;"/>';	
+	conteudo+='					</div>';
+	conteudo+='				</td>';
+	conteudo+='			</tr>';					
+	conteudo+='			<tr>';					
+	conteudo+='				<td >';					
+	conteudo+='					<div style="position: absolute; padding: 0.2em;  padding-left: 0.8em;  background-color: #2763a5;  border-style: solid;  border-width: 2px;  width: 178px;  height: 14px;  color: #ffffff;  font: bold;"><b> '+prefs.getMsg("alertas.que.voce.recebeu")+'</b></div><br>';
+	conteudo+='					<div id="notificacoes" style="padding-left: 0.8em ; width: 302px; height: 156px;overflow: auto;border: 1px solid #2763a5" >'; 
+	conteudo+='						';	
+	conteudo+='					</div>';
+	conteudo+='					<div style="position: absolute; padding: 0.2em;  padding-left: 0.8em;  background-color: #2763a5;  border-style: solid;  border-width: 2px;  width: 178px;  height: 14px;  color: #ffffff;  font: bold;"><b> '+prefs.getMsg("comentarios")+'</b></div><br>';
+	conteudo+='					<div id="comentarios" style="padding-left: 0.8em ;width: 302px; height: 156px; overflow: auto;border: 1px solid #2763a5" >'; 
+	conteudo+='						<br>';	
+	conteudo+='					</div>';					
+	conteudo+='				</td>';
+	conteudo+='				<td valign="top" colspan="2">';
+	conteudo+='					<div id="map"';
+	conteudo+='					style="width: 416px; height: 332px;border: 1px solid #2763a5; display:block;"></div>';
+	conteudo+='					<div id="registro_alerta" align="center" style="padding-top:2px" >'; 
+	conteudo+='					<a style="color : #6da6e2; cursor: pointer;" onclick="mostrarModalFaleConosco();"> <b>'+prefs.getMsg("fale.conosco")+'</b> </a> | <a style="color : #6da6e2; cursor: pointer;" onclick="window.open (\''+linkAplication+'\', \'Wikicrimes\',\'location=1,status=1,scrollbars=1,menubar=1,resizable=1\');"> <b>'+prefs.getMsg("registrar.crimes")+'</b> </a> | <a style="color : #6da6e2; cursor: pointer;" onclick="mostrarModalConfiguracoes();"> <b> '+prefs.getMsg("canvas.configuracoes")+' </b> </a>';	
 	conteudo+='					</div>';
 	conteudo+='				</td>';				
 	conteudo+='			</tr>';				
@@ -598,7 +649,7 @@ function constroiTelaEscolhaTipoCrime(){
 }
 
 function escolherTipoCrime(){
-	mostraDivSelecaoAlerta('400px','220px',constroiTelaEscolhaTipoCrime());
+	mostraDivSelecaoAlerta('400px','150px',constroiTelaEscolhaTipoCrime());
 }
 
 function constroiModoal(conteudo, wPixel, hPixel,titulo, distanciaTopo, distanciaEsquerda){	
@@ -621,21 +672,17 @@ function conteudoAtividade(tipoAtividade){
 	
 		html = "<table>" +
 				"	<tr valign='bottom'>" +
-				"		<td rowspan='2'>" +
+				"		<td>" +
 				"			<img width='50px' height='50px' src='"+linkAplication+"images/widget/atencaoWikiCrimesSocial_50x50.jpg' />" +
 				"		</td>" +
 				"		<td> " +
-				"			Clique <a href='http://www.orkut.com.br/Main#Application.aspx?appId=767909519655'>aqui</a> para ver os alertas que você recebeu."+
+				"			Clique <a href='"+usuarioRedeSocial.linkPerfil+"'>aqui</a> para ver o perfil de "+usuarioRedeSocial.nome+
 				"		</td>" +
-				"		<td rowspan='2'>" +
+				"		<td>" +
 				"			<img width='82px' height='50px' src='"+linkAplication+"images/widget/img_propaganda.jpg' />" +
 				"		</td>" +
 				"	</tr>" +
-				"	<tr>" +				
-				"		<td> " +
-				"			Clique <a href='http://www.orkut.com.br/Main#Application.aspx?appId=767909519655'>aqui</a> para adicionar o WikiCrimes Social."+
-				"		</td>" +
-				"	</tr>" +
+				
 				"</table>";
 		
 	

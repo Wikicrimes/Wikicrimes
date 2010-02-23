@@ -10,50 +10,69 @@ function getViewName() {
 }
 
 function montaTelaApp(latitude, longitude, zoom){
-	 if (getViewName() == "canvas") {					    
-	    document.getElementById("bodyContent").innerHTML = conteudoCanvas();					    
-	 	
+	 if (getViewName() == "canvas") {
+		if(opensocial.getEnvironment().getDomain() == 'orkut.com') 
+			document.getElementById("bodyContent").innerHTML = conteudoCanvasOrkut();
+		else
+			document.getElementById("bodyContent").innerHTML = conteudoCanvasNing();		
 	 }				
 	 if (getViewName() == "profile") {
+		 tutorEstaAtivado = false; 
 	   	document.getElementById("bodyContent").innerHTML = conteudoPerfil();
 	   	qtdMoveMap++;					   	
 	 }
 	 		   	 	   	 
    	 document.getElementById("botao_pesquisar").value = prefs.getMsg("pesquisar.no.mapa");
    	 document.getElementById("pesquisa").title = prefs.getMsg("pesquise.um.endereco.no.mapa");
-   	 if (GBrowserIsCompatible()) {						
-		map = new GMap2(document.getElementById('map'));
-		if(navigator.appName=='Netscape' || navigator.appName=='Opera')
-			mostraDivLegendaMapa('319px','440px',conteudoLegenda());
-		else
-			mostraDivLegendaMapa('308px','426px',conteudoLegenda());
-		if (latitude=='') 
-			map.setCenter(new GLatLng(-8.16100515602485, -34.9125123023987), 3);
-		else
-			map.setCenter(new GLatLng(latitude, longitude), zoom);
-		/*if(qtdMoveMap == 0 )	
-			map.addControl(new GLargeMapControl());
-		else*/
-			map.addControl(new GSmallMapControl());
-		map.addControl(new GMapTypeControl(), new GControlPosition(G_ANCHOR_BOTTOM_RIGHT, new GSize(4,20)));					
-		map.enableScrollWheelZoom();
-		new GKeyboardHandler(map);					
-		//map.addControl(new ComandoAlerta());
-		executaRequisicaoListagem();
-		GEvent.addListener(map, "moveend", function() {
-		  	if (podeCarregarCrimes) {
-        	     limpaTela=false;
+//   if (GBrowserIsCompatible()) {						
+   		var myOptions = {
+   		    zoom: 8,
+   		    center: new google.maps.LatLng(-8.16100515602485, -34.9125123023987),
+   		    mapTypeId: google.maps.MapTypeId.ROADMAP
+   		};
+   		map = new google.maps.Map(document.getElementById("map"), myOptions);
+   		infowindow = new google.maps.InfoWindow(
+   				{ 
+   					content: ''
+   				}); 
+   		 //map = new GMap2(document.getElementById('map'));
+   		if(opensocial.getEnvironment().getDomain() == 'orkut.com'){
+	   		if (getViewName() == "canvas") {	
+				if(navigator.appName=='Netscape' || navigator.appName=='Opera')
+					mostraDivLegendaMapa('319px','380px',conteudoLegenda());
+				else
+					mostraDivLegendaMapa('308px','366px',conteudoLegenda());
+	   		}
+   		}else{
+   			if (getViewName() == "canvas") {	
+				if(navigator.appName=='Netscape' || navigator.appName=='Opera')
+					mostraDivLegendaMapa('319px','288px',conteudoLegenda());
+				else
+					mostraDivLegendaMapa('308px','274px',conteudoLegenda());
+	   		}
+   		}	
+		if (latitude==''){ 
+			map.setCenter(new google.maps.LatLng(-8.16100515602485, -34.9125123023987));
+			map.setZoom(16);
+		}	
+		else{
+			map.setCenter(new google.maps.LatLng(latitude, longitude));
+			map.setZoom(zoom);
+		}	
+		
+		google.maps.event.addListener(map, "tilesloaded", function() {
+			if (podeCarregarCrimes) {
+        	    limpaTela=false;
 			 	atualizaMapa();
 			 	situacao['qtd_move_map']++;
 			 	alterarEstadoSituacao(situacao);
 		  	}
 		});
-		GEvent.addListener(map, "zoomend", function(overlay, latLng) {
+		
+		google.maps.event.addListener(map, "zoom_changed", function() {
 			situacao['zoom'] = map.getZoom();
-		});		
-	  }
-	  else					  	
-		alert(prefs.getMsg("mapsnaosuportado"));	
+		});
+		setTimeout('executaRequisicaoListagem()',500);
 }							
 
 function montaArrayCrimes(responseText){
@@ -73,21 +92,21 @@ function montaArrayCrimes(responseText){
 					crimes[crime[1]].id_usuario_rede_social = crime[2];
 					crimes[crime[1]].id = crime[6];
 					crimes[crime[1]].estaNoMapa = true;
-					for(var j = 0 ; j <= amigos.length ; j++ ){
-																					
-						if(amigos[j]!=null){
-								
-							if( amigos[j].id == crimes[crime[1]].id_usuario_rede_social ){
-								crimes[crime[1]].marcador = criaMarcador(crimes[crime[1]], constroiHtml(amigos[j]));
-								map.addOverlay(crimes[crime[1]].marcador);
-								eDeAmigo = true;
-								break;
-							}
-						}								
-					}
+//					for(var j = 0 ; j <= amigos.length ; j++ ){
+//																					
+//						if(amigos[j]!=null){
+//								
+//							if( amigos[j].id == crimes[crime[1]].id_usuario_rede_social ){
+//								crimes[crime[1]].marcador = criaMarcador(crimes[crime[1]], constroiHtml(amigos[j]));
+//								crimes[crime[1]].marcador.setMap(map);
+//								eDeAmigo = true;
+//								break;
+//							}
+//						}								
+//					}
 					if(!eDeAmigo){
 						crimes[crime[1]].marcador = criaMarcador(crimes[crime[1]], null);
-						map.addOverlay(crimes[crime[1]].marcador);
+						crimes[crime[1]].marcador.setMap(map);
 					}	
 				}
 				else
@@ -100,12 +119,11 @@ function montaArrayCrimes(responseText){
 			}
 		}
 	}
-	
 	for (k in crimes){
 		
 		if(crimes[k]!=undefined){	
 			if(!crimes[k].estaNoMapa){
-				map.removeOverlay(crimes[k].marcador);
+				crimes[k].marcador.setMap(null);
 				crimes[k]=undefined;								
 			}
 			else
@@ -113,7 +131,8 @@ function montaArrayCrimes(responseText){
 			
 			
 			if(k == crimeInfoWindow){								
-				GEvent.trigger(crimes[k].marcador,'click');
+				google.maps.event.trigger(crimes[k].marcador,'click');
+				map.setZoom(16);
 				crimeInfoWindow = null;
 			}		
 		}	
@@ -125,170 +144,265 @@ function montaArrayCrimes(responseText){
 }
 
 function criaMarcador(crime, htmlUser) {
-
-	var icone = new GIcon(G_DEFAULT_ICON);
-	icone.shadow = "";
+	
+	var icone = null;//new GIcon(G_DEFAULT_ICON);
+	var sizeMarker = null;
+	var anchorMarker = null;
 	if(htmlUser==null){
-		icone.iconSize = new GSize(14, 24);
-		icone.iconAnchor = new GPoint(2, 24);
+		sizeMarker = new google.maps.Size(14, 24);
+		anchorMarker = new google.maps.Point(2, 24);
 	}	
 	else{
-		icone.iconSize = new GSize(27,24);
-		icone.iconAnchor = new GPoint(2,22);
+		sizeMarker = new google.maps.Size(27,24);
+		anchorMarker = new google.maps.Point(2,22);
 	}	
 	if(crime.tipo_crime == 'tipocrime.roubo' || crime.tipo_crime == 'tipocrime.tentativaderoubo' || crime.tipo_crime == '1' || crime.tipo_crime == '4' ){
-		if(htmlUser==null)
-			icone.image = linkAplication+'images/widget/vermelho.png';
-		else
-			icone.image = linkAplication+'images/widget/vermelho_amigo.png';
+		if(htmlUser==null){
+			icone = new google.maps.MarkerImage(linkAplication+'images/widget/vermelho.png',
+					sizeMarker,					
+					new google.maps.Point(0,0),
+					anchorMarker); 
+		}	
+		else{
+			icone = new google.maps.MarkerImage(linkAplication+'images/widget/vermelho_amigo.png',
+					sizeMarker,					
+					new google.maps.Point(0,0),
+					anchorMarker); 
+		}	
 	}
 	if(crime.tipo_crime == 'tipocrime.furto' || crime.tipo_crime == 'tipocrime.tentativadefurto' || crime.tipo_crime == '2' || crime.tipo_crime == '3'){
-		if(htmlUser==null)
-			icone.image = linkAplication+'images/widget/azul.png';
+		if(htmlUser==null){			
+			icone = new google.maps.MarkerImage(linkAplication+'images/widget/azul.png',
+					sizeMarker,					
+					new google.maps.Point(0,0),
+					anchorMarker); 
+		}	
 		else{
-			icone.image = linkAplication+'images/widget/azul_amigo.png';
+			icone = new google.maps.MarkerImage(linkAplication+'images/widget/azul_amigo.png',
+					sizeMarker,					
+					new google.maps.Point(0,0),
+					anchorMarker); 
 		}
 	}
 	if(crime.tipo_crime == 'tipocrime.violencia'|| crime.tipo_crime == '5'){
-		if(htmlUser==null)
-			icone.image = linkAplication+'images/widget/laranja.png';
-		else
-			icone.image = linkAplication+'images/widget/laranja_amigo.png';
-	}
-	if(crime.tipo_crime == '6'){
-		if(htmlUser==null)
-			icone.image = linkAplication+'images/baloes/relato.gif';
-		else
-			icone.image = linkAplication+'images/baloes/relato.gif';
+		if(htmlUser==null){
+			icone = new google.maps.MarkerImage(linkAplication+'images/widget/laranja.png',
+					sizeMarker,					
+					new google.maps.Point(0,0),
+					anchorMarker); 
+		}	
+		else{
 			
-		icone.iconSize = new GSize(32,38);
-		icone.iconAnchor = new GPoint(11,35);						
-	
-			
+			icone = new google.maps.MarkerImage(linkAplication+'images/widget/laranja_amigo.png',
+					sizeMarker,					
+					new google.maps.Point(0,0),
+					anchorMarker); 
+		}	
 	}
-	
-
-	markerOptions = { icon:icone };
-	var marcador = new GMarker(new GLatLng(crime.latitude, crime.longitude), markerOptions);
-	GEvent.addListener(marcador, "click", function() {
+	if(crime.tipo_crime == '6'){					
+		sizeMarker = new google.maps.Size(24,32);
+		anchorMarker = new google.maps.Point(2,22);
+		if(htmlUser==null){
+			
+			icone = new google.maps.MarkerImage(linkAplication+'images/baloes/novoMarcadorVerde.png',
+					sizeMarker,					
+					new google.maps.Point(0,0),
+					anchorMarker); 
+		}	
+		else{
+			icone = new google.maps.MarkerImage(linkAplication+'images/baloes/novoMarcadorVerde.png',
+					sizeMarker,					
+					new google.maps.Point(0,0),
+					anchorMarker); 
+		}	
+			
+		
+			
+	}	
+	var marcador = //new GMarker(new GLatLng(crime.latitude, crime.longitude), markerOptions);
+		new google.maps.Marker({
+			position: new google.maps.LatLng(crime.latitude, crime.longitude),
+			map: null,
+			icon: icone
+		 }); 
+	google.maps.event.addListener(marcador, "click", function() {
 		desabilitaTutor(4000);
 		if(htmlUser==null){
 			if(crime.tipo_crime == '6'){
-				marcador.openInfoWindowHtml("<iframe src='"+linkAplication+"mostrarDadosRelatoOpensocial.html?idRelato=" + crime.id + "' width='400' height='150' frameborder='0'></iframe>");
+				infowindow.setContent("<iframe src='"+linkAplication+"mostrarDadosRelatoOpensocial.html?idRelato=" + crime.id + "' height='150' frameborder='0'></iframe>");
+				
 			}
 			else
-				marcador.openInfoWindowHtml("<iframe src='"+linkAplication+"mostrarDadosOpenSocial.html?idCrime=" + crime.id + "' width='380' height='150' frameborder='0'></iframe>");
+				infowindow.setContent("<iframe src='"+linkAplication+"mostrarDadosOpenSocial.html?idCrime=" + crime.id + "' height='150' frameborder='0'></iframe>");
 		}
 		else{
 			if(crime.tipo_crime == '6'){
-				marcador.openInfoWindowTabsHtml([new GInfoWindowTab(prefs.getMsg("ocorrencia"),"<iframe src='"+linkAplication+"mostrarDadosRelatoOpensocial.html?idRelato=" + crime.id + "' width='400' height='150' frameborder='0'></iframe>"),new GInfoWindowTab(prefs.getMsg("amigo"),htmlUser)]);
+				infowindow.setContent([new GInfoWindowTab(prefs.getMsg("ocorrencia"),"<iframe src='"+linkAplication+"mostrarDadosRelatoOpensocial.html?idRelato=" + crime.id + "'height='150' frameborder='0'></iframe>"),new GInfoWindowTab(prefs.getMsg("amigo"),htmlUser)]);
 			}
 			else
-				marcador.openInfoWindowTabsHtml([new GInfoWindowTab(prefs.getMsg("ocorrencia"),"<iframe src='"+linkAplication+"mostrarDadosOpenSocial.html?idCrime=" + crime.id + "' width='380' height='150' frameborder='0'></iframe>"),new GInfoWindowTab('Amigo',htmlUser)]);
+				infowindow.setContent([new GInfoWindowTab(prefs.getMsg("ocorrencia"),"<iframe src='"+linkAplication+"mostrarDadosOpenSocial.html?idCrime=" + crime.id + "' height='150' frameborder='0'></iframe>"),new GInfoWindowTab('Amigo',htmlUser)]);
 		}
+		infowindow.open(map,marcador);
 	});
 	return marcador;
 }
 
 function criaMarcadorTemp(latlng) {
-	var icone = new GIcon(G_DEFAULT_ICON);
-	icone.shadow = "";
 	
-	icone.iconSize = new GSize(130, 40);
-	icone.iconAnchor = new GPoint(10, 38);						
-	
-	icone.image = linkAplication+ prefs.getMsg("imagem.registrar.relato_hint");				
-
-	markerOptions = { icon:icone, draggable:true };
-	var marcador = new GMarker(new GLatLng(latlng.lat(), latlng.lng()), markerOptions);				
+	var sizeMarker = new google.maps.Size(24,32);
+	var anchorMarker = new google.maps.Point(2,22);
+	var icone = new google.maps.MarkerImage(linkAplication+'images/baloes/novoMarcadorVerde.png',
+			sizeMarker,					
+			new google.maps.Point(0,0),
+			anchorMarker
+	);
+	var marcador = //new GMarker(new google.maps.LatLng(latlng.lat(), latlng.lng()), markerOptions);
+		new google.maps.Marker({
+			position: new google.maps.LatLng(latlng.lat(), latlng.lng()),
+			map: null,
+			icon: icone
+		 });
+	marcador.setDraggable(true);	
 					
 	return marcador;
 }
 
 function criaMarcadorTempCrime(latlng, tipoCrime) {
-	var icone = new GIcon(G_DEFAULT_ICON);
-	icone.shadow = "";
+	var icone = null;
 	
-	icone.iconSize = new GSize(130, 40);
-	icone.iconAnchor = new GPoint(10, 38);						
+	var sizeMarker = new google.maps.Size(14, 24);
+	var anchorMarker = new google.maps.Point(2, 24);
 	if(tipoCrime=='1' || tipoCrime=='4'){
-		icone.image = linkAplication+ prefs.getMsg("imagem.registrar.roubo_hint");
-		icone.iconSize = new GSize(96, 30);
-		icone.iconAnchor = new GPoint(3, 30);
+		icone = new google.maps.MarkerImage(linkAplication+'images/baloes/vermelho.png',
+				sizeMarker,					
+				new google.maps.Point(0,0),
+				anchorMarker
+		);
 	}	
 	if(tipoCrime=='2' || tipoCrime=='3'){
-		icone.image = linkAplication+ prefs.getMsg("imagem.registrar.furto_hint");
-		icone.iconSize = new GSize(96, 30);
-		icone.iconAnchor = new GPoint(3, 30);
+		icone = new google.maps.MarkerImage(linkAplication+'images/baloes/azul.png',
+				sizeMarker,					
+				new google.maps.Point(0,0),
+				anchorMarker
+		);
 	}	
 	if(tipoCrime=='5'){		
-		icone.image = linkAplication+ prefs.getMsg("imagem.registrar.outros_hint");
-		icone.iconSize = new GSize(96, 30);
-		icone.iconAnchor = new GPoint(3, 30);
+		icone = new google.maps.MarkerImage(linkAplication+'images/baloes/laranja.png',
+				sizeMarker,					
+				new google.maps.Point(0,0),
+				anchorMarker
+		);
 	}
-	markerOptions = { icon:icone, draggable:true };
-	var marcador = new GMarker(new GLatLng(latlng.lat(), latlng.lng()), markerOptions);				
-					
+	
+	var marcador = //new GMarker(new google.maps.LatLng(latlng.lat(), latlng.lng()), markerOptions);
+		new google.maps.Marker({
+			position: new google.maps.LatLng(latlng.lat(), latlng.lng()),
+			map: null,
+			icon: icone
+		 });
+	marcador.setDraggable(true);
+	
 	return marcador;
 }
 
 var estaRegistrando = false;
-function registrarAlerta(){
+
+function cancelarRegistroAlerta(){
+	infowindowtemp.close();
+	if(!auxRegistrouAlerta)
+		marcadorAlertaAmigos.setMap(null);				
+	var myOptions = {
+		draggable:true
+	};
+	//marcadorAlertaAmigos = null;
+	map.setOptions(myOptions);
+	auxRegistrouAlerta = false;
+	estaRegistrando = false;
+	podeCarregarCrimes = true;
+	infowindowtemp = null;
+}
+
+function mostraJanelaRegistroAlerta(){
+	infowindowtemp.close();
+	infowindowtemp = null;
+	var novoCrime = new Crime();
+	novoCrime.tipo_crime = '6';
+	novoCrime.latitude = marcadorAlertaAmigos.getPosition().lat();
+	novoCrime.longitude = marcadorAlertaAmigos.getPosition().lng();
 	
+	marcadorAlertaAmigos.setMap(null);
+	marcadorAlertaAmigos=criaMarcador(novoCrime, null);
+	desabilitaTutor(2000);
+	marcadorAlertaAmigos.setMap(map);   	
+	infowindow.setContent(constroiHtmlAlerta());
+	infowindow.open(map,marcadorAlertaAmigos);
+	google.maps.event.addListener(infowindow, "closeclick", function (latLng) {
+		if(!auxRegistrouAlerta)
+			marcadorAlertaAmigos.setMap(null);
+		
+		map.setCenter(new google.maps.LatLng(marcadorAlertaAmigos.getPosition().lat(),marcadorAlertaAmigos.getPosition().lng()+0.0000001),map.getZoom());	
+		auxRegistrouAlerta = false;
+		estaRegistrando = false;
+		podeCarregarCrimes = true;
+	});
+}
+var infowindowtemp = null;
+function registrarAlerta(){	
 	escondeDivSelecaoAlerta();
 	if(!estaRegistrando){	
 		if(gadgets.util.getUrlParameters()["gadgetOwner"]!=gadgets.util.getUrlParameters()["gadgetViewer"]){
 			mostrarMensagem('warning', prefs.getMsg("sem.permissao"),true);
 		}else{
+			podeCarregarCrimes = false;
 			estaRegistrando = true;
-			map.disableDragging();
-			marcadorAlertaAmigos = criaMarcadorTemp(map.getCenter());
-			map.addOverlay(marcadorAlertaAmigos);
-			eventoMoveMouse=GEvent.addListener(map, "mousemove", function (latLng) {					
-				if (!marcadorAlertaAmigos) {
-					marcadorAlertaAmigos = criaMarcadorTemp(latLng);
-					map.addOverlay(marcador);
-				} else {
-					marcadorAlertaAmigos.setLatLng(latLng);
-			  	}
-		  	});
+			for (k in crimes){		
+				if(crimes[k]!=undefined){
+					crimes[k].marcador.setVisible(false);
+					crimes[k]=undefined;
+				}
+			}
 			
-			var eventoClickBotaoDireito = GEvent.addListener(map, "singlerightclick", function(latlng) {
-				GEvent.removeListener(eventoMoveMouse);
-	        	GEvent.removeListener(eventoMapClick);
-	        	GEvent.removeListener(eventoClickBotaoDireito);
-				if(!auxRegistrouAlerta)
-					map.removeOverlay(marcadorAlertaAmigos);				
-				map.enableDragging();
-				auxRegistrouAlerta = false;
-				estaRegistrando = false;        	  
-	        });
-		  	eventoMapClick=GEvent.addListener(map, "click", function(latlng) {
-	        	GEvent.removeListener(eventoMoveMouse);
-	        	GEvent.removeListener(eventoMapClick);
-	        	
-	        	var novoCrime = new Crime();
-	        	novoCrime.tipo_crime = '6';
-	        	novoCrime.latitude = marcadorAlertaAmigos.getLatLng().lat();
-	        	novoCrime.longitude = marcadorAlertaAmigos.getLatLng().lng();
-	        	marcadorAlertaAmigos.disableDragging();
-	        	map.removeOverlay(marcadorAlertaAmigos);
-	        	marcadorAlertaAmigos=criaMarcador(novoCrime, null);
-	        	desabilitaTutor(2000);
-	        	map.addOverlay(marcadorAlertaAmigos);	        	
-	        	marcadorAlertaAmigos.openInfoWindowHtml(constroiHtmlAlerta());
-	        	
-	        	map.enableDragging();
-	        	GEvent.addListener(marcadorAlertaAmigos, "infowindowclose", function (latLng) {
-					if(!auxRegistrouAlerta)
-						map.removeOverlay(marcadorAlertaAmigos);
-					map.setCenter(new GLatLng(marcadorAlertaAmigos.getLatLng().lat(),marcadorAlertaAmigos.getLatLng().lng()+0.0000001),map.getZoom());	
-					auxRegistrouAlerta = false;
-					estaRegistrando = false;
-				});		        	  
-	        });
+			infowindowtemp = new google.maps.InfoWindow({ 
+	   			content: '<b>Arraste</b> o ícone ao local da Ocorrência, após isso <b>clique</b> <a href="#" onclick="mostraJanelaRegistroAlerta();" >aqui</a> para preencher seus dados.<br/> Para <b>cancelar</b> este registro clique <a href="#" onclick="cancelarRegistroAlerta();">aqui</a>'
+	   		}); 	
+			marcadorAlertaAmigos = criaMarcadorTemp(map.getCenter());
+			marcadorAlertaAmigos.setMap(map);
+			marcadorAlertaAmigos.setDraggable(true);
+			infowindowtemp.open(map,marcadorAlertaAmigos);
+			google.maps.event.addListener(marcadorAlertaAmigos, "dragend", function() {
+				infowindowtemp.open(map,marcadorAlertaAmigos);
+			});
+			google.maps.event.addListener(marcadorAlertaAmigos, "click", function() {
+				mostraJanelaRegistroAlerta();		        	  
+			});	
+
 		}
 	}	
+}
+
+function mostraJanelaRegistroCrime(tipoCrime){
+	infowindowtemp.close();
+	infowindowtemp = null;
+	var novoCrime = new Crime();
+	novoCrime.tipo_crime = tipoCrime;
+	novoCrime.latitude = marcadorAlertaAmigos.getPosition().lat();
+	novoCrime.longitude = marcadorAlertaAmigos.getPosition().lng();
+	
+	marcadorAlertaAmigos.setMap(null);
+	marcadorAlertaAmigos=criaMarcador(novoCrime, null);
+	desabilitaTutor(2000);
+	marcadorAlertaAmigos.setMap(map);   	
+	infowindow.setContent(constroiHtmlAlertaCrime(tipoCrime));
+	infowindow.open(map,marcadorAlertaAmigos);
+	google.maps.event.addListener(infowindow, "closeclick", function (latLng) {
+		if(!auxRegistrouAlerta)
+			marcadorAlertaAmigos.setMap(null);
+		
+		map.setCenter(new google.maps.LatLng(marcadorAlertaAmigos.getPosition().lat(),marcadorAlertaAmigos.getPosition().lng()+0.0000001),map.getZoom());	
+		auxRegistrouAlerta = false;
+		estaRegistrando = false;
+		podeCarregarCrimes = true;
+	});
 }
 
 function registrarCrime(tipoCrime){
@@ -298,52 +412,74 @@ function registrarCrime(tipoCrime){
 		if(gadgets.util.getUrlParameters()["gadgetOwner"]!=gadgets.util.getUrlParameters()["gadgetViewer"]){
 			mostrarMensagem('warning', prefs.getMsg("sem.permissao"),true);
 		}else{
+			podeCarregarCrimes = false;
 			estaRegistrando = true;
-			map.disableDragging();
+			for (k in crimes){		
+				if(crimes[k]!=undefined){
+					crimes[k].marcador.setVisible(false);
+					crimes[k]=undefined;
+				}
+			}
+			
+			infowindowtemp = new google.maps.InfoWindow({ 
+	   			content: '<b>Arraste</b> o ícone ao local da Ocorrência, após isso <b>clique</b> <a href="#" onclick="mostraJanelaRegistroCrime(\''+tipoCrime+'\');" >aqui</a> para preencher seus dados.<br/> Para <b>cancelar</b> este registro clique <a href="#" onclick="cancelarRegistroAlerta();">aqui</a>'
+	   		}); 	
 			marcadorAlertaAmigos = criaMarcadorTempCrime(map.getCenter(),tipoCrime);
-			map.addOverlay(marcadorAlertaAmigos);
-			eventoMoveMouse=GEvent.addListener(map, "mousemove", function (latLng) {					
-				if (!marcadorAlertaAmigos) {
-					marcadorAlertaAmigos = criaMarcadorTempCrime(latlng, tipoCrime);
-					map.addOverlay(marcador);
-				} else {
-					marcadorAlertaAmigos.setLatLng(latLng);
-			  	}
-		  	});
-			var eventoClickBotaoDireito = GEvent.addListener(map, "singlerightclick", function(latlng) {
-				GEvent.removeListener(eventoMoveMouse);
-	        	GEvent.removeListener(eventoMapClick);
-	        	GEvent.removeListener(eventoClickBotaoDireito);
-				if(!auxRegistrouAlerta)
-					map.removeOverlay(marcadorAlertaAmigos);				
-				map.enableDragging();
-				auxRegistrouAlerta = false;
-				estaRegistrando = false;        	  
-	        });
-		  	eventoMapClick=GEvent.addListener(map, "click", function(latlng) {
-	        	GEvent.removeListener(eventoMoveMouse);
-	        	GEvent.removeListener(eventoMapClick);
-	        	
-	        	var novoCrime = new Crime();
-	        	novoCrime.tipo_crime = tipoCrime;
-	        	novoCrime.latitude = marcadorAlertaAmigos.getLatLng().lat();
-	        	novoCrime.longitude = marcadorAlertaAmigos.getLatLng().lng();
-	        	marcadorAlertaAmigos.disableDragging();
-	        	map.removeOverlay(marcadorAlertaAmigos);
-	        	marcadorAlertaAmigos=criaMarcador(novoCrime, null);
-	        	desabilitaTutor(2000);
-	        	map.addOverlay(marcadorAlertaAmigos);		        	
-	        	marcadorAlertaAmigos.openInfoWindowHtml(constroiHtmlAlertaCrime(tipoCrime));
-	        	
-	        	map.enableDragging();
-	        	GEvent.addListener(marcadorAlertaAmigos, "infowindowclose", function (latLng) {
-					if(!auxRegistrouAlerta)
-						map.removeOverlay(marcadorAlertaAmigos);
-					map.setCenter(new GLatLng(marcadorAlertaAmigos.getLatLng().lat(),marcadorAlertaAmigos.getLatLng().lng()+0.0000001),map.getZoom());	
-					auxRegistrouAlerta = false;
-					estaRegistrando = false;
-				});		        	  
-	        });
+			marcadorAlertaAmigos.setMap(map);
+			marcadorAlertaAmigos.setDraggable(true);
+			infowindowtemp.open(map,marcadorAlertaAmigos);
+			google.maps.event.addListener(marcadorAlertaAmigos, "dragend", function() {
+				infowindowtemp.open(map,marcadorAlertaAmigos);
+			});
+			google.maps.event.addListener(marcadorAlertaAmigos, "click", function() {
+				mostraJanelaRegistroCrime(tipoCrime);		        	  
+			});	
+//			estaRegistrando = true;
+//			map.disableDragging();
+//			marcadorAlertaAmigos = criaMarcadorTempCrime(map.getCenter(),tipoCrime);
+//			map.addOverlay(marcadorAlertaAmigos);
+//			eventoMoveMouse=GEvent.addListener(map, "mousemove", function (latLng) {					
+//				if (!marcadorAlertaAmigos) {
+//					marcadorAlertaAmigos = criaMarcadorTempCrime(latlng, tipoCrime);
+//					map.addOverlay(marcador);
+//				} else {
+//					marcadorAlertaAmigos.setLatLng(latLng);
+//			  	}
+//		  	});
+//			var eventoClickBotaoDireito = GEvent.addListener(map, "singlerightclick", function(latlng) {
+//				GEvent.removeListener(eventoMoveMouse);
+//	        	GEvent.removeListener(eventoMapClick);
+//	        	GEvent.removeListener(eventoClickBotaoDireito);
+//				if(!auxRegistrouAlerta)
+//					map.removeOverlay(marcadorAlertaAmigos);				
+//				map.enableDragging();
+//				auxRegistrouAlerta = false;
+//				estaRegistrando = false;        	  
+//	        });
+//		  	eventoMapClick=GEvent.addListener(map, "click", function(latlng) {
+//	        	GEvent.removeListener(eventoMoveMouse);
+//	        	GEvent.removeListener(eventoMapClick);
+//	        	
+//	        	var novoCrime = new Crime();
+//	        	novoCrime.tipo_crime = tipoCrime;
+//	        	novoCrime.latitude = marcadorAlertaAmigos.getLatLng().lat();
+//	        	novoCrime.longitude = marcadorAlertaAmigos.getLatLng().lng();
+//	        	marcadorAlertaAmigos.disableDragging();
+//	        	map.removeOverlay(marcadorAlertaAmigos);
+//	        	marcadorAlertaAmigos=criaMarcador(novoCrime, null);
+//	        	desabilitaTutor(2000);
+//	        	map.addOverlay(marcadorAlertaAmigos);		        	
+//	        	marcadorAlertaAmigos.openInfoWindowHtml(constroiHtmlAlertaCrime(tipoCrime));
+//	        	
+//	        	map.enableDragging();
+//	        	GEvent.addListener(marcadorAlertaAmigos, "infowindowclose", function (latLng) {
+//					if(!auxRegistrouAlerta)
+//						map.removeOverlay(marcadorAlertaAmigos);
+//					map.setCenter(new google.maps.LatLng(marcadorAlertaAmigos.getLatLng().lat(),marcadorAlertaAmigos.getLatLng().lng()+0.0000001),map.getZoom());	
+//					auxRegistrouAlerta = false;
+//					estaRegistrando = false;
+//				});		        	  
+//	        });
 		}
 	}	
 }
@@ -401,8 +537,13 @@ function validaFormRegistroAlerta(){
 	}
 		
 	
-	if(passouNaValidacao)
-		executaRequisicaoRegistrarAlerta(document.getElementById('desc_alerta').value,marcadorAlertaAmigos.getLatLng().lat(),marcadorAlertaAmigos.getLatLng().lng(),razoes);
+	if(passouNaValidacao){
+		
+		executaRequisicaoRegistrarAlerta(document.getElementById('desc_alerta').value,marcadorAlertaAmigos.getPosition().lat(),marcadorAlertaAmigos.getPosition().lng(),razoes);
+		estaRegistrando = false;
+		podeCarregarCrimes = true;
+		marcadorAlertaAmigos.setMap(null);
+	}	
 }
 
 function validaFormRegistroAlertaCrime(){
@@ -545,59 +686,24 @@ function codificaCaracteres(descricao){
 function showLocal() {
 	var endereco = document.getElementById("pesquisa").value;
 	if (!geocoder) {						
-		geocoder = new GClientGeocoder();
+		geocoder = new google.maps.Geocoder();
 	}
-	geocoder.getLocations(endereco, plotaEnderecoMap);
-	geocoder = null;
+//	geocoder.getLocations(endereco, plotaEnderecoMap);
+//	geocoder = null;
+	geocoder.geocode( { 'address': endereco}, function(results, status) {
+		 if (status == google.maps.GeocoderStatus.OK) {
+			 desabilitaTutor(2000);			 
+			 map.fitBounds(results[0].geometry.bounds);
+			 map.setCenter(results[0].geometry.location);
+			 if(marcadorAlertaAmigos){
+				 marcadorAlertaAmigos.setPosition(results[0].geometry.location);
+			 }	 
+		} else {
+			alert(prefs.getMsg("erro.pesquisa"));
+		}
+	}); 
 }
 
-function plotaEnderecoMap(response) {	  						  
-      if (!response || response.Status.code != 200) {
-        alert(prefs.getMsg("erro.pesquisa"));
-      } 
-      else {
-    	  	//Como ele pesquisou corretamente... eu não mostro mais essaAjuda
-    	  	jaMostrouAjudaPesquisa = true;
-	      	place = response.Placemark[0];
-	      	point = new GLatLng(place.Point.coordinates[1],place.Point.coordinates[0]);
-	      	var html=place.address  + ' <br/> ' + '<b>'+prefs.getMsg("cod.pais")+':</b> <br/>' + place.AddressDetails.Country.CountryNameCode;
-	      	map.openInfoWindowHtml(point,html);
-	        switch(place.AddressDetails.Accuracy)
-			{
-				case 0:
-					zoom=2;
-					  break;    
-				case 1:
-					zoom=4;
-				  break;
-			 	case 2:
-					zoom=6;
-				  break;
-				case 3:
-					zoom=12;
-				  break;
-				case 4:
-					zoom=13;
-				  break;
-				case 5:
-					zoom=14;
-				  break;
-				case 6:
-					zoom=16;
-				  break;
-				case 7:
-					zoom=17;
-				  break;
-				case 8:
-					zoom=17;
-				  break;
-				default:
-					zoom=13;		
-			}
-	        desabilitaTutor(2000);
-          	map.setCenter(point,zoom);        
-    		}
-}				
 
 function submitEnter(e){
 
@@ -682,7 +788,7 @@ function selecionarNotificacao(id, nomeUsuario, acao, tipoNotficacao){
 	usuarioSelecionadoAnterior.nome = nomeUsuario;
 	usuarioSelecionadoAnterior.id = id;								
 	document.getElementById(id).innerHTML ="<b>"+ nomeUsuario +"</b>";
-	map.setCenter(new GLatLng(arrayDados[1],arrayDados[2]),16);
+	map.setCenter(new google.maps.LatLng(arrayDados[1],arrayDados[2]),16);
 	crimeInfoWindow = arrayDados[0];
 	
 	if(tipoNotficacao==1)
@@ -826,34 +932,30 @@ function mostrarModalAvisoDesativarTutor(){
 
 function atualizaMapa() {
 	if(map){
-
 		if (limpaTela) {
 			map.clearOverlays();
-			crimesAtuais = {}							
-			
+			crimesAtuais = {};			
 		}
 		executaRequisicaoListagem();
 	}
 }
 function getCityLatLng2(){
-	if (!geocoder)
-		geocoder = new GClientGeocoder();
-		geocoder.getLocations(document.getElementById('cidade').value + " , " +  document.getElementById('pais').value,function (response) { 
-	
-	if (!response || response.Status.code != 200) {
-		alert(" usuario.cidade.nao.encontrada(" + document.getElementById('cidade').value + " , " +  document.getElementById('pais').value + ")");
-		 //alert(prefs.getMsg('usuario.cidade.nao.encontrada') +" (" + document.getElementById('cidade').value + " , " +  document.getElementById('pais').value + ")");
-		document.getElementById('cidade').focus();
-		return false;
+	if (!geocoder) {						
+		geocoder = new google.maps.Geocoder();
 	}
-	else{
-		place = response.Placemark[0];
-	    usuarioRedeSocial.latitude=place.Point.coordinates[1];
-	    usuarioRedeSocial.longitude=place.Point.coordinates[0];
-		executaRequisicaoRegistraUsuarioOrkut();
-     }
+	geocoder.geocode( { 'address': document.getElementById('cidade').value + " , " +  document.getElementById('pais').value}, function(results, status) {
+		 if (status == google.maps.GeocoderStatus.OK) {
+			 usuarioRedeSocial.latitude=results[0].geometry.location.lat();
+			 usuarioRedeSocial.longitude=results[0].geometry.location.lat().lng();
+			 executaRequisicaoRegistraUsuarioOrkut();
+			
+		} else {
+			alert(" usuario.cidade.nao.encontrada(" + document.getElementById('cidade').value + " , " +  document.getElementById('pais').value + ")");
+			 //alert(prefs.getMsg('usuario.cidade.nao.encontrada') +" (" + document.getElementById('cidade').value + " , " +  document.getElementById('pais').value + ")");
+			document.getElementById('cidade').focus();
+		}
+	}); 
 	
-	 });			 		
 }
 
 function mostraDivSelecaoAlerta(left,top,html){
@@ -880,24 +982,23 @@ function escondeDivLegendaMapa(){
 }
 
 function getCityLatLng(){
-	if (!geocoder)
-		geocoder = new GClientGeocoder();
-	geocoder.getLocations(document.getElementById('cidade').value + " , " +  document.getElementById('pais').value,function (response) {		
-	if (!response || response.Status.code != 200) {
-		 alert("Cidade que você informou não é válida!");
-		 //alert(prefs.getMsg('usuario.cidade.nao.encontrada') +" (" + document.getElementById('cidade').value + " , " +  document.getElementById('pais').value + ")");
-		 document.getElementById('cidade').focus();
-		 place=null;
-		 return false;
+	if (!geocoder) {						
+		geocoder = new google.maps.Geocoder();
 	}
-	else{
-		place = response.Placemark[0];
-        usuarioRedeSocial.latitude=place.Point.coordinates[1];
-        usuarioRedeSocial.longitude=place.Point.coordinates[0];
-        executaRequisicaoRegistraUsuarioOrkut();
-     }
-
-	});			 		
+	geocoder.geocode( { 'address': document.getElementById('cidade').value + " , " +  document.getElementById('pais').value}, function(results, status) {
+		 if (status == google.maps.GeocoderStatus.OK) {
+			 usuarioRedeSocial.latitude=results[0].geometry.location.lat();
+			 usuarioRedeSocial.longitude=results[0].geometry.location.lng();
+			 executaRequisicaoRegistraUsuarioOrkut();
+			
+		} else {
+			 alert(" usuario.cidade.nao.encontrada(" + document.getElementById('cidade').value + " , " +  document.getElementById('pais').value + ")");
+			 //alert(prefs.getMsg('usuario.cidade.nao.encontrada') +" (" + document.getElementById('cidade').value + " , " +  document.getElementById('pais').value + ")");
+			 document.getElementById('cidade').focus();
+			 place=null;
+			 return false;
+		}
+	});
  }
 
    

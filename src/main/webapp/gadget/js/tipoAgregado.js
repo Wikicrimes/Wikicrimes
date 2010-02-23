@@ -31,6 +31,7 @@ function UsuarioRedeSocial() {
 	this.cidade='';
 	this.pais='';		
 	     this.latitude='';
-	this.longitude='';		
+	this.longitude='';
+	this.linkPerfil = '';
 }
 //Tipo agregado UsuarioRedeSocial

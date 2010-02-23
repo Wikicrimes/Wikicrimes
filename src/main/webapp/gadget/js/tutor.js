@@ -19,7 +19,7 @@ function verificarRegras(situacao){
 				return;
 			}	
 		}
-		if(situacao['zoom']>=15 && map.getCurrentMapType() != G_SATELLITE_MAP){
+		if(situacao['zoom']>=15 && map.getMapTypeId() != google.maps.MapTypeId.SATELLITE){
 			
 			if(!jaMostrouTipoMapa && numAleatorio> 40){
 				mostrarBalaoTipoMapa();
@@ -52,7 +52,7 @@ function verificarRegras(situacao){
 				return;
 			}	
 		}
-		if(situacao['zoom']>=15 && map.getCurrentMapType() != G_SATELLITE_MAP){
+		if(situacao['zoom']>=15 && map.getMapTypeId() != google.maps.MapTypeId.SATELLITE){
 			
 			if(!jaMostrouTipoMapa && numAleatorio> 40){
 				mostrarBalaoTipoMapa();
@@ -64,31 +64,48 @@ function verificarRegras(situacao){
 
 function mostraBalaoAlertarAmigos(){
 	criaBalaoSetaCima(prefs.getMsg("balao.ajuda.alertar"),conteudoAjudaRelacionadaNotificacoes());
-	mostrarBalao('360px','100px');
+	if(opensocial.getEnvironment().getDomain() == 'orkut.com')
+		mostrarBalao('360px','40px');
+	else
+		mostrarBalao('360px','12px');
 	jaMostrouAlerta = true;
 }
 
 function mostraBalaoPesquisaEndereco(){
 	criaBalaoSetaCima(prefs.getMsg("balao.ajuda.pesquisar.endereco"),conteudoSemAjudaRelacionada());
-	mostrarBalao('560px','92px');
+	if(opensocial.getEnvironment().getDomain() == 'orkut.com')
+		mostrarBalao('560px','32px');
+	else
+		mostrarBalao('542px','10px');
+	
 	jaMostrouAjudaPesquisa = true;
 }
 
 function mostraBalaoNotificacoes(){
 	criaBalaoSetaCima(prefs.getMsg("balao.ajuda.notificacoes"),conteudoAjudaRelacionadaRegistrarAlerta());
-	mostrarBalao('148px','142px');
+	if(opensocial.getEnvironment().getDomain() == 'orkut.com')
+		mostrarBalao('148px','82px');
+	else
+		mostrarBalao('148px','48px');
+	
 	jaMostrouNotificacoes = true;
 }
 
 function mostrarBalaoInteracaoMapa(){
 	criaBalaoSetaCima(prefs.getMsg("balao.ajuda.manipulacao.mapa"),conteudoSemAjudaRelacionada());
-	mostrarBalao('316px','210px');
+	if(opensocial.getEnvironment().getDomain() == 'orkut.com')
+		mostrarBalao('316px','150px');
+	else
+		mostrarBalao('292px','68px');
 	jaMostrouInteracaoMapa = true;
 }
 
 function mostrarBalaoTipoMapa(){
-	criaBalaoSetaBaixo(prefs.getMsg("balao.ajuda.tipo.mapa"),conteudoSemAjudaRelacionada());
-	mostrarBalao('562px','342px');
+	criaBalaoSetaCima(prefs.getMsg("balao.ajuda.tipo.mapa"),conteudoSemAjudaRelacionada());
+	if(opensocial.getEnvironment().getDomain() == 'orkut.com')	
+		mostrarBalao('582px','82px');
+	else
+		mostrarBalao('520px','58px');
 	jaMostrouTipoMapa = true;
 }
 

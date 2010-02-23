@@ -47,7 +47,7 @@
 			<f:loadBundle var="messages" basename="messages" />
 			
 			
-			<div id="topoBalao"> <b>#{messages['mostrardados.titulo']}</b> </div>
+			<div id="topoBalao" style="width:360px"> <b>#{messages['mostrardados.titulo']}</b> </div>
 			
 			
 			<h:panelGrid border="0" style="font-size: 11px; font-family: sans-serif;" columns="1">
@@ -135,7 +135,7 @@
 					<td> #{messages['mostrardados.permalink']} (<a href="" onmouseover="Tip('#{messages['crime.mostra.permalink']}', BALLOON, true, ABOVE, true, OFFSETX, -100);"  >?</a>) </td>
 				</tr>
 				<tr align="left">
-						<td> <input type="text" readonly="readonly" style="font-size: 10px;" onclick="this.select();" value="http://www.wikicrimes.org/main.html?idcrime=#{mostrarDadosForm.crime.chave}" size="55"/> </td>
+						<td> <input type="text" readonly="readonly" style="font-size: 10px;" onclick="this.select();" value="http://www.wikicrimes.org/main.html?idcrime=#{mostrarDadosForm.crime.chave}" size="46"/> </td>
 				</tr>				
 			</table>
 		<script type="text/javascript">

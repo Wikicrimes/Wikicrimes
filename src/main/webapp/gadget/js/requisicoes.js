@@ -219,9 +219,15 @@ function executaRequisicaoRealizaLogin() {
   	  cont++;
     }
 	params[gadgets.io.RequestParameters.AUTHORIZATION] = gadgets.io.AuthorizationType.SIGNED;
+	params[gadgets.io.RequestParameters.POST_DATA] = 'acao=realizaLogin&idUsuarioRedeSocial="+usuarioRedeSocial.idUsuario+"&dominioRedeSocial="+opensocial.getEnvironment().getDomain()+"&login="+document.getElementById("login").value+"&senha="+document.getElementById("senha").value+"&vizualizarCrimeOpensocial="+vCrimeSelecionado+"&amigos="+paramAmigos;
+	params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.POST;				  
 	params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.DOM;
-	var url = linkAplication+"ServletOpensocial?acao=realizaLogin&idUsuarioRedeSocial="+usuarioRedeSocial.idUsuario+"&dominioRedeSocial="+opensocial.getEnvironment().getDomain()+"&login="+document.getElementById("login").value+"&senha="+document.getElementById("senha").value+"&vizualizarCrimeOpensocial="+vCrimeSelecionado+"&amigos="+paramAmigos;					
-	gadgets.io.makeRequest(url, repostaRequisicaoRealizaLogin, params);							
+	var url = linkAplication+"ServletOpensocial";					
+	gadgets.io.makeRequest(url, repostaRequisicaoRealizaLogin, params);	
+//	params[gadgets.io.RequestParameters.AUTHORIZATION] = gadgets.io.AuthorizationType.SIGNED;
+//	params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.DOM;
+//	var url = linkAplication+"ServletOpensocial?acao=realizaLogin&idUsuarioRedeSocial="+usuarioRedeSocial.idUsuario+"&dominioRedeSocial="+opensocial.getEnvironment().getDomain()+"&login="+document.getElementById("login").value+"&senha="+document.getElementById("senha").value+"&vizualizarCrimeOpensocial="+vCrimeSelecionado+"&amigos="+paramAmigos;					
+//	gadgets.io.makeRequest(url, repostaRequisicaoRealizaLogin, params);							
 }
 
 function repostaRequisicaoRealizaLogin(obj){

@@ -12,6 +12,10 @@
 	<msg name="ms.registro4">Para realizar uma</msg>
 	<msg name="ms.registro5">Busca por Endereço</msg>
 	<msg name="ms.registro6">preencha a caixa de texto acima do mapa e clique em</msg>
+	<msg name="atividade.alerta"> está alertando você</msg>
+	<msg name="atividade.comentou"> comentou um alerta no WikiCrimes Social</msg>
+	<msg name="atividade.confirmou"> confirmou um alerta no WikiCrimes Social</msg>
+	<msg name="atividade.body">para ver o perfil de</msg>
 	
 	<msg name="ocorrencia">Ocorrência</msg>
 	<msg name="alertas.que.voce.recebeu">Alertas que você recebeu</msg>

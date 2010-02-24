@@ -150,11 +150,11 @@ function addToActivityStream(tipoAtividade) {
 	
 	var titulo = "";
 	if(tipoAtividade==1)
-		titulo = " está alertando você!";
+		titulo = " "+prefs.getMsg("atividade.alerta");
 	if(tipoAtividade==2)
-		titulo = " comentou um alerta!";
+		titulo = " "+prefs.getMsg("atividade.comentou");
 	if(tipoAtividade==3)
-		titulo = " confirmou um alerta!";
+		titulo = " "+prefs.getMsg("atividade.confirmou");
 	
  	params[opensocial.Activity.Field.TITLE] = titulo;
  	params[opensocial.Activity.Field.BODY] =conteudoAtividade(tipoAtividade);

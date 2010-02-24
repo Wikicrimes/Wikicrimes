@@ -9,9 +9,13 @@
 	<msg name="ms.registro2">the icon to local of Denounce, after click</msg>
 	<msg name="aqui">here</msg>
 	<msg name="ms.registro3">to ty Data</msg>
-	<msg name="ms.registro4">to perform a</msg>
+	<msg name="ms.registro4">To perform a</msg>
 	<msg name="ms.registro5">Search by Address</msg>
 	<msg name="ms.registro6">type address on text field up and clique in</msg>
+	<msg name="atividade.alerta"> is warning you</msg>
+	<msg name="atividade.comentou"> comments a warning in WikiCrimes Social </msg>
+	<msg name="atividade.confirmou"> confirm a warning in WikiCrimes Social</msg>
+	<msg name="atividade.body">to view the profile of</msg>
 	<msg name="ocorrencia">Crime</msg>
 	<msg name="alertas.que.voce.recebeu">Alerts you received</msg>
 	<msg name="comentarios">Comments</msg>

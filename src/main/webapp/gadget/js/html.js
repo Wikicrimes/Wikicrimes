@@ -676,7 +676,7 @@ function conteudoAtividade(tipoAtividade){
 				"			<img width='50px' height='50px' src='"+linkAplication+"images/widget/atencaoWikiCrimesSocial_50x50.jpg' />" +
 				"		</td>" +
 				"		<td> " +
-				"			Clique <a href='"+usuarioRedeSocial.linkPerfil+"'>aqui</a> para ver o perfil de "+usuarioRedeSocial.nome+
+				"			Clique <a href='"+usuarioRedeSocial.linkPerfil+"'>"+prefs.getMsg("aqui")+"</a> "+prefs.getMsg("atividade.body")+" "+usuarioRedeSocial.nome+
 				"		</td>" +
 				"		<td>" +
 				"			<img width='82px' height='50px' src='"+linkAplication+"images/widget/img_propaganda.jpg' />" +

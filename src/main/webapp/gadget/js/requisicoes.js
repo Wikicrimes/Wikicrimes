@@ -355,11 +355,11 @@ function repostaRequisicaoRegistrarAlertaCrime(obj){
 	}
 	
 	if(responseText=='ok'){
-		auxRegistrouAlerta = true;	
-		marcadorAlertaAmigos.closeInfoWindow();
+		auxRegistrouAlerta = true;			
 		mostrarMensagem('success', prefs.getMsg("alerta.registrado"),true);
 		executaRequisicaoRelatosMaisRecentes();
 		addToActivityStream(1);
+		infowindow.close();
 	}
 	
 }

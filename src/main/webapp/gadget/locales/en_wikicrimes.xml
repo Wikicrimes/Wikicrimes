@@ -5,6 +5,13 @@
 	<msg name="hint.alertarAmigos">Click this image to alert your friends</msg>
 	<msg name="carregando">loading...</msg>
 	<msg name="amigo">Friend</msg>
+	<msg name="ms.registro1">Drag</msg>
+	<msg name="ms.registro2">the icon to local of Denounce, after click</msg>
+	<msg name="aqui">here</msg>
+	<msg name="ms.registro3">to ty Data</msg>
+	<msg name="ms.registro4">to perform a</msg>
+	<msg name="ms.registro5">Search by Address</msg>
+	<msg name="ms.registro6">type address on text field up and clique in</msg>
 	<msg name="ocorrencia">Crime</msg>
 	<msg name="alertas.que.voce.recebeu">Alerts you received</msg>
 	<msg name="comentarios">Comments</msg>

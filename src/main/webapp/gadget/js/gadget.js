@@ -361,20 +361,21 @@ function registrarAlerta(){
 					crimes[k]=undefined;
 				}
 			}
+			infowindow.close();
 			
 			infowindowtemp = new google.maps.InfoWindow({ 
-	   			content: '<b>Arraste</b> o ícone ao local da Ocorrência, após isso <b>clique</b> <a href="#" onclick="mostraJanelaRegistroAlerta();" >aqui</a> para preencher seus dados.<br/> Para <b>cancelar</b> este registro clique <a href="#" onclick="cancelarRegistroAlerta();">aqui</a>'
+	   			content: '<b>'+prefs.getMsg("ms.registro1")+'</b> '+prefs.getMsg("ms.registro2")+' <a href="#" onclick="mostraJanelaRegistroAlerta();" >'+prefs.getMsg("aqui")+'</a> '+prefs.getMsg("ms.registro3")+'.<br/> '+prefs.getMsg("ms.registro4")+' <b>'+prefs.getMsg("ms.registro5")+'</b>, '+prefs.getMsg("ms.registro6")+' "'+prefs.getMsg("pesquisar.no.mapa")+'"' 
 	   		}); 	
 			marcadorAlertaAmigos = criaMarcadorTemp(map.getCenter());
 			marcadorAlertaAmigos.setMap(map);
 			marcadorAlertaAmigos.setDraggable(true);
 			infowindowtemp.open(map,marcadorAlertaAmigos);
-			google.maps.event.addListener(marcadorAlertaAmigos, "dragend", function() {
-				infowindowtemp.open(map,marcadorAlertaAmigos);
-			});
 			google.maps.event.addListener(marcadorAlertaAmigos, "click", function() {
-				mostraJanelaRegistroAlerta();		        	  
-			});	
+				infowindowtemp.open(map,marcadorAlertaAmigos);		        	  
+			});
+			google.maps.event.addListener(infowindowtemp, "closeclick", function (latLng) {
+				cancelarRegistroAlerta();
+			});		
 
 		}
 	}	
@@ -420,66 +421,23 @@ function registrarCrime(tipoCrime){
 					crimes[k]=undefined;
 				}
 			}
-			
+			infowindow.close();
 			infowindowtemp = new google.maps.InfoWindow({ 
-	   			content: '<b>Arraste</b> o ícone ao local da Ocorrência, após isso <b>clique</b> <a href="#" onclick="mostraJanelaRegistroCrime(\''+tipoCrime+'\');" >aqui</a> para preencher seus dados.<br/> Para <b>cancelar</b> este registro clique <a href="#" onclick="cancelarRegistroAlerta();">aqui</a>'
-	   		}); 	
+	   			content: '<b>'+prefs.getMsg("ms.registro1")+'</b> '+prefs.getMsg("ms.registro2")+' <a href="#" onclick="mostraJanelaRegistroCrime(\''+tipoCrime+'\');" >'+prefs.getMsg("aqui")+'</a> '+prefs.getMsg("ms.registro3")+'.<br/> '+prefs.getMsg("ms.registro4")+' <b>'+prefs.getMsg("ms.registro5")+'</b>, '+prefs.getMsg("ms.registro6")+' "'+prefs.getMsg("pesquisar.no.mapa")+'"' 
+	   		});  	
 			marcadorAlertaAmigos = criaMarcadorTempCrime(map.getCenter(),tipoCrime);
 			marcadorAlertaAmigos.setMap(map);
 			marcadorAlertaAmigos.setDraggable(true);
 			infowindowtemp.open(map,marcadorAlertaAmigos);
-			google.maps.event.addListener(marcadorAlertaAmigos, "dragend", function() {
-				infowindowtemp.open(map,marcadorAlertaAmigos);
-			});
+//			google.maps.event.addListener(marcadorAlertaAmigos, "dragend", function() {
+//				infowindowtemp.open(map,marcadorAlertaAmigos);
+//			});
 			google.maps.event.addListener(marcadorAlertaAmigos, "click", function() {
-				mostraJanelaRegistroCrime(tipoCrime);		        	  
-			});	
-//			estaRegistrando = true;
-//			map.disableDragging();
-//			marcadorAlertaAmigos = criaMarcadorTempCrime(map.getCenter(),tipoCrime);
-//			map.addOverlay(marcadorAlertaAmigos);
-//			eventoMoveMouse=GEvent.addListener(map, "mousemove", function (latLng) {					
-//				if (!marcadorAlertaAmigos) {
-//					marcadorAlertaAmigos = criaMarcadorTempCrime(latlng, tipoCrime);
-//					map.addOverlay(marcador);
-//				} else {
-//					marcadorAlertaAmigos.setLatLng(latLng);
-//			  	}
-//		  	});
-//			var eventoClickBotaoDireito = GEvent.addListener(map, "singlerightclick", function(latlng) {
-//				GEvent.removeListener(eventoMoveMouse);
-//	        	GEvent.removeListener(eventoMapClick);
-//	        	GEvent.removeListener(eventoClickBotaoDireito);
-//				if(!auxRegistrouAlerta)
-//					map.removeOverlay(marcadorAlertaAmigos);				
-//				map.enableDragging();
-//				auxRegistrouAlerta = false;
-//				estaRegistrando = false;        	  
-//	        });
-//		  	eventoMapClick=GEvent.addListener(map, "click", function(latlng) {
-//	        	GEvent.removeListener(eventoMoveMouse);
-//	        	GEvent.removeListener(eventoMapClick);
-//	        	
-//	        	var novoCrime = new Crime();
-//	        	novoCrime.tipo_crime = tipoCrime;
-//	        	novoCrime.latitude = marcadorAlertaAmigos.getLatLng().lat();
-//	        	novoCrime.longitude = marcadorAlertaAmigos.getLatLng().lng();
-//	        	marcadorAlertaAmigos.disableDragging();
-//	        	map.removeOverlay(marcadorAlertaAmigos);
-//	        	marcadorAlertaAmigos=criaMarcador(novoCrime, null);
-//	        	desabilitaTutor(2000);
-//	        	map.addOverlay(marcadorAlertaAmigos);		        	
-//	        	marcadorAlertaAmigos.openInfoWindowHtml(constroiHtmlAlertaCrime(tipoCrime));
-//	        	
-//	        	map.enableDragging();
-//	        	GEvent.addListener(marcadorAlertaAmigos, "infowindowclose", function (latLng) {
-//					if(!auxRegistrouAlerta)
-//						map.removeOverlay(marcadorAlertaAmigos);
-//					map.setCenter(new google.maps.LatLng(marcadorAlertaAmigos.getLatLng().lat(),marcadorAlertaAmigos.getLatLng().lng()+0.0000001),map.getZoom());	
-//					auxRegistrouAlerta = false;
-//					estaRegistrando = false;
-//				});		        	  
-//	        });
+				infowindowtemp.open(map,marcadorAlertaAmigos);		        	  
+			});
+			google.maps.event.addListener(infowindowtemp, "closeclick", function (latLng) {
+				cancelarRegistroAlerta();
+			});		
 		}
 	}	
 }
@@ -649,11 +607,10 @@ function validaFormRegistroAlertaCrime(){
 		document.getElementById('razao1').focus();
 	}else{
 		document.getElementById("erroRazoes").innerHTML ="";
-	}
-		
+	}		
 	
 	if(passouNaValidacao)		
-		executaRequisicaoRegistrarAlertaCrime(document.getElementById('desc_alerta').value,marcadorAlertaAmigos.getLatLng().lat(),marcadorAlertaAmigos.getLatLng().lng(),razoes);
+		executaRequisicaoRegistrarAlertaCrime(document.getElementById('desc_alerta').value,marcadorAlertaAmigos.getPosition().lat(),marcadorAlertaAmigos.getPosition().lng(),razoes);
 }
 
 
@@ -776,6 +733,9 @@ function limparMensagem(){
 }	
 
 function selecionarNotificacao(id, nomeUsuario, acao, tipoNotficacao){
+	infowindow.close();
+	estaRegistrando = false;
+	podeCarregarCrimes = true;
 	desabilitaTutor(5000);
 	mostrarMensagem('info', prefs.getMsg("carregando"),false);
 	acaoAposSelecaoNotificacao = acao;
@@ -788,7 +748,8 @@ function selecionarNotificacao(id, nomeUsuario, acao, tipoNotficacao){
 	usuarioSelecionadoAnterior.nome = nomeUsuario;
 	usuarioSelecionadoAnterior.id = id;								
 	document.getElementById(id).innerHTML ="<b>"+ nomeUsuario +"</b>";
-	map.setCenter(new google.maps.LatLng(arrayDados[1],arrayDados[2]),16);
+	map.setCenter(new google.maps.LatLng(arrayDados[1],arrayDados[2]));
+	map.setZoom(16);
 	crimeInfoWindow = arrayDados[0];
 	
 	if(tipoNotficacao==1)

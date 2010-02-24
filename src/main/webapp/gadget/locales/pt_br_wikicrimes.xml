@@ -5,6 +5,14 @@
 	<msg name="hint.alertarAmigos">Clique nesta imagem para alertar seus amigos</msg>
 	<msg name="carregando">carregando...</msg>
 	<msg name="amigo">Amigo</msg>
+	<msg name="ms.registro1">Arraste</msg>
+	<msg name="ms.registro2">o ícone ao local da Ocorrência, após isso clique</msg>
+	<msg name="aqui">aqui</msg>
+	<msg name="ms.registro3">para preencher seus dados</msg>
+	<msg name="ms.registro4">Para realizar uma</msg>
+	<msg name="ms.registro5">Busca por Endereço</msg>
+	<msg name="ms.registro6">preencha a caixa de texto acima do mapa e clique em</msg>
+	
 	<msg name="ocorrencia">Ocorrência</msg>
 	<msg name="alertas.que.voce.recebeu">Alertas que você recebeu</msg>
 	<msg name="comentarios">Comentários</msg>

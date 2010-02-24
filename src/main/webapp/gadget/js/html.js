@@ -54,7 +54,7 @@ function constroiHtmlAlertaCrime(tipoCrime){
 		htmTextoVitima = prefs.getMsg("alerta.tipo.crime");
 	}
 		
-	var html_alerta="<div style='width:400; height:200px ;overflow: auto;'><div id='topoAlerta'> <b> "+prefs.getMsg("titulo.registrar.alerta")+"(Crime) </b> </div> <br/> <br/> <table style='font-family:Arial, sans-serif;  font-size: 11px;'>";
+	var html_alerta="<div style='width:100%; height:180px ;overflow: auto;'><div id='topoAlerta'> <b> "+prefs.getMsg("titulo.registrar.alerta")+"(Crime) </b> </div> <br/> <br/> <table style='font-family:Arial, sans-serif;  font-size: 11px;'>";
 	html_alerta+="<tr> <td colspan = '2' > <b> "+ htmTextoVitima +":(*) </b> </td> <td colspan = '2' > <b>"+ prefs.getMsg("alerta.tipo.local")+":(*) </b> </td>  </tr>";
 	html_alerta+="<tr> <td colspan = '2' > <div style='color:red;' id = 'erroTipoVitima'> </div> </td>  <td colspan = '2' > <div style='color:red;' id = 'erroTipoLocal'> </div> </td>  </tr>";
 	html_alerta+="<tr> <td colspan = '2' > <select style='font-size: 12px; border: 1px solid #2763a5;' name='tipoVitima' id='tipoVitima'> <option value=''>"+prefs.getMsg("selecione")+"</option> "+ htmlTipoVitima +" </select> </td> <td colspan = '2' > <select style='font-size: 12px; border: 1px solid #2763a5;' name='tipoLocal' id='tipoLocal'> <option value=''>"+prefs.getMsg("selecione")+"</option>"+ htmlTipoLocal +"</select> </td>  </tr>";
@@ -73,7 +73,7 @@ function constroiHtmlAlertaCrime(tipoCrime){
 	html_alerta+="<tr> <td colspan='4'> <input type='radio' onclick='setRadioPolInfo(this.value)' id='polinfo' name='polinfo' value='1' checked> Sim (190) <input type='radio' id='polinfo' onclick='setRadioPolInfo(this.value)' name='polinfo' value='2' > Sim (Delegacia) <input type='radio' id='polinfo' name='polinfo' onclick='setRadioPolInfo(this.value)' value='3'> Não <input type='radio' id='polinfo' onclick='setRadioPolInfo(this.value)' name='polinfo' value='4'> Não Sei</td> </tr>"	
 	html_alerta+="<tr> <td colspan = '4' > <b> "+prefs.getMsg("desc.alerta")+":(*) </b> </td>  </tr>";
 	html_alerta+="<tr> <td colspan = '4' > <div style='color:red;' id = 'erroDesc'> </div> </td>  </tr>";
-	html_alerta+="<tr><td colspan = '4'> <TEXTAREA NAME='desc_alerta' id='desc_alerta' style='font-size: 12px; border: 1px solid #2763a5;' COLS='48' ROWS='6'></TEXTAREA> </td></tr>";
+	html_alerta+="<tr><td colspan = '4'> <TEXTAREA NAME='desc_alerta' id='desc_alerta' style='font-size: 12px; border: 1px solid #2763a5;' COLS='38' ROWS='6'></TEXTAREA> </td></tr>";
 	html_alerta+="<tr> <td colspan = '4'><b> "+prefs.getMsg("causa.motivo.ocorrência1")+" <br/> "+prefs.getMsg("causa.motivo.ocorrência2")+":(*) </b> </td>  </tr>";
 	html_alerta+="<tr> <td colspan = '4' > <div style='color:red;' id = 'erroRazoes'> </div> </td>  </tr>";
 	html_alerta+="<tr> <td>	<input style='font-size: 12px; border: 1px solid #2763a5;' type='checkbox' id='razao1' name='cIluP'/> </td> <td > "+prefs.getMsg("ma.iluminacao.publica")+" </td> <td> <input type='checkbox' id='razao2' name='cFalLazJovens'/> </td> <td > "+prefs.getMsg("ausencia.lazer.jovens")+" </td> </tr>";

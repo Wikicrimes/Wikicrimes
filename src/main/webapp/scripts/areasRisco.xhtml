@@ -15,21 +15,21 @@
 	<script type="text/javascript">
 	        /* <![CDATA[ */
 	    
-			var polyHotspot; //polígono q aparece qd passa o mouse sobre um hotspot
-			var polyEditando; //polígono q foi gravado pelo usuário como uma de suas "Areas de Risco"
+			var polyHotspot; //polï¿½gono q aparece qd passa o mouse sobre um hotspot
+			var polyEditando; //polï¿½gono q foi gravado pelo usuï¿½rio como uma de suas "Areas de Risco"
 			var idPolyEditando; //id da AreaRisco do polyEditando
 			var nomePolyEditando; //nome da AreaRisco do polyEditando
 
 			
 	    //******************************************************************
-		//MARCAÇÃO DE HOTSPOT
+		//MARCAï¿½ï¿½O DE HOTSPOT
 			
 			var mousemoveHotspot;
 			var clickHotspot;
 			var isMouseNoHotspot;
 			var posHintHotspot;
-			var corPoly1 = '#0000FF'; //cor do polígono novo, ao passar o mouse nos hotspots
-			var corPoly2 = '#0000FF'; //cor do polígono salvo, áreas gravadas pelo usuário
+			var corPoly1 = '#0000FF'; //cor do polï¿½gono novo, ao passar o mouse nos hotspots
+			var corPoly2 = '#0000FF'; //cor do polï¿½gono salvo, ï¿½reas gravadas pelo usuï¿½rio
 			//roxo #800080
 			//brick #B22222
 			//azul #0000FF
@@ -43,7 +43,7 @@
 						return;
 					}
 
-					//não marcar por cima de um polígono de área salva
+					//nï¿½o marcar por cima de um polï¿½gono de ï¿½rea salva
 					if(isMinhasAreasExibindo && minhasAreas){
 						console.log("minhasAreas.length: " + minhasAreas.length);
 						for(i=0; i<minhasAreas.length; i++){
@@ -55,7 +55,7 @@
 						}
 					}
 					
-					//não marcar denovo se já tiver um polígono marcado (o mouse está sobre ele)
+					//nï¿½o marcar denovo se jï¿½ tiver um polï¿½gono marcado (o mouse estï¿½ sobre ele)
 					if(polyHotspot && (polyHotspot.containsLatLng(latlng) || polyHotspot.isEditing)){
 						return;
 					}
@@ -63,7 +63,7 @@
 					if(polyHotspot != null){
 						desmarcaHotspot();
 					}
-					var posGrid = latLongToGrid(latlng); //posição no grid de densidades correspondente à posição do mouse
+					var posGrid = latLongToGrid(latlng); //posiï¿½ï¿½o no grid de densidades correspondente ï¿½ posiï¿½ï¿½o do mouse
 					isMouseNoHotspot = isCelulaNoHotspot(posGrid); 
 					if(isMouseNoHotspot){
 						marcaHotspot(posGrid);
@@ -99,7 +99,7 @@
 					}
 				});
 
-				//só pro ponteiro do mouse ficar "hand"
+				//sï¿½ pro ponteiro do mouse ficar "hand"
 				GEvent.addListener(polyHotspot, "mouseover", function(){});
 
 				//mostra hint
@@ -123,7 +123,7 @@
 
 			
 			//******************************************************************
-			//LÓGIGA PRA MARCAR CONTORNO DO HOTSPOT
+			//Lï¿½GIGA PRA MARCAR CONTORNO DO HOTSPOT
 			
 			function encontraContorno(celulaInicial){
 				//inicializa
@@ -150,7 +150,7 @@
 				return temp;
 			}
 
-/*			//algorítmo alternativo ao "comerPelasBeiradas"
+/*			//algorï¿½tmo alternativo ao "comerPelasBeiradas"
 			var contorno;
 			var visitado;
 			function flood(celula){
@@ -173,27 +173,27 @@
 				//inicializa
 				var contorno = new Array();
 	
-				//encontra uma célula qualquer da borda a partir da célula inicial (que está no meio do hotspot)
+				//encontra uma cï¿½lula qualquer da borda a partir da cï¿½lula inicial (que estï¿½ no meio do hotspot)
 				var celula = celulaInicial;
 				while(isCelulaNoHotspot(celula)){
-					celula = celulaVizinha(celula, norte); //célula vizinha ao norte
+					celula = celulaVizinha(celula, norte); //cï¿½lula vizinha ao norte
 				}
 
-				//inclui a primeira célula encontrada
+				//inclui a primeira cï¿½lula encontrada
 				var direcao = norte;
 				contorno[contorno.length] = gridToLatlng(celula);
-				var primeira = celula; //usado na condição de parada
+				var primeira = celula; //usado na condiï¿½ï¿½o de parada
 				var cont = 0;
 
-				//caminha pela borda até fechar um 'ciclo' (voltar pra origem)
+				//caminha pela borda atï¿½ fechar um 'ciclo' (voltar pra origem)
 				do{
-					direcao = oposta(direcao); //direção oposta (de onde veio)
+					direcao = oposta(direcao); //direï¿½ï¿½o oposta (de onde veio)
 					for(var i=0; i<3;i++){
 						//primeiro pra direita, depois pra frente, depois pra esquerda 
 						direcao = prox(direcao);
 						celula = celulaVizinha(celula, direcao);
 						if(!isCelulaNoHotspot(celula)){
-							//a primeira que satisfizer esta condição faz parte da borda
+							//a primeira que satisfizer esta condiï¿½ï¿½o faz parte da borda
 							//uma das 3 necessariamente satisfaz
 							contorno[contorno.length] = gridToLatlng(celula);
 							break;
@@ -221,13 +221,13 @@
 				return gridDensidades[celula.x][celula.y] >= limite;
 			}
 
-			const norte = 0;
-			const leste = 1;
-			const sul = 2; 
-			const oeste = 3;
+			var norte = 0;
+			var leste = 1;
+			var sul = 2; 
+			var oeste = 3;
 			
 			function prox(dir){ 
-				//proxima direção, no sentido anti-horário
+				//proxima direï¿½ï¿½o, no sentido anti-horï¿½rio
 				return (dir+1)%4;
 			}
 
@@ -236,7 +236,7 @@
 			}
 			
 			function celulaVizinha(celula, dir){ 
-				//célula vizinha na direção passada como argumento
+				//cï¿½lula vizinha na direï¿½ï¿½o passada como argumento
 				switch(dir){
 				case norte:
 					return new PosicaoGrid(celula.x, celula.y-1);
@@ -304,7 +304,7 @@
 
 
 			//******************************************************************
-			//EDIÇÃO DO POLIGONO
+			//EDIï¿½ï¿½O DO POLIGONO
 
 			GPolygon.prototype.toggleEditing = function() {
 				if(!this.isEditing){
@@ -357,7 +357,7 @@
 					}else{
 						kernelLigadoAoExibirJanelaAreaRisco = false;
 					}
-					//desativaMarcacaoHotspot(); //já é chamado dentro do desativaMapaKernel()
+					//desativaMarcacaoHotspot(); //jï¿½ ï¿½ chamado dentro do desativaMapaKernel()
 					removeHint();
 					zoomNoPoligono(poly);
 					document.getElementById("editarAreaRiscoTituloTD").innerHTML = nomePolyEditando;
@@ -393,7 +393,7 @@
 					kernelLigadoAoExibirJanelaAreaRisco = false;
 				}
 				podeCarregarCrimes=true;
-				//ativaMarcacaoHotspot(); //já é chamado dentro do ativaMapaKernel()
+				//ativaMarcacaoHotspot(); //jï¿½ ï¿½ chamado dentro do ativaMapaKernel()
 
 				if(polyHotspot){
 					map.removeOverlay(polyHotspot);
@@ -430,8 +430,8 @@
 			}
 
 			function deslocaLatLng(latlng, pixelDistance, zoom){
-				//Desloca um GLatLong pra leste. A distância do deslocamento é dada em pixels 
-				//*lembrando que pra zooms diferentes, a escala em pixels é diferente.
+				//Desloca um GLatLong pra leste. A distï¿½ncia do deslocamento ï¿½ dada em pixels 
+				//*lembrando que pra zooms diferentes, a escala em pixels ï¿½ diferente.
 				var pixel = latlngToPixel(latlng, zoom);
 				pixel.x -= pixelDistance;
 				return pixelToLatlng(pixel, zoom);
@@ -494,7 +494,7 @@
 						var id = splitPoly[0];
 						var nome = splitPoly[1];
 						var vertices = [];
-						for(j=2; j<splitPoly.length; j++){ //pula os 2 primeiros elementos q são o id e o nome
+						for(j=2; j<splitPoly.length; j++){ //pula os 2 primeiros elementos q sï¿½o o id e o nome
 							var strPonto = splitPoly[j];
 							var splitPonto = strPonto.split(",");
 							var latlng = new GLatLng(splitPonto[0], splitPonto[1]);
@@ -565,7 +565,7 @@
 
 				refreshMinhasAreas();
 
-				//tirar o polyHotspot (vai ser substituído pelo salvo)
+				//tirar o polyHotspot (vai ser substituï¿½do pelo salvo)
 				map.removeOverlay(polyHotspot);
 				polyHotspot = null;
 			}
@@ -644,7 +644,7 @@
 
 
 			//******************************************************************
-			//LINKS PRA SERVIÇOS (twitter, myspace, etc)
+			//LINKS PRA SERVIï¿½OS (twitter, myspace, etc)
 			
 			function limparShareLinks(){
 				bufferShareLinks = null;
@@ -690,7 +690,7 @@
 				return div;
 			}
 
-			const msgShare = "bla bla"
+			var msgShare = "bla bla"
 			function tagImageShareLink(link, urlImagem){
 				var urlSite = link.url;
 				urlSite = urlSite.replace("%url", escape(urlImagem));
@@ -732,7 +732,7 @@
 				var south = bounds.getSouthWest().lat();
 				var west = bounds.getSouthWest().lng();
 
-				//requisição pro servlet ServletMapaEstatico (ou MapImage)
+				//requisiï¿½ï¿½o pro servlet ServletMapaEstatico (ou MapImage)
 				var paramsGerar = "acao=novaImagem" +
 									"&north=" + north + "&south=" + south + "&east=" + east + "&west=" + west + 
 									"&width=" + width + "&height=" + height +

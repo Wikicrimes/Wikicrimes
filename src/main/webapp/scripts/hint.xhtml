@@ -24,7 +24,8 @@
 				if(hintWidth > 160) hintWidth = 20; //20 é uma largura máxima (em caracteres)
 				var panel = document.getElementById("panelHint"); 
 				panel.style.width = hintWidth + "ex"; //a largura em "em" (relativo ao tamanho da fonte)
-				hintWidth = panel.getWidth(); //a largura em pixels
+				//hintWidth = panel.getWidth(); //a largura em pixels (não funciona no IE)
+				hintWidth = panel.style.width; //a largura em pixels
 				var padding = 20;
 				var ajusteVertical = 50;
             	var mapBounds = map.getBounds();

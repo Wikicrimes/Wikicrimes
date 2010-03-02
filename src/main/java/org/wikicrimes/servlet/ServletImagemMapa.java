@@ -216,9 +216,9 @@ public class ServletImagemMapa extends HttpServlet {
 				Crime c = (Crime)o;
 				String tipo = c.getTipoCrime().getNome();
 				File marcadorFile = null;
-				if(tipo.equals("tipocrime.roubo"))
+				if(tipo.equals("tipocrime.roubo") || tipo.equals("tipocrime.tentativaderoubo"))
 					marcadorFile = new File("webapps/wikicrimes/images/baloes/vermelho.png");
-				else if(tipo.equals("tipocrime.furto"))
+				else if(tipo.equals("tipocrime.furto") || tipo.equals("tipocrime.tentativadefurto"))
 					marcadorFile = new File("webapps/wikicrimes/images/baloes/novoMarcadorAzul.png");
 				else
 					marcadorFile = new File("webapps/wikicrimes/images/baloes/novoMarcadorLaranja.png");

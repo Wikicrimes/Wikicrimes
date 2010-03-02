@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.wikicrimes.util.Util;
 import org.wikicrimes.util.kernelMap.KernelMap;
 import org.wikicrimes.util.kernelMap.KernelMapRenderer;
 import org.wikicrimes.util.kernelMap.Ponto;
@@ -89,7 +90,11 @@ public class ServletKernelMap extends HttpServlet {
 		
 		KernelMapRenderer kRend = new KernelMapRenderer(kernel);
 //		RenderedImage imagem = (zoom > 10)? (RenderedImage)kRend.pintaKernel() : (RenderedImage)kRend.pintaKernel(true);
-		RenderedImage imagem = (RenderedImage)kRend.pintaKernel(zoom);
+		RenderedImage imagem = null;
+		if(Util.isClientUsingIE(request))
+			imagem = (RenderedImage)kRend.pintaKernel(zoom, true);
+		else
+			imagem = (RenderedImage)kRend.pintaKernel(zoom);
 		sessao.setAttribute(IMAGEM_KERNEL, imagem);
 //		/*teste*/KernelImageFilesManager.criarImagem(kernel, request.getSession()); //teste pra ver pq a imagem n aparece as vezes
 	}

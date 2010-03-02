@@ -47,11 +47,10 @@
 				  	document.getElementById("divTelaFiltro").style.visibility = "hidden";
 				  	aindaCarregando = true;
 				  	podeCarregarCrimes=true;
-				  	//window.setTimeout(constroiMapaKernel,1);
 				  	if(statusLegenda=='visivel')
 						wikicrimesDiv.innerHTML = htmlLegenda();
 				  	constroiMapaKernel();
-				  	//comentadas as 2 linhas abaixo pra desativar a funcionalidade de Areas de Risco
+				  	//comentar as 2 linhas abaixo pra desativar a funcionalidade de Areas de Risco
 					//if(!isJanelaAreaRiscoVisible())
 				  		//ativaMarcacaoHotspot();
 			  	}	
@@ -68,7 +67,7 @@
 					podeCarregarCrimes=true;
 					if(statusLegenda=='visivel')
 						wikicrimesDiv.innerHTML = htmlLegenda();
-					//comentadas as 2 linhas abaixo pra desativar a funcionalidade de Areas de Risco
+					//comentar as 2 linhas abaixo pra desativar a funcionalidade de Areas de Risco
 					//if(!isJanelaAreaRiscoVisible())
 						//desativaMarcacaoHotspot();
 				}
@@ -318,7 +317,10 @@
 	
 					//alert('exibeImagemMapaKernel');
 					photo.src = "ServletKernelMap?acao=pegaImagem&nocache=" + new Date();
-					photo.percentOpacity = 100;
+					if(IE)
+						photo.percentOpacity = 50;
+					else
+						photo.percentOpacity = 100;
 					photo.anchorTopLeft = new GLatLng(lat1,lon1);
 					photo.anchorBottomRight = new GLatLng(lat2,lon2);
 			  		map.addTPhoto(photo);
@@ -401,7 +403,8 @@
 			var bandwidth;
 			var densMax;
 			var densMedia;
-			var limite; //limite a partir do qual um valor de densidade é considerado parte de hotspot
+			var limiteDensHotspot; //limite a partir do qual um valor de densidade é considerado parte de hotspot
+			var densMaxSuficiente = .01; //se a densMax for menor que isso, o mapa de kernel não deve ser exibido (pra evitar hotspots de poucos crimes)
 			
 			function pegaGridDensidades(){
 				http_request = GXmlHttp.create();
@@ -422,7 +425,7 @@
 					densMax = parseFloat(linhas[2]);
 					densMedia = parseFloat(linhas[3]);
 					densMin = parseFloat(linhas[4]);
-					limite = 0.5 * densMax;
+					limiteDensHotspot = 0.5 * densMax;
 
 					//grid
 					var comeco = 5; //indice da primeira linha que tem valores do grid
@@ -455,8 +458,8 @@
 				html+="         </tr>";
 				html+="     	<tr align='left'>";
 				html+="     		<td align='right'> <img style='width:20px; height:6em;' src='./images/gradiente.png' />";
-				html+="     		<td align='left'>";
-				html+="					<table align='left' id='valoresLegendaKernel' cellpading='0' cellspacing='0' style='padding:4px;'>";
+				html+="     		<td align='left' id='valoresLegendaKernel' >";
+				html+="					<table align='left' cellpading='0' cellspacing='0' style='padding:4px;'>";
 				html+="     				<tr> <td> 0 </td> </tr>";
 				html+="         			<tr> <td> &nbsp; </td></tr>";
 				html+="     				<tr> <td> 0 </td> </tr>";
@@ -472,15 +475,17 @@
 
 			function atualizaLegendaKernel(){
 
-				var html="     				<tr> <td>"+ arredonda(densMax) + "</td> </tr>";
-				html+="         			<tr><td> &nbsp; </td></tr>";
-				html+="     				<tr> <td>"+ arredonda(0.5 * densMax) + "</td> </tr>";
-				html+="         			<tr><td> &nbsp; </td></tr>";
-				html+="     				<tr> <td>"+ arredonda(densMin) + "</td> </tr>";
+				var html="<table align='left' cellpading='0' cellspacing='0' style='padding:4px;'>";
+				html+="	<tr> <td>"+ arredonda(densMax) + "</td> </tr>";
+				html+="	<tr><td> &nbsp; </td></tr>";
+				html+="	<tr> <td>"+ arredonda(0.5 * densMax) + "</td> </tr>";
+				html+="	<tr><td> &nbsp; </td></tr>";
+				html+="	<tr> <td>"+ arredonda(densMin) + "</td> </tr>";
+				html+="</table>";
 				
-				var table = document.getElementById('valoresLegendaKernel');
-				if(table)
-					table.innerHTML = html;
+				var div = document.getElementById('valoresLegendaKernel');
+				if(div)
+					div.innerHTML = html;
 
 			}
 
@@ -500,6 +505,9 @@
 			}
 			*/
 
+
+			//******************************************************************
+			//UTILIDADES
 
 			function pixelToLatlng(pixel, zoom){
 				if(zoom)

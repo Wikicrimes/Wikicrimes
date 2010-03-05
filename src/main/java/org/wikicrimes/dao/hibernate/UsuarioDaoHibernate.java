@@ -119,11 +119,9 @@ public List<BaseObject> filter(final Map parameters) {
 		return getHibernateTemplate().find(query);
 	}
 
-	
-
-	public List<AreaObservacao> getAreas(Usuario u) {
+	public List<AreaObservacao> getAreas(Usuario u) 
+	{
 		String query = "from AreaObservacao area ";
-
 		query += "where area.usuario.idUsuario = "+u.getIdUsuario();
 
 		return getHibernateTemplate().find(query);

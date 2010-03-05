@@ -86,18 +86,26 @@ public class CrimeDaoHibernate extends GenericCrudDaoHibernate implements
 	// Usando HQL
 	public List<BaseObject> filter(Map parameters) {
 		boolean entrouTipoLocal = false;
-		String consulta = "from Crime as crime where ";
+		String consulta = "from Crime crime where ";
 		List<BaseObject> listaEntidadeCertificadora = (List<BaseObject>) parameters
 		.get("entidadeCertificadora");
+		
 		if (listaEntidadeCertificadora!=null)
-			consulta = "select crime from Crime as crime join crime.confirmacoes as confirmacao where ";
-
+			consulta = "select crime from Crime crime join crime.confirmacoes as confirmacao where ";
+		
+		// Credibilidade
+		if (parameters.get("credibilidadeInicial") != null && parameters.get("credibilidadeFinal") != null) 
+		{
+			consulta += "crime.idCrime IN (SELECT cred.crime.idCrime FROM Credibilidade cred WHERE " +
+					"cred.credibilidade >= "+ parameters.get("credibilidadeInicial") + " and "+
+					"cred.credibilidade <= "+ parameters.get("credibilidadeFinal") + ") and ";
+		}
+		
 		// TipoCrime
 		if (parameters.get("tipoCrime") != null) {
 			consulta += "(crime.tipoCrime.idTipoCrime = "
-					+ ((TipoCrime) parameters.get("tipoCrime"))
-							.getIdTipoCrime() + ") and ";
-
+				+ ((TipoCrime) parameters.get("tipoCrime"))
+					.getIdTipoCrime() + ") and ";
 		}
 		
 		// Email Usuario(Traz somente crimes registrados por esse usuario)
@@ -105,7 +113,6 @@ public class CrimeDaoHibernate extends GenericCrudDaoHibernate implements
 			consulta += "(crime.usuario.email like '"
 					+ (parameters.get("emailUsuario"))
 							+ "') and ";
-
 		}
 
 		// TipoLocal

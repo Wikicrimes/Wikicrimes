@@ -72,6 +72,18 @@
 		<property name="dao" ref="confirmacaoRelatoDao" />		
 	</bean>
 	
+	<bean id="reputacaoService"
+		class="org.wikicrimes.service.impl.ReputacaoServiceImpl">
+		<property name="dao" ref="reputacaoDao" />
+		<property name="reputacaoDao" ref="reputacaoDao" />		
+	</bean>
+	
+	<bean id="credibilidadeService"
+		class="org.wikicrimes.service.impl.CredibilidadeServiceImpl">
+		<property name="dao" ref="credibilidadeDao" />
+		<property name="credibilidadeDao" ref="credibilidadeDao" />		
+	</bean>
+	
 	<bean id="termoUso" class="org.springframework.core.io.ClassPathResource">
 		<constructor-arg value="termosDeUso.txt"/>
 	</bean>
@@ -112,9 +124,9 @@
 		<property name="confirmacaoService" ref="confirmacaoService" />
 		<property name="emailService" ref="emailService" />
 		<property name="razaoDao" ref="razaoDao" />
-
+		<property name="credibilidadeDao" ref="credibilidadeDao" />
 	</bean>
-	
+
 	<bean id="razaoService"
 		class="org.wikicrimes.service.impl.RazaoServiceImpl">
 		<property name="dao" ref="razaoDao" />

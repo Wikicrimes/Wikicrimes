@@ -24,8 +24,7 @@
         <property name="dataSource" ref="dataSource"/>
         <property name="mappingResources">
             <list>
-
-                 <value>org/wikicrimes/model/Confirmacao.hbm.xml</value>
+            	 <value>org/wikicrimes/model/Confirmacao.hbm.xml</value>
                  <value>org/wikicrimes/model/TipoConfirmacao.hbm.xml</value>
                  <value>org/wikicrimes/model/ConfirmacaoRelato.hbm.xml</value>
                  <value>org/wikicrimes/model/Crime.hbm.xml</value>
@@ -66,6 +65,8 @@
                  <value>org/wikicrimes/model/Log.hbm.xml</value>
                  <value>org/wikicrimes/model/TipoLog.hbm.xml</value>
                  <value>org/wikicrimes/model/Abuso.hbm.xml</value>
+                 <value>org/wikicrimes/model/Reputacao.hbm.xml</value>
+				 <value>org/wikicrimes/model/Credibilidade.hbm.xml</value>
                  <value>org/wikicrimes/model/ImagemMapa.hbm.xml</value>
                  <value>org/wikicrimes/model/AreaRisco.hbm.xml</value>
                  <value>org/wikicrimes/model/PontoLatLng.hbm.xml</value>
@@ -155,6 +156,14 @@
     </bean>
     
     <bean id="razaoDao" class="org.wikicrimes.dao.hibernate.RazaoDaoHibernate">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    
+    <bean id="credibilidadeDao" class="org.wikicrimes.dao.hibernate.CredibilidadeDaoHibernate">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    
+    <bean id="reputacaoDao" class="org.wikicrimes.dao.hibernate.ReputacaoDaoHibernate">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     

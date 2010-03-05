@@ -19,9 +19,6 @@
 		<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
 		<link rel="shortcut icon" href="./images/favicon.ico"
 			type="image/x-icon" />
-		
-			
-			
 	</head>
 
 	<body style="overflow-x: hidden">
@@ -29,58 +26,71 @@
 		<f:view>
 		<f:loadBundle var="messages" basename="messages"/>
 		<h:form id="minhasDenunciasForm">
+		
+		<h:outputText value="#{messages['usuario.reputacao']} " style="font-size:12px;" />
+		<h:outputText value="#{usuario.ultimaReputacao.reputacao * 100}" style="font-size:12px;" />
+        <h:outputText value="%" style="font-size:12px;"/>
+        <br/><br/>
+        	
 		<rich:dataTable id="crimes" var="crime"
     	value="#{crimeListForm.crimes}" onRowMouseOver="this.style.backgroundColor='#F1F1F1'"
 				onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'"
 				border="1" cellspacing="0" cellpadding="0" rows="10"
 				styleClass="rich-table">
+     	
+     	<rich:column>        	
+        	<f:facet name="header">            	
+                	<h:outputText value="#{messages['crime.credibilidade']}"/>            	
+        	</f:facet>
+        	<h:outputText value="#{crime.ultimaCredibilidade.credibilidade * 100}">
+	    		<f:convertNumber maxFractionDigits="2"/>
+        	</h:outputText>
+        	<h:outputText value="%"/>
+        	
+    	</rich:column> 
+     	
      	<rich:column>        	
         	<f:facet name="header">            	
                 	<h:outputText value="#{messages['crime.tipoCrime']}"/>            	
         	</f:facet>
         	<h:outputText value="#{messages[crime.tipoCrime.nome]}"/>
     	</rich:column> 
+    	
     	<rich:column>
         	<f:facet name="header">
-            	
                 	<h:outputText value="#{messages['crime.tipoLocal']}"/>
-            	
         	</f:facet>
         	<h:outputText value="#{messages[crime.tipoLocal.nome]}"/>
     	</rich:column>
     	
     	<rich:column>
         	<f:facet name="header">
-            	
                 	<h:outputText value="#{messages['crime.tipoArmaUsada']}"/>
-            	
         	</f:facet>
         	<h:outputText value="#{messages[crime.tipoArmaUsada.nome]}"/>
     	</rich:column>
+    	
     	<rich:column>
         	<f:facet name="header">
-            	
                 	<h:outputText value="#{messages['crime.horario']}"/>
-            	
         	</f:facet>
         	<h:outputText value="#{crime.horario}:00"/>
     	</rich:column>
+    	
     	<rich:column>
         	<f:facet name="header">
-            	
                 	<h:outputText value="#{messages['crime.data']}"/>
-            	
         	</f:facet>
         	<h:outputText value="#{crime.data}"/>
     	</rich:column>
+    	
     	<rich:column>
         	<f:facet name="header">
-            	
                 	<h:outputText value="#{messages['scheduler.titulo.descricao']}"/>
-            	
         	</f:facet>
         	<h:outputText value="#{crime.descricao}"/>
     	</rich:column>
+    	
     	<rich:column>
     	 	<f:facet name="header">
             	<h:outputText value="#{messages['crime.visualizar']}"/>
@@ -90,6 +100,7 @@
             	<u><h:outputText value="#{messages['crime.mapa']}" /></u>
         	</a>
     	</rich:column>
+    	
     	<f:facet name="footer">
 			<rich:datascroller for="crimes"/>
 		</f:facet>

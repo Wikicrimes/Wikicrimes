@@ -316,7 +316,9 @@
 		<h:inputHidden id="zoomMapa" value="#{filtroForm.zoomMapa}" />
 		<h:inputHidden id="latMapa" value="#{filtroForm.latMapa}" />
 		<h:inputHidden id="lngMapa" value="#{filtroForm.lngMapa}" />
-		<div id="divTelaFiltro"><!-- Pesquisa --> <rich:panel
+		
+		<div id="divTelaFiltro"><!-- Pesquisa --> 
+		<rich:panel
 			style="width:300px" id="panelFiltro"
 			header="#{messages['titulo.pesquisaCrimes']}">
 			<t:panelGrid border="0" columns="2" cellpadding="1" cellspacing="1"
@@ -366,6 +368,7 @@
 				</t:panelGroup>
 				<h:outputText
 					value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" />
+				
 				<h:panelGroup border="0">
 					<t:inputText id="dataInicial" onkeyup="limpaDataInicial();"
 						forceId="true" value="#{filtroForm.dataInicial}"
@@ -391,6 +394,7 @@
 						style="display:inline; cursor:pointer;" />
 				</h:panelGroup>
 			</t:panelGrid>
+			
 			<!-- Filtros Avançados -->
 			<t:panelGrid border="0" columns="3" cellpadding="1" cellspacing="1"
 				style="margin:0px;text-align:left;align:left">
@@ -420,6 +424,49 @@
 				</h:selectOneMenu>
 			</t:panelGrid>
 
+			
+			<t:panelGrid border="0" cellpadding="1" cellspacing="1" 
+				style="margin:0px;text-align:left;align:left">
+				
+				<h:outputText value="#{messages['crime.credibilidade.nivel']}"
+					style="vertical-align: text-top; font-size:11px;" />
+					
+				<h:panelGrid columns="3" border="0">
+					<h:outputText value="#{messages['crime.credibilidade.nivel.inicial']}: "
+						style="vertical-align: text-top; font-size:11px;" />
+						
+					<rich:inputNumberSlider id="idCredInicial" value="#{filtroForm.credibilidadeInicial}" 
+						minValue="0" maxValue="100" step="1" showInput="false">
+						<a4j:support event="onchange" reRender="idCredFinal,idValorCredInic,idValorCredFinal"/>
+					</rich:inputNumberSlider>
+					
+					<h:outputText id="idValorCredInic" value="#{filtroForm.credibilidadeInicial}%"/>
+					
+					<h:outputText value="#{messages['crime.credibilidade.nivel.final']}: "
+						style="vertical-align: text-top; font-size:11px;" />
+					
+					<rich:inputNumberSlider id="idCredFinal" value="#{filtroForm.credibilidadeFinal}" 
+						minValue="#{filtroForm.credibilidadeInicial}" maxValue="100" step="1" showInput="false">
+						<a4j:support event="onchange" reRender="idValorCredFinal"/>
+					</rich:inputNumberSlider>
+					
+					<h:outputText id="idValorCredFinal" value="#{filtroForm.credibilidadeFinal}%"/>
+				</h:panelGrid>
+				
+			</t:panelGrid>
+
+			<script type="text/javascript">
+				function testaMenorCredibilidade()
+				{
+					var credInitial = document.getElementById('filtroForm:idCredInicialInput').value;
+					var credFinal = document.getElementById('filtroForm:idCredFinalInput').value;
+					
+					if (credInitial > credFinal)
+						document.getElementById('filtroForm:idValorCredFinal').innerHTML = credInitial +"%";
+				}		
+        	</script>
+			
+			
 			<t:panelGrid border="0" cellpadding="1" cellspacing="1"
 				style="margin:0px;text-align:left;align:left">
 				<h:outputText value="#{messages['crime.filtro.certificacao']}:"
@@ -461,12 +508,9 @@
 									}
 							</script>
 				<!-- update vazio somente para gravar na sessao os parametros do mapa (lat,lng,zoom) -->
-
-
 			</t:panelGrid>
 
 			<h:panelGrid border="0" columns="2">
-
 				<a4j:commandButton value="#{messages['filtro.btn.atualizar']}"
 					id="btnAtualizar" action="#{filtroForm.update}" styleClass="button"
 					onclick="document.getElementById('divTelaFiltro').style.visibility = 'hidden';selecionarComando(map, 'mao'); getUserMapConfig(); limpaUrl();setaSubmeteuFiltro();atualizaMapa();" />
@@ -476,7 +520,8 @@
 					onclick="document.getElementById('divTelaFiltro').style.visibility = 'hidden';selecionarComando(map, 'mao');//comentado pq esse era o limpar filtro. limpaUrl();limpaFiltro(); return false;"
 					styleClass="button" />
 			</h:panelGrid>
-		</rich:panel></div>
+		</rich:panel>
+		</div>
 		<!-- Fim da Pesquisa -->
 
 		<rich:panel id="togglePanelDezMais"
@@ -503,9 +548,11 @@
 			<script><!--
 					/*	<![CDATA[ */
 					function getDezMaisGeralMapa(tipo){
+
 						if(tipo!=undefined)
 							tipoDezMais = tipo;
 						var eMapa = document.getElementById("op_dez_mais1").checked;
+
 						if(!eMapa){
 							if(tipoDezMais == '1')
 								document.getElementById("filtroForm:btSubmitVistos").click();
@@ -513,16 +560,15 @@
 								document.getElementById("filtroForm:btSubmitComentados").click();
 							if(tipoDezMais == '3')
 								document.getElementById("filtroForm:btSubmitConfirmados").click();
-								
 						}else{
-							
 							mostraListaDezMais();
 						}							
 					}	
 						
 					/* ]]> */			
 				--></script>
-			<hr />
+			<hr/>
+			
 			<t:panelGrid align="center"
 				style="width: 100%; font-size: 9px; font-family: sans-serif;"
 				cellpadding="0" cellspacing="0" columns="2">
@@ -558,6 +604,8 @@
 				</t:panelGrid>
 			</t:panelGroup>
 		</rich:panel>
+		
+		
 		<!-- Fim das Estatísticas -->
 		<rich:panel style="width:160px; height:128px;"
 			header="#{messages['modal.publicidade']}">
@@ -1492,8 +1540,8 @@
 						var listaHabilitada = document.getElementById("filtroForm:entidadeCertificadora").disabled;
 						if(listaHabilitada == true){
 							document.getElementById("filtroForm:entidadeCertificadora").disabled = false;
-									 document.getElementById("filtroForm:entidadeCertificadora").selectedIndex = 1;
-									 }
+							document.getElementById("filtroForm:entidadeCertificadora").selectedIndex = 1;
+						}
 						else {
 						 document.getElementById("filtroForm:entidadeCertificadora").disabled = true;
 						 document.getElementById("filtroForm:entidadeCertificadora").selectedIndex = 0;

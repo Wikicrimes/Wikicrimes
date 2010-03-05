@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC
+"-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+<head>
+	<meta http-equiv="Cache-Control" content="no-store" />
+	<meta http-equiv="Pragma" content="no-cache" />
+	<meta http-equiv="Expires" content="0" />
+	<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+	<link rel="shortcut icon" href="./images/favicon.ico"
+		type="image/x-icon" />
+
+	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+	/* <![CDATA[ */
+      	google.load('visualization', '1', {'packages':['annotatedtimeline'], 'language' : '#{messages["webapp.locale.google"]}'});
+      	google.setOnLoadCallback(drawChart);
+      
+		function drawChart() 
+		{
+			var data = new google.visualization.DataTable();
+			data.addColumn('date', 'Date');
+			data.addColumn('number', '#{messages["usuario.reputacao"]}');
+			data.addColumn('string', 'tituloComentMinhaRpt');
+			data.addColumn('string', 'comentMinhaRpt');
+
+			var dadosReputacao = '#{usuarioForm.dadosReputacao}';
+			var arrayDadosRpt = dadosReputacao.split("&");
+			
+			for(i=0; i<arrayDadosRpt.length; i+=2) 
+			{
+				var date = new Date();
+				date.setTime(arrayDadosRpt[i+1]);
+
+				data.addRow([date, arrayDadosRpt[i]*100, "Titulo Minha Reputacao", "Comentario"+ i]);
+			}
+
+			var chart = new google.visualization.AnnotatedTimeLine(document.getElementById('chart_div'));
+			chart.draw(data, {displayAnnotations:true, displayAnnotationsFilter:true, displayExactValues:true, 
+				min:0, max:100, fill:30, thickness:1, allValuesSuffix:'%'});
+		}
+	/* ]]> */
+    </script>
+</head>
+
+<body style="overflow-x: hidden">
+
+<f:view>
+	<f:loadBundle var="messages" basename="messages" />
+	
+	<h:form id="minhaReputacaoForm">
+		<div id='chart_div' style='width: 960px; height: 320px;'></div>
+		
+		
+		
+	</h:form>
+</f:view>
+
+</body>
+</html>

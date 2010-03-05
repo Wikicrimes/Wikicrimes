@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="org.wikicrimes.model.Reputacao" table="TB_RPT_REPUTACAO" lazy="false">
+        <id name="idReputacao" column="RPT_IDREPUTACAO" unsaved-value="null">
+            <generator class="increment"/>
+        </id>
+        <property name="reputacao" column="RPT_REPUTACAO" type="java.lang.Double" not-null="true"/>
+		<property name="periodo" column="RPT_PERIODO" type="java.util.Date"/>
+		
+        <many-to-one name="usuario" column="USU_IDUSUARIO" class="org.wikicrimes.model.Usuario"/>
+    
+    </class>
+</hibernate-mapping>

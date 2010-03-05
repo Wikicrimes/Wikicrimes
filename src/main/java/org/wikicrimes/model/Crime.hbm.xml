@@ -34,6 +34,7 @@
         <property name="ip" column="CRI_IP" type="java.lang.String"/>
         <property name="cep" column="CRI_CEP" type="java.lang.String" length="9"/>
         <property name="dataHoraRegistro" column="CRI_DATA_HORA_REGISTRO" type="java.util.Date"/>
+
         <many-to-one name="tipoVitima" column="TVI_IDTIPO_VITIMA" class="org.wikicrimes.model.TipoVitima" />
         <many-to-one name="tipoLocal" column="TLO_IDTIPO_LOCAL" class="org.wikicrimes.model.TipoLocal" />
         <many-to-one name="tipoArmaUsada" column="TAU_IDTIPO_ARMA_USADA" class="org.wikicrimes.model.TipoArmaUsada" />
@@ -43,10 +44,17 @@
         <many-to-one name="tipoTransporte" column="TTR_IDTIPO_TRANSPORTE" class="org.wikicrimes.model.TipoTransporte" />
         <many-to-one name="usuario" column="USU_IDUSUARIO" class="org.wikicrimes.model.Usuario" />
         <many-to-one name="usuarioRedeSocial" column="URS_IDUSUARIO_REDE_SOCIAL" class="org.wikicrimes.model.UsuarioRedeSocial" />
+
+		<set name="credibilidades" table="TB_CRE_CREDIBILIDADE" lazy="true">
+            <key><column name="CRE_IDCREDIBILIDADE" not-null="true" /></key>
+            <one-to-many class="org.wikicrimes.model.Credibilidade"/>
+        </set>
+
         <set name="confirmacoes" table="TB_CON_CONFIRMACAO" lazy="true">
             <key><column name="CRI_IDCRIME" not-null="true" /></key>
             <one-to-many class="org.wikicrimes.model.Confirmacao"/>
         </set>
+        
 		<set name="razoes" table="TB_CRZ_CRIME_RAZAO" lazy="false">
             <key><column name="CRZ_IDCRIME" not-null="true" /></key>
             <one-to-many class="org.wikicrimes.model.CrimeRazao"/>

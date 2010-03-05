@@ -39,7 +39,8 @@ public class Usuario extends BaseObject {
 	private String emailAtivo;
 	private UsuarioCelular usuarioCelular;
 	private Boolean confAutomatica;
-	
+
+	private Set<Reputacao> reputacoes;
 	
 	private Integer mobileAppAtivacao;
 	private String mobileAppID;
@@ -362,4 +363,18 @@ public class Usuario extends BaseObject {
 		this.usaInternetCelular = usaInternetCelular;
 	}
 
+	
+	public Set<Reputacao> getReputacoes() {
+		return reputacoes;
+	}
+	public void setReputacoes(Set<Reputacao> reputacoes) {
+		this.reputacoes = reputacoes;
+	}
+	
+	public Reputacao getUltimaReputacao() {
+		return (Reputacao)reputacoes.toArray()[reputacoes.size()-1];
+	}
+
 }
+
+

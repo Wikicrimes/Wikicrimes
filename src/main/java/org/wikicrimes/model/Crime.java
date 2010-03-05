@@ -100,7 +100,10 @@ public class Crime extends BaseObject {
 	
 	private String registradoPelaApi;
 	
-	private UsuarioRedeSocial usuarioRedeSocial;	
+	private UsuarioRedeSocial usuarioRedeSocial;
+	
+	private Set<Credibilidade> credibilidades;
+	
 
 	public UsuarioRedeSocial getUsuarioRedeSocial() {
 		return usuarioRedeSocial;
@@ -432,6 +435,18 @@ public class Crime extends BaseObject {
 
 	public void setRegistradoPelaApi(String registradoPelaApi) {
 		this.registradoPelaApi = registradoPelaApi;
+	}
+
+	public void setCredibilidades(Set<Credibilidade> credibilidades) {
+		this.credibilidades = credibilidades;
+	}
+
+	public Set<Credibilidade> getCredibilidades() {
+		return credibilidades;
+	}
+	
+	public Credibilidade getUltimaCredibilidade() {
+		return (Credibilidade)credibilidades.toArray()[credibilidades.size()-1];
 	}
 	
 	

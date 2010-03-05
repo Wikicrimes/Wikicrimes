@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="org.wikicrimes.model.Credibilidade" table="TB_CRE_CREDIBILIDADE" lazy="true">
+        <id name="idCredibilidade" column="CRE_IDCREDIBILIDADE" unsaved-value="null">
+            <generator class="increment"/>
+        </id>
+        <property name="credibilidade" column="CRE_CREDIBILIDADE" type="java.lang.Double" not-null="true"/>
+        <property name="periodo" column="CRE_PERIODO" type="java.util.Date"/>
+        
+       	<many-to-one name="crime" column="CRI_IDCRIME" class="org.wikicrimes.model.Crime"/>
+        	    
+    </class>
+</hibernate-mapping>

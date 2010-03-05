@@ -45,10 +45,8 @@
 
 					//nao marcar por cima de um poligono de area salva
 					if(isMinhasAreasExibindo && minhasAreas){
-						console.log("minhasAreas.length: " + minhasAreas.length);
 						for(i=0; i<minhasAreas.length; i++){
 							var teste = minhasAreas[i];
-							console.log("i: " + i + ", id: " + teste.id + ", nome: " + teste.nome + ", poly: " + teste.poly);
 							if(minhasAreas[i].poligono.containsLatLng(latlng)){
 									return;
 							}

@@ -24,6 +24,6 @@ public interface UsuarioService extends GenericCrudService {
 	public void salvar(UsuarioRedeSocial urs);	
 	public List<AreaObservacao> getAreas(Usuario u);
 	public void excluirAreaObservacao(AreaObservacao area);
-	
+
 	public Usuario getUsuarioKey(String key);
 }

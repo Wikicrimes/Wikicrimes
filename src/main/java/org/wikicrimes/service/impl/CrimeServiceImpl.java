@@ -8,6 +8,7 @@ import java.util.Set;
 import javax.faces.context.FacesContext;
 
 import org.hibernate.Hibernate;
+import org.wikicrimes.dao.CredibilidadeDao;
 import org.wikicrimes.dao.CrimeDao;
 import org.wikicrimes.dao.EntidadeCertificadoraDao;
 import org.wikicrimes.dao.RazaoDao;
@@ -57,7 +58,8 @@ public class CrimeServiceImpl extends GenericCrudServiceImpl implements
 	
 	private EntidadeCertificadoraDao entidadeCertificadoraDao;
 
-
+	private CredibilidadeDao credibilidadeDao;
+	
 	private ConfirmacaoService confirmacaoService;
 	
 	private CrimeDao crimeDao;
@@ -65,27 +67,43 @@ public class CrimeServiceImpl extends GenericCrudServiceImpl implements
 	private RazaoDao razaoDao;
 	
 	private EmailService emailService;
+
 	
-	public boolean insert(BaseObject bo , List<Razao> razoes){
+	public boolean insert(BaseObject bo , List<Razao> razoes)
+	{
 		boolean retorno = insert(bo);
-			for (Razao razao : razoes) {
-				CrimeRazao cr = new CrimeRazao();
-				cr.setRazao(razao);
-				cr.setCrime((Crime)bo);
-				razaoDao.save(cr);
-			}
+		
+		for (Razao razao : razoes) {
+			CrimeRazao cr = new CrimeRazao();
+			cr.setRazao(razao);
+			cr.setCrime((Crime)bo);
+			razaoDao.save(cr);
+		}
 		return retorno;
 	}
 
-	public boolean insert(BaseObject bo) {
+//	private void configuraCredibilidade(Crime crime)
+//	{
+//		// TODO Automatizar!
+//		double peso = 1;
+//		double cred = peso * crime.getUsuario().getUltimaReputacao().getReputacao();
+//		
+//		new CredibilidadeDaoHibernate().save(new Credibilidade(null, cred));
+//	}
+	
+	
+	public boolean insert(BaseObject bo) 
+	{
 		Crime crime = (Crime) bo;
-
+//		configuraCredibilidade(crime);
+		
 		if (getDao().save(crime)) {
 				crime.setChave(Cripto.criptografar(crime.getIdCrime().toString()+crime.getDataHoraRegistro().toString()));
 				if(crime.getUsuario().getConfAutomatica()){
 					crime.setConfirmacoesPositivas(new Long(1));					
 				}
 				getDao().save(crime);
+				
 				//se nao for certificador enviar emails para as indicacoes
 			//	if (!crime.getUsuario().getPerfil().equals(Perfil.CERTIFICADOR)){
 					Set<Confirmacao> confirmacoes = crime.getConfirmacoes();					
@@ -385,8 +403,6 @@ public class CrimeServiceImpl extends GenericCrudServiceImpl implements
 	}
 
 
-
-
 	public Crime getCrime(String chave) {
 			Crime c= new Crime();
 			c.setChave(chave);
@@ -469,4 +485,14 @@ public class CrimeServiceImpl extends GenericCrudServiceImpl implements
 	public boolean realizaAtivacao(String codApp) {
 		return crimeDao.realizaAtivacao(codApp);
 	}
+
+	public void setCredibilidadeDao(CredibilidadeDao credibilidadeDao) {
+		this.credibilidadeDao = credibilidadeDao;
+	}
+
+	public CredibilidadeDao getCredibilidadeDao() {
+		return credibilidadeDao;
+	}
+
+
 }

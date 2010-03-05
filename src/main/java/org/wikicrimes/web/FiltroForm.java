@@ -87,6 +87,8 @@ public class FiltroForm extends GenericForm {
 	
 	private String cssConfirmados;
 	
+	private Double credibilidadeInicial;
+	private Double credibilidadeFinal;
 	
 	//Controle 10 mais
 	
@@ -147,6 +149,9 @@ public class FiltroForm extends GenericForm {
 		cssComentados = "";
 		cssConfirmados = "";
 
+		credibilidadeInicial = 50.0;
+		credibilidadeFinal   = 100.0;
+		
 		/*
 		 * Calendar cal = new GregorianCalendar(); cal.setTime(dataFinal);
 		 * cal.add(Calendar.DAY_OF_MONTH, -30); dataInicial=cal.getTime();
@@ -463,6 +468,9 @@ public class FiltroForm extends GenericForm {
 		try {
 			Map parameters = new HashMap();
 			
+			parameters.put("credibilidadeInicial", credibilidadeInicial / 100);
+			parameters.put("credibilidadeFinal", credibilidadeFinal / 100);
+			
 			if (emailUsuario != null && !emailUsuario.equalsIgnoreCase("") && !emailUsuario.equalsIgnoreCase("undefined")) {
 				parameters.put("emailUsuario", emailUsuario);
 			}
@@ -607,6 +615,14 @@ public class FiltroForm extends GenericForm {
 
 		return returnPage;
 	}
+	
+	
+	public void testaMenorCredibilidade()
+	{
+		if (credibilidadeInicial > credibilidadeFinal)
+			credibilidadeFinal = credibilidadeInicial;
+	}
+	
 
 	public CrimeService getCrimeService() {
 		return crimeService;
@@ -943,6 +959,24 @@ public class FiltroForm extends GenericForm {
 
 	public void setPais(String pais) {
 		this.pais = pais;
+	}
+
+	public Double getCredibilidadeInicial() {
+		return credibilidadeInicial;
+	}
+	public void setCredibilidadeInicial(Double credibilidadeInicial) 
+	{
+		this.credibilidadeInicial = credibilidadeInicial;
+		
+		if (credibilidadeInicial > credibilidadeFinal)
+			credibilidadeFinal = credibilidadeInicial;
+	}
+
+	public Double getCredibilidadeFinal() {
+		return credibilidadeFinal;
+	}
+	public void setCredibilidadeFinal(Double credibilidadeFinal) {
+		this.credibilidadeFinal = credibilidadeFinal;
 	}
 	
 	public Map<String, String> getMapaParametros(){

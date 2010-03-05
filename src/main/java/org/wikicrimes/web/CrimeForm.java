@@ -683,6 +683,7 @@ public class CrimeForm extends GenericForm {
 				crime.setConfirmacoesNegativas(new Long(0));
 				crime.setDataHoraRegistro(new Date());
 				crime.setIp(this.getIp());
+				
 				if (service.insert(crime,razoesInsert)) {
 					addMessage("crime.registrado", "");
 					FiltroForm filtroForm = (FiltroForm) this.getSessionScope().get("filtroForm");

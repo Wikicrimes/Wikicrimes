@@ -28,8 +28,10 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wikicrimes.model.Perfil;
+import org.wikicrimes.model.Reputacao;
 import org.wikicrimes.model.Usuario;
 import org.wikicrimes.service.EmailService;
+import org.wikicrimes.service.ReputacaoService;
 import org.wikicrimes.service.UsuarioService;
 import org.wikicrimes.util.Cripto;
 
@@ -59,6 +61,9 @@ public class UsuarioForm extends GenericForm {
 	private boolean concordaTermo = false;
 	private Integer vizualizarCrimeOpensocial;
 	
+	//Reputacao
+	private ReputacaoService reputacaoService;
+
 	private String relatoIndicacao,chave,chaveCr;
 	
 	private String celularModel,quantoTempoUsaAppCelular,loginMobile,senhaMobile;
@@ -82,10 +87,11 @@ public class UsuarioForm extends GenericForm {
 		this.reCaptcha = reCaptcha;
 	}
 
-	public UsuarioForm() {
+	public UsuarioForm() 
+	{
 		setUsuario((Usuario) this.getSessionScope().get("usuario"));
-
 		estados = getEstadosBrasileiros();
+		
 		if (usuario == null)
 			usuario = new Usuario();
 	}
@@ -217,7 +223,7 @@ public class UsuarioForm extends GenericForm {
 				if (userResult.getPerfil().getIdPerfil() != Perfil.CONVIDADO)
 					getUsuario().setPerfil(new Perfil(Perfil.USUARIO));
 				else
-					getUsuario().setPerfil(new Perfil(Perfil.CONVIDADO));
+					getUsuario().setPerfil(new Perfil(Perfil.CONVIDADO)); // FIXME Seta de novo?
 			} else {
 				getUsuario().setPerfil(new Perfil(Perfil.USUARIO));
 			}
@@ -225,6 +231,7 @@ public class UsuarioForm extends GenericForm {
 			getUsuario().setLng(new Double(lng));
 			getUsuario().setDataHoraRegistro(new Date());
 			getUsuario().setConfAutomatica(false);
+			
 			if (service.insert(getUsuario())) {
 				// addMessage("usuario.registrado", args );
 				addMessage("usuario.registrado", getUsuario().getEmail()
@@ -790,4 +797,32 @@ public class UsuarioForm extends GenericForm {
         fw.write(sbStr.toString());
         fw.close();
 	}
+	
+	
+	// Reputacao //
+	public String getDadosReputacao()
+	{
+		int count = 0;
+		String dados = "";
+		
+		for (Reputacao reputacao : usuario.getReputacoes()) 
+		{
+			count++;
+			dados += reputacao.getReputacao() +"&"+ reputacao.getPeriodo().getTime();
+			
+			if (count != usuario.getReputacoes().size())
+				dados += "&";
+		}
+		
+		return dados;
+	}
+	
+	public ReputacaoService getReputacaoService() {
+		return reputacaoService;
+	}
+	public void setReputacaoService(ReputacaoService reputacaoService) {
+		this.reputacaoService = reputacaoService;
+	}
+
 }
+

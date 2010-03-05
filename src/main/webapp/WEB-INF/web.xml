@@ -272,6 +272,26 @@
 	</servlet-mapping>
 
 	<servlet>
+		<servlet-name>ServletScreenShotMapa</servlet-name>
+		<servlet-class>org.wikicrimes.servlet.ServletScreenShotMapa</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>ServletScreenShotMapa</servlet-name>
+		<url-pattern>/ServletScreenShotMapa</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>ServletQRCode</servlet-name>
+		<servlet-class>org.wikicrimes.servlet.ServletQRCode</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>ServletQRCode</servlet-name>
+		<url-pattern>/ServletQRCode</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
 		<servlet-name>ServletAreasRisco</servlet-name>
 		<servlet-class>org.wikicrimes.servlet.ServletAreasRisco</servlet-class>
 	</servlet>

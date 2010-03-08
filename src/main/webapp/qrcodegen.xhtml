@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC
+"-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:jsp="http://java.sun.com/JSP/Page" >
+	
+<head>
+	<meta http-equiv="Cache-Control" content="no-store" />
+	<meta http-equiv="Pragma" content="no-cache" />
+	<meta http-equiv="Expires" content="0" />
+	<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+	<title>WikiCrimes</title>
+	
+	<script type="text/javascript"><!-- 
+	/* <![CDATA[ */
+		function receberParametros() {
+			string = getParameter("string")
+			if(string != undefined)
+				document.qrcodeform.string.value = unescape(string);
+		}
+
+		function submitForm() {
+			var ultimoIndiceHttp, ultimoIndiceHttps;
+			
+			ultimoIndiceHttp = document.qrcodeform.string.value.lastIndexOf("http://");
+			ultimoIndiceHttps = document.qrcodeform.string.value.lastIndexOf("https://");
+
+			if(ultimoIndiceHttp >= 0 || ultimoIndiceHttps >= 0)
+				if(ultimoIndiceHttp > ultimoIndiceHttps) 
+					document.qrcodeform.string.value = document.qrcodeform.string.value.substring(ultimoIndiceHttp)	
+				else
+					document.qrcodeform.string.value = document.qrcodeform.string.value.substring(ultimoIndiceHttps)
+			else
+				document.qrcodeform.string.value = "http://" + document.qrcodeform.string.value;
+			document.qrcodeform.submit();
+		}
+
+		//Recupera parametro passado por get
+		function getParameter( name ) {
+			name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+			var regexS = "[\\?&]"+name+"=([^&#]*)";
+			var regex = new RegExp( regexS );
+			var results = regex.exec( window.location.href );
+			
+			if( results == null )
+				return "";
+			else
+				return results[1];
+		}
+		/* ]]> */
+	 --></script> 
+	
+	<style type="text/css">
+	body{
+		text-align: center;
+	}
+	h3{
+		font-family: calibri;
+		color: firebrick;
+	}
+	p{
+		font-size: smaller;
+		font-weight: bold;
+		color: black;
+	}
+	#logo{
+		border: none;
+	}
+	#div{
+		margin: auto;
+	}
+	#mapa{
+		margin-top: -10px;
+		border: firebrick solid;
+	}
+	#aviso{
+		width: 2em;
+		height: 2em;
+		margin-bottom: -10px;
+		margin-right: 5px;
+	}
+	</style>
+</head>
+			
+<body onload="javascript:receberParametros()">
+	<f:loadBundle var="messages" basename="messages" />
+		
+	<div id="div" >
+	<p> <a href="http://wikicrimes.org" target="_blank"> <img id="logo" src="#{messages['areasrisco.imagem.logo']}" /> </a> </p>
+	
+	<h1> #{messages['qrcode.qrcodegen.titulo']} </h1>
+	
+	<form action="ServletQRCode" method="get" target="_blank" name="qrcodeform">
+			#{messages['qrcode.qrcodegen.link']}
+			
+			<input type="text" name="string" size="50"/>
+			<br />
+			<br />
+			#{messages['qrcode.qrcodegen.tamanhoimagem']}
+					
+			<input type="radio" name="tamanho" value="0.5" id="r1" checked="checked"/><label for="r1"> #{messages['qrcode.qrcodegen.tamanhoimagem.pequeno']} </label>
+			<input type="radio" name="tamanho" value="1.0" id="r2" /><label for="r2"> #{messages['qrcode.qrcodegen.tamanhoimagem.medio']} </label>
+			<input type="radio" name="tamanho" value="2.0" id="r3" /><label for="r3"> #{messages['qrcode.qrcodegen.tamanhoimagem.grande']} </label>
+			<br />
+			<br />
+			<input type="button" value="Gerar QR Code" onclick="javascript:submitForm()"/>
+	</form>
+	
+	</div>
+			
+</body>
+</html>

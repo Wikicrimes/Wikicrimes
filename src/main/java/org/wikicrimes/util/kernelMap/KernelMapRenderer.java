@@ -16,7 +16,7 @@ public class KernelMapRenderer {
 	private final double ZOOM_MIN = 0;
 	private final double ZOOM_MAX = 19;
 	private final double SUAVIZACAO_MIN = 0.2; //quanto mais próximo de zero, maior é a suavização
-	private final double SUAVIZACAO_MAX = 1.2; //quanto mais próximo de 1, menor é a suavização (menos se altera o mapa de kernel)
+	private final double SUAVIZACAO_MAX = 1.8; //quanto mais próximo de 1, menor é a suavização (menos se altera o mapa de kernel)
 											   //valores maiores que 1 fazem efeito inverso: enfatiza as densidades maiores mais ainda 
 	private final double FATOR_SUAVIZACAO = (SUAVIZACAO_MAX-SUAVIZACAO_MIN)/(ZOOM_MAX-ZOOM_MIN); //usado pra converter de zoom pra suavização
 	
@@ -33,19 +33,19 @@ public class KernelMapRenderer {
 	 * Renderiza o mapa de kernel sem suavização.
 	 */
 	public Image pintaKernel(){
-		return pintaKernelTransparente(1.0);
+		return pintaKernelTransparente(1);
 	}
 	
 	/**
-	 * @param zoom
+	 * Renderiza o mapa de kernel com suavização.
 	 */
 	public Image pintaKernel(int zoom){
 		return pintaKernelTransparente(zoomToSuavizacao(zoom));
 	}
 	
 	/**
-	 * @param zoom
-	 * @param opaco
+	 * Renderiza o mapa de kernel com suavização.
+	 * Pode ser opaco (necessário no IE q não suporta a transparência) 
 	 */
 	public Image pintaKernel(int zoom, boolean opaco){
 		if(opaco)
@@ -58,7 +58,7 @@ public class KernelMapRenderer {
 	 * Renderiza o mapa de kernel "suavizado" enfatizando as densidades menores 
 	 * @param suavAmount: valores próximos de 0 suavizam mais, 1 não altera nada, maior que 1 dá efeito inverso
 	 */
-	public Image pintaKernelTransparente(double suavAmount){
+	private Image pintaKernelTransparente(double suavAmount){
 		//pinta no buffer
 		buffer = new BufferedImage(kernel.getWidth(), kernel.getHeight(), imageType);
 		Graphics g = buffer.getGraphics();
@@ -80,7 +80,7 @@ public class KernelMapRenderer {
 	 * Renderiza o mapa de kernel "suavizado" enfatizando as densidades menores 
 	 * @param suavAmount: valores próximos de 0 suavizam mais, 1 não altera nada, maior que 1 dá efeito inverso
 	 */
-	public Image pintaKernelOpaco(double suavAmount){
+	private Image pintaKernelOpaco(double suavAmount){
 		//pinta no buffer
 		buffer = new BufferedImage(kernel.getWidth(), kernel.getHeight(), imageType);
 		Graphics g = buffer.getGraphics();

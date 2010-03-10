@@ -608,10 +608,10 @@
 			<property-name>emailService</property-name>
 			<value>#{emailService}</value>
 		</managed-property>
-		<managed-property>
+<!--	<managed-property>
 			<property-name>reputacaoService</property-name>
 			<value>#{reputacaoService}</value>
-		</managed-property>
+		</managed-property> -->
 		<managed-property>
 			<property-name>idCrime</property-name>
 			<value>#{param.idCrime}</value>
@@ -925,7 +925,7 @@
 	</managed-bean>
 	
 	<managed-bean>
-		<managed-bean-name>imagemMapa</managed-bean-name>
+		<managed-bean-name>imagemMapaForm</managed-bean-name>
 		<managed-bean-class>org.wikicrimes.web.ImagemMapaForm</managed-bean-class>
 		<managed-bean-scope>request</managed-bean-scope>
 		<managed-property>
@@ -940,6 +940,20 @@
 			<property-name>id</property-name>
 			<value>#{param.id}</value>
 		</managed-property>
+	</managed-bean>
+	
+	<managed-bean>
+		<managed-bean-name>areasRiscoForm</managed-bean-name>
+		<managed-bean-class>org.wikicrimes.web.AreaRiscoForm</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+		<managed-property>
+            <property-name>areaRiscoService</property-name>
+            <value>#{areaRiscoService}</value>
+        </managed-property>
+        <managed-property>
+            <property-name>usuario</property-name>
+            <value>#{usuario}</value>
+        </managed-property>
 	</managed-bean>
 
 </faces-config>

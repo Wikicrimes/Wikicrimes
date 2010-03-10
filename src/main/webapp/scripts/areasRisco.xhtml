@@ -380,7 +380,8 @@
 			
 			function fecharJanelaAreaRisco(tipo){
 				//map.enableDragging();
-				fecharShareLinks(tipo);
+				fecharTodasOpcoesAreasRisco();
+				//fecharShareLinks(tipo);
 				limparShareLinks();
 				fecharOpcaoAreasRisco('salvar');
 				fecharOpcaoAreasRisco('editarNome');
@@ -461,6 +462,8 @@
 			}
 
 			function exibirOpcaoAreasRisco(nome){
+
+				fecharTodasOpcoesAreasRisco();
 				var td = document.getElementById(nome + "AreaRiscoTD");
 				var div = document.getElementById(nome + "AreaRiscoDIV");
 				td.appendChild(div);
@@ -472,11 +475,22 @@
 				console.log('janela: ' + janela.offsetHeight + 'div: ' + div.offsetHeight);
 				*/
 			}
-			
+
 			function fecharOpcaoAreasRisco(nome){
 				var div = document.getElementById(nome + "AreaRiscoDIV");
 				var invisivel = document.getElementById("divInvisivel");
 				invisivel.appendChild(div);
+			}
+
+			function fecharTodasOpcoesAreasRisco(){
+				var invisivel = document.getElementById("divInvisivel");
+				invisivel.appendChild(document.getElementById("salvarAreaRiscoDIV"));
+				invisivel.appendChild(document.getElementById("salvarFormatoAreaRiscoDIV"));
+				invisivel.appendChild(document.getElementById("editarNomeAreaRiscoDIV"));
+				invisivel.appendChild(document.getElementById("editarFormatoAreaRiscoDIV"));
+				invisivel.appendChild(document.getElementById("excluirAreaRiscoDIV"));
+				fecharShareLinks('salvar');
+				fecharShareLinks('editar');
 			}
 
 			function isOpcaoAreasRiscoVisible(nome){
@@ -676,6 +690,7 @@
 
 			var bufferShareLinks;
 			function exibirShareLinks(poly, tipo){
+				fecharTodasOpcoesAreasRisco();
 				var td = document.getElementById(tipo+"ShareLinksTD");
 				if(!bufferShareLinks){
 					td.innerHTML = "<img src='images/loading.gif' style='width:120px;height:15px' />"; //um gif de loading que substitui a divShareLinks, enquanto ela carrega

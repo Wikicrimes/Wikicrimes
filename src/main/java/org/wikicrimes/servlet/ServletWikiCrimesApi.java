@@ -525,7 +525,7 @@ public class ServletWikiCrimesApi extends HttpServlet {
 	private static void poeImagemNaSessao(KernelMap mapKernel, HttpSession httpSession) throws IOException{
 		if(mapKernel != null){
 			KernelMapRenderer kRend = new KernelMapRenderer(mapKernel);
-			RenderedImage imagem = (RenderedImage)kRend.pintaKernel();
+			RenderedImage imagem = (RenderedImage)kRend.pintaKernel(); //TODO precisa do zoom pra fazer a suavização
 			httpSession.setAttribute(IMAGEM_KERNEL, imagem);
 	//		/*teste*/System.out.println(kernel);
 	//		/*teste*/System.out.println("bounds: " + bounds);

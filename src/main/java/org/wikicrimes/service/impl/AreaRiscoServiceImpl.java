@@ -1,7 +1,6 @@
 package org.wikicrimes.service.impl;
 
 import java.util.List;
-import java.util.Set;
 
 import org.wikicrimes.dao.AreaRiscoDao;
 import org.wikicrimes.dao.PontoLatLngDao;

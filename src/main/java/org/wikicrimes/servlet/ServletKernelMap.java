@@ -90,11 +90,8 @@ public class ServletKernelMap extends HttpServlet {
 		
 		KernelMapRenderer kRend = new KernelMapRenderer(kernel);
 //		RenderedImage imagem = (zoom > 10)? (RenderedImage)kRend.pintaKernel() : (RenderedImage)kRend.pintaKernel(true);
-		RenderedImage imagem = null;
-		if(Util.isClientUsingIE(request))
-			imagem = (RenderedImage)kRend.pintaKernel(zoom, true);
-		else
-			imagem = (RenderedImage)kRend.pintaKernel(zoom);
+		boolean ie = Util.isClientUsingIE(request); 
+		RenderedImage imagem = (RenderedImage)kRend.pintaKernel(zoom, ie);
 		sessao.setAttribute(IMAGEM_KERNEL, imagem);
 //		/*teste*/KernelImageFilesManager.criarImagem(kernel, request.getSession()); //teste pra ver pq a imagem n aparece as vezes
 	}

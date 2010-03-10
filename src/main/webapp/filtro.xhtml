@@ -820,89 +820,21 @@
        						var marker=	crimesAtuais[idSelPerma];
        						podeCarregarCrimes=false;               					
 							map.setCenter(marker.getLatLng(),15);
-							
-        					
-//delay necessario pois dava erro quando se mostrar os dados de um marcador que nao esta no view port. Provavelmente pelo fato de o Markermanager nao criar o marker									
-									try {
-									setTimeout(function(){
-									if(idconf){
-										if(marker.idTipoCrime == '6')	
-											marker.confirmaRelato(idconf);
-										else							
-											marker.confirmaCrime(idconf);
-									}	
-									else{
-										if(marker.idTipoCrime == '6')	
-											marker.mostrarDadosRelato();
-										else																				
-											marker.mostrarDados();
-									}	
-										},500);
-											
-									}
-									catch(e){
-										try {
-											setTimeout(function(){
-											if(idconf){
-												if(marker.idTipoCrime == '6')	
-													marker.confirmaRelato(idconf);
-												else							
-													marker.confirmaCrime(idconf);
-											}	
-											else{
-												if(marker.idTipoCrime == '6')	
-													marker.mostrarDadosRelato();
-												else									
-													marker.mostrarDados();
-											}	
-												},1000);
-											}
-										catch(e){
-											try {
-												setTimeout(function(){
-												if(idconf){
-													if(marker.idTipoCrime == '6')	
-														marker.confirmaRelato(idconf);
-													else							
-														marker.confirmaCrime(idconf);
-												}	
-												else{
-													if(marker.idTipoCrime == '6')	
-														marker.mostrarDadosRelato();
-													else									
-														marker.mostrarDados();
-												}	
-												},3000);
-											}
-											catch(e){
-												try {
-													setTimeout(function(){
-													if(idconf){
-														if(marker.idTipoCrime == '6')	
-															marker.confirmaRelato(idconf);
-														else							
-															marker.confirmaCrime(idconf);
-													}	
-													else{
-														if(marker.idTipoCrime == '6')	
-															marker.mostrarDadosRelato();
-														else									
-															marker.mostrarDados();
-													}	
-				 									},5000);
-											
-												}
-												catch(e){}
-											}
-									}
-        						}
-								limpaUrl();
-        					}
-
-
-						  	else {
-						  	//map.setCenter(new GLatLng(#{filtroForm.latMapa},#{filtroForm.lngMapa}),#{filtroForm.zoomMapa});                 		
-						  	}
+							map.addOverlay(marker);	
+							if(idconf){
+								if(marker.idTipoCrime == '6')	
+									marker.confirmaRelato(idconf);
+								else							
+									marker.confirmaCrime(idconf);
+							}	
+							else{
+								if(marker.idTipoCrime == '6')	
+									marker.mostrarDadosRelato();
+								else																				
+									marker.mostrarDados();
+							}
+							limpaUrl();
+        				}
 						 
 				  }
 			    /*Download de arquivos .TXT*/

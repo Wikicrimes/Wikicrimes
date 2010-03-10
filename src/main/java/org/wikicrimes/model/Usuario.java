@@ -372,7 +372,11 @@ public class Usuario extends BaseObject {
 	}
 	
 	public Reputacao getUltimaReputacao() {
-		return (Reputacao)reputacoes.toArray()[reputacoes.size()-1];
+		try{
+			return (Reputacao)reputacoes.toArray()[reputacoes.size()-1];
+		}catch (Exception e) {
+			return new Reputacao();
+		}	
 	}
 
 }

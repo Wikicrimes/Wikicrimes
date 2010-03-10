@@ -27,10 +27,10 @@
 		<f:loadBundle var="messages" basename="messages"/>
 		<h:form id="minhasDenunciasForm">
 		
-		<h:outputText value="#{messages['usuario.reputacao']} " style="font-size:12px;" />
+		<!--<h:outputText value="#{messages['usuario.reputacao']} " style="font-size:12px;" />
 		<h:outputText value="#{usuario.ultimaReputacao.reputacao * 100}" style="font-size:12px;" />
         <h:outputText value="%" style="font-size:12px;"/>
-        <br/><br/>
+        <br/><br/>-->
         	
 		<rich:dataTable id="crimes" var="crime"
     	value="#{crimeListForm.crimes}" onRowMouseOver="this.style.backgroundColor='#F1F1F1'"
@@ -38,7 +38,7 @@
 				border="1" cellspacing="0" cellpadding="0" rows="10"
 				styleClass="rich-table">
      	
-     	<rich:column>        	
+     	<!--  <rich:column>        	
         	<f:facet name="header">            	
                 	<h:outputText value="#{messages['crime.credibilidade']}"/>            	
         	</f:facet>
@@ -47,7 +47,7 @@
         	</h:outputText>
         	<h:outputText value="%"/>
         	
-    	</rich:column> 
+    	</rich:column>--> 
      	
      	<rich:column>        	
         	<f:facet name="header">            	

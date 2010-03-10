@@ -93,7 +93,6 @@
 							parent.mostrarCrimeMapa(idCrime);
 							temCrime = true;
 						}
-						
 						var idRelato = document.getElementById("usuarioForm2:idRelato").value;
 						if(idRelato != null && idRelato != ''){
 							temRelato = true;
@@ -141,13 +140,13 @@
 						//vindo de "areasRisco.xhtml", q chamou o metodo "loginCasoPrecise" em "header.xhtml"
 						if(tipoRegistro=='5'){ 
 							//console.log('login.xhtml, 4');							
-							exibirJanelaAreaRisco('Editar');
+							//parent.exibirJanelaAreaRisco('Editar');
 							//console.log('login.xhtml, 6');
 						}
 
 						//exibir as areas de risco deste usuario (ao logar de qualquer forma)
 						//console.log('login.xhtml, 7');
-						exibirMinhasAreas();
+						parent.exibirMinhasAreas();
 						//console.log('login.xhtml, 9');
 						//*********************** AREAS RISCO FIM ****************************
 						

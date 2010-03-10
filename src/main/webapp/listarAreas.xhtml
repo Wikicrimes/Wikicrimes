@@ -43,7 +43,10 @@
 		<f:loadBundle var="messages" basename="messages"/>
 		<h:form id="areaForm">
 		<h:panelGrid columns="1">
+		
 		<c:if test="#{areaForm.qtdAreas != 0}">
+		
+			<h:outputText value="#{messages['webapp.area.titulo']}"/>   
 			<rich:dataTable id="areas" var="area" align="center"
 	    	value="#{areaForm.areas}" onRowMouseOver="this.style.backgroundColor='#F1F1F1'"
 					onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'"
@@ -80,7 +83,41 @@
 	    	</rich:column>   
 	    	
 			</rich:dataTable>
+			
 		</c:if>	
+		<br/>
+		
+		<c:if test="#{not empty areasRiscoForm.minhasAreas}">
+			<h:outputText value="#{messages['areasrisco.gerenciar.titulo']}" /> <h:commandLink onclick="parent.toggleExibirMinhasAreas();return false;" value="(#{messages['areasrisco.gerenciar.toggle']})" />
+			<rich:dataTable id="tabAreasRisco" var="area" align="center"
+		    	value="#{areasRiscoForm.minhasAreas}" onRowMouseOver="this.style.backgroundColor='#F1F1F1'"
+						onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'"
+						border="1" cellspacing="0" cellpadding="2" styleClass="rich-table">
+						
+				<rich:column>        	
+		        	<f:facet name="header">            	
+		                	<h:outputText value="#{messages['webapp.area.atributo.nome']}"/>            	
+		        	</f:facet>
+		        	<h:outputText value="#{area.nome}"/>
+		    	</rich:column>  		
+		    	<rich:column>
+		    	 	<f:facet name="header">
+		            	<h:outputText value=""/>
+		            </f:facet>            
+		        	<a4j:commandButton onclick="if(!window.confirm('#{messages['webapp.area.erro.pergunta.exclusao.area']}'))return false;"
+			        		oncomplete="parent.refreshMinhasAreas();location.reload();" 
+		        			styleClass="button" value="#{messages['webapp.area.acao.excluir']}" action="#{areasRiscoForm.excluirArea}" >
+		        		<f:setPropertyActionListener value="#{area}" target="#{areasRiscoForm.areaPraExcluir}" />
+		        	</a4j:commandButton>
+		    	</rich:column>   
+		    	
+			</rich:dataTable>
+		</c:if>
+			
+		<c:if test="#{areaForm.qtdAreas == 0 and empty areasRiscoForm.minhasAreas}">
+			<h:outputText value="#{messages['areasrisco.gerenciar.naotemareas']}"/>
+		</c:if>
+		
 		</h:panelGrid>
 		</h:form>					
 		</f:view>

@@ -15,17 +15,21 @@
 	<script type="text/javascript">
 	        /* <![CDATA[ */
 	        
-			function mostraHintNoMapa(msg, latlng){
+			function mostraHintNoMapa(msg, latlng, negrito){
             	var hint = document.getElementById("divHint");
             	map.getPane(G_MAP_FLOAT_PANE).appendChild(hint);
 
 				//não sair da tela
-				var hintWidth = msg.length - 33; //33 é o tamanho das tags "div" e "b" q vem junto da msg propriamente dita
-				if(hintWidth > 160) hintWidth = 20; //20 é uma largura máxima (em caracteres)
+				var numCaracteres = msg.length;
+				var widthEx = numCaracteres <= 15 ? numCaracteres : 15; //20 é uma largura máxima (em caracteres)
 				var panel = document.getElementById("panelHint"); 
-				panel.style.width = hintWidth + "ex"; //a largura em "em" (relativo ao tamanho da fonte)
-				//hintWidth = panel.getWidth(); //a largura em pixels (não funciona no IE)
-				hintWidth = panel.style.width; //a largura em pixels
+				panel.style.textAlign = 'center';
+				if(negrito)
+					panel.style.fontWeight = 'bold';
+				else
+					panel.style.fontWeight = 'normal';
+				panel.style.width = widthEx + "ex"; //a largura em "em" (relativo ao tamanho da fonte)
+				var widthPixel = panel.offsetWidth; //a largura em pixels
 				var padding = 20;
 				var ajusteVertical = 50;
             	var mapBounds = map.getBounds();
@@ -34,7 +38,7 @@
             	var mapNorth = mapPixel.y;
             	var hintPixel = latlngToPixel(latlng); 
 				var hintWest = hintPixel.x;
-				var hintEast = hintWest + hintWidth; 
+				var hintEast = hintWest + widthPixel; 
 				var hintNorth = hintPixel.y;
             	var pos = map.fromLatLngToDivPixel(latlng);
 				var sobra = hintEast + padding - mapEast;

@@ -12,6 +12,7 @@
 	xmlns:rich="http://richfaces.org/rich"
 	xmlns:a4j="http://richfaces.org/a4j">
 
+	<script type="text/javascript" src="scripts/dragresize.js"></script>
 	<script type="text/javascript">
 	        /* <![CDATA[ */
 	    
@@ -22,7 +23,7 @@
 
 			
 	    //******************************************************************
-		//MARCACA�O DE HOTSPOT
+		//MARCACACAO DE HOTSPOT
 			
 			var mousemoveHotspot;
 			var clickHotspot;
@@ -39,7 +40,7 @@
 				mousemoveHotspot = GEvent.addListener(map, "mousemove", function (latlng) {
 
 					//marcar apenas em determinados niveis zoom
-					if(zoomKernel < 10 || zoomKernel > 15){
+					if(zoomKernel < 11 || zoomKernel > 14){
 						return;
 					}
 
@@ -65,6 +66,7 @@
 					isMouseNoHotspot = isCelulaNoHotspot(posGrid); 
 					if(isMouseNoHotspot){
 						marcaHotspot(posGrid);
+						//document.getElementById("map").style.cursor = 'hand'; //nao funcionou
 					}
 				});
 			}
@@ -87,6 +89,7 @@
 				//click listener
 				clickHotspot = GEvent.addListener(polyHotspot, "click", function (latlng) {
 					var msg = "#{messages['areasrisco.login']}"
+					//console.log('areasRisco.xhtml, 0');
 					var precisouLogin = loginCasoPrecise('5', msg);
 					if(precisouLogin){
 						//exibirMinhasAreas();
@@ -98,13 +101,14 @@
 				});
 
 				//so pro ponteiro do mouse ficar "hand"
-				GEvent.addListener(polyHotspot, "mouseover", function(){});
+				hostpostPointer = GEvent.addListener(polyHotspot, "mouseover", function(){});
 
 				//mostra hint
 				posHintHotspot = polyHotspot.getBounds().getNorthEast();
 				mostraHintMarcacaoHotspot(posHintHotspot);
 			}
 
+			var hostpostPointer;
 			var podeDesmarcarHotspot = true;
 			function desmarcaHotspot(){
 				
@@ -112,6 +116,7 @@
 					return;
 				
 				GEvent.removeListener(clickHotspot);
+				GEvent.removeListener(hostpostPointer); //listener q faz o ponteiro do mouse ficar hand no polyHotspot
 				map.removeOverlay(polyHotspot);
 				polyHotspot = null;
 
@@ -327,7 +332,7 @@
 			function mostraHintMarcacaoHotspot(latlng){
 				if(isMouseNoHotspot && !isJanelaAreaRiscoVisible()){
 					var msg = "#{messages['areasrisco.tooltip']}";
-					mostraHintNoMapa(msg, latlng);
+					mostraHintNoMapa(msg, latlng, false);
 				}
 				//isHintAgendado = false;
 			}
@@ -347,22 +352,30 @@
 					}else if(tipo == 'Editar'){
 						poly = polyEditando;
 					}
-
+					//console.log('areasRisco.xhtml, 5.1');
 					//map.disableDragging(); //nao ta funcionando pq isso ta sendo desfeito logo depois, pq em algum lugartem um enableDragging on mouseover no mapa
+					podeMudarModoKernel = false;
 					if(kernelEnable){
 						kernelLigadoAoExibirJanelaAreaRisco = true;
+						//console.log('areasRisco.xhtml, 5.2');
 						desativaMapaKernel();
+						//console.log('areasRisco.xhtml, 5.3');
 					}else{
 						kernelLigadoAoExibirJanelaAreaRisco = false;
 					}
 					//desativaMarcacaoHotspot(); //ja e chamado dentro do desativaMapaKernel()
 					removeHint();
+					//console.log('areasRisco.xhtml, 5.4');
 					zoomNoPoligono(poly);
+					//console.log('areasRisco.xhtml, 5.5');
 					document.getElementById("editarAreaRiscoTituloTD").innerHTML = nomePolyEditando;
 					document.getElementById("editarAreaRiscoDescTD").innerHTML = "#{messages['areasrisco.janela.editar.explicacao']}" + nomePolyEditando;
 					document.getElementById("janela"+tipo+"AreasRisco").style.visibility = "visible";
 
+					ativaDragJanelaAreaRisco(tipo);
+					
 					podeAbrirJanelaAreaRisco = false;
+					//console.log('areasRisco.xhtml, 5.6');
 				}
 			
 			function fecharJanelaAreaRisco(tipo){
@@ -384,6 +397,7 @@
 					polyEditando.isEditing = false;
 				}
 				podeCarregarCrimes=false;
+				podeMudarModoKernel = true;
 				recuperarZoom();
 				podeDesmarcarHotspot = true;
 				if(kernelLigadoAoExibirJanelaAreaRisco){
@@ -416,15 +430,20 @@
 			var zoomAnterior;
 			
 			function zoomNoPoligono(poly){
+				//console.log('areasRisco.xhtml, 5.4.1');
 				var mapBounds = map.getBounds();
+				//console.log('areasRisco.xhtml, 5.4.2');
 				centroAnterior = mapBounds.getCenter();
 				zoomAnterior = map.getZoom();
 				var polyBounds = poly.getBounds();
+				//console.log('areasRisco.xhtml, 5.4.3');
 				var zoom = map.getBoundsZoomLevel(polyBounds);
 				var centro = polyBounds.getCenter();
 				var widthJanela = document.getElementById("janelaSalvarAreasRisco").offsetWidth;
+				//console.log('areasRisco.xhtml, 5.4.4');
 				centro = deslocaLatLng(centro, widthJanela/2, zoom);
 				map.setCenter(centro, zoom);
+				//console.log('areasRisco.xhtml, 5.4.5');
 			}
 
 			function deslocaLatLng(latlng, pixelDistance, zoom){
@@ -445,6 +464,13 @@
 				var td = document.getElementById(nome + "AreaRiscoTD");
 				var div = document.getElementById(nome + "AreaRiscoDIV");
 				td.appendChild(div);
+
+				/*
+				//teste
+				var janela = document.getElementById('janelaSalvarAreasRisco');
+				janela.style.height += div.offsetHeight;
+				console.log('janela: ' + janela.offsetHeight + 'div: ' + div.offsetHeight);
+				*/
 			}
 			
 			function fecharOpcaoAreasRisco(nome){
@@ -482,6 +508,7 @@
 			var isMinhasAreasExibindo = false;
 
 			function carregarMinhasAreas(){
+				//console.log("carregarMinhasAreas()");
 				minhasAreas = [];
 				var str = requisicaoTexto("ServletAreasRisco", "acao=listar");
 				if(str.length > 0){
@@ -532,6 +559,7 @@
 			}
 
 			function toggleExibirMinhasAreas(){
+				//console.log("toggleExibirMinhasAreas()");
 				if(isMinhasAreasExibindo)
 					esconderMinhasAreas();
 				else
@@ -539,6 +567,7 @@
 			}
 
 			function refreshMinhasAreas(){
+				//console.log("refreshMinhasAreas()");
 				var tavaExibindo = isMinhasAreasExibindo;
 				esconderMinhasAreas();
 				carregarMinhasAreas();
@@ -577,10 +606,12 @@
 			}
 
 			function editarFormatoAreaRisco(){
-				var str = "acao=alterarFormato";
-				str += "&id="+idPolyEditando;
-				str += "&vertices="+polyToString(polyEditando);
-				requisicaoTexto("ServletAreasRisco",str);
+				if(polyEditando){
+					var str = "acao=alterarFormato";
+					str += "&id="+idPolyEditando;
+					str += "&vertices="+polyToString(polyEditando);
+					requisicaoTexto("ServletAreasRisco",str);
+				}
 			}
 
 			function excluirAreaRisco(){
@@ -621,8 +652,7 @@
 					//mostra hint
 					this.mouseover = GEvent.addListener(this.poligono, "mouseover", function () {
 						posHint = this.getBounds().getNorthEast();
-						var textoHint = tagsNegritoCentralizado(this.areaRisco.nome);
-						mostraHintNoMapa(textoHint, posHint);
+						mostraHintNoMapa(this.areaRisco.nome, posHint, true);
 						desmarcaHotspot();
 					});
 
@@ -634,10 +664,6 @@
 					map.removeOverlay(poligono);
 					GEvent.removeListener(this.click);
 				}
-			}
-
-			function tagsNegritoCentralizado(str){
-				return "<div align='center'><b>" + str + "</b></div>" 
 			}
 
 
@@ -706,12 +732,12 @@
 			     {id:'facebook',	nome:'Facebook', 	url:'http://www.facebook.com/sharer.php?u=%url?p=%texto'},
 			     {id:'google',		nome:'Google', 		url:'http://www.google.com/bookmarks/mark?op=add&bkmk=%url&title=%texto'},
 			     {id:'delicious',	nome:'Delicious', 	url:'http://del.icio.us/post?url=%url&title=%texto'},
-			     {id:'blinklist',	nome:'Blinklist', 	url:'http://blinklist.com/index.php?Action=Blink/addblink.php&Description=&Url=%url&title=%texto'},
-			     {id:'furl',		nome:'Furl', 		url:'http://www.furl.net/storeIt.jsp?&u=%url&t=%texto'},
-			     {id:'technorati',	nome:'Technorati', 	url:'http://technorati.com/faves?add=&url'},
-			     {id:'magnolia',	nome:'Magnolia', 	url:'http://ma.gnolia.com/beta/bookmarklet/add?url=%url&title=%texto'},
-			     {id:'sphinn',		nome:'Sphinn', 		url:'http://sphinn.com/submit.php?url=%url&title=%texto'},
-			     {id:'mixx',		nome:'Mixx', 		url:'http://www.mixx.com/submit?page_url=%url&title=%texto'},
+			     //{id:'blinklist',	nome:'Blinklist', 	url:'http://blinklist.com/index.php?Action=Blink/addblink.php&Description=&Url=%url&title=%texto'},
+			     //{id:'furl',		nome:'Furl', 		url:'http://www.furl.net/storeIt.jsp?&u=%url&t=%texto'},
+			     //{id:'technorati',	nome:'Technorati', 	url:'http://technorati.com/faves?add=&url'},
+			     //{id:'magnolia',	nome:'Magnolia', 	url:'http://ma.gnolia.com/beta/bookmarklet/add?url=%url&title=%texto'},
+			     //{id:'sphinn',		nome:'Sphinn', 		url:'http://sphinn.com/submit.php?url=%url&title=%texto'},
+			     //{id:'mixx',		nome:'Mixx', 		url:'http://www.mixx.com/submit?page_url=%url&title=%texto'},
 			     {id:'qrcode',		nome:'QR Code',		url:'qrcodegen.html?string=%url'}
 			];
 
@@ -744,14 +770,44 @@
 				return urlMapaComKernel;
 			}
 
+
+			
+			//******************************************************************
+			//DRAG
+			
+			function ativaDragJanelaAreaRisco(tipo){
+				var minimo = 50;
+				var espacoExtra = document.getElementById('janela'+ tipo +'AreasRisco').offsetWidth - minimo;
+				var dragresize = new DragResize('dragresize',
+				 	{ minLeft: -espacoExtra, minTop: 0, 
+				 	maxLeft:getWidthWikicrimes() + espacoExtra, maxTop:getHeightWikicrimes() + espacoExtra });
+					//maxLeft:1000, maxTop:1000 });
+			
+			 	dragresize.isElement = function(elm){
+			 		if (elm.className && elm.className.indexOf('divJanelaAreaRisco') > -1) return true;
+			 	};
+			
+			 	dragresize.isHandle = function(elm){
+			 	 	if (elm.className && elm.className.indexOf('headerJanelaAreaRisco') > -1) return true;
+			 	};
+			
+			 	dragresize.apply(document);
+		 	}
+
+		 	function getWidthWikicrimes(){
+				return document.body.clientWidth;
+		 	}
+
+		 	function getHeightWikicrimes(){
+		 		return document.body.clientHeight;
+		 	}
+
 			/* ]]> */
 	</script>
 
 	<style>
-	#janelaSalvarAreasRisco{
+	.divJanelaAreaRisco {
 		position: absolute;
-		top: 20%;
-		left: 5%;
 		width: 75ex;
 		margin-left: auto;	
 		margin-right: auto;	
@@ -765,22 +821,8 @@
 		visibility: hidden;	
 		background-color: #ffffff;
 	}
-	#janelaEditarAreasRisco{
-		position: absolute;
-		top: 12%;
-		left: 5%;
-		width: 75ex;
-		margin-left: auto;	
-		margin-right: auto;	
-		z-index: 90;	
-		opacity: 1.00;	
-		-moz-opacity: 1.00;	
-		filter: alpha(opacity = 100);	
-		color: #000000;	
-		font-family: helvetica, verdana, sans;	
-		font-size: 12px;
-		visibility: hidden;	
-		background-color: #ffffff;
+	.headerJanelaAreaRisco {
+		cursor: move;
 	}
 	.areas{
 		padding:10px 35px;
@@ -805,13 +847,20 @@
 	.areas{
 		font-size: 13px;
 	}
+	
+	.drsElement {
+	 position: absolute;
+	}
+	.drsMoveHandle {
+	 cursor: move;
+	}
 	</style>
-
-	<div id="janelaSalvarAreasRisco">
-		<rich:panel style="width:100%; height:100%;	border-width:thick;	border-color:#3A5FCD; border-style:solid;">
+	
+	<div id="janelaSalvarAreasRisco" class="divJanelaAreaRisco" style="left:5%; top:20%">
+		<rich:panel style="width:100%; height:100%;	border-width:medium;	border-color:#3a6bb4; border-style:solid;">
 			<f:facet name="header">
 	           <h:panelGroup>
-	           	<table width="100%"><tr>
+	           	<table width="100%" class="headerJanelaAreaRisco"><tr>
 	           		<td align="center" style="width:100%"><h:outputText value="#{messages['areasrisco.janela.salvar.titulo']}" /></td>
 	                <td align="right"><h:graphicImage value="/images/close.gif" onclick="fecharJanelaAreaRisco('Salvar')" style="cursor:pointer;"/></td>
 	            </tr></table>
@@ -871,11 +920,11 @@
 		</div>
 	</div>
 	
-	<div id="janelaEditarAreasRisco">
-		<rich:panel style="width:100%; height:100%;	border-width:thick;	border-color:#3A5FCD; border-style:solid;">
+	<div id="janelaEditarAreasRisco" class="divJanelaAreaRisco" style="left:5%; top:20%">
+		<rich:panel style="width:100%; height:100%;	border-width:medium;	border-color:#3a6bb4; border-style:solid;">
 			<f:facet name="header">
 	           <h:panelGroup>
-	           	<table width="100%"><tr>
+	           	<table width="100%" class="headerJanelaAreaRisco" ><tr>
 	           		<td id="editarAreaRiscoTituloTD" align="center" style="width:100%"> </td>
 	                <td align="right"><h:graphicImage value="/images/close.gif" onclick="fecharJanelaAreaRisco('Editar')" style="cursor:pointer;"/></td>
 	            </tr></table>

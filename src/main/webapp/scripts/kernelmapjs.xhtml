@@ -37,7 +37,9 @@
 		    var aindaCarregando = false;
 		    var me;
 		    var kernelLayer;
-		    var kernelDiv;	
+		    var kernelDiv;
+
+		    var podeMudarModoKernel = true
 
 			function ativaMapaKernel(){
 			    if(!aindaCarregando && !kernelEnable){
@@ -49,10 +51,11 @@
 				  	podeCarregarCrimes=true;
 				  	if(statusLegenda=='visivel')
 						wikicrimesDiv.innerHTML = htmlLegenda();
-				  	constroiMapaKernel();
+				  	atualizaDensidades();
+					pintaMapaKernel();
 				  	//comentar as 2 linhas abaixo pra desativar a funcionalidade de Areas de Risco
-					//if(!isJanelaAreaRiscoVisible())
-				  		//ativaMarcacaoHotspot();
+					if(!isJanelaAreaRiscoVisible())
+				  		ativaMarcacaoHotspot();
 			  	}	
 			}
 
@@ -68,8 +71,8 @@
 					if(statusLegenda=='visivel')
 						wikicrimesDiv.innerHTML = htmlLegenda();
 					//comentar as 2 linhas abaixo pra desativar a funcionalidade de Areas de Risco
-					//if(!isJanelaAreaRiscoVisible())
-						//desativaMarcacaoHotspot();
+					if(!isJanelaAreaRiscoVisible())
+						desativaMarcacaoHotspot();
 				}
 			}
 
@@ -130,18 +133,20 @@
 					desmarcaHotspot();
 			}
 			
-			function constroiMapaKernel(){
+			function pintaMapaKernel(){
+				exibeImagemMapaKernel();
+				if(statusLegenda=='visivel'){
+					atualizaLegendaKernel();
+				}
+			}
+			
+			function atualizaDensidades(){
 				var url = constroiURLMapaKernel();
-				//alert('constroiMapaKernel(), url: ' + url);
 				var req = requisicaoGeraKernelMap(url);
 				if (req.readyState == 4 && req.status == 200){
-					exibeImagemMapaKernel(url);
 					req = pegaGridDensidades();
-					if(req.readyState == 4 && req.status == 200)
-					if(statusLegenda=='visivel'){
-						atualizaLegendaKernel();
-					}
 				}
+				return req;
 			}
 			
 			function constroiURLMapaKernel(){
@@ -295,7 +300,7 @@
 				 return http_request;
 			}
 			
-			function exibeImagemMapaKernel(url){
+			function exibeImagemMapaKernel(){
 				var bounds = map.getBounds();
 
 				removeHintComandosMapa();//pra q mesmo?
@@ -317,18 +322,13 @@
 	
 					//alert('exibeImagemMapaKernel');
 					photo.src = "ServletKernelMap?acao=pegaImagem&nocache=" + new Date();
-					if(IE)
-						photo.percentOpacity = 50;
-					else
-						photo.percentOpacity = 100;
+					photo.percentOpacity = IE? 50 : 100; //no IE, a imagem vem opaca, precisa de transparência aqui
 					photo.anchorTopLeft = new GLatLng(lat1,lon1);
 					photo.anchorBottomRight = new GLatLng(lat2,lon2);
 			  		map.addTPhoto(photo);
-			  	}/*else{
-					alert('zoom diferente no metodo exibeImagemMapaKernel()');
-					apagaMapaKernel();
-			  		constroiMapaKernel();
-			  	}*/
+			  	}else{
+					console.log('zoom diferente no metodo exibeImagemMapaKernel()');
+			  	}
 			}
 
 
@@ -404,7 +404,10 @@
 			var densMax;
 			var densMedia;
 			var limiteDensHotspot; //limite a partir do qual um valor de densidade é considerado parte de hotspot
-			var densMaxSuficiente = .01; //se a densMax for menor que isso, o mapa de kernel não deve ser exibido (pra evitar hotspots de poucos crimes)
+			var densLimiteInfKernel = .01; //se a densMax for menor que isso, o mapa de kernel não deve ser exibido (pra evitar hotspots de poucos crimes)
+			var densLimiteSupMarcadores = .01;
+			var zoomLimiteSupKernel = 15;
+			var zoomLimiteInfMarcadores = 15;
 			
 			function pegaGridDensidades(){
 				http_request = GXmlHttp.create();

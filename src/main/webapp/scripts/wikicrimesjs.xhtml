@@ -79,6 +79,7 @@
 				var atualiza=true;
 				var atualizaGrupos=true;
 				var filtrou=false;
+				var mudouZoom;
 
 				//tutor
 				var acoesUsuario = {};
@@ -465,13 +466,6 @@
 				map.setCenter(new GLatLng(_lat, _long), _zoom);
 				map.addControl(new LegendaWikicrimes());
 				map.disableScrollWheelZoom();
-			//*********************** Kernel Map INICIO ****************************	
-				//map.addControl(new KernelMapTypeControl());
-			//*********************** Kernel Map FIM ****************************	
-			//*********************** ROTAS SEGURAS INICIO ****************************
-			//menu popup pra desenvolvimento, c testes pra rota segura, etc
-				//controleMenu(map);
-			//*********************** ROTAS SEGURAS FIM ****************************
 				map.addControl(new ComandoEmbed());
 				
 				//mostraComandosLogado(map);
@@ -599,8 +593,9 @@
 						else hideDivComment();
 				  	}
 				});
-				
+
 				GEvent.addListener(map, "zoomend", function (overlay, latLng) {
+					mudouZoom = true;
 					acoesUsuario['zoom'] = map.getZoom();
 					alertarTutorDeAcaoDoUsuario(acoesUsuario,"zoom_map");
 					if(map.getZoom() >= 15) showDivComment();
@@ -622,7 +617,18 @@
 					if('#{filtroForm.tutorAtivado}'=='1')
 						tutorEstaAtivado = true;		
 				//setTimeout(reqRenovaSessao,60000*9+30000);
-				GEvent.trigger(map,"moveend");			
+				
+			//*********************** Kernel Map INICIO ****************************	
+				ativaMapaKernel();
+				exibirMinhasAreas();
+				//map.addControl(new KernelMapTypeControl());
+			//*********************** Kernel Map FIM ****************************	
+			//*********************** ROTAS SEGURAS INICIO ****************************
+			//menu popup pra desenvolvimento, c testes pra rota segura, etc
+				//controleMenu(map);
+			//*********************** ROTAS SEGURAS FIM ****************************
+				
+				GEvent.trigger(map,"moveend");
 			}
 			
 			function reqRenovaSessao(){

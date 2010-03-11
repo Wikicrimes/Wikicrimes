@@ -1,5 +1,7 @@
 //Inicializa o mapa
 function initialize() {
+	if(opensocial.getEnvironment().getDomain() == 'orkut.com')
+		nomeRedeSocial = 'orkut';
 	//Este método se encontra o arquivo requisicoes.js
 	getPessoas();
 	//Este método se encontra o arquivo requisicoes.js	   				   					 			

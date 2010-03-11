@@ -834,6 +834,11 @@
 									marker.mostrarDados();
 							}
 							limpaUrl();
+							selecionarComando(map, 'mao');							
+							kernelEnable = false;
+							apagaMapaKernel();
+							if(statusLegenda=='visivel')
+								wikicrimesDiv.innerHTML = htmlLegenda();							
         				}
 						 
 				  }

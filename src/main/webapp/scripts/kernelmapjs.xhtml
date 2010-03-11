@@ -64,7 +64,7 @@
 				if(!aindaCarregando){
 					kernelEnable = false;
 					mostraCrimesAgrupador();
-					selecionarComando(map, 'kernel', true);
+					selecionarComando(map, 'mao');
 					apagaMapaKernel();
 					mostraMarcadores();
 					podeCarregarCrimes=true;
@@ -152,7 +152,7 @@
 			function constroiURLMapaKernel(){
 				jaMostrouAjudaHotSpot = true;
 				
-				//Adiciona os parametros da requisição
+				//Adiciona os parametros da requisiï¿½ï¿½o
 				var url = 'acao=geraKernel';
 				url += boundsUrlParam(map);
 				url += pontosUrlParam();
@@ -210,7 +210,7 @@
 				eastPixel = nePixel.x;
 				westPixel = swPixel.x;
 
-				//size válido desconsiderando o problema das emendas do mapa (linhas com latitude 0 e longitude 0)
+				//size vï¿½lido desconsiderando o problema das emendas do mapa (linhas com latitude 0 e longitude 0)
 				var width = (eastPixel - westPixel);
 				var height = (southPixel - northPixel);
 
@@ -223,7 +223,7 @@
 				console.log("northPixel: " + northPixel);
 				/*teste*/
 
-				//correção do size já considerando o problema das emendas
+				//correï¿½ï¿½o do size jï¿½ considerando o problema das emendas
 				if(width < 0){
 					if(centroPixel.x < westPixel)
 						width = 2*(eastPixel-centroPixel.x);
@@ -322,7 +322,7 @@
 	
 					//alert('exibeImagemMapaKernel');
 					photo.src = "ServletKernelMap?acao=pegaImagem&nocache=" + new Date();
-					photo.percentOpacity = IE? 50 : 100; //no IE, a imagem vem opaca, precisa de transparência aqui
+					photo.percentOpacity = IE? 50 : 100; //no IE, a imagem vem opaca, precisa de transparï¿½ncia aqui
 					photo.anchorTopLeft = new GLatLng(lat1,lon1);
 					photo.anchorBottomRight = new GLatLng(lat2,lon2);
 			  		map.addTPhoto(photo);
@@ -378,7 +378,7 @@
 					pontoXPixel = sw.y; //Longitude (x)
 					pontoYPixel = sw.x; //Latitude (y)
 
-					//Só os crimes exibidos na tela atual								
+					//Sï¿½ os crimes exibidos na tela atual								
 					//if(westPixel <= pontoYPixel && eastPixel >= pontoYPixel && northPixel <= pontoXPixel && southPixel >= pontoXPixel){
 					/*testeconsole.log(bounds.containsLatLng(latlng) + "; " +
 							"bounds: " + bounds.getNorthEast() + ", " + bounds.getSouthWest() + "; " +
@@ -396,15 +396,15 @@
 
 
 			//******************************************************************
-			//INFORMAÇÕES DO MAPA DE KERNEL
+			//INFORMAï¿½ï¿½ES DO MAPA DE KERNEL
 			
 			var gridDensidades;
 			var nodeSize;
 			var bandwidth;
 			var densMax;
 			var densMedia;
-			var limiteDensHotspot; //limite a partir do qual um valor de densidade é considerado parte de hotspot
-			var densLimiteInfKernel = .01; //se a densMax for menor que isso, o mapa de kernel não deve ser exibido (pra evitar hotspots de poucos crimes)
+			var limiteDensHotspot; //limite a partir do qual um valor de densidade ï¿½ considerado parte de hotspot
+			var densLimiteInfKernel = .01; //se a densMax for menor que isso, o mapa de kernel nï¿½o deve ser exibido (pra evitar hotspots de poucos crimes)
 			var densLimiteSupMarcadores = .01;
 			var zoomLimiteSupKernel = 15;
 			var zoomLimiteInfMarcadores = 15;

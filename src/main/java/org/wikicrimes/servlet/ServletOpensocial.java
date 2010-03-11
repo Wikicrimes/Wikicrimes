@@ -863,7 +863,6 @@ public class ServletOpensocial extends HttpServlet {
 				UsuarioRedeSocial urs = new UsuarioRedeSocial();
 				RedeSocial rs = new RedeSocial();
 				rs.setDominioRedeSocial(dominioRedesocial);
-				rs.setDominioRedeSocial(dominioRedesocial);
 				rs = (RedeSocial) opensocialService.getBaseObjects(rs).get(0);
 				urs.setIdUsuarioDentroRedeSocial(idUsuarioRedesocial);
 				urs.setVisualizarCrimes(1);

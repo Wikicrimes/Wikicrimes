@@ -346,18 +346,15 @@
 			}
 
 			function limpaCrimesAgrupador(){
-				// Google Agrupadores: Limpa agrupadores quando mapa de kernel é chamado. 
-				GVetorMarcadores = [];
-				GClusterer.resetViewport();
-				GClusterer.clearMarkers();		
+				map.clearOverlays();	
 			}
 
 			function mostraCrimesAgrupador(){
 				for (k in crimesAtuais) {
-					GVetorMarcadores.push(crimesAtuais[k]);
+					map.addOverlay(crimesAtuais[k]);
 			 	} 	
-				GClusterer = new MarkerClusterer(map, GVetorMarcadores);
-				//setTimeout(atualizaMapa, 1000);
+				
+				setTimeout(atualizaMapa, 1000);
 			}		
 			
 			function crimesTelaPixel(){

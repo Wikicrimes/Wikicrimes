@@ -289,12 +289,7 @@
 					map.clearOverlays();
 					crimesAtuais = {}							
 					mgr.clearMarkers();
-					//document.getElementById("quantidadeCrimesEncontrados").value = "#{messages['filtro.contador.nenhum']}";
-
-					// Google Agrupador: Limpa variáveis de controle
-					crimesAtuaisAgrupador = {};
-					GVetorMarcadores = [];
-					GClusterer.clearMarkers();
+					
 				}
 			}
 			
@@ -732,7 +727,7 @@
 
 //*********************** Kernel Map INICIO ****************************
 //recalcula o mapa de kernel sempre q recarregar os crimes (ao mover o mapa ou alterar o zoom)
-					atualizaDensidades();
+					
 					//console.log('densMax: ' + densMax);
 					//console.log('zoom: ' + map.getZoom());
 					if(podeMudarModoKernel)
@@ -744,6 +739,7 @@
 							//TODO avisar pq q desativou?
 							//TODO reativar sozinho qd a densidade ficar suficiente?
 						}else{
+							atualizaDensidades();
 							apagaMapaKernel();
 							pintaMapaKernel();
 						}
@@ -916,14 +912,7 @@
 //*********************** Kernel Map FIM ****************************	
 							map.clearOverlays();
 							crimesAtuais = {}							
-							mgr.clearMarkers();
-
-							
-							// Google Agrupador: Limpa variáveis de controle
-							//crimesAtuaisAgrupador = {};
-							//GClusterer.clearMarkers();
-							GVetorMarcadores = [];
-							GClusterer.resetViewport();
+													
 						}
 		  			        submeteRequisicao();
 					   
@@ -1392,7 +1381,7 @@
 													&& map.getZoom() <= zoomLimiteInfMarcadores))  
 					//*********************** Kernel Map FIM ****************************
 											// Google Agrupadores: Preenchendo Vetor de marcadores
-												GVetorMarcadores.push(marcador);
+												map.addOverlay(marcador);
 											
 										}
 						            		
@@ -1418,18 +1407,7 @@
 				      				document.getElementById("dataInicial").value=dataMaisAntiga;
 				      				verificaFiltrosAplicados();
 				      				dataInicial=dataMaisAntiga.split("/");	
-				      			}
-				      				GClusterer.clearMarkers();
-				      				 
-  		//*********************** Kernel Map INICIO ****************************
-  		//não deixar plotar os marcadores qd o mapa de kernel estiver ligado
-				      			if(!kernelEnable 
-									//nao plotar marcadores qd o modo kernel for ser habilitado por mudança de zoom
-									&& !(podeMudarModoKernel 
-										&& (mudouZoom) 
-										&& map.getZoom() <= zoomLimiteInfMarcadores))
-		//*********************** Kernel Map FIM ****************************
-									GClusterer = new MarkerClusterer(map, GVetorMarcadores);
+				      			}				      				
 			      		}						
 					  
 					   function plotaEstados() {

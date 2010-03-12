@@ -87,15 +87,6 @@
 				acoesUsuario['qtd_mostrar_dados'] = 0;	
 				//tutor
 				
-				// Google Agrupador
-				var crimesAtuaisAgrupador = {};
-				var GClusterer;
-				var GVetorMarcadores = [];
-				var agrupadorToolTipText = '#{messages["agrupador.toolTip.texto"]}';
-				var rouboText = '#{messages["tipocrime.roubo"]}';
-				var furtoText = '#{messages["tipocrime.furto"]}';
-				var denunciaText = '#{messages["abuso.texto"]}';
-				var outrosText = '#{messages["tipocrime.violencia"]}';
 				
 				browser=navigator.appName;
 				check=browser.indexOf("Microsoft");
@@ -938,24 +929,20 @@
 			}
 			
 			function limpaCrimesOutOfBounds(id, idRelato) {
-			 var mapBounds = map.getBounds();		
-			 GVetorMarcadores = [];
+				var mapBounds = map.getBounds();		
+			 
 			  
 			 //loop para checar crimes fora do viewport apaga todos os crimes fora do viewport com excecao do id
-			 for (k in crimesAtuais) {
-				if (!mapBounds.contains(crimesAtuais[k].getPoint())){
-					if(crimesAtuais[id]!=crimesAtuais[k] && crimesAtuais[idRelato]!=crimesAtuais[k]){
-						//GClusterer.removeMarker(crimesAtuais[k]);
-						//delete crimesAtuaisAgrupador[k] = undefined;
-						//mgr.removeMarker(crimesAtuais[k]);
-						removeComment(k);
-						delete crimesAtuais[k];
+		 		for (k in crimesAtuais) {
+					if (!mapBounds.contains(crimesAtuais[k].getPoint())){
+						if(crimesAtuais[id]!=crimesAtuais[k] && crimesAtuais[idRelato]!=crimesAtuais[k]){
+							removeComment(k);
+							map.removeOverlay(crimesAtuais[k]);
+							delete crimesAtuais[k];
+						}
 					}
 				}
-			}
-			 for (k in crimesAtuais) {
-				 GVetorMarcadores.push(crimesAtuais[k]);
-		 	 } 			
+			
 			}
 			function escondeTooltip(force) {
 			

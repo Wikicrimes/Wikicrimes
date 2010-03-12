@@ -340,7 +340,7 @@
 			//******************************************************************
 			//JANELA PARA EDITAR, SALVAR A MARCACAO OU MANDAR ALERTA
 
-			var kernelLigadoAoExibirJanelaAreaRisco;
+			//var kernelLigadoAoExibirJanelaAreaRisco;
 			var podeAbrirJanelaAreaRisco = true;
 			
 			function exibirJanelaAreaRisco(tipo){
@@ -355,13 +355,11 @@
 					//console.log('areasRisco.xhtml, 5.1');
 					//map.disableDragging(); //nao ta funcionando pq isso ta sendo desfeito logo depois, pq em algum lugartem um enableDragging on mouseover no mapa
 					podeMudarModoKernel = false;
+					//kernelLigadoAoExibirJanelaAreaRisco = kernelEnable;
 					if(kernelEnable){
-						kernelLigadoAoExibirJanelaAreaRisco = true;
 						//console.log('areasRisco.xhtml, 5.2');
 						desativaMapaKernel();
 						//console.log('areasRisco.xhtml, 5.3');
-					}else{
-						kernelLigadoAoExibirJanelaAreaRisco = false;
 					}
 					//desativaMarcacaoHotspot(); //ja e chamado dentro do desativaMapaKernel()
 					removeHint();
@@ -401,10 +399,10 @@
 				podeMudarModoKernel = true;
 				recuperarZoom();
 				podeDesmarcarHotspot = true;
-				if(kernelLigadoAoExibirJanelaAreaRisco){
-					ativaMapaKernel();
-					kernelLigadoAoExibirJanelaAreaRisco = false;
-				}
+				//if(kernelLigadoAoExibirJanelaAreaRisco){
+				//	ativaMapaKernel();
+				//	kernelLigadoAoExibirJanelaAreaRisco = false;
+				//}
 				podeCarregarCrimes=true;
 				//ativaMarcacaoHotspot(); //ja e chamado dentro do ativaMapaKernel()
 
@@ -416,6 +414,8 @@
 				refreshMinhasAreas();
 				
 				podeAbrirJanelaAreaRisco = true;
+
+				GEvent.trigger(map,"moveend");
 			}
 
 			function isJanelaAreaRiscoVisible(tipo){
@@ -522,7 +522,6 @@
 			var isMinhasAreasExibindo = false;
 
 			function carregarMinhasAreas(){
-				//console.log("carregarMinhasAreas()");
 				minhasAreas = [];
 				var str = requisicaoTexto("ServletAreasRisco", "acao=listar");
 				if(str.length > 0){
@@ -573,7 +572,6 @@
 			}
 
 			function toggleExibirMinhasAreas(){
-				//console.log("toggleExibirMinhasAreas()");
 				if(isMinhasAreasExibindo)
 					esconderMinhasAreas();
 				else
@@ -581,7 +579,6 @@
 			}
 
 			function refreshMinhasAreas(){
-				//console.log("refreshMinhasAreas()");
 				var tavaExibindo = isMinhasAreasExibindo;
 				esconderMinhasAreas();
 				carregarMinhasAreas();
@@ -791,8 +788,7 @@
 			//DRAG
 			
 			function ativaDragJanelaAreaRisco(tipo){
-				var minimo = 50;
-				var espacoExtra = document.getElementById('janela'+ tipo +'AreasRisco').offsetWidth - minimo;
+				var espacoExtra = document.getElementById('janela'+ tipo +'AreasRisco').offsetWidth - 50;
 				var dragresize = new DragResize('dragresize',
 				 	{ minLeft: -espacoExtra, minTop: 0, 
 				 	maxLeft:getWidthWikicrimes() + espacoExtra, maxTop:getHeightWikicrimes() + espacoExtra });
@@ -823,7 +819,7 @@
 	<style>
 	.divJanelaAreaRisco {
 		position: absolute;
-		width: 75ex;
+		width: 400px;
 		margin-left: auto;	
 		margin-right: auto;	
 		z-index: 90;	
@@ -840,7 +836,7 @@
 		cursor: move;
 	}
 	.areas{
-		padding:10px 35px;
+		padding:5px 15px 15px;
 	}
 	.areas img{
 		height: 30px;
@@ -855,9 +851,6 @@
 	}
 	.areas a{
 		cursor:pointer;
-	}
-	.areas tr{
-		padding-top:50px;
 	}
 	.areas{
 		font-size: 13px;
@@ -882,30 +875,29 @@
 	           </h:panelGroup>
 	       	</f:facet>
 			<table width="100%" class="areas">
-				<tr> <td colspan="2" width="100%" style="vertical-align:bottom">
-					 <img src="images/areaRisco.png" style="width:45px; height:45px; float:left"/> 
-					 <h3 style="margin-left:7ex"> #{messages['areasrisco.janela.salvar.explicacao']} </h3> </td>  </tr>
-				<tr height="20"></tr>
+				<tr> <td colspan="2" width="100%" style="vertical-align:bottom;">
+					 <img src="images/areaRisco.png" style="width:45px; height:45px; float:left;"/> 
+					 <h3 style="margin-left:7ex; margin-bottom: 5px"> #{messages['areasrisco.janela.salvar.explicacao']} </h3> </td>  </tr>
 				<tr> <td colspan="2" style="font-size:20; font-weight:bold;"> #{messages['areasrisco.janela.vcpode']} </td> </tr>
-				<tr height="20"></tr>
+				<tr height="10"></tr>
 				<tr> 
 					 <td rowspan="2" align="right">	<a onclick="toggleOpcaoAreasRisco('salvar')" > <img src="images/tag.png" style="height: 35px;width: 35px;" /> </a> </td>
 					 <td class="areasLink"> <a onclick="toggleOpcaoAreasRisco('salvar')" > #{messages['areasrisco.janela.nomear']} </a> </td> </tr>
 				<tr> <td class="areasHint"> #{messages['areasrisco.janela.nomear.explicacao']} </td> </tr>
 				<tr> <td id="salvarAreaRiscoTD" align="center" colspan="2" /> </tr>
-				<tr height="20"></tr>
+				<tr height="10"></tr>
 		        <tr>
 		        	 <td rowspan="2" align="right"> <a onclick="toggleShareLinks(polyHotspot, 'salvar');"  > <img src="images/warning.png"  /> </a> </td>
 		        	 <td class="areasLink"> <a onclick="toggleShareLinks(polyHotspot, 'salvar');"  > #{messages['areasrisco.janela.alertar']} </a> </td> </tr>
 		        <tr> <td class="areasHint"> #{messages['areasrisco.janela.alertar.explicacao']} </td> </tr>
 		        <tr> <td id="salvarShareLinksTD" align="center" colspan="2" /> </tr>
-		        <tr height="20"></tr>
+		        <tr height="10"></tr>
 		        <tr>
 		        	 <td rowspan="2" align="right"> <a onclick="alterarFormato();toggleOpcaoAreasRisco('salvarFormato');" > <img src="images/resize.png"  /> </a> </td>
 		        	 <td class="areasLink"> <a onclick="alterarFormato();toggleOpcaoAreasRisco('salvarFormato');" > #{messages['areasrisco.janela.limites']} </a> </td> </tr>
 		        <tr> <td class="areasHint"> #{messages['areasrisco.janela.limites.explicacao']} </td> </tr>
 		        <tr> <td id="salvarFormatoAreaRiscoTD" align="center" colspan="2" /> </tr>
-		        <tr height="20"></tr>
+		        <tr height="10"></tr>
 		        
 		    </table>
 	    </rich:panel>
@@ -948,34 +940,33 @@
 			<table width="100%" class="areas">
 				<tr> <td colspan="2" width="100%" style="vertical-align:bottom">
 					 <img src="images/areaRisco.png" style="width:45px; height:45px; float:left"/> 
-					 <h3 style="margin-left:7ex" id="editarAreaRiscoDescTD">  </h3> </td>  </tr>
-				<tr height="20"></tr>
+					 <h3 style="margin-left:7ex; margin-bottom: 5px" id="editarAreaRiscoDescTD">  </h3> </td>  </tr>
 				<tr> <td colspan="2" style="font-size:20; font-weight:bold;"> #{messages['areasrisco.janela.vcpode']} </td> </tr>
-				<tr height="20"></tr>
+				<tr height="10"></tr>
 				<tr> 
 					 <td rowspan="2" align="right">	<a onclick="atualizaNomeInput();toggleOpcaoAreasRisco('editarNome');" > <img src="images/tag.png" style="height: 35px;width: 35px;" /> </a> </td>
 					 <td class="areasLink"> <a onclick="atualizaNomeInput();toggleOpcaoAreasRisco('editarNome');" > #{messages['areasrisco.janela.renomear']} </a> </td> </tr>
 				<tr> <td class="areasHint"> #{messages['areasrisco.janela.renomear.explicacao']} </td> </tr>
 				<tr> <td id="editarNomeAreaRiscoTD" align="center" colspan="2" /> </tr>
-				<tr height="20"></tr>
+				<tr height="10"></tr>
 				<tr> 
 					 <td rowspan="2" align="right">	<a onclick="toggleOpcaoAreasRisco('excluir')" > <img src="images/remove.png" style="height: 35px;width: 35px;" /> </a> </td>
 					 <td class="areasLink"> <a onclick="toggleOpcaoAreasRisco('excluir')" > #{messages['areasrisco.janela.excluir']} </a> </td> </tr>
 				<tr> <td class="areasHint"> #{messages['areasrisco.janela.excluir.explicacao']} </td> </tr>
 				<tr> <td id="excluirAreaRiscoTD" align="center" colspan="2" /> </tr>
-				<tr height="20"></tr>
+				<tr height="10"></tr>
 		        <tr>
 		        	 <td rowspan="2" align="right"> <a onclick="toggleShareLinks(polyEditando, 'editar');"  > <img src="images/warning.png"  /> </a> </td>
 		        	 <td class="areasLink"> <a onclick="toggleShareLinks(polyEditando, 'editar');"  > #{messages['areasrisco.janela.alertar']} </a> </td> </tr>
 		        <tr> <td class="areasHint"> #{messages['areasrisco.janela.alertar.explicacao']} </td> </tr>
 		        <tr> <td id="editarShareLinksTD" align="center" colspan="2" /> </tr>
-		        <tr height="20"></tr>
+		        <tr height="10"></tr>
 		        <tr>
 		        	 <td rowspan="2" align="right"> <a onclick="alterarFormato();toggleOpcaoAreasRisco('editarFormato');" > <img src="images/resize.png"  /> </a> </td>
 		        	 <td class="areasLink"> <a onclick="alterarFormato();toggleOpcaoAreasRisco('editarFormato');" > #{messages['areasrisco.janela.limites']} </a> </td> </tr>
 		        <tr> <td class="areasHint"> #{messages['areasrisco.janela.limites.explicacao']} </td> </tr>
 		        <tr> <td id="editarFormatoAreaRiscoTD" align="center" colspan="2" /> </tr>
-		        <tr height="20"></tr>
+		        <tr height="10"></tr>
 		        
 		    </table>
 	    </rich:panel>

@@ -34,7 +34,7 @@
 			var textoEmbedMapaWikiCrimes = '#{messages["texto.embed.mapa.wikicrimes"]}';
 			var localeWikiCrimes = '#{messages["webapp.locale"]}'
 			
-		    var aindaCarregando = false;
+		    //var aindaCarregando = false;
 		    var me;
 		    var kernelLayer;
 		    var kernelDiv;
@@ -42,7 +42,8 @@
 		    var podeMudarModoKernel = true; //pq qd abre a janela arearisco, tem que ficar sempre kernel desligado
 
 			function ativaMapaKernel(){
-			    if(!aindaCarregando && !kernelEnable){
+			    //if(!aindaCarregando && !kernelEnable){
+			    if(!kernelEnable){
 				  	kernelEnable = true;
 				  	selecionarComando(map, 'kernel');
 				  	limpaCrimesAgrupador();
@@ -61,7 +62,7 @@
 
 			function desativaMapaKernel(){
 				removeHintComandosMapa();
-				if(!aindaCarregando){
+				//if(!aindaCarregando){
 					kernelEnable = false;
 					mostraCrimesAgrupador();
 					selecionarComando(map, 'mao');
@@ -73,7 +74,7 @@
 					//comentar as 2 linhas abaixo pra desativar a funcionalidade de Areas de Risco
 					if(!isJanelaAreaRiscoVisible())
 						desativaMarcacaoHotspot();
-				}
+				//}
 			}
 
 			/*NAO TAVA USANDO
@@ -123,7 +124,7 @@
 				if (me != null && me.kernelLayer != null){
 					me.kernelLayer.disable();
 					me.toggleButton_(kernelDiv.firstChild, me.kernelLayer.getEnabled());
-					aindaCarregando = false;		
+					//aindaCarregando = false;		
 				}
 			}
 			
@@ -315,7 +316,7 @@
 				var lon2 = east;
 						
 				if (map.getZoom() == zoomKernel){
-			  		aindaCarregando = false;
+			  		//aindaCarregando = false;
 
 					photo = new TPhoto();
 					photo.id = 'addphoto';

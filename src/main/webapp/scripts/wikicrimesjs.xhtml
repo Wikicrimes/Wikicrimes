@@ -585,7 +585,7 @@
 				});
 				
 				GEvent.addListener(map, "moveend", function() {
-					if (podeCarregarCrimes) {						
+					if (podeCarregarCrimes) {
 			            limpaTela=false;
 					 	atualizaMapa();
 						
@@ -1284,11 +1284,15 @@
 				http_request.open('POST', servletName, false);
 				http_request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
 				http_request.send(params);
+
 				
-				if (http_request.readyState == 4 && http_request.status == 200)
+				if (http_request.readyState == 4 && http_request.status == 200){
+					//console.log('servletName: ' + servletName + ', params: ' + params + ', responseText: ' + http_request.responseText);
 					return http_request.responseText;
-				else
+				}else{
+					//console.log('servletName: ' + servletName + ', params: ' + params + ', status: ' + http_request.status + ', readyState: ' + http_request.readyState);
 					return null;
+				}
 			}
 
 

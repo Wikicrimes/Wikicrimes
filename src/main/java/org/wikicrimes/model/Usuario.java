@@ -378,6 +378,11 @@ public class Usuario extends BaseObject {
 			return new Reputacao();
 		}	
 	}
+	
+	@Override
+	public String toString() {
+		return email;
+	}
 
 }
 

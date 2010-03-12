@@ -62,9 +62,16 @@
 	
 	<p>
 		#{imagemMapaForm.nomeUsuario} #{messages['areasrisco.imagem.texto']} <br/>
-		<img src="images/baloes/vermelho.png" /> #{imagemMapaForm.numFurtos} #{messages['comum.roubos']}, 
-		<img src="images/baloes/novoMarcadorAzul.png" /> #{imagemMapaForm.numFurtos} #{messages['comum.furtos']} #{messages['comum.e']} 
-		<img src="images/baloes/novoMarcadorLaranja.png" /> #{imagemMapaForm.numOutros} #{messages['comum.outros']} <br/> 
+		<c:if test="#{imagemMapaForm.numRoubos != 0}">
+		<img src="images/baloes/vermelho.png" /> #{imagemMapaForm.numRoubos} #{messages['comum.roubos']} <br/>
+		</c:if>
+		<c:if test="#{imagemMapaForm.numFurtos != 0}"> 
+		<img src="images/baloes/novoMarcadorAzul.png" /> #{imagemMapaForm.numFurtos} #{messages['comum.furtos']} <br/>
+		</c:if> 
+		<c:if test="#{imagemMapaForm.numOutros != 0}">
+			<img src="images/baloes/novoMarcadorLaranja.png" /> #{imagemMapaForm.numOutros} #{messages['comum.outros']} <br/>
+		</c:if>
+		<br/>
 		#{messages['webapp.carregando.periodo']} #{imagemMapaForm.dataIni} #{messages['comum.a']} #{imagemMapaForm.dataFin}.
 	</p>
 	

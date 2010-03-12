@@ -18,11 +18,11 @@ ComandoMao.prototype.initialize = function(map) {
 		removerPoligono();
 	}
   	document.getElementById("divTelaFiltro").style.visibility = "hidden";
-  	if(!aindaCarregando){
+  	//if(!aindaCarregando){
   		if(kernelEnable){	
   			desativaMapaKernel();
   		}	
-	}  
+	//}  
 		//document.getElementById("divExplicaMarcarArea").style.visibility = "hidden"; 
   });
   

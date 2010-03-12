@@ -12,7 +12,6 @@
 
 	
 	<f:loadBundle var="messages" basename="messages" />
-	<script type="text/javascript" src="./scripts/googleClusterer.js"></script>
 	<script>
 	 var chamouLoadMapa = false;
 	 function loadMapa() {
@@ -463,16 +462,12 @@
 				selecionarComando(map, 'mao');
 				map.setUIToDefault();
 				new GKeyboardHandler(map);
-				mgr = new MarkerManager(map);	
-				//clusterer = new Clusterer(map);
 				
 				// Marcador Temporário
 				var infoTT = document.createElement("div");
 				var posMarcador = null;
 				
-				// Google Agrupadores
-				GClusterer = new MarkerClusterer(map, []);
-				GVetorMarcadores = [];	
+			
 				
 				setPodeRegistrar(false, 0);
 				GEvent.addListener(map, "mousemove", function (latLng) {
@@ -1214,10 +1209,7 @@
 				var html = "<table cellpading='0' cellspacing='0' style='width:100px; padding:4px ;border:1px solid #333333; opacity: .99; -moz-opacity:0.99; filter: alpha(opacity=99); background-color:white;font-family:Arial, sans-serif;  font-size: 11px;'>";
 				html+="     	<tr>";
 				html+="     		<td align='center' colspan='2'> <b >"+ "#{messages['wikicrimes.legenda.mapa']}" +"</b> <img width='12px' height='12px' src='./images/maximizar.png' onclick='mostraEscondeLeganda();' style='font-size: 12px;cursor: pointer;'/> </td>";
-				html+="         </tr>"
-				html+="     	<tr>";
-				html+="     		<td align='center'> <img width='19px' height='33px' src='./images/baloes/clusterIcon_Legend.png' />  </td> <td> "+ "#{messages['agrupador.legenda.texto']}" +"  </td>";
-				html+="         </tr>"
+				html+="         </tr>"				
 				html+="     	<tr>";
 				html+="     		<td align='center'> <img width='14px' height='24px' src='./images/baloes/novoMarcadorVermelha.png' /> </td> <td> "+ "#{messages['tipocrime.roubo']}" +"  </td>";
 				html+="         </tr>"

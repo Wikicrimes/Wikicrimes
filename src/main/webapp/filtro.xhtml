@@ -708,12 +708,11 @@
 					mostraListaDezMais();	
 					montaDadosGraficoRazoes();
 					var total_marcadores = qtd_roubos+qtd_furtos+qtd_outros+qtd_denuncias;
-					var total_agrupadores = GClusterer.getQtdAgrupadores();
 					if(total_marcadores != 0)
 						document.getElementById('graficoEstatisticasAV').innerHTML="<img title='#{messages['estatisticas.area.visivel.titulo.graf.ocorrencias']}' src='http://chart.apis.google.com/chart?cht=p&amp;chd=t:"+(qtd_roubos/total_marcadores)+","+(qtd_furtos/total_marcadores)+","+(qtd_denuncias/total_marcadores)+","+(qtd_outros/total_marcadores)+"&amp;chs=200x70&amp;chdl=#{messages['tipocrime.roubo']} ("+((qtd_roubos/total_marcadores)*100).toFixed(2)+"%)|#{messages['tipocrime.furto']} ("+((qtd_furtos/total_marcadores)*100).toFixed(2)+"%)|#{messages['abuso.texto']} ("+((qtd_denuncias/total_marcadores)*100).toFixed(2)+"%)|#{messages['tipocrime.violencia']} ("+((qtd_outros/total_marcadores)*100).toFixed(2)+"%)&amp;chco=A52A2A|0066FF|006600|FF9933&amp;chf=bg,s,65432100'/>";
 					else
 						document.getElementById('graficoEstatisticasAV').innerHTML="";
-					document.getElementById('divQtdeCrimesFiltrados').innerHTML = total_marcadores + " (" + total_agrupadores +  ' #{messages['estatistivas.area.visivel.total.agrupadores']}' + ")";
+					document.getElementById('divQtdeCrimesFiltrados').innerHTML = total_marcadores;
 					if(getTotalRazoes() != 0)
 						document.getElementById('graficoRazoesAV').innerHTML="<img title='#{messages['estatisticas.area.visivel.titulo.graf.causas']}' src='http://chart.apis.google.com/chart?cht=p&amp;chd=t:"+(arrayEstatisticasQtd[idRazao1]/getTotalRazoes())+","+(arrayEstatisticasQtd[idRazao2]/getTotalRazoes())+","+(arrayEstatisticasQtd[idRazao3]/getTotalRazoes())+","+((getTotalRazoes()-(arrayEstatisticasQtd[idRazao3]+arrayEstatisticasQtd[idRazao2]+arrayEstatisticasQtd[idRazao1]))/getTotalRazoes())+"&amp;chs=320x70&amp;chdl="+escape(arrayEstatisticasDescricao[idRazao1])+" ("+((arrayEstatisticasQtd[idRazao1]/getTotalRazoes())*100).toFixed(2)+"%)|"+escape(arrayEstatisticasDescricao[idRazao2])+" ("+((arrayEstatisticasQtd[idRazao2]/getTotalRazoes())*100).toFixed(2)+"%)|"+escape(arrayEstatisticasDescricao[idRazao3])+" ("+((arrayEstatisticasQtd[idRazao3]/getTotalRazoes())*100).toFixed(2)+"%)|#{messages['razao.outros']} ("+(((getTotalRazoes()-(arrayEstatisticasQtd[idRazao3]+arrayEstatisticasQtd[idRazao2]+arrayEstatisticasQtd[idRazao1]))/getTotalRazoes())*100).toFixed(2)+"%)&amp;chf=bg,s,65432100&amp;chco=CD5C5C'/>";
 					else

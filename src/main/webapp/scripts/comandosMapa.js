@@ -18,12 +18,7 @@ ComandoMao.prototype.initialize = function(map) {
 		removerPoligono();
 	}
   	document.getElementById("divTelaFiltro").style.visibility = "hidden";
-  	//if(!aindaCarregando){
-  		if(kernelEnable){	
-  			desativaMapaKernel();
-  		}	
-	//}  
-		//document.getElementById("divExplicaMarcarArea").style.visibility = "hidden"; 
+  
   });
   
   GEvent.addDomListener(maoDiv, "mouseover", function() {
@@ -419,7 +414,8 @@ ComandoKernelSelecionado.prototype.initialize = function(map) {
   GEvent.addDomListener(kernelDiv, "click", function() {  	
 //*********************** Kernel Map INICIO ****************************
 //clique no botao pra desativar o mapa de kernel
-		desativaMapaKernel();  
+	if(map.getZoom() >= zoomLimiteSupKernel)	
+	  	desativaMapaKernel();  
 //*********************** Kernel Map FIM ****************************
   });
   GEvent.addDomListener(kernelDiv, "mouseover", function() {

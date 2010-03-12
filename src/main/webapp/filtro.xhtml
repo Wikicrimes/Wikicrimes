@@ -288,7 +288,6 @@
 					zeraArrayCrimes();
 					map.clearOverlays();
 					crimesAtuais = {}							
-					mgr.clearMarkers();
 					
 				}
 			}
@@ -1365,7 +1364,7 @@
 		   					                  // Cria o marcador
 							                var marcador = createMarkerId(new GLatLng(lat, long),idTipoCrime,idCrime2,dataCrime);
 							                
-											//mgr.addMarker(marcador,2);
+											
 	
 											crimesAtuais[idCrime]=marcador;
 					//*********************** Kernel Map INICIO ****************************
@@ -1424,7 +1423,6 @@
   					                  // Cria o marcador
 				                var marcador = createMarkerGroup(new GLatLng(lat, long),sigla + ' (' + qtd + ')');
 								      	// Adiciona o marcador ao mapa
-								mgr.addMarker(marcador,2,6);
 								
 						      	i++
 						     }        	                	

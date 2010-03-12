@@ -24,7 +24,6 @@
 				var i = 0;
 				var clusterer;
 				var map;
-				var mgr;
 				var crime;
 				var crime2;
 				var id;
@@ -104,10 +103,7 @@
 					//pogDoMal = idCrimeDestacado+"\r"; 
 					map = new GMap2(document.getElementById("map"));
 					map.setCenter(new GLatLng(latUrl, lngUrl),parseInt(zoomUrl));		
-					//map.disableDoubleClickZoom();
-			//		map.enableScrollWheelZoom();
-					mgr = new GMarkerManager(map);		
-					
+		
 					map.addControl(new GSmallMapControl());
 			        //map.addControl(new GMapTypeControl());
 					map.addControl(new ComandoVaParaWikicrimes());
@@ -388,7 +384,7 @@
 						                   			    
 				            var marcador = createMarker(new GLatLng(lat, long),idTipoCrime,idCrime,texto);
 				        	// Adiciona o marcador ao mapa
-							mgr.addMarker(marcador,2);
+							map.addOverlay(marcador); 
 							
 							gmarkers.put(idCrime,marcador);
 						}
@@ -421,7 +417,7 @@
 						                  // Cria o marcador
 			                var marcador = createMarkerGroup(new GLatLng(lat, long),sigla + ' (' + qtd + ')');
 					      	// Adiciona o marcador ao mapa
-						mgr.addMarker(marcador,2,6);	        
+						map.addOverlay(marcador);	        
 					
 						//parent.gmarkers.put(idCrime,marcador);
 			      		i++

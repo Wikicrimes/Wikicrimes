@@ -57,7 +57,6 @@
 				var ignoraData;
 				var clusterer;
 				var map;
-				var mgr;
 				var crime;
 				var crime2;
 				var id;
@@ -511,7 +510,7 @@
 					if (crime2 != null) {
 						if (crime2.getRegistrado() != 1) {
 							crime2.hide();
-							mgr.removeMarker(crime2);
+							map.removeOverlay(crime2);
 							crime2 = null;
 						} else {
 							if (crime2.getEvento() != 1) {
@@ -522,7 +521,6 @@
 										else 
 											crime2.mostrarDados();
 								});
-								mgr.refresh();
 								crime2.setEvento(1);
 			
 							}
@@ -550,8 +548,7 @@
 						crime2 = createMarker(latLng, idTipoCrime);
 						//tive que comentar o markermanager pois dava erro quando utilizava o modo hibrido, adiciona com overlay e depois removo
 						map.addOverlay(crime2);
-						//clusterer.addMarker(crime2,idTipoCrime);
-						//mgr.addMarker(crime2,2);
+						
 						
 						if (idTipoCrime == 6)
 							crime2.registrarRelato(idTipoCrime, idSubTipoCrime);
@@ -1057,37 +1054,8 @@
 							crimesAtuais[k].getIcon().iconSize = new GSize(29, 39);
 							crimesAtuais[k].getIcon().iconAnchor = new GPoint(9, 38);
 						}
-						mgr.refresh();
 						
 					
-						/*							
-						mgr.removeMarker(crimesAtuais[k]);
-
-						var icone = new GIcon();
-						var marker;
-						icone.shadow = "";
-						icone.infoWindowAnchor = new GPoint(9, 2);
-							
-						if (highlight) {
-							icone.image = "./images/baloes/relatoDestaque.png";							
-							icone.iconSize = new GSize(42, 68);	
-							icone.iconAnchor = new GPoint(13, 66);							
-						}
-						else {
-							icone.image = "./images/baloes/relato.png";
-							icone.iconSize = new GSize(29, 39);
-							icone.iconAnchor = new GPoint(9, 38);
-						}
-					
-						marker = new CrimeMarker(crimesAtuais[k].getLatLng(), {draggable:true, icon:icone, title:id });
-						marker.idTipoCrime = crimesAtuais[k].idTipoCrime;
-						marker.disableDragging();
-						GEvent.addListener(marker,"click", function() {
-					    	crimesAtuais[k].mostrarDadosRelato();     	  
-					    });						    
-					    mgr.addMarker(marker,2);
-					    crimesAtuais[id] = marker;
-					    */
 					}
 				}
 			}	

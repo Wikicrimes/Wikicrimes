@@ -180,7 +180,7 @@ ComandoKML.prototype.initialize = function(map) {
 }
 
 ComandoKML.prototype.getDefaultPosition = function() {
-  return new GControlPosition(G_ANCHOR_TOP_RIGHT, new GSize(32,59));
+  return new GControlPosition(G_ANCHOR_TOP_RIGHT, new GSize(6,52));
 }
 
 
@@ -380,7 +380,7 @@ ComandoEmbed.prototype.initialize = function(map) {
 
 
 ComandoEmbed.prototype.getDefaultPosition = function() {
-  return new GControlPosition(G_ANCHOR_TOP_RIGHT, new GSize(32,28));
+  return new GControlPosition(G_ANCHOR_TOP_RIGHT, new GSize(6,28));
 }
 
 

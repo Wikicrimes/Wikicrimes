@@ -1,4 +1,5 @@
 var estaRegistrandoArea = false;
+
 //Comando dentro do mapa para mover
 function ComandoMao() {
 }
@@ -136,7 +137,7 @@ ComandoFiltroSelecionado.prototype.getDefaultPosition = function() {
 
 ComandoFiltroSelecionado.prototype.setButtonStyle_ = function(button) {
 	  //button.style.textDecoration = "underline";
-	 // button.style.color = "#0000cc";
+	  //button.style.color = "#0000cc";
 	  //button.style.backgroundColor = "white";
 	  //button.style.font = "small Arial";
 	  //button.style.border = "1px solid black";
@@ -148,6 +149,53 @@ ComandoFiltroSelecionado.prototype.setButtonStyle_ = function(button) {
 	  button.style.cursor = "pointer";
 	  button.style.backgroundImage = "url('./images/comandoFiltroSel_"+localeWikiCrimes+".png')";
 	}
+
+function ComandoKML() {
+}
+ComandoKML.prototype = new GControl();
+
+ComandoKML.prototype.initialize = function(map) {
+
+  var container = document.createElement("div");
+
+  var kmlDiv = document.createElement("div");
+  this.setButtonStyle_(kmlDiv);
+  container.appendChild(kmlDiv);
+  kmlDiv.appendChild(document.createTextNode(textoComandoKMLWikiCrimes));
+  GEvent.addDomListener(kmlDiv, "click", function() {
+	  selecionarComando(map, 'kml');
+	  document.getElementById("divTelaKML").style.visibility = "visible";
+  });
+  
+  GEvent.addDomListener(kmlDiv, "mouseover", function() {
+	  
+  });
+  
+  GEvent.addDomListener(kmlDiv, "mouseout", function() {  		
+  		
+  });
+     
+  map.getContainer().appendChild(container);
+  return container;
+}
+
+ComandoKML.prototype.getDefaultPosition = function() {
+  return new GControlPosition(G_ANCHOR_TOP_RIGHT, new GSize(32,59));
+}
+
+
+ComandoKML.prototype.setButtonStyle_ = function(button) {
+	 button.style.textDecoration = "underline";
+	  //button.style.color = "#0000cc";
+	  button.style.backgroundColor = "white";
+	  button.style.border = "1px solid black";
+	  button.style.padding = "2px";
+	  button.style.marginBottom = "3px";
+	  button.style.textAlign = "center";
+	 
+	  button.style.cursor = "pointer";
+	  //button.style.backgroundImage = "url('./images/comandoEmbed.png')";
+}
 
 //Comando dentro do mapa para marcar uma area
 function ComandoMarcadorDeArea() {
@@ -448,7 +496,3 @@ ComandoKernelSelecionado.prototype.setButtonStyle_ = function(button) {
 	  button.style.cursor = "pointer";
 	  button.style.backgroundImage = "url('./images/comandoKernelSel_"+localeWikiCrimes+".png')";
 }
-
-
-
-

@@ -49,6 +49,8 @@ public class FiltroForm extends GenericForm {
 	private RelatoService relatoService;
 	
 	private String tutorAtivado = "1";
+	
+	private String urlKML;
 
 	private Long horarioInicial;
 
@@ -1005,6 +1007,14 @@ public class FiltroForm extends GenericForm {
 			map.put("confirmadoPositivamente", crimeConfirmadoPositivamente.toString());
 		
 		return map;
+	}
+
+	public String getUrlKML() {
+		return urlKML;
+	}
+
+	public void setUrlKML(String urlKML) {
+		this.urlKML = urlKML;
 	}
 	
 }

@@ -177,6 +177,7 @@
 
 				var comandoControleMao = new ComandoMao();
 				var comandoControleMaoSelecionado = new ComandoMaoSelecionado();
+				var comandoControleKML = new ComandoKML();
 				var comandoControleMarcadorDeArea = new ComandoMarcadorDeArea();
 				var comandoControleMarcadorDeAreaSelecionado = new ComandoMarcadorDeAreaSelecionado();
 				//var comandoControleEmbed = new ComandoEmbed();	
@@ -197,13 +198,29 @@
 						//mapa.removeControl(comandoControleEmbedSelecionado);
 						mapa.removeControl(comandoControleFiltro);
 						mapa.removeControl(comandoControleFiltroSelecionado);
+						mapa.removeControl(comandoControleKML);
 						//mapa.removeControl(comandoControleKernel);
 						//mapa.removeControl(comandoControleKernelSelecionado);
 
+
+						if(comando=='kml'){					
+							mapa.addControl(comandoControleMarcadorDeArea);
+							mapa.addControl(comandoControleMao);
+							mapa.addControl(comandoControleFiltro);
+							mapa.addControl(comandoControleKML);
+							//mapa.addControl(comandoControleKernel);
+							if(#{usuario.perfil.nome == 'CERTIFICADOR'}||#{usuario.perfil.nome == 'ADMINISTRADOR'}){
+								if(#{usuario.entidadeCertificadora.idEntidadeCertificadora != 12}){
+									//mapa.addControl(comandoControleEmbed);
+								}	
+							}
+						}
+						
 						
 						if(comando=='filtro'){					
 							mapa.addControl(comandoControleMarcadorDeArea);
 							mapa.addControl(comandoControleMao);
+							mapa.addControl(comandoControleKML);
 							//mapa.addControl(comandoControleKernel);
 							mapa.addControl(comandoControleFiltroSelecionado);
 							if(#{usuario.perfil.nome == 'CERTIFICADOR'}||#{usuario.perfil.nome == 'ADMINISTRADOR'}){
@@ -223,6 +240,7 @@
 							}
 							mapa.addControl(comandoControleMarcadorDeArea);
 							mapa.addControl(comandoControleMao);
+							mapa.addControl(comandoControleKML);
 							mapa.addControl(comandoControleFiltro);
 							if(#{usuario.perfil.nome == 'CERTIFICADOR'}||#{usuario.perfil.nome == 'ADMINISTRADOR'}){
 								if(#{usuario.entidadeCertificadora.idEntidadeCertificadora != 12}){
@@ -234,6 +252,7 @@
 						if(comando=='mao'){											
 							mapa.addControl(comandoControleMarcadorDeArea);
 							mapa.addControl(comandoControleMaoSelecionado);
+							mapa.addControl(comandoControleKML);
 							if(!kernelEnable)
 								mapa.addControl(comandoControleKernel);
 							mapa.addControl(comandoControleFiltro);
@@ -249,6 +268,7 @@
 							mapa.addControl(comandoControleMao);
 							//mapa.addControl(comandoControleKernel);
 							mapa.addControl(comandoControleFiltro);
+							mapa.addControl(comandoControleKML);
 							if(#{usuario.perfil.nome == 'CERTIFICADOR'}||#{usuario.perfil.nome == 'ADMINISTRADOR'}){
 								if(#{usuario.entidadeCertificadora.idEntidadeCertificadora != 12}){
 									//mapa.addControl(comandoControleEmbed);
@@ -256,11 +276,13 @@
 							}
 						}
 						if(comando == 'nenhum'){
+							document.getElementById("divTelaKML").style.visibility = "hidden";
 							document.getElementById("divTelaFiltro").style.visibility = "hidden";
 							mapa.addControl(comandoControleMarcadorDeArea);
 							mapa.addControl(comandoControleMao);
 							mapa.addControl(comandoControleKernel);
 							mapa.addControl(comandoControleFiltro);
+							mapa.addControl(comandoControleKML);
 							if(#{usuario.perfil.nome == 'CERTIFICADOR'}||#{usuario.perfil.nome == 'ADMINISTRADOR'}){
 								if(#{usuario.entidadeCertificadora.idEntidadeCertificadora != 12}){
 									//mapa.addControl(comandoControleEmbed);
@@ -268,9 +290,11 @@
 							}
 						}
 						if(comando == 'embed'){
+							document.getElementById("divTelaKML").style.visibility = "hidden";
 							document.getElementById("divTelaFiltro").style.visibility = "hidden";
 							mapa.addControl(comandoControleMarcadorDeArea);
 							mapa.addControl(comandoControleMao);
+							mapa.addControl(comandoControleKML);
 							mapa.addControl(comandoControleKernel);
 							mapa.addControl(comandoControleFiltro);
 							if(#{usuario.perfil.nome == 'CERTIFICADOR'}||#{usuario.perfil.nome == 'ADMINISTRADOR'}){

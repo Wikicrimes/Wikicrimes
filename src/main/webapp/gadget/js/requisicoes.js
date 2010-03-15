@@ -489,8 +489,9 @@ function respostaRequisicaoComentarNotificacao(obj) {
 	}
 	
 	if(responseText == 'ok'){
-		if(htmlComentariosDescartar == '<br>Nenhum comentário sobre esse alerta')
+		if(htmlComentariosDescartar == '<br>'+prefs.getMsg("nenhum.comentario")){			
 			htmlComentariosDescartar = '';
+		}		
 		document.getElementById('comentarios').innerHTML = '<br><div><img width=22px height=20px src='+ linkAplication+'images/widget/comentar.PNG' +' /> <b>'+usuarioRedeSocial.nome+' comenta:</b> </div><br/>'+document.getElementById('desc_comentario').value+'<br> <hr/>'+ htmlComentariosDescartar;
 		mostrarMensagem('success', prefs.getMsg("comentario.registrado"),true);
 		addToActivityStream(2);
@@ -520,7 +521,7 @@ function respostaRequisicaoComentarNotificacaoCrime(obj) {
 	}
 	
 	if(responseText == 'ok'){
-		if(htmlComentariosDescartar == '<br>Nenhum comentário sobre esse alerta')
+		if(htmlComentariosDescartar == '<br>'+prefs.getMsg("nenhum.comentario"))
 			htmlComentariosDescartar = '';
 		document.getElementById('comentarios').innerHTML = '<br><div><img width=22px height=20px src='+ linkAplication+'images/widget/comentar.PNG' +' /> <b>'+usuarioRedeSocial.nome+' comenta:</b> </div><br/>'+document.getElementById('desc_comentario').value+'<br> <hr/>'+ htmlComentariosDescartar;
 		mostrarMensagem('success', prefs.getMsg("comentario.registrado"),true);

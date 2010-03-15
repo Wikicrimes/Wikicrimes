@@ -175,7 +175,7 @@ function executaRequisicaoRecuperaComentarios(chaveRelato) {
 	var params = {};
 	params[gadgets.io.RequestParameters.AUTHORIZATION] = gadgets.io.AuthorizationType.SIGNED;
 	params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.DOM;
-	var url = linkAplication+"ServletOpensocial?acao=recuperarComentarios&chaveRelato="+chaveRelato+"";					
+	var url = linkAplication+"ServletOpensocial?acao=recuperarComentarios&chaveRelato="+chaveRelato+"&dominioRedeSocial="+opensocial.getEnvironment().getDomain();					
 	gadgets.io.makeRequest(url, repostaRequisicaoRecuperaComentarios, params);									
 }
 
@@ -193,7 +193,7 @@ function executaRequisicaoRecuperaComentariosCrime(chaveRelato) {
 	var params = {};
 	params[gadgets.io.RequestParameters.AUTHORIZATION] = gadgets.io.AuthorizationType.SIGNED;
 	params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.DOM;
-	var url = linkAplication+"ServletOpensocial?acao=recuperarComentariosCrime&chaveCrime="+chaveRelato+"";					
+	var url = linkAplication+"ServletOpensocial?acao=recuperarComentariosCrime&chaveCrime="+chaveRelato+"&dominioRedeSocial="+opensocial.getEnvironment().getDomain();					
 	gadgets.io.makeRequest(url, repostaRequisicaoRecuperaComentariosCrime, params);									
 }
 
@@ -297,7 +297,7 @@ function executaRequisicaoRegistraUsuarioWikiCrimes() {
 		usuarioRedeSocial.estado=document.getElementById("comboEstado").value;
 	else	
 		usuarioRedeSocial.estado=document.getElementById("inputEstado").value;
-	params[gadgets.io.RequestParameters.POST_DATA] = 'acao=registrarUsuarioWikiCrimes&cidade=' + usuarioRedeSocial.cidade + '&pais=' + usuarioRedeSocial.pais+  '&nome='+ usuarioRedeSocial.nome +'&unome=' + document.getElementById("ultimoNome").value + '&email=' + usuarioRedeSocial.email + '&senha=' + document.getElementById("senha").value + '&estado=' + usuarioRedeSocial.estado + '&news=' + document.getElementById("receberNewsletter").value + '&idioma=' + document.getElementById("idiomaPref").value + '&lat=' + usuarioRedeSocial.latitude + '&lng=' + usuarioRedeSocial.longitude;	
+	params[gadgets.io.RequestParameters.POST_DATA] = 'acao=registrarUsuarioWikiCrimes&cidade=' + usuarioRedeSocial.cidade + '&pais=' + usuarioRedeSocial.pais+  '&nome='+ usuarioRedeSocial.nome +'&unome=' + document.getElementById("ultimoNome").value + '&email=' + usuarioRedeSocial.email + '&senha=' + document.getElementById("senha").value + '&estado=' + usuarioRedeSocial.estado + '&news=' + document.getElementById("receberNewsletter").value + '&idioma=' + document.getElementById("idiomaPref").value + '&lat=' + usuarioRedeSocial.latitude + '&lng=' + usuarioRedeSocial.longitude+'&dominioRedeSocial='+opensocial.getEnvironment().getDomain();	
 	var url = linkAplication+"ServletOpensocial";					
 	gadgets.io.makeRequest(url, respostaRequisicaoRegistraUsuarioWikiCrimes, params);								
 }

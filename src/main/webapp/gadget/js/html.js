@@ -95,7 +95,7 @@ function constroiHtmlAlertaCrime(tipoCrime){
 
 function chamarTelaLogin(){
 	var conteudo ='';
-	conteudo +='<div align="center" style="border: 1px solid #2763a5;width: 230px">';
+	conteudo +='<div align="center" style="border: 1px solid #2763a5;width: 260px">';
 	conteudo +='	<table style="font-family:Arial, sans-serif;  font-size: 11px;" cellpadding="1" cellspacing="1"  align="center"';
 	conteudo +='		<tr>';
 	conteudo +='			<td align="center" colspan="2">';

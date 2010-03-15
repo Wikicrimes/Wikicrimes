@@ -74,7 +74,7 @@ public class ServletOpensocial extends HttpServlet {
 	 */
 	private static ApplicationContext ctx;
 	private static SessionFactory sf;
-	private final static String CERTIFICATE = "-----BEGIN CERTIFICATE-----\n"
+	private final static String CERTIFICATE_ORKUT = "-----BEGIN CERTIFICATE-----\n"
 			+ "MIIDHDCCAoWgAwIBAgIJAMbTCksqLiWeMA0GCSqGSIb3DQEBBQUAMGgxCzAJBgNV\n"
 			+ "BAYTAlVTMQswCQYDVQQIEwJDQTEWMBQGA1UEBxMNTW91bnRhaW4gVmlldzEUMBIG\n"
 			+ "A1UEChMLR29vZ2xlIEluYy4xDjAMBgNVBAsTBU9ya3V0MQ4wDAYDVQQDEwVscnlh\n"
@@ -93,6 +93,26 @@ public class ServletOpensocial extends HttpServlet {
 			+ "GeIYpkHXzTa9Q6IKlc7Bt2xkSeY3siRWCxvZekMxPvv7YTcnaVlZzHrVfAzqNsTG\n"
 			+ "P3J//C0j+8JWg6G+zuo5k7pNRKDY76GxxHPYamdLfwk=\n"
 			+ "-----END CERTIFICATE-----";
+	
+	private final static String CERTIFICATE_NING = "-----BEGIN CERTIFICATE-----\n"
+			+"MIIDDTCCAnagAwIBAgIJAIIR50WLj+soMA0GCSqGSIb3DQEBBQUAMGMxCzAJBgNV\n"
+			+"BAYTAlVTMQswCQYDVQQIEwJDQTESMBAGA1UEBxMJUGFsbyBBbHRvMRIwEAYDVQQK\n"
+			+"EwlOaW5nIEluYy4xDTALBgNVBAsTBE5pbmcxEDAOBgNVBAMTB2hlbm5pbmcwHhcN\n"
+			+"MDgwNzI1MTI0NzA3WhcNMDkwNzI1MTI0NzA3WjBjMQswCQYDVQQGEwJVUzELMAkG\n"
+			+"A1UECBMCQ0ExEjAQBgNVBAcTCVBhbG8gQWx0bzESMBAGA1UEChMJTmluZyBJbmMu\n"
+			+"MQ0wCwYDVQQLEwROaW5nMRAwDgYDVQQDEwdoZW5uaW5nMIGfMA0GCSqGSIb3DQEB\n"
+			+"AQUAA4GNADCBiQKBgQC02P2t2GYvZuahj8CW8ZUjennDN+pc6dVOMkwZRxCLF/h1\n"
+			+"KOgRNW5o50oHxOiqmyR5ALD+sYQAjzI3LK5X//nP94HRcypzoE1aD/dh7VoG9kj0\n"
+			+"vYnp/95CwUtRVWmekNVJUCzARyfWmavUZLRa6rxosc+oYuzEOBzl87PYWfZCcwID\n"
+			+"AQABo4HIMIHFMB0GA1UdDgQWBBSbTXSWyslrsd+/mnWM7OrjTdubADCBlQYDVR0j\n"
+			+"BIGNMIGKgBSbTXSWyslrsd+/mnWM7OrjTdubAKFnpGUwYzELMAkGA1UEBhMCVVMx\n"
+			+"CzAJBgNVBAgTAkNBMRIwEAYDVQQHEwlQYWxvIEFsdG8xEjAQBgNVBAoTCU5pbmcg\n"
+			+"SW5jLjENMAsGA1UECxMETmluZzEQMA4GA1UEAxMHaGVubmluZ4IJAIIR50WLj+so\n"
+			+"MAwGA1UdEwQFMAMBAf8wDQYJKoZIhvcNAQEFBQADgYEAYOAHrP9VGlQqu2tvHEWN\n"
+			+"gAPj3wpCj+PWQjtf83Gl7LrInz1QDXJMBGABPYvJtVdDyV6UQF4XS0fl4l9mPtsU\n"
+			+"wc3cgErbPxG1gqxDwHALSc//LmqC6FJURqEbDdnmQmFbkTYxYBjIDgep02ki1CeA\n"
+			+"gstG7eU+0ax6ARotyl2kd8o=\n"
+			+"-----END CERTIFICATE-----";
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -113,11 +133,8 @@ public class ServletOpensocial extends HttpServlet {
 				.getBean("opensocialService");
 		String acao = request.getParameter("acao");
 		String resposta = "";
-		if(request.getParameter("dominioRedeSocial")==null || request.getParameter("dominioRedeSocial").equals("ning.com")){
-			resposta = "permitir";
-		}else{
-			resposta = verificaCertificado(request);
-		}
+		resposta = verificaCertificado(request);
+		
 		if(resposta.equalsIgnoreCase("permitir")){
 			resposta = "";
 			if (acao.equals("faleConosco")) {
@@ -1064,9 +1081,17 @@ public class ServletOpensocial extends HttpServlet {
 		try {
 			OAuthServiceProvider provider = new OAuthServiceProvider(null,
 					null, null);
-			OAuthConsumer consumer = new OAuthConsumer(null, "orkut.com", null,
-					provider);
-			consumer.setProperty(RSA_SHA1.X509_CERTIFICATE, CERTIFICATE);
+			OAuthConsumer consumer = null;
+			if(request.getParameter("dominioRedeSocial").equalsIgnoreCase("orkut.com")){
+				consumer = new OAuthConsumer(null, "orkut.com", null,provider);
+				consumer.setProperty(RSA_SHA1.X509_CERTIFICATE, CERTIFICATE_ORKUT);
+			}	
+			else{
+				consumer = new OAuthConsumer(null, "", null,provider);
+				consumer.setProperty(RSA_SHA1.X509_CERTIFICATE, CERTIFICATE_NING);
+			}	
+			
+			
 
 			String method = request.getMethod();
 			String requestUrl = getRequestUrl(request);

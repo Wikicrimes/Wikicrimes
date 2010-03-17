@@ -61,26 +61,19 @@ public class ServletImagemMapa extends HttpServlet {
 		if(acao != null){
 			
 			if(acao.equals("pegaImagem")){
-				System.out.println("1");
 				//recupera os dados no banco (objeto ImagemMapa)
 				ImagemMapa im = service.get(Integer.valueOf(id));
-				System.out.println("2");
 				
 				//pega a imgaem (só o mapa) pela Google Static Maps API
 				String urlGSM = constroiUrlGSM(im);
-				System.out.println("3");
 				//				/*teste*/System.out.println("urlGSM: " + urlGSM);
 				URL urlImagem = new URL(urlGSM);
-				System.out.println("4");
 				BufferedImage imagemMapa = requisicaoImagemGM(urlImagem);
-				System.out.println("5");
 				//pinta o poligono por cima
 				pintaPoligono(im, imagemMapa);
-				System.out.println("6");
 				
 				//pinta os marcadores por cima
 				pintaMarcadores(im, imagemMapa, sessao);
-				System.out.println("7");
 				enviarImagem(resp, imagemMapa);
 			}
 		}
@@ -222,11 +215,11 @@ public class ServletImagemMapa extends HttpServlet {
 					String tipo = c.getTipoCrime().getNome();
 					File marcadorFile = null;
 					if(tipo.equals("tipocrime.roubo") || tipo.equals("tipocrime.tentativaderoubo"))
-						marcadorFile = new File("webapps/wikicrimes/images/baloes/vermelho.png");
+						marcadorFile = new File("webapps/ROOT/images/baloes/vermelho.png");
 					else if(tipo.equals("tipocrime.furto") || tipo.equals("tipocrime.tentativadefurto"))
-						marcadorFile = new File("webapps/wikicrimes/images/baloes/novoMarcadorAzul.png");
+						marcadorFile = new File("webapps/ROOT/images/baloes/novoMarcadorAzul.png");
 					else
-						marcadorFile = new File("webapps/wikicrimes/images/baloes/novoMarcadorLaranja.png");
+						marcadorFile = new File("webapps/ROOT/images/baloes/novoMarcadorLaranja.png");
 					Image marcador = ImageIO.read(marcadorFile);
 					int height = marcador.getHeight(null);
 					PontoLatLng latlng = new PontoLatLng(c.getLatitude(), c.getLongitude());

@@ -211,27 +211,31 @@ public class ServletImagemMapa extends HttpServlet {
 	
 	private void pintaMarcadores(ImagemMapa im, Image imagem, HttpSession sessao) throws IOException{
 //		/*teste*/ System.out.println("filtro: " + im.getFiltro());
-		Map<String, Object> param = ImagemMapaForm.getParams(im);
-		List<BaseObject> crimes = getCrimeService().filter(param);
-		Graphics2D g = (Graphics2D)imagem.getGraphics();
-		
-		for(BaseObject o : crimes){
-			if(o instanceof Crime){
-				Crime c = (Crime)o;
-				String tipo = c.getTipoCrime().getNome();
-				File marcadorFile = null;
-				if(tipo.equals("tipocrime.roubo") || tipo.equals("tipocrime.tentativaderoubo"))
-					marcadorFile = new File("webapps/wikicrimes/images/baloes/vermelho.png");
-				else if(tipo.equals("tipocrime.furto") || tipo.equals("tipocrime.tentativadefurto"))
-					marcadorFile = new File("webapps/wikicrimes/images/baloes/novoMarcadorAzul.png");
-				else
-					marcadorFile = new File("webapps/wikicrimes/images/baloes/novoMarcadorLaranja.png");
-				Image marcador = ImageIO.read(marcadorFile);
-				int height = marcador.getHeight(null);
-				PontoLatLng latlng = new PontoLatLng(c.getLatitude(), c.getLongitude());
-				Point p = toPixel(latlng, im);
-				g.drawImage(marcador, p.x, p.y - height, null);
+		try{	
+			Map<String, Object> param = ImagemMapaForm.getParams(im);
+			List<BaseObject> crimes = getCrimeService().filter(param);
+			Graphics2D g = (Graphics2D)imagem.getGraphics();
+			
+			for(BaseObject o : crimes){
+				if(o instanceof Crime){
+					Crime c = (Crime)o;
+					String tipo = c.getTipoCrime().getNome();
+					File marcadorFile = null;
+					if(tipo.equals("tipocrime.roubo") || tipo.equals("tipocrime.tentativaderoubo"))
+						marcadorFile = new File("webapps/wikicrimes/images/baloes/vermelho.png");
+					else if(tipo.equals("tipocrime.furto") || tipo.equals("tipocrime.tentativadefurto"))
+						marcadorFile = new File("webapps/wikicrimes/images/baloes/novoMarcadorAzul.png");
+					else
+						marcadorFile = new File("webapps/wikicrimes/images/baloes/novoMarcadorLaranja.png");
+					Image marcador = ImageIO.read(marcadorFile);
+					int height = marcador.getHeight(null);
+					PontoLatLng latlng = new PontoLatLng(c.getLatitude(), c.getLongitude());
+					Point p = toPixel(latlng, im);
+					g.drawImage(marcador, p.x, p.y - height, null);
+				}
 			}
+		}catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 	

@@ -61,22 +61,26 @@ public class ServletImagemMapa extends HttpServlet {
 		if(acao != null){
 			
 			if(acao.equals("pegaImagem")){
-				
+				System.out.println("1");
 				//recupera os dados no banco (objeto ImagemMapa)
 				ImagemMapa im = service.get(Integer.valueOf(id));
+				System.out.println("2");
 				
 				//pega a imgaem (só o mapa) pela Google Static Maps API
 				String urlGSM = constroiUrlGSM(im);
-//				/*teste*/System.out.println("urlGSM: " + urlGSM);
+				System.out.println("3");
+				//				/*teste*/System.out.println("urlGSM: " + urlGSM);
 				URL urlImagem = new URL(urlGSM);
+				System.out.println("4");
 				BufferedImage imagemMapa = requisicaoImagemGM(urlImagem);
-				
+				System.out.println("5");
 				//pinta o poligono por cima
 				pintaPoligono(im, imagemMapa);
+				System.out.println("6");
 				
 				//pinta os marcadores por cima
 				pintaMarcadores(im, imagemMapa, sessao);
-				
+				System.out.println("7");
 				enviarImagem(resp, imagemMapa);
 			}
 		}

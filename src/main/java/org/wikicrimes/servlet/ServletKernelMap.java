@@ -99,6 +99,7 @@ public class ServletKernelMap extends HttpServlet {
 	public static void enviarImagem(HttpServletResponse response, RenderedImage imagem) throws IOException{
 		//manda a imagem gerada pelo KernelMapRenderer
 		response.setContentType("image/png");
+		System.out.println("8");
 		OutputStream out = response.getOutputStream();
 		ImageIO.write(imagem, "PNG", out);
 	}

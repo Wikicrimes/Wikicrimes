@@ -215,11 +215,11 @@ public class ServletImagemMapa extends HttpServlet {
 					String tipo = c.getTipoCrime().getNome();
 					File marcadorFile = null;
 					if(tipo.equals("tipocrime.roubo") || tipo.equals("tipocrime.tentativaderoubo"))
-						marcadorFile = new File("webapps/ROOT/images/baloes/vermelho.png");
+						marcadorFile = new File("/opt/apache-tomcat-6.0.20/webapps/ROOT/images/baloes/vermelho.png");
 					else if(tipo.equals("tipocrime.furto") || tipo.equals("tipocrime.tentativadefurto"))
-						marcadorFile = new File("webapps/ROOT/images/baloes/novoMarcadorAzul.png");
+						marcadorFile = new File("/opt/apache-tomcat-6.0.20/webapps/ROOT/images/baloes/novoMarcadorAzul.png");
 					else
-						marcadorFile = new File("webapps/ROOT/images/baloes/novoMarcadorLaranja.png");
+						marcadorFile = new File("/opt/apache-tomcat-6.0.20/webapps/ROOT/images/baloes/novoMarcadorLaranja.png");
 					Image marcador = ImageIO.read(marcadorFile);
 					int height = marcador.getHeight(null);
 					PontoLatLng latlng = new PontoLatLng(c.getLatitude(), c.getLongitude());

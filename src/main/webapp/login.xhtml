@@ -156,6 +156,7 @@
 							
 							var temp = parent.podeCarregarCrimes;
 							parent.podeCarregarCrimes=false;
+							parent.apagaMapaKernel(); //KERNAL MAP: nao aparecer o vermelhão no zoom q dá qd faz login
 							parent.map.setCenter(latLng, 13);
 							parent.ignoraData="true";
 							parent.filtrou=false;

@@ -20,6 +20,7 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.MemoryCacheImageInputStream;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -61,19 +62,22 @@ public class ServletImagemMapa extends HttpServlet {
 		if(acao != null){
 			
 			if(acao.equals("pegaImagem")){
+				
 				//recupera os dados no banco (objeto ImagemMapa)
 				ImagemMapa im = service.get(Integer.valueOf(id));
 				
 				//pega a imgaem (só o mapa) pela Google Static Maps API
 				String urlGSM = constroiUrlGSM(im);
-				//				/*teste*/System.out.println("urlGSM: " + urlGSM);
+//				/*teste*/System.out.println("urlGSM: " + urlGSM);
 				URL urlImagem = new URL(urlGSM);
 				BufferedImage imagemMapa = requisicaoImagemGM(urlImagem);
+				
 				//pinta o poligono por cima
 				pintaPoligono(im, imagemMapa);
 				
 				//pinta os marcadores por cima
 				pintaMarcadores(im, imagemMapa, sessao);
+				
 				enviarImagem(resp, imagemMapa);
 			}
 		}
@@ -202,24 +206,27 @@ public class ServletImagemMapa extends HttpServlet {
 		g.drawPolygon(xPoints, yPoints, nPoints);
 	}
 	
-	private void pintaMarcadores(ImagemMapa im, Image imagem, HttpSession sessao) throws IOException{
-//		/*teste*/ System.out.println("filtro: " + im.getFiltro());
-		try{	
+	private void pintaMarcadores(ImagemMapa im, Image imagem, HttpSession sessao){
+		try{
+	//		/*teste*/ System.out.println("filtro: " + im.getFiltro());
 			Map<String, Object> param = ImagemMapaForm.getParams(im);
 			List<BaseObject> crimes = getCrimeService().filter(param);
 			Graphics2D g = (Graphics2D)imagem.getGraphics();
+			ServletContext ctx = sessao.getServletContext();
 			
 			for(BaseObject o : crimes){
 				if(o instanceof Crime){
 					Crime c = (Crime)o;
 					String tipo = c.getTipoCrime().getNome();
-					File marcadorFile = null;
+					String filePath = null;
 					if(tipo.equals("tipocrime.roubo") || tipo.equals("tipocrime.tentativaderoubo"))
-						marcadorFile = new File("/opt/apache-tomcat-6.0.20/webapps/ROOT/images/baloes/vermelho.png");
+//						marcadorFile = new File("webapps/wikicrimes/images/baloes/vermelho.png");
+						filePath = ctx.getRealPath("images/baloes/vermelho.png");
 					else if(tipo.equals("tipocrime.furto") || tipo.equals("tipocrime.tentativadefurto"))
-						marcadorFile = new File("/opt/apache-tomcat-6.0.20/webapps/ROOT/images/baloes/novoMarcadorAzul.png");
+						filePath = ctx.getRealPath("images/baloes/novoMarcadorAzul.png");
 					else
-						marcadorFile = new File("/opt/apache-tomcat-6.0.20/webapps/ROOT/images/baloes/novoMarcadorLaranja.png");
+						filePath = ctx.getRealPath("/images/baloes/novoMarcadorLaranja.png");
+					File marcadorFile = new File(filePath);
 					Image marcador = ImageIO.read(marcadorFile);
 					int height = marcador.getHeight(null);
 					PontoLatLng latlng = new PontoLatLng(c.getLatitude(), c.getLongitude());
@@ -227,7 +234,7 @@ public class ServletImagemMapa extends HttpServlet {
 					g.drawImage(marcador, p.x, p.y - height, null);
 				}
 			}
-		}catch (Exception e) {
+		}catch(IOException e){
 			e.printStackTrace();
 		}
 	}

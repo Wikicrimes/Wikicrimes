@@ -3,7 +3,6 @@ package org.wikicrimes.servlet;
 import static org.wikicrimes.servlet.ServletKernelMap.BANDWIDTH;
 import static org.wikicrimes.servlet.ServletKernelMap.GRID_NODE;
 import static org.wikicrimes.servlet.ServletKernelMap.IMAGEM_KERNEL;
-import static org.wikicrimes.servlet.ServletKernelMap.enviarImagem;
 import static org.wikicrimes.servlet.ServletKernelMap.getPoints;
 
 import java.awt.Rectangle;
@@ -42,6 +41,7 @@ import org.wikicrimes.model.Usuario;
 import org.wikicrimes.service.CrimeService;
 import org.wikicrimes.service.UsuarioService;
 import org.wikicrimes.util.Constantes;
+import org.wikicrimes.util.Util;
 import org.wikicrimes.util.kernelMap.KernelMap;
 import org.wikicrimes.util.kernelMap.KernelMapRenderer;
 import org.wikicrimes.web.FiltroForm;
@@ -76,7 +76,7 @@ public class ServletWikiCrimesApi extends HttpServlet {
 			RenderedImage imagem = (RenderedImage)sessao.getAttribute(IMAGEM_KERNEL);
 //			sessao.removeAttribute(IMAGEM_KERNEL);
 			if(imagem != null)
-				enviarImagem(response, imagem);
+				Util.enviarImagem(response, imagem);
 		}else{
 		
 			PrintWriter out = response.getWriter();

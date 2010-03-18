@@ -1,10 +1,15 @@
 package org.wikicrimes.util;
 
+import java.awt.image.RenderedImage;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 public class Util {
 
@@ -55,10 +60,19 @@ public class Util {
 		// TODO fazer os outros quando precisar...
 	}
 	
-	public enum Browser{ INTERNET_EXPLORER, NETSCAPE, UNKNOWN }
-
 	public static boolean isClientUsingIE(HttpServletRequest req) {
 		return getClientBrowser(req) == Browser.INTERNET_EXPLORER;
 	}
+	
+	public static void enviarImagem(HttpServletResponse response, RenderedImage imagem) throws IOException{
+		//manda a imagem gerada pelo KernelMapRenderer
+		response.setContentType("image/png");
+		OutputStream out = response.getOutputStream();
+		ImageIO.write(imagem, "PNG", out);
+	}
 
+}
+
+enum Browser{ 
+	INTERNET_EXPLORER, NETSCAPE, UNKNOWN 
 }

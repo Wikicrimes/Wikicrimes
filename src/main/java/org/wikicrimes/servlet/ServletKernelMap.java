@@ -4,12 +4,10 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.RenderedImage;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServlet;
@@ -22,7 +20,6 @@ import org.wikicrimes.util.kernelMap.KernelMap;
 import org.wikicrimes.util.kernelMap.KernelMapRenderer;
 import org.wikicrimes.util.kernelMap.Ponto;
 import org.wikicrimes.util.kernelMap.testes.TesteCenariosRotas;
-
 
 /**
  * Trata requisições HTTP para calcular mapa de kernel e gerar imagem.
@@ -53,7 +50,7 @@ public class ServletKernelMap extends HttpServlet {
 		}else if(acao.equals("pegaImagem")){
 			RenderedImage imagem = (RenderedImage)sessao.getAttribute(IMAGEM_KERNEL);
 			if(imagem != null)
-				enviarImagem(response, imagem);
+				Util.enviarImagem(response, imagem);
 		}else if(acao.equals("pegaInfo")){
 			KernelMap kernel = (KernelMap)sessao.getAttribute(KERNEL);
 			double[][] dens = kernel.getDensidadeGrid();
@@ -94,13 +91,6 @@ public class ServletKernelMap extends HttpServlet {
 		RenderedImage imagem = (RenderedImage)kRend.pintaKernel(zoom, ie);
 		sessao.setAttribute(IMAGEM_KERNEL, imagem);
 //		/*teste*/KernelImageFilesManager.criarImagem(kernel, request.getSession()); //teste pra ver pq a imagem n aparece as vezes
-	}
-	
-	public static void enviarImagem(HttpServletResponse response, RenderedImage imagem) throws IOException{
-		//manda a imagem gerada pelo KernelMapRenderer
-		response.setContentType("image/png");
-		OutputStream out = response.getOutputStream();
-		ImageIO.write(imagem, "PNG", out);
 	}
 	
 	public static void enviarInfo(HttpServletRequest request, HttpServletResponse response, double[][] dens) throws IOException{

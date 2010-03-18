@@ -1,7 +1,5 @@
 package org.wikicrimes.servlet;
 
-import static org.wikicrimes.servlet.ServletKernelMap.enviarImagem;
-
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -36,6 +34,7 @@ import org.wikicrimes.model.PontoLatLng;
 import org.wikicrimes.model.Usuario;
 import org.wikicrimes.service.CrimeService;
 import org.wikicrimes.service.ImagemMapaService;
+import org.wikicrimes.util.Util;
 import org.wikicrimes.web.FiltroForm;
 import org.wikicrimes.web.ImagemMapaForm;
 
@@ -78,7 +77,7 @@ public class ServletImagemMapa extends HttpServlet {
 				//pinta os marcadores por cima
 				pintaMarcadores(im, imagemMapa, sessao);
 				
-				enviarImagem(resp, imagemMapa);
+				Util.enviarImagem(resp, imagemMapa);
 			}
 		}
 	}

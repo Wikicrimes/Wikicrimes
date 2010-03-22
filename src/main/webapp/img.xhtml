@@ -31,11 +31,12 @@
 		font-weight: bold;
 		color: black;
 	}
+	#texto{
+		max-width:300px;
+		margin:auto;
+	}
 	#logo{
 		border: none;
-	}
-	#div{
-		margin: auto;
 	}
 	#mapa{
 		margin-top: -10px;
@@ -53,14 +54,13 @@
 <body>
 	<f:loadBundle var="messages" basename="messages" />
 		
-	<div id="div" >
 	<p> <a href="http://wikicrimes.org" target="_blank"> <img id="logo" src="#{messages['areasrisco.imagem.logo']}" /> </a> </p>
 	
 	<h3> <img id="aviso" src="images/warning_grande2.png" /> #{messages['areasrisco.imagem.titulo']} </h3>
 	
 	<p> <img id="mapa" src="ServletImagemMapa?acao=pegaImagem&amp;id=#{param.id}" /> </p>
 	
-	<p>
+	<p id="texto">
 		#{imagemMapaForm.nomeUsuario} #{messages['areasrisco.imagem.texto']} <br/>
 		<c:if test="#{imagemMapaForm.numRoubos != 0}">
 		<img src="images/baloes/vermelho.png" /> #{imagemMapaForm.numRoubos} #{messages['comum.roubos']} <br/>
@@ -77,7 +77,6 @@
 	
 	<p> #{messages['areasrisco.imagem.detalhes']} <a href="http://wikicrimes.org" target="_blank" > wikicrimes.org </a> </p>
 	
-	</div>
 			
 </body>
 </html>

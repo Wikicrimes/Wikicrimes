@@ -56,22 +56,40 @@
 		
 	<p> <a href="http://wikicrimes.org" target="_blank"> <img id="logo" src="#{messages['areasrisco.imagem.logo']}" /> </a> </p>
 	
-	<h3> <img id="aviso" src="images/warning_grande2.png" /> #{messages['areasrisco.imagem.titulo']} </h3>
+	<!--  <h3> <img id="aviso" src="images/warning_grande2.png" /> #{messages['areasrisco.imagem.titulo']} </h3>  -->
 	
 	<p> <img id="mapa" src="ServletImagemMapa?acao=pegaImagem&amp;id=#{param.id}" /> </p>
 	
 	<p id="texto">
-		#{imagemMapaForm.nomeUsuario} #{messages['areasrisco.imagem.texto']} <br/>
-		<c:if test="#{imagemMapaForm.numRoubos != 0}">
-		<img src="images/baloes/vermelho.png" /> #{imagemMapaForm.numRoubos} #{messages['comum.roubos']} <br/>
-		</c:if>
-		<c:if test="#{imagemMapaForm.numFurtos != 0}"> 
-		<img src="images/baloes/novoMarcadorAzul.png" /> #{imagemMapaForm.numFurtos} #{messages['comum.furtos']} <br/>
-		</c:if> 
-		<c:if test="#{imagemMapaForm.numOutros != 0}">
-			<img src="images/baloes/novoMarcadorLaranja.png" /> #{imagemMapaForm.numOutros} #{messages['comum.outros']} <br/>
-		</c:if>
-		<br/>
+	
+		<c:choose>
+			<c:when test="#{not param.qr}">
+				#{imagemMapaForm.nomeUsuario} 
+			</c:when>
+			<c:otherwise>
+				Wikicrimes
+			</c:otherwise>
+		</c:choose>
+		
+		<c:choose>
+			<c:when test="#{imagemMapaForm.numRoubos == 0 and imagemMapaForm.numFurtos == 0 and imagemMapaForm.numOutros == 0}">
+				#{messages['areasrisco.imagem.texto.nenhumCrime']}
+			</c:when>		
+			<c:otherwise>
+				#{messages['areasrisco.imagem.texto']} <br/>
+				<c:if test="#{imagemMapaForm.numRoubos != 0}">
+				<img src="images/baloes/vermelho.png" /> #{imagemMapaForm.numRoubos} #{messages['comum.roubos']} <br/>
+				</c:if>
+				<c:if test="#{imagemMapaForm.numFurtos != 0}"> 
+				<img src="images/baloes/novoMarcadorAzul.png" /> #{imagemMapaForm.numFurtos} #{messages['comum.furtos']} <br/>
+				</c:if> 
+				<c:if test="#{imagemMapaForm.numOutros != 0}">
+					<img src="images/baloes/novoMarcadorLaranja.png" /> #{imagemMapaForm.numOutros} #{messages['comum.outros']} <br/>
+				</c:if>
+				<br/>
+			</c:otherwise>
+		</c:choose>			
+		
 		#{messages['webapp.carregando.periodo']} #{imagemMapaForm.dataIni} #{messages['comum.a']} #{imagemMapaForm.dataFin}.
 	</p>
 	

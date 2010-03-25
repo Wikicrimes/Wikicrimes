@@ -726,7 +726,7 @@
 				return div;
 			}
 
-			var msgShare = "bla bla"
+			var msgShare = "";
 			function tagImageShareLink(link, urlImagem){
 				var urlSite = link.url;
 				urlSite = urlSite.replace("%url", escape(urlImagem));
@@ -746,11 +746,11 @@
 			     {id:'delicious',	nome:'Delicious', 	url:'http://del.icio.us/post?url=%url&title=%texto'},
 			     //{id:'blinklist',	nome:'Blinklist', 	url:'http://blinklist.com/index.php?Action=Blink/addblink.php&Description=&Url=%url&title=%texto'},
 			     //{id:'furl',		nome:'Furl', 		url:'http://www.furl.net/storeIt.jsp?&u=%url&t=%texto'},
-			     //{id:'technorati',	nome:'Technorati', 	url:'http://technorati.com/faves?add=&url'},
+			     //{id:'technorati',nome:'Technorati', 	url:'http://technorati.com/faves?add=&url'},
 			     //{id:'magnolia',	nome:'Magnolia', 	url:'http://ma.gnolia.com/beta/bookmarklet/add?url=%url&title=%texto'},
-			     //{id:'sphinn',		nome:'Sphinn', 		url:'http://sphinn.com/submit.php?url=%url&title=%texto'},
+			     //{id:'sphinn',	nome:'Sphinn', 		url:'http://sphinn.com/submit.php?url=%url&title=%texto'},
 			     //{id:'mixx',		nome:'Mixx', 		url:'http://www.mixx.com/submit?page_url=%url&title=%texto'},
-			     {id:'qrcode',		nome:'QR Code',		url:'qrcodegen.html?string=%url'}
+			     {id:'qrcode',		nome:'QR Code',		url:'qrcodegen.html?string=%url' + escape('&qr=true')}
 			];
 
 			function getUrlImagem(poly){

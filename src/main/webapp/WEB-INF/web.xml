@@ -312,6 +312,16 @@
 	</servlet-mapping>
 	
 	<servlet>
+		<servlet-name>ServletIphone</servlet-name>
+		<servlet-class>org.wikicrimes.servlet.ServletIphone</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>ServletIphone</servlet-name>
+		<url-pattern>/ServletIphone</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
 		<servlet-name>TesteCenariosRotas</servlet-name>
 		<servlet-class>org.wikicrimes.util.kernelMap.testes.TesteCenariosRotas</servlet-class>
 	</servlet>

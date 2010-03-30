@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC
+"-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+<head>
+<script
+	src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAW7K3r0mTd0o4dVJpLGRl7hR30ZXoNZ9X8hjGhk8avHZWTklHEhTY6j1c5ZVPSoSVXQbHLHuJ90HAPQ"
+	type="text/javascript">
+	</script>
+<script src="scripts/greversegeocoderv107.js" type="text/javascript"></script>
+
+<link rel="commands" href="scripts/mapcrimes.js"   />
+<script type="text/javascript">
+		/* <![CDATA[ */		
+		var reversegeocoder = null;
+		var reverse = null;
+		var map;
+		var i;
+		var marker;
+		var pontoNoMapa;
+		var textoBotaoReverse = 'Usar Reverse';
+		var msgDeErro = 'Endereco nao encontrado';
+		
+		function initialize() {
+			if (GBrowserIsCompatible()) {
+				map = new GMap2(document.getElementById("map_canvas"));
+				map.setCenter(new GLatLng(0, 0), 1);
+				map.addControl(new GLargeMapControl());
+		 		map.addControl(new GMapTypeControl());
+		  		map.addControl(new GScaleControl());
+		 		map.addControl(new GOverviewMapControl());
+		 		map.enableScrollWheelZoom();
+		 		
+			}
+		}
+		
+		//Adiciona um Marker e seus eventos ao map.
+		function fixarTarrachaPonto(lat, lng) {
+			pontoNoMapa = new Ponto();
+			
+			pontoNoMapa.lat = lat;
+			pontoNoMapa.lng = lng;
+						
+			var centro = new GLatLng(lat,lng);
+
+			if(marker)
+				map.removeOverlay(marker);
+			
+			marker = new GMarker(centro, {draggable: true});
+			
+			map.addOverlay(marker);
+			map.setCenter(centro, 14);
+
+			GEvent.addListener(marker, "dragstart", function() {
+				marker.closeInfoWindow();
+				iniciarForm(pontoNoMapa);
+		    });
+
+		    GEvent.addListener(marker, "dragend", function() {
+		    	marker.openInfoWindowHtml("<html><head></head><body><p align='center'>"+
+		    	    	"<input type='button' onclick='procurarEndereco();' value='"+textoBotaoReverse+"' />"+
+		    	    	"</body></html>");
+		    });
+		}
+		function setarEnderecoSIA (enderecoSIA){
+		document.getElementById("enderecoSIA").value = enderecoSIA;
+		}
+		function setarTexto (texto){
+			document.getElementById("descricao").value = texto;
+			}
+		function setarCrime (tipoCrime){
+			document.getElementById("j_id2:tipoCrime").value = tipoCrime;
+			}
+        function setarCamposUb(data,horario,tipoArmaUsada,tipoRegistro,tipoVitima,tipoLocal,tipoPapel){
+        	document.getElementById("dataForm").value = data;
+        	document.getElementById("j_id2:horario").value = horario;
+        	document.getElementById("j_id2:tipoArmaUsada").value = tipoArmaUsada;
+        	document.getElementById("j_id2:tipoRegistro").value = tipoRegistro;
+        	document.getElementById("j_id2:tipoVitima").value = tipoVitima;
+        	document.getElementById("j_id2:local").value = tipoLocal;
+        	document.getElementById("j_id2:tipoPapel").value = tipoPapel;
+        	//alert(tipoPapel):
+        	
+            }
+		
+		function setarCamposUbiq (tipoLocal, data, horario, quantidade, qtdMasculino, tipoArmaUsada, tipoPapel, tipoCrime, tipoRegistro, tipoVitima, textoUbiq){
+			document.getElementById("j_id2:local").value = tipoLocal;
+			document.getElementById("dataForm").value = data;
+			document.getElementById("j_id2:horario").value = horario;
+			document.getElementById("j_id2:quantidade").value = quantidade;
+			document.getElementById("j_id2:qtdMasculino").value = qtdMasculino;
+			document.getElementById("j_id2:tipoArmaUsada").value = tipoArmaUsada;
+			document.getElementById("j_id2:tipoPapel").value = tipoPapel;
+			document.getElementById("j_id2:tipoCrime").value = tipoCrime;
+			document.getElementById("j_id2:tipoRegistro").value = tipoRegistro;
+			document.getElementById("j_id2:tipoVitima").value = tipoVitima;
+			document.getElementById("j_id2:descricao").value = textoUbiq;
+		}
+		
+				
+		function iniciarForm(ponto) {
+			document.getElementById("paisForm").value = '';
+			document.getElementById("estadoForm").value = '';
+			document.getElementById("cidadeForm").value = '';
+			document.getElementById("enderecoForm").value = '';
+			document.getElementById("cepForm").value = '';
+			document.getElementById("latForm").value = ponto.lat;
+			document.getElementById("lngForm").value = ponto.lng;
+		
+		}
+
+		//Usa o reverse geocoder para procurar dados do endereço
+		function procurarEndereco() {
+
+				if (reversegeocoder)
+					GEvent.clearInstanceListeners(reversegeocoder);
+				reversegeocoder = new GReverseGeocoder(map);
+				
+				//Evento que é chamado quando a requisição dos endereços é respondida 
+				GEvent.addListener(reversegeocoder, "load", function(placemark) {
+
+					pontoNoMapa.cep = reversegeocoder.getPlacemarkProperty(placemark,"PostalCodeNumber");
+					pontoNoMapa.endereco = reversegeocoder.getPlacemarkProperty(placemark,"ThoroughfareName");  
+					pontoNoMapa.cidade = reversegeocoder.getPlacemarkProperty(placemark,"LocalityName");  
+
+					if (reversegeocoder.getPlacemarkProperty(placemark,"AdministrativeAreaName")) 
+						pontoNoMapa.estado = reversegeocoder.getPlacemarkProperty(placemark,"AdministrativeAreaName");  					      					    
+					else     
+						pontoNoMapa.estado = reversegeocoder.getPlacemarkProperty(placemark,"SubAdministrativeAreaName");
+					
+					pontoNoMapa.pais = reversegeocoder.getPlacemarkProperty(placemark,"CountryNameCode");
+					var latlngAux = marker.getLatLng();
+					pontoNoMapa.lat = latlngAux.lat();
+					pontoNoMapa.lng = latlngAux.lng();
+
+					document.getElementById("paisForm").value = pontoNoMapa.pais;
+					document.getElementById("estadoForm").value = pontoNoMapa.estado;
+					document.getElementById("cidadeForm").value = pontoNoMapa.cidade;
+					document.getElementById("enderecoForm").value = pontoNoMapa.endereco;
+					document.getElementById("cepForm").value = pontoNoMapa.cep;
+					document.getElementById("latForm").value = pontoNoMapa.lat;
+					document.getElementById("lngForm").value = pontoNoMapa.lng;
+					
+					document.getElementById("paisTmp").value = pontoNoMapa.pais;
+					document.getElementById("estadoTmp").value = pontoNoMapa.estado;
+					document.getElementById("cidadeTmp").value = pontoNoMapa.cidade;
+					document.getElementById("enderecoTmp").value = pontoNoMapa.endereco;
+					document.getElementById("cepTmp").value = pontoNoMapa.cep;
+					document.getElementById("latTmp").value = pontoNoMapa.lat;
+					document.getElementById("lngTmp").value = pontoNoMapa.lng;
+				});
+				
+				//Evento que é chamado quando a requisição dos endereços não é corretamente respondida
+				//GEvent.addListener(reversegeocoder, "error", function() {
+					//alert(msgDeErro);
+				//});
+
+				//Realiza a requisição reverseGeocoder do ponto em foco
+				var latlng = marker.getLatLng();
+				reversegeocoder.reverseGeocode(latlng);
+		}
+		
+		//"Classe" Ponto que representara crime
+		function Ponto() {
+			this.id;
+			this.lat;
+			this.lng;
+			this.cep;
+			this.cidade;
+			this.estado;
+			this.endereco;
+			this.pais;
+		}
+		
+		function showLocal() {				
+				var endereco = document.getElementById("pesquisa").value;
+				
+				if (!reverse) {
+					reverse = new GClientGeocoder();
+				}
+				reverse.getLocations(endereco, plotaEnderecoMap);
+				reverse = null;
+			}
+			
+			function plotaEnderecoMap(response) {
+		      if (!response || response.Status.code != 200) {
+		        alert("#{messages['menu.mensagem.erro']}");
+		      } 
+		      else {
+		      var place = response.Placemark[0];
+		      var point = new GLatLng(place.Point.coordinates[1],place.Point.coordinates[0]);
+		      this.fixarTarrachaPonto(place.Point.coordinates[1],place.Point.coordinates[0]);
+		      }
+			}
+					
+		
+		/* ]]> */
+		</script>
+</head>
+<body onload="initialize();">
+<f:view>
+	<h:form>
+
+		<div align="center"><h:graphicImage value="images/topoUbiq.gif" />
+		<br />
+		</div>
+		<h:panelGrid columns="3">
+			<h:panelGrid columns="1">
+				<rich:panel bodyClass="richPanels" headerClass="panelHeader"
+					style="height: 348px">
+					<f:facet name="header">
+						<h:outputText value="Dados Sobre Endereço" />
+					</f:facet>
+					<h:panelGrid>
+
+						<h:outputText value="Endereço" />
+						<t:inputText id="enderecoForm" forceId="true"
+							value="#{crimeIEForm.crime.endereco}" />
+
+						<h:outputText value="Cidade" />
+						<t:inputText id="cidadeForm" forceId="true"
+							value="#{crimeIEForm.crime.cidade}" />
+
+						<h:outputText value="Estado" />
+						<t:inputText id="estadoForm" forceId="true"
+							value="#{crimeIEForm.crime.estado}" />
+
+						<h:outputText value="País" />
+						<t:inputText id="paisForm" forceId="true"
+							value="#{crimeIEForm.crime.pais}" />
+
+						<h:outputText value="CEP" />
+						<t:inputText id="cepForm" forceId="true"
+							value="#{crimeIEForm.crime.cep}" />
+
+					    <h:outputText value="Tipo do Local (*)" />
+						<h:selectOneMenu value="#{crimeIEForm.tipoLocal}" id="local"
+							required="true">
+							<f:selectItem itemLabel="Selecione..." itemValue="0"
+								style="font-size: 12px;" />
+							<f:selectItems value="#{crimeIEForm.tipoLocalItens}"
+								style="font-size: 12px;" />
+						</h:selectOneMenu>
+						
+
+						<t:inputHidden id="enderecoTmp" forceId="true"
+							value="#{crimeIEForm.crimeTemp.endereco}" />
+						<t:inputHidden id="cidadeTmp" forceId="true"
+							value="#{crimeIEForm.crimeTemp.cidade}" />
+						<t:inputHidden id="paisTmp" forceId="true"
+							value="#{crimeIEForm.crimeTemp.pais}" />
+						<t:inputHidden id="estadoTmp" forceId="true"
+							value="#{crimeIEForm.crimeTemp.estado}" />
+						<t:inputHidden id="cepTmp" forceId="true"
+							value="#{crimeIEForm.crimeTemp.cep}" />
+						<t:inputHidden id="latTmp" forceId="true"
+							value="#{crimeIEForm.crimeTemp.latitude}" />
+						<t:inputHidden id="lngTmp" forceId="true"
+							value="#{crimeIEForm.crimeTemp.longitude}" />
+
+						<t:inputHidden id="latForm" forceId="true"
+							value="#{crimeIEForm.crime.latitude}" />
+
+						<t:inputHidden id="lngForm" forceId="true"
+							value="#{crimeIEForm.crime.longitude}" />
+					</h:panelGrid>
+
+
+				</rich:panel>
+				<rich:panel bodyClass="richPanels" headerClass="panelHeader"
+					style="height: 366px">
+					<f:facet name="header">
+						<h:outputText value="Dados Sobre o Crime" />
+					</f:facet>
+					<h:panelGrid cellspacing="5">
+
+						<h:outputText value="Data da Ocorrência (dd/mm/yyyy)  (*)" />
+						<t:inputText id="dataForm" forceId="true"
+							value="#{crimeIEForm.dataDaOcorrencia}" />
+
+						<h:outputText value="Horário (*)" />
+						<h:selectOneListbox value="#{crimeIEForm.horario}" id="horario"
+							size="1" required="true">
+							<f:selectItem itemLabel="Selecione..." itemValue="-1" />
+							<f:selectItems value="#{crimeIEForm.horarioItens}"
+								style="font-size: 12px;" />
+						</h:selectOneListbox>
+
+						<h:outputText value="Quantidade de Criminosos" />
+						<h:inputText value="#{crimeIEForm.crime.quantidade}" maxlength="3"
+							size="3" id="quantidade" />
+
+						<h:outputText value="Quantidade de Vítimas" />
+						<h:inputText value="#{crimeIEForm.crime.qtdMasculino}"
+							maxlength="3" size="3" id="qtdMasculino" />
+
+						<h:panelGroup>
+							<h:outputText value="Qual a sua relação com o crime? (*)" />
+							<h:selectOneMenu value="#{crimeIEForm.tipoPapel}" id="tipoPapel"
+								required="true">
+								<f:selectItem itemLabel="Selecione..." itemValue="0" />
+								<f:selectItems value="#{crimeIEForm.tipoPapelItens}" style="font-size: 12px;" />
+								
+							</h:selectOneMenu>
+						</h:panelGroup>
+
+						<h:panelGroup>
+							<h:outputText value="A polícia foi informada? (*)" />
+							<h:selectOneMenu value="#{crimeIEForm.tipoRegistro}"
+								id="tipoRegistro" required="true">
+								<f:selectItem itemLabel="Selecione..." itemValue="0" />
+								<f:selectItems value="#{crimeIEForm.tipoRegistroItens}" />
+							</h:selectOneMenu>
+						</h:panelGroup>
+
+					</h:panelGrid>
+				</rich:panel>
+
+			</h:panelGrid>
+			<h:panelGrid columns="1">
+				<rich:panel bodyClass="richPanels" headerClass="panelHeader">
+					<f:facet name="header">
+						<h:outputText value="Texto Selecionado" />
+					</f:facet>
+					<h:outputText
+						value="Texto Selecionado pelo " />
+						<a href="http://labs.mozilla.com/projects/ubiquity/">Ubiquity</a>
+						<h:outputText
+						value=", Descrição:  (*)" />
+					 <!--  <br /><br /><div align="center" style=" height : 84px;"><h:graphicImage
+							value="images/ubiquity.gif" /> <br />
+						</div>-->
+					<br />
+					<br /> 
+					<div align="center">
+					<t:inputTextarea value="#{crimeIEForm.descricao}" forceId="true" id="descricao" cols="60" rows="9"
+						required="true" />
+						<br />
+					<br />
+					<h:outputText value="Endereço obtido pelo SIA" />
+						<t:inputText id="enderecoSIA" forceId="true"
+							value="#{crimeIEForm.enderecoSIA}" />
+					</div>
+				</rich:panel>
+
+				<rich:panel bodyClass="richPanels" headerClass="panelHeader">
+					<f:facet name="header">
+						<h:outputText value="Mapa" />
+					</f:facet>
+					<div id="map_canvas" style="width: 500px; height: 355px"></div>
+				</rich:panel>
+				<rich:panel bodyClass="richPanels" headerClass="panelHeader">
+					<f:facet name="header">
+						<h:outputText value="Pesquisar no Mapa" />
+					</f:facet>
+					<h:panelGroup>
+						<div align="center"><t:inputText value="" forceId="true"
+							id="pesquisa" styleClass="address_input" style="margin-top: 2px;"
+							size="47" /> <h:outputText value="   " /><t:commandButton
+							forceId="true" id="btnPesquisaLogado" styleClass="button"
+							type="button" value="Pesquisar"
+							onclick="showLocal();"
+							style="width:109px; margin-top:2px;" /></div>
+					</h:panelGroup>
+				</rich:panel>
+			</h:panelGrid>
+			<rich:panel bodyClass="richPanels" style="height: 722px"
+				headerClass="panelHeader">
+				<f:facet name="header">
+					<h:outputText value="Dados sobre o Crime" />
+				</f:facet>
+				<h:panelGrid>
+					<h:outputText value="Tipo do Crime (*)" />
+					<h:selectOneMenu value="#{crimeIEForm.tipoCrime}" id="tipoCrime"
+						required="true">
+						<f:selectItem itemLabel="Selecione..." itemValue="0"
+							style="font-size: 12px;" />
+						<f:selectItems value="#{crimeIEForm.tipoCrimeItens}"
+							style="font-size: 12px;" />
+					</h:selectOneMenu>
+				</h:panelGrid>
+				
+				
+				<h:panelGrid>
+					<h:outputText value="Tipo de Vítima (*)" />
+					<h:selectOneMenu value="#{crimeIEForm.tipoVitima}" id="tipoVitima"
+						required="true">
+						<f:selectItem itemLabel="Selecione..." itemValue="0"
+							style="font-size: 12px;" />
+						<f:selectItems value="#{crimeIEForm.tipoVitimaItens}"
+							style="font-size: 12px;" />
+					</h:selectOneMenu>
+				</h:panelGrid>
+				<h:panelGrid>
+					<h:outputText value="Arma Utilizada  (*)" />
+					<h:selectOneListbox value="#{crimeIEForm.tipoArmaUsada}"
+						id="tipoArmaUsada" size="1" required="true">
+						<f:selectItem itemLabel="Selecione..." itemValue="0" />
+						<f:selectItems value="#{crimeIEForm.tipoArmaUsadaItens}" />
+					</h:selectOneListbox>
+				</h:panelGrid>
+				<br />
+				<h:panelGrid cellpadding="3"
+					style="border-width: 1px; border-style: solid solid solid solid; border-color: gray gray gray gray;">
+					<h:outputText
+						value="O que você considera causa/motivo desta ocorrência. Marque no mínimo 1 e no máximo 4 opções:" />
+					<div align="center"><t:selectManyCheckbox layoutWidth="2"
+						id="razoesCheck" layout="pageDirection"
+						value="#{crimeIEForm.razoesSel}">
+						<f:selectItems id="razoes" value="#{crimeIEForm.razoes}" />
+					</t:selectManyCheckbox></div>
+				</h:panelGrid>
+				<br />
+				<h:outputText value="(*) Campos Obrigatórios" />
+				<br />
+				<br />
+				<h:commandButton value="Registrar Crime" id="btnRegistrar"
+					action="#{crimeIEForm.insert}" styleClass="button" />
+			</rich:panel>
+		</h:panelGrid>
+
+	</h:form>
+</f:view>
+</body>
+</html>

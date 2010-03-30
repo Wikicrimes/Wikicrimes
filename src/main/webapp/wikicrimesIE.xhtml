@@ -11,13 +11,12 @@
 	xmlns:rich="http://richfaces.org/rich"
 	xmlns:t="http://myfaces.apache.org/tomahawk">
 <head>
-<script
-	src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAW7K3r0mTd0o4dVJpLGRl7hR30ZXoNZ9X8hjGhk8avHZWTklHEhTY6j1c5ZVPSoSVXQbHLHuJ90HAPQ"
-	type="text/javascript">
-	</script>
-<script src="scripts/greversegeocoderv107.js" type="text/javascript"></script>
+	<f:loadBundle var="messages" basename="messages" />
+	<script	src="http://maps.google.com/maps?file=api&amp;v=2&amp;oe=iso-8859-1&amp;hl=#{messages['webapp.locale']}&amp;key=#{messages['chave.googlemaps']}"
+			type="text/javascript"/>
+	<script src="scripts/greversegeocoderv107.js" type="text/javascript"></script>
 
-<link rel="commands" href="scripts/mapcrimes.js"   />
+	<link rel="commands" href="scripts/mapcrimes.js"   />
 <script type="text/javascript">
 		/* <![CDATA[ */		
 		var reversegeocoder = null;
@@ -117,14 +116,14 @@
 		
 		}
 
-		//Usa o reverse geocoder para procurar dados do endereço
+		//Usa o reverse geocoder para procurar dados do endereï¿½o
 		function procurarEndereco() {
 
 				if (reversegeocoder)
 					GEvent.clearInstanceListeners(reversegeocoder);
 				reversegeocoder = new GReverseGeocoder(map);
 				
-				//Evento que é chamado quando a requisição dos endereços é respondida 
+				//Evento que ï¿½ chamado quando a requisiï¿½ï¿½o dos endereï¿½os ï¿½ respondida 
 				GEvent.addListener(reversegeocoder, "load", function(placemark) {
 
 					pontoNoMapa.cep = reversegeocoder.getPlacemarkProperty(placemark,"PostalCodeNumber");
@@ -158,12 +157,12 @@
 					document.getElementById("lngTmp").value = pontoNoMapa.lng;
 				});
 				
-				//Evento que é chamado quando a requisição dos endereços não é corretamente respondida
+				//Evento que ï¿½ chamado quando a requisiï¿½ï¿½o dos endereï¿½os nï¿½o ï¿½ corretamente respondida
 				//GEvent.addListener(reversegeocoder, "error", function() {
 					//alert(msgDeErro);
 				//});
 
-				//Realiza a requisição reverseGeocoder do ponto em foco
+				//Realiza a requisiï¿½ï¿½o reverseGeocoder do ponto em foco
 				var latlng = marker.getLatLng();
 				reversegeocoder.reverseGeocode(latlng);
 		}
@@ -217,11 +216,11 @@
 				<rich:panel bodyClass="richPanels" headerClass="panelHeader"
 					style="height: 348px">
 					<f:facet name="header">
-						<h:outputText value="Dados Sobre Endereço" />
+						<h:outputText value="Dados Sobre Endereï¿½o" />
 					</f:facet>
 					<h:panelGrid>
 
-						<h:outputText value="Endereço" />
+						<h:outputText value="Endereï¿½o" />
 						<t:inputText id="enderecoForm" forceId="true"
 							value="#{crimeIEForm.crime.endereco}" />
 
@@ -233,7 +232,7 @@
 						<t:inputText id="estadoForm" forceId="true"
 							value="#{crimeIEForm.crime.estado}" />
 
-						<h:outputText value="País" />
+						<h:outputText value="Paï¿½s" />
 						<t:inputText id="paisForm" forceId="true"
 							value="#{crimeIEForm.crime.pais}" />
 
@@ -282,11 +281,11 @@
 					</f:facet>
 					<h:panelGrid cellspacing="5">
 
-						<h:outputText value="Data da Ocorrência (dd/mm/yyyy)  (*)" />
+						<h:outputText value="Data da Ocorrï¿½ncia (dd/mm/yyyy)  (*)" />
 						<t:inputText id="dataForm" forceId="true"
 							value="#{crimeIEForm.dataDaOcorrencia}" />
 
-						<h:outputText value="Horário (*)" />
+						<h:outputText value="Horï¿½rio (*)" />
 						<h:selectOneListbox value="#{crimeIEForm.horario}" id="horario"
 							size="1" required="true">
 							<f:selectItem itemLabel="Selecione..." itemValue="-1" />
@@ -298,12 +297,12 @@
 						<h:inputText value="#{crimeIEForm.crime.quantidade}" maxlength="3"
 							size="3" id="quantidade" />
 
-						<h:outputText value="Quantidade de Vítimas" />
+						<h:outputText value="Quantidade de Vï¿½timas" />
 						<h:inputText value="#{crimeIEForm.crime.qtdMasculino}"
 							maxlength="3" size="3" id="qtdMasculino" />
 
 						<h:panelGroup>
-							<h:outputText value="Qual a sua relação com o crime? (*)" />
+							<h:outputText value="Qual a sua relaï¿½ï¿½o com o crime? (*)" />
 							<h:selectOneMenu value="#{crimeIEForm.tipoPapel}" id="tipoPapel"
 								required="true">
 								<f:selectItem itemLabel="Selecione..." itemValue="0" />
@@ -313,7 +312,7 @@
 						</h:panelGroup>
 
 						<h:panelGroup>
-							<h:outputText value="A polícia foi informada? (*)" />
+							<h:outputText value="A polï¿½cia foi informada? (*)" />
 							<h:selectOneMenu value="#{crimeIEForm.tipoRegistro}"
 								id="tipoRegistro" required="true">
 								<f:selectItem itemLabel="Selecione..." itemValue="0" />
@@ -334,7 +333,7 @@
 						value="Texto Selecionado pelo " />
 						<a href="http://labs.mozilla.com/projects/ubiquity/">Ubiquity</a>
 						<h:outputText
-						value=", Descrição:  (*)" />
+						value=", Descriï¿½ï¿½o:  (*)" />
 					 <!--  <br /><br /><div align="center" style=" height : 84px;"><h:graphicImage
 							value="images/ubiquity.gif" /> <br />
 						</div>-->
@@ -345,7 +344,7 @@
 						required="true" />
 						<br />
 					<br />
-					<h:outputText value="Endereço obtido pelo SIA" />
+					<h:outputText value="Endereï¿½o obtido pelo SIA" />
 						<t:inputText id="enderecoSIA" forceId="true"
 							value="#{crimeIEForm.enderecoSIA}" />
 					</div>
@@ -390,7 +389,7 @@
 				
 				
 				<h:panelGrid>
-					<h:outputText value="Tipo de Vítima (*)" />
+					<h:outputText value="Tipo de Vï¿½tima (*)" />
 					<h:selectOneMenu value="#{crimeIEForm.tipoVitima}" id="tipoVitima"
 						required="true">
 						<f:selectItem itemLabel="Selecione..." itemValue="0"
@@ -411,7 +410,7 @@
 				<h:panelGrid cellpadding="3"
 					style="border-width: 1px; border-style: solid solid solid solid; border-color: gray gray gray gray;">
 					<h:outputText
-						value="O que você considera causa/motivo desta ocorrência. Marque no mínimo 1 e no máximo 4 opções:" />
+						value="O que vocï¿½ considera causa/motivo desta ocorrï¿½ncia. Marque no mï¿½nimo 1 e no mï¿½ximo 4 opï¿½ï¿½es:" />
 					<div align="center"><t:selectManyCheckbox layoutWidth="2"
 						id="razoesCheck" layout="pageDirection"
 						value="#{crimeIEForm.razoesSel}">
@@ -419,7 +418,7 @@
 					</t:selectManyCheckbox></div>
 				</h:panelGrid>
 				<br />
-				<h:outputText value="(*) Campos Obrigatórios" />
+				<h:outputText value="(*) Campos Obrigatï¿½rios" />
 				<br />
 				<br />
 				<h:commandButton value="Registrar Crime" id="btnRegistrar"

@@ -463,6 +463,15 @@
 		</navigation-case>
 	</navigation-rule>
 	
+	<navigation-rule>
+		<from-view-id>/wikicrimesIE.xhtml</from-view-id>
+		<navigation-case>
+				<from-outcome>success</from-outcome>
+				<to-view-id>/crimeConfirmado.xhtml</to-view-id>
+				<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
     <navigation-rule>
         <from-view-id>/main.xhtml</from-view-id>
         <navigation-case>
@@ -552,6 +561,26 @@
 			<value>#{crimeService}</value>
 		</managed-property>
 		
+	</managed-bean>
+	
+	<managed-bean>
+		<managed-bean-name>crimeIEForm</managed-bean-name>
+		<managed-bean-class>
+			org.wikicrimes.web.CrimeIEForm
+		</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+		<managed-property>
+			<property-name>crimeService</property-name>
+			<value>#{crimeService}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>usuarioService</property-name>
+			<value>#{usuarioService}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>logUbiquityService</property-name>
+			<value>#{logUbiquityService}</value>
+		</managed-property>
 	</managed-bean>
 	
 	<managed-bean>

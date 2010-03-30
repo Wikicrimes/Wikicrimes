@@ -222,6 +222,16 @@
 	</servlet-mapping>
 	
 	<servlet>
+  		<servlet-name>ServletUbiq</servlet-name> 
+  		<servlet-class>org.wikicrimes.servlet.ServletUbiq</servlet-class> 
+   </servlet>
+   
+   <servlet-mapping>
+  		<servlet-name>ServletUbiq</servlet-name> 
+ 		 <url-pattern>/ServletUbiq</url-pattern> 
+   </servlet-mapping>
+	
+	<servlet>
 		<servlet-name>ServletInterfaceComunicacao</servlet-name>
 		<servlet-class>org.wikicrimes.servlet.ServletInterfaceComunicacao</servlet-class>
 	</servlet>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="org.wikicrimes.model.LogUbiquity" table="TB_LU_LOG_UBIQUITY" lazy="true">
+        <id name="idLog" column="LU_IDLOG" unsaved-value="null">
+            <generator class="increment"/>
+        </id>
+        <property name="campo" column="LU_CAMPO" type="java.lang.String"/>
+        <property name="data" column="LU_DATA" type="java.util.Date" not-null="true"/>
+        <property name="campoAntigo" column="LU_CAMPO_ANTIGO" type="java.lang.String"/>
+        <property name="campoNovo" column="LU_CAMPO_NOVO" type="java.lang.String"/>
+		<property name="idSIA" column="LU_IDSIA" type="java.lang.Integer"/>
+        <many-to-one name="crime" column="CRI_IDCRIME" class="org.wikicrimes.model.Crime" />
+       
+    </class>
+</hibernate-mapping>

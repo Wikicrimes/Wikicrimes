@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Semaphore;
 
 import org.wikicrimes.model.BaseObject;
 import org.wikicrimes.model.Crime;
@@ -22,10 +23,13 @@ import org.wikicrimes.service.ImagemMapaService;
 
 public class ImagemMapaForm extends GenericForm{
 	
+	private static Semaphore qrCodeViewedSemaphore = new Semaphore(1);
+	
 	private ImagemMapaService imagemMapaService;
 	private CrimeService crimeService;
 	
 	private Integer id;
+	private Boolean qr;
 	private String numFurtos;
 	private String numRoubos;
 	private String numOutros;
@@ -33,9 +37,22 @@ public class ImagemMapaForm extends GenericForm{
 	private String dataFin;
 	private String nomeUsuario;
 	
-	
-	public void calc(){
+	public void inicializar(){
 		ImagemMapa im = imagemMapaService.get(Integer.valueOf(id));
+		//Se for QR Code: incrementa.
+		if(qr != null && qr.booleanValue()) {
+			try {
+				qrCodeViewedSemaphore.acquire();
+				im.setViewedQrCode(im.getViewedQrCode()+1);
+				imagemMapaService.save(im);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			} finally {
+				if(qrCodeViewedSemaphore.availablePermits() == 0)
+					qrCodeViewedSemaphore.release();
+			}
+		}
+		
 		Map<String, Object> param = getParams(im); 
 		List<BaseObject> crimes =  crimeService.filter(param);
 		
@@ -176,7 +193,7 @@ public class ImagemMapaForm extends GenericForm{
 	}
 	public String getNumFurtos() {
 		if(numFurtos == null)
-			calc();
+			inicializar();
 		return numFurtos;
 	}
 	public void setNumFurtos(String numFurtos) {
@@ -184,7 +201,7 @@ public class ImagemMapaForm extends GenericForm{
 	}
 	public String getNumRoubos() {
 		if(numRoubos == null)
-			calc();
+			inicializar();
 		return numRoubos;
 	}
 	public void setNumRoubos(String numRoubos) {
@@ -192,7 +209,7 @@ public class ImagemMapaForm extends GenericForm{
 	}
 	public String getNumOutros() {
 		if(numOutros == null)
-			calc();
+			inicializar();
 		return numOutros;
 	}
 	public void setNumOutros(String numOutros) {
@@ -200,7 +217,7 @@ public class ImagemMapaForm extends GenericForm{
 	}
 	public String getDataIni() {
 		if(dataIni == null)
-			calc();
+			inicializar();
 		return dataIni;
 	}
 	public void setDataIni(String dataIni) {
@@ -208,7 +225,7 @@ public class ImagemMapaForm extends GenericForm{
 	}
 	public String getDataFin() {
 		if(dataFin == null)
-			calc();
+			inicializar();
 		return dataFin;
 	}
 	public void setDataFin(String dataFin) {
@@ -216,7 +233,7 @@ public class ImagemMapaForm extends GenericForm{
 	}
 	public String getNomeUsuario() {
 		if(nomeUsuario == null)
-			calc();
+			inicializar();
 		return nomeUsuario;
 	}
 	public void setNomeUsuario(String nomeUsuario) {
@@ -233,6 +250,14 @@ public class ImagemMapaForm extends GenericForm{
 	}
 	public void setCrimeService(CrimeService crimeService) {
 		this.crimeService = crimeService;
+	}
+
+	public Boolean getQr() {
+		return qr;
+	}
+
+	public void setQr(Boolean qr) {
+		this.qr = qr;
 	}
 	
 }

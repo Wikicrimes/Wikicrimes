@@ -25,6 +25,49 @@ var map;
 var initialLocation;
 var n, s, w, e;
 
+
+var myWidth;
+var myHeight;
+
+
+var janelaBrowser=window;
+if (janelaBrowser.captureEvents){
+       janelaBrowser.captureEvents(Event.RESIZE);
+       janelaBrowser.onresize=alterarTamanhoTela;
+}else{
+       janelaBrowser.onresize = alterarTamanhoTela;
+}
+
+function alterarTamanhoTela(){
+	calculaTamanhoTela();
+	document.getElementById('map_canvas').style.height = myHeight+'px';
+}
+
+function calculaTamanhoTela(){
+	if( typeof( window.innerWidth ) == 'number' ) {
+
+        //Non-IE
+
+        myWidth = window.innerWidth;
+        myHeight = window.innerHeight;
+
+	} else if( document.documentElement && (document.documentElement.clientWidth ||	document.documentElement.clientHeight ) ) {
+
+        //IE 6+ in 'standards compliant mode'
+
+        myWidth = document.documentElement.clientWidth;
+        myHeight = document.documentElement.clientHeight;
+
+	} else if( document.body && ( document.body.clientWidth || document.body.clientHeight ) ) {
+
+        //IE 4 compatible
+
+        myWidth = document.body.clientWidth;
+        myHeight = document.body.clientHeight;
+
+	}
+}
+
 var arrayCrimes={};
 
 var response = '';
@@ -83,6 +126,7 @@ function initialize() {
 	    mapTypeId: google.maps.MapTypeId.ROADMAP
 	  };
 	  map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+	  
 	  google.maps.event.addListener(map, "tilesloaded", function() {
 		 
 			markersOnBounds();
@@ -121,6 +165,11 @@ function initialize() {
 	    handleNoGeolocation(browserSupportFlag);
 	  }
 
+	  google.maps.event.addListener(map, 'zoom_changed', function() {
+		  map.setZoom(18);
+	    });
+	  calculaTamanhoTela();
+	  document.getElementById('map_canvas').style.height = myHeight+'px';	  
 }
 
 function markersOnBounds() {
@@ -165,18 +214,18 @@ function trataRespostaDetalhesCrimesIphone(crime){
 			response = text;
 			var detalhesCrime = response.split("|");
 	  		var infowindow = new google.maps.InfoWindow({ 
-				content: '<html> Detalhes do crime: '+detalhesCrime[0] + '</br>' + 'Endereço do Crime: ' + detalhesCrime[1] + '</br>' + 'Horário do Crime: '+ detalhesCrime[2] +'</html>'
+				content: "<table> <td> <tr>" + detalhesCrime[0].substring(10,detalhesCrime[0].length).toUpperCase() + " </tr> <tr> " + detalhesCrime[1].substring(0,10) + " </tr> <tr> " + detalhesCrime[2] + ": 00" + "</tr> </td> </table>"
 	  		});
 		    infowindow.open(map,crime.marcador);
 	    }
 		});
 	});
-}		  
+}
 
 --></script>
 </head>
-<body style="margin: 0px; padding: 0px;" onload="initialize()">
+<body style="margin: 0px; padding: 0px;" onload="initialize()" >
 <div id="map_canvas"
-	style="width: 99%; height: 480px; border: 1px solid black"></div>
+	style="width: 100%; height: 200px;"></div>
 </body>
 </html>

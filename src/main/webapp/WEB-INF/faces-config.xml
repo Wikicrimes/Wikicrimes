@@ -969,6 +969,10 @@
 			<property-name>id</property-name>
 			<value>#{param.id}</value>
 		</managed-property>
+		<managed-property>
+			<property-name>qr</property-name>
+			<value>#{param.qr}</value>
+		</managed-property>
 	</managed-bean>
 	
 	<managed-bean>

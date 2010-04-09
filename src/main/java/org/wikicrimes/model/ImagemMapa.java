@@ -17,6 +17,7 @@ public class ImagemMapa  extends BaseObject{
 	private Integer zoom;
 	private Integer width;
 	private Integer height;
+	private Integer viewedQrCode;
 	
 	//poligono
 	private List<PontoLatLng> poligono;
@@ -129,5 +130,12 @@ public class ImagemMapa  extends BaseObject{
 	public void setToken(String token) {
 		this.token = token;
 	}
-	
+	public Integer getViewedQrCode() {
+		if(viewedQrCode == null)
+			return 0;
+		return viewedQrCode;
+	}
+	public void setViewedQrCode(Integer viewedQrCode) {
+		this.viewedQrCode = viewedQrCode;
+	}
 }

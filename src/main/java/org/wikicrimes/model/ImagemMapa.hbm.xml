@@ -31,5 +31,7 @@
         <many-to-one name="usuario" column="ID_USUARIO"/>
         <property name="dataHoraRegistro" column="DATA_HORA_REGISTRO"/>
 
+        <property name="viewedQrCode" column="VIEWED_QRCODE" not-null="true"/>
+
     </class>
 </hibernate-mapping>

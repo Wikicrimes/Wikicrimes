@@ -153,7 +153,7 @@ public class ServletIphone extends HttpServlet {
 		ApplicationContext springContext = WebApplicationContextUtils.getWebApplicationContext(getServletContext()); 
 		CrimeService crimeService = (CrimeService)springContext.getBean("crimeService");
 		Crime crime = crimeService.getCrime(idCrime);
-		detailCrime.append(crime.getDescricao() + "|" + crime.getEndereco() + "|" + crime.getHorario() + "\n");
+		detailCrime.append(crime.getTipoCrime().getNome() + "|" + crime.getData() + "|" + crime.getHorario() + "\n");
 
 		return detailCrime;
 	}

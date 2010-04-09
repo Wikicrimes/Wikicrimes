@@ -11,8 +11,10 @@ import java.awt.image.BufferedImage;
 import java.awt.image.PixelGrabber;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.UnknownHostException;
 
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageInputStream;
@@ -58,11 +60,23 @@ public class ServletQRCode extends HttpServlet {
 		URL urlImagem = new URL(url);
 		Image imagemMapa = requisitarImagem(urlImagem, tamanho);
 		
-		
-		
-		response.setContentType("image/png");
-		OutputStream out = response.getOutputStream();
-		ImageIO.write(toBufferedImage(imagemMapa), "PNG", out);
+		if(imagemMapa == null) {
+			String acceptLanguage = request.getHeader("Accept-Language");
+			PrintWriter out = response.getWriter();
+			out.println("<html><head></head><body>");
+			if(acceptLanguage.equalsIgnoreCase("pt-br")) {
+				out.println("Erro ao tentar gerar a imagem. Por favor, tente novamente em alguns segundos.");
+				out.println("<a href='javascript:history.go(0)'>Tentar novamente.</a>");
+			} else {
+				out.println("Error generating the QR Code. Please, try again in a few seconds.");
+				out.println("<a href='javascript:history.go(0)'>Try again.</a>");
+			}
+			out.println("</body></html>");
+		} else {
+			response.setContentType("image/png");
+			OutputStream out = response.getOutputStream();
+			ImageIO.write(toBufferedImage(imagemMapa), "PNG", out);
+		}
 	}
 	
 	/**
@@ -104,7 +118,7 @@ public class ServletQRCode extends HttpServlet {
 
 		} catch (IOException e) {
 			e.printStackTrace();
-			throw new AssertionError("Impossível recuperar a imagem.\n" + e.getMessage());
+			return null;
 		} finally {
 			con.disconnect();
 		}
@@ -136,7 +150,9 @@ public class ServletQRCode extends HttpServlet {
             GraphicsConfiguration gc = gs.getDefaultConfiguration();
             bimage = gc.createCompatibleImage(image.getWidth(null), image.getHeight(null), transparency);
         } 
-        catch (HeadlessException e) {} //No screen
+        catch (HeadlessException e) {
+        	
+        } //No screen
     
         if (bimage == null) {
             // Create a buffered image using the default color model

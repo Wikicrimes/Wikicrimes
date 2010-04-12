@@ -61,5 +61,8 @@
 	<classpathentry kind="lib" path="target/jars/json-rpc-1.0.jar"/>
 	<classpathentry kind="lib" path="target/jars/RSA.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/Sia.jar"/>
+	<classpathentry kind="lib" path="lib/commons-httpclient.jar"/>
+	<classpathentry kind="lib" path="lib/jdom1.1.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

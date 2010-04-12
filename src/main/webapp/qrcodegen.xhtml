@@ -97,7 +97,7 @@
 	
 	<h1> #{messages['qrcode.qrcodegen.titulo']} </h1>
 	
-	<form action="ServletQRCode" method="get" target="_blank" name="qrcodeform">
+	<form action="http://wikicrimes.org/ServletQRCode" method="get" target="_blank" name="qrcodeform">
 			#{messages['qrcode.qrcodegen.link']}
 			
 			<input type="text" name="string" size="50"/>
@@ -110,7 +110,7 @@
 			<input type="radio" name="tamanho" value="2.0" id="r3" /><label for="r3"> #{messages['qrcode.qrcodegen.tamanhoimagem.grande']} </label>
 			<br />
 			<br />
-			<input type="button" value="Gerar QR Code" onclick="javascript:submitForm()"/>
+			<input type="button" value="#{messages['qrcode.qrcodegen.gerar']}" onclick="javascript:submitForm()"/>
 	</form>
 	
 	</div>

@@ -618,13 +618,6 @@ public class FiltroForm extends GenericForm {
 		return returnPage;
 	}
 	
-	
-	public void testaMenorCredibilidade()
-	{
-		if (credibilidadeInicial > credibilidadeFinal)
-			credibilidadeFinal = credibilidadeInicial;
-	}
-	
 
 	public CrimeService getCrimeService() {
 		return crimeService;
@@ -977,8 +970,12 @@ public class FiltroForm extends GenericForm {
 	public Double getCredibilidadeFinal() {
 		return credibilidadeFinal;
 	}
-	public void setCredibilidadeFinal(Double credibilidadeFinal) {
+	public void setCredibilidadeFinal(Double credibilidadeFinal) 
+	{
 		this.credibilidadeFinal = credibilidadeFinal;
+		
+		if (credibilidadeInicial > credibilidadeFinal)
+			this.credibilidadeFinal = credibilidadeInicial;
 	}
 	
 	public Map<String, String> getMapaParametros(){

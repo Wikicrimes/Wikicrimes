@@ -1,5 +1,7 @@
 package org.wikicrimes.service.impl;
 
+import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +11,7 @@ import javax.faces.context.FacesContext;
 
 import org.hibernate.Hibernate;
 import org.springframework.core.io.Resource;
+import org.wikicrimes.dao.ReputacaoDao;
 import org.wikicrimes.dao.UsuarioDao;
 import org.wikicrimes.model.AreaObservacao;
 import org.wikicrimes.model.BaseObject;
@@ -27,13 +30,8 @@ public class UsuarioServiceImpl extends GenericCrudServiceImpl implements Usuari
 	private Resource txtTermoUso_ES;
 	private UsuarioDao usuarioDao;
 	private EmailService emailService;
-//	private ReputacaoService reputacaoService;
-//
-//	
-//	public UsuarioServiceImpl(){
-//		reputacaoService = new ReputacaoServiceImpl();
-//	}
-	
+	private ReputacaoDao reputacaoDao;
+
 	
 	public void setEmailService(EmailService emailService) {
 		this.emailService = emailService;
@@ -48,14 +46,15 @@ public class UsuarioServiceImpl extends GenericCrudServiceImpl implements Usuari
 	 * (MailException ex) { // simply log it and go on... System.err.println(ex.getMessage()); } }
 	 */
 	@Override
-	public boolean insert(BaseObject u) {
+	public boolean insert(BaseObject u)
+	{
 		boolean result = false;
 		Usuario usuario = ((Usuario) u);
 
-		if (!exist(usuario)) {
-//			TODO configuraReputacao(usuario);
-
-			if (usuario.getPerfil().getIdPerfil() != Perfil.CONVIDADO) {
+		if (!exist(usuario)) 
+		{
+			if (usuario.getPerfil().getIdPerfil() != Perfil.CONVIDADO) 
+			{
 				usuario.setConfirmacao(Usuario.FALSE);
 				result = super.insert(usuario);
 				usuario.setChaveConfirmacao(String.valueOf(usuario.hashCode()));
@@ -66,7 +65,8 @@ public class UsuarioServiceImpl extends GenericCrudServiceImpl implements Usuari
 				else
 					emailService.sendMailConfirmation(usuario, usuario.getIdiomaPreferencial());
 			}
-			else {
+			else 
+			{
 				// List list =this.find(usuario);
 				Usuario usuarioGuest = this.getUsuario(usuario.getEmail());
 				usuarioGuest.setAniversario(usuario.getAniversario());
@@ -90,24 +90,29 @@ public class UsuarioServiceImpl extends GenericCrudServiceImpl implements Usuari
 				emailService.sendMailConfirmation(usuarioGuest, FacesContext.getCurrentInstance()
 						.getViewRoot().getLocale().toString());
 			}
-			return result;
-		}
-		else {
-			return false;
-		}
 
+			criarReputacao(usuario);
+		}
+		
+		return result;
 	}
 
-//	TODO Salvar a reputacao de um usuario
-//	private void configuraReputacao(Usuario usuario) {
-//		Reputacao reputacao = new Reputacao(null, usuario, 0.5);
-//
-//		if (usuario.getEntidadeCertificadora() != null)
-//			reputacao.setReputacao(1);
-//
-//		new ReputacaoServiceImpl().insert(reputacao);
-//		usuario.setReputacao(reputacao);
-//	}
+	private void criarReputacao(Usuario usuario) 
+	{
+		Reputacao reputacao = new Reputacao(null, 0.5, new Date(), usuario);
+
+		if (usuario.getEntidadeCertificadora() != null)
+			reputacao.setReputacao(1.0);
+
+		Set<Reputacao> reputacoes = usuario.getReputacoes();
+		
+		if (reputacoes == null)
+			reputacoes = new HashSet<Reputacao>();
+		
+		reputacoes.add(reputacao);
+		usuario.setReputacoes(reputacoes); // caso null
+		reputacaoDao.save(reputacao);
+	}
 
 	public boolean exist(BaseObject bo) {
 		return getDao().exist(bo);
@@ -162,9 +167,10 @@ public class UsuarioServiceImpl extends GenericCrudServiceImpl implements Usuari
 		usuario.setIdiomaPreferencial(idioma);
 		usuario.setPerfil(new Perfil(Perfil.CONVIDADO));
 		usuario.setConfAutomatica(false);
-//		TODO usuario.setReputacao(new Reputacao(null, usuario, 0.5));
 
 		this.getDao().save(usuario);
+		criarReputacao(usuario);
+		
 		return usuario;
 	}
 
@@ -230,12 +236,12 @@ public class UsuarioServiceImpl extends GenericCrudServiceImpl implements Usuari
 		return usuarioDao.getUsuarioKey(key);
 	}
 
-//	public void setReputacaoService(ReputacaoService reputacaoService) {
-//		this.reputacaoService = reputacaoService;
-//	}
-//
-//	public ReputacaoService getReputacaoService() {
-//		return reputacaoService;
-//	}
-
+	// Reputacao
+	public ReputacaoDao getReputacaoDao() {
+		return reputacaoDao;
+	}
+	public void setReputacaoDao(ReputacaoDao reputacaoDao) {
+		this.reputacaoDao = reputacaoDao;
+	}
+	
 }

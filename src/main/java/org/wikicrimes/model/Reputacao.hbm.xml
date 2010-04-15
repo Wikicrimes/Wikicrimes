@@ -12,6 +12,5 @@
 		<property name="periodo" column="RPT_PERIODO" type="java.util.Date"/>
 		
         <many-to-one name="usuario" column="USU_IDUSUARIO" class="org.wikicrimes.model.Usuario"/>
-    
     </class>
 </hibernate-mapping>

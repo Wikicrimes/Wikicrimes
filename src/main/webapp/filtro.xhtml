@@ -484,56 +484,36 @@
 				</h:selectOneMenu>
 			</t:panelGrid>
 
-			<!--
-			<t:panelGrid border="0" cellpadding="1" cellspacing="1"
+			<t:panelGrid border="0" cellpadding="1" cellspacing="1" 
 				style="margin:0px;text-align:left;align:left">
-
+				
 				<h:outputText value="#{messages['crime.credibilidade.nivel']}"
 					style="vertical-align: text-top; font-size:11px;" />
-
-				<h:panelGrid columns="3" border="0">
-					<h:outputText
-						value="#{messages['crime.credibilidade.nivel.inicial']}: "
-						style="vertical-align: text-top; font-size:11px;" />
-
-					<rich:inputNumberSlider id="idCredInicial"
-						value="#{filtroForm.credibilidadeInicial}" minValue="0"
-						maxValue="100" step="1" showInput="false">
-						<a4j:support event="onchange"
-							reRender="idCredFinal,idValorCredInic,idValorCredFinal" />
-					</rich:inputNumberSlider>
-
-					<h:outputText id="idValorCredInic"
-						value="#{filtroForm.credibilidadeInicial}%" />
-
-					<h:outputText
-						value="#{messages['crime.credibilidade.nivel.final']}: "
-						style="vertical-align: text-top; font-size:11px;" />
-
-					<rich:inputNumberSlider id="idCredFinal"
-						value="#{filtroForm.credibilidadeFinal}"
-						minValue="#{filtroForm.credibilidadeInicial}" maxValue="100"
-						step="1" showInput="false">
-						<a4j:support event="onchange" reRender="idValorCredFinal" />
-					</rich:inputNumberSlider>
-
-					<h:outputText id="idValorCredFinal"
-						value="#{filtroForm.credibilidadeFinal}%" />
-				</h:panelGrid>
-
-			</t:panelGrid>
-			-->
-			<script type="text/javascript">
-				function testaMenorCredibilidade()
-				{
-					var credInitial = document.getElementById('filtroForm:idCredInicialInput').value;
-					var credFinal = document.getElementById('filtroForm:idCredFinalInput').value;
 					
-					if (credInitial > credFinal)
-						document.getElementById('filtroForm:idValorCredFinal').innerHTML = credInitial +"%";
-				}		
-        	</script>
-
+				<h:panelGrid columns="3" border="0">
+					<h:outputText value="#{messages['crime.credibilidade.nivel.inicial']}: "
+						style="vertical-align: text-top; font-size:11px;" />
+					
+					<rich:inputNumberSlider id="idCredInicial" value="#{filtroForm.credibilidadeInicial}" 
+						minValue="0" maxValue="100" step="1" showInput="false">
+						<a4j:support event="onchange" reRender="idCredFinal,idValorCredInic,idValorCredFinal"/>
+					</rich:inputNumberSlider>
+					
+					<h:outputText id="idValorCredInic" value="#{filtroForm.credibilidadeInicial}%"/>
+					
+					<h:outputText value="#{messages['crime.credibilidade.nivel.final']}: "
+						style="vertical-align: text-top; font-size:11px;" />
+					
+					<rich:inputNumberSlider id="idCredFinal" value="#{filtroForm.credibilidadeFinal}" 
+						minValue="#{filtroForm.credibilidadeInicial}" maxValue="100" step="1" showInput="false">
+						<a4j:support event="onchange" reRender="idValorCredFinal"/>
+					</rich:inputNumberSlider>
+					
+					<h:outputText id="idValorCredFinal" value="#{filtroForm.credibilidadeFinal}%"/>
+				</h:panelGrid>
+				
+			</t:panelGrid>
+			
 
 			<t:panelGrid border="0" cellpadding="1" cellspacing="1"
 				style="margin:0px;text-align:left;align:left">
@@ -731,10 +711,15 @@
 					
 				makeCombos();
 				
-				function verificaFiltrosAplicados(){
+				function verificaFiltrosAplicados()
+				{
 					var filtrosHtml = "";
-					var temFiltroAplicado = false;
-					if(document.getElementById("tipoCrime").value!=0){
+
+					// Sempre existira pelo menos um filtro aplicado (Credibilidade)
+					filtrosHtml = "<span style='cursor: pointer; color:black;' title='"+ document.getElementById("filtroForm:idValorCredInic").innerHTML +" #{messages['estatisticas.area.visivel.credibilidade.periodo']} "+ document.getElementById("filtroForm:idValorCredFinal").innerHTML +"'> #{messages['scheduler.titulo.credibilidade']},</span>";
+					
+					if(document.getElementById("tipoCrime").value!=0)
+					{
 						var textoHint = "";
 						if(document.getElementById("tipoCrime").value==1)
 							textoHint ="#{messages['tipocrime.tentativaderoubo']}";
@@ -746,10 +731,13 @@
 							textoHint ="#{messages['tipocrime.roubo']}";
 						if(document.getElementById("tipoCrime").value==5)
 							textoHint ="#{messages['tipocrime.violencia']}";			
+
 						filtrosHtml+=" <span title='"+textoHint+"'>#{messages['estatisticas.area.visivel.tipo.crime']}</span>,";
-						temFiltroAplicado = true;						
-						if(document.getElementById("tipoVitima").value!=0){
+
+						if(document.getElementById("tipoVitima").value!=0)
+						{
 							filtrosHtml+="<span> #{messages['estatisticas.area.visivel.subtipo.crime']}</span>,"
+
 							if(tipoLocal = document.getElementById("tipoLocal").value!=0){
 								filtrosHtml+="<span> #{messages['estatisticas.area.visivel.tipo.local']}</span>,"
 							}
@@ -757,17 +745,12 @@
 					}
 					if(document.getElementById("dataInicial").value!='' || document.getElementById("dataFinal").value!=''){
 						filtrosHtml+=" <span style='cursor: pointer; color:black;' title='"+document.getElementById("dataInicial").value+" #{messages['estatisticas.area.visivel.data.periodo']} "+document.getElementById("dataFinal").value+"'>#{messages['scheduler.titulo.data']},</span>";
-						temFiltroAplicado = true;
 					}
 					if(document.getElementById("filtroForm:horarioInicial").value!=-1 && document.getElementById("filtroForm:horarioFinal").value!=-1){
 						filtrosHtml+=" <span style='cursor: pointer; color:black;' title='"+document.getElementById("filtroForm:horarioInicial").value+":00 #{messages['estatisticas.area.visivel.horario.periodo']} "+document.getElementById("filtroForm:horarioFinal").value+":00'>#{messages['scheduler.titulo.horario']},</span>";
-						temFiltroAplicado = true;
 					}
-					if(!temFiltroAplicado){
-						filtrosHtml=" #{messages['estatisticas.area.visivel.sem.filtros']}";
-					}
-					if(filtrosHtml != " #{messages['estatisticas.area.visivel.sem.filtros']}")
-						filtrosHtml= filtrosHtml.substring(0,filtrosHtml.length-8)+"</span>";
+					filtrosHtml= filtrosHtml.substring(0,filtrosHtml.length-8)+"</span>";
+
 					document.getElementById('divFiltrosAplicados').innerHTML = filtrosHtml;
 				}
 				var idRazao1;

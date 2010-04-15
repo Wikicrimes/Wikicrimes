@@ -46,7 +46,7 @@
         <many-to-one name="usuarioRedeSocial" column="URS_IDUSUARIO_REDE_SOCIAL" class="org.wikicrimes.model.UsuarioRedeSocial" />
 
 		<set name="credibilidades" table="TB_CRE_CREDIBILIDADE" lazy="true">
-            <key><column name="CRE_IDCREDIBILIDADE" not-null="true" /></key>
+            <key><column name="CRI_IDCRIME" not-null="true" /></key>
             <one-to-many class="org.wikicrimes.model.Credibilidade"/>
         </set>
 

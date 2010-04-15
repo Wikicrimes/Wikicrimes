@@ -5,9 +5,6 @@ import java.util.Set;
 
 public class Crime extends BaseObject {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -8178805938830754193L;
 
 	/**
@@ -437,10 +434,10 @@ public class Crime extends BaseObject {
 		this.registradoPelaApi = registradoPelaApi;
 	}
 
+	// Credibilidade
 	public void setCredibilidades(Set<Credibilidade> credibilidades) {
 		this.credibilidades = credibilidades;
 	}
-
 	public Set<Credibilidade> getCredibilidades() {
 		return credibilidades;
 	}
@@ -448,7 +445,7 @@ public class Crime extends BaseObject {
 	public Credibilidade getUltimaCredibilidade() {
 		return (Credibilidade)credibilidades.toArray()[credibilidades.size()-1];
 	}
-	
-	
 
 }
+
+

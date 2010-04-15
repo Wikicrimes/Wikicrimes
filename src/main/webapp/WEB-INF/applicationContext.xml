@@ -54,8 +54,8 @@
 		<property name="txtTermoUso" ref="termoUso"/>
 		<property name="txtTermoUso_EN" ref="termoUso_EN" />
 		<property name="txtTermoUso_ES" ref="termoUso_ES" />
-		
 		<property name="emailService" ref="emailService" />
+		<property name="reputacaoDao" ref="reputacaoDao" />
 	</bean>
 	
 	<bean id="estatisticaService"

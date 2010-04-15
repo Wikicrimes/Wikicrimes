@@ -12,6 +12,5 @@
         <property name="periodo" column="CRE_PERIODO" type="java.util.Date"/>
         
        	<many-to-one name="crime" column="CRI_IDCRIME" class="org.wikicrimes.model.Crime"/>
-        	    
     </class>
 </hibernate-mapping>

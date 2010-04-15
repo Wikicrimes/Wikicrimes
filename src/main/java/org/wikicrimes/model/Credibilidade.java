@@ -69,7 +69,7 @@ public class Credibilidade extends BaseObject{
 			return false;
 		} else {
 			Credibilidade credibilidade = (Credibilidade) obj;
-			return credibilidade.getIdCredibilidade().equals( this.getIdCredibilidade() );
+			return credibilidade.getIdCredibilidade().equals(idCredibilidade);
 		}
 
 	}

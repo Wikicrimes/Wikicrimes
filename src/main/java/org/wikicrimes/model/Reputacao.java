@@ -68,7 +68,7 @@ public class Reputacao extends BaseObject{
 			return false;
 		} else {
 			Reputacao reputacao = (Reputacao) obj;
-			return reputacao.getIdReputacao().equals( this.getIdReputacao() );
+			return reputacao.getIdReputacao().equals(idReputacao);
 		}
 
 	}

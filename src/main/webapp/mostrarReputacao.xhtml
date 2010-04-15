@@ -31,8 +31,8 @@
 			var data = new google.visualization.DataTable();
 			data.addColumn('date', 'Date');
 			data.addColumn('number', '#{messages["usuario.reputacao"]}');
-			data.addColumn('string', 'tituloComentMinhaRpt');
-			data.addColumn('string', 'comentMinhaRpt');
+			//data.addColumn('string', 'tituloComentMinhaRpt');
+			//data.addColumn('string', 'comentMinhaRpt');
 
 			var dadosReputacao = '#{usuarioForm.dadosReputacao}';
 			var arrayDadosRpt = dadosReputacao.split("&");
@@ -42,11 +42,12 @@
 				var date = new Date();
 				date.setTime(arrayDadosRpt[i+1]);
 
-				data.addRow([date, arrayDadosRpt[i]*100, "Titulo Minha Reputacao", "Comentario"+ i]);
+				data.addRow([date, arrayDadosRpt[i]*100]);
+				//data.addRow([date, arrayDadosRpt[i]*100, "Titulo Minha Reputacao", "Comentario "+ i]);
 			}
 
 			var chart = new google.visualization.AnnotatedTimeLine(document.getElementById('chart_div'));
-			chart.draw(data, {displayAnnotations:true, displayAnnotationsFilter:true, displayExactValues:true, 
+			chart.draw(data, {displayAnnotations:false, displayAnnotationsFilter:false, displayExactValues:true, 
 				min:0, max:100, fill:30, thickness:1, allValuesSuffix:'%'});
 		}
 	/* ]]> */
@@ -59,10 +60,11 @@
 	<f:loadBundle var="messages" basename="messages" />
 	
 	<h:form id="minhaReputacaoForm">
-		<div id='chart_div' style='width: 960px; height: 320px;'></div>
-		
-		
-		
+		<div id='chart_div' style='width: 940px; height: 320px;' />
+		<br/>
+		<p align="justify">
+			<h:outputText value="#{messages['reputacao.explicacao']}" style="vertical-align: text-top; font-size:11px;"/>
+		</p>
 	</h:form>
 </f:view>
 

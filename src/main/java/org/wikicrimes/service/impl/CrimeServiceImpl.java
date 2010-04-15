@@ -1,5 +1,7 @@
 package org.wikicrimes.service.impl;
 
+import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +23,7 @@ import org.wikicrimes.dao.TipoTransporteDao;
 import org.wikicrimes.dao.TipoVitimaDao;
 import org.wikicrimes.model.BaseObject;
 import org.wikicrimes.model.Confirmacao;
+import org.wikicrimes.model.Credibilidade;
 import org.wikicrimes.model.Crime;
 import org.wikicrimes.model.CrimeRazao;
 import org.wikicrimes.model.CrimeVitima;
@@ -82,59 +85,73 @@ public class CrimeServiceImpl extends GenericCrudServiceImpl implements
 		return retorno;
 	}
 
-//	private void configuraCredibilidade(Crime crime)
-//	{
-//		// TODO Automatizar!
-//		double peso = 1;
-//		double cred = peso * crime.getUsuario().getUltimaReputacao().getReputacao();
-//		
-//		new CredibilidadeDaoHibernate().save(new Credibilidade(null, cred));
-//	}
-	
-	
 	public boolean insert(BaseObject bo) 
 	{
 		Crime crime = (Crime) bo;
-//		configuraCredibilidade(crime);
 		
-		if (getDao().save(crime)) {
-				crime.setChave(Cripto.criptografar(crime.getIdCrime().toString()+crime.getDataHoraRegistro().toString()));
-				if(crime.getUsuario().getConfAutomatica()){
-					crime.setConfirmacoesPositivas(new Long(1));					
-				}
-				getDao().save(crime);
-				
-				//se nao for certificador enviar emails para as indicacoes
-			//	if (!crime.getUsuario().getPerfil().equals(Perfil.CERTIFICADOR)){
-					Set<Confirmacao> confirmacoes = crime.getConfirmacoes();					
-					if(confirmacoes!=null){
-						for (Confirmacao confirmacao : confirmacoes) {
-						
-							confirmacao.setCrime(crime);
-							if(crime.getUsuario().getConfAutomatica()){
-								confirmacao.setConfirma(true);
-								TipoConfirmacao tipCon = new TipoConfirmacao();
-								tipCon.setIdTipoConfirmacao(new Long(1));
-								confirmacao.setTipoConfirmacao(tipCon);
-							}
-							confirmacaoService.insert(confirmacao);
-						}
-						if(!crime.getUsuario().getConfAutomatica()){
-							if(crime.getRegistradoPelaApi()!=null && !crime.getRegistradoPelaApi().equalsIgnoreCase("1"))
-								emailService.sendMailConfirmation(crime,FacesContext.getCurrentInstance().getViewRoot().getLocale().toString());
-							else{
-								emailService.sendMailConfirmation(crime,crime.getUsuario().getIdiomaPreferencial());
-							}
-						}
-							
-					}	
-				//}
-				return true;
+		if (getDao().save(crime)) 
+		{
+			crime.setChave(Cripto.criptografar(crime.getIdCrime().toString()+crime.getDataHoraRegistro().toString()));
+			
+			if(crime.getUsuario().getConfAutomatica()){
+				crime.setConfirmacoesPositivas(new Long(1));					
 			}
-		
-		 
+			getDao().save(crime);
+			
+			//se nao for certificador enviar emails para as indicacoes
+			//if (!crime.getUsuario().getPerfil().equals(Perfil.CERTIFICADOR)){
+				Set<Confirmacao> confirmacoes = crime.getConfirmacoes();					
+				
+				if(confirmacoes!=null)
+					criarConfirmacoes(crime, confirmacoes);
+			//}
+			criarCredibilidade(crime);
+				
+			return true;
+		}
 		return false;
 	}
+	
+	private void criarConfirmacoes(Crime crime, Set<Confirmacao> confirmacoes)
+	{
+		for (Confirmacao confirmacao : confirmacoes) 
+		{
+			confirmacao.setCrime(crime);
+			
+			if(crime.getUsuario().getConfAutomatica())
+			{
+				confirmacao.setConfirma(true);
+				TipoConfirmacao tipCon = new TipoConfirmacao();
+				tipCon.setIdTipoConfirmacao(new Long(1));
+				confirmacao.setTipoConfirmacao(tipCon);
+			}
+			confirmacaoService.insert(confirmacao);
+		}
+		
+		if(!crime.getUsuario().getConfAutomatica())
+		{
+			if(crime.getRegistradoPelaApi()!=null && !crime.getRegistradoPelaApi().equalsIgnoreCase("1"))
+				emailService.sendMailConfirmation(crime,FacesContext.getCurrentInstance().getViewRoot().getLocale().toString());
+			else
+				emailService.sendMailConfirmation(crime,crime.getUsuario().getIdiomaPreferencial());
+		}
+	}
+	
+	private void criarCredibilidade(Crime crime)
+	{
+		double cred = crime.getUsuario().getUltimaReputacao().getReputacao();
+		
+		Credibilidade credibilidade = new Credibilidade(null, cred, new Date(), crime);
+		Set<Credibilidade> credibilidades = crime.getCredibilidades();
+		
+		if (credibilidades == null)
+			credibilidades = new HashSet<Credibilidade>();
+		
+		credibilidades.add(credibilidade);
+		crime.setCredibilidades(credibilidades);
+		credibilidadeDao.save(credibilidade);
+	}
+	
 	
 	public void update(Crime crime, Set<Confirmacao> confirmacoes, List<Razao> razoes){
 		update(crime);

@@ -193,10 +193,6 @@ public class EmailServiceImpl extends GenericCrudServiceImpl implements
 	
 	public void sendMailConfirmation(final Crime crime, final String locale) {
 		
-		
-		 
-		
-		
 		for (final Confirmacao confirmacao : crime.getConfirmacoes()) {
 		
 			Usuario usuarioTemp;

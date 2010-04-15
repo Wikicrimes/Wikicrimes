@@ -637,10 +637,6 @@
 			<property-name>emailService</property-name>
 			<value>#{emailService}</value>
 		</managed-property>
-<!--	<managed-property>
-			<property-name>reputacaoService</property-name>
-			<value>#{reputacaoService}</value>
-		</managed-property> -->
 		<managed-property>
 			<property-name>idCrime</property-name>
 			<value>#{param.idCrime}</value>

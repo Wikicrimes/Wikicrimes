@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
 
 import javax.faces.FactoryFinder;
 import javax.faces.application.ApplicationFactory;
+import javax.faces.context.FacesContext;
 import javax.mail.internet.MimeMessage;
 
 import org.apache.velocity.app.VelocityEngine;
@@ -88,16 +89,24 @@ public class EmailServiceImpl extends GenericCrudServiceImpl implements
 		            message.setTo(usuario.getEmail());
 		            
 		            message.setFrom("admin@wikicrimes.org"); 
+		            ApplicationFactory factory = (ApplicationFactory) FactoryFinder
+					.getFactory(FactoryFinder.APPLICATION_FACTORY);
+					String bundleName = factory.getApplication().getMessageBundle();
+					ResourceBundle bundle;				
 		            String idiomaEmail;
-					if (usuario.getIdiomaPreferencial()!=null)
+					if (usuario.getIdiomaPreferencial()!=null){
+						bundle = ResourceBundle.getBundle(bundleName,new Locale(usuario.getIdiomaPreferencial().toString()));
 						 idiomaEmail=usuario.getIdiomaPreferencial();
-					else
+					}
+					else {
+						bundle = ResourceBundle.getBundle(bundleName,new Locale(locale));
 						idiomaEmail=locale;
+					}	
 		           	  String text=null;
 		           	    Map model= new HashMap();
 						model.put("usuario",usuario);
 						if (idiomaEmail.equals("pt_BR") || idiomaEmail.equals("pt")){
-							message.setSubject("Confirmação de Cadastro - WikiCrimes.org");
+							message.setSubject(bundle.getString("confirmacao.cadastro")+ " - WikiCrimes.org");
 						 text = VelocityEngineUtils.mergeTemplateIntoString(
 					               velocityEngine, "org/wikicrimes/template-cadastro-confirmacao.vm", model);
 						}
@@ -242,7 +251,7 @@ public class EmailServiceImpl extends GenericCrudServiceImpl implements
 					String text=null;
 					
 					if (idiomaEmail.equals("pt_BR") || idiomaEmail.equals("pt")){
-						message.setSubject("Confirmação de relato de crime - WikiCrimes.org");
+						message.setSubject(bundle.getString("confirmacao.relato")+ " - WikiCrimes.org");
 						//verifica se usuario ja e cadastrado
 					if(confirmacao.getUsuario().getPerfil().getIdPerfil().equals(new Long(Perfil.CONVIDADO))){
 						text = VelocityEngineUtils.mergeTemplateIntoString(
@@ -303,19 +312,29 @@ public class EmailServiceImpl extends GenericCrudServiceImpl implements
 			         public void prepare(MimeMessage mimeMessage) throws Exception {
 			        	 String text;
 			            MimeMessageHelper message = new MimeMessageHelper(mimeMessage,true);
-			            message.setTo(usuario.getEmail());
-			            
-			            message.setFrom("admin@wikicrimes.org"); 
+			            message.setTo(usuario.getEmail());			            
+			            message.setFrom("admin@wikicrimes.org");
+			            ApplicationFactory factory = (ApplicationFactory) FactoryFinder
+						.getFactory(FactoryFinder.APPLICATION_FACTORY);
+						String bundleName = factory.getApplication().getMessageBundle();
+						ResourceBundle bundle;
+											
 			           	           
 			           	    Map model= new HashMap();
 							model.put("usuario",usuario);
 							String idiomaEmail;
-							if (usuario.getIdiomaPreferencial()!=null)
+							if (usuario.getIdiomaPreferencial()!=null) {
+								bundle = ResourceBundle.getBundle(bundleName,new Locale(usuario.getIdiomaPreferencial().toString()));	
 								 idiomaEmail=usuario.getIdiomaPreferencial();
-							else
+							}
+							else{
+								bundle = ResourceBundle.getBundle(bundleName,new Locale(locale));
 								idiomaEmail=locale;
+							}
 							if (idiomaEmail.equals("pt_BR") || idiomaEmail.equals("pt")){
-							message.setSubject("Recuperação de Senha - WikiCrimes.org");
+								
+							String subject=bundle.getString("usuario.recuperar" + " - WikiCrimes.org");
+							message.setSubject(subject);
 							text = VelocityEngineUtils.mergeTemplateIntoString(
 						               velocityEngine, "org/wikicrimes/template-recupera-senha.vm", model);
 							} else if (idiomaEmail.equals("it")){
@@ -378,9 +397,20 @@ public class EmailServiceImpl extends GenericCrudServiceImpl implements
 					model.put("relato",relato);
 					model.put("confirmacao",confirmacao);
 					String text=null;
-					
+					ApplicationFactory factory = (ApplicationFactory) FactoryFinder
+					.getFactory(FactoryFinder.APPLICATION_FACTORY);
+					String bundleName = factory.getApplication().getMessageBundle();
+					ResourceBundle bundle;
+					if (usuario.getIdiomaPreferencial()!=null) {
+						bundle = ResourceBundle.getBundle(bundleName,new Locale(usuario.getIdiomaPreferencial().toString()));	
+					 
+					}
+					else{
+						bundle = ResourceBundle.getBundle(bundleName,new Locale(locale));
+					}	
+				
 					if (locale.equals("pt_BR") || locale.equals("pt")){
-						message.setSubject("Confirmação de Denúncia - WikiCrimes.org");
+						message.setSubject(bundle.getString("confirmacao.denuncia")+" - WikiCrimes.org");
 						//verifica se usuario ja e cadastrado
 						if(relato.getSubTipoRelato().equalsIgnoreCase("1"))
 							model.put("subTipoRelato", "Áreas Perigosas");
@@ -458,10 +488,13 @@ public class EmailServiceImpl extends GenericCrudServiceImpl implements
 				public void prepare(MimeMessage mimeMessage) throws Exception {
 					
 					String idiomaEmail;
-					if (usuario.getIdiomaPreferencial()!=null)
-						 idiomaEmail=usuario.getIdiomaPreferencial();
-					else
+					if (usuario.getIdiomaPreferencial()!=null) 
+					{
+						 idiomaEmail=usuario.getIdiomaPreferencial();				 
+					}
+					else{
 						idiomaEmail=locale;
+					}
 					ApplicationFactory factory = (ApplicationFactory) FactoryFinder
 					.getFactory(FactoryFinder.APPLICATION_FACTORY);
 					String bundleName = factory.getApplication().getMessageBundle();
@@ -472,6 +505,7 @@ public class EmailServiceImpl extends GenericCrudServiceImpl implements
 					 final String descricaoTipoVitima =bundle.getString(crime.getTipoVitima().getNome());
 					 final String usuarioTexto = bundle.getString("usuario.texto");
 					final boolean positiva = confirmacao.getConfirma();
+					
 					MimeMessageHelper message = new MimeMessageHelper(
 							mimeMessage, true);
 					message.setTo(usuario.getEmail());
@@ -499,7 +533,7 @@ public class EmailServiceImpl extends GenericCrudServiceImpl implements
 					String text=null;
 					
 					if (idiomaEmail.equals("pt_BR") || idiomaEmail.equals("pt")){
-						message.setSubject("Notificação sobre seu relato de crime - WikiCrimes.org");
+						message.setSubject(bundle.getString("notificacao.confirmacao")+" - WikiCrimes.org");
 							text = VelocityEngineUtils.mergeTemplateIntoString(
 					               velocityEngine, "org/wikicrimes/template-notificacao-confirmacao.vm", model);
 					}
@@ -573,7 +607,7 @@ public class EmailServiceImpl extends GenericCrudServiceImpl implements
 					String text=null;
 					
 					if (idiomaEmail.equals("pt_BR") || idiomaEmail.equals("pt")){
-						message.setSubject("Notificação sobre sua denúncia - WikiCrimes.org");
+						message.setSubject(bundle.getString("notificacao.relato")+" - WikiCrimes.org");
 							text = VelocityEngineUtils.mergeTemplateIntoString(
 					               velocityEngine, "org/wikicrimes/template-notificacao-relato.vm", model);
 					}
@@ -656,7 +690,7 @@ public class EmailServiceImpl extends GenericCrudServiceImpl implements
 					String text=null;
 					
 					if (idiomaEmail.equals("pt_BR") || idiomaEmail.equals("pt")){
-						message.setSubject("Comentários sobre seu relato de crime - WikiCrimes.org");
+						message.setSubject(bundle.getString("notificacao.comentario")+" - WikiCrimes.org");
 							text = VelocityEngineUtils.mergeTemplateIntoString(
 					               velocityEngine, "org/wikicrimes/template-notificacao-comentario.vm", model);
 					}

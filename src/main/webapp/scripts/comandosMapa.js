@@ -68,7 +68,7 @@ ComandoFiltro.prototype.initialize = function(map) {
   filtroDiv.appendChild(document.createTextNode(""));
   GEvent.addDomListener(filtroDiv, "click", function() {
 	  selecionarComando(map, 'filtro');
-	  document.getElementById("divTelaFiltro").style.visibility = "visible";
+	  mostrarFiltro();
   });
   
   GEvent.addDomListener(filtroDiv, "mouseover", function() {
@@ -117,7 +117,7 @@ ComandoFiltroSelecionado.prototype.initialize = function(map) {
   filtroDiv.appendChild(document.createTextNode(""));
   GEvent.addDomListener(filtroDiv, "click", function() {  		
 		selecionarComando(map, 'mao');
-		document.getElementById("divTelaFiltro").style.visibility = "hidden";
+		esconderFiltro();
   });
   GEvent.addDomListener(filtroDiv, "mouseover", function() {
 	  mostraHintComandosMapa("tutor.texto.filtro", "178px", "134px");

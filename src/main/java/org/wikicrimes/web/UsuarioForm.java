@@ -21,8 +21,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import net.tanesha.recaptcha.ReCaptchaImpl;
-import net.tanesha.recaptcha.ReCaptchaResponse;
+//import net.tanesha.recaptcha.ReCaptchaImpl;
+//import net.tanesha.recaptcha.ReCaptchaResponse;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
@@ -56,7 +56,7 @@ public class UsuarioForm extends GenericForm {
 	private String nsenha = null;
 	private List<SelectItem> estados;
 	private String estado;
-	private ReCaptchaImpl reCaptcha;
+//	private ReCaptchaImpl reCaptcha;
 	private String termoUso;
 	private boolean concordaTermo = false;
 	private Integer vizualizarCrimeOpensocial;
@@ -79,13 +79,13 @@ public class UsuarioForm extends GenericForm {
 		periodoSelecaoUsoCelular.put("m5a","mais de 5 anos");
 	}
 
-	public ReCaptchaImpl getReCaptcha() {
-		return reCaptcha;
-	}
-
-	public void setReCaptcha(ReCaptchaImpl reCaptcha) {
-		this.reCaptcha = reCaptcha;
-	}
+//	public ReCaptchaImpl getReCaptcha() {
+//		return reCaptcha;
+//	}
+//
+//	public void setReCaptcha(ReCaptchaImpl reCaptcha) {
+//		this.reCaptcha = reCaptcha;
+//	}
 
 	public UsuarioForm() 
 	{
@@ -186,9 +186,9 @@ public class UsuarioForm extends GenericForm {
 		HttpServletRequest request = (HttpServletRequest) FacesContext
 				.getCurrentInstance().getExternalContext().getRequest();
 		String ip = request.getRemoteAddr();
-		ReCaptchaResponse resp = reCaptcha.checkAnswer(ip, desafio, response);
+//		ReCaptchaResponse resp = reCaptcha.checkAnswer(ip, desafio, response);
 
-		return resp.isValid();
+		return false;//resp.isValid();
 
 	}
 

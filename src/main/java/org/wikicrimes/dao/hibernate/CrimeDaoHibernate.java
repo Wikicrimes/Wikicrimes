@@ -94,12 +94,12 @@ public class CrimeDaoHibernate extends GenericCrudDaoHibernate implements
 			consulta = "select as crime from Crime crime join crime.confirmacoes as confirmacao where ";
 		
 		// Credibilidade
-		if (parameters.get("credibilidadeInicial") != null && parameters.get("credibilidadeFinal") != null) 
-		{
-			consulta += "crime.idCrime IN (SELECT cred.crime.idCrime FROM Credibilidade cred WHERE " +
-					"cred.credibilidade >= "+ parameters.get("credibilidadeInicial") + " and "+
-					"cred.credibilidade <= "+ parameters.get("credibilidadeFinal") + ") and ";
-		}
+//		if (parameters.get("credibilidadeInicial") != null && parameters.get("credibilidadeFinal") != null) 
+//		{
+//			consulta += "crime.idCrime IN (SELECT cred.crime.idCrime FROM Credibilidade cred WHERE " +
+//					"cred.credibilidade >= "+ parameters.get("credibilidadeInicial") + " and "+
+//					"cred.credibilidade <= "+ parameters.get("credibilidadeFinal") + ") and ";
+//		}
 		
 		// TipoCrime
 		if (parameters.get("tipoCrime") != null) {

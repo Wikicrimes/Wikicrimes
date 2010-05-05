@@ -39,7 +39,7 @@
 <style>
 #divTelaFiltro {
 	position: absolute;
-	top: 142px;
+	top: -300px;
 	left: 36%;
 	text-align: center;
 	margin-left: auto;
@@ -561,11 +561,11 @@
 			<h:panelGrid border="0" columns="2">
 				<a4j:commandButton value="#{messages['filtro.btn.atualizar']}"
 					id="btnAtualizar" action="#{filtroForm.update}" styleClass="button"
-					onclick="document.getElementById('divTelaFiltro').style.visibility = 'hidden';selecionarComando(map, 'mao'); getUserMapConfig(); limpaUrl();setaSubmeteuFiltro();atualizaMapa();" />
+					onclick="esconderFiltro();selecionarComando(map, 'mao'); getUserMapConfig(); limpaUrl();setaSubmeteuFiltro();atualizaMapa();" />
 
 				<a4j:commandButton value="#{messages['faleconosco.cancelar']}"
 					id="btnCancelar"
-					onclick="document.getElementById('divTelaFiltro').style.visibility = 'hidden';selecionarComando(map, 'mao');//comentado pq esse era o limpar filtro. limpaUrl();limpaFiltro(); return false;"
+					onclick="esconderFiltro();selecionarComando(map, 'mao');//comentado pq esse era o limpar filtro. limpaUrl();limpaFiltro(); return false;"
 					styleClass="button" />
 			</h:panelGrid>
 		</rich:panel></div>

@@ -142,13 +142,17 @@ public class CrimeServiceImpl extends GenericCrudServiceImpl implements
 		double cred = crime.getUsuario().getUltimaReputacao().getReputacao();
 		
 		Credibilidade credibilidade = new Credibilidade(null, cred, new Date(), crime);
-		Set<Credibilidade> credibilidades = crime.getCredibilidades();
 		
-		if (credibilidades == null)
-			credibilidades = new HashSet<Credibilidade>();
+//		TODO Manter lista de Credibilidades para futura atualizacao
+//		Set<Credibilidade> credibilidades = crime.getCredibilidades();
+//		
+//		if (credibilidades == null)
+//			credibilidades = new HashSet<Credibilidade>();
+//		
+//		credibilidades.add(credibilidade);
+//		crime.setCredibilidades(credibilidades);
 		
-		credibilidades.add(credibilidade);
-		crime.setCredibilidades(credibilidades);
+		crime.setUltimaCredibilidade(credibilidade.getCredibilidade());
 		credibilidadeDao.save(credibilidade);
 	}
 	

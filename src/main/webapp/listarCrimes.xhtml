@@ -42,7 +42,7 @@
         	<f:facet name="header">            	
                 	<h:outputText value="#{messages['crime.credibilidade']}"/>            	
         	</f:facet>
-        	<h:outputText value="#{crime.ultimaCredibilidade.credibilidade * 100}">
+        	<h:outputText value="#{crime.ultimaCredibilidade * 100}">
 	    		<f:convertNumber maxFractionDigits="2"/>
         	</h:outputText>
         	<h:outputText value="%"/>

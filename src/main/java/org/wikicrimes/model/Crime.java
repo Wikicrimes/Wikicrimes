@@ -99,7 +99,10 @@ public class Crime extends BaseObject {
 	
 	private UsuarioRedeSocial usuarioRedeSocial;
 	
-	private Set<Credibilidade> credibilidades;
+//	TODO Manter lista de Credibilidades para futura atualizacao
+//	private Set<Credibilidade> credibilidades;
+	
+	private Double ultimaCredibilidade;
 	
 
 	public UsuarioRedeSocial getUsuarioRedeSocial() {
@@ -435,17 +438,24 @@ public class Crime extends BaseObject {
 	}
 
 	// Credibilidade
-	public void setCredibilidades(Set<Credibilidade> credibilidades) {
-		this.credibilidades = credibilidades;
+//	public void setCredibilidades(Set<Credibilidade> credibilidades) {
+//		this.credibilidades = credibilidades;
+//	}
+//	public Set<Credibilidade> getCredibilidades() {
+//		return credibilidades;
+//	}
+//	
+//	public Credibilidade getUltimaCredibilidade() {
+//		return (Credibilidade)credibilidades.toArray()[credibilidades.size()-1];
+//	}
+
+	public Double getUltimaCredibilidade() {
+		return ultimaCredibilidade;
 	}
-	public Set<Credibilidade> getCredibilidades() {
-		return credibilidades;
+	public void setUltimaCredibilidade(Double ultimaCredibilidade) {
+		this.ultimaCredibilidade = ultimaCredibilidade;
 	}
 	
-	public Credibilidade getUltimaCredibilidade() {
-		return (Credibilidade)credibilidades.toArray()[credibilidades.size()-1];
-	}
-
 }
 
 

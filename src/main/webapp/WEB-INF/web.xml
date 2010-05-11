@@ -212,13 +212,13 @@
 	</servlet-mapping>
 	
 	<servlet>
-		<servlet-name>RenovaSessao</servlet-name>
-		<servlet-class>org.wikicrimes.servlet.RenovaSessao</servlet-class>
+		<servlet-name>ServletRpx</servlet-name>
+		<servlet-class>org.wikicrimes.servlet.ServletRpx</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
-		<servlet-name>RenovaSessao</servlet-name>
-		<url-pattern>/RenovaSessao</url-pattern>
+		<servlet-name>ServletRpx</servlet-name>
+		<url-pattern>/ServletRpx</url-pattern>
 	</servlet-mapping>
 	
 	<servlet>

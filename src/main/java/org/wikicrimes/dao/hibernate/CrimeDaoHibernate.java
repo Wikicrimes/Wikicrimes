@@ -91,7 +91,7 @@ public class CrimeDaoHibernate extends GenericCrudDaoHibernate implements
 		.get("entidadeCertificadora");
 		
 		if (listaEntidadeCertificadora!=null)
-			consulta = "select as crime from Crime crime join crime.confirmacoes as confirmacao where ";
+			consulta = "select crime from Crime crime join crime.confirmacoes as confirmacao where ";
 		
 		// Credibilidade
 		if (parameters.get("credibilidadeInicial") != null && parameters.get("credibilidadeFinal") != null) 

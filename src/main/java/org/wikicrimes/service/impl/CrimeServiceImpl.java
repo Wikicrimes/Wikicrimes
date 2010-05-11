@@ -92,12 +92,12 @@ public class CrimeServiceImpl extends GenericCrudServiceImpl implements
 		if (getDao().save(crime)) 
 		{
 			crime.setChave(Cripto.criptografar(crime.getIdCrime().toString()+crime.getDataHoraRegistro().toString()));
-			
+			System.out.println("1");
 			if(crime.getUsuario().getConfAutomatica()){
 				crime.setConfirmacoesPositivas(new Long(1));					
 			}
 			getDao().save(crime);
-			
+			System.out.println("2");
 			//se nao for certificador enviar emails para as indicacoes
 			//if (!crime.getUsuario().getPerfil().equals(Perfil.CERTIFICADOR)){
 				Set<Confirmacao> confirmacoes = crime.getConfirmacoes();					
@@ -105,8 +105,9 @@ public class CrimeServiceImpl extends GenericCrudServiceImpl implements
 				if(confirmacoes!=null)
 					criarConfirmacoes(crime, confirmacoes);
 			//}
+			System.out.println("3");	
 			criarCredibilidade(crime);
-				
+			System.out.println("4");	
 			return true;
 		}
 		return false;

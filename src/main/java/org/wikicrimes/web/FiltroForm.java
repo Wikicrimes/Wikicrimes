@@ -151,7 +151,7 @@ public class FiltroForm extends GenericForm {
 		cssComentados = "";
 		cssConfirmados = "";
 
-		credibilidadeInicial = 55.0;
+		credibilidadeInicial = 50.0;
 		credibilidadeFinal   = 100.0;
 		
 		/*

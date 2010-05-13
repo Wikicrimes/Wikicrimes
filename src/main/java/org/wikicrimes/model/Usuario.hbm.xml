@@ -21,6 +21,8 @@
         <property name="confAutomatica" column="USU_CONF_AUTOMATICA" type="java.lang.Boolean" />                
         <property name="estado" column="USU_ESTADO" type="java.lang.String"/>
         <property name="pais" column="USU_PAIS" type="java.lang.String" not-null="false"/>
+        <property name="externalUrlRpx" column="USU_EXTERNAL_URL_RPX" type="java.lang.String" not-null="false"/>
+               
         <property name="aniversario" column="USU_ANIVERSARIO" type="java.util.Date"/>
         <property name="ip" column="USU_IP" type="java.lang.String"/>
         <property name="lat" column="USU_LATITUDE" type="java.lang.Double"/>

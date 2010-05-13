@@ -39,7 +39,8 @@ public class Usuario extends BaseObject {
 	private String emailAtivo;
 	private UsuarioCelular usuarioCelular;
 	private Boolean confAutomatica;
-
+	private String externalUrlRpx;
+	
 	private Set<Reputacao> reputacoes;
 	
 	private Integer mobileAppAtivacao;
@@ -375,6 +376,14 @@ public class Usuario extends BaseObject {
 		return (Reputacao)reputacoes.toArray()[reputacoes.size()-1];
 	}
 	
+	public String getExternalUrlRpx() {
+		return externalUrlRpx;
+	}
+
+	public void setExternalUrlRpx(String externalUrlRpx) {
+		this.externalUrlRpx = externalUrlRpx;
+	}
+
 	@Override
 	public String toString() {
 		return email;

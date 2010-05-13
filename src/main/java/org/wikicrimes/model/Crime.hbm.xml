@@ -23,6 +23,7 @@
         <property name="embedNoticia" length="1000" column="CRI_EMBED_NOTICIA" type="java.lang.String" not-null="false"/>
         <property name="linkNoticia" length="1000" column="CRI_LINK_NOTICIA" type="java.lang.String" not-null="false"/>
         <property name="pais" column="CRI_PAIS" type="java.lang.String" not-null="false"/>
+        
         <property name="data" column="CRI_DATA" type="java.util.Date" not-null="true"/>
         <property name="horario" column="CRI_HORARIO" type="java.lang.Long" not-null="true"/>
         <property name="status" column="CRI_STATUS" type="java.lang.Long" not-null="true" />

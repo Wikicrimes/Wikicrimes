@@ -55,7 +55,8 @@ public class UsuarioServiceImpl extends GenericCrudServiceImpl implements Usuari
 		{
 			if (usuario.getPerfil().getIdPerfil() != Perfil.CONVIDADO) 
 			{
-				usuario.setConfirmacao(Usuario.FALSE);
+				if(usuario.getExternalUrlRpx() == null)
+					usuario.setConfirmacao(Usuario.FALSE);
 				result = super.insert(usuario);
 				usuario.setChaveConfirmacao(String.valueOf(usuario.hashCode()));
 				if(usuario.getExternalUrlRpx() == null)	

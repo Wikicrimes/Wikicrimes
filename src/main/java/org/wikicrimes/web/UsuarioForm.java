@@ -343,6 +343,18 @@ public class UsuarioForm extends GenericForm {
 
 			Usuario usuario = service.login(getUsuario());
 			// System.out.println("id sessao: " + getExternalSession().getId());
+			
+			//Usuário RPX
+			getUsuario().setSenha("");
+			Usuario usuarioRpx = service.login(getUsuario());
+			if(usuarioRpx != null){
+				System.out.println("Usuário "+usuarioRpx.getEmail()+" do Rpx tentando fazer login pelo wikicrimes");
+				
+				addMessage("usuario.loginFail", "");
+				getRequestScope().put("loginMessage",
+						getMessage("usuario.erro.login.rpx", ""));
+				return null;
+			}
 			if (usuario != null) {
 
 				if (usuario.getConfirmacao().equals(Usuario.TRUE)) {

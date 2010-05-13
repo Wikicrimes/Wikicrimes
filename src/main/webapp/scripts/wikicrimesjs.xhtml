@@ -16,9 +16,14 @@
 	 var chamouLoadMapa = false;
 	 function loadMapa() {
 	 		chamouLoadMapa=true;	 		
-			<c:if test="#{not empty usuario}">
-				load(#{usuario.lat},#{usuario.lng},13);
-			</c:if>    
+				<c:if test="#{not empty usuario}">
+					<c:if test="#{usuario.cidade == null or usuario.cidade == ''}">
+						load(#{filtroForm.latMapa},#{filtroForm.lngMapa},#{filtroForm.zoomMapa});
+						return;
+					</c:if>
+					load(#{usuario.lat},#{usuario.lng},13);
+						
+				</c:if>    
 			<c:if test="#{empty usuario}">
 				load(#{filtroForm.latMapa},#{filtroForm.lngMapa},#{filtroForm.zoomMapa});
 			</c:if>

@@ -58,12 +58,12 @@ public class UsuarioServiceImpl extends GenericCrudServiceImpl implements Usuari
 				usuario.setConfirmacao(Usuario.FALSE);
 				result = super.insert(usuario);
 				usuario.setChaveConfirmacao(String.valueOf(usuario.hashCode()));
-
-				if (usuario.getIdiomaPreferencial() == null)
-					emailService.sendMailConfirmation(usuario, FacesContext.getCurrentInstance()
-							.getViewRoot().getLocale().toString());
-				else
-					emailService.sendMailConfirmation(usuario, usuario.getIdiomaPreferencial());
+				if(usuario.getExternalUrlRpx() == null)	
+					if (usuario.getIdiomaPreferencial() == null)
+						emailService.sendMailConfirmation(usuario, FacesContext.getCurrentInstance()
+								.getViewRoot().getLocale().toString());
+					else
+						emailService.sendMailConfirmation(usuario, usuario.getIdiomaPreferencial());
 			}
 			else 
 			{
@@ -87,7 +87,8 @@ public class UsuarioServiceImpl extends GenericCrudServiceImpl implements Usuari
 				usuarioGuest.setDataHoraRegistro(usuario.getDataHoraRegistro());
 
 				result = this.update(usuarioGuest);
-				emailService.sendMailConfirmation(usuarioGuest, FacesContext.getCurrentInstance()
+				if(usuario.getExternalUrlRpx()==null)	
+					emailService.sendMailConfirmation(usuarioGuest, FacesContext.getCurrentInstance()
 						.getViewRoot().getLocale().toString());
 			}
 
@@ -188,7 +189,10 @@ public class UsuarioServiceImpl extends GenericCrudServiceImpl implements Usuari
 	 * Metodo que retorna usuario a partir do email. Retorna null se nao existir Leo Ayres
 	 */
 	public Usuario getUsuario(String email) {
-		return (Usuario) ((UsuarioDao) this.getDao()).getByEmail(email);
+		Usuario u = (Usuario) ((UsuarioDao) this.getDao()).getByEmail(email); 
+		if(u != null)
+			Hibernate.initialize(u.getPerfil());
+		return u;
 
 	}
 

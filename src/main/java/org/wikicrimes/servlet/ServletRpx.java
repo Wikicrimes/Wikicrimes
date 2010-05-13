@@ -1,6 +1,7 @@
 package org.wikicrimes.servlet;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,12 +10,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.wikicrimes.service.CrimeService;
 import org.wikicrimes.util.rpx.Rpx;
 import org.wikicrimes.model.*;
 import org.wikicrimes.web.*;
+import org.wikicrimes.service.*;
 
 public class ServletRpx extends HttpServlet {
     
@@ -62,21 +67,42 @@ public class ServletRpx extends HttpServlet {
             } else
                 openIdMap.put(n.getNodeName(), n.getTextContent());
         }        
-        // Nested elements can be accessed with the full path:
-        String name = openIdMap.get("name.formatted");
-        String mail = openIdMap.get("email");
-        HttpSession session = request.getSession();
-        FiltroForm filtroForm = (FiltroForm)session.getAttribute("filtroForm");
-        
-        Usuario usuario = new Usuario();
-        usuario.setPrimeiroNome(name);
-        usuario.setEmail(mail);
-        usuario.setCidade("");
-//        usuario.setPais(pais);
-        usuario.setConfAutomatica(false);
-        Perfil p = new Perfil();
-        p.setIdPerfil(new Long(Perfil.USUARIO));        
-        usuario.setPerfil(p);
+     // checa se ja existe email cadastrado ou se e convidado
+        ApplicationContext springContext = WebApplicationContextUtils.getWebApplicationContext(getServletContext());  
+		UsuarioService usuarioService = (UsuarioService)springContext.getBean("usuarioService");
+		String email = openIdMap.get("email");
+        Usuario userResult = usuarioService.getUsuario(email);
+		if(userResult == null){		
+	        
+	        HttpSession session = request.getSession();
+	        FiltroForm filtroForm = (FiltroForm)session.getAttribute("filtroForm");
+	        
+	        Usuario usuario = new Usuario();
+	        usuario.setPrimeiroNome(openIdMap.get("name.givenName"));
+	        usuario.setUltimoNome(openIdMap.get("name.familyName"));
+	        usuario.setSenha("");
+	        usuario.setEmail(email);
+	        usuario.setCidade("");
+	        usuario.setIdiomaPreferencial("pt");
+	        usuario.setPais(filtroForm.getPais());
+	        usuario.setDataHoraRegistro(new Date());
+	        usuario.setConfAutomatica(false);
+	        if(email != null && !email.equals(""))
+	        	usuario.setEmailAtivo("1");
+	        usuario.setConfirmacao(Usuario.TRUE);
+	        usuario.setLat(new Double(filtroForm.getLatMapa()));
+	        usuario.setLng(new Double(filtroForm.getLngMapa()));
+	        usuario.setReceberNewsletter("1");
+	        usuario.setExternalUrlRpx(openIdMap.get("identifier"));
+	        Perfil p = new Perfil();
+	        p.setIdPerfil(new Long(Perfil.USUARIO));        
+	        usuario.setPerfil(p);
+	        
+	        usuarioService.insert(usuario);
+	        userResult = usuarioService.getUsuario(email);
+		}
+		HttpSession session = request.getSession();
+		session.setAttribute("usuario", userResult);
         // Do something useful with them...
         response.sendRedirect(request.getRequestURL().toString().replace("/ServletRpx", ""));
     }

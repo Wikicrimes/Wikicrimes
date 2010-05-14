@@ -18,8 +18,9 @@ import javax.servlet.http.HttpSession;
 import org.wikicrimes.util.kernelMap.GrafoRotas;
 import org.wikicrimes.util.kernelMap.KernelMap;
 import org.wikicrimes.util.kernelMap.LogicaRotaSegura;
+import org.wikicrimes.util.kernelMap.PropertiesLoader;
 import org.wikicrimes.util.kernelMap.Ponto;
-import org.wikicrimes.util.kernelMap.Rota;
+import org.wikicrimes.util.kernelMap.Caminho;
 import org.wikicrimes.util.kernelMap.RotaGM;
 import org.wikicrimes.util.kernelMap.SegmentoReta;
 import org.wikicrimes.util.kernelMap.StatusGM;
@@ -43,32 +44,27 @@ public class ServletRotaSegura extends HttpServlet {
 	/*teste*/private static final String TEMPO_INICIO = "TEMPO_INICIO";
 	
 	//parâmetros
-	private static /*final*/ int FATOR_TOLERANCIA = 1;
-	private static final int MAX_REFINAMENTOS = 0;
-	private static final int MAX_REQUISICOES_GOOGLEMAPS = 50;
+	private static /*final*/ double FATOR_TOLERANCIA = PropertiesLoader.getInt("fator_tol");
+	private static final int MAX_REFINAMENTOS = PropertiesLoader.getInt("max_refinamentos");
+	private static final int MAX_REQUISICOES_GM = PropertiesLoader.getInt("max_requisicoes_gm");
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		/*debug*/System.out.println("keyset: " + request.getParameterMap().keySet() + ", status: " + getStatusGM(request));
 		
 		try{
-			
 			boolean primeiraVez = getContRevisoes(request)==0 || !isLogicaRotasNaSessao(request);
-			
 			if(primeiraVez)
 				primeiraExecucao(request, response);
-			else
-				metodoPrincipal(request, response);
-
+			metodoPrincipal(request, response);
 		}catch(Throwable e){
-			HttpSession sessao = request.getSession();
-			LogicaRotaSegura logicaRotas = getLogicaRotaSegura(request, response);
-			limpar(sessao, logicaRotas);
-			/*teste*/TesteCenariosRotas.setResult("erro", e.getClass() + " : " + e.getMessage());
-			/*teste*/TesteCenariosRotas.salvar();
 			e.printStackTrace();
-//			throw e;
-			respostaErro(request, response);
+			if(!response.isCommitted()){
+				respostaErro(request, response);
+				/*teste*/TesteCenariosRotas.setResult("erro", e.getClass() + " : " + e.getMessage());
+				/*teste*/TesteCenariosRotas.salvar();
+			}
+			limpar(request,response);
 		}
 	}
 	
@@ -83,7 +79,7 @@ public class ServletRotaSegura extends HttpServlet {
 		LogicaRotaSegura logicaRota = getLogicaRotaSegura(request, response);
 		
 		//pega a ROTA ORIGINAL que gerada pelo GoogleMaps, que vai da origem até o destino
-		Rota rotaGoogleMaps = getRota(request);
+		Caminho rotaGoogleMaps = getRota(request);
 		
 		//inicializa o GRAFO com a rota original
 		GrafoRotas grafo = new GrafoRotas(rotaGoogleMaps.getInicio(), rotaGoogleMaps.getFim(), logicaRota);
@@ -97,7 +93,7 @@ public class ServletRotaSegura extends HttpServlet {
 		sessao.setAttribute(FILA_TRECHOS_EXPANDIDOS, filaTrechosExpandidos);
 		
 		//define a TOLERANCIA
-		double distReta = rotaGoogleMaps.getDistanciaRetaOD();
+		double distReta = rotaGoogleMaps.distanciaRetaOD();
 		double densMedia = logicaRota.getKernel().getMediaDens();
 		double tolerancia = distReta * densMedia * FATOR_TOLERANCIA;
 		sessao.setAttribute(TOLERANCIA, tolerancia);
@@ -109,24 +105,24 @@ public class ServletRotaSegura extends HttpServlet {
 		/*teste*/TesteCenariosRotas.setResult("distReta", distReta);
 //		/*teste*/System.out.println("tolerancia: " + tolerancia);
 		/*teste*/TesteCenariosRotas.setResult("tol", tolerancia);
-		metodoPrincipal(request, response);
 	}
 	
 	private void metodoPrincipal(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 
 			//inicialização dos objetos principais
-			final HttpSession sessao = request.getSession();
-			final LogicaRotaSegura logicaRota = getLogicaRotaSegura(request, response);
+			HttpSession sessao = request.getSession();
+			LogicaRotaSegura logicaRota = getLogicaRotaSegura(request, response);
 			StatusGM status = getStatusGM(request);
 			GrafoRotas grafo = logicaRota.getGrafoRotas();
 			Queue<Ponto> filaPontosParaExpandir = grafo.getFilaPontosParaExpandir(); //fila de pontos candidatos a expansão
 			Queue<SegmentoReta> filaTrechosExpandidos = (Queue<SegmentoReta>)sessao.getAttribute(FILA_TRECHOS_EXPANDIDOS); //fila de segmentos pra mandar pro GM (segmentos gerados por uma expansão)
 			double tolerancia = (Double)sessao.getAttribute(TOLERANCIA);
 			
+			//NOVO TRECHOGM E PONTO PRA EXPANDIR
 			if(status == StatusGM.SUCCESS){
 				//recebe a rota obtida do GoogleMaps
-				Rota rotaGoogleMaps = getRota(request);
-				double custoGM = rotaGoogleMaps.getDistanciaPercorrida(); //TODO mudar isso, pegar o valor de tempo do GM
+				Caminho rotaGoogleMaps = getRota(request);
+				double custoGM = rotaGoogleMaps.distanciaPercorrida(); //TODO mudar isso, pegar o valor de tempo do GM
 				double perigo = logicaRota.perigo(rotaGoogleMaps);
 				RotaGM trechoGM = new RotaGM(rotaGoogleMaps, custoGM, perigo); 
 				grafo.inserirRota(trechoGM);
@@ -134,7 +130,7 @@ public class ServletRotaSegura extends HttpServlet {
 				if(!novoVertice.equals(grafo.getDestino()))
 					filaPontosParaExpandir.offer(novoVertice);
 				/*teste*/if(getContRevisoes(request) == 0 ){
-				/*teste*/	double distIni = grafo.menorCaminhoDetalhado().getDistanciaPercorrida();
+				/*teste*/	double distIni = grafo.menorCaminho().distanciaPercorrida();
 //				/*teste*/	System.out.println("distância inicial: " + distIni);
 				/*teste*/	TesteCenariosRotas.setResult("distIni", distIni);
 				/*teste*/	double qualiIni = grafo.desfav(grafo.getDestino());
@@ -144,27 +140,33 @@ public class ServletRotaSegura extends HttpServlet {
 			}else if(status == StatusGM.TOO_MANY_QUERIES){
 				respostaRepeteTrechoAnterior(request, response);
 				return;
+			}else{
+				throw new AssertionError("requisicao ao GooglMaps: " + status);
 			}
 			
+			//EXPANDIR
 			double desfMelhorRota = grafo.desfav(grafo.getDestino()); //desfavorabilidade da menor rota encontrada até agora
-			boolean resultadoToleravel = desfMelhorRota <= tolerancia; 
-			if( !resultadoToleravel
-					&& !(filaPontosParaExpandir.isEmpty() && filaTrechosExpandidos.isEmpty()) 
-					&& getContRevisoes(request)<MAX_REQUISICOES_GOOGLEMAPS){//NAO TERMINOU
+			boolean isToleravel = desfMelhorRota <= tolerancia;
+			if( !isToleravel
+//					&& !(filaPontosParaExpandir.isEmpty() && filaTrechosExpandidos.isEmpty())
+					&& !filaPontosParaExpandir.isEmpty() 
+					&& getContRevisoes(request) < MAX_REQUISICOES_GM){
 
 				//EXPANDE novamente, se a fila de trechos estiver vazia
 				/*teste*/boolean expandiu = false;
 				while(filaTrechosExpandidos.isEmpty() && !filaPontosParaExpandir.isEmpty()){
-					//expande só do vértice até o destino primeiro
 					Ponto p = filaPontosParaExpandir.peek();
-					if(p == null) throw new AssertionError("sem pontos pra expandir");
+					/*teste*/if(p == null) throw new AssertionError("sem pontos pra expandir");
+
+					//expande só do vértice até o destino primeiro
 					SegmentoReta trecho = logicaRota.expandirProDestino(p);
 					if(trecho != null){
 						filaTrechosExpandidos.offer(trecho);
 						/*teste*/expandiu = true;
 					}
+					
+					//se a expansão anterior não for novidade, então expande para novos pontos 
 					if(filaTrechosExpandidos.isEmpty()){
-						//se a expansão anterior não for novidade, então expande para novos pontos 
 						p = filaPontosParaExpandir.poll();
 						List<SegmentoReta> novosSegms = logicaRota.expandir(p);
 						for(SegmentoReta novo : novosSegms){
@@ -173,68 +175,88 @@ public class ServletRotaSegura extends HttpServlet {
 						}
 					}
 				}
-//				/*teste*/if(expandiu) TesteRotas.mostra("contrev: " + getContRevisoes(request), logicaRota.getKernel(), grafo);
+				/*teste*/if(expandiu) TesteRotas.mostra("contrev: " + getContRevisoes(request), logicaRota.getKernel(), grafo);
 			}
 			
-			if(!resultadoToleravel && !filaTrechosExpandidos.isEmpty()){
-				SegmentoReta segm = filaTrechosExpandidos.poll();
-				Rota trecho = new Rota(segm);
-				/*teste*/if(segm == null) throw new AssertionError("trecho == null");
-				respostaPedeNovoTrecho(request, response, trecho);
-	
-			}else{
+			//RESPOSTA
+			if(!isToleravel){
 				
-				/*teste*/if(!resultadoToleravel) 
-				/*teste*/	System.out.println("***NAO TEM MAIS PONTOS PRA EXPANDIR");
-				
-				//encontra a melhor rota segura
-				final Rota menorCaminho = grafo.menorCaminho();
-				Rota menorCaminhoDetalhado = grafo.menorCaminhoDetalhado();
-//				/*teste*/TesteRotas.mostra("Resultado esperado", logicaRota.getKernel(), menorCaminhoDetalhado);
-//				/*teste*/TesteRotas.mostra("Resposta", logicaRota.getKernel(), menorCaminho);
-				
-				//REFINA a rota, tirando pontas e arrodeios
-				Integer contRefinamentos = (Integer)sessao.getAttribute(CONT_REFINAMENTOS);
-				if(contRefinamentos == null) contRefinamentos = 0;
-				boolean precisouRefinar = false;
-				if(contRefinamentos < MAX_REFINAMENTOS)
-					precisouRefinar = LogicaRotaSegura.refinaRota(menorCaminho, menorCaminhoDetalhado);
-				
-				if(precisouRefinar){
-//					/*teste*/TesteRotas.mostra("Resposta refinada", logicaRota.getKernel(), menorCaminho);
-					sessao.setAttribute(CONT_REFINAMENTOS, contRefinamentos+1);
-					respostaPedeNovoTrecho(request, response, menorCaminho);
+				if(!filaTrechosExpandidos.isEmpty()){
+					//continua calculando trechos
+					SegmentoReta segm = filaTrechosExpandidos.poll();
+					Caminho trecho = new Caminho(segm);
+					/*teste*/if(segm == null) throw new AssertionError("trecho == null");
+					respostaPedeNovoTrecho(request, response, trecho);
 				}else{
-					//manda a RESPOSTA FINAL e termina
-					/*teste*/long t1 = (Long)sessao.getAttribute(TEMPO_INICIO);
-					/*teste*/long t2 = System.nanoTime();
-					/*teste*/double tempo = (t2-t1)/(Math.pow(10, 9));
-//					/*teste*/System.out.println("TEMPO para calcular a rota: " + tempo + "s");
-					/*teste*/TesteCenariosRotas.setResult("tempo", tempo);
-//					/*teste*/TesteRotas.mostra("grafo final", logicaRota.getKernel(), grafo);
-//					/*teste*/SwingUtilities.invokeLater(new Runnable(){public void run() {
-					limpar(sessao, logicaRota);
-//					/*teste*/}});
-					/*teste*/double distFin = grafo.menorCaminhoDetalhado().getDistanciaPercorrida();
-//					/*teste*/System.out.println("distância final: " + distFin);
-					/*teste*/TesteCenariosRotas.setResult("distFin", distFin);
-					/*teste*/double qualiFin = grafo.desfav(grafo.getDestino());
-//					/*teste*/System.out.println("qualidade final: " + qualiFin);
-					/*teste*/TesteCenariosRotas.setResult("qualiFin", qualiFin);
-//					/*teste*/System.out.println("requisicoes ao googlemaps: " + getContRevisoes(request));
-					/*teste*/TesteCenariosRotas.setResult("reqGM", getContRevisoes(request));
-					respostaFim(request, response, menorCaminho);
-					/*teste*/TesteCenariosRotas.salvar();
+					//entrou aqui pq a filaTrechosExpandidos era emtpy
+					//TODO pode entrar aqui? (quase sempre entra)
+					Error e = new AssertionError("nao tem mais pontos pra expandir"); 
+					/*teste*/TesteCenariosRotas.setResult("erro", e.getClass() + " : " + e.getMessage());
+					terminar(request, response);
+					throw e;
 				}
 				
+			}else{
+				
+//				//REFINA a rota, tirando pontas e arrodeios
+//	//			Integer contRefinamentos = (Integer)sessao.getAttribute(CONT_REFINAMENTOS);
+//	//			if(contRefinamentos == null) contRefinamentos = 0;
+//				boolean precisouRefinar = false;
+//	//			if(contRefinamentos < MAX_REFINAMENTOS)
+//					precisouRefinar = LogicaRotaSegura.refinaRota(menorCaminhoVertices, menorCaminho);
+//				if(precisouRefinar){
+//					/*teste*/TesteRotas.mostra("Resposta refinada", logicaRota.getKernel(), menorCaminhoVertices);
+//	//				sessao.setAttribute(CONT_REFINAMENTOS, contRefinamentos+1);
+//	//				respostaPedeNovoTrecho(request, response, menorCaminhoVertices);
+//				}else{
+					terminar(request, response);
+//				}
 			}
 			
+	}
+	
+	private void terminar(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
+		
+		//inicialização dos objetos principais
+		HttpSession sessao = request.getSession();
+		LogicaRotaSegura logicaRota = getLogicaRotaSegura(request, response);
+		GrafoRotas grafo = logicaRota.getGrafoRotas();
+		
+		//melhor rota segura encontrada
+		Caminho menorCaminhoVertices = grafo.menorCaminhoVertices();
+		Caminho menorCaminho = grafo.menorCaminho();
+		/*teste*/TesteRotas.mostra("Resultado esperado", logicaRota.getKernel(), menorCaminho);
+		/*teste*/TesteRotas.mostra("Resposta", logicaRota.getKernel(), menorCaminhoVertices);
+
+		//manda a RESPOSTA FINAL e termina
+		/*teste*/long t1 = (Long)sessao.getAttribute(TEMPO_INICIO);
+		/*teste*/long t2 = System.nanoTime();
+		/*teste*/double tempo = (t2-t1)/(Math.pow(10, 9));
+//			/*teste*/System.out.println("TEMPO para calcular a rota: " + tempo + "s");
+		/*teste*/TesteCenariosRotas.setResult("tempo", tempo);
+		/*teste*/TesteRotas.mostra("grafo final", logicaRota.getKernel(), grafo);
+//			/*teste*/SwingUtilities.invokeLater(new Runnable(){public void run() {
+		limpar(request, response);
+//			/*teste*/}});
+		/*teste*/double distFin = grafo.menorCaminho().distanciaPercorrida();
+//			/*teste*/System.out.println("distância final: " + distFin);
+		/*teste*/TesteCenariosRotas.setResult("distFin", distFin);
+		/*teste*/double qualiFin = grafo.desfav(grafo.getDestino());
+//			/*teste*/System.out.println("qualidade final: " + qualiFin);
+		/*teste*/TesteCenariosRotas.setResult("qualiFin", qualiFin);
+//			/*teste*/System.out.println("requisicoes ao googlemaps: " + getContRevisoes(request));
+		/*teste*/TesteCenariosRotas.setResult("reqGM", getContRevisoes(request));
+		respostaFim(request, response, menorCaminhoVertices);
+		/*teste*/TesteCenariosRotas.salvar();
+		
 	}
 	
 	/**
 	 * Faz uma limpeza nos objetos da sessão, preparando pra uma próxima série de requisições do mesmo usuário
 	 */
-	private void limpar(HttpSession sessao, LogicaRotaSegura logicaRotas){
+	private void limpar(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
+		HttpSession sessao = request.getSession();
+		LogicaRotaSegura logicaRotas = getLogicaRotaSegura(request, response);
 		sessao.removeAttribute(TOLERANCIA);
 		sessao.removeAttribute(FILA_TRECHOS_EXPANDIDOS);
 		sessao.removeAttribute(LOGICA_ROTAS);
@@ -244,47 +266,52 @@ public class ServletRotaSegura extends HttpServlet {
 		/*teste*/TesteRotas.limpar();
 	}
 	
-	private void respostaPedeNovoTrecho(HttpServletRequest request, HttpServletResponse response, Rota trecho) throws IOException{
+	private void respostaPedeNovoTrecho(HttpServletRequest request, HttpServletResponse response, Caminho trecho) throws IOException{
 		trecho = trecho.invertida();
 		request.getSession().setAttribute(RESPOSTA_ANTERIOR, trecho); //necessário caso de o erro TOO_MANY_QUERIES no GM
 //		/*teste*/System.out.println("TRECHO: " + trecho);
 		PrintWriter out = response.getWriter();
-		out.print(trecho);	//rota segura gerada
+		out.println(trecho);	//rota segura gerada
+		/*teste*/out.println("de=respostaPedeNovoTrecho");
 		out.close();
 	}
 	
 	private void respostaRepeteTrechoAnterior(HttpServletRequest request, HttpServletResponse response) throws IOException{
-		Rota trecho = (Rota)request.getSession().getAttribute(RESPOSTA_ANTERIOR);
+		Caminho trecho = (Caminho)request.getSession().getAttribute(RESPOSTA_ANTERIOR);
 		PrintWriter out = response.getWriter();
-		out.print(trecho);	//rota segura gerada na vez anterior, qd deu TOO_MANY_QUERIES no GM
+		out.println(trecho);	//rota segura gerada na vez anterior, qd deu TOO_MANY_QUERIES no GM
+		/*teste*/out.println("de=respostaRepeteTrechoAnterior");
 		out.close();
 	}
 	
-	private void respostaFim(HttpServletRequest request, HttpServletResponse response, Rota rota) throws IOException{
+	private void respostaFim(HttpServletRequest request, HttpServletResponse response, Caminho rota) throws IOException{
 		/*teste*/if(rota == null) throw new AssertionError("rota == null");
 		rota = rota.invertida();
 		PrintWriter out = response.getWriter();
 		out.println(rota);			//rota segura gerada
-		out.print("fim");			//sinal pro fim
+		out.println("fim");			//sinal pro fim
 		/*teste*/System.out.println("FIM");
+		/*teste*/out.println("de=respostaFim");
 		out.close();
 	}
 	
 	private void respostaErro(HttpServletRequest request, HttpServletResponse response) throws IOException{
 		PrintWriter out = response.getWriter();
 		out.println("erro");			//rota segura gerada
-		out.print("fim");			//sinal pro fim
+		out.println("fim");			//sinal pro fim
 		/*teste*/System.out.println("FIM ERRO");
+		/*teste*/out.println("de=respostaErro");
 		out.close();
 	}
 	
-	private Rota getRota(HttpServletRequest request) throws ServletException, IOException {
+	private Caminho getRota(HttpServletRequest request) throws ServletException, IOException {
 		String stringRotas = null;
 		try{
 			stringRotas = request.getParameter("rotas");
-			Rota rota = new Rota(stringRotas).invertida();
+			Caminho rota = new Caminho(stringRotas).invertida();
 			return rota;
 		}catch(RuntimeException e){
+			e.printStackTrace();
 			if(stringRotas == null)
 				stringRotas = "null";
 			else if(stringRotas.equals(""))

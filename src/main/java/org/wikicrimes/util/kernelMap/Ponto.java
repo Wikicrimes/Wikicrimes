@@ -1,6 +1,7 @@
 package org.wikicrimes.util.kernelMap;
 
 import java.awt.Point;
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,13 +11,26 @@ import java.util.List;
  */
 
 public class Ponto extends Point{
+
+	private static final double TOLERANCIA_PONTOS_IGUAIS = PropertiesLoader.getDouble("tol_ponto");
 	
 	public Ponto(int x, int y) {
 		this.x = x;
 		this.y = y;
 	}
 	
+	public Ponto(double x, double y){
+		if(x > Integer.MAX_VALUE)
+			throw new InvalidParameterException("X ("+ x +") é muito grande e não cabe num INT");
+		if(y > Integer.MAX_VALUE)
+			throw new InvalidParameterException("Y ("+ y +") é muito grande e não cabe num INT");
+		
+		this.x = (int)Math.round(x);
+		this.y = (int)Math.round(y);
+	}
+	
 	public Ponto(String string){
+//		System.out.println("novo ponto:" + string);
 		String valores[] = string.split(",");
 		x = Integer.parseInt(valores[0]);
 		y = Integer.parseInt(valores[1]);
@@ -37,6 +51,7 @@ public class Ponto extends Point{
 	public String toString() {
 		return x + "," + y;
 	}
+	@Override
 	public boolean equals(Object obj) {
 		if(obj instanceof Ponto){
 			Ponto outra = (Ponto)obj;
@@ -49,15 +64,22 @@ public class Ponto extends Point{
 		return x+y;
 	}
 	
-	public boolean isPerto(Ponto outra, int proximidade){
-		double distancia = new SegmentoReta(this,outra).getComprimento();
-		return distancia <= proximidade;
+	public boolean isPerto(Ponto outro, double max){
+		return Ponto.distancia(this,outro) <= max;
+	}
+	
+	public boolean isPerto(Ponto outro){
+		return isPerto(outro, TOLERANCIA_PONTOS_IGUAIS);
 	}
 	
 	public static Ponto medio(Ponto ponto1, Ponto ponto2) {
 		int x = (ponto1.x + ponto2.x) / 2;
 		int y = (ponto1.y + ponto2.y) / 2;
 		return new Ponto(x,y);
+	}
+	
+	public static double distancia(Ponto ponto1, Ponto ponto2){
+		return Point.distance(ponto1.x, ponto1.y, ponto2.x, ponto2.y);
 	}
 	
 	public Ponto rotacionado(double angulo){

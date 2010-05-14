@@ -313,7 +313,7 @@
 	
 	<servlet>
 		<servlet-name>ServletRotaSegura</servlet-name>
-		<servlet-class>org.wikicrimes.servlet.ServletRotaSegura</servlet-class>
+		<servlet-class>org.wikicrimes.servlet.ServletRotaSegura2</servlet-class>
 	</servlet>
 
 	<servlet-mapping>

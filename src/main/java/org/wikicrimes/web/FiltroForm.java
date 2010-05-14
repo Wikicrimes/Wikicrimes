@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.ResourceBundle;
 
 import javax.faces.FactoryFinder;
@@ -978,9 +977,10 @@ public class FiltroForm extends GenericForm {
 			this.credibilidadeFinal = credibilidadeInicial;
 	}
 	
-	public Map<String, String> getMapaParametros(){
+	public Map<String, String> getFiltroStringMap(){
 		Map<String, String> map = new HashMap<String, String>();
 		
+		//tipo
 		if(tipoCrime != null && tipoCrime != 0)
 			map.put("tipoCrime", tipoCrime.toString());
 		if(tipoVitima != null && tipoVitima != 0)
@@ -988,6 +988,7 @@ public class FiltroForm extends GenericForm {
 		if(tipoLocal != null && tipoLocal != 0)
 			map.put("tipoLocal", tipoLocal.toString());
 		
+		//data e hora
 		DateFormat df = new SimpleDateFormat("dd,MM,yyyy");
 		if(dataInicial != null)
 			map.put("dataInicial", df.format(dataInicial));
@@ -998,6 +999,7 @@ public class FiltroForm extends GenericForm {
 		if(horarioFinal != null && horarioFinal != -1)
 			map.put("horarioFinal", horarioFinal.toString());
 		
+		//credibilidade
 		if(entidadeCertificadora != null && entidadeCertificadora != 0 )
 			map.put("entidadeCertificadora", entidadeCertificadora.toString());
 		if(crimeConfirmadoPositivamente != null && crimeConfirmadoPositivamente != false)
@@ -1005,7 +1007,37 @@ public class FiltroForm extends GenericForm {
 		
 		return map;
 	}
-
+	
+	public Map<String, Object> getFiltroMap(){
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		//tipo
+		if(tipoCrime != null && tipoCrime != 0)
+			map.put("tipoCrime", tipoCrime);
+		if(tipoVitima != null && tipoVitima != 0)
+			map.put("tipoVitima", tipoVitima);
+		if(tipoLocal != null && tipoLocal != 0)
+			map.put("tipoLocal", tipoLocal);
+		
+		//data e hora
+		if(dataInicial != null)
+			map.put("dataInicial", dataInicial);
+		if(dataFinal != null)
+			map.put("dataFinal", dataFinal);
+		if(horarioInicial != null && horarioInicial != -1)
+			map.put("horarioInicial", horarioInicial);
+		if(horarioFinal != null && horarioFinal != -1)
+			map.put("horarioFinal", horarioFinal);
+		
+		//credibilidade
+		if(entidadeCertificadora != null && entidadeCertificadora != 0 )
+			map.put("entidadeCertificadora", entidadeCertificadora);
+		if(crimeConfirmadoPositivamente != null && crimeConfirmadoPositivamente != false)
+			map.put("confirmadoPositivamente", crimeConfirmadoPositivamente);
+		
+		return map;
+	}
+	
 	public String getUrlKML() {
 		return urlKML;
 	}

@@ -78,36 +78,6 @@
 				//}
 			}
 
-			/*NAO TAVA USANDO
-			function KernelLayer(map, opt_opts) {
-			  var me = this;
-			  me.map = map;  
-			}
-			
-			KernelLayer.prototype.enable = function() {
-			  	if(!aindaCarregando){
-				  	this.enabled = true;
-				  	//document.getElementById("loadingKernelMap").style.visibility='visible';		
-				  	aindaCarregando = true;
-				  	podeCarregarCrimes=false;
-				  	//window.setTimeout(constroiMapaKernel,1);
-				  	constroiMapaKernel(); 
-			  	}
-			}
-			
-			KernelLayer.prototype.disable = function() {
-				if(!aindaCarregando){
-					this.enabled = false;
-					apagaMapaKernel();
-					mostraMarcadores();
-					podeCarregarCrimes=true;
-				}  
-			}
-			
-			KernelLayer.prototype.getEnabled = function() {
-			  return this.enabled;
-			}*/
-			
 			function crimeKernelMap(lng, lat, crimeMarker){
 				this.lng = lng;
 				this.lat = lat;
@@ -156,20 +126,20 @@
 				
 				//Adiciona os parametros da requisicao
 				var url = 'acao=geraKernel';
-				url += boundsUrlParam(map);
-				url += pontosUrlParam();
+				url += boundsPixelUrlParams(map);
+				url += boundsLatLngUrlParams(map);
+				url += '&zoom=' + map.getZoom();
+				zoomKernel = map.getZoom();
+				//url += pontosUrlParam();
 
 				//console.log("url: " + url);
 				return url;
 			}
 
-			function boundsUrlParam(map){
+			function boundsPixelUrlParams(map){
 				var bounds = map.getBounds();
 				var proj = map.getCurrentMapType().getProjection();
-				var zoom = map.getZoom();
 
-				//console.log("map: " + map + ", bounds: " + bounds + ", proj: " + proj);
-				
 				//Passa os limites para pixel
 				var nePixel = latlngToPixel(bounds.getNorthEast());
 				var swPixel = latlngToPixel(bounds.getSouthWest());
@@ -177,78 +147,48 @@
 				southPixel = swPixel.y;
 				eastPixel = nePixel.x;
 				westPixel = swPixel.x;
-				//alert(northPixel + "," + southPixel + "," + eastPixel + "," + westPixel);
-
 				var str = '&northPixel=' + northPixel + '&southPixel=' + southPixel + '&eastPixel=' + eastPixel + '&westPixel=' + westPixel;
-				//url += '&north=' + north + '&south=' + south + '&east=' + east + '&west=' + west;
 
-				var size = sizePixel(bounds);
-				width = size.width;
-				height = size.height;
-					      		
-		      	str +='&width='+width+'&height='+height;
-
-				//zoom
-				str += '&zoom=' + zoom;
-		      	/*teste console.log("width: " + width + ", height: " + height + 
-				      	", east: " + eastPixel + ", west: " + westPixel + 
-				      	", north: " + northPixel + ", south: " + southPixel +
-				      	", c.x: " + centroPixel.x + ", c.y: " + centroPixel.y);/*teste*/
-		      	return str;
-			}
-
-			function sizePixel(bounds){
-				//returna um objeto contendo "width" e "height"
-
-				//centro
-				var centro = bounds.getCenter();
-				var centroPixel = latlngToPixel(centro);
-
-				//norte, sul, leste, oeste
-				var nePixel = latlngToPixel(bounds.getNorthEast());
-				var swPixel = latlngToPixel(bounds.getSouthWest());
-				northPixel = nePixel.y;
-				southPixel = swPixel.y;
-				eastPixel = nePixel.x;
-				westPixel = swPixel.x;
-
-				//size valido desconsiderando o problema das emendas do mapa (linhas com latitude 0 e longitude 0)
+				//altura e largra
+				var centroLatLng = bounds.getCenter();
+				var centroPixel = latlngToPixel(centroLatLng);
 				var width = (eastPixel - westPixel);
 				var height = (southPixel - northPixel);
+				//correcao problema das emendas do mapa (linhas com latitude 0 e longitude 0)
+				if(width < 0)
+					width = centroPixel.x < westPixel ? 2*(eastPixel-centroPixel.x) : 2*(centroPixel.x-westPixel);
+				if(height < 0)
+					height = centroPixel.y < southPixel ? 2*(northPixel-centroPixel.y) : 2*(centroPixel.y-southPixel);
+		      	str +='&widthPixel='+width+'&heightPixel='+height;
+		      	
+				return str;
+			}
 
-				/*teste
-				console.log("width: " + width);
-				console.log("height: " + height);
-				console.log("eastPixel: " + eastPixel);
-				console.log("westPixel: " + westPixel);
-				console.log("southPixel: " + southPixel);
-				console.log("northPixel: " + northPixel);
-				/*teste*/
+			function boundsLatLngUrlParams(map){
+				var bounds = map.getBounds();
+				var proj = map.getCurrentMapType().getProjection();
 
-				//correcao do size ja considerando o problema das emendas
-				if(width < 0){
-					if(centroPixel.x < westPixel)
-						width = 2*(eastPixel-centroPixel.x);
-					else
-						width = 2*(centroPixel.x-westPixel);
-				}
-				if(height < 0){
-					if(centroPixel.y < southPixel)
-						height = 2*(northPixel-centroPixel.y);
-					else
-						height = 2*(centroPixel.y-southPixel);
-				}
+				//norte, sul, leste, oeste
+				var neLatLng = bounds.getNorthEast();
+				var swLatLng = bounds.getSouthWest();
+				northLatLng = neLatLng.y;
+				southLatLng = swLatLng.y;
+				eastLatLng = neLatLng.x;
+				westLatLng = swLatLng.x;
+				var str = '&northLatLng=' + northLatLng + '&southLatLng=' + southLatLng + '&eastLatLng=' + eastLatLng + '&westLatLng=' + westLatLng;
 
-				/*teste
-				console.log("width: " + width);
-				console.log("height: " + height);
-				/*teste*/
-
-				//empacota e retorna
-				var size = {};
-				size.width = width;
-				size.height = height;
-				return size;
+				//altura e largra
+				var centroLatLng = bounds.getCenter();
+				var width = (eastLatLng - westLatLng);
+				var height = (southLatLng - northLatLng);
+				//correcao problema das emendas do mapa (linhas com latitude 0 e longitude 0)
+				if(width < 0)
+					width = centroLatLng.x < westLatLng ? 2*(eastLatLng-centroLatLng.x) : 2*(centroLatLng.x-westLatLng);
+				if(height < 0)
+					height = centroLatLng.y < southLatLng ? 2*(northLatLng-centroLatLng.y) : 2*(centroLatLng.y-southLatLng);
+		      	str +='&widthLatLng='+width+'&heightLatLng='+height;
+		      	
+				return str;
 			}
 
 			function pontosUrlParam(){
@@ -315,7 +255,7 @@
 				var lon1 = west;
 				var lat2 = south;
 				var lon2 = east;
-						
+
 				if (map.getZoom() == zoomKernel){
 			  		//aindaCarregando = false;
 

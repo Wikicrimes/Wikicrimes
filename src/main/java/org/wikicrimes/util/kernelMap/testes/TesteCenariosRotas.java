@@ -30,23 +30,23 @@ public class TesteCenariosRotas extends HttpServlet{
 	private static final String resultadosFileName = "resultados.txt";
 	private static final String cenariosFileName = "cenarios.txt";
 	private static final String paramFileName = "param.txt";
-	private static final String dir = "/home/victor/Desktop/testes rotas/serie de testes/teste auto";
+	private static final String dir = "/home/victor/Desktop/testes rotas/serie de testes/teste auto 2";
 	
 	private static Map<String,String> result = new HashMap<String, String>();
 	private static Map<String,String> param;
 	
-	/*teste*/
-	public static void main(String[] args) {
-		setResult("numCrimes", 4);
-		setResult("distReta", 2);
-		setResult("qualiIni", 3);
-		setResult("tol", 0);
-		setResult("distIni", 1);
-		setResult("distFin", 5);
-		salvar();
-		screenshot(1000);
-	}
-	/*teste*/
+//	/*teste*/
+//	public static void main(String[] args) {
+//		setResult("numCrimes", 4);
+//		setResult("distReta", 2);
+//		setResult("qualiIni", 3);
+//		setResult("tol", 0);
+//		setResult("distIni", 1);
+//		setResult("distFin", 5);
+//		salvar();
+//		screenshot(1000);
+//	}
+//	/*teste*/
 	
 	//escrever resultados no arquivo
 	public static void setResult(String key, Object value){
@@ -64,13 +64,13 @@ public class TesteCenariosRotas extends HttpServlet{
 			b.append("\t" + cenario[0]); //id
 			b.append("\t" + cenario[1]); //nome
 			//resultado direto do cenário
-			b.append("\t" + result.get("numCrimes"));
-			b.append("\t" + result.get("densMedia"));
-			b.append("\t" + result.get("densMax"));
-			b.append("\t" + result.get("distReta"));
-			b.append("\t" + result.get("tol"));
-			b.append("\t" + result.get("distIni"));
-			b.append("\t" + result.get("qualiIni"));
+//			b.append("\t" + result.get("numCrimes"));
+//			b.append("\t" + result.get("densMedia"));
+//			b.append("\t" + result.get("densMax"));
+//			b.append("\t" + result.get("distReta"));
+//			b.append("\t" + result.get("tol"));
+//			b.append("\t" + result.get("distIni"));
+//			b.append("\t" + result.get("qualiIni"));
 			//parametros
 			b.append("\t" + getTamExp());
 			b.append("\t" + getNumExp());
@@ -107,9 +107,9 @@ public class TesteCenariosRotas extends HttpServlet{
 				out.write(getStringCenario());
 			
 			}else if(acao.equals("param")){
-				screenshot(0);
+//				screenshot(0);
 				screenshot(1000);
-				screenshot(2000);
+//				screenshot(2000);
 				cont++;
 				param = getMapParam();
 				if(param == null){
@@ -178,10 +178,10 @@ public class TesteCenariosRotas extends HttpServlet{
 			param = getMapParam();
 		return Integer.valueOf(param.get("numExp"));
 	}
-	public static int getFatTol(){
+	public static double getFatTol(){
 		if(param == null)
 			param = getMapParam();
-		return Integer.valueOf(param.get("fatTol"));
+		return Double.valueOf(param.get("fatTol"));
 	}
 	
 	

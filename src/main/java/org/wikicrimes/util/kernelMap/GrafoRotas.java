@@ -85,8 +85,9 @@ public class GrafoRotas {
 		//atualiza menor caminho do vertice V, se for o caso
 		boolean mudou = false;
 		double novoCustoOV = pai.custoOV + trecho.getCusto();
-		double novoPerigoOV = Math.max(pai.perigoOV, trecho.getPerigo()); //perigo baseado em máximo
-//		double novoPerigoOV = (pai.perigoOP*pai.custoOP + trecho.getPerigo()*trecho.getCusto()) / (pai.custoOP+trecho.getCusto()); //perigo baseado em média
+//		double novoPerigoOV = Math.max(pai.perigoOV, trecho.getPerigo()); //perigo baseado em máximo
+//		double novoPerigoOV = (pai.perigoOV*pai.custoOV + trecho.getPerigo()*trecho.getCusto()) / (pai.custoOV+trecho.getCusto()); //perigo baseado em média
+		double novoPerigoOV = pai.perigoOV + trecho.getPerigo();	//media ponderada * distancia
 		double novaDesfavOV = desfav(novoCustoOV, novoPerigoOV);
 		double velhaDesfavOV = desfav(v.custoOV, v.perigoOV);
 		if(novaDesfavOV < velhaDesfavOV){
@@ -103,14 +104,14 @@ public class GrafoRotas {
 	 * Retona a sequência de vértices que define o menor caminho da ORIGEM até o DESTINO.
 	 * Obs: A Rota retornada não é a concatenação das rotas do caminho, contém apenas os vértices. 
 	 */
-	public Rota menorCaminho(){
+	public Caminho menorCaminhoVertices(){
 		Ponto p = destino; 
 		if(p == null)
 			return null;
 		
-		Rota r = new Rota();
+		Caminho r = new Caminho();
 		Ponto aux = p;
-		r.add(p);
+		r.append(p);
 		while(aux != origem){
 			No noAnte = vertices.get(aux).antecessor;
 			if(noAnte == null)
@@ -125,8 +126,8 @@ public class GrafoRotas {
 	/**
 	 * Retona a concatenação dos trechos de rota que formam o menor caminho da ORIGEM até o DESTINO.
 	 */
-	public Rota menorCaminhoDetalhado(){
-		Rota r = new Rota();
+	public Caminho menorCaminho(){
+		Caminho r = new Caminho();
 
 		No noDest = vertices.get(destino);
 		No noOrig = vertices.get(origem);
@@ -214,12 +215,12 @@ public class GrafoRotas {
 			
 			//calculo do desfavPD
 			SegmentoReta segmPD = new SegmentoReta(ponto,destino); 
-			custoVD = segmPD.getComprimento();
-			perigoVD = logicaRota.perigo(new Rota(segmPD));
+			custoVD = segmPD.comprimento();
+			perigoVD = logicaRota.perigo(new Caminho(segmPD));
 		}
 		
 		private double desfav(){
-			return GrafoRotas.this.desfav(ponto);
+			return GrafoRotas.this.desfav(this);
 		}
 		
 		@Override
@@ -267,10 +268,10 @@ public class GrafoRotas {
 		return destino;
 	}
 	
-	public List<Rota> getRotas(){
-		List<Rota> rotas = new ArrayList<Rota>();
+	public List<Caminho> getRotas(){
+		List<Caminho> rotas = new ArrayList<Caminho>();
 		for(No no : vertices.values())
-			for(Rota rota : no.trechosSaindo.values()){
+			for(Caminho rota : no.trechosSaindo.values()){
 				rotas.add(rota);
 			}
 		return rotas;
@@ -301,7 +302,7 @@ public class GrafoRotas {
 			return -1;
 	}
 	
-	public RotaGM getTrecho(Rota rota){
+	public RotaGM getTrecho(Caminho rota){
 		No ini = vertices.get(rota.getInicio());
 		No fim = vertices.get(rota.getFim());
 		if(rota != null && ini !=  null && fim != null){
@@ -321,7 +322,7 @@ public class GrafoRotas {
 	 * @return distância (reta) entre a origem e o destino
 	 */
 	public double getDistanciaRetaOD(){
-		return getSegmentoRetaOD().getComprimento();
+		return getSegmentoRetaOD().comprimento();
 	}
 	
 

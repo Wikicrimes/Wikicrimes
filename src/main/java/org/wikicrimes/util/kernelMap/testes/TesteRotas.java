@@ -9,6 +9,7 @@ import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +21,7 @@ import org.wikicrimes.util.kernelMap.GrafoRotas;
 import org.wikicrimes.util.kernelMap.KernelMap;
 import org.wikicrimes.util.kernelMap.KernelMapRenderer;
 import org.wikicrimes.util.kernelMap.Ponto;
-import org.wikicrimes.util.kernelMap.Rota;
+import org.wikicrimes.util.kernelMap.Caminho;
 import org.wikicrimes.util.kernelMap.RotaGM;
 
 /**
@@ -30,18 +31,19 @@ import org.wikicrimes.util.kernelMap.RotaGM;
  */
 public class TesteRotas {
 
+	static final boolean enabled = false;
 	static Rectangle LIMITES_GERAL; //guarda os limites(bounds) da primeira rota, pra aplicar os mesmos limites na segunda
 	public static double tolerancia, distReta;
 
-	public static void main(String[] args) {
-		Ponto p1 = new Ponto(1,1);
-		Ponto p2 = new Ponto(5,5);
-		Rota r1 = new Rota(p1, p2);
-		setLegendaGeral(0.001234, 20);
-		mostra(r1);
-	}
+//	public static void main(String[] args) {
+//		Ponto p1 = new Ponto(1,1);
+//		Ponto p2 = new Ponto(5,5);
+//		Rota r1 = new Rota(p1, p2);
+//		setLegendaGeral(0.001234, 20);
+//		mostra(r1);
+//	}
 	
-	public static void mostra(Rota... rotas){
+	public static void mostra(Caminho... rotas){
 		mostra("", rotas);
 	}
 	
@@ -53,40 +55,41 @@ public class TesteRotas {
 		mostra("", kernel, grafo);
 	}
 	
-	public static void mostra(String titulo, Rota... rotas){
-		PainelTeste painel = constroi(titulo, rotas[0]);
+	public static void mostra(String titulo, Caminho... rotas){
+		if(!enabled)return;
+		rotas = rotas.clone();
+		PainelTeste painel = constroi(titulo, rotas[0].getPontosArray());
 		painel.setRotas(rotas);
 		painel.repaint();
 	}
 		
 	public static void mostra(String titulo, GrafoRotas grafo){
+		if(!enabled)return;
 		grafo = (GrafoRotas)grafo.clone();
-		PainelTeste painel = constroi(titulo, new Rota(grafo.getOrigem(),grafo.getDestino()));
-//		painel.grafo = grafo;
+		PainelTeste painel = constroi(titulo, grafo.getOrigem(), grafo.getDestino());
 		painel.setGrafo(grafo);
 		painel.repaint();
 	}
 	
 	public static void mostra(String titulo, KernelMap kernel, GrafoRotas grafo){
+		if(!enabled)return;
 		grafo = (GrafoRotas)grafo.clone();
-		PainelTeste painel = constroi(titulo, new Rota(grafo.getOrigem(),grafo.getDestino()));
+		PainelTeste painel = constroi(titulo, grafo.getOrigem(), grafo.getDestino());
 		painel.setKernel(kernel);
-//		painel.grafo = grafo;
 		painel.setGrafo(grafo);
 		painel.repaint();
 	}
 	
-	public static void mostra(String titulo, KernelMap kernel, Rota... rotas){
-		PainelTeste painel = constroi(titulo, rotas[0]);
+	public static void mostra(String titulo, KernelMap kernel, Caminho... rotas){
+		if(!enabled)return;
+		PainelTeste painel = constroi(titulo, rotas[0].getPontosArray());
 		painel.setKernel(kernel);
 		painel.setRotas(rotas);
 		painel.repaint();
 	}
 	
-	protected static PainelTeste constroi(String titulo, Rota rotaProsLimites){
-		List<Ponto> pontos = null;
-		if(rotaProsLimites != null) 
-			pontos = rotaProsLimites.getPontos(); 
+	protected static PainelTeste constroi(String titulo, Ponto... pontosProsLimites){
+		List<Ponto> pontos = Arrays.asList(pontosProsLimites);
 		PainelTeste painel = new PainelTeste();
 		painel.setPreferredSize(new Dimension(620,620));
 		if(LIMITES_GERAL == null){
@@ -112,7 +115,7 @@ public class TesteRotas {
 			LIMITES_GERAL = null;
 		}else{	
 			PainelTeste p = new PainelTeste();
-			p.setLimites(new Rota(g.getOrigem(),g.getDestino()).getPontos());
+			p.setLimites(new Caminho(g.getOrigem(),g.getDestino()).getPontos());
 			LIMITES_GERAL = p.limites;
 		}
 	}
@@ -142,7 +145,8 @@ public class TesteRotas {
 class PainelTeste extends JPanel{
 	
 	private Color[] cores = {Color.BLUE, Color.RED, Color.GREEN, Color.ORANGE, Color.PINK};
-	private Rota[] rotas;
+	private Ponto[] pontos;
+	private Caminho[] rotas;
 	private GrafoRotas grafo;
 	private KernelMap kernel;
 	
@@ -165,7 +169,11 @@ class PainelTeste extends JPanel{
 //			add(new Vertice(p));
 	}
 	
-	public void setRotas(Rota... rotas) {
+	public void setPontos(Ponto... pontos){
+		this.pontos = pontos;
+	}
+	
+	public void setRotas(Caminho... rotas) {
 		this.rotas = rotas;
 //		for(Rota r : rotas)
 //			for(Ponto p : r.getPontos())
@@ -203,10 +211,10 @@ class PainelTeste extends JPanel{
 //		}
 	}
 	
-	protected void pintaRotas(Graphics g, Rota... rotas){
+	protected void pintaRotas(Graphics g, Caminho... rotas){
 		if(rotas!= null){
 			int i = 0;
-			for(Rota r : rotas){
+			for(Caminho r : rotas){
 				g.setColor(cores[i]);
 				pintaRota(g, r, true);
 				i++;
@@ -214,7 +222,7 @@ class PainelTeste extends JPanel{
 		}
 	}
 	
-	protected void pintaRota(Graphics g, Rota rota, boolean numerado){
+	protected void pintaRota(Graphics g, Caminho rota, boolean numerado){
 		if(rota != null){
 			List<Ponto> pontos = rota.getPontos();
 			for(int i=0; i<pontos.size(); i++){

@@ -7,7 +7,7 @@ package org.wikicrimes.util.kernelMap;
  * Representa um trecho de rota que faz parte de um grafo de possíveis rotas. 
  * Foi gerado a partir de um SegmentoReta que foi enviado para o GoogleMaps, que retornou uma rota aproximada.
  */
-public class RotaGM extends Rota{
+public class RotaGM extends Caminho{
 
 	/**
 	 * Custo deste trecho segundo o GoogleMaps
@@ -15,13 +15,7 @@ public class RotaGM extends Rota{
 	private double custo;
 	private double perigo;
 	
-	/**
-	 * O GrafoRotas do qual este trecho faz parte
-	 */
-//	private GrafoRotas grafo;
-	
-	
-	public RotaGM(Rota rota, double custo, double perigo) {
+	public RotaGM(Caminho rota, double custo, double perigo) {
 		super(rota);
 		this.custo = custo;
 		this.perigo = perigo;
@@ -36,22 +30,10 @@ public class RotaGM extends Rota{
 	}
 	
 	@Override
-	protected Object clone(){
-		Rota r = (Rota)super.clone();
+	public Object clone(){
+		Caminho r = (Caminho)super.clone();
 		RotaGM rgm = new RotaGM(r, this.custo, this.perigo);
 		return rgm;
 	}
 	
-
-//	public GrafoRotas getGrafo() {
-//		return grafo;
-//	}
-//
-//	void setGrafo(GrafoRotas grafo){
-//		if(this.grafo == null || grafo == null)
-//			this.grafo = grafo;
-//		else
-//			throw new InvalidParameterException("não pode sobrepor o GrafoRotas associado a um TrechoRotaGM");
-//	}
-
 }

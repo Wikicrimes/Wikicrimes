@@ -114,6 +114,10 @@ public class KernelMap {
 		return bounds;
 	}
 	
+	public int getNodeSize(){
+		return nodeSize;
+	}
+	
 	public int getWidth(){
 		return Math.abs(bounds.width);
 	}
@@ -138,6 +142,10 @@ public class KernelMap {
 		NumberFormat f = new DecimalFormat("0.000");
 		
 		StringBuilder s = new StringBuilder();
+//		s.append("BANDWIDTH: " + bandwidth + "\n");
+//		s.append("GRID NODE: " + nodeSize + "\n");
+		s.append("DENSIDADE MÁXIMA: " + maxDens + "\n");
+		s.append("DENSIDADE MÉDIA: " + mediaDens + "\n");
 		s.append("DENSIDADES:");
 		for (int i = 0; i < dens.length; i++) {
 			for (int j = 0; j < dens[i].length; j++) {
@@ -145,10 +153,6 @@ public class KernelMap {
 			}
 			s.append('\n');
 		}
-		s.append("BANDWIDTH: " + bandwidth + "\n");
-		s.append("GRID NODE: " + nodeSize + "\n");
-		s.append("DENSIDADE MÁXIMA: " + maxDens + "\n");
-		s.append("DENSIDADE MÉDIA: " + mediaDens + "\n");
 		
 		return s.toString();
 	}

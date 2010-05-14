@@ -19,12 +19,12 @@ public class LogicaRotaSegura {
 	private Set<SegmentoReta> trechosJaGerados = new HashSet<SegmentoReta>(); //controle pra nao pedir duas vezes o mesmo trecho ao GoogleMaps
 	
 	//parâmetros das expansões
-	private static /*final*/ int RAZAO_TAMANHO_EXPANSOES = 7; //quanto maior, MENORES serão as expansões feitas
-	private static /*final*/ int QUANTIDADE_EXPANSOES = 6;
+	private static /*final*/ int RAZAO_TAMANHO_EXPANSOES = PropertiesLoader.getInt("razao_tam_expansoes"); //quanto maior, MENORES serão as expansões feitas
+	private static /*final*/ int QUANTIDADE_EXPANSOES = PropertiesLoader.getInt("qtd_expansoes");
 	
 	//parâmetros do refinamento
-	private final static double TOLERANCIA_ARRODEIO = 4; //quanto menor, mais arodeios serão corrigidos pelo algorítmo
-	private final static int TOLERANCIA_APROXIMACAO = 1000; //distancia máxima entre pontos na obtenção de pontos e rotas aproximadas
+	private final static double TOLERANCIA_ARRODEIO = PropertiesLoader.getInt("tol_arrodeio"); //quanto menor, mais arodeios serão corrigidos pelo algorítmo
+	private final static int MAX_APROXIMACAO = PropertiesLoader.getInt("tol_aproximacao"); //distancia máxima entre pontos na obtenção de pontos e rotas aproximadas
 	
 	
 	public LogicaRotaSegura(KernelMap kernel){
@@ -41,17 +41,16 @@ public class LogicaRotaSegura {
 	 * A solução é mover este ponto para um local próximo ao início ou fim do arrodeio, que são bem próximos um do outro.
 	 * Obs: se for detectada um "arrodeio", a rotaServidor será modificada por este método
 	 */
-	public static boolean refinaRota(Rota rotaServidor, Rota rotaGoogleMaps){
+	public static boolean refinaRota(Caminho rotaServidor, Caminho rotaGoogleMaps){
 		//obs: 
-		//a rotaServidor é a que é resultado direto da lógica de rotas seguras (foi gerada pelo servidor)
-		//a rotaGoogleMaps é a gerada pelo googleMaps, ao receber os pontos da rotaServidor como parâmetro (foi obtida do cliente)
-		//as duas são semelhantes, mas a rotaGoogleMaps tem mais pontos do que a rotaServidor (ou a msm qtdade, mas nunca tem menos)
-		//a rotaGoogleMaps será usada para detectar a "arrodeio"
-		//o ponto de correção será adicionado à rotaServidor (que será enviada novamente ao google maps, desta vez sem evitando arrodeio)
+		//a rotaServidor eh a que eh resultado direto da logica de rotas seguras (foi gerada pelo servidor)
+		//a rotaGoogleMaps eh a gerada pelo googleMaps, ao receber os pontos da rotaServidor como parametro (foi obtida do cliente)
+		//as duas sao semelhantes, mas a rotaGoogleMaps tem mais pontos do que a rotaServidor (ou a msm qtdade, mas nunca tem menos)
+		//a rotaGoogleMaps serah usada para detectar o "arrodeio"
+		//o ponto de correcao serah adicionado a rotaServidor (que serah enviada novamente ao google maps, desta vez evitando arrodeio)
 		
-		//teste
-//		new PainelTesteRotas(rotaServidor, rotaGoogleMaps,"tiraArrodeio(), azul:rotaServidor , vermelho:rotaGoogleMaps");
-		System.out.println("ARRODEIO: ");
+//		/*teste*/new PainelTesteRotas(rotaServidor, rotaGoogleMaps,"tiraArrodeio(), azul:rotaServidor , vermelho:rotaGoogleMaps");
+		/*teste*/System.out.println("ARRODEIO: ");
 		
 		//DETECTA
 		boolean temArrodeio = false;
@@ -60,23 +59,23 @@ public class LogicaRotaSegura {
 			Ponto p1 = pontos.get(i); //p1 é cada uma das coordenadas de toda a rotaGoogleMaps
 			for(int j=i+1; j<pontos.size(); j++){
 				Ponto p2 = pontos.get(j); //p2 é cada uma das coordenadas subsequentes à p1
-				double distReta = new SegmentoReta(p1,p2).getComprimento(); //distancia entre p1 e p2 em linha reta
+				double distReta = new SegmentoReta(p1,p2).comprimento(); //distancia entre p1 e p2 em linha reta
 				
 				//trecho de p1 até p2
-				Rota trecho = new Rota();
+				Caminho trecho = new Caminho();
 				for(int k=i; k<=j; k++){
-					trecho.add(pontos.get(k));
+					trecho.append(pontos.get(k));
 				}
-				double distCurva = trecho.getDistanciaPercorrida(); //distancia entre p1 e p2 seguindo a curva da rota
+				double distCurva = trecho.distanciaPercorrida(); //distancia entre p1 e p2 seguindo a curva da rota
 				
 				double distLimite = distReta * TOLERANCIA_ARRODEIO; //distancia limite para o contorno não ser considerado "arrodeio"
-												   //este limite é arbitrário
+																	//este limite é arbitrário
 				if(distCurva > distLimite){
-					Ponto ida = p1; //p1 é começo de uma "arrodeio", agora tem q ver qual é o fim (p2 com menor distância reta até p1)
+					Ponto ida = p1; //p1 é começo de um "arrodeio", agora tem q ver qual é o fim (p2 com menor distância reta até p1)
 					
-					int indiceVolta = encontraFimArrodeio(rotaGoogleMaps, i, j); //identifica o fim da "arrodeio"
+					int indiceVolta = encontraFimArrodeio(rotaGoogleMaps, i, j); //identifica o fim do "arrodeio"
 					Ponto volta = pontos.get(indiceVolta);
-					System.out.println("ida="+i+", volta="+indiceVolta);
+					/*teste*/System.out.println("ida="+i+", volta="+indiceVolta);
 					
 					//CORRIGE
 					corrigeArrodeio(ida, volta, rotaServidor, rotaGoogleMaps); //corrige o problema
@@ -92,17 +91,17 @@ public class LogicaRotaSegura {
 		
 		//teste
 		if(!temArrodeio)
-			System.out.println("nao tem arrodeio");
+			/*teste*/System.out.println("nao tem arrodeio");
 		
 		return temArrodeio;
 	}
 	
-	private static int encontraFimArrodeio(Rota rotaGoogleMaps, int inicio, int fimPorEnquanto){
+	private static int encontraFimArrodeio(Caminho rotaGoogleMaps, int inicio, int fimPorEnquanto){
 		List<Ponto> pontos = rotaGoogleMaps.getPontos();
-		double menorDistancia = new SegmentoReta(pontos.get(inicio), pontos.get(fimPorEnquanto)).getComprimento();
+		double menorDistancia = new SegmentoReta(pontos.get(inicio), pontos.get(fimPorEnquanto)).comprimento();
 		int fim = fimPorEnquanto;
 		for(int i=fimPorEnquanto+1; i< pontos.size(); i++){
-			double distancia = new SegmentoReta(pontos.get(inicio), pontos.get(i)).getComprimento();
+			double distancia = new SegmentoReta(pontos.get(inicio), pontos.get(i)).comprimento();
 			menorDistancia = Math.min(menorDistancia,distancia);
 			if(menorDistancia == distancia)
 				fim = i;
@@ -110,19 +109,19 @@ public class LogicaRotaSegura {
 		return fim;
 	}
 	
-	private static void corrigeArrodeio(Ponto ida, Ponto volta, Rota rotaServidor, Rota rotaGoogleMaps){
+	private static void corrigeArrodeio(Ponto ida, Ponto volta, Caminho rotaServidor, Caminho rotaGoogleMaps){
 		
-		Rota rotaGoogleMapsAprox = rotaGoogleMaps.getRotaAproximada(rotaServidor, TOLERANCIA_APROXIMACAO); //pontos da rotaGoogleMaps que mais se aproximam dos pontos da rotaServidor
+		Caminho rotaGoogleMapsAprox = rotaGoogleMaps.getRotaAproximada(rotaServidor, MAX_APROXIMACAO); //pontos da rotaGoogleMaps que mais se aproximam dos pontos da rotaServidor
 		Ponto aux = ida;
-		while(!rotaGoogleMapsAprox.contains(aux) && aux != null){
+		while(!rotaGoogleMapsAprox.contem(aux) && aux != null){
 			aux = rotaGoogleMaps.pontoAnterior(aux); //caminhando pra tras na rotaGoogleMaps até encontrar um ponto que exista na rotaGoogleMapsAprox
 		}
 		
 		Ponto ptAnteriorGoogleMapsAproxServidor = aux; //pt na rotaGoogleMaps q está próximo a um ponto na rotaServidor e vem antes da ida
-		Ponto ptAnteriorServidor = rotaServidor.getPontoAproximado(ptAnteriorGoogleMapsAproxServidor, TOLERANCIA_APROXIMACAO);
+		Ponto ptAnteriorServidor = rotaServidor.getPontoPerto(ptAnteriorGoogleMapsAproxServidor, MAX_APROXIMACAO);
 		
 		if(ptAnteriorGoogleMapsAproxServidor == null || ptAnteriorServidor == null){
-			throw new RuntimeException("limite de aproximação excedido no método corrigeArrodeio()");
+			throw new RuntimeException("limite de aproximação excedido");
 		}
 		
 		Ponto pontoCausadorDoArrodeio = rotaServidor.pontoPosterior(ptAnteriorServidor); //o ponto que deve estar na ponta da ida e volta
@@ -170,7 +169,7 @@ public class LogicaRotaSegura {
 		if(p.equals(d)) 
 			return trechos;
 		SegmentoReta segmPD = new SegmentoReta(p,d);
-		double anguloPD = segmPD.getAngulo(); //angulo da reta que passa por P e D
+		double anguloPD = segmPD.angulo(); //angulo da reta que passa por P e D
 		double anguloExpansoes = Math.PI*2 / qt; //angulo entre as expansoes
 		
 		//expandir
@@ -183,7 +182,7 @@ public class LogicaRotaSegura {
 			SegmentoReta trecho = new SegmentoReta(p,pExpandido);
 			if(!trechosJaGerados.contains(trecho) 
 					/*teste*/ //aceita só as expansões que apontam pro destino
-					&& new SegmentoReta(trecho.getFim(), d).getComprimento() <= segmPD.getComprimento()/*teste*/){
+					&& new SegmentoReta(trecho.getFim(), d).comprimento() <= segmPD.comprimento()/*teste*/){
 				
 				trechos.add(trecho);
 				trechosJaGerados.add(trecho);
@@ -205,15 +204,15 @@ public class LogicaRotaSegura {
 		}
 	}
 	
-	public double perigo(Rota rota){
+	public double perigo(Caminho rota){
 		
-		if(rota.getDistanciaPercorrida() == 0)
+		if(rota.distanciaPercorrida() == 0)
 			return 0;
 		
 		double valor = 0;
 		for(SegmentoReta segm : rota.getSegmentosReta()){
 //			valor = Math.max(valor, perigoMaximo(segm)); //máximo
-			valor += perigoSomaPonderada(segm);
+			valor += perigoDistancia(segm); //perigo * distância 
 		}
 //		valor /= rota.getDistanciaPercorrida();
 //		valor /= kernel.getMaiorDensidade(); //dividido por maxDens pra ficar 'relativo', pra variar entre 0 e 1
@@ -285,7 +284,7 @@ public class LogicaRotaSegura {
 	 * Soma o valor de perigo de cada célula cordada pelo Segmento.
 	 * Cada valor é multiplicado (ponderado) pelo tamanho do segmento que passa em cima da célula
 	 */
-	private double perigoSomaPonderada(SegmentoReta segm){
+	private double perigoDistancia(SegmentoReta segm){
 		
 		Rectangle bounds = kernel.getBounds();
 		double[][] dens = kernel.getDensidadeGrid();
@@ -295,7 +294,7 @@ public class LogicaRotaSegura {
 		int xIni = (int)((segm.getInicio().x - bounds.x) / node); //coluna na matriz de densidades onde se encontra o ponto inicial do segmento
 		int xFim = (int)((segm.getFim().x - bounds.x) / node); //coluna do ponto final
 		int yIni = (int)((segm.getInicio().y - bounds.y) / node); //linha do ponto inicial
-		int yFim = (int)((segm.getFim().y - bounds.y) / node); //linhado ponto final
+		int yFim = (int)((segm.getFim().y - bounds.y) / node); //linha do ponto final
 		
 		//se o fim for maior q o início, inverte
 		if(xIni > xFim){ int aux=xIni; xIni=xFim; xFim=aux;}
@@ -349,7 +348,7 @@ public class LogicaRotaSegura {
 			
 			if(celula.contains(ini) && celula.contains(fim)){
 				//o segmento está completamente contido na célula
-				tam = segm.getComprimento();
+				tam = segm.comprimento();
 			}else{
 				
 				if(celula.contains(ini) || celula.contains(fim)){
@@ -363,8 +362,8 @@ public class LogicaRotaSegura {
 						fora = ini;
 					}
 						
-					if(new SegmentoReta(intersecoes.get(0), fora).getComprimento() 
-							> new SegmentoReta(intersecoes.get(1), fora).getComprimento())
+					if(new SegmentoReta(intersecoes.get(0), fora).comprimento() 
+							> new SegmentoReta(intersecoes.get(1), fora).comprimento())
 						intersecoes.remove(0); //remove o q tá mais longe do FORA
 					else
 						intersecoes.remove(1);
@@ -372,7 +371,7 @@ public class LogicaRotaSegura {
 					intersecoes.add(dentro); //coloca o DENTRO no lugar do q foi removido
 				}
 				
-				tam = new SegmentoReta(intersecoes.get(0), intersecoes.get(1)).getComprimento();
+				tam = new SegmentoReta(intersecoes.get(0), intersecoes.get(1)).comprimento();
 			
 			}
 		}
@@ -386,8 +385,8 @@ public class LogicaRotaSegura {
 	private List<Ponto> listaIntersecoes(SegmentoReta reta, Rectangle retangulo){
 		Set<Ponto> intersecoes = new HashSet<Ponto>(); //usando um Set pra descartar os pontos idênticos (se a reta passar no canto da célula, vão ter 2 idênticos, ex: NORTE e OESTE, se for no canto superior esquerdo)
 		
-		double a = reta.getCoefA();
-		double b = reta.getCoefB();
+		double a = reta.coefA();
+		double b = reta.coefB();
 		if(!Double.isInfinite(a) && !Double.isInfinite(b)){
 			double corte;
 			//norte

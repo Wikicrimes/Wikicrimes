@@ -151,7 +151,7 @@ public class ServletImagemMapa extends HttpServlet {
 		
 		//filtro crimes
 		FiltroForm filtro = (FiltroForm)sessao.getAttribute("filtroForm");
-		im.setFiltro(filtro.getMapaParametros());
+		im.setFiltro(filtro.getFiltroStringMap());
 //		/*teste*/ System.out.println("filtro setado: " + im.getFiltro());
 		
 		service.save(im);

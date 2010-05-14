@@ -396,7 +396,8 @@
 			contrev = 0;
 			//TODO garantir qo mapa de kernel teja ativado
 			var url = constroiURLRotaPrimeiraVez();
-			 	  	//url += boundsUrlParam();
+			 	  	//url += boundsPixelUrlParams();
+			 	  	//url += '&zoom=' + zoom;
 			var req = enviaRequisicaoRotaSegura(url);
 			recebeRespostaRotaSegura(req);
       }
@@ -429,8 +430,10 @@
       
       function enviaRequisicaoRotaSegura(params) {
 
+    	var dirn = contrev == 0? dirn1 : dirnRotaSegura;
+    	
       	//parametros q sempre são enviados
-		var url = "status=" + dirnRotaSegura.getStatus().code + 
+		var url = "status=" + dirn.getStatus().code + 
 	  	   		  "&contRevisao=" + contrev; 
     	  
 		//parametros adicionais
@@ -486,8 +489,10 @@
 			if (http_request.readyState == 4 && http_request.status == 200) {
 				limpaRotaAnterior();
 				var documento = http_request.responseText;
-				//console.log('documento, no metodo recebeRespostaRotaSegura():' + documento);
-				var linhas = documento.split("\n");
+				//console.log('documento:' + documento);
+				var linhas = documento.split("\r\n");
+				//console.log('linhas.length:' + linhas.length);
+
 
 				if(linhas[0] != 'erro'){ 
 					//carrega rota no GoogleMaps
@@ -507,18 +512,18 @@
 					}
 
 					if(linhas[1] != "fim"){
-						//console.log('chama enviaRotaProServletEEsperaResposta, linhas[1]: ' + linhas[1]);
 						rotaLoadListener = GEvent.addListener(dirnRotaSegura,"load", enviaRotaProServletEEsperaResposta); 
 						//o listener é pq so pode acessar a rota depois q o "loadFromWaypoints" acima for concluído
 					}
 					
 					dirnRotaSegura.loadFromWaypoints(rotaSegura ,{getPolyline:true});
 				}
-				
+
 				if(linhas[1] == "fim"){
 					//última resposta, não se comunica mais com o servlet
 					calculandoRota = false;
-					//console.log("fim, respostas do GoogleMaps="+contrev);
+					//alert("fim, contrev="+contrev);
+					//console.log("fim, contrev="+contrev);
 					//console.log('continuaTeste(), documento: ' + documento);
 					
 					/*teste*/if(testeCalcRotas)
@@ -530,14 +535,13 @@
 		function enviaRotaProServletEEsperaResposta(){
 			GEvent.removeListener(rotaLoadListener);
 			if(calculandoRota){
-				//console.log('enviaRotaProServletEEseraResposta()');
+				//alert('enviaRotaProServletEEseraResposta(), contrev=' + contrev);
+				//console.log('enviaRotaProServletEEseraResposta(), contrev=' + contrev);
 				var url = constroiURLRota();
 				var req = enviaRequisicaoRotaSegura(url);
 				recebeRespostaRotaSegura(req);
 			}
 		}
-
-
 
 
 		//******************************************************************
@@ -595,6 +599,8 @@
 			if (http_request.readyState == 4 && http_request.status == 200) {
 				var resposta = http_request.responseText;
 				var cenario = resposta.split("\t");
+				//alert("resposta: " + resposta);
+				//alert("cenario: " + cenario);
 
 				var cenario = {
 						centroX : Number(cenario[2]),
@@ -666,7 +672,6 @@
 			if (http_request.readyState == 4 && http_request.status == 200) {
 				var resposta = http_request.responseText;
 				//console.log('continuaTeste(), resposta: ' + resposta);
-
 				if(resposta != 'fim'){
 					setTimeout(calculaRotaSegura,3000);
 				}else{

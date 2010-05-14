@@ -11,7 +11,7 @@ import javax.swing.JFrame;
 
 import org.wikicrimes.util.kernelMap.LogicaRotaSegura;
 import org.wikicrimes.util.kernelMap.Ponto;
-import org.wikicrimes.util.kernelMap.Rota;
+import org.wikicrimes.util.kernelMap.Caminho;
 
 
 public class TesteRefinamento extends TesteRotas{
@@ -50,12 +50,12 @@ public class TesteRefinamento extends TesteRotas{
 
 class PainelTesteRefinamento extends PainelTeste {
 
-	Rota rota;
-	Rota vertices;
+	Caminho rota;
+	Caminho vertices;
 	
 	public PainelTesteRefinamento(){
-		rota = new Rota();
-		vertices = new Rota();
+		rota = new Caminho();
+		vertices = new Caminho();
 		removeMouseListener(getMouseListeners()[0]); //tira o TesteVerticeListener
 		addMouseListener(new TesteRefMouseListener());
 		addKeyListener(new TesteRefKeyListener());
@@ -70,9 +70,9 @@ class PainelTesteRefinamento extends PainelTeste {
 			int y = (int)yTesteToGM(mouse.y); 
 			
 			if(e.getButton() == MouseEvent.BUTTON3){
-				vertices.add(new Ponto(x, y));
+				vertices.append(new Ponto(x, y));
 			}else if(e.getButton() == MouseEvent.BUTTON1){
-				rota.add(new Ponto(x, y));
+				rota.append(new Ponto(x, y));
 			}else{
 				
 			}

@@ -24,7 +24,7 @@
 			<tr>
 				<td width="40px"></td>
 				<td><h:outputLink value="#"
-					onclick="displayMessage('./login.html', 300, 245,'Login');return false">
+					onclick="mostrarPainelLogin('./login.html');">
 					<h:outputText value="Login" />
 				</h:outputLink> |</td>
 				<td><h:outputLink value="#"
@@ -135,8 +135,8 @@
 				function loginCasoPrecise(tipo, msg){
 					var precisaLogin = #{usuario == null}; 
 					if(precisaLogin)
-						displayMessage('./login.html?mensagemLogin=' + msg + '&amp;'+
-								'tipoRegistro='+tipo,300, 245,'Login');
+						mostrarPainelLogin('./login.html?mensagemLogin=' + msg + '&amp;'+
+								'tipoRegistro='+tipo);
 					return precisaLogin;
 				}
 
@@ -162,7 +162,7 @@
 					    startShape();
 					}
 					else{
-						displayMessage('./login.html?mensagemLogin=#{messages["usuario.informacao.area"]}&amp;tipoRegistro=3',300, 245,'Login');
+						mostrarPainelLogin('./login.html?mensagemLogin=#{messages["usuario.informacao.area"]}&amp;tipoRegistro=3');
 					}
 				}
 
@@ -170,7 +170,7 @@
 					if(#{usuario != null}){
 						displayMessage('./geradorEmbedded.html', 900, 510,'#{messages["mapaEmbedded.estado.mapa"]}');
 					}else{
-						displayMessage('./login.html',300, 245,'Login');
+						mostrarPainelLogin('./login.html');
 					}	
 				}
 

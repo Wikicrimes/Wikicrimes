@@ -26,10 +26,10 @@
 <script type="text/javascript">
 	/* <![CDATA[ */
 		function chamaModal(){
-			parent.displayMessage('./login.html?idRelato='+'#{mostrarDadosRelatoForm.relato.chave}', 300, 245,'Login');
+			parent.mostrarPainelLogin('./login.html?idRelato='+'#{mostrarDadosRelatoForm.relato.chave}');
 		}	
 		function chamaModalIndicacao(){
-			parent.displayMessage('./login.html?mensagemLogin=#{messages['mostrar.dados.link.login']}&amp;chaveCr='+'#{mostrarDadosRelatoForm.relato.chave}&amp;relatoIndicacao=ok', 300, 245,'Login');
+			parent.mostrarPainelLogin('./login.html?mensagemLogin=#{messages['mostrar.dados.link.login']}&amp;chaveCr='+'#{mostrarDadosRelatoForm.relato.chave}&amp;relatoIndicacao=ok');
 		}		
 		function detectBrowser()
 		{

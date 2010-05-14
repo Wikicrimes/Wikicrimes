@@ -479,7 +479,7 @@
 				</span>
 			</p>
 			<p align="right" >
-				<h:outputLink value="#" onclick="window.stop();displayMessage('./login.html', 300, 245,'Login');return false" rendered="#{(filtroForm.primeiraVez eq 'true') ? 'true' : 'false'}">
+				<h:outputLink value="#" onclick="window.stop();mostrarPainelLogin('./login.html');" rendered="#{(filtroForm.primeiraVez eq 'true') ? 'true' : 'false'}">
 					<h:outputText value="Login" style="margin:5px; font-size:14px; font-weight:bold; color:#87CEFA; background-color:#3A5FCD; float:right; "/>
 				</h:outputLink>
 				<br/>

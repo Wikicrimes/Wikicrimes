@@ -456,6 +456,10 @@ public class Crime extends BaseObject {
 		this.ultimaCredibilidade = ultimaCredibilidade;
 	}
 	
+	@Override
+	public String toString() {
+		return "lat:" + latitude + ", lng:" + longitude;
+	}
 }
 
 

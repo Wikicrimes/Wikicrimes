@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,11 +17,10 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.wikicrimes.service.CrimeService;
-import org.wikicrimes.util.rpx.Rpx;
 import org.wikicrimes.model.*;
-import org.wikicrimes.web.*;
-import org.wikicrimes.service.*;
+import org.wikicrimes.service.UsuarioService;
+import org.wikicrimes.util.rpx.Rpx;
+import org.wikicrimes.web.FiltroForm;
 
 public class ServletRpx extends HttpServlet {
     
@@ -27,12 +28,12 @@ public class ServletRpx extends HttpServlet {
 	/**
      * The RPX base URL.
     */
-    private static final String RPX_BASEURL = "https://wikicrimes.rpxnow.com/";  
+    private static final String RPX_BASEURL = "https://wikicrimes2.rpxnow.com/";  
     /**
      * Your secret API code.
      */
-    private static final String RPX_APIKEY = "28185ff566a3eaf1cbbd9395f4b1e422b564afb6";
- 
+    private static final String RPX_APIKEY = "156d45ece00ed923cad6daab2b717f9dbb5b5b82";
+    
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
@@ -71,7 +72,19 @@ public class ServletRpx extends HttpServlet {
         ApplicationContext springContext = WebApplicationContextUtils.getWebApplicationContext(getServletContext());  
 		UsuarioService usuarioService = (UsuarioService)springContext.getBean("usuarioService");
 		String email = openIdMap.get("email");
-        Usuario userResult = usuarioService.getUsuario(email);
+		Usuario userResult = null;
+		if(email!=null && !email.equals(""))
+			userResult = usuarioService.getUsuario(email);
+		else{
+			email="";
+        	Usuario userSearch = new Usuario();
+        	userSearch.setExternalUrlRpx(openIdMap.get("identifier"));	
+        	List<BaseObject> list = usuarioService.find(userSearch);
+        	if(list != null && list.size() == 1){
+        		userResult = (Usuario)list.get(0);
+        	}
+        	 
+        }
 		if(userResult == null){		
 	        
 	        HttpSession session = request.getSession();

@@ -3,21 +3,23 @@ package org.wikicrimes.servlet;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.hibernate.Hibernate;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.wikicrimes.model.*;
+import org.wikicrimes.model.BaseObject;
+import org.wikicrimes.model.Perfil;
+import org.wikicrimes.model.Usuario;
 import org.wikicrimes.service.UsuarioService;
 import org.wikicrimes.util.rpx.Rpx;
 import org.wikicrimes.web.FiltroForm;
@@ -79,9 +81,9 @@ public class ServletRpx extends HttpServlet {
 			email="";
         	Usuario userSearch = new Usuario();
         	userSearch.setExternalUrlRpx(openIdMap.get("identifier"));	
-        	List<BaseObject> list = usuarioService.find(userSearch);
+        	List<Usuario> list = usuarioService.find(userSearch);
         	if(list != null && list.size() == 1){
-        		userResult = (Usuario)list.get(0);
+        		userResult = list.get(0);
         	}
         	 
         }

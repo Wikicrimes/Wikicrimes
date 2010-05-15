@@ -98,6 +98,15 @@ public class UsuarioServiceImpl extends GenericCrudServiceImpl implements Usuari
 		
 		return result;
 	}
+	
+	@Override
+	public List<Usuario> find(Usuario u){
+		List<Usuario> usuarios = find(u);
+		for (Usuario usuario : usuarios) {
+			Hibernate.initialize(usuario.getPerfil());
+		}
+		return usuarios;
+	}
 
 	private void criarReputacao(Usuario usuario) 
 	{

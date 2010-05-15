@@ -26,4 +26,5 @@ public interface UsuarioService extends GenericCrudService {
 	public void excluirAreaObservacao(AreaObservacao area);
 
 	public Usuario getUsuarioKey(String key);
+	List<Usuario> find(Usuario u);
 }

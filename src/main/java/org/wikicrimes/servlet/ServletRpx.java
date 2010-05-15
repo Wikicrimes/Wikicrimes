@@ -81,9 +81,9 @@ public class ServletRpx extends HttpServlet {
 			email="";
         	Usuario userSearch = new Usuario();
         	userSearch.setExternalUrlRpx(openIdMap.get("identifier"));	
-        	List<Usuario> list = usuarioService.find(userSearch);
+        	List<BaseObject> list = usuarioService.find(userSearch);
         	if(list != null && list.size() == 1){
-        		userResult = list.get(0);
+        		userResult = (Usuario)list.get(0);
         	}
         	 
         }

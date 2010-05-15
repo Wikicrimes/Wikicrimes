@@ -100,10 +100,11 @@ public class UsuarioServiceImpl extends GenericCrudServiceImpl implements Usuari
 	}
 	
 	@Override
-	public List<Usuario> find(Usuario u){
-		List<Usuario> usuarios = find(u);
-		for (Usuario usuario : usuarios) {
-			Hibernate.initialize(usuario.getPerfil());
+	public List<BaseObject> find(Usuario u){
+		List<BaseObject> usuarios = super.find(u);
+		for (BaseObject usuario : usuarios) {
+			Usuario u2 = (Usuario) usuario;
+			Hibernate.initialize(u2.getPerfil());
 		}
 		return usuarios;
 	}

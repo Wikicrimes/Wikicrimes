@@ -93,8 +93,8 @@ public class ServletRpx extends HttpServlet {
 	        FiltroForm filtroForm = (FiltroForm)session.getAttribute("filtroForm");
 	        
 	        Usuario usuario = new Usuario();
-	        usuario.setPrimeiroNome(openIdMap.get("name.givenName"));
-	        usuario.setUltimoNome(openIdMap.get("name.familyName"));
+	        usuario.setPrimeiroNome(openIdMap.get("name.givenName")==null?"":openIdMap.get("name.givenName"));
+	        usuario.setUltimoNome(openIdMap.get("name.familyName")==null?"":openIdMap.get("name.familyName"));
 	        usuario.setSenha("");
 	        usuario.setEmail(email);
 	        usuario.setCidade("");

@@ -246,6 +246,16 @@ public class UsuarioForm extends GenericForm {
 		return returnPage;
 	}
 
+	public String updateEmail() {
+		Usuario usuarioBD = (Usuario) service.get(((Usuario) this
+				.getSessionScope().get("usuario")).getIdUsuario());
+		
+		usuarioBD.setEmail(getUsuario().getEmail());
+		
+		service.update(usuarioBD);
+		return null;
+	}
+	
 	public String update() {
 		String returnPage = FAILURE;
 

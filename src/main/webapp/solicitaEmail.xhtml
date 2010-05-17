@@ -19,7 +19,12 @@
 	<body>
 
 	<f:view> <!-- locale="#{facesContext.externalContext.request.locale}"> -->
-		
+		<c:if test="#{usuario.email != ''}">
+			<script>
+				parent.podeFecharModal = true;
+				parent.closeMessage();
+			</script>
+		</c:if>		
 		<f:loadBundle var="messages" basename="messages" />
 		<h:panelGrid border="0" columns="1"
 			style="font-size: 11px; font-family: sans-serif; width:100%;text-align:left"
@@ -34,12 +39,14 @@
 						<h:outputText  value="#{messages['message.request.email1']} #{messages['message.request.email2']}"/>
 				</div>
 				<br/><br/>
+				<h:message styleClass="errorMessage" for="email" />
+				<br/>
 				<h:outputText value="#{messages['usuario.email']}:" />
 				<h:inputText required="true" value="#{usuarioForm.usuario.email}"
 							id="email" size="40"/>
 				<br/>		
-				<t:commandButton id="btnRegistrar" forceId="true"
-						value="#{messages['usuario.btn.salvar']}" onclick="getCityLatLng(); return false;" styleClass="button" />
+				<t:commandButton id="btnRegistrar" forceId="true" action="#{usuarioForm.updateEmail}"
+						value="#{messages['usuario.btn.salvar']}" styleClass="button" />
 					
 
 			</h:form>

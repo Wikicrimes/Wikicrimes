@@ -14,6 +14,7 @@
 	<f:loadBundle var="messages" basename="messages" />
 	<script>
 	 var chamouLoadMapa = false;
+	 var podeFecharModal = true;
 	 function loadMapa() {
 	 		chamouLoadMapa=true;	 		
 				<c:if test="#{not empty usuario}">
@@ -100,7 +101,7 @@
 			} else {
 				alert('#{messages["webapp.maps.nao.compativel"]}');
 			}
-
+			
 			function mostrarModalSolicitandoEmail(){
 				podeFecharModal = false;
 				displayMessage('./solicitaEmail.html', 420, 240,'#{messages["message.wikicrimes"]}');

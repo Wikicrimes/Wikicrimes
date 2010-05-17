@@ -263,6 +263,9 @@ public class UsuarioForm extends GenericForm {
 		usuarioBD.setEmail(getUsuario().getEmail());
 		
 		service.update(usuarioBD);
+		System.out.println("[" + new Date() + "] "
+				+ email + " ,cadastrado pelo RPX, atualizou seu email...");
+		
 		return null;
 	}
 	

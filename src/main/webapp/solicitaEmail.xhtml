@@ -29,10 +29,7 @@
 		<h:panelGrid border="0" columns="1"
 			style="font-size: 11px; font-family: sans-serif; width:100%;text-align:left"
 			cellpadding="0" cellspacing="0">
-<c:if test="#{not empty message}">
-							<h:outputText value="*#{message}" styleClass="errorMessage" />
-	</c:if>
-			
+					
 			<h:form id="usuarioForm">
 				<t:saveState value="#{usuarioForm.usuario.email}" />
 				<div style="text-align:justify;font-size: 12px; font-family: sans-serif;width:380px;">
@@ -40,11 +37,14 @@
 				</div>
 				<br/><br/>
 				<h:message styleClass="errorMessage" for="email" />
+				<c:if test="#{not empty message}">
+					<h:outputText value="*#{message}" styleClass="errorMessage" />
+				</c:if>
 				<br/>
 				<h:outputText value="#{messages['usuario.email']}:" />
 				<h:inputText required="true" value="#{usuarioForm.usuario.email}"
 							id="email" size="40">
-					<t:validateEmail for="email" />
+					<t:validateEmail/>
 				</h:inputText>			
 				<br/>		
 				<t:commandButton id="btnRegistrar" forceId="true" action="#{usuarioForm.updateEmail}"

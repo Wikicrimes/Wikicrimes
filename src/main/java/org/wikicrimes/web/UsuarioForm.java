@@ -249,7 +249,17 @@ public class UsuarioForm extends GenericForm {
 	public String updateEmail() {
 		Usuario usuarioBD = (Usuario) service.get(((Usuario) this
 				.getSessionScope().get("usuario")).getIdUsuario());
-		
+		Usuario userResult = service.getUsuario(getUsuario().getEmail());
+		String email = getUsuario().getEmail();
+		getUsuario().setEmail("");
+		if (userResult != null) {
+			// se nao for convidado nao passa
+			if (userResult.getPerfil().getIdPerfil() != Perfil.CONVIDADO) {
+				addMessage("erro.email.existente", "");
+				return null;
+			}	
+		}		
+		getUsuario().setEmail(email);
 		usuarioBD.setEmail(getUsuario().getEmail());
 		
 		service.update(usuarioBD);

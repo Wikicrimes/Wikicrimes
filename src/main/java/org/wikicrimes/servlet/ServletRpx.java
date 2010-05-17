@@ -74,15 +74,19 @@ public class ServletRpx extends HttpServlet {
         ApplicationContext springContext = WebApplicationContextUtils.getWebApplicationContext(getServletContext());  
 		UsuarioService usuarioService = (UsuarioService)springContext.getBean("usuarioService");
 		String email = openIdMap.get("email");
-		if(email == null)
-			email="";	
-    	Usuario userSearch = new Usuario();
-    	Usuario userResult = null;
-    	userSearch.setExternalUrlRpx(openIdMap.get("identifier"));	
-    	List<BaseObject> list = usuarioService.find(userSearch);
-    	if(list != null && list.size() == 1){
-    		userResult = (Usuario)list.get(0);
-    	}
+		Usuario userResult = null;
+		if(email!=null && !email.equals(""))
+			userResult = usuarioService.getUsuario(email);
+		else{
+			email="";
+        	Usuario userSearch = new Usuario();
+        	userSearch.setExternalUrlRpx(openIdMap.get("identifier"));	
+        	List<BaseObject> list = usuarioService.find(userSearch);
+        	if(list != null && list.size() == 1){
+        		userResult = (Usuario)list.get(0);
+        	}
+        	 
+        }
         
 		if(userResult == null){		
 	        

@@ -43,7 +43,9 @@
 				<br/>
 				<h:outputText value="#{messages['usuario.email']}:" />
 				<h:inputText required="true" value="#{usuarioForm.usuario.email}"
-							id="email" size="40"/>
+							id="email" size="40">
+					<t:validateEmail for="email" />
+				</h:inputText>			
 				<br/>		
 				<t:commandButton id="btnRegistrar" forceId="true" action="#{usuarioForm.updateEmail}"
 						value="#{messages['usuario.btn.salvar']}" styleClass="button" />

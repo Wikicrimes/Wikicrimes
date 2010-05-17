@@ -42,7 +42,8 @@
 
 		    var podeMudarModoKernel = true; //pq qd abre a janela arearisco, tem que ficar sempre kernel desligado
 
-			function ativaMapaKernel(){
+			function ativaMapaKernel(primeiraVez){
+				//console.log("ativaMapaKernel()");
 			    //if(!aindaCarregando && !kernelEnable){
 			    if(!kernelEnable){
 				  	kernelEnable = true;
@@ -53,8 +54,10 @@
 				  	podeCarregarCrimes=true;
 				  	if(statusLegenda=='visivel')
 						wikicrimesDiv.innerHTML = htmlLegenda();
-				  	atualizaDensidades();
-					pintaMapaKernel();
+					if(!primeiraVez){
+				  		atualizaDensidades();
+						pintaMapaKernel();
+					}
 				  	//comentar as 2 linhas abaixo pra desativar a funcionalidade de Areas de Risco
 					if(!isJanelaAreaRiscoVisible())
 				  		ativaMarcacaoHotspot();
@@ -113,6 +116,7 @@
 			}
 			
 			function atualizaDensidades(){
+				//console.log("atualizaDensidades()");
 				var url = constroiURLMapaKernel();
 				var req = requisicaoGeraKernelMap(url);
 				if (req.readyState == 4 && req.status == 200){
@@ -227,8 +231,7 @@
 			}
 
 			function requisicaoGeraKernelMap(url) {
-				//alert("constroiRequisicaoRotaSegura()");
-				//alert("constroiRequisicaoRotaSegura(), url=\n" + url);
+				//console.log("requisicaoGeraKernelMap()");
 				//alert("contrev: " + contrev);
 			     http_request = GXmlHttp.create();
 			     if (http_request.overrideMimeType) {

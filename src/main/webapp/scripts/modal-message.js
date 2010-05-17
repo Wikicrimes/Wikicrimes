@@ -413,5 +413,9 @@ function displayMessage(url, width, height, titulo)
 
 function closeMessage()
 {
-    messageObj.close();
+	if(podeFecharModal)	
+		messageObj.close();
+	else{
+		alert(msgNaoPodeCancelar);
+	}	
 }

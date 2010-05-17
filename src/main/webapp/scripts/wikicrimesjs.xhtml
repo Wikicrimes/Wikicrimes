@@ -17,6 +17,9 @@
 	 function loadMapa() {
 	 		chamouLoadMapa=true;	 		
 				<c:if test="#{not empty usuario}">
+					<c:if test="#{usuario.email == ''}">
+						mostrarModalSolicitandoEmail();
+					</c:if>
 					<c:if test="#{usuario.cidade == null or usuario.cidade == ''}">
 						load(#{filtroForm.latMapa},#{filtroForm.lngMapa},#{filtroForm.zoomMapa});
 						return;
@@ -32,7 +35,7 @@
 	<script type="text/javascript"><!-- 
 	/* <![CDATA[ */
 		var googleMapsKey = "ABQIAAAAg4v-Pz31X7RpxlFPsEIYsRTazo9qQMtEEaWMpOq8Zpopb9nT3RT_PrvaAoazyXGxX2pPie38TEPKIQ";	
-			
+		var msgNaoPodeCancelar = '#{messages["nao.pode.cancelar"]}'; 	
 		if (GBrowserIsCompatible()) {
 			//*********************** Area INICIO ****************************
 			var labelArea = null;
@@ -97,6 +100,11 @@
 			} else {
 				alert('#{messages["webapp.maps.nao.compativel"]}');
 			}
+
+			function mostrarModalSolicitandoEmail(){
+				podeFecharModal = false;
+				displayMessage('./solicitaEmail.html', 420, 240,'#{messages["message.wikicrimes"]}');
+			}	
 					
 			function removerPoligono(){
 				estaRemovendoPoligono = true;

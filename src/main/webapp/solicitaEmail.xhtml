@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		
+		<link rel="stylesheet" type="text/css" href="./styles/wikicrimes.css"
+			title="default" />
+		</head>
+	<body>
+
+	<f:view> <!-- locale="#{facesContext.externalContext.request.locale}"> -->
+		
+		<f:loadBundle var="messages" basename="messages" />
+		<h:panelGrid border="0" columns="1"
+			style="font-size: 11px; font-family: sans-serif; width:100%;text-align:left"
+			cellpadding="0" cellspacing="0">
+<c:if test="#{not empty message}">
+							<h:outputText value="*#{message}" styleClass="errorMessage" />
+	</c:if>
+			
+			<h:form id="usuarioForm">
+				<t:saveState value="#{usuarioForm.usuario.email}" />
+				<div style="text-align:justify;font-size: 12px; font-family: sans-serif;width:380px;">
+						<h:outputText  value="#{messages['message.request.email1']} #{messages['message.request.email2']}"/>
+				</div>
+				<br/><br/>
+				<h:outputText value="#{messages['usuario.email']}:" />
+				<h:inputText required="true" value="#{usuarioForm.usuario.email}"
+							id="email" size="40"/>
+				<br/>		
+				<t:commandButton id="btnRegistrar" forceId="true"
+						value="#{messages['usuario.btn.salvar']}" onclick="getCityLatLng(); return false;" styleClass="button" />
+					
+
+			</h:form>
+			
+		</h:panelGrid>
+	
+	
+	</f:view>
+
+	
+
+</body>
+
+</html>

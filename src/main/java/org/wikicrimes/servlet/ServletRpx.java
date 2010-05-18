@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.hibernate.Hibernate;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.w3c.dom.Element;
@@ -69,7 +68,9 @@ public class ServletRpx extends HttpServlet {
                 }
             } else
                 openIdMap.put(n.getNodeName(), n.getTextContent());
-        }        
+        }
+        //System.out.println(openIdMap);
+        
      // checa se ja existe email cadastrado ou se e convidado
         ApplicationContext springContext = WebApplicationContextUtils.getWebApplicationContext(getServletContext());  
 		UsuarioService usuarioService = (UsuarioService)springContext.getBean("usuarioService");
@@ -88,7 +89,7 @@ public class ServletRpx extends HttpServlet {
         	 
         }
         
-		if(userResult == null){		
+		if(userResult == null && email !=null && !email.equals("")){		
 	        
 	        HttpSession session = request.getSession();
 	        FiltroForm filtroForm = (FiltroForm)session.getAttribute("filtroForm");
@@ -117,11 +118,19 @@ public class ServletRpx extends HttpServlet {
 	        usuarioService.insert(usuario);
 	        userResult = usuarioService.getUsuario(email);
 		}
-		System.out.println("[" + new Date() + "] "
-				+ email + " efetuou o login pelo RPX...");
 		HttpSession session = request.getSession();
-		session.setAttribute("usuario", userResult);
-        // Do something useful with them...
+		if(userResult!=null){
+			System.out.println("[" + new Date() + "] "
+					+ email + " efetuou o login pelo RPX...");
+			
+			
+			session.setAttribute("usuario", userResult);
+	       
+		}else{	
+			session.setAttribute("rpx_usuario_sem_email","sim");
+			session.setAttribute("rpx_provider",openIdMap.get("providerName"));
+			
+		}
         response.sendRedirect(request.getRequestURL().toString().replace("/ServletRpx", ""));
     }
 }

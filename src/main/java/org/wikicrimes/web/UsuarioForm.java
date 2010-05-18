@@ -89,6 +89,9 @@ public class UsuarioForm extends GenericForm {
 
 	public UsuarioForm() 
 	{
+		HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(true);
+		session.removeAttribute("rpx_usuario_sem_email");
+		session.removeAttribute("rpx_provider");
 		setUsuario((Usuario) this.getSessionScope().get("usuario"));
 		estados = getEstadosBrasileiros();
 		

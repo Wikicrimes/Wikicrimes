@@ -19,36 +19,21 @@
 	<body>
 
 	<f:view> <!-- locale="#{facesContext.externalContext.request.locale}"> -->
-		<c:if test="#{usuario.email != ''}">
-			<script>
-				parent.podeFecharModal = true;
-				parent.closeMessage();
-			</script>
-		</c:if>		
+		
 		<f:loadBundle var="messages" basename="messages" />
 		<h:panelGrid border="0" columns="1"
-			style="font-size: 11px; font-family: sans-serif; width:100%;text-align:left"
+			style="font-size: 11px; font-family: sans-serif; width:100%;text-align:center"
 			cellpadding="0" cellspacing="0">
 					
 			<h:form id="usuarioForm">
 				<t:saveState value="#{usuarioForm.usuario.email}" />
 				<div style="text-align:justify;font-size: 12px; font-family: sans-serif;width:380px;">
-						<h:outputText  value="#{messages['message.request.email1']} #{messages['message.request.email2']}"/>
+						<h:outputText  value="#{messages['message.request.email1']} #{rpx_provider} #{messages['message.request.email2']} "/><a href="#" onclick="parent.displayMessage('./registrarUsuario.html', 600, 350,'#{messages['usuario.registrar']}');return false;"> #{messages["mostrarinformacoes.clique"]} </a>.
 				</div>
 				<br/><br/>
-				<h:message styleClass="errorMessage" for="email" />
-				<c:if test="#{not empty message}">
-					<h:outputText value="*#{message}" styleClass="errorMessage" />
-				</c:if>
-				<br/>
-				<h:outputText value="#{messages['usuario.email']}:" />
-				<h:inputText required="true" value="#{usuarioForm.usuario.email}"
-							id="email" size="40">
-					<t:validateEmail/>
-				</h:inputText>			
+				
 				<br/>		
-				<t:commandButton id="btnRegistrar" forceId="true" action="#{usuarioForm.updateEmail}"
-						value="#{messages['usuario.btn.salvar']}" styleClass="button" />
+				<input type="button" id="btnRegistrar" onclick="parent.displayMessage('./registrarUsuario.html', 600, 350,'#{messages['usuario.registrar']}');return false;" value="ok" class="button" />
 					
 
 			</h:form>

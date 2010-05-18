@@ -16,20 +16,21 @@
 	 var chamouLoadMapa = false;
 	 var podeFecharModal = true;
 	 function loadMapa() {
-	 		chamouLoadMapa=true;	 		
-				<c:if test="#{not empty usuario}">
-					<c:if test="#{usuario.email == ''}">
-						mostrarModalSolicitandoEmail();
-					</c:if>
-					<c:if test="#{usuario.cidade == null or usuario.cidade == ''}">
-						load(#{filtroForm.latMapa},#{filtroForm.lngMapa},#{filtroForm.zoomMapa});
-						return;
-					</c:if>
-					load(#{usuario.lat},#{usuario.lng},13);
-						
-				</c:if>    
+	 		chamouLoadMapa=true;
+	 		
+			<c:if test="#{not empty usuario}">					
+				<c:if test="#{usuario.cidade == null or usuario.cidade == ''}">
+					load(#{filtroForm.latMapa},#{filtroForm.lngMapa},#{filtroForm.zoomMapa});
+					return;
+				</c:if>
+				load(#{usuario.lat},#{usuario.lng},13);
+					
+			</c:if>    
 			<c:if test="#{empty usuario}">
 				load(#{filtroForm.latMapa},#{filtroForm.lngMapa},#{filtroForm.zoomMapa});
+				if("#{rpx_usuario_sem_email}" == "sim"){
+					mostrarModalSolicitandoEmail();
+		 		}		
 			</c:if>
 		} 
 	</script>
@@ -102,9 +103,9 @@
 				alert('#{messages["webapp.maps.nao.compativel"]}');
 			}
 			
-			function mostrarModalSolicitandoEmail(){
-				podeFecharModal = false;
-				displayMessage('./solicitaEmail.html', 420, 240,'#{messages["message.wikicrimes"]}');
+			function mostrarModalSolicitandoEmail(){				
+				
+				displayMessage('./falhaLoginRpx.html', 420, 200,'#{messages["message.wikicrimes"]}');
 			}	
 					
 			function removerPoligono(){

@@ -37,8 +37,8 @@
   <tr>
     <td height="44">&nbsp;</td>
     <td>
-	<div align="justify"><span class="style6">${usuario.primeiroNome} (${usuario.email}) pediu que voc&ecirc; desse sua contribui&ccedil;&atilde;o avaliando um 
-	registro(#if($crime.tipoCrime.idTipoCrime ne 5)
+	<div align="justify"><span class="style6">${usuario.primeiroNome} (${usuario.email}) pediu que voc&ecirc; desse sua contribui&ccedil;&atilde;o avaliando a credibilidade de um registro de
+		(#if($crime.tipoCrime.idTipoCrime ne 5)
 			${tipoCrime} a ${tipoVitima}
 		#end
 		#if($crime.tipoCrime.idTipoCrime eq 5)
@@ -71,7 +71,8 @@
   </tr>
   <tr>
     <td>&nbsp;</td>
-    <td class="style1"><div align="justify">Clique no bot&atilde;o acima ou <span class="style3"><a href="http://www.wikicrimes.org/main.html?idcrime=${crime.chave}&idconf=${confirmacao.idConfirmacao}">aqui</a></span> para ver o registro na &iacute;ntegra e deixar sua avalia&ccedil;&atilde;o registrada. Sua avalia&ccedil;&atilde;o &eacute; fundamental para que o registro de ${usuario.primeiroNome} tenha credibilidade no sistema, por este motivo voc&ecirc; foi indicado para colaborar.</div></td>
+    <td class="style1"><div align="justify">Clique no bot&atilde;o acima ou <span class="style3"><a href="http://www.wikicrimes.org/main.html?idcrime=${crime.chave}&idconf=${confirmacao.idConfirmacao}">aqui</a></span> para ver o registro na &iacute;ntegra e deixar sua avalia&ccedil;&atilde;o registrada.Sua avalia&ccedil;&atilde;o , positiva ou negativa, afeta a credibilidade do registro do crime e consequentemente a reputa&ccedil;&atilde;o da pessoa que o registrou no
+WikiCrimes.</div></td>
     <td>&nbsp;</td>
   </tr>
   <tr>

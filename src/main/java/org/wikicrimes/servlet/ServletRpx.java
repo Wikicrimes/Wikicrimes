@@ -100,7 +100,7 @@ public class ServletRpx extends HttpServlet {
 	        usuario.setSenha("");
 	        usuario.setEmail(email);
 	        usuario.setCidade("");
-	        usuario.setIdiomaPreferencial("pt");
+	        usuario.setIdiomaPreferencial(request.getLocale().getLanguage());
 	        usuario.setPais(filtroForm.getPais());
 	        usuario.setDataHoraRegistro(new Date());
 	        usuario.setConfAutomatica(false);
@@ -118,6 +118,7 @@ public class ServletRpx extends HttpServlet {
 	        usuarioService.insert(usuario);
 	        userResult = usuarioService.getUsuario(email);
 		}
+		
 		HttpSession session = request.getSession();
 		if(userResult!=null){
 			System.out.println("[" + new Date() + "] "

@@ -35,8 +35,8 @@
       				//alert(place.address);
                 	document.getElementById("latitude").value=place.Point.coordinates[1];
                 	document.getElementById("longitude").value=place.Point.coordinates[0];
-                	parent.map.setCenter(new parent.GLatLng(document.getElementById("latitude").value,document.getElementById("longitude").value),13);
-					document.getElementById("formUsuario").onsubmit = "return true;";
+                	parent.preparaRequisicaoMudandoData(new parent.GLatLng(document.getElementById("latitude").value,document.getElementById("longitude").value),13);
+                	document.getElementById("formUsuario").onsubmit = "return true;";
 	        		document.getElementById("formUsuario:btnSalvarCidadeInvisivel").click();
         	        	
                 }

@@ -36,7 +36,7 @@
                 	document.getElementById("latitude").value=place.Point.coordinates[1];
                 	document.getElementById("longitude").value=place.Point.coordinates[0];
                 	parent.map.setCenter(new parent.GLatLng(document.getElementById("latitude").value,document.getElementById("longitude").value),13);
-
+					document.getElementById("formUsuario").onsubmit = "return true;";
 	        		document.getElementById("formUsuario:btnSalvarCidadeInvisivel").click();
         	        	
                 }
@@ -62,7 +62,7 @@
 				<h:outputText value="*#{message}" styleClass="errorMessage" />
 			</c:if>
 			
-			<h:form id="formUsuario">
+			<h:form onsubmit="return false;" id="formUsuario">
 					
 				<div style="text-align:justify;font-size: 12px; font-family: sans-serif;width:380px;">
 					<h:outputText  value="#{messages['message.request.cidade']}"/>

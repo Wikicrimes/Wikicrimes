@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <Module>
-<ModulePrefs title="WikiCrimes Social" width="400" height="400" thumbnail="http://www.wikicrimes.org/images/widget/wikicrimes.PNG" screenshot="http://www.wikicrimes.org/images/widget/wikicrimes_propaganda.PNG" scrolling="true" author="Carlos Caminha" description="Versão do Wikicrimes.org para redes sociais, esta aplicação mostra crimes registrados pelos amigos do usuario corrente em um mapa do google maps." author_email="carlos.o.c.neto@gmail.com">
+<ModulePrefs title="WikiCrimes Social" width="400" height="400" thumbnail="http://www.wikicrimes.org/images/widget/wikicrimes.PNG" screenshot="http://www.wikicrimes.org/images/widget/wikicrimes_propaganda.PNG" scrolling="true" author="Carlos Caminha" description="Version of WikiCrimes for social networks, this application shows crimes recorded by friends of the current user on a map from google maps." author_email="carlos.o.c.neto@gmail.com">
   <Locale messages="http://www.wikicrimes.org/gadget/locales/en_wikicrimes.xml"/>
   <Locale lang="en" messages="http://www.wikicrimes.org/gadget/locales/en_wikicrimes.xml"/>
   <Locale lang="pt" messages="http://www.wikicrimes.org/gadget/locales/pt_br_wikicrimes.xml"/>

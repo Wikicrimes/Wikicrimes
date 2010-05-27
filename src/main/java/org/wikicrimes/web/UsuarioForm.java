@@ -21,9 +21,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-//import net.tanesha.recaptcha.ReCaptchaImpl;
-//import net.tanesha.recaptcha.ReCaptchaResponse;
-
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -249,25 +246,26 @@ public class UsuarioForm extends GenericForm {
 		return returnPage;
 	}
 
-	public String updateEmail() {
+	public String updateCidade() {
 		Usuario usuarioBD = (Usuario) service.get(((Usuario) this
 				.getSessionScope().get("usuario")).getIdUsuario());
-		Usuario userResult = service.getUsuario(getUsuario().getEmail());
-		String email = getUsuario().getEmail();
-		getUsuario().setEmail("");
-		if (userResult != null) {
-			// se nao for convidado nao passa
-			if (userResult.getPerfil().getIdPerfil() != Perfil.CONVIDADO) {
-				addMessage("erro.email.existente", "");
-				return null;
-			}	
-		}		
-		getUsuario().setEmail(email);
-		usuarioBD.setEmail(getUsuario().getEmail());
+		
+		Usuario usuarioLogado = (Usuario) this
+		.getSessionScope().get("usuario");
+		
+		usuarioLogado.setPais(getUsuario().getPais());		
+		usuarioLogado.setCidade(getUsuario().getCidade());
+		usuarioLogado.setLat(getUsuario().getLat());
+		usuarioLogado.setLng(getUsuario().getLng());
+		
+		usuarioBD.setPais(getUsuario().getPais());		
+		usuarioBD.setCidade(getUsuario().getCidade());
+		usuarioBD.setLat(getUsuario().getLat());
+		usuarioBD.setLng(getUsuario().getLng());
 		
 		service.update(usuarioBD);
 		System.out.println("[" + new Date() + "] "
-				+ email + " ,cadastrado pelo RPX, atualizou seu email...");
+				+ usuarioBD.getEmail() + " ,cadastrado pelo RPX, atualizou sua cidade...");
 		
 		return null;
 	}

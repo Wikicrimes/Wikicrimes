@@ -21,6 +21,7 @@
 			<c:if test="#{not empty usuario}">					
 				<c:if test="#{usuario.cidade == null or usuario.cidade == ''}">
 					load(#{filtroForm.latMapa},#{filtroForm.lngMapa},#{filtroForm.zoomMapa});
+					mostrarModalSolicitandoCidade();
 					return;
 				</c:if>
 				load(#{usuario.lat},#{usuario.lng},13);
@@ -104,8 +105,11 @@
 			}
 			
 			function mostrarModalSolicitandoEmail(){				
-				
 				displayMessage('./falhaLoginRpx.html', 420, 200,'#{messages["message.wikicrimes"]}');
+			}
+
+			function mostrarModalSolicitandoCidade(){				
+				displayMessage('./informaCidade.html', 420, 280,'#{messages["message.wikicrimes"]}');
 			}	
 					
 			function removerPoligono(){

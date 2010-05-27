@@ -255,13 +255,13 @@ public class UsuarioForm extends GenericForm {
 		
 		usuarioLogado.setPais(getUsuario().getPais());		
 		usuarioLogado.setCidade(getUsuario().getCidade());
-		usuarioLogado.setLat(getUsuario().getLat());
-		usuarioLogado.setLng(getUsuario().getLng());
+		usuarioLogado.setLat(new Double(getLat()));
+		usuarioLogado.setLng(new Double(getLng()));
 		
 		usuarioBD.setPais(getUsuario().getPais());		
 		usuarioBD.setCidade(getUsuario().getCidade());
-		usuarioBD.setLat(getUsuario().getLat());
-		usuarioBD.setLng(getUsuario().getLng());
+		usuarioBD.setLat(new Double(getLat()));
+		usuarioBD.setLng(new Double(getUsuario().getLng()));
 		
 		service.update(usuarioBD);
 		System.out.println("[" + new Date() + "] "

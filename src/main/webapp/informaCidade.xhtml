@@ -16,17 +16,13 @@
 		<link rel="stylesheet" type="text/css" href="./styles/wikicrimes.css"
 			title="default" />
 		<script>
-
-
 			function getLatLngByAddress(){
 				if (!parent.geocoder)
 					parent.geocoder = new parent.GClientGeocoder();
 				if(document.getElementById("pais").value== "" || document.getElementById("cidade").value == "" )
 					return;
 			    var address = document.getElementById("pais").value+','+document.getElementById("cidade").value;
-			    	
-
-			 	parent.geocoder.getLocations(address,setLatLng);			 		
+			    parent.geocoder.getLocations(address,setLatLng);			 		
 			}
 			
 			function setLatLng(response){				
@@ -40,7 +36,9 @@
                 	document.getElementById("latitude").value=place.Point.coordinates[1];
                 	document.getElementById("longitude").value=place.Point.coordinates[0];
                 	parent.map.setCenter(new parent.GLatLng(document.getElementById("latitude").value,document.getElementById("longitude").value),13);
-	        		document.getElementById("btnSalvarCidadeInvisivel").click();        	
+
+	        		document.getElementById("formUsuario:btnSalvarCidadeInvisivel").click();
+        	        	
                 }
 			}
 		</script>
@@ -48,21 +46,24 @@
 	<body>
 
 	<f:view> <!-- locale="#{facesContext.externalContext.request.locale}"> -->
-		<c:if test="#{usuario.cidade != ''}">
-			<script>
-				parent.closeMessage();
-			</script>
-		</c:if>		
+				
 		<f:loadBundle var="messages" basename="messages" />
-		<h:panelGrid border="0" columns="1"
+		<h:panelGrid border="0" id="painelInformarLogin" columns="1"
 			style="font-size: 11px; font-family: sans-serif; width:100%;text-align:left"
 			cellpadding="0" cellspacing="0">
+			
+			<c:if test="#{usuario.cidade != ''}">
+				<script>
+					parent.closeMessage();
+				</script>
+			</c:if>
+			
 			<c:if test="#{not empty message}">
 				<h:outputText value="*#{message}" styleClass="errorMessage" />
 			</c:if>
 			
-			<h:form id="usuarioForm">
-				<t:saveState value="#{usuarioForm.usuario}" />
+			<h:form id="formUsuario">
+					
 				<div style="text-align:justify;font-size: 12px; font-family: sans-serif;width:380px;">
 					<h:outputText  value="#{messages['message.request.cidade']}"/>
 				</div>
@@ -81,16 +82,18 @@
 				<t:inputText forceId="true" required="true" value="#{usuarioForm.usuario.cidade}"
 							id="cidade" size="40">
 				</t:inputText>
-				<t:inputHidden forceId="true" id="latitude" value="#{usuarioForm.usuario.lat}"></t:inputHidden>			
-				<t:inputHidden forceId="true" id="longitude" value="#{usuarioForm.usuario.lng}"></t:inputHidden>			
+				<t:saveState value="#{usuarioForm.usuario.cidade}" />
+				<t:inputHidden forceId="true" id="latitude" value="#{usuarioForm.lat}"></t:inputHidden>			
+				<t:inputHidden forceId="true" id="longitude" value="#{usuarioForm.lng}"></t:inputHidden>			
 				
-				<a4j:commandButton reRender="usuarioForm" id="btnSalvarCidade" onclick="getLatLngByAddress();" forceId="true"
+				<t:saveState value="#{usuarioForm.lat}" />
+				<t:saveState value="#{usuarioForm.lng}" />
+				<input type="button" id="btnSalvarCidade" onclick="getLatLngByAddress();"
+						value="#{messages['usuario.btn.salvar']}" class="button" />
+				
+				<h:commandButton id="btnSalvarCidadeInvisivel" action="#{usuarioForm.updateCidade}" style="visibility:hidden"
 						value="#{messages['usuario.btn.salvar']}" styleClass="button" />
-				<t:commandButton id="btnSalvarCidadeInvisivel" immediate="true" action="#{usuarioForm.updateCidade}" style="visibility:hidden" forceId="true"
-						value="#{messages['usuario.btn.salvar']}" styleClass="button" />
-				
-				
-					
+												
 				</t:panelGrid>
 			</h:form>
 			

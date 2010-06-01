@@ -787,8 +787,8 @@
 				acoesUsuario['qtd_mostrar_dados'] = acoesUsuario['qtd_mostrar_dados'] + 1;
 				alertarTutorDeAcaoDoUsuario(acoesUsuario, "mostrar_dados");	
 
-				var myHtml = "<iframe src='./mostrarDados.html?idCrime=" + this.idCrime + "' width='400' height='150' frameborder='0'></iframe>";
-				var myHtml2 = "<iframe src='./mostrarInformacoes.html?idCrime=" + this.idCrime + "' width='400' height='150' frameborder='0'></iframe>";
+				var myHtml = "<iframe src='./mostrarDados.html?idCrime=" + this.idCrime + "' width='420' height='150' frameborder='0'></iframe>";
+				var myHtml2 = "<iframe src='./mostrarInformacoes.html?idCrime=" + this.idCrime + "' width='420' height='150' frameborder='0'></iframe>";
 				this.openInfoWindowTabsHtml([new GInfoWindowTab('#{messages["crimes.tabs.titulo.dados"]}', myHtml), 
 				             				new GInfoWindowTab('#{messages["crimes.tabs.titulo.comentarios"]}', myHtml2)]);
 			}, mostrarDadosRelato:function () {

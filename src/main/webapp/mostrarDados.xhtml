@@ -240,7 +240,31 @@
 					</tr>
 				</c:if>
 			</table>
-
+			<div style="position:absolute; top:52px; right: 4px;z-index: 100"> 
+				<c:if test="#{messages['webapp.locale'] eq 'pt'}">	
+					<c:if test="#{mostrarDadosForm.crime.ultimaCredibilidade gt 0.54999999}">
+						<img width="132px" height="132px" src="/images/carimboAlta.png" /> 
+					</c:if>
+					<c:if test="#{mostrarDadosForm.crime.ultimaCredibilidade lt 0.5500000 and mostrarDadosForm.crime.ultimaCredibilidade gt 0.49999999}">
+						<img width="132px" height="132px" src="/images/carimboMedia.png" /> 
+					</c:if>
+					<c:if test="#{mostrarDadosForm.crime.ultimaCredibilidade lt 0.500000}">
+						<img width="132px" height="132px" src="/images/carimboBaixa.png" /> 
+					</c:if>
+				</c:if>
+				<c:if test="#{!(messages['webapp.locale'] eq 'pt')}">	
+					<c:if test="#{mostrarDadosForm.crime.ultimaCredibilidade gt 0.54999999}">
+						<img width="132px" height="132px" src="/images/carimboAltaEng.png" /> 
+					</c:if>
+					<c:if test="#{mostrarDadosForm.crime.ultimaCredibilidade lt 0.5500000 and mostrarDadosForm.crime.ultimaCredibilidade gt 0.49999999}">
+						<img width="132px" height="132px" src="/images/carimboMediaEng.png" /> 
+					</c:if>
+					<c:if test="#{mostrarDadosForm.crime.ultimaCredibilidade lt 0.500000}">
+						<img width="132px" height="132px" src="/images/carimboBaixaEng.png" /> 
+					</c:if>
+				</c:if>
+						
+			</div>
 <script type="text/javascript">
 /* <![CDATA[ */
 				var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." :

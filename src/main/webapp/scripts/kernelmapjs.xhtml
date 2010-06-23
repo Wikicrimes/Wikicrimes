@@ -142,7 +142,6 @@
 
 			function boundsPixelUrlParams(map){
 				var bounds = map.getBounds();
-				var proj = map.getCurrentMapType().getProjection();
 
 				//Passa os limites para pixel
 				var nePixel = latlngToPixel(bounds.getNorthEast());
@@ -168,9 +167,32 @@
 				return str;
 			}
 
+			function sizePixel(bounds){
+				//Passa os limites para pixel
+				var nePixel = latlngToPixel(bounds.getNorthEast());
+				var swPixel = latlngToPixel(bounds.getSouthWest());
+				northPixel = nePixel.y;
+				southPixel = swPixel.y;
+				eastPixel = nePixel.x;
+				westPixel = swPixel.x;
+
+				//altura e largra
+				var centroLatLng = bounds.getCenter();
+				var centroPixel = latlngToPixel(centroLatLng);
+				var width = (eastPixel - westPixel);
+				var height = (southPixel - northPixel);
+				//correcao problema das emendas do mapa (linhas com latitude 0 e longitude 0)
+				if(width < 0)
+					width = centroPixel.x < westPixel ? 2*(eastPixel-centroPixel.x) : 2*(centroPixel.x-westPixel);
+				if(height < 0)
+					height = centroPixel.y < southPixel ? 2*(northPixel-centroPixel.y) : 2*(centroPixel.y-southPixel);
+
+			    var size = {w : width, h : height};
+				return size;
+			}
+
 			function boundsLatLngUrlParams(map){
 				var bounds = map.getBounds();
-				var proj = map.getCurrentMapType().getProjection();
 
 				//norte, sul, leste, oeste
 				var neLatLng = bounds.getNorthEast();

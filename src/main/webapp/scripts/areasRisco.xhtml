@@ -171,6 +171,16 @@
 				flood(celulaVizinha(celula, oeste));
 			}
 */
+			//TODO tem um problema
+			//em cada passo da caminhada pela borda, n tao sendo processadas só as 3 células como na ilustracao 1 (como foi planejado)
+			//ta sendo processado como na ilustracao 2, pq não ta "voltando" pro "x" antes de ir pra cima e pra esquerda (erro de implementação mesmo)  
+			//só q, ao corrigir isso, pára de funcionar 
+			//pq acontece com mais frequencia de nao achar "celula fora do hotspot" procurando na area menor (ilustracao 1)
+			//
+			//  1 			     2       < ^
+			//        ^		    	   < v < ^
+			//      < x >              V > x >
+			//                           V > 
 			function comerPelasBeiradas(celulaInicial){
 
 				//inicializa
@@ -197,14 +207,12 @@
 						celula = celulaVizinha(celula, direcao);
 						if(!isCelulaNoHotspot(celula)){
 							//a primeira que satisfizer esta condicao faz parte da borda
-							//uma das 3 necessariamente satisfaz
 							contorno[contorno.length] = gridToLatlng(celula);
 							break;
 						}
 					}
 
-					//acontece de entrar em loop infinito e encontrar um contorno nada a ver, 
-					//qd isto acontecer, ignora e retorna null;
+					//se o algoritmo se perder, ignora e retorna null;
 					cont++;
 					if(cont>200){ 
 						//alert('cont='+cont);
@@ -230,7 +238,7 @@
 			var oeste = 3;
 			
 			function prox(dir){ 
-				//proxima direcao, no sentido anti-horario
+				//proxima direcao, no sentido horario
 				return (dir+1)%4;
 			}
 
@@ -759,8 +767,8 @@
 				var bounds = poly.getBounds();
 				var centro = bounds.getCenter();
 				var size = sizePixel(bounds);
-				var width = size.width;
-				var height = size.height;
+				var width = size.w;
+				var height = size.h;
 				var zoom = map.getZoom();
 
 				//bounds

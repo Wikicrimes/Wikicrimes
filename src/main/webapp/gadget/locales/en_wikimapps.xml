@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<messagebundle>
+	<msg name="save">save</msg>
+	<msg name="delete">delete</msg>
+	<msg name="edit">edit</msg>
+	<msg name="search">search</msg>
+	<msg name="error.search">The address searched was not found</msg>
+	<msg name="loading">loading...</msg>
+	<msg name="friend">Friend</msg>
+	<msg name="here">here</msg>
+	<msg name="back">back</msg>
+	<msg name="to.the.map">to the map</msg>			
+</messagebundle>

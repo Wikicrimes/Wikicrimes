@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <messagebundle>
+	<msg name="extras">extras</msg>
 	<msg name="save">salvar</msg>
+	<msg name="select">select</msg>
+	<msg name="send">enviar</msg>
+	<msg name="select.a.application">selecione uma aplicação</msg>
+	<msg name="you.can.select.a.application">Você deve selecionar um WikiMapp</msg>	
 	<msg name="delete">deletar</msg>
 	<msg name="edit">editar</msg>
-	<msg name="search">procurar</msg>
-	<msg name="error.search">O endere�o solicitado n�o foi encontrado!</msg>
+	<msg name="search">pesquisar</msg>
+	<msg name="error.search">O endereço solicitado não foi encontrado!</msg>
 	<msg name="loading">carregando...</msg>
 	<msg name="friend">Amigo</msg>
 	<msg name="here">aqui</msg>

@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <messagebundle>
+	<msg name="extras">extras</msg>
 	<msg name="save">save</msg>
+	<msg name="select">select</msg>
+	<msg name="send">send</msg>
+	<msg name="select.a.application">select a application</msg>	
 	<msg name="delete">delete</msg>
 	<msg name="edit">edit</msg>
 	<msg name="search">search</msg>

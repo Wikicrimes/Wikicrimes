@@ -13,5 +13,6 @@
 	<msg name="friend">Friend</msg>
 	<msg name="here">here</msg>
 	<msg name="back">back</msg>
-	<msg name="to.the.map">to the map</msg>			
+	<msg name="to.the.map">to the map</msg>
+	<msg name="search.on.the.map"> Search on the Map </msg>			
 </messagebundle>

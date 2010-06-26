@@ -14,5 +14,6 @@
 	<msg name="friend">Amigo</msg>
 	<msg name="here">aqui</msg>
 	<msg name="back">voltar</msg>
-	<msg name="to.the.map">para o mapa</msg>			
+	<msg name="to.the.map">para o mapa</msg>
+	<msg name="search.on.the.map"> Pesquisar no Mapa </msg>			
 </messagebundle>

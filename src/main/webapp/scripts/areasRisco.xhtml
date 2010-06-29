@@ -141,9 +141,6 @@
 				if(contorno == null) return;
 
 				//diminui a quantidade de pontos do contorno
-				//var numPontos = 10;
-				//var passo = parseInt(contorno.length/numPontos);
-				//if(passo==0) passo = 1;
 				var passo = 3;
 				var temp = new Array();
 				for(var i=0; i<contorno.length; i+=passo)
@@ -172,9 +169,9 @@
 			}
 */
 			//TODO tem um problema
-			//em cada passo da caminhada pela borda, n tao sendo processadas só as 3 células como na ilustracao 1 (como foi planejado)
-			//ta sendo processado como na ilustracao 2, pq não ta "voltando" pro "x" antes de ir pra cima e pra esquerda (erro de implementação mesmo)  
-			//só q, ao corrigir isso, pára de funcionar 
+			//em cada passo da caminhada pela borda, n tao sendo processadas sï¿½ as 3 cï¿½lulas como na ilustracao 1 (como foi planejado)
+			//ta sendo processado como na ilustracao 2, pq nï¿½o ta "voltando" pro "x" antes de ir pra cima e pra esquerda (erro de implementaï¿½ï¿½o mesmo)  
+			//sï¿½ q, ao corrigir isso, pï¿½ra de funcionar 
 			//pq acontece com mais frequencia de nao achar "celula fora do hotspot" procurando na area menor (ilustracao 1)
 			//
 			//  1 			     2       < ^
@@ -749,7 +746,7 @@
 			var shareLinks = [
 			     {id:'twitter', 	nome:'Twitter', 	url:'http://twitter.com/home?status=%texto (%url)'},
 			     {id:'myspace',		nome:'Myspace', 	url:'http://www.myspace.com/Modules/PostTo/Pages/?u=%url&t=%texto'},
-			     {id:'facebook',	nome:'Facebook', 	url:'http://www.facebook.com/sharer.php?u=%url?p=%texto'},
+			     {id:'facebook',	nome:'Facebook', 	url:'http://www.facebook.com/sharer.php?u=%url'},
 			     {id:'google',		nome:'Google', 		url:'http://www.google.com/bookmarks/mark?op=add&bkmk=%url&title=%texto'},
 			     {id:'delicious',	nome:'Delicious', 	url:'http://del.icio.us/post?url=%url&title=%texto'},
 			     //{id:'blinklist',	nome:'Blinklist', 	url:'http://blinklist.com/index.php?Action=Blink/addblink.php&Description=&Url=%url&title=%texto'},

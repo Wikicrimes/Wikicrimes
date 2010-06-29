@@ -77,9 +77,13 @@ public class ImagemMapaForm extends GenericForm{
 		//datas
 		DateFormat f1 = new SimpleDateFormat("dd,MM,yyyy");
 		DateFormat f2 = new SimpleDateFormat("dd/MM/yy");
+		String dataIniStr = im.getFiltro().get("dataInicial");
+		String dataFimStr = im.getFiltro().get("dataFinal");
+		if(dataIniStr == null) dataIniStr = "01,01,1970";
+		if(dataFimStr == null) dataFimStr = "01,01,1970";
 		try {
-			dataIni = f2.format( f1.parse( im.getFiltro().get("dataInicial") ) );
-			dataFin = f2.format( f1.parse( im.getFiltro().get("dataFinal") ) );
+			dataIni = f2.format( f1.parse( dataIniStr ) );
+			dataFin = f2.format( f1.parse( dataFimStr ) );
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}

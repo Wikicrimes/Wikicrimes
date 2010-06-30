@@ -12,7 +12,15 @@
 	<msg name="loading">loading...</msg>
 	<msg name="friend">Friend</msg>
 	<msg name="here">here</msg>
+	<msg name="all">All</msg>
+	<msg name="for.date">For Date</msg>
+	<msg name="by.friends">By Friends</msg>
+	<msg name="my">My</msg>
 	<msg name="back">back</msg>
+	<msg name="places">places</msg>
+	<msg name="markers">markers</msg>
+	<msg name="go">Go!</msg>
 	<msg name="to.the.map">to the map</msg>
-	<msg name="search.on.the.map"> Search on the Map </msg>			
+	<msg name="search.on.the.map"> Search on the Map </msg>
+	<msg name="filter.on.the.map"> Show On the Map </msg>
 </messagebundle>

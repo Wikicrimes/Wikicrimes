@@ -1013,27 +1013,34 @@ public class FiltroForm extends GenericForm {
 		
 		//tipo
 		if(tipoCrime != null && tipoCrime != 0)
-			map.put("tipoCrime", new TipoCrime(tipoCrime));
+			map.put("tipoCrime", new TipoCrime(getTipoCrime()));
 		if(tipoVitima != null && tipoVitima != 0)
-			map.put("tipoVitima", new TipoVitima(tipoVitima));
+			map.put("tipoVitima", new TipoVitima(getTipoVitima()));
 		if(tipoLocal != null && tipoLocal != 0)
-			map.put("tipoLocal", new TipoLocal(tipoLocal));
+			map.put("tipoLocal", new TipoLocal(getTipoLocal()));
 		
 		//data e hora
 		if(dataInicial != null)
-			map.put("dataInicial", dataInicial);
+			map.put("dataInicial", getDataInicial());
 		if(dataFinal != null)
-			map.put("dataFinal", dataFinal);
+			map.put("dataFinal", getDataFinal());
 		if(horarioInicial != null && horarioInicial != -1)
-			map.put("horarioInicial", horarioInicial);
+			map.put("horarioInicial", getHorarioInicial());
 		if(horarioFinal != null && horarioFinal != -1)
-			map.put("horarioFinal", horarioFinal);
+			map.put("horarioFinal", getHorarioFinal());
 		
 		//credibilidade
-		if(entidadeCertificadora != null && entidadeCertificadora != 0 )
-			map.put("entidadeCertificadora", new EntidadeCertificadora(entidadeCertificadora));
+		if(entidadeCertificadora != null && entidadeCertificadora != 0 ){
+			List<BaseObject> list = new ArrayList<BaseObject>();
+			list.add(new EntidadeCertificadora(getEntidadeCertificadora()));
+			map.put("entidadeCertificadora", list);
+		}
 		if(crimeConfirmadoPositivamente != null && crimeConfirmadoPositivamente != false)
-			map.put("confirmadoPositivamente", crimeConfirmadoPositivamente);
+			map.put("crimeConfirmadoPositivamente", getCrimeConfirmadoPositivamente());
+		if(credibilidadeInicial != null)
+			map.put("credibilidadeInicial", getCredibilidadeInicial()/100);
+		if(credibilidadeFinal != null)
+			map.put("credibilidadeFinal", getCredibilidadeFinal()/100);
 		
 		return map;
 	}

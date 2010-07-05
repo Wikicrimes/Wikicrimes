@@ -787,16 +787,16 @@
 				acoesUsuario['qtd_mostrar_dados'] = acoesUsuario['qtd_mostrar_dados'] + 1;
 				alertarTutorDeAcaoDoUsuario(acoesUsuario, "mostrar_dados");	
 
-				var myHtml = "<iframe src='./mostrarDados.html?idCrime=" + this.idCrime + "' width='420' height='150' frameborder='0'></iframe>";
-				var myHtml2 = "<iframe src='./mostrarInformacoes.html?idCrime=" + this.idCrime + "' width='420' height='150' frameborder='0'></iframe>";
+				var myHtml = "<iframe src='./mostrarDados.html?idCrime=" + this.idCrime + "' width='420' height='150' frameborder='0' style='z-index: 98;'></iframe>";
+				var myHtml2 = "<iframe src='./mostrarInformacoes.html?idCrime=" + this.idCrime + "' width='420' height='150' frameborder='0' style='z-index: 98;' ></iframe>";
 				this.openInfoWindowTabsHtml([new GInfoWindowTab('#{messages["crimes.tabs.titulo.dados"]}', myHtml), 
 				             				new GInfoWindowTab('#{messages["crimes.tabs.titulo.comentarios"]}', myHtml2)]);
 			}, mostrarDadosRelato:function () {
 				podeCarregarCrimes = false;
-				var myHtml = "<iframe src='./mostrarDadosRelato.html?idRelato=" + this.idCrime + "' width='400' height='150' frameborder='0'></iframe>";
+				var myHtml = "<iframe src='./mostrarDadosRelato.html?idRelato=" + this.idCrime + "' width='400' height='150' frameborder='0' style='z-index: 98;'></iframe>";
 				this.openInfoWindowHtml(myHtml, 600);
 			}, mostrarGraficos:function() {
-					var myHtml = "<iframe src='./mostrarGraficos.html?agrupadorEstado=" + this.texto + "' width='400' height='150' frameborder='0'></iframe>";
+					var myHtml = "<iframe src='./mostrarGraficos.html?agrupadorEstado=" + this.texto + "' width='400' height='150' frameborder='0' style='z-index: 98;'></iframe>";
 					this.openInfoWindow(myHtml,400);			
 			}, registrarRelato:function (idTipoRelato, idSubTipoRelato) {
 				var latitude = this.getLatLng().lat();

@@ -655,14 +655,38 @@
 
 		<!-- Fim das Estatísticas -->
 		<rich:panel style="width:160px; height:128px;"
-			header="#{messages['modal.publicidade']}">
-			<div style="padding: 6px;"><a href="http://www.wikimapps.com"
-				target="_blank"><img
-				src="./images/#{messages['anuncio.wikimapps']}" alt="WikiMapps.com" /></a><br />
-			<a href="http://www.wikimapps.com" target="_blank">
-			<p align="justify" style="font-size: 10px; font-family: Arial">#{messages['anuncio.wikimapps.texto']}
-			</p>
-			</a></div>
+			header="Video WikiCrimes">
+			   
+			<div id="videodiv">
+			<div id="verVideo" style="width: 160; height: 40;"><img src="./images/video.gif" /></div>
+			<div id="fundovideo" style="width: 0; height: 0; display: none; background-color: black; position: fixed; z-index: 100; right: 100; top: 380;"
+				align="right">
+			</div>	
+			<div id="video"
+				style="width: 0; height: 0; display: none; background-color: null; position: fixed; z-index: 100; right: 100; top: 380;"
+				align="right">
+			<div style="width: 100%; height: 42px; z-index: 100;" align="center" >
+				<div style="width: 100%; height: 20px; postion: fixed; z-index: 100;">
+				</div>
+				<div style="width: 50%; height: 22px; z-index: 100; background-color: black;" align="right" >
+					<div id="fecharVideo"
+						style="width: 40px; height: 22px; color: white; background-color: black; font-size: 20px; postion: fixed; right: 0; top: 0; z-index: 100;">
+						 [ x ] 
+					</div>
+				</div>
+			</div>
+				<div style="width: 100%; height: 95%; z-index: 100;" align="center" >
+				<div id="conteudoVideo" style="width: 0px; height: 0px; z-index: 100;">
+					<object
+						width="100%" height="100%" style="z-index: 100;">
+						<param name="movie" value="http://www.youtube.com/v/EtLjq3Ocs6w"></param>
+						<embed src="http://www.youtube.com/v/lOpNuHaCDh0" type="application/x-shockwave-flash" width="100%" height="100%" style="z-index: 100;"></embed> 
+					</object>
+					</div>
+					</div>
+				</div>
+			</div>
+			
 		</rich:panel>
 
 
@@ -1566,6 +1590,76 @@
 		      weekNumbers : false
 		    }
 		  	);
+</script>
+
+<script type="text/javascript" src="./scripts/jquery-1.4.2.js"></script>
+<script type="text/javascript"> 
+		    // animation
+		        jQuery.noConflict();
+		        
+		        jQuery('#verVideo').click(function(){
+		        	document.getElementById('conteudoVideo').innerHTML = '<object width="100%" height="100%" style="z-index: 100;"> <param name="movie" value="http://www.youtube.com/v/EtLjq3Ocs6w"> </param> <embed src="http://www.youtube.com/v/lOpNuHaCDh0" type="application/x-shockwave-flash" width="100%" height="100%" style="z-index: 100;"> </embed> </object>';
+			        
+		        	jQuery('#video').animate({
+	                  	right: 100,
+	                    top: 380,  	
+	                    width:  0,
+	                    height: 0,
+	                    opacity: 0
+	              }, 0 );
+	        	jQuery('#fundovideo').animate({
+                  	right: 100,
+                    top: 380,  	
+                    width:  0,
+                    height: 0,
+                    opacity: 0
+              	}, 0 );  
+	        	jQuery('#conteudoVideo').animate({	
+	                  width:  0,
+	                  height: 0
+	              }, 0 );
+		        jQuery('#video').animate({
+		                  	right: 0,
+		                    top: 0,
+		                    width:  '100%',
+		                    height: '100%',
+		                    opacity: 1
+		              }, 1000 );
+		        	jQuery('#fundovideo').animate({
+	                  	right: 0,
+	                    top: 0,
+	                    width:  '100%',
+	                    height: '100%',
+	                    opacity: 0.6
+	              	}, 1000 ); 
+		        	jQuery('#conteudoVideo').animate({
+		                  width:  '50%',
+		                  height: '65%'
+		              }, 1000 );
+		        });
+		        
+		        jQuery('#fecharVideo').click(function(){
+		        	document.getElementById('conteudoVideo').innerHTML = '';
+		        	jQuery('#video').animate({
+		                  	right: 100,
+		                    top: 380,  	
+		                    width:  0,
+		                    height: 0,
+		                    opacity: 0
+		              }, 1000 );
+		        	jQuery('#fundovideo').animate({
+	                  	right: 100,
+	                    top: 380,  	
+	                    width:  0,
+	                    height: 0,
+	                    opacity: 0
+	              	}, 1000 );  
+		        	jQuery('#conteudoVideo').animate({	
+		                  width:  0,
+		                  height: 0
+		              }, 1000 );
+		        });
+				
 		</script>
 
 </body>

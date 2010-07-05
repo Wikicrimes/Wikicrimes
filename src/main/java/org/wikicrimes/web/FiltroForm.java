@@ -1013,11 +1013,11 @@ public class FiltroForm extends GenericForm {
 		
 		//tipo
 		if(tipoCrime != null && tipoCrime != 0)
-			map.put("tipoCrime", tipoCrime);
+			map.put("tipoCrime", new TipoCrime(tipoCrime));
 		if(tipoVitima != null && tipoVitima != 0)
-			map.put("tipoVitima", tipoVitima);
+			map.put("tipoVitima", new TipoVitima(tipoVitima));
 		if(tipoLocal != null && tipoLocal != 0)
-			map.put("tipoLocal", tipoLocal);
+			map.put("tipoLocal", new TipoLocal(tipoLocal));
 		
 		//data e hora
 		if(dataInicial != null)
@@ -1031,7 +1031,7 @@ public class FiltroForm extends GenericForm {
 		
 		//credibilidade
 		if(entidadeCertificadora != null && entidadeCertificadora != 0 )
-			map.put("entidadeCertificadora", entidadeCertificadora);
+			map.put("entidadeCertificadora", new EntidadeCertificadora(entidadeCertificadora));
 		if(crimeConfirmadoPositivamente != null && crimeConfirmadoPositivamente != false)
 			map.put("confirmadoPositivamente", crimeConfirmadoPositivamente);
 		

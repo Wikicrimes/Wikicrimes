@@ -6,6 +6,8 @@ import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -21,6 +23,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+import org.wikicrimes.dao.hibernate.PontoLatLngDaoHibernate;
 import org.wikicrimes.model.BaseObject;
 import org.wikicrimes.model.Crime;
 import org.wikicrimes.model.PontoLatLng;
@@ -43,7 +46,8 @@ import org.wikicrimes.web.FiltroForm;
 @SuppressWarnings("serial")
 public class ServletKernelMap extends HttpServlet {
 	
-	final static String IMAGEM_KERNEL = "IMAGEM_KERNEL"; //imagem renderizada do mapa de kernel
+	final static String IMAGEM_KERNEL = "IMAGEM_KERNEL"; //imagem renderizada do mapa de kernel do wikicrimes
+	final static String IMAGEM_KERNEL_WIKIMAPPS = "IMAGEM_KERNEL_WIKIMAPPS"; //imagem renderizada do mapa de kernel do wikimapps
 	final static String DENSIDADES = "DENSIDADES"; //matriz de densidades do mapa de kernel
 	final static String KERNEL = "KERNEL"; //objeto MapaKernel
 	
@@ -55,16 +59,37 @@ public class ServletKernelMap extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		HttpSession sessao = request.getSession();
+		response.setContentType("text/plain");
+		response.setHeader("Pragma", "no-cache");
+		response.setHeader("Cache-Control", "no-cache");
+		response.setDateHeader("Expires", 0);
+		response.setCharacterEncoding("iso-8859-1");
 		
 //		/*teste*/System.out.println(request.getParameterMap().keySet() + " - pontoXY:" + request.getParameter("pontoXY"));
 		
 		String acao = request.getParameter("acao");
+		String app = request.getParameter("app");
 		if(acao != null)
 		if(acao.equals("geraKernel")){
-			//calcular o mapa de kernel e criar imagens
-			gerarMapaKernel2(request);
+			//calcular o mapa de kernel e criar imagens			
+			
+			if(app!= null && app.equals("wikimapps")) {
+				Util.enviarImagem(response, gerarMapaKernel2(request));
+			}
+			else {
+				gerarMapaKernel2(request);
+			}
+	
 		}else if(acao.equals("pegaImagem")){
-			RenderedImage imagem = (RenderedImage)sessao.getAttribute(IMAGEM_KERNEL);
+			RenderedImage imagem;			
+			//verifica a aplicacao que acionou o servico. o default é wikicrimes
+			if(app!= null && app.equals("wikimapps")) {
+				imagem= (RenderedImage)sessao.getAttribute(IMAGEM_KERNEL_WIKIMAPPS);
+			}
+			else {
+				imagem= (RenderedImage)sessao.getAttribute(IMAGEM_KERNEL);
+			}
+			
 			if(imagem != null)
 				Util.enviarImagem(response, imagem);
 		}else if(acao.equals("pegaInfo")){
@@ -111,14 +136,24 @@ public class ServletKernelMap extends HttpServlet {
 	}
 	
 	//a diferença entre o gerarMapaKernel() e o gerarMapaKernel2() é q o primeiro pega os crimes do cliente, o segundo pega do servidor
-	private void gerarMapaKernel2(HttpServletRequest request){
+	private RenderedImage gerarMapaKernel2(HttpServletRequest request){
+		
 		HttpSession sessao = request.getSession();
+		String app = request.getParameter("app");
 		
 		//pega bounds e zoom dos parâmetros de requisição
 		LatLngBoundsGM limitesLatlng = getLimitesLatLng(request);
 		Rectangle limitesPixel = getLimitesPixel(request);
 		int zoom = getZoom(request);
-		
+		//verifica a aplicacao que acionou o servico. o default é wikicrimes
+		if(app!= null && app.equals("wikimapps")) {
+			List<Point> pontos =recuperaPontosWikiMapps(limitesLatlng,request.getParameter("url"),request.getParameter("tm"),zoom);
+			KernelMap kernel = new KernelMap(GRID_NODE, BANDWIDTH, limitesPixel, pontos);			
+			KernelMapRenderer kRend = new KernelMapRenderer(kernel);
+			boolean isIE = Util.isClientUsingIE(request); 
+			RenderedImage imagem = (RenderedImage)kRend.pintaKernel(zoom, isIE);
+			return imagem;//sessao.setAttribute(IMAGEM_KERNEL_WIKIMAPPS, imagem);			
+		}else{
 		//pega crimes
 		FiltroForm filtro = (FiltroForm)sessao.getAttribute("filtroForm");
 		Map<String,Object> params = filtro.getFiltroMap();
@@ -141,7 +176,9 @@ public class ServletKernelMap extends HttpServlet {
 		boolean isIE = Util.isClientUsingIE(request); 
 		RenderedImage imagem = (RenderedImage)kRend.pintaKernel(zoom, isIE);
 		sessao.setAttribute(IMAGEM_KERNEL, imagem);
+		return imagem;
 		
+		}
 //		/*teste*/testeArquivo(imagem);
 //		/*teste*/System.out.println("numPontos:"+pontos.size());
 	}
@@ -311,10 +348,45 @@ public class ServletKernelMap extends HttpServlet {
 	public static void testeArquivo(RenderedImage imagem){
 		//escrever a imagem em arquivo
 		try {
-			ImageIO.write(imagem, "PNG", new File("/home/victor/Desktop/img.png"));
+			ImageIO.write(imagem, "PNG", new File("/home/leonardo/img324.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
+	//recupera pontos no wikimapps de acordo com os limites e o tipo de marcador
+	private List<Point> recuperaPontosWikiMapps(LatLngBoundsGM limitesLatLng, String url,String tm,int zoom){
+		List<Point> pontos=new ArrayList<Point>();
+		try {
+			String query="select distinct(e.id),c.lt,c.lg from events e, coordinates c, apps a where e.apps_id=a.id and e.id = c.events_id and markers_id is not null and a.url='"+ url +"'";
+			if(tm!=null && tm!="" && !tm.equals("undefined")){
+				String[] tmArray=tm.split(",");
+				for (String valor : tmArray){
+				query+=" and e.markers_id!="+valor;
+				}
+			}
+			//retorna todos os pontos dentro da southwest/northeast boundary
+			if(limitesLatLng.leste > limitesLatLng.oeste){
+				query+=" and (c.lg < " + limitesLatLng.leste + " or c.lg >= " + limitesLatLng.oeste + " ) and ( c.lt <= " + limitesLatLng.norte + " and c.lt >= " + limitesLatLng.sul + ")";
+			}
+			else {
+				//retorna todos os pontos dentro da southwest/northeast boundary
+				 //split over the meridian
+				query+=" and (c.lg <= " + limitesLatLng.leste + " or c.lg >= " + limitesLatLng.oeste + " ) and ( c.lt <= " + limitesLatLng.norte + " and c.lt >= " + limitesLatLng.sul + ")";
+			}
+			ConexaoBD con=ConexaoBD.getConexaoBD();
+			ResultSet rs =con.enviarConsulta(query);
+			while(rs.next()){
+				PontoLatLng p = new PontoLatLng(rs.getDouble(2),rs.getDouble(3));
+				pontos.add(toPixel(p, zoom));
+				
+			}
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+			e.printStackTrace();
+		}
+		return pontos;
+	}
+	
+	
 }
 	

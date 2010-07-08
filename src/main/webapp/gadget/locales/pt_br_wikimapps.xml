@@ -18,6 +18,8 @@
 	<msg name="by.friends">De Amigos</msg>
 	<msg name="my">Meus</msg>
 	<msg name="back">voltar</msg>
+	<msg name="month">Mês</msg>
+	<msg name="year">Ano</msg>	
 	<msg name="places">locais</msg>
 	<msg name="markers">marcadores</msg>
 	<msg name="go">Ir</msg>

@@ -17,6 +17,8 @@
 	<msg name="by.friends">By Friends</msg>
 	<msg name="my">My</msg>
 	<msg name="back">back</msg>
+	<msg name="month">Month</msg>
+	<msg name="year">Year</msg>
 	<msg name="places">places</msg>
 	<msg name="markers">markers</msg>
 	<msg name="go">Go!</msg>

@@ -9,7 +9,7 @@
 	<msg name="delete">deletar</msg>
 	<msg name="edit">editar</msg>
 	<msg name="search">pesquisar</msg>
-	<msg name="error.search">O endereço solicitado não foi encontrado!</msg>
+	<msg name="error.search">O endereço digitado não foi encontrado!</msg>
 	<msg name="loading">carregando...</msg>
 	<msg name="friend">Amigo</msg>
 	<msg name="here">aqui</msg>

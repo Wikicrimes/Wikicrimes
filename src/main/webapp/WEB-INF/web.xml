@@ -332,6 +332,16 @@
 	</servlet-mapping>
 	
 	<servlet>
+		<servlet-name>ServletCrimeInRadius</servlet-name>
+		<servlet-class>org.wikicrimes.servlet.ServletCrimeInRadius</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>ServletCrimeInRadius</servlet-name>
+		<url-pattern>/ServletCrimeInRadius</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
 		<servlet-name>TesteCenariosRotas</servlet-name>
 		<servlet-class>org.wikicrimes.util.kernelMap.testes.TesteCenariosRotas</servlet-class>
 	</servlet>

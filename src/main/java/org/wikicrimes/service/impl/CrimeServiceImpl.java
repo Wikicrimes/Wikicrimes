@@ -515,5 +515,11 @@ public class CrimeServiceImpl extends GenericCrudServiceImpl implements
 		return credibilidadeDao;
 	}
 
+	@Override
+	public StringBuilder getCrimesArea(double latitude, double longitude,
+			double raio, long dataIni, long dataFim) {
+		return crimeDao.crimesArea(latitude, longitude, raio, dataIni, dataFim);
+	}
+
 
 }

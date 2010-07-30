@@ -594,7 +594,7 @@ public class CrimeDaoHibernate extends GenericCrudDaoHibernate implements
 				while(rs.next()){
 	
 					//crimes.append(rs.getString("tipoCrime") + "|" + rs.getString("dataCrime") + "|" + rs.getString("horarioCrime") + "|"+ rs.getString("descricaoCrime") + "|"+ rs.getString("latitudeCrime") + "|"+ rs.getString("longitudeCrime") + "\n");
-					crimes.append(rs.getString("cri_chave") + "|" + rs.getString("latitudeCrime") + "|"+ rs.getString("longitudeCrime") + "|" + rs.getString("tipoCrime") + "\n");
+					crimes.append(rs.getString("tipoCrime") + "|" + rs.getString("latitudeCrime") + "|"+ rs.getString("longitudeCrime") + "|" + rs.getString("cri_chave") + "\n");
 					
 				}
 			

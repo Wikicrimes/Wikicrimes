@@ -322,23 +322,23 @@
 	</servlet-mapping>
 	
 	<servlet>
-		<servlet-name>ServletIphone</servlet-name>
+		<servlet-name>ServletIphone2</servlet-name>
 		<servlet-class>org.wikicrimes.servlet.ServletIphone</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>ServletIphone2</servlet-name>
+		<url-pattern>/ServletIphone2</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>ServletIphone</servlet-name>
+		<servlet-class>org.wikicrimes.servlet.ServletCrimeInRadius</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
 		<servlet-name>ServletIphone</servlet-name>
 		<url-pattern>/ServletIphone</url-pattern>
-	</servlet-mapping>
-	
-	<servlet>
-		<servlet-name>ServletCrimeInRadius</servlet-name>
-		<servlet-class>org.wikicrimes.servlet.ServletCrimeInRadius</servlet-class>
-	</servlet>
-
-	<servlet-mapping>
-		<servlet-name>ServletCrimeInRadius</servlet-name>
-		<url-pattern>/ServletCrimeInRadius</url-pattern>
 	</servlet-mapping>
 	
 	<servlet>

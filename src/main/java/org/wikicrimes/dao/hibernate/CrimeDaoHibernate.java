@@ -566,46 +566,52 @@ public class CrimeDaoHibernate extends GenericCrudDaoHibernate implements
 		return mapa;
 	}
 	
-	public StringBuilder crimesArea(double latitude, double longitude, double raio,long dataIni, long dataFim){
+	public StringBuilder getCrimesInRadius(double latitude, double longitude, double raio,long dataIni, long dataFim){
 		
 		StringBuilder crimes = new StringBuilder(); 
 		
 		java.sql.Date dIni = new java.sql.Date(dataIni);
 		java.sql.Date dFim = new java.sql.Date(dataFim);
 		
-		String sqlCrimes; //= "SELECT tcr_descricao AS tipoCrime, cri_data as dataCrime, cri_horario as horarioCrime, cri_descricao as descricaoCrime, cri_latitude as latitudeCrime, cri_longitude as logitudeCrime FROM tb_cri_crime as tcc inner join tb_tcr_tipo_crime as tipo on tipo.tcr_idtipo_crime=tcc.tcr_idtipo_crime and ("+RAIO_TERRA_KM+" * ACOS( (SIN(PI()* "+latitude+" /180)*SIN(PI() * tcc.cri_latitude/180)) + (COS(PI()* "+latitude+" /180)*cos(PI()*tcc.cri_latitude/180)*COS(PI() * tcc.cri_longitude/180-PI()* "+longitude+" /180))) < "+raio+") and tcc.cri_status=0 and (tcc.cri_data between '"+dIni.toString()+"' and '"+dFim.toString()+"') group by tipo.tcr_descricao";
+		String sqlCrimes;
 		
-		//usa essa URL de teste...
-		//http://localhost:8080/wikicrimes/CrimeRatioServlet?lat=-3.72927166&long=-38.51398944&raio=1.25
-		
-		Session session = getHibernateTemplate().getSessionFactory().openSession();//abre a secao do hibernate
+		Session session = getHibernateTemplate().getSessionFactory().openSession(); // Abre a secao do hibernate
 		
 		//e trabalha normalmente atraves da conex do BD
 		Connection connect = session.connection();
 		
-			Statement ps;
-			try {
-				
-				ps = connect.createStatement();
-				crimes = new StringBuilder();
-				sqlCrimes = "SELECT cri_chave, tipo.tcr_idtipo_crime AS tipoCrime, cri_data as dataCrime, cri_horario as horarioCrime, cri_descricao as descricaoCrime, cri_latitude as latitudeCrime, cri_longitude as longitudeCrime FROM tb_cri_crime AS tcc INNER JOIN tb_tcr_tipo_crime AS tipo ON tipo.tcr_idtipo_crime=tcc.tcr_idtipo_crime AND ("+RAIO_TERRA_KM+" * ACOS( (SIN(PI()* "+latitude+" /180)*SIN(PI() * tcc.cri_latitude/180)) + (COS(PI()* "+latitude+" /180)*COS(PI()*tcc.cri_latitude/180)*COS(PI() * tcc.cri_longitude/180-PI()* "+longitude+" /180))) < "+raio+") AND tcc.cri_status=0 AND (tcc.cri_data BETWEEN "+dIni.toString()+" AND '"+dFim.toString()+"') ";
-				ResultSet rs = ps.executeQuery(sqlCrimes);
+		Statement ps;
+		try {
 
-				while(rs.next()){
+			ps = connect.createStatement();
+			crimes = new StringBuilder();
 
-					//crimes.append(rs.getString("tipoCrime") + "|" + rs.getString("dataCrime") + "|" + rs.getString("horarioCrime") + "|"+ rs.getString("descricaoCrime") + "|"+ rs.getString("latitudeCrime") + "|"+ rs.getString("longitudeCrime") + "\n");
-					crimes.append(rs.getString("tipoCrime") + "|" + rs.getString("latitudeCrime") + "|"+ rs.getString("longitudeCrime") + "|" + rs.getString("cri_chave") + "|" + rs.getString("dataCrime") + "|" + rs.getString("horarioCrime") + "|" + rs.getString("descricaoCrime").replaceAll(";;;", ";") + ";;;");
-				}
-				rs.close();
-				
-				connect.close();
-				session.close();
-				
-			} catch (SQLException e) {
+			sqlCrimes = "SELECT cri_chave, tipo.tcr_idtipo_crime AS tipoCrime, cri_data as dataCrime, cri_horario as horarioCrime, cri_descricao as descricaoCrime, cri_latitude as latitudeCrime, cri_longitude as longitudeCrime FROM tb_cri_crime AS tcc INNER JOIN tb_tcr_tipo_crime AS tipo ON tipo.tcr_idtipo_crime=tcc.tcr_idtipo_crime AND ("+RAIO_TERRA_KM+" * ACOS( (SIN(PI()* "+latitude+" /180)*SIN(PI() * tcc.cri_latitude/180)) + (COS(PI()* "+latitude+" /180)*COS(PI()*tcc.cri_latitude/180)*COS(PI() * tcc.cri_longitude/180-PI()* "+longitude+" /180))) < "+raio+") AND tcc.cri_status=0 AND (tcc.cri_data BETWEEN "+dIni.toString()+" AND '"+dFim.toString()+"') ";
+			ResultSet rs = ps.executeQuery(sqlCrimes);
 
-				e.printStackTrace();
+			String crimeSeparator = ";;;";
+			
+			while(rs.next()) {
+				crimes.append(
+						rs.getString("tipoCrime") + "|" + 
+						rs.getString("latitudeCrime") + "|"+ 
+						rs.getString("longitudeCrime") + "|" + 
+						rs.getString("cri_chave") + "|" + 
+						rs.getString("dataCrime") + "|" + 
+						rs.getString("horarioCrime") + "|" + 
+						rs.getString("descricaoCrime").replaceAll(crimeSeparator, ";") + crimeSeparator);
 			}
-		 
+			
+			rs.close();
+
+			connect.close();
+			session.close();
+
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+		}
+
 		return crimes;
 	}
 

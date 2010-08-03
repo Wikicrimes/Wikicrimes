@@ -59,7 +59,7 @@ public interface CrimeService extends GenericCrudService {
 	public List<Crime> getCrimesMaisConfirmados();
 	public void update(Crime crime, Set<Confirmacao> confirmacoes, List<Razao> razoes);
 	
-	public StringBuilder getCrimesArea(double latitude, double longitude, double raio,long dataIni, long dataFim);
+	public StringBuilder getCrimesInRadius(double latitude, double longitude, double raio,long dataIni, long dataFim);
 	
 	public Map<String,Integer> numeroCrimesArea(double latitude, double longitude, double raio,long dataIni, long dataFim);
 	

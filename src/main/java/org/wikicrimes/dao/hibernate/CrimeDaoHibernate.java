@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -588,23 +587,16 @@ public class CrimeDaoHibernate extends GenericCrudDaoHibernate implements
 			try {
 				
 				ps = connect.createStatement();
-				int cont = 0;
-				while(cont < 30 & raio < 20){
-					cont = 0;
-					crimes = new StringBuilder();
-					raio+=0.1;
-					sqlCrimes = "SELECT cri_chave, tipo.tcr_idtipo_crime AS tipoCrime, cri_data as dataCrime, cri_horario as horarioCrime, cri_descricao as descricaoCrime, cri_latitude as latitudeCrime, cri_longitude as longitudeCrime FROM tb_cri_crime AS tcc INNER JOIN tb_tcr_tipo_crime AS tipo ON tipo.tcr_idtipo_crime=tcc.tcr_idtipo_crime AND ("+RAIO_TERRA_KM+" * ACOS( (SIN(PI()* "+latitude+" /180)*SIN(PI() * tcc.cri_latitude/180)) + (COS(PI()* "+latitude+" /180)*COS(PI()*tcc.cri_latitude/180)*COS(PI() * tcc.cri_longitude/180-PI()* "+longitude+" /180))) < "+raio+") AND tcc.cri_status=0 AND (tcc.cri_data BETWEEN "+dIni.toString()+" AND '"+dFim.toString()+"') ";
-					ResultSet rs = ps.executeQuery(sqlCrimes);
-					
-					while(rs.next()){
-		
-						//crimes.append(rs.getString("tipoCrime") + "|" + rs.getString("dataCrime") + "|" + rs.getString("horarioCrime") + "|"+ rs.getString("descricaoCrime") + "|"+ rs.getString("latitudeCrime") + "|"+ rs.getString("longitudeCrime") + "\n");
-						crimes.append(rs.getString("tipoCrime") + "|" + rs.getString("latitudeCrime") + "|"+ rs.getString("longitudeCrime") + "|" + rs.getString("cri_chave") + "\n");
-						cont++;
-					}
-					rs.close();
-				}	
-				
+				crimes = new StringBuilder();
+				sqlCrimes = "SELECT cri_chave, tipo.tcr_idtipo_crime AS tipoCrime, cri_data as dataCrime, cri_horario as horarioCrime, cri_descricao as descricaoCrime, cri_latitude as latitudeCrime, cri_longitude as longitudeCrime FROM tb_cri_crime AS tcc INNER JOIN tb_tcr_tipo_crime AS tipo ON tipo.tcr_idtipo_crime=tcc.tcr_idtipo_crime AND ("+RAIO_TERRA_KM+" * ACOS( (SIN(PI()* "+latitude+" /180)*SIN(PI() * tcc.cri_latitude/180)) + (COS(PI()* "+latitude+" /180)*COS(PI()*tcc.cri_latitude/180)*COS(PI() * tcc.cri_longitude/180-PI()* "+longitude+" /180))) < "+raio+") AND tcc.cri_status=0 AND (tcc.cri_data BETWEEN "+dIni.toString()+" AND '"+dFim.toString()+"') ";
+				ResultSet rs = ps.executeQuery(sqlCrimes);
+
+				while(rs.next()){
+
+					//crimes.append(rs.getString("tipoCrime") + "|" + rs.getString("dataCrime") + "|" + rs.getString("horarioCrime") + "|"+ rs.getString("descricaoCrime") + "|"+ rs.getString("latitudeCrime") + "|"+ rs.getString("longitudeCrime") + "\n");
+					crimes.append(rs.getString("tipoCrime") + "|" + rs.getString("latitudeCrime") + "|"+ rs.getString("longitudeCrime") + "|" + rs.getString("cri_chave") + "|" + rs.getString("dataCrime") + "|" + rs.getString("horarioCrime") + "|" + rs.getString("descricaoCrime").replaceAll(";;;", ";") + ";;;");
+				}
+				rs.close();
 				
 				connect.close();
 				session.close();

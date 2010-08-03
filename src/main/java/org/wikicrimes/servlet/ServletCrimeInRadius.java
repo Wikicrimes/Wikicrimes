@@ -2,8 +2,6 @@ package org.wikicrimes.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.servlet.ServletException;
@@ -28,19 +26,14 @@ public class ServletCrimeInRadius extends HttpServlet {
 		
 		double lat = Double.parseDouble(request.getParameter("lat"));
 		double lng = Double.parseDouble(request.getParameter("lng"));
+		long initDateMilliSeconds = Long.parseLong(request.getParameter("initDate"));
+		double radius = Double.parseDouble(request.getParameter("radius"));
+		
+		StringBuilder crimes = getService().getCrimesArea(lat, lng, radius, initDateMilliSeconds, new Date().getTime());
 
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-		try {
-			StringBuilder crimes = getService().getCrimesArea(lat, lng, 0.6, dateFormat.parse("1999/10/10").getTime(), new Date().getTime());
-			
-			PrintWriter writer = response.getWriter();
-			writer.println(crimes);
-			writer.close();			
-			
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-
+		PrintWriter writer = response.getWriter();
+		writer.println(crimes);
+		writer.close();			
 	}
 	
 	private CrimeService getService(){

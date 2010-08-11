@@ -1,5 +1,5 @@
 //Solicita da rede social os dados do usuário logado e de seus amigos
-function getPessoas(){					
+function getPessoas(){	
 	//document.getElementById("content_info").innerHTML = "<img src='"+linkAplication+"/images/spinner.gif'> </img><b>Carregando dados do seus amigos...</b>";
 	var req = opensocial.newDataRequest();
 	var params = {};

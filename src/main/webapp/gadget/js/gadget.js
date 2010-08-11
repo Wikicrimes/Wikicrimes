@@ -17,15 +17,15 @@ function montaTelaApp(latitude, longitude, zoom){
 			document.getElementById("bodyContent").innerHTML = conteudoCanvasOrkut();
 		else
 			document.getElementById("bodyContent").innerHTML = conteudoCanvasNing();		
-	 }				
-	 if (getViewName() == "profile") {
-		 tutorEstaAtivado = false; 
+	 }else {
+		tutorEstaAtivado = false; 
 	   	document.getElementById("bodyContent").innerHTML = conteudoPerfil();
 	   	qtdMoveMap++;					   	
 	 }
-	 		   	 	   	 
-   	 document.getElementById("botao_pesquisar").value = prefs.getMsg("pesquisar.no.mapa");
-   	 document.getElementById("pesquisa").title = prefs.getMsg("pesquise.um.endereco.no.mapa");
+	 if(document.getElementById("botao_pesquisar")){		   	 	   	 
+		 document.getElementById("botao_pesquisar").value = prefs.getMsg("pesquisar.no.mapa");
+   	 	 document.getElementById("pesquisa").title = prefs.getMsg("pesquise.um.endereco.no.mapa");
+	 }	 
 //   if (GBrowserIsCompatible()) {						
    		var myOptions = {
    		    zoom: 8,

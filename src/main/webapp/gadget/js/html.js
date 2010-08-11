@@ -468,7 +468,7 @@ function conteudoPerfil(){
 	conteudo+='				<td colspan="1" align="left"><img width="150px" height="50px" id="img_logo"';
 	conteudo+='					src="'+linkAplication+'images/widget/wikicrimesPerfil.PNG'+'" />';						
 	conteudo+='				</td>';				
-	conteudo+='				<td align="right"> <input title="" size="30" type="text" id="pesquisa" name="pesquisa" style="font-size: 12px; border: 1px solid #2763a5;" onkeypress="return submitEnter(event);"/><input type="button" id="botao_pesquisar" onclick="showLocal();" style="font-family: Arial, Helvetica, sans-serif; font-size: 10px;	font-weight: bold; margin: 1; padding: 1; background-color: #6da6e2; color: white;	border: 1px solid #2763a5;"/> </td>';
+	conteudo+='				<td align="right"> <input title="" type="text" id="pesquisa" name="pesquisa" style="width:220px;font-size: 12px; border: 1px solid #2763a5;" onkeypress="return submitEnter(event);"/><input type="button" id="botao_pesquisar" onclick="showLocal();" style="font-family: Arial, Helvetica, sans-serif; font-size: 10px;	font-weight: bold; margin: 1; padding: 1; background-color: #6da6e2; color: white;	border: 1px solid #2763a5;"/> </td>';
 	conteudo+='			</tr>';
 	conteudo+='			<tr>';
 	conteudo+='				<td colspan="2" align="center">';
@@ -480,7 +480,7 @@ function conteudoPerfil(){
 	conteudo+='			<tr>';
 	conteudo+='				<td colspan="2">';
 	conteudo+='				<div id="map"';
-	conteudo+='				style="width: 500px; height: 340px; border: 2px solid #2763a5;"></div>';
+	conteudo+='				style="width: 482px; height: 340px; border: 2px solid #2763a5;"></div>';
 	conteudo+='				</td>';				
 	conteudo+='			</tr>';				
     conteudo+='		</table>';

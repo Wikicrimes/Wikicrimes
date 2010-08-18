@@ -132,7 +132,7 @@ public class ServletKernelMap extends HttpServlet {
 		RenderedImage imagem = (RenderedImage)kRend.pintaKernel(zoom, isIE);
 		sessao.setAttribute(IMAGEM_KERNEL, imagem);
 		
-		/*teste*/testeArquivo(imagem);
+		///*teste*/testeArquivo(imagem);
 	}
 	
 	//a diferença entre o gerarMapaKernel() e o gerarMapaKernel2() é q o primeiro pega os crimes do cliente, o segundo pega do servidor

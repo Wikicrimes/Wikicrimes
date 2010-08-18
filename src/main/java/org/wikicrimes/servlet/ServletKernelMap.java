@@ -56,53 +56,60 @@ public class ServletKernelMap extends HttpServlet {
 	
 	private CrimeService crimeService;
 	
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		HttpSession sessao = request.getSession();
-		response.setContentType("text/plain");
-		response.setHeader("Pragma", "no-cache");
-		response.setHeader("Cache-Control", "no-cache");
-		response.setDateHeader("Expires", 0);
-		response.setCharacterEncoding("iso-8859-1");
-		
-//		/*teste*/System.out.println(request.getParameterMap().keySet() + " - pontoXY:" + request.getParameter("pontoXY"));
-		
-		String acao = request.getParameter("acao");
-		String app = request.getParameter("app");
-		if(acao != null)
-		if(acao.equals("geraKernel")){
-			//calcular o mapa de kernel e criar imagens			
+	protected void doPost(HttpServletRequest request, HttpServletResponse response){
+		try{	
+			HttpSession sessao = request.getSession();
+			response.setContentType("text/plain");
+			response.setHeader("Pragma", "no-cache");
+			response.setHeader("Cache-Control", "no-cache");
+			response.setDateHeader("Expires", 0);
+			response.setCharacterEncoding("iso-8859-1");
 			
-			if(app!= null && app.equals("wikimapps")) {
-				Util.enviarImagem(response, gerarMapaKernel2(request));
-			}
-			else {
-				gerarMapaKernel2(request);
-			}
-	
-		}else if(acao.equals("pegaImagem")){
-			RenderedImage imagem;			
-			//verifica a aplicacao que acionou o servico. o default é wikicrimes
-			if(app!= null && app.equals("wikimapps")) {
-				imagem= (RenderedImage)sessao.getAttribute(IMAGEM_KERNEL_WIKIMAPPS);
-			}
-			else {
-				imagem= (RenderedImage)sessao.getAttribute(IMAGEM_KERNEL);
-			}
+	//		/*teste*/System.out.println(request.getParameterMap().keySet() + " - pontoXY:" + request.getParameter("pontoXY"));
 			
-			if(imagem != null)
-				Util.enviarImagem(response, imagem);
-		}else if(acao.equals("pegaInfo")){
-			KernelMap kernel = (KernelMap)sessao.getAttribute(KERNEL);
-			double[][] dens = kernel.getDensidadeGrid();
-			enviarInfo(request, response, dens);
-		}
+			String acao = request.getParameter("acao");
+			String app = request.getParameter("app");
+			if(acao != null)
+			if(acao.equals("geraKernel")){
+				//calcular o mapa de kernel e criar imagens			
+				
+				if(app!= null && app.equals("wikimapps")) {
+					Util.enviarImagem(response, gerarMapaKernel2(request));
+				}
+				else {
+					gerarMapaKernel2(request);
+				}
+		
+			}else if(acao.equals("pegaImagem")){
+				RenderedImage imagem;			
+				//verifica a aplicacao que acionou o servico. o default é wikicrimes
+				if(app!= null && app.equals("wikimapps")) {
+					imagem= (RenderedImage)sessao.getAttribute(IMAGEM_KERNEL_WIKIMAPPS);
+				}
+				else {
+					imagem= (RenderedImage)sessao.getAttribute(IMAGEM_KERNEL);
+				}
+				
+				if(imagem != null)
+					Util.enviarImagem(response, imagem);
+			}else if(acao.equals("pegaInfo")){
+				KernelMap kernel = (KernelMap)sessao.getAttribute(KERNEL);
+				double[][] dens = kernel.getDensidadeGrid();
+				enviarInfo(request, response, dens);
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}	
 		
 	}
 	
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		doPost(req, resp);
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp){
+		try{
+			doPost(req, resp);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	//a diferença entre o gerarMapaKernel() e o gerarMapaKernel2() é q o primeiro pega os crimes do cliente, o segundo pega do servidor   

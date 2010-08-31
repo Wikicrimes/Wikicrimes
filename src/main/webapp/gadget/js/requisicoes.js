@@ -4,7 +4,7 @@ function getPessoas(){
 	var req = opensocial.newDataRequest();
 	var params = {};
 	params[opensocial.DataRequest.PeopleRequestFields.PROFILE_DETAILS] = [opensocial.Person.Field.ADDRESSES];
-	req.add(req.newFetchPersonRequest('OWNER', params),'usuario');
+	req.add(req.newFetchPersonRequest('VIEWER', params),'usuario');
 	var paramsFriends = { };
 	paramsFriends[opensocial.DataRequest.PeopleRequestFields.PROFILE_DETAILS] = [
 	opensocial.Person.Field.PROFILE_URL,
@@ -12,7 +12,7 @@ function getPessoas(){
 	opensocial.Person.Field.GENDER ];
 	paramsFriends[opensocial.DataRequest.PeopleRequestFields.FIRST] = 0;
 	paramsFriends[opensocial.DataRequest.PeopleRequestFields.MAX] = 1000;
-	req.add(req.newFetchPeopleRequest('OWNER_FRIENDS',paramsFriends), 'amigos');
+	req.add(req.newFetchPeopleRequest('VIEWER_FRIENDS',paramsFriends), 'amigos');
 	req.send(carregarAmigos);
 };
 
@@ -22,6 +22,7 @@ function carregarAmigos(dataResponse) {
 	var endereco =usuario.getField(opensocial.Person.Field.ADDRESSES);
 	usuarioRedeSocial.idUsuario = usuario.getId();
 	usuarioRedeSocial.nome = usuario.getDisplayName();
+	alert(usuarioRedeSocial.nome);
 	usuarioRedeSocial.linkPerfil = usuario.getField(opensocial.Person.Field.PROFILE_URL)
 	usuarioRedeSocial.idRedeSocial = opensocial.getEnvironment().getDomain();
 	try{	

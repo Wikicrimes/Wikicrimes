@@ -22,7 +22,7 @@ function carregarAmigos(dataResponse) {
 	var endereco =usuario.getField(opensocial.Person.Field.ADDRESSES);
 	usuarioRedeSocial.idUsuario = usuario.getId();
 	usuarioRedeSocial.nome = usuario.getDisplayName();
-	alert(usuario.getId(););
+	alert(usuario.getId());
 	usuarioRedeSocial.linkPerfil = usuario.getField(opensocial.Person.Field.PROFILE_URL)
 	usuarioRedeSocial.idRedeSocial = opensocial.getEnvironment().getDomain();
 	try{	

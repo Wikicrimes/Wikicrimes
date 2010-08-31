@@ -100,7 +100,8 @@
 	
 	<bean id="opensocialService"
 		class="org.wikicrimes.service.impl.OpensocialServiceImpl">
-		<property name="dao" ref="opensocialDao" />		
+		<property name="dao" ref="opensocialDao" />
+		<property name="credibilidadeDao" ref="credibilidadeDao" />		
 	</bean>
 	
 	<bean id="entidadeCertificadoraService"

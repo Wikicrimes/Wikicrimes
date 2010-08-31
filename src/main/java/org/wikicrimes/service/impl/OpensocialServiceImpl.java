@@ -27,6 +27,8 @@ public class OpensocialServiceImpl extends GenericCrudServiceImpl implements Ope
 	
 	private OpensocialDao opensocialDao;
 	
+	private CredibilidadeDao credibilidadeDao;
+	
 	public OpensocialDao getOpensocialDao() {
 		return opensocialDao;
 	}
@@ -42,8 +44,6 @@ public class OpensocialServiceImpl extends GenericCrudServiceImpl implements Ope
 	public void setCredibilidadeDao(CredibilidadeDao credibilidadeDao) {
 		this.credibilidadeDao = credibilidadeDao;
 	}
-
-	private CredibilidadeDao credibilidadeDao;
 	
 	public List<Crime> getCrimes(List<Usuario> usuarios) {
 		opensocialDao = (OpensocialDaoHibernate)getDao();

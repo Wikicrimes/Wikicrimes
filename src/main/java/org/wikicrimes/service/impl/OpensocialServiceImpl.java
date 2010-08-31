@@ -27,6 +27,22 @@ public class OpensocialServiceImpl extends GenericCrudServiceImpl implements Ope
 	
 	private OpensocialDao opensocialDao;
 	
+	public OpensocialDao getOpensocialDao() {
+		return opensocialDao;
+	}
+
+	public void setOpensocialDao(OpensocialDao opensocialDao) {
+		this.opensocialDao = opensocialDao;
+	}
+
+	public CredibilidadeDao getCredibilidadeDao() {
+		return credibilidadeDao;
+	}
+
+	public void setCredibilidadeDao(CredibilidadeDao credibilidadeDao) {
+		this.credibilidadeDao = credibilidadeDao;
+	}
+
 	private CredibilidadeDao credibilidadeDao;
 	
 	public List<Crime> getCrimes(List<Usuario> usuarios) {

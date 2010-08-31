@@ -20,9 +20,12 @@ function getPessoas(){
 function carregarAmigos(dataResponse) {								
 	var usuario = dataResponse.get('usuario').getData();
 	var endereco =usuario.getField(opensocial.Person.Field.ADDRESSES);
+	if(usuario.getId()=="_anonymous"){
+		document.write("You must logged!");
+		return;
+	}
 	usuarioRedeSocial.idUsuario = usuario.getId();
 	usuarioRedeSocial.nome = usuario.getDisplayName();
-	alert(usuario.getId());
 	usuarioRedeSocial.linkPerfil = usuario.getField(opensocial.Person.Field.PROFILE_URL)
 	usuarioRedeSocial.idRedeSocial = opensocial.getEnvironment().getDomain();
 	try{	

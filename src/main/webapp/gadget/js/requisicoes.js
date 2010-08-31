@@ -21,7 +21,7 @@ function carregarAmigos(dataResponse) {
 	var usuario = dataResponse.get('usuario').getData();
 	var endereco =usuario.getField(opensocial.Person.Field.ADDRESSES);
 	if(usuario.getId()=="_anonymous"){
-		document.write("You must logged!");
+		document.write("<div style='background-color:white'> You must be logged! </div>");
 		return;
 	}
 	usuarioRedeSocial.idUsuario = usuario.getId();
@@ -534,17 +534,17 @@ function respostaRequisicaoComentarNotificacaoCrime(obj) {
 };
 
 function executaRequisicaoConfirmarNotificacao(idNotificacao, confirma) {
-	if(gadgets.util.getUrlParameters()["gadgetOwner"]!=gadgets.util.getUrlParameters()["gadgetViewer"]){
-		mostrarMensagem('warning', prefs.getMsg("sem.permissao"),true);
-	}else{					     	
-	var params = {};
+//	if(gadgets.util.getUrlParameters()["gadgetOwner"]!=gadgets.util.getUrlParameters()["gadgetViewer"]){
+//		mostrarMensagem('warning', prefs.getMsg("sem.permissao"),true);
+//	}else{					     	
+		var params = {};
 		params[gadgets.io.RequestParameters.AUTHORIZATION] = gadgets.io.AuthorizationType.SIGNED;
 		params[gadgets.io.RequestParameters.POST_DATA] = 'acao=confirmarNotificacao&idUsuarioRedeSocial='+usuarioRedeSocial.idUsuario+'&dominioRedeSocial='+opensocial.getEnvironment().getDomain()+'&idNotificacao='+idNotificacao+'&confirma='+confirma;		 
 		params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.POST;				  
 		params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.DOM;
 		var url = linkAplication+"ServletOpensocial";					
 		gadgets.io.makeRequest(url, respostaRequisicaoConfirmarNotificacao, params);
-	}   
+	//}   
 };
 
 function respostaRequisicaoConfirmarNotificacao(obj) {
@@ -566,17 +566,17 @@ function respostaRequisicaoConfirmarNotificacao(obj) {
 };
 
 function executaRequisicaoConfirmarNotificacaoCrime(idNotificacao, confirma) {
-	if(gadgets.util.getUrlParameters()["gadgetOwner"]!=gadgets.util.getUrlParameters()["gadgetViewer"]){
-		mostrarMensagem('warning', prefs.getMsg("sem.permissao"),true);
-	}else{					     	
-	var params = {};
+//	if(gadgets.util.getUrlParameters()["gadgetOwner"]!=gadgets.util.getUrlParameters()["gadgetViewer"]){
+//		mostrarMensagem('warning', prefs.getMsg("sem.permissao"),true);
+//	}else{					     	
+		var params = {};
 		params[gadgets.io.RequestParameters.AUTHORIZATION] = gadgets.io.AuthorizationType.SIGNED;
 		params[gadgets.io.RequestParameters.POST_DATA] = 'acao=confirmarNotificacaoCrime&idUsuarioRedeSocial='+usuarioRedeSocial.idUsuario+'&dominioRedeSocial='+opensocial.getEnvironment().getDomain()+'&idNotificacao='+idNotificacao+'&confirma='+confirma;		 
 		params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.POST;				  
 		params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.DOM;
 		var url = linkAplication+"ServletOpensocial";					
 		gadgets.io.makeRequest(url, respostaRequisicaoConfirmarNotificacaoCrime, params);
-	}   
+//	}   
 };
 
 function respostaRequisicaoConfirmarNotificacaoCrime(obj) {
@@ -597,9 +597,9 @@ function respostaRequisicaoConfirmarNotificacaoCrime(obj) {
 };
 
 function executaRequisicaoRepassarRelato(idNotificacao) {
- 	if(gadgets.util.getUrlParameters()["gadgetOwner"]!=gadgets.util.getUrlParameters()["gadgetViewer"]){
-		mostrarMensagem('warning', prefs.getMsg("sem.permissao"),true);
-	}else{					     	
+// 	if(gadgets.util.getUrlParameters()["gadgetOwner"]!=gadgets.util.getUrlParameters()["gadgetViewer"]){
+//		mostrarMensagem('warning', prefs.getMsg("sem.permissao"),true);
+//	}else{					     	
 		var params = {};
 		params[gadgets.io.RequestParameters.AUTHORIZATION] = gadgets.io.AuthorizationType.SIGNED;
 		params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.POST;				  
@@ -616,7 +616,7 @@ function executaRequisicaoRepassarRelato(idNotificacao) {
 	 	params[gadgets.io.RequestParameters.POST_DATA] = 'acao=repassarRelato&idUsuarioRedeSocial='+usuarioRedeSocial.idUsuario+'&dominioRedeSocial='+opensocial.getEnvironment().getDomain()+'&idNotificacao='+idNotificacao+'&amigos='+paramAmigos;
 	  	var url = linkAplication+"ServletOpensocial";					
 	  	gadgets.io.makeRequest(url, respostaRequisicaoRepassarRelato, params);
-	 }   
+	// }   
 };
 
 function respostaRequisicaoRepassarRelato(obj) {
@@ -639,9 +639,9 @@ function respostaRequisicaoRepassarRelato(obj) {
 };
 
 function executaRequisicaoRepassarCrime(idNotificacao) {
- 	if(gadgets.util.getUrlParameters()["gadgetOwner"]!=gadgets.util.getUrlParameters()["gadgetViewer"]){
-		mostrarMensagem('warning', prefs.getMsg("sem.permissao"),true);
-	}else{					     	
+// 	if(gadgets.util.getUrlParameters()["gadgetOwner"]!=gadgets.util.getUrlParameters()["gadgetViewer"]){
+//		mostrarMensagem('warning', prefs.getMsg("sem.permissao"),true);
+//	}else{					     	
 		var params = {};
 		params[gadgets.io.RequestParameters.AUTHORIZATION] = gadgets.io.AuthorizationType.SIGNED;
 		params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.POST;				  
@@ -658,7 +658,7 @@ function executaRequisicaoRepassarCrime(idNotificacao) {
 	 	params[gadgets.io.RequestParameters.POST_DATA] = 'acao=repassarCrime&idUsuarioRedeSocial='+usuarioRedeSocial.idUsuario+'&dominioRedeSocial='+opensocial.getEnvironment().getDomain()+'&idNotificacao='+idNotificacao+'&amigos='+paramAmigos;
 	  	var url = linkAplication+"ServletOpensocial";					
 	  	gadgets.io.makeRequest(url, respostaRequisicaoRepassarCrime, params);
-	 }   
+	 //}   
 };
 
 function respostaRequisicaoRepassarCrime(obj) {

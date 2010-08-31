@@ -352,9 +352,9 @@ var infowindowtemp = null;
 function registrarAlerta(){	
 	escondeDivSelecaoAlerta();
 	if(!estaRegistrando){	
-		if(gadgets.util.getUrlParameters()["gadgetOwner"]!=gadgets.util.getUrlParameters()["gadgetViewer"]){
-			mostrarMensagem('warning', prefs.getMsg("sem.permissao"),true);
-		}else{
+//		if(gadgets.util.getUrlParameters()["gadgetOwner"]!=gadgets.util.getUrlParameters()["gadgetViewer"]){
+//			mostrarMensagem('warning', prefs.getMsg("sem.permissao"),true);
+//		}else{
 			podeCarregarCrimes = false;
 			estaRegistrando = true;
 			for (k in crimes){		
@@ -379,7 +379,7 @@ function registrarAlerta(){
 				cancelarRegistroAlerta();
 			});		
 
-		}
+//		}
 	}	
 }
 
@@ -412,9 +412,9 @@ function registrarCrime(tipoCrime){
 	
 	escondeDivSelecaoAlerta();
 	if(!estaRegistrando){	
-		if(gadgets.util.getUrlParameters()["gadgetOwner"]!=gadgets.util.getUrlParameters()["gadgetViewer"]){
-			mostrarMensagem('warning', prefs.getMsg("sem.permissao"),true);
-		}else{
+//		if(gadgets.util.getUrlParameters()["gadgetOwner"]!=gadgets.util.getUrlParameters()["gadgetViewer"]){
+//			mostrarMensagem('warning', prefs.getMsg("sem.permissao"),true);
+//		}else{
 			podeCarregarCrimes = false;
 			estaRegistrando = true;
 			for (k in crimes){		
@@ -440,7 +440,7 @@ function registrarCrime(tipoCrime){
 			google.maps.event.addListener(infowindowtemp, "closeclick", function (latLng) {
 				cancelarRegistroAlerta();
 			});		
-		}
+//		}
 	}	
 }
 
@@ -966,9 +966,9 @@ function getCityLatLng(){
 
    
 function prepararComentarNotificacao(idNotificacao, tipoNotificacao){
-   	if(gadgets.util.getUrlParameters()["gadgetOwner"]!=gadgets.util.getUrlParameters()["gadgetViewer"]){
-		mostrarMensagem('warning', prefs.getMsg("sem.permissao"),true);
-	}else{			    
+//   	if(gadgets.util.getUrlParameters()["gadgetOwner"]!=gadgets.util.getUrlParameters()["gadgetViewer"]){
+//		mostrarMensagem('warning', prefs.getMsg("sem.permissao"),true);
+//	}else{			    
     	htmlComentariosDescartar = document.getElementById('comentarios').innerHTML;
     	var htmlComentarios = "<br><div><img width=22px height=20px src="+ linkAplication+"images/widget/comentar.PNG" +" /> <b>"+usuarioRedeSocial.nome+" comenta:</b> </div><br/>";		
    		htmlComentarios +="<TEXTAREA NAME='desc_comentario' id='desc_comentario' style='font-size: 12px; border: 1px solid #2763a5;' COLS='36' ROWS='4'></TEXTAREA> ";
@@ -980,7 +980,7 @@ function prepararComentarNotificacao(idNotificacao, tipoNotificacao){
     		document.getElementById('comentarios').innerHTML = '';	
     	document.getElementById('comentarios').innerHTML = htmlComentarios + document.getElementById('comentarios').innerHTML;
     	document.getElementById('desc_comentario').focus();
-    }	
+//    }	
 }
    
 function descartarComentario(){

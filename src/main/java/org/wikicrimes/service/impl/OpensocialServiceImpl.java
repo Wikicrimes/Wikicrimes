@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import org.wikicrimes.dao.CredibilidadeDao;
 import org.wikicrimes.dao.OpensocialDao;
 import org.wikicrimes.dao.hibernate.OpensocialDaoHibernate;
 import org.wikicrimes.model.BaseObject;
@@ -12,7 +11,6 @@ import org.wikicrimes.model.Comentario;
 import org.wikicrimes.model.ComentarioRelato;
 import org.wikicrimes.model.Confirmacao;
 import org.wikicrimes.model.ConfirmacaoRelato;
-import org.wikicrimes.model.Credibilidade;
 import org.wikicrimes.model.Crime;
 import org.wikicrimes.model.CrimeRazao;
 import org.wikicrimes.model.RedeSocial;
@@ -26,24 +24,6 @@ import org.wikicrimes.service.OpensocialService;
 public class OpensocialServiceImpl extends GenericCrudServiceImpl implements OpensocialService{	
 	
 	private OpensocialDao opensocialDao;
-	
-	private CredibilidadeDao credibilidadeDao;
-	
-	public OpensocialDao getOpensocialDao() {
-		return opensocialDao;
-	}
-
-	public void setOpensocialDao(OpensocialDao opensocialDao) {
-		this.opensocialDao = opensocialDao;
-	}
-
-	public CredibilidadeDao getCredibilidadeDao() {
-		return credibilidadeDao;
-	}
-
-	public void setCredibilidadeDao(CredibilidadeDao credibilidadeDao) {
-		this.credibilidadeDao = credibilidadeDao;
-	}
 	
 	public List<Crime> getCrimes(List<Usuario> usuarios) {
 		opensocialDao = (OpensocialDaoHibernate)getDao();
@@ -157,29 +137,10 @@ public class OpensocialServiceImpl extends GenericCrudServiceImpl implements Ope
 	@Override
 	public void registrarCrime(Crime c, List<CrimeRazao> razoes) {
 		registrarBaseObject(c);
+		c.setUltimaCredibilidade(0.5);
 		for (CrimeRazao crimeRazao : razoes) {
 			registrarBaseObject(crimeRazao);
 		}
-		criarCredibilidade(c);
-	}
-	
-	private void criarCredibilidade(Crime crime)
-	{
-		double cred = crime.getUsuario().getUltimaReputacao().getReputacao();
-		
-		Credibilidade credibilidade = new Credibilidade(null, cred, new Date(), crime);
-		
-//		TODO Manter lista de Credibilidades para futura atualizacao
-//		Set<Credibilidade> credibilidades = crime.getCredibilidades();
-//		
-//		if (credibilidades == null)
-//			credibilidades = new HashSet<Credibilidade>();
-//		
-//		credibilidades.add(credibilidade);
-//		crime.setCredibilidades(credibilidades);
-		
-		crime.setUltimaCredibilidade(credibilidade.getCredibilidade());
-		credibilidadeDao.save(credibilidade);
 	}
 	
 	public boolean verificaSeRepasseFoiRegistrado(RepasseRelato rp){

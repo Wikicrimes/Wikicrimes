@@ -387,6 +387,8 @@ public class ServletKernelMap extends HttpServlet {
 				pontos.add(toPixel(p, zoom));
 				
 			}
+			ConexaoBD.fechaConexao();
+		
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace();

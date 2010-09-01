@@ -17,7 +17,7 @@ public class ConexaoBD {
 
 	// Conexão
 	private static ConexaoBD conexaoBD;
-	private Connection conexao;
+	private static Connection conexao;
 	
 	
 
@@ -73,7 +73,7 @@ public class ConexaoBD {
 	}
 
 	public static ConexaoBD getConexaoBD() {
-		if (conexaoBD == null)
+		if (conexao == null)
 			try {
 				conexaoBD = new ConexaoBD();
 			} catch (SQLException e) {
@@ -104,13 +104,14 @@ public class ConexaoBD {
 		return st.executeBatch();
 	}
 
-	public void fechaConexao() {
+	public static void fechaConexao() {
 		try {
 			conexao.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		conexao = null;
 	}
 
 	

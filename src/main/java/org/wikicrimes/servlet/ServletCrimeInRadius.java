@@ -27,9 +27,10 @@ public class ServletCrimeInRadius extends HttpServlet {
 		double lat = Double.parseDouble(request.getParameter("lat"));
 		double lng = Double.parseDouble(request.getParameter("lng"));
 		long initDateMilliSeconds = Long.parseLong(request.getParameter("initDate"));
+		long finalDateMilliSeconds = Long.parseLong(request.getParameter("finalDate"));
 		double radius = Double.parseDouble(request.getParameter("radius"));
 		
-		StringBuilder crimes = getService().getCrimesInRadius(lat, lng, radius, initDateMilliSeconds, new Date().getTime());
+		StringBuilder crimes = getService().getCrimesInRadius(lat, lng, radius, initDateMilliSeconds, finalDateMilliSeconds);
 
 		PrintWriter writer = response.getWriter();
 		writer.println(crimes);

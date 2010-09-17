@@ -129,7 +129,7 @@ public class ServletScreenShotMapa extends HttpServlet {
 		//Recupera o crime central atravï¿½s da chave
 		Crime crimeCentral = crimeService.getCrime(chaveCrime);
 		
-		URL url = constroiUrlGSM(crimeCentral.getLatitude(), crimeCentral.getLongitude());
+		URL url = constroiUrlGSM(crimeCentral.getLatitude(), crimeCentral.getLongitude(), false);
 		BufferedImage imagemMapa = toBufferedImage(requestImage(url));
 		
 		//Calcula os valores limite da imagem em latlng
@@ -151,12 +151,20 @@ public class ServletScreenShotMapa extends HttpServlet {
 	 * @return URL preparada para requisitar imagem do Google Static Maps
 	 * @throws MalformedURLException
 	 */
-	private URL constroiUrlGSM(double latitude, double longitude)
+	/**
+	 * @param latitude - Latitude do centro
+	 * @param longitude - Longitude do centro
+	 * @param satellite - booleano que diz se o mapa deve aparecer como imagem de satelite
+	 * @return
+	 * @throws MalformedURLException
+	 */
+	private URL constroiUrlGSM(double latitude, double longitude, boolean satellite)
 			throws MalformedURLException {
 		/*
 		 * Para mais informacoes sobre a URL ver:
 		 * http://code.google.com/intl/pt-BR/apis/maps/documentation/staticmaps/
 		 */
+		
 		String urlMapaLimpo = "http://maps.google.com/maps/api/staticmap?center="
 				+ latitude
 				+ ","
@@ -169,6 +177,9 @@ public class ServletScreenShotMapa extends HttpServlet {
 				+ (int) mapImageHeight
 				+ "&sensor=false";
 
+		if(satellite) 
+			urlMapaLimpo += "maptype=satellite";
+		
 		return new URL(urlMapaLimpo);
 	}
 	
@@ -337,8 +348,15 @@ public class ServletScreenShotMapa extends HttpServlet {
 			// xml com os marcadores da area
 			String xml = requestWikiMappsXML(application, north, south, east, west);
 			
-			// Recebe uma img no formado Image e transforma em BufferedImage
-			Image imageAux = requestImage(constroiUrlGSM(latitude, longitude));
+			// Recebe uma img no formato Image e transforma em BufferedImage
+			
+			URL url;
+			if(application.equalsIgnoreCase("unifor"))
+				url = constroiUrlGSM(latitude, longitude, true);
+			else
+				url = constroiUrlGSM(latitude, longitude, false);
+			
+			Image imageAux = requestImage(url);
 			BufferedImage mapImage = toBufferedImage(imageAux);
 
 			// Recebe todos os marcadores da área

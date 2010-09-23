@@ -19,7 +19,7 @@
 	 		chamouLoadMapa=true;
 	 		
 			<c:if test="#{not empty usuario}">					
-				<c:if test="#{usuario.cidade == null or usuario.cidade == ''}">
+				<c:if test="#{usuario.cidade == null or usuario.cidade == '' or usuario.lat == null or usuario.lng == null}">
 					load(#{filtroForm.latMapa},#{filtroForm.lngMapa},#{filtroForm.zoomMapa});
 					mostrarModalSolicitandoCidade();
 					return;

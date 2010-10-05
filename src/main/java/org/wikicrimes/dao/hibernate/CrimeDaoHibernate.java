@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -573,6 +574,15 @@ public class CrimeDaoHibernate extends GenericCrudDaoHibernate implements
 		java.sql.Date dIni = new java.sql.Date(dataIni);
 		java.sql.Date dFim = new java.sql.Date(dataFim);
 		
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(dIni);
+		calendar.add(Calendar.YEAR, -1);
+		java.sql.Date dIniAnt = new java.sql.Date(calendar.getTime().getTime());
+		
+		calendar.setTime(dFim);
+		calendar.add(Calendar.YEAR, -1);
+		java.sql.Date dFimAnt = new java.sql.Date(calendar.getTime().getTime());		
+		
 		String sqlCrimes;
 		
 		Session session = getHibernateTemplate().getSessionFactory().openSession(); // Abre a secao do hibernate
@@ -584,11 +594,42 @@ public class CrimeDaoHibernate extends GenericCrudDaoHibernate implements
 		try {
 
 			ps = connect.createStatement();
-			crimes = new StringBuilder();
 
-			sqlCrimes = "SELECT cri_chave, tipo.tcr_idtipo_crime AS tipoCrime, cri_data as dataCrime, cri_horario as horarioCrime, cri_descricao as descricaoCrime, cri_latitude as latitudeCrime, cri_longitude as longitudeCrime FROM tb_cri_crime AS tcc INNER JOIN tb_tcr_tipo_crime AS tipo ON tipo.tcr_idtipo_crime=tcc.tcr_idtipo_crime AND ("+RAIO_TERRA_KM+" * ACOS( (SIN(PI()* "+latitude+" /180)*SIN(PI() * tcc.cri_latitude/180)) + (COS(PI()* "+latitude+" /180)*COS(PI()*tcc.cri_latitude/180)*COS(PI() * tcc.cri_longitude/180-PI()* "+longitude+" /180))) < "+raio+") AND tcc.cri_status=0 AND (tcc.cri_data BETWEEN '"+dIni.toString()+"' AND '"+dFim.toString()+"') ";
-			ResultSet rs = ps.executeQuery(sqlCrimes);
+			crimes = new StringBuilder();
 			String crimeSeparator = ";;;";
+			
+			// Calcula se os crimes subiram comparado ao ano anterior
+			sqlCrimes = 
+				"SELECT COUNT(*) as quantidade FROM tb_cri_crime AS tcc INNER JOIN tb_tcr_tipo_crime AS tipo ON tipo.tcr_idtipo_crime=tcc.tcr_idtipo_crime AND ("+RAIO_TERRA_KM+" * ACOS( (SIN(PI()* "+latitude+" /180)*SIN(PI() * tcc.cri_latitude/180)) + (COS(PI()* "+latitude+" /180)*COS(PI()*tcc.cri_latitude/180)*COS(PI() * tcc.cri_longitude/180-PI()* "+longitude+" /180))) < "+raio+") AND tcc.cri_status=0 AND (tcc.cri_data BETWEEN '"+dIni.toString()+"' AND '"+dFim.toString()+"') " +
+					"UNION " +
+				"SELECT COUNT(*) as quantidade FROM tb_cri_crime AS tcc INNER JOIN tb_tcr_tipo_crime AS tipo ON tipo.tcr_idtipo_crime=tcc.tcr_idtipo_crime AND ("+RAIO_TERRA_KM+" * ACOS( (SIN(PI()* "+latitude+" /180)*SIN(PI() * tcc.cri_latitude/180)) + (COS(PI()* "+latitude+" /180)*COS(PI()*tcc.cri_latitude/180)*COS(PI() * tcc.cri_longitude/180-PI()* "+longitude+" /180))) < "+raio+") AND tcc.cri_status=0 AND (tcc.cri_data BETWEEN '"+dIniAnt.toString()+"' AND '"+dFimAnt.toString()+"') ";
+			ResultSet rs = ps.executeQuery(sqlCrimes);
+			
+			double qtdAtual = 0;
+			double qtdAnterior = 0;
+			
+			if(rs.next()) {
+				qtdAtual = rs.getDouble("quantidade");
+				if(rs.next())
+					qtdAnterior = rs.getDouble("quantidade");
+			}
+			if(qtdAnterior > 0 && qtdAtual > 0) {
+				if(qtdAnterior > qtdAtual)
+					crimes.append("-"); // Representa que a quantidade diminuiu
+				else
+					crimes.append("+"); // Representa que a quantidade aumentou
+				
+				crimes.append((qtdAtual/qtdAnterior)-1 + crimeSeparator);
+			} else {
+				crimes.append("null" + crimeSeparator);
+			}
+			rs.close();
+
+			// Recupera os crimes no raio
+			ps = connect.createStatement();
+			
+			sqlCrimes = "SELECT cri_chave, tipo.tcr_idtipo_crime AS tipoCrime, cri_data as dataCrime, cri_horario as horarioCrime, cri_descricao as descricaoCrime, cri_latitude as latitudeCrime, cri_longitude as longitudeCrime FROM tb_cri_crime AS tcc INNER JOIN tb_tcr_tipo_crime AS tipo ON tipo.tcr_idtipo_crime=tcc.tcr_idtipo_crime AND ("+RAIO_TERRA_KM+" * ACOS( (SIN(PI()* "+latitude+" /180)*SIN(PI() * tcc.cri_latitude/180)) + (COS(PI()* "+latitude+" /180)*COS(PI()*tcc.cri_latitude/180)*COS(PI() * tcc.cri_longitude/180-PI()* "+longitude+" /180))) < "+raio+") AND tcc.cri_status=0 AND (tcc.cri_data BETWEEN '"+dIni.toString()+"' AND '"+dFim.toString()+"') ORDER BY cri_data DESC";
+			rs = ps.executeQuery(sqlCrimes);
 			
 			while(rs.next()) {
 				crimes.append(
@@ -602,7 +643,7 @@ public class CrimeDaoHibernate extends GenericCrudDaoHibernate implements
 			}
 			
 			rs.close();
-
+			
 			connect.close();
 			session.close();
 

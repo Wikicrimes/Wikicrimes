@@ -614,11 +614,6 @@ public class CrimeDaoHibernate extends GenericCrudDaoHibernate implements
 					qtdAnterior = rs.getDouble("quantidade");
 			}
 			if(qtdAnterior > 0 && qtdAtual > 0) {
-				if(qtdAnterior > qtdAtual)
-					crimes.append("-"); // Representa que a quantidade diminuiu
-				else
-					crimes.append("+"); // Representa que a quantidade aumentou
-				
 				crimes.append((qtdAtual/qtdAnterior)-1 + crimeSeparator);
 			} else {
 				crimes.append("null" + crimeSeparator);

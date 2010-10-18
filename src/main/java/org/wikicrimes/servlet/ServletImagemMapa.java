@@ -34,7 +34,7 @@ import org.wikicrimes.model.PontoLatLng;
 import org.wikicrimes.model.Usuario;
 import org.wikicrimes.service.CrimeService;
 import org.wikicrimes.service.ImagemMapaService;
-import org.wikicrimes.util.Util;
+import org.wikicrimes.util.ServletUtil;
 import org.wikicrimes.web.FiltroForm;
 import org.wikicrimes.web.ImagemMapaForm;
 
@@ -77,7 +77,7 @@ public class ServletImagemMapa extends HttpServlet {
 				//pinta os marcadores por cima
 				pintaMarcadores(im, imagemMapa, sessao);
 				
-				Util.enviarImagem(resp, imagemMapa);
+				ServletUtil.enviarImagem(resp, imagemMapa);
 			}
 		}
 	}

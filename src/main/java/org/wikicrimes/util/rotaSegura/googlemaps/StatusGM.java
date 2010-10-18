@@ -1,4 +1,4 @@
-package org.wikicrimes.util.kernelMap;
+package org.wikicrimes.util.rotaSegura.googlemaps;
 
 /**
  * Status da requisição de rota à api do GoogleMaps, inclusive possíveis erros.

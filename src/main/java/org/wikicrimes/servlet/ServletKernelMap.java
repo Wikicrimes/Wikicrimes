@@ -9,6 +9,7 @@ import java.io.PrintWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -23,19 +24,18 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
-import org.wikicrimes.dao.hibernate.PontoLatLngDaoHibernate;
 import org.wikicrimes.model.BaseObject;
 import org.wikicrimes.model.Crime;
 import org.wikicrimes.model.PontoLatLng;
 import org.wikicrimes.model.Relato;
 import org.wikicrimes.service.CrimeService;
-import org.wikicrimes.util.Util;
+import org.wikicrimes.util.ServletUtil;
 import org.wikicrimes.util.kernelMap.KernelMap;
 import org.wikicrimes.util.kernelMap.KernelMapRenderer;
 import org.wikicrimes.util.kernelMap.LatLngBoundsGM;
-import org.wikicrimes.util.kernelMap.Ponto;
 import org.wikicrimes.util.kernelMap.PropertiesLoader;
-import org.wikicrimes.util.kernelMap.testes.TesteCenariosRotas;
+import org.wikicrimes.util.rotaSegura.geometria.Ponto;
+import org.wikicrimes.util.rotaSegura.testes.TesteCenariosRotas;
 import org.wikicrimes.web.FiltroForm;
 
 /**
@@ -46,10 +46,10 @@ import org.wikicrimes.web.FiltroForm;
 @SuppressWarnings("serial")
 public class ServletKernelMap extends HttpServlet {
 	
-	final static String IMAGEM_KERNEL = "IMAGEM_KERNEL"; //imagem renderizada do mapa de kernel do wikicrimes
+	public final static String IMAGEM_KERNEL = "IMAGEM_KERNEL"; //imagem renderizada do mapa de kernel
 	final static String IMAGEM_KERNEL_WIKIMAPPS = "IMAGEM_KERNEL_WIKIMAPPS"; //imagem renderizada do mapa de kernel do wikimapps
-	final static String DENSIDADES = "DENSIDADES"; //matriz de densidades do mapa de kernel
-	final static String KERNEL = "KERNEL"; //objeto MapaKernel
+	public final static String DENSIDADES = "DENSIDADES"; //matriz de densidades do mapa de kernel
+	public final static String KERNEL = "KERNEL"; //objeto MapaKernel
 	
 	public final static int GRID_NODE = PropertiesLoader.getInt("node_size");
 	public final static int BANDWIDTH = PropertiesLoader.getInt("bandwidth");
@@ -57,7 +57,7 @@ public class ServletKernelMap extends HttpServlet {
 	private CrimeService crimeService;
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response){
-		try{	
+		try{
 			HttpSession sessao = request.getSession();
 			response.setContentType("text/plain");
 			response.setHeader("Pragma", "no-cache");
@@ -71,27 +71,22 @@ public class ServletKernelMap extends HttpServlet {
 			String app = request.getParameter("app");
 			if(acao != null)
 			if(acao.equals("geraKernel")){
-				//calcular o mapa de kernel e criar imagens			
-				
+				//calcular o mapa de kernel e criar imagens
 				if(app!= null && app.equals("wikimapps")) {
-					Util.enviarImagem(response, gerarMapaKernel2(request));
+					ServletUtil.enviarImagem(response, gerarMapaKernel(request));
+				}else{
+					gerarMapaKernel(request);
 				}
-				else {
-					gerarMapaKernel2(request);
-				}
-		
 			}else if(acao.equals("pegaImagem")){
-				RenderedImage imagem;			
+				RenderedImage imagem;
 				//verifica a aplicacao que acionou o servico. o default é wikicrimes
 				if(app!= null && app.equals("wikimapps")) {
-					imagem= (RenderedImage)sessao.getAttribute(IMAGEM_KERNEL_WIKIMAPPS);
+					imagem = (RenderedImage)sessao.getAttribute(IMAGEM_KERNEL_WIKIMAPPS);
+				}else{
+					imagem = (RenderedImage)sessao.getAttribute(IMAGEM_KERNEL);
 				}
-				else {
-					imagem= (RenderedImage)sessao.getAttribute(IMAGEM_KERNEL);
-				}
-				
 				if(imagem != null)
-					Util.enviarImagem(response, imagem);
+					ServletUtil.enviarImagem(response, imagem);
 			}else if(acao.equals("pegaInfo")){
 				KernelMap kernel = (KernelMap)sessao.getAttribute(KERNEL);
 				double[][] dens = kernel.getDensidadeGrid();
@@ -99,52 +94,19 @@ public class ServletKernelMap extends HttpServlet {
 			}
 		}catch (Exception e) {
 			e.printStackTrace();
-		}	
-		
+		}
 	}
 	
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp){
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
 		try{
 			doPost(req, resp);
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 	}
 
-	//a diferença entre o gerarMapaKernel() e o gerarMapaKernel2() é q o primeiro pega os crimes do cliente, o segundo pega do servidor   
-	private static void gerarMapaKernel(HttpServletRequest request) throws ServletException, IOException {
-		///*teste*/long ini = System.currentTimeMillis();
-		HttpSession sessao = request.getSession();
-		Rectangle bounds = getLimitesPixel(request);
-		int zoom = getZoom(request);
-		
-		//extrai informação dos parâmetros de requisição
-		List<Point> pontos = getPoints(request);
-		/*teste*/TesteCenariosRotas.setResult("numCrimes", pontos.size());
-		
-		//calcula as densidades
-		KernelMap kernel = new KernelMap(GRID_NODE, BANDWIDTH, bounds, pontos);
-		sessao.setAttribute(KERNEL, kernel);
-//		/*teste*/System.out.println(kernel);
-		/*teste*/TesteCenariosRotas.setResult("densMedia", kernel.getMediaDens());
-		/*teste*/TesteCenariosRotas.setResult("densMax", kernel.getMaxDens());
-		
-//		/*teste*/long fim = System.currentTimeMillis();
-//		/*teste*/System.out.println("TEMPO da geração do mapa de kernel: " + (fim-ini));
-		
-		KernelMapRenderer kRend = new KernelMapRenderer(kernel);
-//		RenderedImage imagem = (zoom > 10)? (RenderedImage)kRend.pintaKernel() : (RenderedImage)kRend.pintaKernel(true);
-		boolean isIE = Util.isClientUsingIE(request); 
-		RenderedImage imagem = (RenderedImage)kRend.pintaKernel(zoom, isIE);
-		sessao.setAttribute(IMAGEM_KERNEL, imagem);
-		
-		///*teste*/testeArquivo(imagem);
-	}
-	
-	//a diferença entre o gerarMapaKernel() e o gerarMapaKernel2() é q o primeiro pega os crimes do cliente, o segundo pega do servidor
-	private RenderedImage gerarMapaKernel2(HttpServletRequest request){
-		
+	protected RenderedImage gerarMapaKernel(HttpServletRequest request){
 		HttpSession sessao = request.getSession();
 		String app = request.getParameter("app");
 		
@@ -152,18 +114,21 @@ public class ServletKernelMap extends HttpServlet {
 		LatLngBoundsGM limitesLatlng = getLimitesLatLng(request);
 		Rectangle limitesPixel = getLimitesPixel(request);
 		int zoom = getZoom(request);
+		
 		//verifica a aplicacao que acionou o servico. o default é wikicrimes
 		if(app!= null && app.equals("wikimapps")) {
 			List<Point> pontos =recuperaPontosWikiMapps(limitesLatlng,request.getParameter("url"),request.getParameter("tm"),zoom);
 			KernelMap kernel = new KernelMap(GRID_NODE, BANDWIDTH, limitesPixel, pontos);			
 			KernelMapRenderer kRend = new KernelMapRenderer(kernel);
-			boolean isIE = Util.isClientUsingIE(request); 
+			boolean isIE = ServletUtil.isClientUsingIE(request); 
 			RenderedImage imagem = (RenderedImage)kRend.pintaKernel(zoom, isIE);
 			return imagem;//sessao.setAttribute(IMAGEM_KERNEL_WIKIMAPPS, imagem);			
 		}else{
 		//pega crimes
 		FiltroForm filtro = (FiltroForm)sessao.getAttribute("filtroForm");
-		Map<String,Object> params = filtro.getFiltroMap();
+		Map<String,Object> params = new HashMap<String, Object>();
+		if(filtro != null)
+			params = filtro.getFiltroMap();
 		params.put("norte", limitesLatlng.norte);
 		params.put("sul", limitesLatlng.sul);
 		params.put("leste", limitesLatlng.leste);
@@ -171,21 +136,22 @@ public class ServletKernelMap extends HttpServlet {
 //		/*tsete*/params.put("maxResults", 100);
 		List<BaseObject> crimes = getCrimeService().filter(params);
 		List<Point> pontos = toPixel(crimes, zoom);
-		/*teste*/TesteCenariosRotas.setResult("numCrimes", pontos.size());
+//		/*teste*/TesteCenariosRotas.setResult("numCrimes", pontos.size());
 		
 		//calcula as densidades
 		KernelMap kernel = new KernelMap(GRID_NODE, BANDWIDTH, limitesPixel, pontos);
 		sessao.setAttribute(KERNEL, kernel);
-		/*teste*/TesteCenariosRotas.setResult("densMedia", kernel.getMediaDens());
-		/*teste*/TesteCenariosRotas.setResult("densMax", kernel.getMaxDens());
+//		/*teste*/TesteCenariosRotas.setResult("densMedia", kernel.getMediaDens());
+//		/*teste*/TesteCenariosRotas.setResult("densMax", kernel.getMaxDens());
 		
 		KernelMapRenderer kRend = new KernelMapRenderer(kernel);
-		boolean isIE = Util.isClientUsingIE(request); 
+		boolean isIE = ServletUtil.isClientUsingIE(request); 
 		RenderedImage imagem = (RenderedImage)kRend.pintaKernel(zoom, isIE);
 		sessao.setAttribute(IMAGEM_KERNEL, imagem);
 		return imagem;
 		
 		}
+		
 //		/*teste*/testeArquivo(imagem);
 //		/*teste*/System.out.println("numPontos:"+pontos.size());
 	}
@@ -244,7 +210,7 @@ public class ServletKernelMap extends HttpServlet {
 //	return pontos;
 //}
 	
-	private static Rectangle getLimitesPixel(ServletRequest request){
+	protected static Rectangle getLimitesPixel(ServletRequest request){
 		//obs: width = east-west não funciona no caso em q a emenda do mapa está aparecendo na tela (a linha entre Japão e EUA) 
 		//width seria negativo já q west>east
 		//por isso o width e o height estão sendo calculado no javascript, usando as coordenadas do centro da tela
@@ -270,7 +236,7 @@ public class ServletKernelMap extends HttpServlet {
 		}
 	}
 	
-	private static LatLngBoundsGM getLimitesLatLng(ServletRequest request){
+	protected static LatLngBoundsGM getLimitesLatLng(ServletRequest request){
 		//obs: width = east-west não funciona no caso em q a emenda do mapa está aparecendo na tela (a linha entre Japão e EUA) 
 		//width seria negativo já q west>east
 		//por isso o width e o height estão sendo calculado no javascript, usando as coordenadas do centro da tela
@@ -298,7 +264,7 @@ public class ServletKernelMap extends HttpServlet {
 	/**
 	 * obs: O zoom do GoogleMaps varia de 0 a 19. Zero é o mais de longe. 
 	 */
-	public static int getZoom(ServletRequest request){
+	protected static int getZoom(ServletRequest request){
 		String zoomStr = request.getParameter("zoom");
 		try{
 			return Integer.parseInt(zoomStr);
@@ -307,7 +273,7 @@ public class ServletKernelMap extends HttpServlet {
 		}
 	}
 	
-	private static List<Point> toPixel(List<BaseObject> crimes, int zoom){
+	public static List<Point> toPixel(List<BaseObject> crimes, int zoom){
 		List<Point> pontos = new ArrayList<Point>();
 		for(BaseObject o : crimes){
 			PontoLatLng p = null;
@@ -320,31 +286,12 @@ public class ServletKernelMap extends HttpServlet {
 			}else{
 				continue;
 			}
-			pontos.add(toPixel(p, zoom));
+			pontos.add(p.toPixel(zoom));
 		}
 		return pontos;
 	}
 	
-	private static Point toPixel(PontoLatLng latlng, int zoom){
-		double offset = 256 << (zoom-1);
-		double lat = latlng.getLatitude();
-		double lng = latlng.getLongitude();
-	    int x = (int)Math.round(offset + (offset * lng / 180));
-	    int y = (int)Math.round(offset - offset/Math.PI * Math.log((1 + Math.sin(lat * Math.PI / 180)) / (1 - Math.sin(lat * Math.PI / 180))) / 2);
-		return new Point(x,y);
-	}
-	
-	//hotspots ficam deslocados no zoom alto (o outro metodo toPixel acima faz direito)
-	private static Point toPixel(PontoLatLng latlng, LatLngBoundsGM boundsLatlng, Rectangle boundsPixel){
-		double razaoWidth = boundsPixel.width/boundsLatlng.width;
-		double razaoHeight = boundsPixel.height/boundsLatlng.height;
-		int x = boundsPixel.x + (int)((latlng.getLongitude()-boundsLatlng.oeste) * razaoWidth);
-		int y = boundsPixel.y + (int)((boundsLatlng.norte-latlng.getLatitude()) * razaoHeight);
-		return new Point(x,y);
-	}
-	
-	
-	private CrimeService getCrimeService(){
+	protected CrimeService getCrimeService(){
 		if(crimeService == null){
 			ApplicationContext springContext = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
 			crimeService = (CrimeService)springContext.getBean("crimeService");
@@ -355,11 +302,12 @@ public class ServletKernelMap extends HttpServlet {
 	public static void testeArquivo(RenderedImage imagem){
 		//escrever a imagem em arquivo
 		try {
-			ImageIO.write(imagem, "PNG", new File("/home/leonardo/img324.png"));
+			ImageIO.write(imagem, "PNG", new File("/home/victor/Desktop/img.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
+	
 	//recupera pontos no wikimapps de acordo com os limites e o tipo de marcador
 	private List<Point> recuperaPontosWikiMapps(LatLngBoundsGM limitesLatLng, String url,String tm,int zoom){
 		List<Point> pontos=new ArrayList<Point>();
@@ -384,7 +332,7 @@ public class ServletKernelMap extends HttpServlet {
 			ResultSet rs =con.enviarConsulta(query);
 			while(rs.next()){
 				PontoLatLng p = new PontoLatLng(rs.getDouble(2),rs.getDouble(3));
-				pontos.add(toPixel(p, zoom));
+				pontos.add(p.toPixel(zoom));
 				
 			}
 			ConexaoBD.fechaConexao();
@@ -395,7 +343,5 @@ public class ServletKernelMap extends HttpServlet {
 		}
 		return pontos;
 	}
-	
-	
 }
 	

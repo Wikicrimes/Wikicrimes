@@ -1,4 +1,4 @@
-package org.wikicrimes.util.kernelMap.testes;
+package org.wikicrimes.util.rotaSegura.testes;
 
 import java.awt.AWTException;
 import java.awt.GraphicsEnvironment;
@@ -24,32 +24,28 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.wikicrimes.util.NumerosUtil;
 
+
+@SuppressWarnings("serial")
 public class TesteCenariosRotas extends HttpServlet{
 
 	private static final String resultadosFileName = "resultados.txt";
 	private static final String cenariosFileName = "cenarios.txt";
 	private static final String paramFileName = "param.txt";
-	private static final String dir = "/home/victor/Desktop/testes rotas/serie de testes/teste auto 2";
+	private static final String dir = "/home/victor/Desktop/testes/rotas 2010.09.17/novo teste";
 	
 	private static Map<String,String> result = new HashMap<String, String>();
 	private static Map<String,String> param;
-	
-//	/*teste*/
-//	public static void main(String[] args) {
-//		setResult("numCrimes", 4);
-//		setResult("distReta", 2);
-//		setResult("qualiIni", 3);
-//		setResult("tol", 0);
-//		setResult("distIni", 1);
-//		setResult("distFin", 5);
-//		salvar();
-//		screenshot(1000);
-//	}
-//	/*teste*/
+	public static String idCenarioAtual;
+	private static String stringCenarioAtual;
 	
 	//escrever resultados no arquivo
 	public static void setResult(String key, Object value){
+		if(value instanceof Double || value instanceof Float){
+			double d = Double.parseDouble(value.toString());
+			value = NumerosUtil.roundToDecimals(d, 5);
+		}
 		result.put(key, String.valueOf(value));
 	}
 	public static void salvar(){
@@ -60,7 +56,7 @@ public class TesteCenariosRotas extends HttpServlet{
 			//data e hora
 			b.append(new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date()));
 			//cenario
-			String[] cenario = getStringCenario().split("\t");  
+			String[] cenario = stringCenarioAtual.split("\t");  
 			b.append("\t" + cenario[0]); //id
 			b.append("\t" + cenario[1]); //nome
 			//resultado direto do cenário
@@ -72,8 +68,6 @@ public class TesteCenariosRotas extends HttpServlet{
 //			b.append("\t" + result.get("distIni"));
 //			b.append("\t" + result.get("qualiIni"));
 			//parametros
-			b.append("\t" + getTamExp());
-			b.append("\t" + getNumExp());
 			b.append("\t" + getFatTol());
 			//resultados dependentes dos paramentros
 			b.append("\t" + result.get("distFin"));
@@ -83,7 +77,7 @@ public class TesteCenariosRotas extends HttpServlet{
 			b.append("\t" + result.get("erro"));
 			b.append("\n");
 			
-			System.out.println(b.toString());
+//			System.out.println(b.toString());
 
 			w.write(b.toString());
 			w.close();
@@ -96,37 +90,56 @@ public class TesteCenariosRotas extends HttpServlet{
 
 	
 	//ler cenário do txt e passar pro javascript
-	private static int cont = 0;
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	private static int contParam = 0;
+	private static int contCenario = 0;
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
 		
 		PrintWriter out = resp.getWriter();
 		
 		String acao = req.getParameter("acao"); 
 		if(acao != null){
-			if(acao.equals("cenario")){
-				out.write(getStringCenario());
+			if(acao.equals("cenarioPrimeiraLinha")){
+				String stringCenario = getStringCenarioPrimeiraLinha();
+				out.write(stringCenario);
 			
+			}else if(acao.equals("cenarioSequencia")){
+				contCenario++;
+				String stringCenario = getStringCenarioSequencia();
+				if(stringCenario.equals("fim"))
+					contCenario = 0;
+				out.write(stringCenario);
+			
+			}else if(acao.equals("screenshot")){
+				int tempo = Integer.parseInt(req.getParameter("tempo"));
+				try{
+					Thread.sleep(tempo);
+					screenshot();
+				}catch(InterruptedException e){
+					e.printStackTrace();
+				}
+				out.write("screenshot ok");
+				
 			}else if(acao.equals("param")){
-//				screenshot(0);
-				screenshot(1000);
-//				screenshot(2000);
-				cont++;
+				contParam++;
 				param = getMapParam();
 				if(param == null){
 					out.write("fim");
-					cont = 0;
+					contParam = 0;
 				}
 			}
 		}
 		
 		out.close();
 	}
-	private static String getStringCenario(){
+	
+	private static String getStringCenarioPrimeiraLinha(){
 		try {
 			
 			File cenarioFile = new File(dir, cenariosFileName);
 			BufferedReader r = new BufferedReader(new FileReader(cenarioFile));
-			return r.readLine();
+			String stringCenario = r.readLine();
+			stringCenarioAtual = stringCenario;
+			return stringCenario;
 			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -136,7 +149,41 @@ public class TesteCenariosRotas extends HttpServlet{
 		return null;
 	}
 	
+	private static String getStringCenarioSequencia(){
+		try {
+			
+			File cenarioFile = new File(dir, cenariosFileName);
+			BufferedReader r = new BufferedReader(new FileReader(cenarioFile));
+			
+			String stringCenario = null;
+			
+			String primeiraPalavra = r.readLine().split("\t")[0]; 
+			while(!primeiraPalavra.equals("#cen")){
+				primeiraPalavra = r.readLine().split("\t")[0];
+			}
+			
+			for(int i=0; i<contCenario; i++){
+				stringCenario = r.readLine();
+				if(stringCenario.equals("fim"))
+					return "fim";
+			}
+			
+			stringCenarioAtual = stringCenario;
+			idCenarioAtual = stringCenario.split("\t")[0];
+			
+			return stringCenario;
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} 
+		return null;
+	}
 	
+	public static String getStringCenarioAtual(){
+		return stringCenarioAtual;
+	}
 	
 	//ler parametros do txt e passar pro ServletRotaSegura e LogicaRotaSegura
 	private static Map<String,String> getMapParam(){
@@ -146,7 +193,7 @@ public class TesteCenariosRotas extends HttpServlet{
 			BufferedReader r = new BufferedReader(new FileReader(paramFile));
 			
 			String stringParam = null;
-			for(int i=0; i<=cont; i++){
+			for(int i=0; i<=contParam; i++){
 				stringParam = r.readLine();
 				if(stringParam.equals("fim"))
 					return null;
@@ -155,9 +202,7 @@ public class TesteCenariosRotas extends HttpServlet{
 			String[] s = stringParam.split("\t");
 			
 			Map<String,String> map = new HashMap<String,String>();
-			map.put("tamExp", s[0]);
-			map.put("numExp", s[1]);
-			map.put("fatTol", s[2]);
+			map.put("fatTol", s[0]);
 			
 			return map;
 			
@@ -168,16 +213,6 @@ public class TesteCenariosRotas extends HttpServlet{
 		} 
 		return null;
 	}
-	public static int getTamExp(){
-		if(param == null)
-			param = getMapParam();
-		return Integer.valueOf(param.get("tamExp"));
-	}
-	public static int getNumExp(){
-		if(param == null)
-			param = getMapParam();
-		return Integer.valueOf(param.get("numExp"));
-	}
 	public static double getFatTol(){
 		if(param == null)
 			param = getMapParam();
@@ -185,12 +220,8 @@ public class TesteCenariosRotas extends HttpServlet{
 	}
 	
 	
-	
-	public static void screenshot(int milis){
+	public static void screenshot(){
 		try {
-			
-			//espera um poquim pra rota verde aparecer
-			Thread.sleep(milis);
 			
 			//screenshot
 	        Robot robot = new Robot();
@@ -199,15 +230,13 @@ public class TesteCenariosRotas extends HttpServlet{
 	        BufferedImage image = robot.createScreenCapture(captureSize);
 	        
 	        //nome da imagem
+	        String[] cenario = stringCenarioAtual.split("\t");  
 	        StringBuilder b = new StringBuilder();
 	        //cenario
-	        String[] cenario = getStringCenario().split("\t");  
 			b.append(cenario[0]); //id
 			b.append(", " + cenario[1]); //nome
 			//parametros
-			b.append("." + getTamExp());
-			b.append("." + getNumExp());
-			b.append("." + getFatTol());
+			b.append(", " + getFatTol()); //parametro
 			//data e hora
 			b.append(", " + new SimpleDateFormat("yyyy-MM-dd HH-mm-ss").format(new Date()));
 			String imageName = b.toString();
@@ -219,8 +248,6 @@ public class TesteCenariosRotas extends HttpServlet{
 	    }catch(AWTException e) {
 	    	e.printStackTrace();
 	    } catch (IOException e) {
-			e.printStackTrace();
-		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 

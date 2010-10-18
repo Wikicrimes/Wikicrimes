@@ -41,7 +41,7 @@ import org.wikicrimes.model.Usuario;
 import org.wikicrimes.service.CrimeService;
 import org.wikicrimes.service.UsuarioService;
 import org.wikicrimes.util.Constantes;
-import org.wikicrimes.util.Util;
+import org.wikicrimes.util.ServletUtil;
 import org.wikicrimes.util.kernelMap.KernelMap;
 import org.wikicrimes.util.kernelMap.KernelMapRenderer;
 import org.wikicrimes.web.FiltroForm;
@@ -76,7 +76,7 @@ public class ServletWikiCrimesApi extends HttpServlet {
 			RenderedImage imagem = (RenderedImage)sessao.getAttribute(IMAGEM_KERNEL);
 //			sessao.removeAttribute(IMAGEM_KERNEL);
 			if(imagem != null)
-				Util.enviarImagem(response, imagem);
+				ServletUtil.enviarImagem(response, imagem);
 		}else{
 		
 			PrintWriter out = response.getWriter();

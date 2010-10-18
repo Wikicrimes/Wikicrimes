@@ -10,6 +10,35 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:t="http://myfaces.apache.org/tomahawk">
 	
+	
+	<style>
+	.rotasSeguras {
+		position: absolute;
+		width: 120px;
+		height: 120px;
+		margin-left: auto;	
+		margin-right: auto;	
+		z-index: 90;	
+		opacity: 1.00;	
+		-moz-opacity: 1.00;	
+		filter: alpha(opacity = 100);	
+		color: #000000;	
+		font-family: helvetica, verdana, sans;	
+		font-size: 12px;
+		visibility: hidden;	
+		background-color: #ffffff;
+		overflow:auto;
+	}
+	a.rotasSeguras{
+		cursor: pointer;
+	}
+	</style>
+	
+	<div id="rotasSeguras" class="rotasSeguras" style="right:180px; top:200px">
+		
+	</div>
+	
+	
 	<f:loadBundle var="messages" basename="messages" />
 	<script type="text/javascript"><!-- 
 	/* <![CDATA[ */
@@ -28,11 +57,60 @@
     var rotalastindex = 0;
     var rotaMarcadores = new Array();
     var rotaMarcadoresIndice = 0;
-    var rotaSegura = new Array();
     var rotaNumMarcadores = 0;
     var rotaSeguraPolyline;
-    var rotaSeguraMarcador = [];
 
+
+    //============= PAINEL COM A LISTA DAS MELHORES ROTAS SEGURAS : INIÃCIO ================
+    var rotasSeguras;
+
+    function mostraDivRotasSeguras(){
+        var div = document.getElementById("rotasSeguras");
+        var html = "<ul>"
+		for(i=0; i<rotasSeguras.length; i++){
+			html += "<li id='rotaSegura" + i + "' onClick=carregaRota("+i+")><a>rota"+(i+1)+"</a></li>"
+		}
+		html += "</ul>";
+		div.innerHTML = html;
+		div.style.visibility = "visible";
+    }
+
+    function escondeDivRotasSeguras(){
+    	var div = document.getElementById("rotasSeguras");
+		div.innerHTML = "";
+		div.style.visibility = "hidden";
+    }
+
+    var idRotaSelecionada;
+    function carregaRota(i){
+        if(i > rotasSeguras.length){
+			console.log('carregaRota(), i=' + i + ' maior q rotasSeguras.length=' + rotasSeguras.length);
+			return;
+        }
+
+        //marcar item da lista
+		if(typeof(idRotaSelecionada) != 'undefined'){
+			var anterior = document.getElementById("rotaSegura"+idRotaSelecionada);
+			//anterior.style["font-weight"] = "lighter";
+			anterior.innerHTML = "<a>rota" + (idRotaSelecionada+1) + "</a>"; 
+		}
+		var novo = document.getElementById("rotaSegura"+i);
+		//novo.style["font-weight"] = "bolder";
+		novo.innerHTML = "<a>rota" + (i+1) + "*</a>";
+		idRotaSelecionada = i;
+
+		//apaga rota atual
+		if(rotaSeguraPolyline){
+			map.removeOverlay(rotaSeguraPolyline);
+		}
+
+		//plota rota nova
+		var rota = rotasSeguras[i];
+		dirnRotaSegura.loadFromWaypoints(rota ,{getPolyline:true});
+    }
+    //============= PAINEL COM A LISTA DAS MELHORES ROTAS SEGURAS : FIM =================
+
+    
 	function controleMenu(map){
 		// === create the context menu div ===
 		contextmenu = document.createElement("div");
@@ -40,15 +118,14 @@
 		contextmenu.style.background="#ffffff";
 		contextmenu.style.border="1px solid #8888FF";
 	
-		contextmenu.innerHTML = '<a class="menu" href="javascript:adicionaPontoOrigem()"><div class="contextMenu">&nbsp;&nbsp;Ponto Origem&nbsp;&nbsp;</div></a>'
-						+ '<a class="menu" href="javascript:adicionaPontoDestino()"><div class="contextMenu">&nbsp;&nbsp;Ponto Destino&nbsp;&nbsp;</div></a>'				
-						+ '<a class="menu" href="javascript:tiraCrimes()"><div class="contextMenu">&nbsp;&nbsp;Limpa Crimes&nbsp;&nbsp;</div></a>'
-						+ '<a class="menu" href="javascript:colocaCrimes()"><div class="contextMenu">&nbsp;&nbsp;Mostra Crimes&nbsp;&nbsp;</div></a>'
-						+ '<a class="menu" href="javascript:calculaRotaSegura()"><div class="contextMenu">&nbsp;&nbsp;Calcula Rota Segura&nbsp;&nbsp;</div></a>'
-						+ '<a class="menu" href="javascript:removeRotas()"><div class="contextMenu">&nbsp;&nbsp;Limpa Rotas&nbsp;&nbsp;</div></a>'
-						+ '<a class="menu" href="javascript:mostraCenario()"><div class="contextMenu">&nbsp;&nbsp;Posicionar Cenario&nbsp;&nbsp;</div></a>'
+		contextmenu.innerHTML = '<a class="menu" href="javascript:adicionaPontoOrigem()"><div class="contextMenu">&nbsp;&nbsp;Origem&nbsp;&nbsp;</div></a>'
+						+ '<a class="menu" href="javascript:adicionaPontoDestino()"><div class="contextMenu">&nbsp;&nbsp;Destino&nbsp;&nbsp;</div></a>'				
+						+ '<a class="menu" href="javascript:limpaRotas()"><div class="contextMenu">&nbsp;&nbsp;Limpa Rotas&nbsp;&nbsp;</div></a>'
+						+ '<a class="menu" href="javascript:calculaRotaSeguraClientSide()"><div class="contextMenu">&nbsp;&nbsp;Rota Segura (ClientSide)&nbsp;&nbsp;</div></a>'
+						+ '<a class="menu" href="javascript:calculaRotaSeguraServerSide()"><div class="contextMenu">&nbsp;&nbsp;Rota Segura (ServerSide)&nbsp;&nbsp;</div></a>'
+						+ '<a class="menu" href="javascript:posicionaCenario()"><div class="contextMenu">&nbsp;&nbsp;Posicionar Cenario&nbsp;&nbsp;</div></a>'
 						+ '<a class="menu" href="javascript:infoCenario()"><div class="contextMenu">&nbsp;&nbsp;Info Cenario&nbsp;&nbsp;</div></a>'
-						+ '<a class="menu" href="javascript:teste()"><div class="contextMenu">&nbsp;&nbsp;Teste&nbsp;&nbsp;</div></a>'
+						+ '<a class="menu" href="javascript:serieDeTestes()"><div class="contextMenu">&nbsp;&nbsp;Serie de Testes&nbsp;&nbsp;</div></a>'
 						;
 
 		map.getContainer().appendChild(contextmenu);
@@ -69,54 +146,6 @@
 			contextmenu.style.visibility = "visible";
 		});
 	}
-	
-      // === functions that perform the context menu options ===
-      function zoomInM() {
-        // perform the requested operation
-        map.zoomIn();
-        // hide the context menu now that it has been used
-        contextmenu.style.visibility="hidden";
-      }      
-      function zoomOutM() {
-        // perform the requested operation
-        map.zoomOut();
-        // hide the context menu now that it has been used
-        contextmenu.style.visibility="hidden";
-      }      
-      function zoomInHereM() {
-        // perform the requested operation
-        var point = map.fromContainerPixelToLatLng(clickedPixel)
-        map.zoomIn(point,true);
-        // hide the context menu now that it has been used
-        contextmenu.style.visibility="hidden";
-      }      
-      function zoomOutHereM() {
-        // perform the requested operation
-        var point = map.fromContainerPixelToLatLng(clickedPixel)
-        map.setCenter(point,map.getZoom()-1); // There is no map.zoomOut() equivalent
-        // hide the context menu now that it has been used
-        contextmenu.style.visibility="hidden";
-      }      
-      function centreMapHereM() {
-        // perform the requested operation
-        var point = map.fromContainerPixelToLatLng(clickedPixel)
-        map.setCenter(point);
-        // hide the context menu now that it has been used
-        contextmenu.style.visibility="hidden";
-      }
-      
-	function tiraCrimes(){
-		escondeMarcadores();
-		 // hide the context menu now that it has been used
-        contextmenu.style.visibility="hidden";
-	}
-	
-	function colocaCrimes(){
-		mostraMarcadores();				
-		 // hide the context menu now that it has been used
-        contextmenu.style.visibility="hidden";
-	}
-
 	
 	function adicionaPontoOrigem() {
 		if (rotaNumMarcadores == 0){
@@ -161,7 +190,7 @@
         contextmenu.style.visibility="hidden";
       }
       
-      function removeRotas() {
+      function limpaRotas() {
 	    /*map.removeOverlay(dirn1.getPolyline());
 	    map.removeOverlay(dirn2.getPolyline());
 	    map.removeOverlay(dirn3.getPolyline());
@@ -175,10 +204,6 @@
 	  	for(i = 0; i < rotagpolys.length; i++){
 	  		map.removeOverlay(rotagpolys[i]);
 	  	}
-	  	
-	  	for(i = 0; i < rotaSeguraMarcador.length; i++){
-	  		map.removeOverlay(rotaSeguraMarcador[i]);
-	  	}
 
 	  	try{
 		  	map.removeOverlay(rotaSeguraPolyline);
@@ -191,8 +216,9 @@
 	    rotagpolys = [];
 	    rotalastindex = 0;
 	    romoveMardadoresDaGPolyline();
-	    rotaSegura = new Array();
 	    rotaNumMarcadores = 0;
+
+	    escondeDivRotasSeguras();
 	    
 	    // hide the context menu now that it has been used
         contextmenu.style.visibility="hidden";
@@ -286,7 +312,7 @@
         adicionaRotaMarcadores();
       });
 
-      // == move the polyline following this point ==
+      // == move the polyline following this point ==calculateDistance()
       GEvent.addListener(dirn3,"load", function() {
         // snap to first vertex in the polyline
         var p=dirn3.getPolyline().getVertex(0);
@@ -318,7 +344,8 @@
         rotaSeguraPolyline = mypoly; 
         
          // add the new polyline
-         map.addOverlay(mypoly); 
+         if(!calculandoRota) //ja terminou
+         	map.addOverlay(mypoly); 
          
          //map.addOverlay(dirnRotaSegura.getPolyline());
       });
@@ -359,7 +386,11 @@
 	  
 	  //loglog
       GEvent.addListener(dirn1,"error", function() {
-        GLog.write("Failed: "+dirn1.getStatus().code);
+        //GLog.write("Failed: "+dirn1.getStatus().code);
+        if(calculandoRota){
+	        var req = enviaRequisicaoRotaSeguraClientSide(); //avisa o servlet enviando uma com o cï¿½digo do erro
+			recebeRespostaRotaSeguraClientSide(req);
+        }
       });
       GEvent.addListener(dirn2,"error", function() {
         GLog.write("Failed: "+dirn2.getStatus().code);
@@ -381,15 +412,14 @@
 		        }
 			}
 	        GLog.write(str);*/
-	        
 	        if(calculandoRota){
-		        var req = enviaRequisicaoRotaSegura(); //avisa o servlet enviando uma com o código do erro
-				recebeRespostaRotaSegura(req);
+		        var req = enviaRequisicaoRotaSeguraClientSide(); //avisa o servlet enviando uma com o cï¿½digo do erro
+				recebeRespostaRotaSeguraClientSide(req);
 	        }
       });
       
 
-      function calculaRotaSegura() {
+      function calculaRotaSeguraClientSide() {
     	  	calculandoRota = true;
 			//hide the context menu now that it has been used
 			contextmenu.style.visibility="hidden";
@@ -398,8 +428,8 @@
 			var url = constroiURLRotaPrimeiraVez();
 			 	  	//url += boundsPixelUrlParams();
 			 	  	//url += '&zoom=' + zoom;
-			var req = enviaRequisicaoRotaSegura(url);
-			recebeRespostaRotaSegura(req);
+			var req = enviaRequisicaoRotaSeguraClientSide(url);
+			recebeRespostaRotaSeguraClientSide(req);
       }
 
       function constroiURLRotaPrimeiraVez(){
@@ -407,7 +437,7 @@
 	      	for(i = 0; i < rotaMarcadoresIndice; i++){
 	      		var latlng = rotaMarcadores[i].getLatLng();
 	      		var gpoint = map.getCurrentMapType().getProjection().fromLatLngToPixel(latlng, map.getZoom());
-	      		url += gpoint.y + ',' + gpoint.x + 'a';
+	      		url += gpoint.y + ',' + gpoint.x + ';';
 	      	}
 	      	url = url.substring(0, url.length-1); //tira o 'a' do final
 
@@ -422,17 +452,17 @@
 			for(var i=0; i<vertices; i++){
 				var latlng = polyline.getVertex(i);
 				var point = map.getCurrentMapType().getProjection().fromLatLngToPixel(latlng, map.getZoom());
-				url += point.y + ',' + point.x + 'a';
+				url += point.y + ',' + point.x + ';';
 			}
 	      	url = url.substring(0, url.length-1); //tira o 'a' do final
 	      	return url;
       }
       
-      function enviaRequisicaoRotaSegura(params) {
+      function enviaRequisicaoRotaSeguraClientSide(params) {
 
     	var dirn = contrev == 0? dirn1 : dirnRotaSegura;
     	
-      	//parametros q sempre são enviados
+      	//parametros q sempre sï¿½o enviados
 		var url = "status=" + dirn.getStatus().code + 
 	  	   		  "&contRevisao=" + contrev; 
     	  
@@ -440,119 +470,139 @@
 		if(params) 
 			url += params;
 
-        //constroi requisição e envia
+        //constroi requisiï¿½ï¿½o e envia
     	//console.log("enviaRequisicaoRotaSegura(), url: " + url);
     	//console.log("contrev: " + contrev);
 	    var http_request = GXmlHttp.create();
 	    if (http_request.overrideMimeType)
 	         http_request.overrideMimeType('text/xml');
 		 
-	    http_request.open('POST', 'ServletRotaSegura', false);
+	    http_request.open('POST', 'ServletRotaSeguraClientSide', false);
 		http_request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
 		//http_request.onreadystatechange = carregaKernelMap;
 		http_request.send(url);
 		return http_request; 
 	  }
 		
-		function limpaRotaAnterior(){
-
-			limpaMarcadores();
-			
-			//remove rota (as linhas verdes)
-			try{
-				map.removeOverlay(rotaSeguraPolyline);
-			}catch(e){ 
-				//na primeira vez nao tem rota ainda 
-			}
-		    
-		    rotaSegura = new Array();
-		}
 		
-		function limpaMarcadores(){
-			//remove marcadores
-			for(i = 0; i < rotaSeguraMarcador.length; i++){
-	    		map.removeOverlay(rotaSeguraMarcador[i]);
-		  	}
-		}
-
 		//******************************************************************
 		//estrategia nova: construir rota passo a passo
 		
-		var rotaLoadListener; //pra chamar o "revisaRota()" só dpois q terminar de fazer o "loadFromWaypoints"
-		var contrev=0; //contagem de revisões
+		var rotaLoadListener = GEvent.addListener(dirnRotaSegura,"load", enviaRotaProServletEEsperaResposta);
+		var contrev=0; //contagem de revisï¿½es
 		var calculandoRota;
 
-		function recebeRespostaRotaSegura(http_request){
+		function recebeRespostaRotaSeguraClientSide(http_request){
 			var bounds = map.getBounds();
-			//console.log('recebeRespostaRotaSegura(), readyState: ' + http_request.readyState + ', status: ' + http_request.status);
 			contrev++;
 			if (http_request.readyState == 4 && http_request.status == 200) {
-				limpaRotaAnterior();
 				var documento = http_request.responseText;
-				//console.log('documento:' + documento);
 				var linhas = documento.split("\r\n");
-				//console.log('linhas.length:' + linhas.length);
 
-
-				if(linhas[0] != 'erro'){ 
+				if(linhas[0] == 'continua'){ 
 					//carrega rota no GoogleMaps
-					var marcadoresRota = linhas[0].split("a");
-	
-					for(z = 0; z < marcadoresRota.length; z++){
-						var marcadorRota = marcadoresRota[z].split(",");
-						var swRota = map.getCurrentMapType().getProjection().fromPixelToLatLng(new GPoint(marcadorRota[1], marcadorRota[0]), zoomKernel, true);
-						var lonRota = swRota.lng();
-						var latRota = swRota.lat();
-						var marcador = new GMarker(new GLatLng(latRota, lonRota));
-						if (z != 0 && z != marcadoresRota.length - 1){
-							map.addOverlay(marcador);
-						}
-						rotaSeguraMarcador[z] = marcador;
-						rotaSegura[z] = new GLatLng(latRota, lonRota);
-					}
-
-					if(linhas[1] != "fim"){
-						rotaLoadListener = GEvent.addListener(dirnRotaSegura,"load", enviaRotaProServletEEsperaResposta); 
-						//o listener é pq so pode acessar a rota depois q o "loadFromWaypoints" acima for concluído
-					}
+					var marcadoresRota = linhas[1].split(";");
+					var arrayLatLng = rotaStringToArrayGLatLng(linhas[1]);
+					//rotaLoadListener = GEvent.addListener(dirnRotaSegura,"load", enviaRotaProServletEEsperaResposta); 
+					dirnRotaSegura.loadFromWaypoints(arrayLatLng ,{getPolyline:true});
 					
-					dirnRotaSegura.loadFromWaypoints(rotaSegura ,{getPolyline:true});
-				}
-
-				if(linhas[1] == "fim"){
-					//última resposta, não se comunica mais com o servlet
+				}else if(linhas[0] == "fim" || linhas[0] == "erro"){
 					calculandoRota = false;
-					//alert("fim, contrev="+contrev);
-					//console.log("fim, contrev="+contrev);
-					//console.log('continuaTeste(), documento: ' + documento);
-					
-					/*teste*/if(testeCalcRotas)
+
+					if(linhas[0] == "fim"){
+						recebeRespostaFinalRotaSegura(http_request);
+						mostraDivRotasSeguras();
+						carregaRota(0);
+					}
+
+					///*teste*/console.log("recebeRespostaRotaSegura(), testeParam=" + testeParam + ", testeCenarioSequencia=" + testeCenarioSequencia);
+					/*teste*/if(linhas[0] == "fim"){
+					/*teste*/	screenshotTeste();
+					/*teste*/}
+					/*teste*/if(testeParam){
 					/*teste*/	continuaTeste();
+					/*teste*/}else{
+					/*teste*/	console.log('fim teste');
+					/*teste*/}
 				}
 			}
 		}
 
 		function enviaRotaProServletEEsperaResposta(){
-			GEvent.removeListener(rotaLoadListener);
+			//GEvent.removeListener(rotaLoadListener);
 			if(calculandoRota){
-				//alert('enviaRotaProServletEEseraResposta(), contrev=' + contrev);
-				//console.log('enviaRotaProServletEEseraResposta(), contrev=' + contrev);
 				var url = constroiURLRota();
-				var req = enviaRequisicaoRotaSegura(url);
-				recebeRespostaRotaSegura(req);
+				var req = enviaRequisicaoRotaSeguraClientSide(url);
+				recebeRespostaRotaSeguraClientSide(req);
 			}
 		}
 
 
+		function calculaRotaSeguraServerSide() {
+			//hide the context menu now that it has been used
+			contextmenu.style.visibility="hidden";
+			var url = constroiURLRotaPrimeiraVez() + "&zoom=" + map.getZoom();
+			var req = enviaRequisicaoRotaSeguraServerSide(url);
+			recebeRespostaFinalRotaSegura(req);
+			mostraDivRotasSeguras();
+			carregaRota(0);
+		}
+
+		function enviaRequisicaoRotaSeguraServerSide(params) {
+	    	var dirn = dirn1;
+		    var http_request = GXmlHttp.create();
+		    if (http_request.overrideMimeType)
+		         http_request.overrideMimeType('text/xml');
+		    http_request.open('POST', 'ServletRotaSeguraServerSide', false);
+			http_request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+			alert('params = ' + params);
+			http_request.send(params);
+			return http_request; 
+		  }
+
+		function recebeRespostaFinalRotaSegura(http_request){
+			var bounds = map.getBounds();
+			if (http_request.readyState == 4 && http_request.status == 200) {
+				var documento = http_request.responseText;
+				var linhas = documento.split("\r\n");
+				var linha = linhas[0];
+				if(linha != 'erro'){ 
+					//carrega rota no GoogleMaps
+					rotasSeguras = new Array();
+					linha = linhas[1];
+					for(var i=1; linha.length > 0; i++){
+						rotasSeguras[i-1] = rotaStringToArrayGLatLng(linha);
+						linha = linhas[i+1];
+					}
+				}else{
+					console.log("recebeRespostaFinalRotaSegura(), erro");
+				}
+			}
+		}
+
+		function rotaStringToArrayGLatLng(str){
+			var array = new Array();
+			var stringsRotas = str.split(";");
+			for(var i = 0; i < stringsRotas.length; i++){
+				var coordenadas = stringsRotas[i].split(",");
+				var swRota = map.getCurrentMapType().getProjection().fromPixelToLatLng(new GPoint(coordenadas[1], coordenadas[0]), zoomKernel, true);
+				var lonRota = swRota.lng();
+				var latRota = swRota.lat();
+				array[i] = new GLatLng(latRota, lonRota);
+			}
+			return array;
+		}
+
 		//******************************************************************
 		//TESTE
 	
-		var testeCalcRotas;
+		var testeParam;
+		var testeCenarioSequencia;
 		
 		function infoCenario(){
 
 			if(!dirn1)
-				alert('o cenário precisa ter origem e destino');
+				alert('o cenï¿½rio precisa ter origem e destino');
 			
 			var origem = dirn1.getPolyline().getVertex(0);
 			var destino = dirn1.getPolyline().getVertex(dirn1.getPolyline().getVertexCount()-1);
@@ -571,22 +621,20 @@
 			contextmenu.style.visibility="hidden";
 		}
 
-		function mostraCenario(){
-			//posiciona o GoogleMaps de acordo com o cenário fornecido pelo servidor
-			posicionaCenario(pegaCenario());
-		}
-
-		function teste(){
-			//faz cálculos de rota sucessivos segundo instruções do servidor e registra resultados
-			testeCalcRotas = true;
-			var cenario = pegaCenario();
+		function serieDeTestes(){
+			//faz calculos de rota sucessivos segundo instrucoes do servidor e registra resultados
+			testeParam = true;
+			testeCenarioSequencia = true;
+			var cenario = pegaCenario(true);
+			if(cenario == null)
+				 return;
 			posicionaCenario(cenario);
-			setTimeout(ativaMapaKernel,3000);
-			setTimeout(calculaRotaSegura,8000);
+			//setTimeout(ativaMapaKernel,3000);
+			setTimeout(calculaRotaSeguraClientSide,8000);
 		}
 
-		function pegaCenario(){
-			//pega um cenário fornecido pelo servidor
+		function pegaCenario(sequencia){
+			//pega um cenario fornecido pelo servidor
 			
 			http_request = GXmlHttp.create();
 		    if (http_request.overrideMimeType) {
@@ -594,15 +642,27 @@
 		    }
 		    http_request.open('POST', 'TesteCenariosRotas', false);
 			http_request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-			http_request.send('acao=cenario');
-
+			if(sequencia)
+				http_request.send('acao=cenarioSequencia');
+			else
+				http_request.send('acao=cenarioPrimeiraLinha');
+			
 			if (http_request.readyState == 4 && http_request.status == 200) {
 				var resposta = http_request.responseText;
+
+				///*teste*/console.log("pegaCenario(" + sequencia + "): " + resposta);
+				if(resposta == "fim"){
+					testeCenarioSequencia = false;
+					return null;
+				}
+				
 				var cenario = resposta.split("\t");
 				//alert("resposta: " + resposta);
 				//alert("cenario: " + cenario);
 
 				var cenario = {
+						id: Number(cenario[0]),
+						nome: cenario[1],
 						centroX : Number(cenario[2]),
 						centroY : Number(cenario[3]),
 						zoom : Number(cenario[4]),
@@ -619,9 +679,10 @@
 		}
 
 		function posicionaCenario(cenario){
-			//posiciona o GoogleMaps de acordo com o cenário
+			//posiciona o GoogleMaps de acordo com o cenï¿½rio
 			
-			if(!cenario) return;
+			if(!cenario)
+				cenario = pegaCenario(false);
 			
 			var centro = new GLatLng(cenario.centroX, cenario.centroY);
 			var zoom = cenario.zoom;
@@ -631,10 +692,10 @@
 			var dataFim = cenario.dataFim;
 
 			//viewport (centro e zoom)
-			map.setCenter(centro, zoom); //zoom vai de 2 a 17  (ou é 0 a 19?)
+			map.setCenter(centro, zoom); //zoom vai de 2 a 17  (ou ï¿½ 0 a 19?)
 
 			//rota (origem e destino)
-			removeRotas();
+			limpaRotas();
 	        if (rotafirstpoint) {
 	            dirn1.loadFromWaypoints([origem.toUrlValue(6),origem.toUrlValue(6)],{getPolyline:true});
 	        } else {
@@ -659,8 +720,21 @@
 
 		}
 
+		function screenshotTeste(){
+			for(var i=0; i < rotasSeguras.length; i++){
+				var tempo;
+				if(i==0){
+					tempo = 5000;
+				}else{
+					carregaRota(i);
+					tempo = 3000;
+				}
+				requisicaoTexto('TesteCenariosRotas', 'acao=screenshot&tempo='+tempo); //manda o servlet tirar a screenshot
+			}
+		}
+		
 		function continuaTeste(){
-			//console.log('continuaTeste(), inicio');
+			/*teste*/console.log('continuaTeste()');
 			var http_request = GXmlHttp.create();
 		    if (http_request.overrideMimeType) {
 		       http_request.overrideMimeType('text/xml');
@@ -673,10 +747,11 @@
 				var resposta = http_request.responseText;
 				//console.log('continuaTeste(), resposta: ' + resposta);
 				if(resposta != 'fim'){
-					setTimeout(calculaRotaSegura,3000);
+					setTimeout(calculaRotaSeguraClientSide,3000);
 				}else{
-					testeCalcRotas = false;
-					console.log('fim testes');
+					testeParam = false;
+					if(testeCenarioSequencia)
+						serieDeTestes();
 				}
 			}
 		}

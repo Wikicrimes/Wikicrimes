@@ -2,6 +2,8 @@ package org.wikicrimes.model;
 
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.wikicrimes.util.kernelMap.LatLngBoundsGM;
 
@@ -71,6 +73,20 @@ public class PontoLatLng extends BaseObject {
 		double lng = (pixel.x/offset-1)*180;
 		double lat = (Math.PI/2-2*Math.atan(Math.exp((pixel.y-offset)/(offset/Math.PI))))*180/Math.PI;
 		return new PontoLatLng(lat,lng);
+	}
+	
+	public static List<PontoLatLng> fromPixel(List<? extends Point> pixel, int zoom){
+		List<PontoLatLng> latlng = new ArrayList<PontoLatLng>();
+		for(Point p : pixel)
+			latlng.add(fromPixel(p, zoom));
+		return latlng;
+	}
+	
+	public static List<Point> toPixel(List<PontoLatLng> latlng, int zoom){
+		List<Point> pixel = new ArrayList<Point>();
+		for(PontoLatLng p : latlng)
+			pixel.add(p.toPixel(zoom));
+		return pixel;
 	}
 	
 	@Override

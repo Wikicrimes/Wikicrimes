@@ -1,57 +1,63 @@
-package org.wikicrimes.util.kernelMap;
+package org.wikicrimes.util.rotaSegura.geometria;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+
+import org.wikicrimes.util.kernelMap.PropertiesLoader;
 
 /**
  * Conjunto de coordenadas ou conjunto de segmentos de reta ligados.
  * 
  * @author Victor E.
  */
-public class Caminho {
+public class Rota {
 
 	private List<Ponto> pontos;
 	
 	private final static int MAX_APROXIMACAO = PropertiesLoader.getInt("tol_aproximacao"); //distancia máxima entre pontos na obtenção de pontos e rotas aproximadas
 
-	public Caminho() {
+	public Rota() {
 		pontos = new LinkedList<Ponto>();
 	}
 
-	public Caminho(List<Ponto> pontos) {
+	public Rota(List<? extends Point> pontos) {
 		this();
-		for (Ponto ponto : pontos) {
+		for (Point ponto : pontos) {
 			if (ponto != null)
-				append(ponto);
+			if(ponto instanceof Ponto)
+				addFim((Ponto)ponto);
+			else
+				addFim(new Ponto(ponto));
 		}
 	}
 
-	public Caminho(Ponto... ponto) {
+	public Rota(Point... ponto){
 		this(Arrays.asList(ponto));
 	}
 
-	public Caminho(SegmentoReta... segm) {
+	public Rota(Segmento... segm) {
 		this();
-		for (SegmentoReta s : segm) {
+		for (Segmento s : segm) {
 			if (s != null)
-				append(s);
+				addFim(s);
 		}
 	}
 
-	public Caminho(Caminho rota) {
+	public Rota(Rota rota) {
 		pontos = new LinkedList<Ponto>(rota.pontos);
 	}
 
 	/**
 	 * @param string
-	 *            : uma String no formato xxx,xxxaxxx,xxxaxxx,xxx (pontos do
-	 *            formato xxx,xxx separados por 'a')
+	 *            : uma String no formato xxx,xxxaxxx,xxx;xxx,xxx (pontos do
+	 *            formato xxx,xxx separados por ';')
 	 */
-	public Caminho(String string) {
+	public Rota(String string) {
 		pontos = new LinkedList<Ponto>();
-		for (String str : string.split("a")) {
+		for (String str : string.split(";")) {
 			pontos.add(new Ponto(str));
 		}
 	}
@@ -59,7 +65,7 @@ public class Caminho {
 	/**
 	 * Adiciona uma Coordenada no fim desta Rota
 	 */
-	public void append(Ponto ponto) {
+	public void addFim(Ponto ponto) {
 		if (pontos.contains(ponto)) {
 			// System.err.println("coordenada repetida sendo adicionada numa Rota");
 			pontos.add(ponto.clone()); // nao pode ter objetos iguais, senao vai dar problemas pra identificar
@@ -67,7 +73,7 @@ public class Caminho {
 			pontos.add(ponto);
 		}
 	}
-
+	
 	/**
 	 * Adiciona uma Coordenada no fim desta Rota
 	 */
@@ -94,20 +100,20 @@ public class Caminho {
 	 * Adiciona todas as Coordenadas da rota passada como parâmetro no fim desta
 	 * Rota
 	 */
-	public void append(Caminho rota) {
+	public void addFim(Rota rota) {
 		for (Ponto coord : rota.getPontos()) {
-			append(coord);
+			addFim(coord);
 		}
 	}
 
-	public void addInicio(Caminho rota) {
+	public void addInicio(Rota rota) {
 		List<Ponto> pts = rota.getPontos();
 		for (int i = pts.size() - 1; i >= 0; i--) {
 			addInicio(pts.get(i));
 		}
 	}
 
-	public void append(SegmentoReta segm) {
+	public void addFim(Segmento segm) {
 		if (pontos.isEmpty()) {
 			pontos.add(segm.getInicio());
 			pontos.add(segm.getFim());
@@ -157,10 +163,10 @@ public class Caminho {
 	 * @return os SegmentosReta que compôem a Rota. É equivalente ao
 	 *         getCoordenadas.
 	 */
-	public List<SegmentoReta> getSegmentosReta() {
-		List<SegmentoReta> listSeg = new LinkedList<SegmentoReta>();
+	public List<Segmento> getSegmentosReta() {
+		List<Segmento> listSeg = new LinkedList<Segmento>();
 		for (int i = 0; i < pontos.size() - 1; i++) {
-			listSeg.add(new SegmentoReta(pontos.get(i), pontos.get(i + 1)));
+			listSeg.add(new Segmento(pontos.get(i), pontos.get(i + 1)));
 		}
 		return listSeg;
 	}
@@ -195,8 +201,8 @@ public class Caminho {
 
 	public double distanciaPercorrida() {
 		double distancia = 0;
-		List<SegmentoReta> segms = getSegmentosReta();
-		for (SegmentoReta segm : segms) {
+		List<Segmento> segms = getSegmentosReta();
+		for (Segmento segm : segms) {
 			distancia += segm.comprimento();
 		}
 		return distancia;
@@ -206,28 +212,28 @@ public class Caminho {
 	 * @return distância (reta) entre a ORIGEM e o DESTINO
 	 */
 	public double distanciaRetaOD() {
-		return new SegmentoReta(getInicio(), getFim()).comprimento();
+		return new Segmento(getInicio(), getFim()).comprimento();
 	}
 
-	public Caminho invertida() {
-		Caminho inv = new Caminho();
+	public Rota invertida() {
+		Rota inv = new Rota();
 		for (Ponto p : pontos) {
-			inv.append(p.invertido());
+			inv.addFim(p.invertido());
 		}
 		return inv;
 	}
 
-	public Caminho rotacionada(double angulo) {
-		Caminho rota = new Caminho();
+	public Rota rotacionada(double angulo) {
+		Rota rota = new Rota();
 		for (Ponto p : this.getPontos()) {
-			rota.append(p.rotacionado(angulo));
+			rota.addFim(p.rotacionado(angulo));
 		}
 		return rota;
 	}
 
-	public static List<Caminho> rotaciona(List<Caminho> rotas, double angulo) {
-		List<Caminho> rotas2 = new ArrayList<Caminho>();
-		for (Caminho r : rotas) {
+	public static List<Rota> rotaciona(List<Rota> rotas, double angulo) {
+		List<Rota> rotas2 = new ArrayList<Rota>();
+		for (Rota r : rotas) {
 			rotas2.add(r.rotacionada(angulo));
 		}
 		return rotas2;
@@ -280,12 +286,12 @@ public class Caminho {
 	 * uma outra rota semelhante. Obs: espera-se que a "outraRota" tenha menos
 	 * pontos do que esta
 	 */
-	public Caminho getRotaAproximada(Caminho outraRota, int distMax) {
-		Caminho rotaAproximada = new Caminho();
+	public Rota getRotaAproximada(Rota outraRota, int distMax) {
+		Rota rotaAproximada = new Rota();
 		for (Ponto p : outraRota.getPontos()) {
 			Ponto aprox = this.getPontoPerto(p, distMax);
 			if (aprox != null)
-				rotaAproximada.append(aprox);
+				rotaAproximada.addFim(aprox);
 		}
 		return rotaAproximada;
 	}
@@ -325,7 +331,7 @@ public class Caminho {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < pontos.size() - 1; i++) {
 			sb.append(pontos.get(i).toString());
-			sb.append("a");
+			sb.append(";");
 		}
 		sb.append(pontos.get(pontos.size() - 1).toString());
 		return sb.toString();
@@ -333,8 +339,8 @@ public class Caminho {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof Caminho) {
-			Caminho rota = (Caminho) obj;
+		if (obj instanceof Rota) {
+			Rota rota = (Rota) obj;
 			return getPontos().equals(rota.getPontos());
 		} else {
 			return false;
@@ -348,10 +354,10 @@ public class Caminho {
 	}
 
 	@Override
-	public Object clone() {
-		Caminho r = new Caminho();
+	public Rota clone() {
+		Rota r = new Rota();
 		for (Ponto p : this.pontos)
-			r.append(p);
+			r.addFim(p);
 		return r;
 	}
 
@@ -364,21 +370,21 @@ public class Caminho {
 	 * @param tol - tolerancia
 	 */
 	public boolean passaPor(Ponto p) {
-		for (SegmentoReta s : getSegmentosReta())
+		for (Segmento s : getSegmentosReta())
 			if (s.passaPor(p))
 				return true;
 		return false;
 	}
 	
-	public boolean passaPor(SegmentoReta segm){
-		for (SegmentoReta s : getSegmentosReta())
+	public boolean passaPor(Segmento segm){
+		for (Segmento s : getSegmentosReta())
 			if (s.passaPor(segm))
 				return true;
 		return false;
 	}
 
 	public void promoverPontoParaVertice(Ponto p) throws PontoForaDoCaminhoException{
-		for (SegmentoReta s : getSegmentosReta())
+		for (Segmento s : getSegmentosReta())
 			if (s.passaPor(p)) {
 				addDepois(s.getInicio(), p);
 				return;
@@ -386,10 +392,10 @@ public class Caminho {
 		throw new PontoForaDoCaminhoException(p, this);
 	}
 
-	public Caminho subCaminho(Ponto p1, Ponto p2) {
+	public Rota subRota(Ponto p1, Ponto p2) {
 		int i1 = 0;
 		int i2 = 0;
-		Caminho temp = (Caminho)clone();
+		Rota temp = (Rota)clone();
 		try {
 			i1 = temp.pontos.indexOf(p1);
 			if (i1 == -1){
@@ -406,38 +412,37 @@ public class Caminho {
 			return null;
 		}
 		
-		Caminho sub = new Caminho();
+		Rota sub = new Rota();
 		for (int i = i1; i <= i2; i++) {
-			sub.append(temp.pontos.get(i));
+			sub.addFim(temp.pontos.get(i));
 		}
 		return sub;
 	}
 	
-	public List<Caminho> dividir(Ponto... pontos){
-		List<Caminho> partes = new LinkedList<Caminho>();
+	public List<Rota> dividir(Ponto... pontos){
+		List<Rota> partes = new LinkedList<Rota>();
 		Ponto p1 = pontos[0];
 		Ponto p2 = null;
 		for(int i=1; i<pontos.length; i++){
 			p2 = pontos[i];
-			partes.add( subCaminho(p1, p2) );
+			partes.add( subRota(p1, p2) );
 			p1 = p2;
 		}
 		return partes;
 	}
 	
-	public List<Caminho> dividirAprox(Ponto... pontos){
+	public List<Rota> dividirAprox(Ponto... pontos){
 		Ponto[] pontosAprox = new Ponto[pontos.length]; 
 		for(int i=0; i<pontos.length; i++){
 			Ponto p = pontos[i];
 			Ponto pAprox = getPontoPerto(p, MAX_APROXIMACAO);
 			pontosAprox[i] = pAprox;
-			/*teste*/System.out.println("p:" + p + ", pAprox:" + pAprox);
 		}
 		return dividir(pontosAprox);
 	}
 	
-	public Ponto intersecao(SegmentoReta segm){
-		for(SegmentoReta s : getSegmentosReta()){
+	public Ponto intersecao(Segmento segm){
+		for(Segmento s : getSegmentosReta()){
 			Ponto p = segm.intersecao(s);
 			if(p != null)
 				return p;
@@ -445,8 +450,8 @@ public class Caminho {
 		return null;
 	}
 	
-	public Ponto intersecao(Caminho rota){
-		for(SegmentoReta s : getSegmentosReta()){
+	public Ponto intersecao(Rota rota){
+		for(Segmento s : getSegmentosReta()){
 			Ponto p = rota.intersecao(s);
 			if(p != null)
 				return p;
@@ -454,20 +459,20 @@ public class Caminho {
 		return null;
 	}
 	
-	public List<Caminho> subtracao(Caminho caminho){
-		List<Caminho> partesDiferentes = new LinkedList<Caminho>();
-		Caminho resto = (Caminho)this.clone(); //copia do Caminho "this" q vai sendo consumida no decorrer deste metodo
-		for(SegmentoReta s : caminho.getSegmentosReta()){
+	public List<Rota> subtracao(Rota caminho){
+		List<Rota> partesDiferentes = new LinkedList<Rota>();
+		Rota resto = (Rota)this.clone(); //copia do Caminho "this" q vai sendo consumida no decorrer deste metodo
+		for(Segmento s : caminho.getSegmentosReta()){
 			if(resto.passaPor(s)){
 				Ponto iniResto = resto.getInicio();
 				Ponto fimResto = resto.getFim();
 				Ponto iniSegm = s.getInicio();
 				Ponto fimSegm = s.getFim();
 				if(!resto.getInicio().isPerto(s.getInicio())){
-					Caminho parteAntes = resto.subCaminho(iniResto, iniSegm);
+					Rota parteAntes = resto.subRota(iniResto, iniSegm);
 					partesDiferentes.add(parteAntes);
 				}
-				resto = resto.subCaminho(fimSegm, fimResto);
+				resto = resto.subRota(fimSegm, fimResto);
 			}else{
 				//TODO caso passar por um pedaço de "s"
 			}
@@ -497,7 +502,7 @@ public class Caminho {
 			Ponto p2 = pontos.get(i + 1);
 			if (p1.equals(partida))
 				chegou = true;
-			SegmentoReta s = new SegmentoReta(p1, p2);
+			Segmento s = new Segmento(p1, p2);
 			double compS = s.comprimento();
 			if (chegou) {
 				cont += compS;
@@ -543,7 +548,7 @@ public class Caminho {
 			Ponto p2 = pontos.get(i - 1);
 			if (p1.equals(partida))
 				chegou = true;
-			SegmentoReta s = new SegmentoReta(p1, p2);
+			Segmento s = new Segmento(p1, p2);
 			double compS = s.comprimento();
 			if (chegou) {
 				cont += compS;
@@ -569,8 +574,8 @@ public class Caminho {
 
 class PontoForaDoCaminhoException extends Exception{
 	Ponto ponto;
-	Caminho caminho;
-	public PontoForaDoCaminhoException(Ponto ponto, Caminho caminho) {
+	Rota caminho;
+	public PontoForaDoCaminhoException(Ponto ponto, Rota caminho) {
 		super("Ponto: " + ponto);
 		this.ponto = ponto;
 		this.caminho = caminho;

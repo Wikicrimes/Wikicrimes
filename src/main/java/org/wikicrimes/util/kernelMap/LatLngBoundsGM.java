@@ -1,5 +1,11 @@
 package org.wikicrimes.util.kernelMap;
 
+import org.wikicrimes.model.PontoLatLng;
+
+/**
+ * Representa um "bounds" em lat-long vindo do GoogleMaps.
+ * Precisa disso pq Rectangle soh aceita inteiros.
+ */
 public class LatLngBoundsGM {
 
 	public double norte;
@@ -21,6 +27,11 @@ public class LatLngBoundsGM {
 		this.oeste = oeste;
 		this.width = width;
 		this.height = height;
+	}
+	
+	public LatLngBoundsGM(PontoLatLng superiorEsquerdo, PontoLatLng inferiorDireito, double width, double height){
+		this(superiorEsquerdo.getLatitude(), inferiorDireito.getLatitude(), 
+				inferiorDireito.getLongitude(), superiorEsquerdo.getLongitude(), width, height);
 	}
 	
 	@Override

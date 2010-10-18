@@ -1,9 +1,13 @@
-package org.wikicrimes.util.kernelMap;
+package org.wikicrimes.util.rotaSegura.geometria;
 
 import java.awt.Point;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+
+import org.wikicrimes.util.kernelMap.PropertiesLoader;
+import org.wikicrimes.util.GeneralHashFunctionLibrary;
 
 /**
  * x: longitude
@@ -20,10 +24,10 @@ public class Ponto extends Point{
 	}
 	
 	public Ponto(double x, double y){
-		if(x > Integer.MAX_VALUE)
-			throw new InvalidParameterException("X ("+ x +") é muito grande e não cabe num INT");
-		if(y > Integer.MAX_VALUE)
-			throw new InvalidParameterException("Y ("+ y +") é muito grande e não cabe num INT");
+		if(x > Integer.MAX_VALUE || x < Integer.MIN_VALUE || java.lang.Double.isNaN(x))
+			throw new InvalidParameterException("X ("+ x +") não pode ser representado num INT");
+		if(y > Integer.MAX_VALUE || y < Integer.MIN_VALUE || java.lang.Double.isNaN(y))
+			throw new InvalidParameterException("Y ("+ y +") não pode ser representado num INT");
 		
 		this.x = (int)Math.round(x);
 		this.y = (int)Math.round(y);
@@ -61,7 +65,8 @@ public class Ponto extends Point{
 	}
 	@Override
 	public int hashCode() {
-		return x+y;
+		GeneralHashFunctionLibrary hash = new GeneralHashFunctionLibrary();
+		return (int)hash.JSHash(toString());
 	}
 	
 	public boolean isPerto(Ponto outro, double max){
@@ -82,6 +87,10 @@ public class Ponto extends Point{
 		return Point.distance(ponto1.x, ponto1.y, ponto2.x, ponto2.y);
 	}
 	
+	public static boolean estaoAlinhados(Ponto p1, Ponto p2, Ponto p3){
+		return p1.x*p2.y + p2.x*p3.y + p3.x*p1.y - p1.x*p3.y - p2.x*p1.y - p3.x*p2.y == 0;
+	}
+	
 	public Ponto rotacionado(double angulo){
 		int x1 = this.x;
 		int y1 = this.y;
@@ -98,4 +107,15 @@ public class Ponto extends Point{
 		return pontos2;
 	}
 	
+	public static final Comparator<Ponto> ordemDeX = new Comparator<Ponto>(){
+		public int compare(Ponto o1, Ponto o2) {
+			return o1.x-o2.x;
+		}
+	};
+	
+	public static final Comparator<Ponto> ordemDeY = new Comparator<Ponto>(){
+		public int compare(Ponto o1, Ponto o2) {
+			return o1.y-o2.y;
+		}
+	};
 }

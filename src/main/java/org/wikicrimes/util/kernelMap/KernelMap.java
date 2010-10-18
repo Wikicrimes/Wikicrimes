@@ -6,15 +6,18 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.List;
 
+import org.wikicrimes.util.rotaSegura.geometria.Ponto;
+
 public class KernelMap {
 
-	final int nodeSize;
-	final double bandwidth;
-	final Rectangle bounds;
+	private final int nodeSize;
+	private final double bandwidth;
+	private final Rectangle bounds;
 	
-	double[][] densidade;
-	double maxDens;
-	double mediaDens;
+	private double[][] densidade;
+	private double maxDens = Double.NaN;
+	private double mediaDens = Double.NaN;
+	private double minDens = Double.NaN;
 	
 	/**
 	 * @param <b>gridNode</b> 
@@ -27,14 +30,18 @@ public class KernelMap {
 	 * Eh o raio da 'janela' onde eh feita a varredura por eventos vizinhos.
 	 * Qt maior o bandwidth, mais 'suave' será o Mapa de Kernel.
 	 */
-	public KernelMap(int gridNode, double bandwidth, Rectangle bounds, List<Point> pontos){
-		this.nodeSize = gridNode;
+	public KernelMap(int nodeSize, double bandwidth, Rectangle bounds, List<Point> pontos){
+		this.nodeSize = nodeSize;
 		this.bandwidth = bandwidth;
 		this.bounds = bounds;
-//		/*teste*/System.out.println("width: " + bounds.getWidth() + ", height: " + bounds.getHeight());
 		this.densidade = calcDensidade(pontos);
-		this.maxDens = encontraMaiorDensidade();
-		this.mediaDens = encontraMediaDensidade();
+	}
+	
+	public KernelMap(double[][] densidades, int nodeSize, Rectangle bounds){
+		densidade = densidades;
+		this.bounds = bounds;
+		this.nodeSize = nodeSize;
+		this.bandwidth = Double.NaN;
 	}
 	
 	private double[][] calcDensidade(List<Point> pontos){
@@ -84,7 +91,7 @@ public class KernelMap {
 	
 	private double encontraMaiorDensidade(){
 		double maxDens = 0;
-		for(double[] linha :densidade)
+		for(double[] linha : densidade)
 			for(double d : linha)
 				maxDens = Math.max(maxDens, d);
 		return maxDens;
@@ -92,10 +99,18 @@ public class KernelMap {
 	
 	private double encontraMediaDensidade(){
 		double mediaDens = 0;
-		for(double[] linha :densidade)
+		for(double[] linha : densidade)
 			for(double d : linha)
 				mediaDens += d;
 		return mediaDens/(getCols()*getRows());
+	}
+	
+	private double encontraMenorDensidade(){
+		double minDens = Integer.MAX_VALUE;
+		for(double[] linha : densidade)
+			for(double d : linha)
+				minDens = Math.min(minDens, d);
+		return minDens;
 	}
 	
 	public double[][] getDensidadeGrid(){
@@ -103,11 +118,27 @@ public class KernelMap {
 	}
 	
 	public double getMaxDens(){
+		if(Double.isNaN(maxDens))
+			maxDens = encontraMaiorDensidade();
 		return maxDens;
 	}
 	
 	public double getMediaDens() {
+		if(Double.isNaN(maxDens))
+			mediaDens = encontraMediaDensidade();
 		return mediaDens;
+	}
+	
+	public double getMinDens(){
+		if(Double.isNaN(minDens))
+			minDens = encontraMenorDensidade();
+		return minDens;
+	}
+	
+	public double getDensidade(Ponto pixel){
+		int x = xPixelParaGrid(pixel.x);
+		int y = yPixelParaGrid(pixel.y);
+		return densidade[x][y];
 	}
 
 	public Rectangle getBounds(){
@@ -134,6 +165,39 @@ public class KernelMap {
 	
 	public int getRows(){
 		return getHeight()/nodeSize + 1;
+	}
+	
+	public Point pixelParaGrid(Ponto pixel){
+		int x = xPixelParaGrid(pixel.x);
+		int y = yPixelParaGrid(pixel.y);
+		return new Point(x,y);
+	}
+	
+	public int xPixelParaGrid(int xPixel){
+		return (int)Math.round((xPixel-bounds.x)/nodeSize);
+	}
+	
+	public int yPixelParaGrid(int yPixel){
+		return (int)Math.round((yPixel-bounds.y)/nodeSize);
+	}
+	
+	public Ponto gridParaPixel(Point celula){
+		int x = xGridParaPixel(celula.x);
+		int y = yGridParaPixel(celula.y);
+		return new Ponto(x,y);
+	}
+	
+	public int xGridParaPixel(int xGrid){
+		return xGrid*nodeSize + bounds.x;
+	}
+	
+	public int yGridParaPixel(int yGrid){
+		return yGrid*nodeSize + bounds.y;
+	}
+	
+	public boolean taNoHotspot(Point celula){
+		if(celula.x >= getCols() || celula.y >= getRows()) return false;
+		return densidade[celula.x][celula.y] >= maxDens/2;
 	}
 	
 	@Override

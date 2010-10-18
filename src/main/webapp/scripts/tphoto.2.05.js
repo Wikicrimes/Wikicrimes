@@ -12,6 +12,7 @@
 		b.setAttribute('src',this.src);
 		b.style.position='absolute';
 		b.style.zIndex=1;
+		//b.style.behavior = "url(/styles/iepngfix/iepngfix.htc)"; //pra funcionar a tranparência no IE
 		this.mapTray=a.getPane(G_MAP_MAP_PANE);
 		this.mapTray.appendChild(b);
 		this.setPosition(a);

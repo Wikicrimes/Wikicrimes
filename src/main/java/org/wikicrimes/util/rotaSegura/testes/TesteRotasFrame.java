@@ -9,28 +9,32 @@ import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import org.wikicrimes.util.kernelMap.KernelMap;
 import org.wikicrimes.util.kernelMap.KernelMapRenderer;
-import org.wikicrimes.util.kernelMap.Ponto;
-import org.wikicrimes.util.kernelMap.Caminho;
-import org.wikicrimes.util.rotaSegura.Grafo;
-import org.wikicrimes.util.rotaSegura.LogicaRotaSegura;
+import org.wikicrimes.util.rotaSegura.geometria.Poligono;
+import org.wikicrimes.util.rotaSegura.geometria.Ponto;
+import org.wikicrimes.util.rotaSegura.geometria.Rota;
+import org.wikicrimes.util.rotaSegura.geometria.Segmento;
+import org.wikicrimes.util.rotaSegura.logica.Grafo;
+import org.wikicrimes.util.rotaSegura.logica.modelo.GrafoRotas;
 
 /**
  * Representa rotas graficamente, para testes. 
  * 
  * @author victor
  */
-public class TesteRotas {
+public class TesteRotasFrame {
 
 	static final boolean enabled = true;
 	static Rectangle limites; //guarda os limites(bounds) da primeira rota, pra aplicar os mesmos limites na segunda
@@ -41,13 +45,17 @@ public class TesteRotas {
 	private PainelTeste painel;
 	
 	private Color[] cores = {Color.BLUE, Color.RED, Color.GREEN, Color.ORANGE, Color.PINK};
-	private Ponto[] pontos;
-	private Caminho[] caminhos;
-	private Grafo grafo;
+	private List<Ponto> pontos = new ArrayList<Ponto>();
+	private List<Color> coresPontos = new ArrayList<Color>();
+	private List<Rota> caminhos = new ArrayList<Rota>();
+	private List<Color> coresCaminhos = new ArrayList<Color>();
+	private GrafoRotas grafo;
 	private KernelMap kernel;
 	private Map<String,Label> labels = new HashMap<String,Label>();
 	
-	protected TesteRotas(String titulo, Ponto... pontosProsLimites){
+	private JFrame frame;
+	
+	public TesteRotasFrame(Ponto... pontosProsLimites){
 		if(!enabled) return;
 		List<Ponto> pontos = Arrays.asList(pontosProsLimites);
 		painel = new PainelTeste();
@@ -55,33 +63,72 @@ public class TesteRotas {
 		if(limites == null)
 			limites = getLimites(pontos);
 		
-		JFrame frame = new JFrame();
-		frame.setTitle(titulo);
+		frame = new JFrame();
 		frame.add(painel);
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 	}
 	
-	public TesteRotas(KernelMap kernel, Grafo grafo){
-		this("", grafo.getOrigem(), grafo.getDestino());
+	public TesteRotasFrame(Collection<Ponto> pontosProsLimites){
+		this(pontosProsLimites.toArray(new Ponto[pontosProsLimites.size()]));
+	}
+	
+	public TesteRotasFrame(KernelMap kernel, GrafoRotas grafo){
+		this(grafo.getOrigem(), grafo.getDestino());
 //		this( "", new Ponto(kernel.getBounds().x,kernel.getBounds().y), new Ponto(kernel.getBounds().x+kernel.getBounds().width,kernel.getBounds().y+kernel.getBounds().height) );
-		grafo = (Grafo)grafo.clone();
+		grafo = (GrafoRotas)grafo.clone();
 		setKernel(kernel);
 		setGrafo(grafo);
 		painel.repaint();
 	}
 	
-	public void setGrafo(Grafo grafo){
+	public void setTitulo(String titulo){
+		frame.setTitle(titulo);
+	}
+	
+	public void setGrafo(GrafoRotas grafo){
 		this.grafo = grafo;
 	}
 	
-	public void setPontos(Ponto... pontos){
-		this.pontos = pontos;
+	public void addPonto(Ponto ponto, Color cor){
+		pontos.add(ponto);
+		coresPontos.add(cor);
 	}
 	
-	public void setRotas(Caminho... rotas) {
-		this.caminhos = rotas;
+	public void addRota(Rota caminho) {
+		caminhos.add(caminho);
+		coresCaminhos.add(cores[(caminhos.size()-1)%cores.length]);
+	}
+	
+	public void addRota(Rota caminho, Color cor) {
+		caminhos.add(caminho);
+		coresCaminhos.add(cor);
+	}
+	
+	public void addSegmento(Segmento s, Color cor){
+		addRota(new Rota(s), cor);
+	}
+	
+	public void addRetangulo(Rectangle r, Color cor){
+		Ponto p1 = new Ponto(r.x, r.y);
+		Ponto p2 = new Ponto(r.x+r.width, r.y);
+		Ponto p3 = new Ponto(r.x+r.width, r.y+r.height);
+		Ponto p4 = new Ponto(r.x, r.y+r.height); 
+		addRota(new Rota(p1, p2, p3, p4, p1.clone()), cor);
+	}
+	
+	public void addPoligono(Poligono p, Color cor){
+		List<Ponto> pts = p.getVertices();
+		Rota c = new Rota(pts);
+		c.addFim(pts.get(0).clone());
+		addRota(c, cor);
+	}
+	
+	public void addGrafo(Grafo<Ponto> g, Color cor){
+		for(Ponto p : g.getVertices())
+			for(Ponto q : g.getVizinhos(p))
+				addRota(new Rota(p,q), cor);
 	}
 	
 	public void setCores(Color... cores){
@@ -128,10 +175,14 @@ public class TesteRotas {
 	}
 	
 	public static void limpar(){
-		limites = null;
+		SwingUtilities.invokeLater(new Runnable(){
+			public void run(){ 
+				limites = null;
+			}
+		});
 	}
 
-	class PainelTeste extends JPanel{
+	protected class PainelTeste extends JPanel{
 	
 		public PainelTeste() {
 			super();
@@ -150,24 +201,21 @@ public class TesteRotas {
 			
 			pintaKernel(g, kernel);
 			pintaGrafo(g, grafo);
-			pintaCaminhos(g, caminhos);
-			pintaPontos(g, pontos);
+			pintaCaminhos(g);
+			pintaPontos(g);
 			pintaLabels(g, labels);
 		}
 		
-		protected void pintaCaminhos(Graphics g, Caminho... rotas){
-			if(rotas!= null){
-				int i = 0;
-				for(Caminho r : rotas){
-					g.setColor(cores[i]);
-//					pintaCaminho(g, r, true);
-					pintaCaminho(g, r);
-					i++;
-				}
+		protected void pintaCaminhos(Graphics g){
+			for(int i=0; i<caminhos.size(); i++){
+				Rota c = caminhos.get(i);
+				Color cor = coresCaminhos.get(i);
+				g.setColor(cor);
+				pintaCaminho(g, c);
 			}
 		}
 		
-		protected void pintaCaminho(Graphics g, Caminho rota, boolean numerado){
+		protected void pintaCaminho(Graphics g, Rota rota, boolean numerado){
 			if(rota != null){
 				List<Ponto> pontos = rota.getPontos();
 				for(int i=0; i<pontos.size(); i++){
@@ -191,7 +239,7 @@ public class TesteRotas {
 			}
 		}
 		
-		protected void pintaCaminho(Graphics g, Caminho rota){
+		protected void pintaCaminho(Graphics g, Rota rota){
 			if(rota!= null){
 				Color cor = g.getColor();
 				List<Ponto> pontos = rota.getPontos();
@@ -221,7 +269,7 @@ public class TesteRotas {
 			}
 		}
 		
-		protected void pintaGrafo(Graphics g, Grafo grafo){
+		protected void pintaGrafo(Graphics g, GrafoRotas grafo){
 			if(grafo != null){
 				
 				//pinta vertices
@@ -234,24 +282,22 @@ public class TesteRotas {
 				}
 				
 				//pinta rotas
-				List<Caminho> rotas = grafo.getCaminhos();
+				List<Rota> rotas = grafo.getRotas();
 				g.setColor(Color.BLACK);
-				for(Caminho rota : rotas){
-					if(kernel != null)
-						g.setColor(new LogicaRotaSegura(kernel).isToleravel(rota)? Color.BLACK : Color.RED);
+				for(Rota rota : rotas){
+//					if(kernel != null)
+//						g.setColor(new LogicaRotaSegura(kernel).isToleravel(rota)? Color.BLACK : Color.RED);
 					pintaCaminho(g, rota);
 				}
 			}
 		}
 		
-		protected void pintaPontos(Graphics g, Ponto... pontos){
-			if(pontos!= null){
-				int i = 0;
-				for(Ponto p : pontos){
-					g.setColor(cores[i]);
-					pintaPonto(g, p, RAIO_VERTICE);
-					i++;
-				}
+		protected void pintaPontos(Graphics g){
+			for(int i=0; i<pontos.size(); i++){
+				Ponto p = pontos.get(i);
+				Color cor = coresPontos.get(i);
+				g.setColor(cor);
+				pintaPonto(g, p, RAIO_VERTICE);
 			}
 		}
 		
@@ -322,6 +368,7 @@ public class TesteRotas {
 		class TesteMouseListener extends MouseAdapter{
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				if(limites == null || grafo == null) return;
 				Point mouse = e.getPoint();
 				int idVertice = 0;
 				Map<Integer, Ponto> m = grafo.getPontos();
@@ -341,15 +388,22 @@ public class TesteRotas {
 			
 			@Override
 			public void mouseMoved(MouseEvent e) {
+				if(limites == null || kernel == null) return;
 				Point mouse = e.getPoint();
-				addLabel(POS_MOUSE, "x:" + xTesteToGM(mouse.x) + ", y:" + yTesteToGM(mouse.y), xTesteToGM(0), yTesteToGM(10), Color.BLACK);
+				int pixelX = xTesteToGM(mouse.x);
+				int pixelY = yTesteToGM(mouse.y);
+				Ponto pixel = new Ponto(pixelX, pixelY);
+				Point grid = kernel.pixelParaGrid(pixel);
+				addLabel(PIXEL_MOUSE, "pixel: (" + pixelX + "," + pixelY + ")", xTesteToGM(0), yTesteToGM(10), Color.BLACK);
+				addLabel(GRID_MOUSE, "grid: (" + grid.x + "," + grid.y + ")", xTesteToGM(0), yTesteToGM(20), Color.BLACK);
 				refresh();
 			}
 			
 		}
 	}
 
-	static final String POS_MOUSE = "POS_MOUSE";
+	static final String PIXEL_MOUSE = "PIXEL_MOUSE";
+	static final String GRID_MOUSE = "CELULA_MOUSE";
 	
 	class Label{
 		String texto;

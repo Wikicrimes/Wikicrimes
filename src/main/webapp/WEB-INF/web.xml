@@ -305,20 +305,30 @@
 		<servlet-name>ServletAreasRisco</servlet-name>
 		<servlet-class>org.wikicrimes.servlet.ServletAreasRisco</servlet-class>
 	</servlet>
-
+	
 	<servlet-mapping>
 		<servlet-name>ServletAreasRisco</servlet-name>
 		<url-pattern>/ServletAreasRisco</url-pattern>
 	</servlet-mapping>
 	
 	<servlet>
-		<servlet-name>ServletRotaSegura</servlet-name>
-		<servlet-class>org.wikicrimes.servlet.ServletRotaSegura2</servlet-class>
+		<servlet-name>ServletRotaSeguraClientSide</servlet-name>
+		<servlet-class>org.wikicrimes.servlet.ServletRotaSeguraClientSide</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
-		<servlet-name>ServletRotaSegura</servlet-name>
-		<url-pattern>/ServletRotaSegura</url-pattern>
+		<servlet-name>ServletRotaSeguraClientSide</servlet-name>
+		<url-pattern>/ServletRotaSeguraClientSide</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>ServletRotaSeguraServerSide</servlet-name>
+		<servlet-class>org.wikicrimes.servlet.ServletRotaSeguraServerSide</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>ServletRotaSeguraServerSide</servlet-name>
+		<url-pattern>/ServletRotaSeguraServerSide</url-pattern>
 	</servlet-mapping>
 	
 	<servlet>
@@ -341,15 +351,32 @@
 		<url-pattern>/ServletIphone</url-pattern>
 	</servlet-mapping>
 	
+<!-- TESTE esses servlets nao devem ser usados em produção-->
 	<servlet>
 		<servlet-name>TesteCenariosRotas</servlet-name>
-		<servlet-class>org.wikicrimes.util.kernelMap.testes.TesteCenariosRotas</servlet-class>
+		<servlet-class>org.wikicrimes.util.rotaSegura.testes.TesteCenariosRotas</servlet-class>
 	</servlet>
-
 	<servlet-mapping>
 		<servlet-name>TesteCenariosRotas</servlet-name>
 		<url-pattern>/TesteCenariosRotas</url-pattern>
 	</servlet-mapping>
+	<servlet>
+		<servlet-name>KernelSemBrowser</servlet-name>
+		<servlet-class>org.wikicrimes.util.kernelMap.testes.KernelSemBrowser</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>KernelSemBrowser</servlet-name>
+		<url-pattern>/KernelSemBrowser</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>ServletCrimesHotSpots</servlet-name>
+		<servlet-class>org.wikicrimes.util.kernelMap.testes.ServletCrimesHotSpots</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ServletCrimesHotSpots</servlet-name>
+		<url-pattern>/ServletCrimesHotSpots</url-pattern>
+	</servlet-mapping>
+<!-- FIM TESTE -->
 
 	<servlet>
 		<servlet-name>CrimeRatioServlet</servlet-name>

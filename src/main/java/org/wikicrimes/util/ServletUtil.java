@@ -1,52 +1,23 @@
 package org.wikicrimes.util;
 
 import java.awt.image.RenderedImage;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.net.URL;
+import java.net.URLConnection;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class Util {
+public class ServletUtil {
 
-	/*
-	 * public static ResourceBundle getMessages() { ApplicationFactory factory =
-	 * (ApplicationFactory) FactoryFinder
-	 * .getFactory(FactoryFinder.APPLICATION_FACTORY); String bundleName =
-	 * factory.getApplication().getMessageBundle(); ResourceBundle rb =
-	 * ResourceBundle.getBundle(bundleName,
-	 * FacesContext.getCurrentInstance().getViewRoot().getLocale()); return rb;
-	 * }
-	 */
-
-	/**
-	 * 
-	 * @param data
-	 * @return
-	 */
-	public static String formatDate(Date data) {
-		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-		return format.format(data);
+	enum Browser{ 
+		INTERNET_EXPLORER, NETSCAPE, UNKNOWN 
 	}
-
-	/**
-	 * 
-	 * @param data
-	 * @return
-	 */
-	public static Date toDate(String data) {
-		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-		try {
-			return format.parse(data);
-		} catch (ParseException e) {
-			return null;
-		}
-	}
-
+	
 	private static Browser getClientBrowser(HttpServletRequest req) {
 		String s = req.getHeader("user-agent");
 		if (s == null)
@@ -70,9 +41,22 @@ public class Util {
 		OutputStream out = response.getOutputStream();
 		ImageIO.write(imagem, "PNG", out);
 	}
-
-}
-
-enum Browser{ 
-	INTERNET_EXPLORER, NETSCAPE, UNKNOWN 
+	
+	public static String fazerRequisicao(URL url) throws IOException{
+		StringBuilder str = new StringBuilder();
+		URLConnection con;
+		try {
+			con = url.openConnection();
+			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+			String linha = null;
+			while((linha = in.readLine()) != null)
+				str.append(linha);
+		} catch (IOException e) {
+			/*DEBUG*/System.out.println("DEBUG: IOException, Util.fazerRequisicao(), url = " + url);
+			throw e;
+		}
+		
+		return str.toString();
+	}
+	
 }

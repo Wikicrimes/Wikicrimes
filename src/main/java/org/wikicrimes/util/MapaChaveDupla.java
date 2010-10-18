@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings("serial")
 public class MapaChaveDupla<K1, K2, V> implements Serializable {
 	
 	Map<K1, Map<K2, V>> mapao;

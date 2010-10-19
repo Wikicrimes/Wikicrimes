@@ -264,13 +264,13 @@ public class GrafoRotas {
 //			/*TESTE*/teste +=  id(p) + ", ";
 //			/*TESTE*/w = vmc;
 			VerticeMC pai = vmc.pai;
-			if(pai == null){
-				/*DEBUG*/TesteGrafoJung teste = new TesteGrafoJung(this);
-				/*DEBUG*/teste.setTitulo("menor caminho de A até B");
-				/*DEBUG*/teste.addLabel(origem, "A");
-				/*DEBUG*/teste.addLabel(destino, "B");
-				throw new NaoTemCaminhoException(this,vOrigem,vDestino,vmc);
-			}
+//			if(pai == null){
+//				/*DEBUG*/TesteGrafoJung teste = new TesteGrafoJung(this);
+//				/*DEBUG*/teste.setTitulo("menor caminho de A até B");
+//				/*DEBUG*/teste.addLabel(origem, "A");
+//				/*DEBUG*/teste.addLabel(destino, "B");
+//				throw new NaoTemCaminhoException(this,vOrigem,vDestino,vmc);
+//			}
 			p = pai.ponto;
 			c.addInicio(p);
 		}

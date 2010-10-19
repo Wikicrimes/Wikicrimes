@@ -11,7 +11,6 @@ import org.wikicrimes.model.BaseObject;
 import org.wikicrimes.model.PontoLatLng;
 import org.wikicrimes.service.CrimeService;
 import org.wikicrimes.servlet.ServletKernelMap;
-import org.wikicrimes.util.NumerosUtil;
 import org.wikicrimes.util.rotaSegura.geometria.Ponto;
 
 
@@ -21,24 +20,17 @@ public class AvaliacaoPerigo{
 
 	private static final int PROPORCAO_TAMANHO_MAPA = 10; //proporcao do tamanho do mapa de kernel em relacao ao circulo avaliado
 	private static final double KM_POR_GRAU = 110.5; //aproximacao do valor medio pra distancia em 1 grau de latitude ou longitude
-	private static final int ZOOM = 13;
+	private static final int ZOOM = 15;
 	private static final int NODE_SIZE = 5;
 	private static final double BANDWIDTH = 30;
 	
 	//condicoes pra avaliacao
-	private int minimoCrimes;
-	private double amplitudeMinima; //diferenca entre a menor e a maior densidade do mapa de kernel 
+	private double amplitudeMinima = 0.000025; //diferenca entre a menor e a maior densidade do mapa de kernel 
 	
 	public AvaliacaoPerigo(CrimeService crimeService){
 		this.crimeService = crimeService;
 	}
-	
-	public AvaliacaoPerigo(CrimeService crimeService, int minimoCrimes, double amplitudeMinima){
-		this.crimeService = crimeService;
-		this.minimoCrimes = minimoCrimes;
-		this.amplitudeMinima = amplitudeMinima;
-	}
-	
+
 	/**
 	 * @param centro : lat lng
 	 * @param raio : raio do circulo, em metros 
@@ -54,7 +46,6 @@ public class AvaliacaoPerigo{
 		int lado = raioPixel*PROPORCAO_TAMANHO_MAPA;
 		Rectangle boundsMapa = new Rectangle(centroPixel.x-lado/2, centroPixel.y-lado/2, lado, lado);
 		List<Point> crimes = buscaCrimes(boundsMapa, dataInicial);
-		if(crimes.size() < minimoCrimes) return -1;
 		KernelMap kernel = new KernelMap(NODE_SIZE, BANDWIDTH, boundsMapa, crimes);
 		
 		//calculo de densidades

@@ -20,7 +20,7 @@ public class AvaliacaoPerigo{
 
 	private static final int PROPORCAO_TAMANHO_MAPA = 10; //proporcao do tamanho do mapa de kernel em relacao ao circulo avaliado
 	private static final double KM_POR_GRAU = 110.5; //aproximacao do valor medio pra distancia em 1 grau de latitude ou longitude
-	private static final int ZOOM = 15;
+	private static final int ZOOM = 12;
 	private static final int NODE_SIZE = 5;
 	private static final double BANDWIDTH = 30;
 	
@@ -33,7 +33,7 @@ public class AvaliacaoPerigo{
 
 	/**
 	 * @param centro : lat lng
-	 * @param raio : raio do circulo, em metros 
+	 * @param raio : raio do circulo, em km 
 	 * @param dataInicial : o periodo comeca na dataInicial e termina na data de hoje
 	 * @return um double variando de 0 (densidade minima do mapa) a 1 (densidade maxima do mapa)
 	 * obs:o "mapa" eh um quadrado grande que contem o circulo.
@@ -42,7 +42,7 @@ public class AvaliacaoPerigo{
 		
 		//conversoes e mapa de kernel
 		Ponto centroPixel = new Ponto(centro.toPixel(ZOOM));
-		int raioPixel = raioMetrosToPixel(centro, raio);
+		int raioPixel = raioKmToPixel(centro, raio);
 		int lado = raioPixel*PROPORCAO_TAMANHO_MAPA;
 		Rectangle boundsMapa = new Rectangle(centroPixel.x-lado/2, centroPixel.y-lado/2, lado, lado);
 		List<Point> crimes = buscaCrimes(boundsMapa, dataInicial);
@@ -54,12 +54,12 @@ public class AvaliacaoPerigo{
 		double amplitude = maxMapa-minMapa; 
 		if(amplitude < amplitudeMinima) return -1;
 		double mediaCirculo = densidadeMediaNoCirculo(kernel, centroPixel, raioPixel);
-		double normalizada = (mediaCirculo-minMapa)/amplitude;
+		double normalizada = mediaCirculo/maxMapa;
 		return normalizada;
 	}
 	
-	private int raioMetrosToPixel(PontoLatLng centro, double raio){
-		double raioLatLng = (raio/1000)/KM_POR_GRAU;
+	private int raioKmToPixel(PontoLatLng centro, double raio){
+		double raioLatLng = (raio)/KM_POR_GRAU;
 		PontoLatLng pontoPerimetro = new PontoLatLng(centro.lat, centro.lng+raioLatLng); //um ponto qualquer do perimetro, foi escolhido o da direita arbitrariamente
 		Ponto pontoPerimetroPixel = new Ponto(pontoPerimetro.toPixel(ZOOM));
 		Ponto centroPixel = new Ponto(centro.toPixel(ZOOM));

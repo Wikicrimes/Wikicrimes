@@ -11,7 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+import org.wikicrimes.model.PontoLatLng;
 import org.wikicrimes.service.CrimeService;
+import org.wikicrimes.util.kernelMap.AvaliacaoPerigo;
 
 public class ServletCrimeInRadius extends HttpServlet {
 
@@ -31,10 +33,16 @@ public class ServletCrimeInRadius extends HttpServlet {
 		double radius = Double.parseDouble(request.getParameter("radius"));
 		
 		StringBuilder crimes = getService().getCrimesInRadius(lat, lng, radius, initDateMilliSeconds, finalDateMilliSeconds);
-
+		double perigo;
+		if(radius > 0.8f) {
+			AvaliacaoPerigo avaliacaoPerigo = new AvaliacaoPerigo(getService());
+			perigo = avaliacaoPerigo.avaliarCirculo(new PontoLatLng(lat, lng), radius, new Date(initDateMilliSeconds));
+		} else {
+			perigo = -1;
+		}
 		PrintWriter writer = response.getWriter();
-		writer.println(crimes);
-		writer.close();			
+		writer.println(perigo + ";;;" + crimes);
+		writer.close();	
 	}
 	
 	private CrimeService getService(){

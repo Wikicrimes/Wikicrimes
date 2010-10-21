@@ -37,7 +37,7 @@ public class ServletCrimeInRadius extends HttpServlet {
 		
 		StringBuilder crimes = getService().getCrimesInRadius(lat, lng, radius, initDateMilliSeconds, finalDateMilliSeconds);
 		double perigo;
-		if(radius > 0.8f) {
+		if(radius < 0.8f) {
 			AvaliacaoPerigo avaliacaoPerigo = new AvaliacaoPerigo(getService());
 			perigo = avaliacaoPerigo.avaliarCirculo(new PontoLatLng(lat, lng), radius, new Date(initDateMilliSeconds));
 		} else {

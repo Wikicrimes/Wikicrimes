@@ -521,6 +521,11 @@ UPDATE TB_CRI_CRIME C SET C.CRI_QTD_COMENTARIOS =
 //verificar inconsistencias
 SELECT  t.cri_idcrime,count(*)  as quantidade, c.cri_confirmacoes_NEGATIVAS FROM tb_con_confirmacao t, tb_cri_crime c  where t.con_confirma=0 and t.cri_idcrime=c.cri_idcrime  group by t.cri_idcrime 
 
+
+--seleciona todos os usuários que ser registraram após uma indicação.
+select * from tb_usu_usuario u where usu_data_hora_registro > (SELECT c.cri_data_hora_registro FROM tb_con_confirmacao t, tb_cri_crime c where c.cri_idcrime = t.cri_idcrime and t.usu_idusuario = u.usu_idusuario LIMIT 0,1)
+
+
 insert into tb_tve_tipo_violencia_escola_relato values(1,'tipo.violencia.relato.bullying', 'Bullying'),
 						(2, 'tipo.violencia.relato.assedio.sexual', 'Assédio Sexual'),
 						(3, 'tipo.violencia.relato.violencia.sexual', 'Violência Sexual'),

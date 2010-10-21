@@ -155,7 +155,11 @@
 		<property name="confirmacaoService" ref="confirmacaoService" />
 		<property name="emailService" ref="emailService" />		
 	</bean>
-
+	
+	<bean id="logService"
+		class="org.wikicrimes.service.impl.LogServiceImpl">
+		<property name="mobileRequestLogDao" ref="mobileRequestLogDao" />				
+	</bean>
 	<!-- envio de emails -->
 	<bean id="mailSender"
 		class="org.springframework.mail.javamail.JavaMailSenderImpl">

@@ -1,7 +1,6 @@
 package org.wikicrimes.service.impl;
 
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +27,7 @@ import org.wikicrimes.model.Crime;
 import org.wikicrimes.model.CrimeRazao;
 import org.wikicrimes.model.CrimeVitima;
 import org.wikicrimes.model.EntidadeCertificadora;
+import org.wikicrimes.model.MobileRequestLog;
 import org.wikicrimes.model.Razao;
 import org.wikicrimes.model.TipoArmaUsada;
 import org.wikicrimes.model.TipoConfirmacao;
@@ -520,6 +520,5 @@ public class CrimeServiceImpl extends GenericCrudServiceImpl implements
 			double raio, long dataIni, long dataFim) {
 		return crimeDao.getCrimesInRadius(latitude, longitude, raio, dataIni, dataFim);
 	}
-
 
 }

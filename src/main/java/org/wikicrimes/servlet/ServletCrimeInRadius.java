@@ -11,8 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+import org.wikicrimes.model.MobileRequestLog;
 import org.wikicrimes.model.PontoLatLng;
 import org.wikicrimes.service.CrimeService;
+import org.wikicrimes.service.LogService;
 import org.wikicrimes.util.kernelMap.AvaliacaoPerigo;
 
 public class ServletCrimeInRadius extends HttpServlet {
@@ -22,6 +24,7 @@ public class ServletCrimeInRadius extends HttpServlet {
 	 */
 	private static final long serialVersionUID = 1L;
 	private CrimeService service;
+	private LogService logService;
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 	throws ServletException, IOException {
@@ -40,9 +43,14 @@ public class ServletCrimeInRadius extends HttpServlet {
 		} else {
 			perigo = -1;
 		}
+		
+		String userAgent = request.getHeader("User-Agent");
+		MobileRequestLog mobileRequestLog = new MobileRequestLog(new Date(System.currentTimeMillis()), userAgent);
+		getLogService().save(mobileRequestLog);
+		
 		PrintWriter writer = response.getWriter();
 		writer.println(perigo + ";;;" + crimes);
-		writer.close();	
+		writer.close();
 	}
 	
 	private CrimeService getService(){
@@ -51,5 +59,13 @@ public class ServletCrimeInRadius extends HttpServlet {
 			service = (CrimeService)springContext.getBean("crimeService");
 		}
 		return service;
+	}
+	
+	private LogService getLogService(){
+		if(logService == null){
+			ApplicationContext springContext = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
+			logService = (LogService)springContext.getBean("logService");
+		}
+		return logService;
 	}
 }

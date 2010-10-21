@@ -70,6 +70,7 @@
                  <value>org/wikicrimes/model/ImagemMapa.hbm.xml</value>
                  <value>org/wikicrimes/model/AreaRisco.hbm.xml</value>
                  <value>org/wikicrimes/model/PontoLatLng.hbm.xml</value>
+                 <value>org/wikicrimes/model/MobileRequestLog.hbm.xml</value>
             </list>
         </property>
         <property name="hibernateProperties">
@@ -176,6 +177,10 @@
     </bean>
     
     <bean id="pontoLatLngDao" class="org.wikicrimes.dao.hibernate.PontoLatLngDaoHibernate">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    
+    <bean id="mobileRequestLogDao" class="org.wikicrimes.dao.hibernate.MobileRequestLogDaoHibernate">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     

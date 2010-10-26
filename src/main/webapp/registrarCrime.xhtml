@@ -128,7 +128,11 @@
 						<div id="topoBalao"><b> #{messages['crime.topo.latrocinio']}</b> </div>
 					</c:if>	
 				</c:if>				
-				
+				<c:if test="#{crimeForm.crime.tipoCrime.idTipoCrime == 5 }">
+					<c:if test="#{crimeForm.crime.tipoVitima.idTipoVitima == 9}">
+						<div id="topoBalao"><b> #{messages['crime.topo.atentadoaopudor']}</b> </div>
+					</c:if>	
+				</c:if>	
 				
 				<c:if test="#{not empty message}">				
 					<c:if test="#{(message != messages['errors.email.confirmacao']) and (message != messages['errors.dataMaior']) and (message != messages['errors.razao']) and (message != messages['errors.embed.invaliado'])}">

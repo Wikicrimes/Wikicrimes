@@ -824,7 +824,7 @@ public class CrimeForm extends GenericForm {
 
 		List<BaseObject> result = new ArrayList();
 		if (tipoVitima != null && !tipoVitima.equals("0")) {
-			if(tipoVitima == 3 || tipoVitima == 4 || tipoVitima == 5 || tipoVitima == 6 || tipoVitima == 7 || tipoVitima == 8 ){
+			if(tipoVitima == 3 || tipoVitima == 4 || tipoVitima == 5 || tipoVitima == 6 || tipoVitima == 7 || tipoVitima == 8 || tipoVitima == 9 ){
 				result = service.findTipoLocalByTipoVitima(new Long(1));
 			}else{			
 				Long tipoVitima = Long.valueOf(getTipoVitima());

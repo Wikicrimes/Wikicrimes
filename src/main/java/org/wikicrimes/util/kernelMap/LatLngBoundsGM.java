@@ -34,6 +34,20 @@ public class LatLngBoundsGM {
 				inferiorDireito.getLongitude(), superiorEsquerdo.getLongitude(), width, height);
 	}
 	
+	public LatLngBoundsGM(double norte, double sul, double leste, double oeste) {
+		this.norte = norte;
+		this.sul = sul;
+		this.leste = leste;
+		this.oeste = oeste;
+		this.width = norte-sul;
+		this.height = leste-oeste;
+	}
+	
+	public LatLngBoundsGM(PontoLatLng superiorEsquerdo, PontoLatLng inferiorDireito){
+		this(superiorEsquerdo.getLatitude(), inferiorDireito.getLatitude(), 
+				inferiorDireito.getLongitude(), superiorEsquerdo.getLongitude());
+	}
+	
 	@Override
 	public String toString() {
 		return "n:"+ norte +", s:"+ sul +", l:"+ leste +", o:"+ oeste +", w:"+ width +", h:"+ height;

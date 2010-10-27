@@ -41,13 +41,13 @@ public class AlternativasGrafoDeCaminhosLivres extends AlternativasGrafoVisibili
 		return alternativas;
 	}
 	
-	/*TESTE*/static TesteRotasImg teste;
+//	/*TESTE*/static TesteRotasImg teste;
 	
 	private List<Rota> calcularRotas(Ponto origem, Ponto destino, double pesoMaximo){
 		Rectangle area = getAreaLimite(origem, destino);
 		List<Poligono> polis = getPoligonosHotspots(area);
-		/*TESTE*/teste = new TesteRotasImg(kernel);
-		/*TESTE*/teste.setTitulo("AlternativasGrafoDeCaminhosLivres");
+//		/*TESTE*/teste = new TesteRotasImg(kernel);
+//		/*TESTE*/teste.setTitulo("AlternativasGrafoDeCaminhosLivres");
 		Grafo<Ponto> g = getGrafoCaminhosLivres(polis, area, origem, destino);
 		List<List<Ponto>> caminhos = g.todosCaminhos(origem, destino, pesoMaximo*1.7);
 		
@@ -56,12 +56,12 @@ public class AlternativasGrafoDeCaminhosLivres extends AlternativasGrafoVisibili
 			rotas.add( new Rota(caminho) );
 		}
 
-		/*TESTE*/teste.addGrafo(g, Color.BLACK);
-		/*TESTE*/teste.addPonto(origem, Color.BLACK);
-		/*TESTE*/teste.addPonto(destino, Color.BLACK);
-		/*TESTE*/teste.addPoligonos(polis, Color.RED);
-		/*TESTE*/teste.addRotas(rotas, Color.BLUE);
-		/*TESTE*/teste.salvar();
+//		/*TESTE*/teste.addGrafo(g, Color.BLACK);
+//		/*TESTE*/teste.addPonto(origem, Color.BLACK);
+//		/*TESTE*/teste.addPonto(destino, Color.BLACK);
+//		/*TESTE*/teste.addPoligonos(polis, Color.RED);
+//		/*TESTE*/teste.addRotas(rotas, Color.BLUE);
+//		/*TESTE*/teste.salvar();
 		return rotas;
 	}
 
@@ -81,7 +81,7 @@ public class AlternativasGrafoDeCaminhosLivres extends AlternativasGrafoVisibili
 	
 	private List<Ponto> pontosMediosDasVerticais(List<Poligono> poligonos, List<Segmento> obstaculos, Retangulo retangulo){
 		List<Ponto> pontosMedios = new ArrayList<Ponto>();
-		/*TESTE*/teste.addRetangulo(retangulo.bounds(), Color.GRAY);
+//		/*TESTE*/teste.addRetangulo(retangulo.bounds(), Color.GRAY);
 		for(Poligono poli : poligonos){
 			for(Ponto v : poli.getVertices()){
 				if(!retangulo.contem(v)) continue;
@@ -98,8 +98,8 @@ public class AlternativasGrafoDeCaminhosLivres extends AlternativasGrafoVisibili
 				Segmento cima = new Segmento(v, intersecoes.get(index-1));
 				Ponto medioCima = cima.pontoMedio();
 				if(!poli.contem(medioCima)){
-					/*TESTE*/teste.addSegmento(cima, Color.GRAY);
-					/*TESTE*/teste.addPonto(medioCima, Color.GRAY);
+//					/*TESTE*/teste.addSegmento(cima, Color.GRAY);
+//					/*TESTE*/teste.addPonto(medioCima, Color.GRAY);
 					pontosMedios.add(medioCima);
 				}
 				
@@ -107,8 +107,8 @@ public class AlternativasGrafoDeCaminhosLivres extends AlternativasGrafoVisibili
 				Segmento baixo = new Segmento(v, intersecoes.get(index+1));
 				Ponto medioBaixo = baixo.pontoMedio();
 				if(!poli.contem(medioBaixo)){
-					/*TESTE*/teste.addSegmento(baixo, Color.GRAY);
-					/*TESTE*/teste.addPonto(medioBaixo, Color.GRAY);
+//					/*TESTE*/teste.addSegmento(baixo, Color.GRAY);
+//					/*TESTE*/teste.addPonto(medioBaixo, Color.GRAY);
 					pontosMedios.add(medioBaixo);
 				}
 			}

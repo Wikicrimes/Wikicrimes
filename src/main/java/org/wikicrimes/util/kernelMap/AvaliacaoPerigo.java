@@ -19,7 +19,6 @@ public class AvaliacaoPerigo{
 	private CrimeService crimeService; 
 
 	private static final int PROPORCAO_TAMANHO_MAPA = 10; //proporcao do tamanho do mapa de kernel em relacao ao circulo avaliado
-	private static final double KM_POR_GRAU = 110.5; //aproximacao do valor medio pra distancia em 1 grau de latitude ou longitude
 	private static final int ZOOM = 12;
 	private static final int NODE_SIZE = 5;
 	private static final double BANDWIDTH = 30;
@@ -41,7 +40,7 @@ public class AvaliacaoPerigo{
 	public double avaliarCirculo(PontoLatLng centro, double raio, Date dataInicial){
 		
 		//conversoes e mapa de kernel
-		Ponto centroPixel = new Ponto(centro.toPixel(ZOOM));
+		Ponto centroPixel = centro.toPixel(ZOOM);
 		int raioPixel = raioKmToPixel(centro, raio);
 		int lado = raioPixel*PROPORCAO_TAMANHO_MAPA;
 		Rectangle boundsMapa = new Rectangle(centroPixel.x-lado/2, centroPixel.y-lado/2, lado, lado);
@@ -59,10 +58,9 @@ public class AvaliacaoPerigo{
 	}
 	
 	private int raioKmToPixel(PontoLatLng centro, double raio){
-		double raioLatLng = (raio)/KM_POR_GRAU;
-		PontoLatLng pontoPerimetro = new PontoLatLng(centro.lat, centro.lng+raioLatLng); //um ponto qualquer do perimetro, foi escolhido o da direita arbitrariamente
-		Ponto pontoPerimetroPixel = new Ponto(pontoPerimetro.toPixel(ZOOM));
-		Ponto centroPixel = new Ponto(centro.toPixel(ZOOM));
+		PontoLatLng pontoPerimetro = centro.transladarKm(raio, 0);
+		Ponto pontoPerimetroPixel = pontoPerimetro.toPixel(ZOOM);
+		Ponto centroPixel = centro.toPixel(ZOOM);
 		int raioPixel = (int)Math.round(Ponto.distancia(pontoPerimetroPixel, centroPixel));
 		return raioPixel;
 	}

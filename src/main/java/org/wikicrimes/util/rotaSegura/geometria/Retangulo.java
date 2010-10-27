@@ -1,8 +1,8 @@
 package org.wikicrimes.util.rotaSegura.geometria;
 
 import java.awt.Rectangle;
-
-import com.sun.java.swing.plaf.gtk.GTKConstants.WidgetType;
+import java.util.Arrays;
+import java.util.Collection;
 
 public class Retangulo extends Poligono {
 
@@ -11,6 +11,24 @@ public class Retangulo extends Poligono {
 		Ponto ne = new Ponto(r.x + r.width, r.y);
 		Ponto se = new Ponto(r.x + r.width, r.y + r.height);
 		Ponto sw = new Ponto(r.x, r.y + r.height);
+		pontos = new Ponto[]{nw, ne, se, sw};
+	}
+	
+	public Retangulo(Collection<Ponto> pontos) {
+		this(Ponto.getBounds(pontos));
+	}
+	
+	public Retangulo(Ponto... pontos) {
+		this(Arrays.asList(pontos));
+	}
+	
+	public Retangulo(Ponto centro, int width, int height) {
+		int w2 = width/2;
+		int h2 = height/2;
+		Ponto nw = new Ponto(centro.x-w2, centro.y-h2);
+		Ponto ne = new Ponto(centro.x+w2, centro.y-h2);
+		Ponto se = new Ponto(centro.x+w2, centro.y+h2);
+		Ponto sw = new Ponto(centro.x-w2, centro.y+h2);
 		pontos = new Ponto[]{nw, ne, se, sw};
 	}
 	
@@ -30,6 +48,18 @@ public class Retangulo extends Poligono {
 		return pontos[0].x;
 	}
 	
+	public int largura(){
+		return leste()-oeste();
+	}
+	
+	public int altura(){
+		return sul()-norte();
+	}
+	
+	public int maiorLado() {
+		return Math.max(largura(), altura());
+	}
+	
 	public Rectangle getRectangle(){
 		int x = oeste();
 		int y = norte();
@@ -38,21 +68,15 @@ public class Retangulo extends Poligono {
 		return new Rectangle(x, y, width, height);
 	}
 	
-	public void expandir(int tamanho){
-		pontos[0].x -= tamanho;
-		pontos[0].y -= tamanho;
-		pontos[1].x += tamanho;
-		pontos[1].y -= tamanho;
-		pontos[2].x += tamanho;
-		pontos[2].y += tamanho;
-		pontos[3].x -= tamanho;
-		pontos[3].y += tamanho;
+	public Retangulo expandir(int tamanho){
+		Ponto no = new Ponto(oeste()-tamanho, norte()-tamanho);
+		Ponto se = new Ponto(leste()+tamanho, sul()+tamanho);
+		return new Retangulo(no,se);
 	}
 	
 	public static Rectangle expandir(Rectangle retangulo, int tamanho){
 		Retangulo r = new Retangulo(retangulo);
-		r.expandir(tamanho);
-		return r.getRectangle();
+		return r.expandir(tamanho).getRectangle();
 	}
 	
 }

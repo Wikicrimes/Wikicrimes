@@ -47,6 +47,7 @@ public class ServletUtil {
 		URLConnection con;
 		try {
 			con = url.openConnection();
+//			/*DEBUG*/System.out.println( "content type: " + con.getContentType() );
 			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
 			String linha = null;
 			while((linha = in.readLine()) != null)

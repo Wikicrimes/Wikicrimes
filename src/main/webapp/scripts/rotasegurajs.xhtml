@@ -433,7 +433,7 @@
       }
 
       function constroiURLRotaPrimeiraVez(){
-	      var url = "&rotas=";
+	      var url = "&rota=";
 	      	for(i = 0; i < rotaMarcadoresIndice; i++){
 	      		var latlng = rotaMarcadores[i].getLatLng();
 	      		var gpoint = map.getCurrentMapType().getProjection().fromLatLngToPixel(latlng, map.getZoom());
@@ -444,8 +444,21 @@
       		return url;
       }
 
+      /*TESTE*/
+      function constroiURLTesteServicoRota(){
+	      var url = "origem=";
+	      var latlng = rotaMarcadores[0].getLatLng();
+    	  var gpoint = map.getCurrentMapType().getProjection().fromLatLngToPixel(latlng, map.getZoom());
+    	  url += gpoint.y + ',' + gpoint.x + ';';
+    	  var latlng = rotaMarcadores[rotaMarcadoresIndice-1].getLatLng();
+    	  var gpoint = map.getCurrentMapType().getProjection().fromLatLngToPixel(latlng, map.getZoom());
+    	  url += gpoint.y + ',' + gpoint.x;
+   		  return url;
+      }
+      /*FIM TESTE*/
+
       function constroiURLRota(){
-	      	var url = "&rotas=";
+	      	var url = "&rota=";
 			var polyline = dirnRotaSegura.getPolyline();
 			var vertices = polyline.getVertexCount();
 			
@@ -516,14 +529,14 @@
 					}
 
 					///*teste*/console.log("recebeRespostaRotaSegura(), testeParam=" + testeParam + ", testeCenarioSequencia=" + testeCenarioSequencia);
-					/*teste*/if(linhas[0] == "fim"){
-					/*teste*/	screenshotTeste();
-					/*teste*/}
-					/*teste*/if(testeParam){
-					/*teste*/	continuaTeste();
-					/*teste*/}else{
-					/*teste*/	console.log('fim teste');
-					/*teste*/}
+					///*teste*/if(linhas[0] == "fim"){
+					///*teste*/	screenshotTeste();
+					///*teste*/}
+					///*teste*/if(testeParam){
+					///*teste*/	continuaTeste();
+					///*teste*/}else{
+					///*teste*/	console.log('fim teste');
+					///*teste*/}
 				}
 			}
 		}
@@ -542,6 +555,7 @@
 			//hide the context menu now that it has been used
 			contextmenu.style.visibility="hidden";
 			var url = constroiURLRotaPrimeiraVez() + "&zoom=" + map.getZoom();
+			//var url = constroiURLTesteServicoRota() + "&zoom=" + map.getZoom() + "&output=" + json;
 			var req = enviaRequisicaoRotaSeguraServerSide(url);
 			recebeRespostaFinalRotaSegura(req);
 			mostraDivRotasSeguras();
@@ -555,7 +569,7 @@
 		         http_request.overrideMimeType('text/xml');
 		    http_request.open('POST', 'ServletRotaSeguraServerSide', false);
 			http_request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-			alert('params = ' + params);
+			//alert('params = ' + params);
 			http_request.send(params);
 			return http_request; 
 		  }

@@ -331,6 +331,11 @@
 		<url-pattern>/ServletRotaSeguraServerSide</url-pattern>
 	</servlet-mapping>
 	
+	<servlet-mapping>
+		<servlet-name>ServletRotaSeguraServerSide</servlet-name>
+		<url-pattern>/RotaSegura</url-pattern>
+	</servlet-mapping>
+	
 	<servlet>
 		<servlet-name>ServletIphone2</servlet-name>
 		<servlet-class>org.wikicrimes.servlet.ServletIphone</servlet-class>

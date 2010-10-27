@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +36,7 @@ import org.wikicrimes.util.kernelMap.KernelMapRenderer;
 import org.wikicrimes.util.kernelMap.LatLngBoundsGM;
 
 //pro Douglas, 04/08/2010
-public class KernelSemBrowser extends HttpServlet {
+public class KernelMapCidades extends HttpServlet {
 	
 	private static final int NODE_SIZE = 5;
 	private static final double BANDWIDTH = 30;

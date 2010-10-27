@@ -76,16 +76,16 @@ public class AlternativasPontoDesvio extends GeradorDeAlternativasAbstrato{
 			}
 		}
 		
-		/*TESTE*/TesteRotasImg teste = new TesteRotasImg(kernel);
-		/*TESTE*/teste.setTitulo("AlternativasPontoDesvio");
-		/*TESTE*/teste.addPonto(origem, Color.BLACK);
-		/*TESTE*/teste.addPonto(destino, Color.BLACK);
-		/*TESTE*/int i = 1;
-		/*TESTE*/for(Ponto p : q){
-		/*TESTE*/	teste.addLabel("PontoDesvio"+i,String.valueOf(i), p.x, p.y, Color.BLUE);
-		/*TESTE*/i++;
-		/*TESTE*/}
-		/*TESTE*/teste.salvar();
+//		/*TESTE*/TesteRotasImg teste = new TesteRotasImg(kernel);
+//		/*TESTE*/teste.setTitulo("AlternativasPontoDesvio");
+//		/*TESTE*/teste.addPonto(origem, Color.BLACK);
+//		/*TESTE*/teste.addPonto(destino, Color.BLACK);
+//		/*TESTE*/int i = 1;
+//		/*TESTE*/for(Ponto p : q){
+//		/*TESTE*/	teste.addLabel("PontoDesvio"+i,String.valueOf(i), p.x, p.y, Color.BLUE);
+//		/*TESTE*/i++;
+//		/*TESTE*/}
+//		/*TESTE*/teste.salvar();
 		
 		return q;
 	}

@@ -372,7 +372,8 @@ public class GrafoRotas {
 	
 	//CALCULO DE K MENORES CAMINHOS
 	public List<Rota> verticesKMenoresCaminhos(int k){
-		return verticesKMenoresCaminhos(origem, destino, k);
+		List<Rota> rotas = verticesKMenoresCaminhos(origem, destino, k);
+		return rotas;
 	}
 	public List<Rota> verticesKMenoresCaminhos(Ponto origem, Ponto destino, int k){
 		List<RotaPromissora> todas = todosCaminhos(origem, destino);

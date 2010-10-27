@@ -124,7 +124,7 @@ public class KernelMap {
 	}
 	
 	public double getMediaDens() {
-		if(Double.isNaN(maxDens))
+		if(Double.isNaN(mediaDens))
 			mediaDens = encontraMediaDensidade();
 		return mediaDens;
 	}

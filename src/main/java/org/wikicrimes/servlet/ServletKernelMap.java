@@ -47,7 +47,7 @@ import org.wikicrimes.web.FiltroForm;
 public class ServletKernelMap extends HttpServlet {
 	
 	public final static String IMAGEM_KERNEL = "IMAGEM_KERNEL"; //imagem renderizada do mapa de kernel
-	final static String IMAGEM_KERNEL_WIKIMAPPS = "IMAGEM_KERNEL_WIKIMAPPS"; //imagem renderizada do mapa de kernel do wikimapps
+	public final static String IMAGEM_KERNEL_WIKIMAPPS = "IMAGEM_KERNEL_WIKIMAPPS";
 	public final static String DENSIDADES = "DENSIDADES"; //matriz de densidades do mapa de kernel
 	public final static String KERNEL = "KERNEL"; //objeto MapaKernel
 	
@@ -117,38 +117,41 @@ public class ServletKernelMap extends HttpServlet {
 		
 		//verifica a aplicacao que acionou o servico. o default é wikicrimes
 		if(app!= null && app.equals("wikimapps")) {
-			List<Point> pontos =recuperaPontosWikiMapps(limitesLatlng,request.getParameter("url"),request.getParameter("tm"),zoom);
+			
+			List<Point> pontos = recuperaPontosWikiMapps(limitesLatlng,request.getParameter("url"),request.getParameter("tm"),zoom);
 			KernelMap kernel = new KernelMap(GRID_NODE, BANDWIDTH, limitesPixel, pontos);			
 			KernelMapRenderer kRend = new KernelMapRenderer(kernel);
 			boolean isIE = ServletUtil.isClientUsingIE(request); 
 			RenderedImage imagem = (RenderedImage)kRend.pintaKernel(zoom, isIE);
-			return imagem;//sessao.setAttribute(IMAGEM_KERNEL_WIKIMAPPS, imagem);			
+			return imagem;	
+			
 		}else{
-		//pega crimes
-		FiltroForm filtro = (FiltroForm)sessao.getAttribute("filtroForm");
-		Map<String,Object> params = new HashMap<String, Object>();
-		if(filtro != null)
-			params = filtro.getFiltroMap();
-		params.put("norte", limitesLatlng.norte);
-		params.put("sul", limitesLatlng.sul);
-		params.put("leste", limitesLatlng.leste);
-		params.put("oeste", limitesLatlng.oeste);
-//		/*tsete*/params.put("maxResults", 100);
-		List<BaseObject> crimes = getCrimeService().filter(params);
-		List<Point> pontos = toPixel(crimes, zoom);
-//		/*teste*/TesteCenariosRotas.setResult("numCrimes", pontos.size());
-		
-		//calcula as densidades
-		KernelMap kernel = new KernelMap(GRID_NODE, BANDWIDTH, limitesPixel, pontos);
-		sessao.setAttribute(KERNEL, kernel);
-//		/*teste*/TesteCenariosRotas.setResult("densMedia", kernel.getMediaDens());
-//		/*teste*/TesteCenariosRotas.setResult("densMax", kernel.getMaxDens());
-		
-		KernelMapRenderer kRend = new KernelMapRenderer(kernel);
-		boolean isIE = ServletUtil.isClientUsingIE(request); 
-		RenderedImage imagem = (RenderedImage)kRend.pintaKernel(zoom, isIE);
-		sessao.setAttribute(IMAGEM_KERNEL, imagem);
-		return imagem;
+			
+			//pega crimes
+			FiltroForm filtro = (FiltroForm)sessao.getAttribute("filtroForm");
+			Map<String,Object> params = new HashMap<String, Object>();
+			if(filtro != null)
+				params = filtro.getFiltroMap();
+			params.put("norte", limitesLatlng.norte);
+			params.put("sul", limitesLatlng.sul);
+			params.put("leste", limitesLatlng.leste);
+			params.put("oeste", limitesLatlng.oeste);
+//			/*teste*/params.put("maxResults", 100);
+			List<BaseObject> crimes = getCrimeService().filter(params);
+			List<Point> pontos = toPixel(crimes, zoom);
+//			/*TESTE CENARIO*/TesteCenariosRotas.setResult("numCrimes", pontos.size());
+			
+			//calcula as densidades
+			KernelMap kernel = new KernelMap(GRID_NODE, BANDWIDTH, limitesPixel, pontos);
+			sessao.setAttribute(KERNEL, kernel);
+//			/*TESTE CENARIO*/TesteCenariosRotas.setResult("densMedia", kernel.getMediaDens());
+//			/*TESTE CENARIO*/TesteCenariosRotas.setResult("densMax", kernel.getMaxDens());
+			
+			KernelMapRenderer kRend = new KernelMapRenderer(kernel);
+			boolean isIE = ServletUtil.isClientUsingIE(request); 
+			RenderedImage imagem = (RenderedImage)kRend.pintaKernel(zoom, isIE);
+			sessao.setAttribute(IMAGEM_KERNEL, imagem);
+			return imagem;
 		
 		}
 		
@@ -170,7 +173,7 @@ public class ServletKernelMap extends HttpServlet {
 			KernelMap kernel = (KernelMap)request.getSession().getAttribute(KERNEL);
 			out.println(kernel.getMaxDens());
 			out.println(kernel.getMediaDens());
-			out.println(0); //TODO calcular o minimo 
+			out.println(kernel.getMinDens()); 
 		}else{
 			out.println("\n\n\n");
 		}

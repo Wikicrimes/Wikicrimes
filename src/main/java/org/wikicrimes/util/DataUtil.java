@@ -2,6 +2,7 @@ package org.wikicrimes.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class DataUtil {
@@ -40,5 +41,13 @@ public class DataUtil {
 		}
 	}
 	
+	public static Date moveData(Date data, int dias, int meses, int anos) {
+		Calendar c = Calendar.getInstance();
+		c.setTime(data);
+		c.add(Calendar.DAY_OF_MONTH, dias);
+		c.add(Calendar.MONTH, meses);
+		c.add(Calendar.YEAR, anos);
+		return c.getTime();
+	}
 }
 

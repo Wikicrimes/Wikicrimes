@@ -59,16 +59,16 @@ public class AlternativasGrafoVisibilidade extends GeradorDeAlternativasAbstrato
 			rotas.add( new Rota(caminho) );
 		}
 
-		/*TESTE*/TesteRotasImg teste = new TesteRotasImg(kernel);
-		/*TESTE*/teste.setTitulo("AlternativasGrafoVisibilidade");
-		/*TESTE*/teste.addGrafo(g, Color.GRAY);
-		/*TESTE*/teste.addPonto(origem, Color.BLACK);
-		/*TESTE*/teste.addPonto(destino, Color.BLACK);
-		/*TESTE*/for(Poligono p : polis)
-		/*TESTE*/	teste.addPoligono(p, new Color(200,0,0));
-		/*TESTE*/for(Rota r : rotas)
-		/*TESTE*/	teste.addRota(r, Color.BLUE);
-		/*TESTE*/teste.salvar();
+//		/*TESTE*/TesteRotasImg teste = new TesteRotasImg(kernel);
+//		/*TESTE*/teste.setTitulo("AlternativasGrafoVisibilidade");
+//		/*TESTE*/teste.addGrafo(g, Color.GRAY);
+//		/*TESTE*/teste.addPonto(origem, Color.BLACK);
+//		/*TESTE*/teste.addPonto(destino, Color.BLACK);
+//		/*TESTE*/for(Poligono p : polis)
+//		/*TESTE*/	teste.addPoligono(p, new Color(200,0,0));
+//		/*TESTE*/for(Rota r : rotas)
+//		/*TESTE*/	teste.addRota(r, Color.BLUE);
+//		/*TESTE*/teste.salvar();
 		
 		return rotas;
 	}
@@ -154,10 +154,10 @@ public class AlternativasGrafoVisibilidade extends GeradorDeAlternativasAbstrato
 					if(cont>200){ 
 						
 						
-						/*TESTE*/TesteRotasImg teste = new TesteRotasImg(kernel);
-						/*TESTE*/teste.setTitulo("falha getPoligonosHotspots()");
-						/*TESTE*/teste.addPoligono(new Poligono(contorno), Color.RED);
-						/*TESTE*/teste.salvar();
+//						/*TESTE*/TesteRotasImg teste = new TesteRotasImg(kernel);
+//						/*TESTE*/teste.setTitulo("falha getPoligonosHotspots()");
+//						/*TESTE*/teste.addPoligono(new Poligono(contorno), Color.RED);
+//						/*TESTE*/teste.salvar();
 						
 						//acontece de entrar em loop infinito e encontrar um contorno nada a ver
 						System.err.println("***falha na classe LogicaRotaSegura, metodo getPoligonosHotspots()");

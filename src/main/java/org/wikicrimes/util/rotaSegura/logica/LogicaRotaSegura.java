@@ -1,5 +1,6 @@
 package org.wikicrimes.util.rotaSegura.logica;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
@@ -98,15 +99,37 @@ public class LogicaRotaSegura {
 		return caminhos;
 	}
 	
+	private List<Rota> rotasJaPassadas = new ArrayList<Rota>();
+	
 	public Queue<Rota> criarAlternativas(Rota rota, int iteracao){
+//		/*DEBUG*/TesteRotasImg.teste(rota, "criarAlternativas, parametro", this);
 		Queue<Rota> rotas = new PriorityQueue<Rota>();
-		if(iteracao == 0){
-			rotas.addAll(new AlternativasGrafoDeCaminhosLivres(this).getAlternativas(rota));
+		
+		if(rota.size() < 2)
+			return rotas;
+		
+		//descartar parametros ja passados anteriormente
+		if(rotasJaPassadas.contains(rota)){
+			return rotas;
+		}else{
+			rotasJaPassadas.add(rota);
 		}
-		rotas.addAll(new AlternativasPontoDesvio(this).getAlternativas(rota));
-		rotas.addAll(new AlternativasGrafoVisibilidade(this).getAlternativas(rota));
+		
+		if(iteracao == 0){
+			Queue<Rota> altCL = new AlternativasGrafoDeCaminhosLivres(this).getAlternativas(rota);
+//			/*DEBUG*/TesteRotasImg.teste(altCL, "criarAlternativas, CL", this);
+			rotas.addAll(altCL);
+		}
+		Queue<Rota> altPD = new AlternativasPontoDesvio(this).getAlternativas(rota);
+//		/*DEBUG*/TesteRotasImg.teste(altPD, "criarAlternativas, PD", this);
+		rotas.addAll(altPD);
+		
+		Queue<Rota> altGV = new AlternativasGrafoVisibilidade(this).getAlternativas(rota);
+//		/*DEBUG*/TesteRotasImg.teste(altGV, "criarAlternativas, GV", this);
+		rotas.addAll(altGV);
 		
 		rotas = quebrarRotasGrandes(rotas);
+//		/*DEBUG*/TesteRotasImg.teste(rotas, "criarAlternativas, resultado", this);
 		return rotas;
 	}
 	
@@ -133,6 +156,7 @@ public class LogicaRotaSegura {
 	public void limpar(){
 		grafo = null;
 		kernel = null;
+		calcPerigo = null;
 	}
 	
 	public GrafoRotas getGrafo() {

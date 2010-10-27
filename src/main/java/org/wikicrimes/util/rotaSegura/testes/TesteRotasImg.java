@@ -17,6 +17,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 
 import javax.imageio.ImageIO;
 
@@ -27,7 +28,9 @@ import org.wikicrimes.util.rotaSegura.geometria.Ponto;
 import org.wikicrimes.util.rotaSegura.geometria.Rota;
 import org.wikicrimes.util.rotaSegura.geometria.Segmento;
 import org.wikicrimes.util.rotaSegura.logica.Grafo;
+import org.wikicrimes.util.rotaSegura.logica.LogicaRotaSegura;
 import org.wikicrimes.util.rotaSegura.logica.modelo.GrafoRotas;
+import org.wikicrimes.util.rotaSegura.logica.modelo.RotaGM;
 
 /**
  * Representa rotas graficamente, para testes. 
@@ -128,7 +131,7 @@ public class TesteRotasImg {
 	}
 	
 	public void setDir(String dir){
-		this.dir = dir;
+		TesteRotasImg.dir = dir;
 	}
 	
 	public void setTituloTesteCenarios(String infoIteracao){
@@ -142,6 +145,11 @@ public class TesteRotasImg {
 	public void addPonto(Ponto ponto, Color cor){
 		pontos.add(ponto);
 		coresPontos.add(cor);
+	}
+	
+	public void addPontos(Collection<Ponto> pontos, Color cor) {
+		for(Ponto p : pontos)
+			addPonto(p, cor);
 	}
 	
 	public void addRota(Rota caminho) {
@@ -455,4 +463,43 @@ public class TesteRotasImg {
 			return texto;
 		}
 	}
+	
+	public static void teste(Rota rota, String titulo, LogicaRotaSegura logicaRota, Object... labels) {
+		TesteRotasImg teste = new TesteRotasImg(logicaRota.getKernel(), logicaRota.getGrafo());
+		teste.setTitulo(titulo);
+		teste.addRota(rota, Color.BLUE);
+		teste.addLabels(labels);
+		teste.salvar();
+	}
+	
+	public static void teste(Collection<Rota> rotas, String titulo, LogicaRotaSegura logicaRota, Object... labels) {
+		TesteRotasImg teste = new TesteRotasImg(logicaRota.getKernel(), logicaRota.getGrafo());
+		teste.setTitulo(titulo);
+		for(Rota rota : rotas) {
+			teste.addRota(rota, Color.BLUE);
+		}
+		teste.addLabels(labels);
+		teste.salvar();
+	}
+	
+	public static void teste(Queue<Rota> rotas, String titulo, LogicaRotaSegura logicaRota, Object... labels) {
+		TesteRotasImg teste = new TesteRotasImg(logicaRota.getKernel(), logicaRota.getGrafo());
+		teste.setTitulo(titulo);
+		int size = rotas.size();
+		Rota[] temp = rotas.toArray(new Rota[size]);
+		for(int i=size-1; i>=0; i--) {
+			float rg = (float)i/size; 
+			Color azul = new Color(rg,rg,1);
+			teste.addRota(temp[i], azul);
+		}
+		teste.addLabels(labels);
+		teste.salvar();
+	}
+	
+	private void addLabels(Object[] labels) {
+		for(int i=0; i<labels.length; i++) {
+			addLabel(""+i, ""+labels[i], limites.x + i*20, limites.y + 20, Color.BLACK);
+		}
+	}
+	
 }

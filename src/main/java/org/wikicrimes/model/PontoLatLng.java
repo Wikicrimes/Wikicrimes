@@ -6,14 +6,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.wikicrimes.util.kernelMap.LatLngBoundsGM;
+import org.wikicrimes.util.rotaSegura.geometria.Ponto;
 
+@SuppressWarnings("serial")
 public class PontoLatLng extends BaseObject {
 	
-	private static final long serialVersionUID = 1L;
-
 	private Long idPonto;
 	public Double lat;
 	public Double lng;
+	
+	private static final double KM_POR_GRAU = 110.5; //aproximacao do valor medio pra distancia em 1 grau de latitude ou longitude
 	
 	public PontoLatLng(){
 		super();
@@ -49,22 +51,22 @@ public class PontoLatLng extends BaseObject {
 		this.idPonto = idPonto;
 	}
 	
-	public Point toPixel(int zoom){
+	public Ponto toPixel(int zoom){
 		double offset = 256 << (zoom-1);
 		double lat = this.getLatitude();
 		double lng = this.getLongitude();
 	    int x = (int)Math.round(offset + offset*lng/180);
 	    int y = (int)Math.round(offset - offset/Math.PI * Math.log((1 + Math.sin(lat * Math.PI / 180)) / (1 - Math.sin(lat * Math.PI / 180))) / 2);
-		return new Point(x,y);
+		return new Ponto(x,y);
 	}
 	
 	//hotspots ficam deslocados no zoom alto (o outro metodo toPixel acima faz direito)
-	public Point toPixel(LatLngBoundsGM boundsLatlng, Rectangle boundsPixel){
+	public Ponto toPixel(LatLngBoundsGM boundsLatlng, Rectangle boundsPixel){
 		double razaoWidth = boundsPixel.width/boundsLatlng.width;
 		double razaoHeight = boundsPixel.height/boundsLatlng.height;
 		int x = boundsPixel.x + (int)((this.getLongitude()-boundsLatlng.oeste) * razaoWidth);
 		int y = boundsPixel.y + (int)((boundsLatlng.norte-this.getLatitude()) * razaoHeight);
-		return new Point(x,y);
+		return new Ponto(x,y);
 	}
 	
 	//fonte: http://home.provide.net/~bratliff/adjust.js
@@ -82,11 +84,33 @@ public class PontoLatLng extends BaseObject {
 		return latlng;
 	}
 	
-	public static List<Point> toPixel(List<PontoLatLng> latlng, int zoom){
-		List<Point> pixel = new ArrayList<Point>();
+	public static List<Ponto> toPixel(List<PontoLatLng> latlng, int zoom){
+		List<Ponto> pixel = new ArrayList<Ponto>();
 		for(PontoLatLng p : latlng)
 			pixel.add(p.toPixel(zoom));
 		return pixel;
+	}
+	
+	/**
+	 * @param x: kms para leste (negativo vai pra oeste)
+	 * @param y: kms para sul (negativo vai pra norte)
+	 */
+	public PontoLatLng transladarKm(double x, double y) {
+		double lat = this.lat - y/KM_POR_GRAU;
+		double lng = this.lng + x/KM_POR_GRAU;
+		//TODO tratar qd o lat passa de +-90 graus ou o lng passa de +-180
+		return new PontoLatLng(lat, lng);
+	}
+	
+	public static double distanciaKM(PontoLatLng p, PontoLatLng q) {
+		double distanciaLatLng = Point.distance(p.lng, p.lat, q.lng, q.lat);
+		return distanciaLatLng * KM_POR_GRAU;
+	}
+	
+	public static PontoLatLng medio(PontoLatLng p, PontoLatLng q) {
+		double lng = (p.lng + q.lng) / 2;
+		double lat = (p.lat + q.lat) / 2;
+		return new PontoLatLng(lat,lng);
 	}
 	
 	@Override

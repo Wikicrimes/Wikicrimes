@@ -1,12 +1,16 @@
 package org.wikicrimes.util.rotaSegura.geometria;
 
+import java.awt.Color;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
 import org.wikicrimes.util.kernelMap.PropertiesLoader;
+import org.wikicrimes.util.rotaSegura.testes.TesteRotasImg;
 
 /**
  * Conjunto de coordenadas ou conjunto de segmentos de reta ligados.
@@ -425,7 +429,8 @@ public class Rota {
 		Ponto p2 = null;
 		for(int i=1; i<pontos.length; i++){
 			p2 = pontos[i];
-			partes.add( subRota(p1, p2) );
+			if(!p1.equals(p2))
+				partes.add( subRota(p1, p2) );
 			p1 = p2;
 		}
 		return partes;
@@ -568,6 +573,18 @@ public class Rota {
 			}
 		}
 		return null;
+	}
+	
+	public Rectangle getBounds() {
+		return Ponto.getBounds(getPontos());
+	}
+	
+	public static Rectangle getBounds(Collection<Rota> rotas) {
+		List<Ponto> pontos = new ArrayList<Ponto>();
+		for(Rota rota : rotas) {
+			pontos.addAll(rota.getPontos());
+		}
+		return Ponto.getBounds(pontos);
 	}
 
 }

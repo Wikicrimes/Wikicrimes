@@ -1,13 +1,15 @@
 package org.wikicrimes.util.rotaSegura.geometria;
 
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 
-import org.wikicrimes.util.kernelMap.PropertiesLoader;
 import org.wikicrimes.util.GeneralHashFunctionLibrary;
+import org.wikicrimes.util.kernelMap.PropertiesLoader;
 
 /**
  * x: longitude
@@ -118,4 +120,18 @@ public class Ponto extends Point{
 			return o1.y-o2.y;
 		}
 	};
+	
+	public static Rectangle getBounds(Collection<Ponto> pontos) {
+		int menorX = Integer.MAX_VALUE;
+		int menorY = Integer.MAX_VALUE;
+		int maiorX = Integer.MIN_VALUE;
+		int maiorY = Integer.MIN_VALUE;
+		for(Ponto p: pontos){
+			menorX = Math.min(menorX, (int)p.getX());
+			menorY = Math.min(menorY, (int)p.getY());
+			maiorX = Math.max(maiorX, (int)p.getX());
+			maiorY = Math.max(maiorY, (int)p.getY());
+		}
+		return new Rectangle(menorX, menorY, maiorX - menorX, maiorY - menorY);
+	}
 }

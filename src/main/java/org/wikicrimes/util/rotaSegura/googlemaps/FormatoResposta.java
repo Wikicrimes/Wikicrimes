@@ -2,7 +2,7 @@ package org.wikicrimes.util.rotaSegura.googlemaps;
 
 public enum FormatoResposta {
 
-	JSON, KML, WIKICRIMES;
+	JSON, KML, LATLNGS;
 	
 	public static FormatoResposta getFormatoResposta(String str){
 		if(str != null){
@@ -10,8 +10,10 @@ public enum FormatoResposta {
 				return JSON;
 			}else if(str.equalsIgnoreCase("kml")){
 				return KML;
+			}else if(str.equalsIgnoreCase("latlngs")){
+				return LATLNGS;
 			}
 		}
-		return WIKICRIMES;
+		return LATLNGS;
 	}
 }

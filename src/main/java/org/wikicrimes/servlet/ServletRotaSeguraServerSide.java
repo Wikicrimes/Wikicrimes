@@ -293,7 +293,7 @@ public class ServletRotaSeguraServerSide extends HttpServlet{
 		
 		//chamada vinda do wikicrimes
 		FormatoResposta formato = FormatoResposta.getFormatoResposta(request.getParameter("output")); 
-		if(formato == FormatoResposta.WIKICRIMES) {
+		if(formato == FormatoResposta.LATLNGS) {
 			return ServletRotaSeguraClientSide.getLogicaRotaSegura(request);
 			
 		//chamada externa ao servico de rotas 
@@ -319,7 +319,7 @@ public class ServletRotaSeguraServerSide extends HttpServlet{
 		response.setCharacterEncoding("UTF-8");
 		
 		switch(formato){
-		case WIKICRIMES:
+		case LATLNGS:
 			ServletRotaSeguraClientSide.respostaFim(request, response, rotas);
 			return;
 		case JSON:

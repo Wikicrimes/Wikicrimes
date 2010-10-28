@@ -27,6 +27,7 @@ import org.wikicrimes.util.rotaSegura.logica.FilaRotasCandidatas;
 import org.wikicrimes.util.rotaSegura.logica.LogicaRotaSegura;
 import org.wikicrimes.util.rotaSegura.logica.modelo.GrafoRotas;
 import org.wikicrimes.util.rotaSegura.logica.modelo.RotaGM;
+import org.wikicrimes.util.rotaSegura.logica.modelo.GrafoRotas.NaoTemCaminhoException;
 import org.wikicrimes.util.rotaSegura.testes.TesteCenariosRotas;
 import org.wikicrimes.util.rotaSegura.testes.TesteRotasImg;
 
@@ -133,16 +134,21 @@ public class ServletRotaSeguraClientSide extends HttpServlet {
 //		/*TESTE*/logicaRota.getRotasPromissoras(grafo.getOrigem(), grafo.getDestino());
 		
 		//RESPOSTA
-		Rota melhorCaminho = grafo.melhorCaminho();
+		boolean rotaEhToleravel;
+		try {
+			Rota melhorCaminho = grafo.melhorCaminho();
+//			/*TESTE*/TesteRotasImg teste = new TesteRotasImg(logicaRota.getKernel(), grafo);
+//	//		/*TESTE*/teste.setTituloTesteCenarios(getContRevisoes(request) + ", " + status);
+//			/*TESTE*/teste.setTitulo(iteracao + ", " + status);
+//			/*TESTE*/teste.addRota(melhorCaminho, new Color(0,150,0));
+//			/*TESTE*/if(!isPrimeiraVez(request)) teste.addRota(new Rota(ultimaResp), new Color(100,100,255));
+//			/*TESTE*/teste.salvar();
+			rotaEhToleravel = calcPerigo.isToleravel(melhorCaminho); 
+		} catch (NaoTemCaminhoException e1) {
+			rotaEhToleravel = false;
+		}
 		
-//		/*TESTE*/TesteRotasImg teste = new TesteRotasImg(logicaRota.getKernel(), grafo);
-////		/*TESTE*/teste.setTituloTesteCenarios(getContRevisoes(request) + ", " + status);
-//		/*TESTE*/teste.setTitulo(iteracao + ", " + status);
-//		/*TESTE*/teste.addRota(melhorCaminho, new Color(0,150,0));
-//		/*TESTE*/if(!isPrimeiraVez(request)) teste.addRota(new Rota(ultimaResp), new Color(100,100,255));
-//		/*TESTE*/teste.salvar();
-		
-		if(!calcPerigo.isToleravel(melhorCaminho) && iteracao < MAX_REQUISICOES_GM){
+		if(!rotaEhToleravel && iteracao < MAX_REQUISICOES_GM){
 			if(status == StatusGM.SUCCESS){
 				for(Rota rota : rotasNovas){
 					Queue<Rota> alternativas = logicaRota.criarAlternativas(rota, iteracao); 
@@ -156,7 +162,7 @@ public class ServletRotaSeguraClientSide extends HttpServlet {
 				List<Rota> rotas = grafo.verticesKMenoresCaminhos(PADRAO_NUM_ROTAS_RESPOSTA);
 				respostaFim(request, response, rotas);
 				limpar(request);
-				throw new AssertionError("nao tem mais rotas alternativas");
+				System.err.println("***nao tem mais rotas alternativas");
 			}
 		}else{
 			List<Rota> rotas = grafo.verticesKMenoresCaminhos(PADRAO_NUM_ROTAS_RESPOSTA);

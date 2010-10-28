@@ -14,6 +14,7 @@ import org.wikicrimes.util.rotaSegura.geometria.Ponto;
 import org.wikicrimes.util.rotaSegura.geometria.Rota;
 import org.wikicrimes.util.rotaSegura.geometria.Segmento;
 import org.wikicrimes.util.rotaSegura.logica.modelo.RotaPromissora;
+import org.wikicrimes.util.rotaSegura.logica.modelo.GrafoRotas.NaoTemCaminhoException;
 import org.wikicrimes.util.rotaSegura.testes.TesteRotasImg;
 
 public class AlternativasGrafoVisibilidade extends GeradorDeAlternativasAbstrato{
@@ -27,21 +28,25 @@ public class AlternativasGrafoVisibilidade extends GeradorDeAlternativasAbstrato
 
 	public Queue<Rota> getAlternativas(Rota rota){
 		Queue<Rota> alternativas = new PriorityQueue<Rota>();
-		Ponto i = rota.getInicio();
-		Ponto f = rota.getFim();
-		Rota rotaAntes = grafo.melhorCaminho(grafo.getOrigem(), i);
-		Rota rotaDepois = grafo.melhorCaminho(f, grafo.getDestino());
-		double perigoAntes = calcPerigo.perigo(rotaAntes);
-		double perigoDepois = calcPerigo.perigo(rotaDepois);
-		double limitePerigo = calcPerigo.perigo(rota);
-		List<Rota> rotasPromissoras = calcularRotas(i, f, limitePerigo);
-		for(Rota desvio : rotasPromissoras){
-			double perigoDesvio = calcPerigo.perigo(desvio);
-			double peso = perigoAntes + perigoDesvio + perigoDepois;
-			RotaPromissora rotaPromissora = new RotaPromissora(desvio, peso);
-			alternativas.offer(rotaPromissora);
+		try {
+			Ponto i = rota.getInicio();
+			Ponto f = rota.getFim();
+			Rota rotaAntes = grafo.melhorCaminho(grafo.getOrigem(), i);
+			Rota rotaDepois = grafo.melhorCaminho(f, grafo.getDestino());
+			double perigoAntes = calcPerigo.perigo(rotaAntes);
+			double perigoDepois = calcPerigo.perigo(rotaDepois);
+			double limitePerigo = calcPerigo.perigo(rota);
+			List<Rota> rotasPromissoras = calcularRotas(i, f, limitePerigo);
+			for(Rota desvio : rotasPromissoras){
+				double perigoDesvio = calcPerigo.perigo(desvio);
+				double peso = perigoAntes + perigoDesvio + perigoDepois;
+				RotaPromissora rotaPromissora = new RotaPromissora(desvio, peso);
+				alternativas.offer(rotaPromissora);
+			}
+			return alternativas;
+		} catch (NaoTemCaminhoException e) {
+			return alternativas;
 		}
-		return alternativas;
 	}
 	
 	
@@ -99,6 +104,12 @@ public class AlternativasGrafoVisibilidade extends GeradorDeAlternativasAbstrato
 		//     mas pra encontrar o contorno tem q ser caminhando pela borda
 		//     pq o flood nao pega a ordem
 		
+		List<Poligono> polis = new ArrayList<Poligono>();
+		
+		//mapa de kernel todo branco
+		if(kernel.getMaxDens() == 0)
+			return polis;
+		
 		final int perto = 1; //fecha o poligono msm se o inicio e fim msm nao tiverem se encontrado, se estiverem a esta distância
 		final int minimoIteracoes = 10;
 		Ponto p1 = new Ponto(bounds.x, bounds.y);
@@ -108,11 +119,10 @@ public class AlternativasGrafoVisibilidade extends GeradorDeAlternativasAbstrato
 		int cols = kernel.getCols();
 		int rows = kernel.getRows();
 		int xIni = NumerosUtil.limitar(g1.x, 0, cols);
-		int xFim = NumerosUtil.limitar(g2.x, 0,cols);
+		int xFim = NumerosUtil.limitar(g2.x, 0, cols);
 		int yIni = NumerosUtil.limitar(g1.y, 0, rows);
 		int yFim = NumerosUtil.limitar(g2.y, 0, rows);
 
-		List<Poligono> polis = new ArrayList<Poligono>();
 		boolean[][] visto = new boolean[cols][rows];
 		for(int i=xIni; i<xFim; i++){
 			forCelula:
@@ -154,10 +164,10 @@ public class AlternativasGrafoVisibilidade extends GeradorDeAlternativasAbstrato
 					if(cont>200){ 
 						
 						
-//						/*TESTE*/TesteRotasImg teste = new TesteRotasImg(kernel);
-//						/*TESTE*/teste.setTitulo("falha getPoligonosHotspots()");
-//						/*TESTE*/teste.addPoligono(new Poligono(contorno), Color.RED);
-//						/*TESTE*/teste.salvar();
+//						/*DEBUG*/TesteRotasImg teste = new TesteRotasImg(kernel);
+//						/*DEBUG*/teste.setTitulo("falha getPoligonosHotspots()");
+//						/*DEBUG*/teste.addPoligono(new Poligono(contorno), Color.RED);
+//						/*DEBUG*/teste.salvar();
 						
 						//acontece de entrar em loop infinito e encontrar um contorno nada a ver
 						System.err.println("***falha na classe LogicaRotaSegura, metodo getPoligonosHotspots()");
@@ -191,7 +201,7 @@ public class AlternativasGrafoVisibilidade extends GeradorDeAlternativasAbstrato
 	}
 	
 	private void flood(boolean[][] visto, Point celula){
-		if(celula.x >= visto.length || celula.y >= visto[0].length)
+		if(celula.x >= visto.length || celula.y >= visto[0].length || celula.x < 0 || celula.y < 0)
 			return;
 		if(visto[celula.x][celula.y] || !kernel.taNoHotspot(celula))
 			return;

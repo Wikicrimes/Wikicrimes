@@ -264,13 +264,13 @@ public class GrafoRotas {
 //			/*TESTE*/teste +=  id(p) + ", ";
 //			/*TESTE*/w = vmc;
 			VerticeMC pai = vmc.pai;
-//			if(pai == null){
+			if(pai == null){
 //				/*DEBUG*/TesteGrafoJung teste = new TesteGrafoJung(this);
 //				/*DEBUG*/teste.setTitulo("menor caminho de A até B");
 //				/*DEBUG*/teste.addLabel(origem, "A");
 //				/*DEBUG*/teste.addLabel(destino, "B");
-//				throw new NaoTemCaminhoException(this,vOrigem,vDestino,vmc);
-//			}
+				throw new NaoTemCaminhoException(this,vOrigem,vDestino,vmc);
+			}
 			p = pai.ponto;
 			c.addInicio(p);
 		}
@@ -285,7 +285,7 @@ public class GrafoRotas {
 		return c;
 	}
 	
-	public Rota verticesMelhorCaminho(){
+	public Rota verticesMelhorCaminho() throws NaoTemCaminhoException{
 		return verticesMelhorCaminho(origem, destino);
 	}
 	
@@ -313,11 +313,11 @@ public class GrafoRotas {
 		return new RotaGM(r, custo, perigo);
 	}
 	
-	public Rota melhorCaminho(){
+	public Rota melhorCaminho() throws NaoTemCaminhoException{
 		return getRota(verticesMelhorCaminho().getPontosArray());
 	}
 	
-	public Rota melhorCaminho(Ponto origem, Ponto destino){
+	public Rota melhorCaminho(Ponto origem, Ponto destino) throws NaoTemCaminhoException{
 		return getRota(verticesMelhorCaminho(origem, destino).getPontosArray());
 	}
 	
@@ -357,7 +357,7 @@ public class GrafoRotas {
 	}
 
 	@SuppressWarnings("serial")
-	public class NaoTemCaminhoException extends RuntimeException{
+	public class NaoTemCaminhoException extends Exception{
 		public GrafoRotas grafo;
 		public VerticeRotas inicio, fim, semPai;
 		public NaoTemCaminhoException(GrafoRotas grafo, VerticeRotas inicio, VerticeRotas fim, VerticeRotas semPai) {

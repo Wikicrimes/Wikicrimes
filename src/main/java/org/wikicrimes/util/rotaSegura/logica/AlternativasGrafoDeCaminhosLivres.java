@@ -14,6 +14,7 @@ import org.wikicrimes.util.rotaSegura.geometria.Retangulo;
 import org.wikicrimes.util.rotaSegura.geometria.Rota;
 import org.wikicrimes.util.rotaSegura.geometria.Segmento;
 import org.wikicrimes.util.rotaSegura.logica.modelo.RotaPromissora;
+import org.wikicrimes.util.rotaSegura.logica.modelo.GrafoRotas.NaoTemCaminhoException;
 import org.wikicrimes.util.rotaSegura.testes.TesteRotasImg;
 
 public class AlternativasGrafoDeCaminhosLivres extends AlternativasGrafoVisibilidade{
@@ -24,21 +25,25 @@ public class AlternativasGrafoDeCaminhosLivres extends AlternativasGrafoVisibili
 	
 	public Queue<Rota> getAlternativas(Rota rota){
 		Queue<Rota> alternativas = new PriorityQueue<Rota>();
-		Ponto i = rota.getInicio();
-		Ponto f = rota.getFim();
-		Rota rotaAntes = grafo.melhorCaminho(grafo.getOrigem(), i);
-		Rota rotaDepois = grafo.melhorCaminho(f, grafo.getDestino());
-		double perigoAntes = calcPerigo.perigo(rotaAntes);
-		double perigoDepois = calcPerigo.perigo(rotaDepois);
-		double limitePerigo = calcPerigo.perigo(rota);
-		List<Rota> rotasPromissoras = calcularRotas(i, f, limitePerigo);
-		for(Rota desvio : rotasPromissoras){
-			double perigoDesvio = calcPerigo.perigo(desvio);
-			double peso = perigoAntes + perigoDesvio + perigoDepois;
-			RotaPromissora rotaPromissora = new RotaPromissora(desvio, peso);
-			alternativas.offer(rotaPromissora);
+		try {
+			Ponto i = rota.getInicio();
+			Ponto f = rota.getFim();
+			Rota rotaAntes = grafo.melhorCaminho(grafo.getOrigem(), i);
+			Rota rotaDepois = grafo.melhorCaminho(f, grafo.getDestino());
+			double perigoAntes = calcPerigo.perigo(rotaAntes);
+			double perigoDepois = calcPerigo.perigo(rotaDepois);
+			double limitePerigo = calcPerigo.perigo(rota);
+			List<Rota> rotasPromissoras = calcularRotas(i, f, limitePerigo);
+			for(Rota desvio : rotasPromissoras){
+				double perigoDesvio = calcPerigo.perigo(desvio);
+				double peso = perigoAntes + perigoDesvio + perigoDepois;
+				RotaPromissora rotaPromissora = new RotaPromissora(desvio, peso);
+				alternativas.offer(rotaPromissora);
+			}
+			return alternativas;
+		} catch (NaoTemCaminhoException e) {
+			return alternativas;
 		}
-		return alternativas;
 	}
 	
 //	/*TESTE*/static TesteRotasImg teste;

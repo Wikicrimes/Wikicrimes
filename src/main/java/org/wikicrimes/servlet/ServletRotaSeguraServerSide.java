@@ -42,6 +42,7 @@ import org.wikicrimes.util.rotaSegura.logica.FilaRotasCandidatas;
 import org.wikicrimes.util.rotaSegura.logica.LogicaRotaSegura;
 import org.wikicrimes.util.rotaSegura.logica.modelo.GrafoRotas;
 import org.wikicrimes.util.rotaSegura.logica.modelo.RotaGM;
+import org.wikicrimes.util.rotaSegura.logica.modelo.GrafoRotas.NaoTemCaminhoException;
 import org.wikicrimes.util.rotaSegura.testes.TesteRotasImg;
 
 
@@ -122,17 +123,22 @@ public class ServletRotaSeguraServerSide extends HttpServlet{
 				throw new AssertionError(status);
 			}
 		
-			Rota melhorCaminho = grafo.melhorCaminho();
+			boolean rotaEhToleravel;
+			try {
+				Rota melhorCaminho = grafo.melhorCaminho();
+//				/*TESTE*/TesteRotasImg teste = new TesteRotasImg(logicaRota.getKernel(), grafo);
+//	//			/*TESTE*/teste.setTituloTesteCenarios(contReq + ", " + status);
+//				/*TESTE*/teste.setTitulo(iteracao + ", " + status);
+//				/*TESTE*/teste.addRota(melhorCaminho, new Color(0,150,0));
+//				/*TESTE*/teste.addRota(rotaGoogleMaps, Color.BLUE);
+//				/*TESTE*/if(iteracao != 0) teste.addRota(rotaIdeal, new Color(100,100,255));
+//				/*TESTE*/teste.salvar();
+				rotaEhToleravel = calcPerigo.isToleravel(melhorCaminho);
+			} catch (NaoTemCaminhoException e1) {
+				rotaEhToleravel = false;
+			}
+			terminado = rotaEhToleravel || iteracao >= MAX_REQUISICOES_GM || forcarTermino;
 			
-//			/*TESTE*/TesteRotasImg teste = new TesteRotasImg(logicaRota.getKernel(), grafo);
-////			/*TESTE*/teste.setTituloTesteCenarios(contReq + ", " + status);
-//			/*TESTE*/teste.setTitulo(iteracao + ", " + status);
-//			/*TESTE*/teste.addRota(melhorCaminho, new Color(0,150,0));
-//			/*TESTE*/teste.addRota(rotaGoogleMaps, Color.BLUE);
-//			/*TESTE*/if(iteracao != 0) teste.addRota(rotaIdeal, new Color(100,100,255));
-//			/*TESTE*/teste.salvar();
-			
-			terminado = calcPerigo.isToleravel(melhorCaminho) || iteracao >= MAX_REQUISICOES_GM || forcarTermino; 
 			if(!terminado){
 				if(status == StatusGMDirections.OK) {
 					for(Rota rota : rotasNovas) {

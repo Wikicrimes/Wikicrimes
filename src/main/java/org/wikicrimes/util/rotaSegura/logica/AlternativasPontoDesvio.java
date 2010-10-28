@@ -11,6 +11,7 @@ import org.wikicrimes.util.kernelMap.PropertiesLoader;
 import org.wikicrimes.util.rotaSegura.geometria.Ponto;
 import org.wikicrimes.util.rotaSegura.geometria.Rota;
 import org.wikicrimes.util.rotaSegura.logica.modelo.RotaPromissora;
+import org.wikicrimes.util.rotaSegura.logica.modelo.GrafoRotas.NaoTemCaminhoException;
 import org.wikicrimes.util.rotaSegura.testes.TesteRotasImg;
 
 
@@ -24,24 +25,28 @@ public class AlternativasPontoDesvio extends GeradorDeAlternativasAbstrato{
 	
 	public Queue<Rota> getAlternativas(Rota rota){
 		Queue<Rota> alternativas = new PriorityQueue<Rota>();
-		Ponto i = rota.getInicio();
-		Ponto f = rota.getFim();
-		Rota rotaAntes = grafo.melhorCaminho(grafo.getOrigem(), i);
-		Rota rotaDepois = grafo.melhorCaminho(f, grafo.getDestino());
-		double perigoAntes = calcPerigo.perigo(rotaAntes);
-		double perigoDepois = calcPerigo.perigo(rotaDepois);
-		double perigoMaximo = calcPerigo.perigo(rota);
-		Queue<Ponto> pontosPromissoresOD = getPontosPromissores(i, f, perigoMaximo);
-		while(!pontosPromissoresOD.isEmpty()){
-			Ponto p = pontosPromissoresOD.poll();
-			if(p.isPerto(i) || p.isPerto(f))
-				continue;
-			Rota desvio = new Rota(i,p,f);
-			double peso = perigoAntes + calcPerigo.perigo(desvio) + perigoDepois;
-			RotaPromissora rotaPromissora = new RotaPromissora(desvio, peso);
-			alternativas.offer(rotaPromissora);
+		try {
+			Ponto i = rota.getInicio();
+			Ponto f = rota.getFim();
+			Rota rotaAntes = grafo.melhorCaminho(grafo.getOrigem(), i);
+			Rota rotaDepois = grafo.melhorCaminho(f, grafo.getDestino());
+			double perigoAntes = calcPerigo.perigo(rotaAntes);
+			double perigoDepois = calcPerigo.perigo(rotaDepois);
+			double perigoMaximo = calcPerigo.perigo(rota);
+			Queue<Ponto> pontosPromissoresOD = getPontosPromissores(i, f, perigoMaximo);
+			while(!pontosPromissoresOD.isEmpty()){
+				Ponto p = pontosPromissoresOD.poll();
+				if(p.isPerto(i) || p.isPerto(f))
+					continue;
+				Rota desvio = new Rota(i,p,f);
+				double peso = perigoAntes + calcPerigo.perigo(desvio) + perigoDepois;
+				RotaPromissora rotaPromissora = new RotaPromissora(desvio, peso);
+				alternativas.offer(rotaPromissora);
+			}
+			return alternativas;
+		} catch (NaoTemCaminhoException e) {
+			return alternativas;
 		}
-		return alternativas;
 	}
 	
 	private Queue<Ponto> getPontosPromissores(Ponto origem, Ponto destino, double maximo){

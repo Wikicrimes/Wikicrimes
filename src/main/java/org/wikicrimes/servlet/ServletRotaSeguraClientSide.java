@@ -237,8 +237,15 @@ public class ServletRotaSeguraClientSide extends HttpServlet {
 	}
 	
 	public static void respostaErro(HttpServletRequest request, HttpServletResponse response) throws IOException{
+		respostaErro(request, response, null);
+	}
+	
+	public static void respostaErro(HttpServletRequest request, HttpServletResponse response, String details) throws IOException{
 		PrintWriter out = response.getWriter();
 		out.println("erro");
+		if(details != null) {
+			out.println(details);
+		}
 //		/*DEBUG*/System.out.println("FIM ERRO");
 		out.close();
 	}

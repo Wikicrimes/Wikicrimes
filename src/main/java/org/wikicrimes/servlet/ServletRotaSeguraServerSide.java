@@ -32,9 +32,11 @@ import org.wikicrimes.util.ServletUtil;
 import org.wikicrimes.util.kernelMap.KernelMap;
 import org.wikicrimes.util.kernelMap.KernelMapUtil;
 import org.wikicrimes.util.kernelMap.PropertiesLoader;
+import org.wikicrimes.util.rotaSegura.ParametroInvalidoRotaSeguraException;
 import org.wikicrimes.util.rotaSegura.geometria.Ponto;
 import org.wikicrimes.util.rotaSegura.geometria.Rota;
 import org.wikicrimes.util.rotaSegura.googlemaps.DirectionsAPI;
+import org.wikicrimes.util.rotaSegura.googlemaps.DirectionsAPIRequestException;
 import org.wikicrimes.util.rotaSegura.googlemaps.FormatoResposta;
 import org.wikicrimes.util.rotaSegura.googlemaps.StatusGMDirections;
 import org.wikicrimes.util.rotaSegura.logica.CalculoPerigo;
@@ -69,6 +71,10 @@ public class ServletRotaSeguraServerSide extends HttpServlet{
 		
 		try{
 			metodoPrincipal(request, response);
+		}catch(ParametroInvalidoRotaSeguraException e){
+			respostaErro(request, response, e.getMessage());
+		}catch(DirectionsAPIRequestException e){
+			respostaErro(request, response, e.getMessage());
 		}catch(Throwable e){
 			e.printStackTrace();
 			if(!response.isCommitted()){
@@ -76,6 +82,7 @@ public class ServletRotaSeguraServerSide extends HttpServlet{
 //				/*teste*/TesteCenariosRotas.setResult("erro", e.getClass() + " : " + e.getMessage());
 //				/*teste*/TesteCenariosRotas.salvar();
 			}
+		}finally {
 			limpar(request);
 		}
 	}
@@ -151,13 +158,11 @@ public class ServletRotaSeguraServerSide extends HttpServlet{
 					try{
 						json = getJSONDirectionsAPI(rotaIdeal, zoom);
 						status = getStatus(json);
-						if(status == StatusGMDirections.OK) {
-							rotaGoogleMaps = getRota(json, zoom);
-						}else {
-							rotaGoogleMaps = null;
-						}
+						rotaGoogleMaps = getRota(json, zoom);
 					}catch(IOException e){
 						status = StatusGMDirections.UNKNOWN_ERROR;
+						rotaGoogleMaps = null;
+					}catch(DirectionsAPIRequestException e2) {
 						rotaGoogleMaps = null;
 					}
 				}
@@ -166,7 +171,6 @@ public class ServletRotaSeguraServerSide extends HttpServlet{
 			if(terminado || rotasCandidatas.isEmpty()){
 				List<Rota> rotaResposta = grafo.verticesKMenoresCaminhos(numRotasResposta);
 				respostaFim(request, response, rotaResposta, formato);
-				limpar(request);
 				if(!terminado){
 					System.err.println("***nao tem mais rotas alternativas");
 					terminado = true;
@@ -214,12 +218,20 @@ public class ServletRotaSeguraServerSide extends HttpServlet{
 	
 	private static JSONObject getJSONDirectionsAPI(Rota rota, int zoom) throws IOException{
 		URL url = DirectionsAPI.getUrlJSON(rota, zoom);
-		String json = ServletUtil.fazerRequisicao(url);
-		return JSONObject.fromObject(json);
+		String jsonStr = ServletUtil.fazerRequisicao(url);
+		JSONObject json = JSONObject.fromObject(jsonStr); 
+//		/*DEBUG*/System.out.println("Directions API, status="+getStatus(json));
+		return json;
 	}
 	
 	
-	private static Rota getRota(JSONObject json, int zoom){
+	private static Rota getRota(JSONObject json, int zoom) throws DirectionsAPIRequestException{
+		
+		StatusGMDirections status = getStatus(json); 
+		if(status != StatusGMDirections.OK) {
+			throw new DirectionsAPIRequestException(status);
+		}
+		
 		List<PontoLatLng> latlngs = new ArrayList<PontoLatLng>();
 		JSONArray routes = json.getJSONArray("routes");
 		
@@ -284,14 +296,20 @@ public class ServletRotaSeguraServerSide extends HttpServlet{
 		//chamada externa ao servico de rotas (origem e destino em latlng)
 		}else if(request.getParameter("origem") != null && request.getParameter("destino") != null){
 			int zoom = getZoom(request);
-			Ponto origem = new PontoLatLng(request.getParameter("origem")).toPixel(zoom);
-			Ponto destino = new PontoLatLng(request.getParameter("destino")).toPixel(zoom);
-			Rota retaOD = new Rota(origem, destino); 
-			return getRota(getJSONDirectionsAPI(retaOD, zoom), zoom);
+			Rota retaOD;
+			try {
+				Ponto origem = new PontoLatLng(request.getParameter("origem")).toPixel(zoom);
+				Ponto destino = new PontoLatLng(request.getParameter("destino")).toPixel(zoom);
+				retaOD = new Rota(origem, destino);
+			}catch (Exception e) {
+				throw new ParametroInvalidoRotaSeguraException("Valores inválidos em pelo menos um dos parâmetros 'origem' e 'destino'");
+			}
+			JSONObject json = getJSONDirectionsAPI(retaOD, zoom);
+			return getRota(json, zoom);
 		
 		//sem parametro de rota
 		}else{
-			throw new InvalidParameterException("a requisicao nao tem os parametros 'origem' e 'destino' ou nao tem o parametro 'rota'");
+			throw new ParametroInvalidoRotaSeguraException("A requisicao nao tem os parametros 'origem' e 'destino'");
 		}
 	}
 	
@@ -364,6 +382,13 @@ public class ServletRotaSeguraServerSide extends HttpServlet{
 				
 				//pega o 'route' e adiciona no json q reune todas as rotas
 				JSONObject json = JSONObject.fromObject(jsonStr);
+
+				//testa status da requisicao a Directions API
+				StatusGMDirections status = getStatus(json); 
+				if(status != StatusGMDirections.OK) {
+					throw new DirectionsAPIRequestException(status);
+				}
+				
 				JSONArray routes = json.getJSONArray("routes");
 				JSONObject route = routes.getJSONObject(0);
 				resRoutes.add(route);

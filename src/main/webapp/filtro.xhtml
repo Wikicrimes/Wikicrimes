@@ -570,143 +570,83 @@
 		</rich:panel></div>
 		<!-- Fim da Pesquisa -->
 
-		<rich:panel id="togglePanelDezMais"
-			header="#{messages['cinco.mais.titulo']}" style="width:160px;">
-			<t:panelGroup
-				style="width: 100%; font-size: 10px; font-family: sans-serif;padding:1em;">
-				<table width="100%" cellpadding="0" cellspacing="0" align="center">
-					<tr>
-						<td align="center"><select size="3"
-							style="font-size: 10px; font-family: sans-serif;"
-							id="tipoDezMaisSelecao"
-							onchange="getDezMaisGeralMapa(this.value);">
-							<option selected="selected" value="1"><h:outputText
-								value="#{messages['cinco.mais.vistos']}" /></option>
-							<option value="2"><h:outputText
-								value="#{messages['cinco.mais.comentados']}" /></option>
-							<option value="3"><h:outputText
-								value="#{messages['cinco.mais.confirmados']}" /></option>
-						</select></td>
-					</tr>
-				</table>
-			</t:panelGroup>
-
-			<script><!--
-					/*	<![CDATA[ */
-					function getDezMaisGeralMapa(tipo){
-
-						if(tipo!=undefined)
-							tipoDezMais = tipo;
-						var eMapa = document.getElementById("op_dez_mais1").checked;
-
-						if(!eMapa){
-							if(tipoDezMais == '1')
-								document.getElementById("filtroForm:btSubmitVistos").click();
-							if(tipoDezMais == '2')
-								document.getElementById("filtroForm:btSubmitComentados").click();
-							if(tipoDezMais == '3')
-								document.getElementById("filtroForm:btSubmitConfirmados").click();
-						}else{
-							mostraListaDezMais();
-						}							
-					}	
-						
-					/* ]]> */			
-				--></script>
-			<hr />
-
-			<t:panelGrid align="center"
-				style="width: 100%; font-size: 9px; font-family: sans-serif;"
-				cellpadding="0" cellspacing="0" columns="2">
-				<t:panelGroup>
-					<input checked="checked" type="radio" id="op_dez_mais"
-						name="op_dez_mais" value="1" onclick="getDezMaisGeralMapa();" />
-					<h:outputText value="#{messages['tipo.dez.mais.geral']}" />
-				</t:panelGroup>
-				<t:panelGroup>
-					<input type="radio" id="op_dez_mais1" name="op_dez_mais" value="2"
-						onclick="getDezMaisGeralMapa();" />
-					<h:outputText value="#{messages['tipo.dez.mais.mapa']}" />
-				</t:panelGroup>
-			</t:panelGrid>
-			<t:panelGroup id="painelDezMaisListagem" style="width: 100%;">
-				<t:panelGrid
-					style="font-size: 10.6px; font-family: sans-serif; padding-left:1.5em; padding-right:1.5em;padding-top:1em;padding-bottom:1em;"
-					width="100%" columns="2" cellpadding="1" cellspacing="1">
-					<c:forEach var="dezMaisIter" items="#{filtroForm.dezMais}">
-						<t:panelGroup>
-							<div style="cursor: pointer;"
-								onclick="mostrarCrimeMapa('#{dezMaisIter.chave}','#{dezMaisIter.latitude}', '#{dezMaisIter.longitude}');"
-								class="moldura"><h:outputText
-								value="#{dezMaisIter.idCrime}" /></div>
-						</t:panelGroup>
-						<t:panelGroup>
-							<a
-								onclick="mostrarCrimeMapa('#{dezMaisIter.chave}','#{dezMaisIter.latitude}', '#{dezMaisIter.longitude}');"
-								style="cursor: pointer;"><h:outputText
-								value="#{dezMaisIter.descricao}" /> </a>
-						</t:panelGroup>
-					</c:forEach>
-				</t:panelGrid>
-			</t:panelGroup>
-		</rich:panel>
-
-
-		<!-- Fim das Estatísticas -->
-		<rich:panel style="width:160px; height:128px;"
-			header="Video WikiCrimes">
+		<rich:panel style="width:160px; height:300px;"
+			header="Videos WikiCrimes">
 			   
 			<div id="videodiv">
 			<div id="verVideo" style="width: 160; height: 40;"><img style="cursor: pointer" src="./images/video.png" /></div>
+			<div>#{messages['video.titulo1']}</div>
+			
 			<div id="fundovideo" style="width: 0; height: 0; display: none; background-color: black; position: fixed; z-index: 100; right: 100; top: 380;"
 				align="right">
 			</div>	
-			<div id="video"
-				style="width: 0; height: 0; display: none; background-color: null; position: fixed; z-index: 100; right: 100; top: 380;"
-				align="right">
-			<div style="width: 100%; height: 42px; z-index: 100;" align="center" >
-				<div style="width: 100%; height: 20px; postion: fixed; z-index: 100;">
-				</div>
-				<div style="width: 50%; height: 22px; z-index: 100; background-color: black;" align="right" >
-					<div id="fecharVideo"
-						style="cursor : pointer; width: 40px; height: 22px; color: white; background-color: black; font-size: 20px; postion: fixed; right: 0; top: 0; z-index: 100;">
-						[ x ] 
+			<div id="video" style="width: 0; height: 0; display: none; background-color: null; position: fixed; z-index: 100; right: 100; top: 380;" align="right">
+			
+				<div style="width: 100%; height: 100%; z-index: 100; padding: 0px;" align="center">
+					<div style="width: 100%; height: 26px; postion: fixed; z-index: 100;"></div>
+					<div class="dr-pnl rich-panel" style="width: 600px; height: 400px; z-index: 100;" align="center">
+						<div style="width: 100%; height: 30px; z-index: 100;" align="center" >
+							<div class="dr-pnl-h rich-panel-header" style="width: 99%; height: 30px; z-index: 100;" align="right" >
+								<div  id="fecharVideo" style="cursor : pointer; width: 40px; height: 20px; color: black; font-size: 18px; postion: fixed; right: 5px; top: 0; z-index: 100;">
+									X
+								</div>
+							</div>
+						</div>
+						<div style="width: 100%; height: 92%; z-index: 100;" align="center" >
+							<div id="conteudoVideo" style="width: 0px; height: 0px; z-index: 100;">
+								<object
+									width="100%" height="100%" style="z-index: 100;">
+									<param name="movie" value="http://www.youtube.com/v/LesfLXQ1mkg"></param>
+									<embed src="http://www.youtube.com/v/LesfLXQ1mkg" type="application/x-shockwave-flash" width="100%" height="100%" style="z-index: 100;"></embed> 
+								</object>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
-				<div style="width: 100%; height: 95%; z-index: 100;" align="center" >
-				<div id="conteudoVideo" style="width: 0px; height: 0px; z-index: 100;">
-					<object
-						width="100%" height="100%" style="z-index: 100;">
-						<param name="movie" value="http://www.youtube.com/v/LesfLXQ1mkg"></param>
-						<embed src="http://www.youtube.com/v/LesfLXQ1mkg" type="application/x-shockwave-flash" width="100%" height="100%" style="z-index: 100;"></embed> 
-					</object>
-					</div>
-					</div>
-				</div>
 			</div>
 			
+			<div id="videodiv2">
+			<div id="verVideo2" style="width: 160; height: 40;"><img style="cursor: pointer" src="./images/vasconoted3.png" /></div>
+			<div>#{messages['video.titulo2']}</div>
+			
+			<div id="fundovideo2" style="width: 0; height: 0; display: none; background-color: black; position: fixed; z-index: 100; right: 100; top: 380;"
+				align="right">
+			</div>	
+			<div id="video2" style="width: 0; height: 0; display: none; background-color: null; position: fixed; z-index: 100; right: 100; top: 380;" align="right">
+			
+				<div style="width: 100%; height: 100%; z-index: 100; padding: 0px;" align="center">
+					<div style="width: 100%; height: 26px; postion: fixed; z-index: 100;"></div>
+					<div class="dr-pnl rich-panel" style="width: 600px; height: 400px; z-index: 100;" align="center">
+						<div style="width: 100%; height: 30px; z-index: 100;" align="center" >
+							<div class="dr-pnl-h rich-panel-header" style="width: 99%; height: 30px; z-index: 100;" align="right" >
+								<div  id="fecharVideo2" style="cursor : pointer; width: 40px; height: 20px; color: black; font-size: 18px; postion: fixed; right: 5px; top: 0; z-index: 100;">
+									X
+								</div>
+							</div>
+						</div>
+						<div style="width: 100%; height: 92%; z-index: 100;" align="center" >
+							<div id="conteudoVideo2" style="width: 0px; height: 0px; z-index: 100;">
+								<object
+									width="100%" height="100%" style="z-index: 100;">
+									<param name="movie2" value="http://www.youtube.com/v/QAVUhyJTFMM"></param>
+									<embed src="http://www.youtube.com/v/QAVUhyJTFMM" type="application/x-shockwave-flash" width="100%" height="100%" style="z-index: 100;"></embed> 
+								</object>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>	
 		</rich:panel>
 
 
-		<rich:panel id="divMobile" style="width:160px; height:138px;"
+		<rich:panel id="divMobile" style="width:160px; height:188px;"
 			header="#{messages['modal.wikicrimes.mobile']}">
-			<div style="padding: 6px;"><h:form id="UserCompraForm">
+			<div style="padding: 6px;">
 				<img src="./images/wikcrimesMobileSmall.png" />
-				<br />
-				<c:if test="#{!empty usuario}">
-					<a href="./paginaDownloadWikiMobile.html" target="_blank"> <h:outputText
-						style="font-size:10px"
-						value="#{messages['modal.wikicrimes.mobile.msg']}" /> </a>
-				</c:if>
-				<c:if test="#{empty usuario}">
-					<h:outputLink value="#"
-						onclick="mostrarPainelLogin('./login.html?mensagemLogin=#{messages['modal.wikicrimes.mobile.login.msg']}&amp;tipoRegistro=4');">
-						<h:outputText style="font-size:10px"
-							value="#{messages['modal.wikicrimes.mobile.msg']}" />
-					</h:outputLink>
-				</c:if>
-			</h:form></div>
+				<h:outputText style="font-size:10px" value="#{messages['modal.wikicrimes.mobile.msg']}" />
+			</div>
 		</rich:panel>
 
 
@@ -1067,7 +1007,10 @@
 					}
 					var tipoDezMais = '1';
 					function mostraListaDezMais(){
-						var eMapa = document.getElementById("op_dez_mais1").checked;
+						//caso n tenha o filtro lateral
+						if(!document.getElementById("op_dez_mais1")==null){
+							
+							var eMapa = document.getElementById("op_dez_mais1").checked;
 						if(eMapa){
 							var html = "<table style='padding-left:1.5em; padding-right:1.5em;padding-top:1em;padding-bottom:1em;' width='100%' >";
 							
@@ -1094,6 +1037,7 @@
 							html+="</table>";
 							document.getElementById("filtroForm:painelDezMaisListagem").innerHTML = html;							
 						}	
+						}
 					}
 
 					function getCrimeAreaVisivel(idCrime, lat, lng){
@@ -1598,65 +1542,142 @@
 		        
 		        jQuery('#verVideo').click(function(){
 		
-			        
-		        	jQuery('#video').animate({
+			        jQuery('#video').animate({
+		                  	right: 100,
+		                    top: 115,  	
+		                    width:  0,
+		                    height: 0,
+		                    opacity: 0
+		            }, 0 );
+			              
+		        	jQuery('#fundovideo').animate({
 	                  	right: 100,
-	                    top: 380,  	
+	                    top: 140,  	
 	                    width:  0,
 	                    height: 0,
 	                    opacity: 0
-	              }, 0 );
-	        	jQuery('#fundovideo').animate({
-                  	right: 100,
-                    top: 380,  	
-                    width:  0,
-                    height: 0,
-                    opacity: 0
-              	}, 0 );  
-	        	jQuery('#conteudoVideo').animate({	
-	                  width:  0,
-	                  height: 0
-	              }, 0 );
-		        jQuery('#video').animate({
-		                  	right: 0,
-		                    top: 0,
-		                    width:  '100%',
-		                    height: '100%',
-		                    opacity: 1
-		              }, 1000 );
-		        	jQuery('#fundovideo').animate({
+	              	}, 0 );
+	              	  
+		        	jQuery('#conteudoVideo').animate({	
+		                  width:  0,
+		                  height: 0
+		            }, 0 );
+		              
+			        jQuery('#video').animate({
+			                  	right: 0,
+			                    top: 0,
+			                    width:  '100%',
+			                    height: '100%',
+			                    opacity: 1
+			        }, 1000 );
+
+			        jQuery('#fundovideo').animate({
 	                  	right: 0,
 	                    top: 0,
 	                    width:  '100%',
-	                    height: '100%',
-	                    opacity: 0.6
-	              	}, 1000 ); 
-		        	jQuery('#conteudoVideo').animate({
-		                  width:  '50%',
-		                  height: '65%'
-		              }, 1000 );
-		        });
-		        
-		        jQuery('#fecharVideo').click(function(){
+	                    height: '100%'
+	            	}, 0 );  
+			        jQuery('#fundovideo').animate({
+		                   opacity: 0.6
+		            }, 1000 );
+		            
+			        jQuery('#conteudoVideo').animate({
+			                  width:  '100%',
+			                  height: '100%'
+			        }, 1000 );
+			        
+			});
+			        
+			jQuery('#fecharVideo').click(function(){
 		        	jQuery('#video').animate({
-		                  	right: 100,
-		                    top: 380,  	
+		                  	right: 0,
+		                    top: 0,  	
 		                    width:  0,
 		                    height: 0,
 		                    opacity: 0
 		              }, 1000 );
 		        	jQuery('#fundovideo').animate({
-	                  	right: 100,
-	                    top: 380,  	
-	                    width:  0,
-	                    height: 0,
 	                    opacity: 0
-	              	}, 1000 );  
+	              	}, 1000 ); 
+		        	jQuery('#fundovideo').animate({
+	                  	right: 0,
+	                    top: 0,  	
+	                    width:  0,
+	                    height: 0
+	              	}, 0 );
 		        	jQuery('#conteudoVideo').animate({	
 		                  width:  0,
 		                  height: 0
 		              }, 1000 );
-		        });
+			});
+
+			jQuery('#verVideo2').click(function(){
+		
+		        jQuery('#video2').animate({
+	                  	right: 100,
+	                    top: 270,  	
+	                    width:  0,
+	                    height: 0,
+	                    opacity: 0
+	            }, 0 );
+	            
+	        	jQuery('#fundovideo2').animate({
+                  	right: 100,
+                    top: 270,  	
+                    width:  0,
+                    height: 0,
+                    opacity: 0
+              	}, 0 );
+              	
+	        	jQuery('#conteudoVideo2').animate({	
+	                  width:  0,
+	                  height: 0
+	            }, 0 );
+	              
+		        jQuery('#video2').animate({
+                  	right: 0,
+                    top: 0,
+                    width:  '100%',
+                    height: '100%',
+                    opacity: 1
+		        }, 1000 );
+		        jQuery('#fundovideo2').animate({
+                  	right: 0,
+                    top: 0,
+                    width:  '100%',
+                    height: '100%'
+              	}, 0 );
+	        	jQuery('#fundovideo2').animate({
+                    opacity: 0.6
+              	}, 1000 );
+	        	jQuery('#conteudoVideo2').animate({
+	                  width:  '100%',
+	                  height: '100%'
+	            }, 1000 );
+		   });
+		        
+		   jQuery('#fecharVideo2').click(function(){
+	        	jQuery('#video2').animate({
+	                  	right: 0,
+	                    top: 270,  	
+	                    width:  0,
+	                    height: 0,
+	                    opacity: 0
+	            }, 1000 );
+		        jQuery('#fundovideo2').animate({
+                    opacity: 0
+           		}, 1000 );
+		        jQuery('#fundovideo2').animate({
+                  	right: 100,
+                    top: 270,  	
+                    width:  0,
+                    height: 0
+            	}, 0 ); 
+		        jQuery('#conteudoVideo2').animate({	
+	                 	width:  0,
+	                	height: 0
+		        }, 1000 );
+		   });
 				
 		</script>
 

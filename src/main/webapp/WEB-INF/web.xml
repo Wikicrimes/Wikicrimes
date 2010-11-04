@@ -366,14 +366,6 @@
 		<url-pattern>/TesteCenariosRotas</url-pattern>
 	</servlet-mapping>
 	<servlet>
-		<servlet-name>KernelSemBrowser</servlet-name>
-		<servlet-class>org.wikicrimes.util.kernelMap.testes.KernelSemBrowser</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>KernelSemBrowser</servlet-name>
-		<url-pattern>/KernelSemBrowser</url-pattern>
-	</servlet-mapping>
-	<servlet>
 		<servlet-name>ServletCrimesHotSpots</servlet-name>
 		<servlet-class>org.wikicrimes.util.kernelMap.testes.ServletCrimesHotSpots</servlet-class>
 	</servlet>

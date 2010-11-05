@@ -570,12 +570,14 @@
 		</rich:panel></div>
 		<!-- Fim da Pesquisa -->
 
-		<rich:panel style="width:160px; height:300px;"
+		<rich:panel style="width:160px; height:305px;"
 			header="Videos WikiCrimes">
 			   
-			<div id="videodiv">
+			<div id="videodiv" style="padding-top: 7px">
 			<div id="verVideo" style="width: 160; height: 40;"><img style="cursor: pointer" src="./images/video.png" /></div>
-			<div>#{messages['video.titulo1']}</div>
+			<div style="padding-top: 5px">
+				<h:outputText style="font-size:10px" value="#{messages['video.titulo1']}" />
+			</div>
 			
 			<div id="fundovideo" style="width: 0; height: 0; display: none; background-color: black; position: fixed; z-index: 100; right: 100; top: 380;"
 				align="right">
@@ -606,9 +608,11 @@
 			</div>
 			</div>
 			
-			<div id="videodiv2">
+			<div id="videodiv2" style="padding-top: 5px">
 			<div id="verVideo2" style="width: 160; height: 40;"><img style="cursor: pointer" src="./images/vasconoted3.png" /></div>
-			<div>#{messages['video.titulo2']}</div>
+			<div style="padding-top: 5px; font-size:10px" >
+				<h:outputText style="font-size:10px" value="#{messages['video.titulo2']}" />
+			</div>
 			
 			<div id="fundovideo2" style="width: 0; height: 0; display: none; background-color: black; position: fixed; z-index: 100; right: 100; top: 380;"
 				align="right">
@@ -641,11 +645,20 @@
 		</rich:panel>
 
 
-		<rich:panel id="divMobile" style="width:160px; height:188px;"
+		<rich:panel id="divMobile" style="width:160px; height:185px;"
 			header="#{messages['modal.wikicrimes.mobile']}">
 			<div style="padding: 6px;">
-				<img src="./images/wikcrimesMobileSmall.png" />
 				<h:outputText style="font-size:10px" value="#{messages['modal.wikicrimes.mobile.msg']}" />
+				<div style="padding-top: 5px;">
+					<a target="_BLANK" href="http://www.pointgphone.com/applications-android/social/org.wikicrimes">
+						<img src="./images/icones_sites/iphone.jpg"/>
+					</a>
+				</div>
+				<div style="padding-top: 10px;">
+					<a target="_BLANK" href="http://itunes.apple.com/br/app/wikicrimes/id399776422?mt=8">
+						<img src="./images/icones_sites/android.gif"/>
+					</a>
+				</div>
 			</div>
 		</rich:panel>
 

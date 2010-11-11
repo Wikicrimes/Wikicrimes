@@ -127,7 +127,7 @@
 					{id:4, nome:'Roubo'},
 					{id:2, nome:'Tentativa de Furto'},
 					{id:1, nome:'Tentativa de Roubo'},
-					{id:5, nome:'Violência'} 
+					{id:5, nome:'Violï¿½ncia'} 
 			];
         	
         	var tpVitimaPrimLinha = {
@@ -454,7 +454,7 @@
 				</h:panelGroup>
 			</t:panelGrid>
 
-			<!-- Filtros Avançados -->
+			<!-- Filtros Avanï¿½ados -->
 			<t:panelGrid border="0" columns="3" cellpadding="1" cellspacing="1"
 				style="margin:0px;text-align:left;align:left">
 				<t:panelGroup colspan="3">
@@ -544,8 +544,8 @@
 					id="entidadeCertificadora">
 					<f:selectItems value="#{filtroForm.entidadeCertificadoraItens}" />
 				</h:selectOneMenu>
-				<!-- FIM Filtro por nível de confiabilidade  -->
-				<!-- Inserção de um código javaScript para resolução dos problemas com a propriedade disable do componente "selectOneMenu"-->
+				<!-- FIM Filtro por nï¿½vel de confiabilidade  -->
+				<!-- Inserï¿½ï¿½o de um cï¿½digo javaScript para resoluï¿½ï¿½o dos problemas com a propriedade disable do componente "selectOneMenu"-->
 				<script type="text/javascript">
 							
 								var isEntidadeCertificadoraSelecionada = document.getElementById("filtroForm:crimeConfirmadoEntidadeCertificadora").checked;
@@ -650,12 +650,12 @@
 			<div style="padding: 6px;">
 				<h:outputText style="font-size:10px" value="#{messages['modal.wikicrimes.mobile.msg']}" />
 				<div style="padding-top: 5px;">
-					<a target="_BLANK" href="http://www.pointgphone.com/applications-android/social/org.wikicrimes">
+					<a target="_BLANK" href="http://itunes.apple.com/br/app/wikicrimes/id399776422?mt=8">
 						<img src="./images/icones_sites/iphone.jpg"/>
 					</a>
 				</div>
 				<div style="padding-top: 10px;">
-					<a target="_BLANK" href="http://itunes.apple.com/br/app/wikicrimes/id399776422?mt=8">
+					<a target="_BLANK" href="http://www.pointgphone.com/applications-android/social/org.wikicrimes">
 						<img src="./images/icones_sites/android.gif"/>
 					</a>
 				</div>
@@ -882,7 +882,7 @@
 						 http_request.send(null);
 
 					   }
-					   // Ler os dados do arquivo texto enviado pelo servidor e constrói os marcadores de crimes
+					   // Ler os dados do arquivo texto enviado pelo servidor e constrï¿½i os marcadores de crimes
 					   function constroiMarcadores() {
 
 						 	if (http_request.readyState == 4) {
@@ -1002,7 +1002,7 @@
 								
 						
 					function atualizaEstatisticasRazoes(razoesTexto){
-						if(razoesTexto){ //obs: ver pq ta vindo undefined as vezes, não devia
+						if(razoesTexto){ //obs: ver pq ta vindo undefined as vezes, nï¿½o devia
 							var arrayRazoesOcorrencia = razoesTexto.split(",");
 							if(arrayRazoesOcorrencia[0] != undefined && arrayRazoesOcorrencia[0] != null && arrayRazoesOcorrencia[0] != ''){
 								arrayEstatisticasQtd[parseInt(arrayRazoesOcorrencia[0])]++;
@@ -1403,11 +1403,11 @@
 											crimesAtuais[idCrime]=marcador;
 					//*********************** Kernel Map INICIO ****************************
 					//coleta os crimes pra serem mandados pro servlet q gera o mapa de kernel
-					//o if é pra não deixar plotar os marcadores qd o mapa de kernel estiver ligado
+					//o if ï¿½ pra nï¿½o deixar plotar os marcadores qd o mapa de kernel estiver ligado
 											arrayCrimesLatLng[index] = new crimeKernelMap(long, lat, marcador);
 											++index;
 											if(!kernelEnable 
-												//nao plotar marcadores qd o modo kernel for ser habilitado por mudança de zoom
+												//nao plotar marcadores qd o modo kernel for ser habilitado por mudanï¿½a de zoom
 												&& !(podeMudarModoKernel 
 													&& (mudouZoom) 
 													&& map.getZoom() <= zoomLimiteInfMarcadores))  
@@ -1507,7 +1507,7 @@
             			}
 					}
 					
-					/*Função que habilita/desabilita a lista contendo as entidades certificadoras cadastradas*/
+					/*Funï¿½ï¿½o que habilita/desabilita a lista contendo as entidades certificadoras cadastradas*/
 					function habilitaListaEntidadeCertificadora(){
 						
 						var listaHabilitada = document.getElementById("filtroForm:entidadeCertificadora").disabled;

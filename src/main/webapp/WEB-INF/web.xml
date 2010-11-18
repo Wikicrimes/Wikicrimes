@@ -252,6 +252,16 @@
 	</servlet-mapping>
 	
 	<servlet>
+		<servlet-name>KernelMapCidades</servlet-name>
+		<servlet-class>org.wikicrimes.util.kernelMap.testes.KernelMapCidades</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>KernelMapCidades</servlet-name>
+		<url-pattern>/KernelMapCidades</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
 		<servlet-name>ServletWikiCrimesApi</servlet-name>
 		<servlet-class>org.wikicrimes.servlet.ServletWikiCrimesApi</servlet-class>
 	</servlet>

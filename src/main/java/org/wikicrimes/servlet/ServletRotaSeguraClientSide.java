@@ -20,7 +20,7 @@ import org.wikicrimes.util.kernelMap.KernelMap;
 import org.wikicrimes.util.kernelMap.PropertiesLoader;
 import org.wikicrimes.util.rotaSegura.geometria.Ponto;
 import org.wikicrimes.util.rotaSegura.geometria.Rota;
-import org.wikicrimes.util.rotaSegura.googlemaps.DirectionsAPI;
+import org.wikicrimes.util.rotaSegura.googlemaps.ServiceURLBuilder;
 import org.wikicrimes.util.rotaSegura.googlemaps.StatusGM;
 import org.wikicrimes.util.rotaSegura.logica.CalculoPerigo;
 import org.wikicrimes.util.rotaSegura.logica.FilaRotasCandidatas;
@@ -41,8 +41,8 @@ import org.wikicrimes.util.rotaSegura.testes.TesteRotasImg;
 public class ServletRotaSeguraClientSide extends HttpServlet {
 	
 	//PARAMETROS
-	private static final int MAX_REQUISICOES_GM = PropertiesLoader.getInt("max_requisicoes_gm");
-	private static final int PADRAO_NUM_ROTAS_RESPOSTA = PropertiesLoader.getInt("padrao_num_rotas_resposta");
+	private static final int MAX_REQUISICOES_GM = PropertiesLoader.getInt("saferoutes.max_gm_requests");
+	private static final int PADRAO_NUM_ROTAS_RESPOSTA = PropertiesLoader.getInt("saferoutes.default_number_of_alternatives");
 	
 	//chaves para atributos de sessao
 	public static final String LOGICA_ROTAS = "LOGICA_ROTAS";

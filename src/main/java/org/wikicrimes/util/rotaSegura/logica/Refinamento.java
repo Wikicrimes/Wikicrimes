@@ -11,8 +11,8 @@ import org.wikicrimes.util.rotaSegura.geometria.Segmento;
 public class Refinamento {
 	
 	
-	private final static double TOLERANCIA_ARRODEIO = PropertiesLoader.getInt("tol_arrodeio"); //quanto menor, mais arodeios serão corrigidos pelo algorítmo
-	private final static int TOLERANCIA_APROXIMACAO = PropertiesLoader.getInt("tol_aproximacao"); //distancia máxima entre pontos na obtenção de pontos e rotas aproximadas
+	private final static double TOLERANCIA_ARRODEIO = PropertiesLoader.getInt("saferoutes.refinement.loop_prunning_tolerance"); //quanto menor, mais arodeios serão corrigidos pelo algorítmo
+	private final static int TOLERANCIA_APROXIMACAO = PropertiesLoader.getInt("saferoutes.point_approximation_limit"); //distancia máxima entre pontos na obtenção de pontos e rotas aproximadas
 	
 	
 	/**

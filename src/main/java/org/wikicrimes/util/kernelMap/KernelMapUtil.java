@@ -15,8 +15,8 @@ import org.wikicrimes.util.rotaSegura.geometria.Ponto;
 
 public class KernelMapUtil {
 
-	public final static int GRID_NODE = PropertiesLoader.getInt("node_size");
-	public final static int BANDWIDTH = PropertiesLoader.getInt("bandwidth");
+	public final static int GRID_NODE = PropertiesLoader.getInt("kernelmap.nodesize");
+	public final static int BANDWIDTH = PropertiesLoader.getInt("kernelmap.bandwidth");
 
 	public static KernelMap fazerKernelMap(PontoLatLng centro, double raioKm, int zoom, CrimeService crimeService, Date dataInicial) {
 		Rectangle boundsPixel = getBoundsPixel(centro, raioKm, zoom); 

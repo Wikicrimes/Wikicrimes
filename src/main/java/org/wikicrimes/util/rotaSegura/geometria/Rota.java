@@ -21,7 +21,7 @@ public class Rota {
 
 	private List<Ponto> pontos;
 	
-	private final static int MAX_APROXIMACAO = PropertiesLoader.getInt("tol_aproximacao"); //distancia máxima entre pontos na obtenção de pontos e rotas aproximadas
+	private final static int MAX_APROXIMACAO = PropertiesLoader.getInt("saferoutes.point_approximation_limit"); //distancia máxima entre pontos na obtenção de pontos e rotas aproximadas
 
 	public Rota() {
 		pontos = new LinkedList<Ponto>();

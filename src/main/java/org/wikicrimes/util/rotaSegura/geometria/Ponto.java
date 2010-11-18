@@ -18,7 +18,7 @@ import org.wikicrimes.util.kernelMap.PropertiesLoader;
 
 public class Ponto extends Point{
 
-	private static final double TOLERANCIA_PONTOS_IGUAIS = PropertiesLoader.getDouble("tol_ponto");
+	private static final double TOLERANCIA_PONTOS_IGUAIS = PropertiesLoader.getDouble("geometry.point_approximation");
 	
 	public Ponto(int x, int y) {
 		this.x = x;

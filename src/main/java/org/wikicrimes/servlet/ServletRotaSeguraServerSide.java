@@ -6,9 +6,6 @@ import static org.wikicrimes.servlet.ServletRotaSeguraClientSide.respostaErro;
 import java.awt.Color;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,24 +17,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-
+import org.jdom.Document;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.wikicrimes.model.PontoLatLng;
 import org.wikicrimes.service.CrimeService;
 import org.wikicrimes.util.DataUtil;
-import org.wikicrimes.util.ServletUtil;
 import org.wikicrimes.util.kernelMap.KernelMap;
 import org.wikicrimes.util.kernelMap.KernelMapUtil;
 import org.wikicrimes.util.kernelMap.PropertiesLoader;
 import org.wikicrimes.util.rotaSegura.ParametroInvalidoRotaSeguraException;
 import org.wikicrimes.util.rotaSegura.geometria.Ponto;
 import org.wikicrimes.util.rotaSegura.geometria.Rota;
-import org.wikicrimes.util.rotaSegura.googlemaps.DirectionsAPI;
 import org.wikicrimes.util.rotaSegura.googlemaps.DirectionsAPIRequestException;
 import org.wikicrimes.util.rotaSegura.googlemaps.FormatoResposta;
+import org.wikicrimes.util.rotaSegura.googlemaps.JSONRouteHandler;
+import org.wikicrimes.util.rotaSegura.googlemaps.KMLRouteHandler;
 import org.wikicrimes.util.rotaSegura.googlemaps.StatusGMDirections;
 import org.wikicrimes.util.rotaSegura.logica.CalculoPerigo;
 import org.wikicrimes.util.rotaSegura.logica.FilaRotasCandidatas;
@@ -52,10 +47,10 @@ import org.wikicrimes.util.rotaSegura.testes.TesteRotasImg;
 public class ServletRotaSeguraServerSide extends HttpServlet{
 
 	//PARAMETROS
-	private static final int MAX_REQUISICOES_GM = PropertiesLoader.getInt("max_requisicoes_gm");
-	private static final int PADRAO_NUM_ROTAS_RESPOSTA = PropertiesLoader.getInt("padrao_num_rotas_resposta");
-	private static final int PADRAO_ZOOM = PropertiesLoader.getInt("padrao_zoom_rota_segura");
-	private static final int PADRAO_ANOS_ATRAS = PropertiesLoader.getInt("rotaSegura.padrao.anosAtrasDataInicial");
+	private static final int MAX_REQUISICOES_GM = PropertiesLoader.getInt("saferoutes.max_gm_requests");
+	private static final int PADRAO_NUM_ROTAS_RESPOSTA = PropertiesLoader.getInt("saferoutes.default_number_of_alternatives");
+	private static final int PADRAO_ZOOM = PropertiesLoader.getInt("saferoutes.default_zoom");
+	private static final int PADRAO_ANOS_ATRAS = PropertiesLoader.getInt("saferoutes.default_start_date");
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -103,7 +98,6 @@ public class ServletRotaSeguraServerSide extends HttpServlet{
 		Rota rotaIdeal = null;
 		FilaRotasCandidatas rotasCandidatas = new FilaRotasCandidatas(calcPerigo, grafo);
 		List<Rota> rotasNovas = new ArrayList<Rota>();
-		JSONObject json = null;
 		boolean terminado = false;
 		boolean forcarTermino = false;
 
@@ -156,9 +150,12 @@ public class ServletRotaSeguraServerSide extends HttpServlet{
 				if(!rotasCandidatas.isEmpty()){
 					rotaIdeal = rotasCandidatas.pop();
 					try{
-						json = getJSONDirectionsAPI(rotaIdeal, zoom);
-						status = getStatus(json);
-						rotaGoogleMaps = getRota(json, zoom);
+//						JSONObject json = getJSONDirectionsAPI(rotaIdeal, zoom);
+//						status = getStatus(json);
+//						rotaGoogleMaps = getRota(json, zoom);
+						Document kml = KMLRouteHandler.getKML(rotaIdeal, zoom);
+						status = KMLRouteHandler.getStatus(kml);
+						rotaGoogleMaps = KMLRouteHandler.getRoute(kml, zoom);
 					}catch(IOException e){
 						status = StatusGMDirections.UNKNOWN_ERROR;
 						rotaGoogleMaps = null;
@@ -211,62 +208,10 @@ public class ServletRotaSeguraServerSide extends HttpServlet{
 			grafo.inserirCaminho(rota, custo, perigo);
 			rotasNovas.set(i, new RotaGM(rota, custo, perigo));
 		}
-//		/*DEBUG*/TesteRotasImg.teste(rotasPromissoras, "recebeRotas, rotasPromissoras antes do refresh", logicaRota);
 		rotasCandidatas.reponderar();
-//		/*DEBUG*/TesteRotasImg.teste(rotasPromissoras, "recebeRotas, rotasPromissoras depois do refresh", logicaRota);
 	}
 	
-	private static JSONObject getJSONDirectionsAPI(Rota rota, int zoom) throws IOException{
-		URL url = DirectionsAPI.getUrlJSON(rota, zoom);
-		String jsonStr = ServletUtil.fazerRequisicao(url);
-		JSONObject json = JSONObject.fromObject(jsonStr); 
-//		/*DEBUG*/System.out.println("Directions API, status="+getStatus(json));
-		return json;
-	}
-	
-	
-	private static Rota getRota(JSONObject json, int zoom) throws DirectionsAPIRequestException{
-		
-		StatusGMDirections status = getStatus(json); 
-		if(status != StatusGMDirections.OK) {
-			throw new DirectionsAPIRequestException(status);
-		}
-		
-		List<PontoLatLng> latlngs = new ArrayList<PontoLatLng>();
-		JSONArray routes = json.getJSONArray("routes");
-		
-		//primeiro ponto
-		JSONObject start = routes.getJSONObject(0).getJSONArray("legs").getJSONObject(0).
-							getJSONArray("steps").getJSONObject(0).getJSONObject("start_location");
-		PontoLatLng latlngStart = new PontoLatLng(start.getDouble("lat"), start.getDouble("lng")); 
-		latlngs.add(latlngStart);
-		
-		//pontos restantes
-		for(Object routeObj : routes){
-			JSONObject route = (JSONObject)routeObj;
-			JSONArray legs = route.getJSONArray("legs");
-			for(Object legObj : legs){
-				JSONObject leg = (JSONObject)legObj;
-				JSONArray steps = leg.getJSONArray("steps");
-				for(Object stepObj : steps){
-					JSONObject step = (JSONObject)stepObj; 
-					JSONObject end = step.getJSONObject("end_location");
-					PontoLatLng latlngEnd = new PontoLatLng(end.getDouble("lat"), end.getDouble("lng")); 
-					latlngs.add(latlngEnd);
-				}
-			}
-		}
-		
-		List<Ponto> pixels = PontoLatLng.toPixel(latlngs, zoom);
-		return new Rota(pixels);
-	}
-	
-	public static StatusGMDirections getStatus(JSONObject json){
-		String statusStr = json.getString("status"); 
-		return StatusGMDirections.getStatus(statusStr);
-	}
-	
-	public int getNumRotasResposta(HttpServletRequest request) throws ServletException, IOException{
+	private int getNumRotasResposta(HttpServletRequest request) throws ServletException, IOException{
 		String nrotas = request.getParameter("nrotas");
 		if(nrotas != null) {
 			int num = Integer.valueOf(nrotas);
@@ -304,8 +249,8 @@ public class ServletRotaSeguraServerSide extends HttpServlet{
 			}catch (Exception e) {
 				throw new ParametroInvalidoRotaSeguraException("Valores inválidos em pelo menos um dos parâmetros 'origem' e 'destino'");
 			}
-			JSONObject json = getJSONDirectionsAPI(retaOD, zoom);
-			return getRota(json, zoom);
+			Document kml = KMLRouteHandler.getKML(retaOD, zoom);
+			return KMLRouteHandler.getRoute(kml, zoom);
 		
 		//sem parametro de rota
 		}else{
@@ -350,7 +295,7 @@ public class ServletRotaSeguraServerSide extends HttpServlet{
 			response.setContentType("application/json");
 			PrintWriter out = response.getWriter();
 			int zoom = getZoom(request);
-			String json = constroiJSONRotas(rotas, zoom);
+			String json = JSONRouteHandler.getJSON(rotas, zoom);
 			out.println(json);
 			return;
 		case KML:
@@ -358,129 +303,12 @@ public class ServletRotaSeguraServerSide extends HttpServlet{
 			response.setContentType("application/vnd.google-earth.kml+xml");
 			out = response.getWriter();
 			zoom = getZoom(request);
-			String kml = constroiKMLRotas(rotas, zoom);
+			String kml = KMLRouteHandler.getKML(rotas, zoom);
 			out.println(kml);
 			return;
 		}
 		
 //		/*DEBUG*/System.out.println("FIM");
-	}
-	
-	private static String constroiJSONRotas(List<Rota> rotas, int zoom) {
-		try {
-		
-			//cria um json q vai reunir todas as rotas
-			JSONObject resJson = new JSONObject();
-			resJson.put("status", "OK");
-			JSONArray resRoutes = new JSONArray();
-			
-			for(Rota rota : rotas) {
-				
-				//pega JSON de cada rota (requisicao ao GM)
-				URL urlGoogleAPI = DirectionsAPI.getUrlJSON(rota, zoom);
-				String jsonStr = ServletUtil.fazerRequisicao(urlGoogleAPI);
-				
-				//pega o 'route' e adiciona no json q reune todas as rotas
-				JSONObject json = JSONObject.fromObject(jsonStr);
-
-				//testa status da requisicao a Directions API
-				StatusGMDirections status = getStatus(json); 
-				if(status != StatusGMDirections.OK) {
-					throw new DirectionsAPIRequestException(status);
-				}
-				
-				JSONArray routes = json.getJSONArray("routes");
-				JSONObject route = routes.getJSONObject(0);
-				resRoutes.add(route);
-			}
-			
-			resJson.put("routes", resRoutes);
-			
-			//retorna o json com todas as rotas 
-			return resJson.toString();
-		
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	private static String constroiKMLRotas(List<Rota> rotas, int zoom) {
-		try {
-			
-			StringBuilder s = new StringBuilder();
-			s.append("<?xml version='1.0' encoding='UTF-8'?>");
-			s.append("<kml xmlns='http://earth.google.com/kml/2.0'>");
-			s.append("<Document>");
-			s.append("<name></name>");
-			s.append("<Style id='roadStyle'>");
-			s.append("<LineStyle>");
-			s.append("<color>7fcf0064</color>");
-			s.append("<width>6</width>");
-			s.append("</LineStyle>");
-			s.append("</Style>");
-			
-			for(Rota rota : rotas) {
-				URL urlGoogleAPI = DirectionsAPI.getUrlJSON(rota, zoom);
-				String jsonStr = ServletUtil.fazerRequisicao(urlGoogleAPI);
-				JSONObject json = JSONObject.fromObject(jsonStr);
-				s.append(rotaJsonToKml(json));
-			}
-			
-			s.append("</Document>");
-			s.append("</kml>");
-			
-			return s.toString();
-			
-//		} catch (JDOMException e) {
-//			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	private static String rotaJsonToKml(JSONObject json) {
-		
-		StringBuilder s = new StringBuilder();
-		s.append("<Placemark>");
-		s.append("<name>Route</name>");
-		s.append("<description></description>");
-		s.append("<GeometryCollection>");
-		s.append("<LineString>");
-		s.append("<coordinates>");
-		
-		JSONArray routes = json.getJSONArray("routes");
-		
-		//primeiro ponto
-		JSONObject start = routes.getJSONObject(0).getJSONArray("legs").getJSONObject(0).
-							getJSONArray("steps").getJSONObject(0).getJSONObject("start_location");
-		s.append(start.getDouble("lng") + "," + start.getDouble("lat") + ",0.000000 ");
-		
-		//pontos restantes
-		for(Object routeObj : routes){
-			JSONObject route = (JSONObject)routeObj;
-			JSONArray legs = route.getJSONArray("legs");
-			for(Object legObj : legs){
-				JSONObject leg = (JSONObject)legObj;
-				JSONArray steps = leg.getJSONArray("steps");
-				for(Object stepObj : steps){
-					JSONObject step = (JSONObject)stepObj; 
-					JSONObject end = step.getJSONObject("end_location");
-					s.append(end.getDouble("lng") + "," + end.getDouble("lat") + ",0.000000 "); 
-				}
-			}
-		}
-		
-		s.append("</coordinates>");
-		s.append("</LineString>");
-		s.append("</GeometryCollection>");
-		s.append("<styleUrl>#roadStyle</styleUrl>");
-		s.append("</Placemark>");
-
-		return s.toString();
 	}
 	
 	private void limpar(HttpServletRequest request) throws IOException, ServletException{

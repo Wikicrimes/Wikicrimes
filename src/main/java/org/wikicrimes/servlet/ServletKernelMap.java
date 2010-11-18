@@ -51,8 +51,8 @@ public class ServletKernelMap extends HttpServlet {
 	public final static String DENSIDADES = "DENSIDADES"; //matriz de densidades do mapa de kernel
 	public final static String KERNEL = "KERNEL"; //objeto MapaKernel
 	
-	public final static int GRID_NODE = PropertiesLoader.getInt("node_size");
-	public final static int BANDWIDTH = PropertiesLoader.getInt("bandwidth");
+	public final static int GRID_NODE = PropertiesLoader.getInt("kernelmap.nodesize");
+	public final static int BANDWIDTH = PropertiesLoader.getInt("kernelmap.bandwidth");
 	
 	private CrimeService crimeService;
 	

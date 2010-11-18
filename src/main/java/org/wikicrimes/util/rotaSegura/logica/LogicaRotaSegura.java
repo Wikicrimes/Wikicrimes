@@ -25,7 +25,7 @@ public class LogicaRotaSegura {
 	private CalculoPerigo calcPerigo;
 	
 	//PARAMETROS
-	static final int GRANULARIDADE_ROTAS = PropertiesLoader.getInt("granularidade_rotas");
+	static final int GRANULARIDADE_ROTAS = PropertiesLoader.getInt("saferoutes.route_granularity");
 	
 	public LogicaRotaSegura(KernelMap kernel){
 		this.kernel = kernel;

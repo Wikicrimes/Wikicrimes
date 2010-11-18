@@ -20,9 +20,9 @@ public class CalculoPerigo {
 	private Double baseTolerancia;
 	
 	//PARAMETROS
-	static final double FATOR_TOLERANCIA = PropertiesLoader.getDouble("fator_tolerancia");
+	static final double FATOR_TOLERANCIA = PropertiesLoader.getDouble("saferoutes.tolerance_factor");
 //	/*TESTE CENARIO*/public double FATOR_TOLERANCIA = 0.0; //setado pelo TesteCenarioRotas
-	static final double INFLUENCIA_DISTANCIA = PropertiesLoader.getDouble("influencia_dist"); //entre 0 e 1
+	static final double INFLUENCIA_DISTANCIA = PropertiesLoader.getDouble("saferoutes.distance_influence"); //entre 0 e 1
 	
 	public CalculoPerigo(LogicaRotaSegura logica) {
 		this.kernel = logica.getKernel();

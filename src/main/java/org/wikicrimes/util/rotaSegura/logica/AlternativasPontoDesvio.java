@@ -17,7 +17,7 @@ import org.wikicrimes.util.rotaSegura.testes.TesteRotasImg;
 
 public class AlternativasPontoDesvio extends GeradorDeAlternativasAbstrato{
 
-	private static final int DETALHE_PONTOS_PROMISSORES = PropertiesLoader.getInt("detalhe_pts_promissores");
+	private static final int DETALHE_PONTOS_PROMISSORES = PropertiesLoader.getInt("saferoutes.promising_points_grid_resolution");
 	
 	public AlternativasPontoDesvio(LogicaRotaSegura logica) {
 		super(logica);

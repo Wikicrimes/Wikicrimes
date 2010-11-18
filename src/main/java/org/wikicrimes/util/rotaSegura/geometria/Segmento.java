@@ -18,7 +18,7 @@ import org.wikicrimes.util.kernelMap.PropertiesLoader;
 public class Segmento {
 	private Ponto inicio;
 	private Ponto fim;
-	private static final double TOLERANCIA_PONTOS_IGUAIS = PropertiesLoader.getDouble("tol_ponto");
+	private static final double TOLERANCIA_PONTOS_IGUAIS = PropertiesLoader.getDouble("geometry.point_approximation");
 	
 	public Segmento(Ponto inicio, Ponto fim){
 		this.inicio = inicio;

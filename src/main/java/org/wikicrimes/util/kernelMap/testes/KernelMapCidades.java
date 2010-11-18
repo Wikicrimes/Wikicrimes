@@ -41,18 +41,18 @@ public class KernelMapCidades extends HttpServlet {
 	private static final int NODE_SIZE = 5;
 	private static final double BANDWIDTH = 30;
 	private static final int ZOOM = 13;
-	private final String dir = "/home/victor/Desktop/testes/rotas 2010.07.29/teste douglas/";
+	private final String dir = "/home/carlos/Desktop/testes/";
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp){
 		
-		//teste
-		AvaliacaoPerigo a = new AvaliacaoPerigo(getCrimeService());
-		Calendar c = Calendar.getInstance();
-		c.set(2005, 01, 01);
-		a.avaliarCirculo(new PontoLatLng(-3.72647,-38.535748), 1000, c.getTime());
-		if(true) return;
-		//teste
+//		//teste
+//		AvaliacaoPerigo a = new AvaliacaoPerigo(getCrimeService());
+//		Calendar c = Calendar.getInstance();
+//		c.set(2005, 01, 01);
+//		a.avaliarCirculo(new PontoLatLng(-3.72647,-38.535748), 1000, c.getTime());
+//		if(true) return;
+//		//teste
 		
 		System.out.println("inicio");
 		
@@ -160,7 +160,7 @@ public class KernelMapCidades extends HttpServlet {
 		params.put("oeste", boundsLatLng.oeste);
 		List<BaseObject> crimes = getCrimeService().filter(params);
 		List<Point> crimesPixel = ServletKernelMap.toPixel(crimes, ZOOM);
-		System.out.print(", criando mapa de crimes para cada céula");
+		System.out.print(", criando mapa de crimes para cada cï¿½ula");
 		MapaChaveDupla<Integer, Integer, List<BaseObject>> mapaCrimesDeCadaCelula = mapaCrimesDeCadaCelula(boundsPixel, NODE_SIZE, crimesPixel, crimes);
 		System.out.print(", calculando densidades");
 		KernelMap kernel = new KernelMap(NODE_SIZE, BANDWIDTH, boundsPixel, crimesPixel);

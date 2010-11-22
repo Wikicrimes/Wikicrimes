@@ -17,8 +17,11 @@ public class ServiceURLBuilder {
 		if(waypoints.length() > 0)
 			waypoints.deleteCharAt(waypoints.length()-1);
 		return new URL("http://maps.google.com/maps/api/directions/"+formato+"?" +
-				"origin=(" + pontos.get(0) + ")&destination=(" + pontos.get(pontos.size()-1) + ")&" +
-				"waypoints=" + waypoints.toString() + "&sensor=false");
+				"origin=(" + pontos.get(0) + ")&" +
+				"destination=(" + pontos.get(pontos.size()-1) + ")&" +
+				"waypoints=" + waypoints.toString() + "&" +
+				"language=pt-BR&" +
+				"sensor=false");
 	}
 	
 	public static URL getUrlJSON(Rota rota, int zoom) throws MalformedURLException{
@@ -35,11 +38,17 @@ public class ServiceURLBuilder {
 		StringBuilder to = new StringBuilder(); //do terceiro ate o ultimo ponto
 		for(int i=2; i<pontos.size(); i++)
 			to.append("+to:(" + pontos.get(i).toString() + ")");
-		URL url = new URL("http://maps.google.com/maps?f=d&source=s_d&hl=pt-BR&mra=dpe&mrcr=0&mrsp=2&via=1,2&sll=-3.730653,-38.555832&sspn=0.078797,0.168056&ie=UTF8&t=h"
-				+ "&z=" + zoom + "&sz=" + 13
-				+ "&saddr=(" + pontos.get(0) + ")"
-				+ "&daddr=(" + pontos.get(1) + ")"
-				+ to.toString() + "&output=kml"); 
+//		URL url = new URL("http://maps.google.com/maps?f=d&source=s_d&mra=dpe&mrcr=0&mrsp=2&via=1,2&sll=-3.730653,-38.555832&sspn=0.078797,0.168056&ie=UTF8&t=h"
+//				+ "&hl=pt-BR"
+//				+ "&z=" + zoom + "&sz=" + 13
+//				+ "&saddr=(" + pontos.get(0) + ")"
+//				+ "&daddr=(" + pontos.get(1) + ")"
+//				+ to.toString() + "&output=kml"); 
+		URL url = new URL("http://maps.google.com/maps?" +
+				"hl=pt-BR" +
+				"&saddr=(" + pontos.get(0) + ")" +
+				"&daddr=(" + pontos.get(1) + ")" + to +
+				"&output=kml");
 //		/*DEBUG*/System.out.println(url.toString());
 		return url; 
 	}

@@ -1,5 +1,6 @@
 package org.wikicrimes.web;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.wikicrimes.model.AreaRisco;
@@ -25,7 +26,11 @@ public class AreaRiscoForm extends GenericForm{
 		this.areaRiscoService = areaRiscoService;
 	}
 	public List<AreaRisco> getMinhasAreas() {
-		minhasAreas = areaRiscoService.listAreas(usuario);
+		if(usuario != null) {
+			minhasAreas = areaRiscoService.listAreas(usuario);
+		}else {
+			minhasAreas = new ArrayList<AreaRisco>();
+		}
 		return minhasAreas;
 	}
 	public void setMinhasAreas(List<AreaRisco> minhasAreas) {

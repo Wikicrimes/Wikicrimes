@@ -178,7 +178,7 @@ public class ServletScreenShotMapa extends HttpServlet {
 				+ "&sensor=false";
 
 		if(satellite) 
-			urlMapaLimpo += "maptype=satellite";
+			urlMapaLimpo += "&maptype=satellite";
 		
 		return new URL(urlMapaLimpo);
 	}
@@ -188,21 +188,22 @@ public class ServletScreenShotMapa extends HttpServlet {
 	 * Metodo que retorna uma imagem a partir de uma URL.
 	 * 
 	 * @param url - URL da requisicao
+	 * @param width - width que a imagem tera
+	 * @param height - height que a imagem tera
 	 * @return imagem de reposta
 	 */
-	private Image requestImage(URL url) {
-		return requestImage(url, -1, -1);
+	private Image requestImage(URL url, int width, int height) {
+		Image img = requestImage(url); 
+		return img.getScaledInstance(width, height, Image.SCALE_SMOOTH); 
 	}
 	
 	/**
 	 * Metodo que retorna uma imagem a partir de uma URL.
 	 * 
 	 * @param url - URL da requisicao
-	 * @param width - width que a imagem tera
-	 * @param height - height que a imagem tera
 	 * @return imagem de resposta
 	 */
-	private Image requestImage(URL url, int width, int height) {
+	private Image requestImage(URL url) {
 		BufferedImage imagem = null;
 		HttpURLConnection con = null;
 		try {
@@ -223,10 +224,7 @@ public class ServletScreenShotMapa extends HttpServlet {
 			con.disconnect();
 		}
 
-		if (width <= 0 || height <= 0)
-			return imagem;
-		else
-			return imagem.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+		return imagem;
 	}
 	
 	/**

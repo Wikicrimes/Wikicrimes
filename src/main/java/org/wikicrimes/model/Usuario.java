@@ -40,6 +40,7 @@ public class Usuario extends BaseObject {
 	private UsuarioCelular usuarioCelular;
 	private Boolean confAutomatica;
 	private String externalUrlRpx;
+	private String externalToken;
 	
 	private Set<Reputacao> reputacoes;
 	
@@ -382,6 +383,14 @@ public class Usuario extends BaseObject {
 
 	public void setExternalUrlRpx(String externalUrlRpx) {
 		this.externalUrlRpx = externalUrlRpx;
+	}
+	
+	public String getExternalToken() {
+		return externalToken;
+	}
+
+	public void setExternalToken(String externalToken) {
+		this.externalToken = externalToken;
 	}
 
 	@Override

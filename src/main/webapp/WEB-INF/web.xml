@@ -222,6 +222,16 @@
 	</servlet-mapping>
 	
 	<servlet>
+		<servlet-name>ServletCadastroCrime</servlet-name>
+		<servlet-class>org.wikicrimes.servlet.ServletCadastroCrime</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>ServletCadastroCrime</servlet-name>
+		<url-pattern>/ServletCadastroCrime</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
   		<servlet-name>ServletUbiq</servlet-name> 
   		<servlet-class>org.wikicrimes.servlet.ServletUbiq</servlet-class> 
    </servlet>

@@ -13,6 +13,8 @@ import java.util.PriorityQueue;
 import org.wikicrimes.util.rotaSegura.geometria.Ponto;
 import org.wikicrimes.util.rotaSegura.geometria.Rota;
 import org.wikicrimes.util.rotaSegura.geometria.Segmento;
+import org.wikicrimes.util.rotaSegura.logica.CalculoPerigo;
+import org.wikicrimes.util.rotaSegura.logica.LogicaRotaSegura;
 import org.wikicrimes.util.rotaSegura.testes.TesteGrafoJung;
 
 
@@ -43,6 +45,7 @@ public class GrafoRotas {
 	}
 	
 	private VerticeRotas inserirVertice(Ponto v){
+		if(v == null) throw new InvalidParameterException("ponto === null");
 		VerticeRotas no = vertices.get(v);
 		if(no == null){
 			no =  new VerticeRotas(v, ++numVertices);
@@ -51,10 +54,44 @@ public class GrafoRotas {
 		return no;
 	}
 	
-	public void inserirCaminho(Rota caminho, double custo, double perigo){
-		if(caminho == null)
+	public void inserirRota(Rota rota, double custo, double perigo){
+		if(rota == null)
 			throw new InvalidParameterException();
-		inserirAresta(caminho, custo, perigo);
+		inserirAresta(rota, custo, perigo);
+	}
+	
+	public void inserirRota(Rota rota, double custo, CalculoPerigo calcPerigo){
+		if(rota == null)
+			throw new InvalidParameterException();
+		
+		//ver se passa por vertices existentes
+		List<Ponto> verticesExistentes = new ArrayList<Ponto>();
+		for(VerticeRotas v : vertices.values()) {
+			if(rota.passaPor(v.ponto)) {
+				verticesExistentes.add(v.ponto);
+			}
+		}
+		verticesExistentes.remove(rota.getInicio());
+		verticesExistentes.remove(rota.getFim());
+		List<Rota> rotas1 = rota.dividirAprox(verticesExistentes);
+		
+		//dividir em partes pequenas
+		List<Rota> rotas2 = new ArrayList<Rota>();
+		for(Rota r : rotas1) {
+			List<Rota> partes = r.dividir(LogicaRotaSegura.GRANULARIDADE_ROTAS);
+			rotas2.addAll(partes);
+		}
+		
+		//unir partes coincidentes
+		//TODO
+
+		//adicionar cada parte
+		for(Rota parte : rotas2) {
+			if(parte.size() == 0) continue;
+			double custoProporcional = custo*parte.distanciaPercorrida()/rota.distanciaPercorrida();
+			double perigoParte = calcPerigo.perigo(parte);
+			inserirAresta(parte, custoProporcional, perigoParte);
+		}
 	}
 		
 	/*public void inserirCaminho(Caminho caminho, double custo, double perigo){
@@ -158,7 +195,7 @@ public class GrafoRotas {
 		}
 		for(VerticeRotas v : nos){
 			for(ArestaRotas r : v.arestasSaindo){
-				g.inserirCaminho(r.rota.clone(), r.custoGM, r.perigo);
+				g.inserirRota(r.rota.clone(), r.custoGM, r.perigo);
 			}
 		}
 		return g;
@@ -445,6 +482,16 @@ public class GrafoRotas {
 			caminhos.addAll(todosCaminhosSubrotina(v, destino, caminhoAteVEPeso));
 		}
 		return caminhos;
+	}
+	
+	
+	public List<Rota> intersecao(Rota rota){
+		List<Rota> intersecoes = new ArrayList<Rota>();
+		for(Rota rotaDoGrafo : getRotas()) {
+			List<Rota> partes = rota.intersecao(rotaDoGrafo);
+			intersecoes.addAll(partes);
+		}
+		return intersecoes;
 	}
 	
 	

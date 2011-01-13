@@ -33,8 +33,8 @@ public class AlternativasGrafoDeCaminhosLivres extends AlternativasGrafoVisibili
 			double perigoAntes = calcPerigo.perigo(rotaAntes);
 			double perigoDepois = calcPerigo.perigo(rotaDepois);
 			double limitePerigo = calcPerigo.perigo(rota);
-			List<Rota> rotasPromissoras = calcularRotas(i, f, limitePerigo);
-			for(Rota desvio : rotasPromissoras){
+			List<Rota> desvios = calcularRotas(i, f, limitePerigo);
+			for(Rota desvio : desvios){
 				double perigoDesvio = calcPerigo.perigo(desvio);
 				double peso = perigoAntes + perigoDesvio + perigoDepois;
 				RotaPromissora rotaPromissora = new RotaPromissora(desvio, peso);

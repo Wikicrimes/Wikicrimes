@@ -14,7 +14,6 @@ import org.wikicrimes.util.rotaSegura.logica.modelo.RotaPromissora;
 import org.wikicrimes.util.rotaSegura.logica.modelo.GrafoRotas.NaoTemCaminhoException;
 import org.wikicrimes.util.rotaSegura.testes.TesteRotasImg;
 
-
 public class AlternativasPontoDesvio extends GeradorDeAlternativasAbstrato{
 
 	private static final int DETALHE_PONTOS_PROMISSORES = PropertiesLoader.getInt("saferoutes.promising_points_grid_resolution");

@@ -19,6 +19,9 @@ public class KernelMap {
 	private double mediaDens = Double.NaN;
 	private double minDens = Double.NaN;
 	
+	private static final int defaultNodeSize = 5;
+	private static final int defaultBandwidth = 20;
+	
 	/**
 	 * @param <b>gridNode</b> 
 	 * Tamanho do no da grade.
@@ -35,6 +38,10 @@ public class KernelMap {
 		this.bandwidth = bandwidth;
 		this.bounds = bounds;
 		this.densidade = calcDensidade(pontos);
+	}
+	
+	public KernelMap(Rectangle bounds, List<Point> pontos) {
+		this(defaultNodeSize, defaultBandwidth, bounds, pontos);
 	}
 	
 	public KernelMap(double[][] densidades, int nodeSize, Rectangle bounds){
@@ -196,8 +203,14 @@ public class KernelMap {
 	}
 	
 	public boolean taNoHotspot(Point celula){
-		if(celula.x >= getCols() || celula.y >= getRows()) return false;
-		return densidade[celula.x][celula.y] >= maxDens/2;
+		return taNoHotspot(celula, 0.5f);
+	}
+	
+	public boolean taNoHotspot(Point celula, float threshold){
+		if(celula.x < 0 || celula.x >= getCols() 
+				|| celula.y < 0 || celula.y >= getRows())
+			return false;
+		return densidade[celula.x][celula.y] >= maxDens*threshold;
 	}
 	
 	@Override

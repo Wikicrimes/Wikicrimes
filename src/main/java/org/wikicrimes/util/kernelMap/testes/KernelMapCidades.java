@@ -13,7 +13,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,10 +29,11 @@ import org.wikicrimes.model.PontoLatLng;
 import org.wikicrimes.service.CrimeService;
 import org.wikicrimes.servlet.ServletKernelMap;
 import org.wikicrimes.util.MapaChaveDupla;
-import org.wikicrimes.util.kernelMap.AvaliacaoPerigo;
 import org.wikicrimes.util.kernelMap.KernelMap;
-import org.wikicrimes.util.kernelMap.KernelMapRenderer;
+import org.wikicrimes.util.kernelMap.Suavizador;
 import org.wikicrimes.util.kernelMap.LatLngBoundsGM;
+import org.wikicrimes.util.kernelMap.renderer.CellBasedRenderer;
+import org.wikicrimes.util.kernelMap.renderer.TransparentToColor;
 
 //pro Douglas, 04/08/2010
 public class KernelMapCidades extends HttpServlet {
@@ -41,7 +41,7 @@ public class KernelMapCidades extends HttpServlet {
 	private static final int NODE_SIZE = 5;
 	private static final double BANDWIDTH = 30;
 	private static final int ZOOM = 13;
-	private final String dir = "/home/carlos/Desktop/testes/";
+	private final String dir = "/home/victor/Desktop/teste2/";
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp){
@@ -222,9 +222,10 @@ public class KernelMapCidades extends HttpServlet {
 	}
 	
 	private void salvaImagem(KernelMap kernel, String nome){
-		KernelMapRenderer renderer = new KernelMapRenderer(kernel);
+		CellBasedRenderer scheme = new TransparentToColor(kernel, Color.RED);
+		Suavizador renderer = new Suavizador(kernel);
 		try {
-			ImageIO.write((RenderedImage)renderer.pintaKernel(), "PNG" , new File(dir,nome + ".png"));
+			ImageIO.write((RenderedImage)renderer.pintaKernel(scheme), "PNG" , new File(dir,nome + ".png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -254,8 +255,9 @@ public class KernelMapCidades extends HttpServlet {
 				
 				//renderiza
 				KernelMap kernelSetor = new KernelMap(gridSetor, kernel.getNodeSize(), new Rectangle(tamanhoSetor, tamanhoSetor)); 
-				KernelMapRenderer renderer = new KernelMapRenderer(kernelSetor);
-				Image img = renderer.pintaKernel();
+				Suavizador renderer = new Suavizador(kernelSetor);
+				CellBasedRenderer scheme = new TransparentToColor(kernel, Color.RED);
+				Image img = renderer.pintaKernel(scheme);
 				g.drawImage(img, x*tamanhoSetor, y*tamanhoSetor, tamanhoSetor, tamanhoSetor, null);
 				g.setColor(Color.BLACK);
 				g.drawRect(x*tamanhoSetor, y*tamanhoSetor, tamanhoSetor, tamanhoSetor);

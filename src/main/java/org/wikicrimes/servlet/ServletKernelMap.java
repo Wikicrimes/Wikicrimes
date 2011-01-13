@@ -1,5 +1,6 @@
 package org.wikicrimes.servlet;
 
+import java.awt.Color;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.RenderedImage;
@@ -31,11 +32,13 @@ import org.wikicrimes.model.Relato;
 import org.wikicrimes.service.CrimeService;
 import org.wikicrimes.util.ServletUtil;
 import org.wikicrimes.util.kernelMap.KernelMap;
-import org.wikicrimes.util.kernelMap.KernelMapRenderer;
+import org.wikicrimes.util.kernelMap.Suavizador;
 import org.wikicrimes.util.kernelMap.LatLngBoundsGM;
 import org.wikicrimes.util.kernelMap.PropertiesLoader;
+import org.wikicrimes.util.kernelMap.renderer.CellBasedRenderer;
+import org.wikicrimes.util.kernelMap.renderer.TransparentToColor;
+import org.wikicrimes.util.kernelMap.renderer.WhiteToRed;
 import org.wikicrimes.util.rotaSegura.geometria.Ponto;
-import org.wikicrimes.util.rotaSegura.testes.TesteCenariosRotas;
 import org.wikicrimes.web.FiltroForm;
 
 /**
@@ -120,9 +123,14 @@ public class ServletKernelMap extends HttpServlet {
 			
 			List<Point> pontos = recuperaPontosWikiMapps(limitesLatlng,request.getParameter("url"),request.getParameter("tm"),zoom);
 			KernelMap kernel = new KernelMap(GRID_NODE, BANDWIDTH, limitesPixel, pontos);			
-			KernelMapRenderer kRend = new KernelMapRenderer(kernel);
+			Suavizador kRend = new Suavizador(kernel);
 			boolean isIE = ServletUtil.isClientUsingIE(request); 
-			RenderedImage imagem = (RenderedImage)kRend.pintaKernel(zoom, isIE);
+			CellBasedRenderer scheme;
+			if(isIE)
+				scheme = new WhiteToRed(kernel);
+			else
+				scheme = new TransparentToColor(kernel, Color.RED);
+			RenderedImage imagem = (RenderedImage)kRend.pintaKernelSuavizado(scheme, zoom);
 			return imagem;	
 			
 		}else{
@@ -147,9 +155,14 @@ public class ServletKernelMap extends HttpServlet {
 //			/*TESTE CENARIO*/TesteCenariosRotas.setResult("densMedia", kernel.getMediaDens());
 //			/*TESTE CENARIO*/TesteCenariosRotas.setResult("densMax", kernel.getMaxDens());
 			
-			KernelMapRenderer kRend = new KernelMapRenderer(kernel);
+			Suavizador kRend = new Suavizador(kernel);
 			boolean isIE = ServletUtil.isClientUsingIE(request); 
-			RenderedImage imagem = (RenderedImage)kRend.pintaKernel(zoom, isIE);
+			CellBasedRenderer scheme;
+			if(isIE)
+				scheme = new WhiteToRed(kernel);
+			else
+				scheme = new TransparentToColor(kernel, Color.RED);
+			RenderedImage imagem = (RenderedImage)kRend.pintaKernelSuavizado(scheme, zoom);
 			sessao.setAttribute(IMAGEM_KERNEL, imagem);
 			return imagem;
 		

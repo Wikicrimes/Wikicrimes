@@ -1,5 +1,8 @@
 package org.wikicrimes.util.kernelMap;
 
+import java.awt.Point;
+import java.awt.Rectangle;
+
 import org.wikicrimes.model.PontoLatLng;
 
 /**
@@ -46,6 +49,30 @@ public class LatLngBoundsGM {
 	public LatLngBoundsGM(PontoLatLng superiorEsquerdo, PontoLatLng inferiorDireito){
 		this(superiorEsquerdo.getLatitude(), inferiorDireito.getLatitude(), 
 				inferiorDireito.getLongitude(), superiorEsquerdo.getLongitude());
+	}
+	
+	public LatLngBoundsGM(PontoLatLng centro, int widthPixel, int heightPixel, int zoom) {
+		Point centroPixel = centro.toPixel(zoom);
+		Point noPixel = new Point(centroPixel.x - widthPixel/2, centroPixel.y - heightPixel/2);
+		Point sePixel = new Point(centroPixel.x + widthPixel/2, centroPixel.y + heightPixel/2);
+		PontoLatLng noLatLng = PontoLatLng.fromPixel(noPixel, zoom);
+		PontoLatLng seLatLng = PontoLatLng.fromPixel(sePixel, zoom);
+		this.norte = noLatLng.lat;
+		this.sul = seLatLng.lat;
+		this.leste = seLatLng.lng;
+		this.oeste = noLatLng.lng;
+		this.width = norte-sul;
+		this.height = leste-oeste;
+	}
+	
+	public Rectangle toPixel(int zoom) {
+		int north = new PontoLatLng(norte, 0.0).toPixel(zoom).y;
+		int south = new PontoLatLng(sul, 0.0).toPixel(zoom).y;
+		int east = new PontoLatLng(0.0,leste).toPixel(zoom).x;
+		int west = new PontoLatLng(0.0,oeste).toPixel(zoom).x;
+		int width = east - west; ;
+		int height = south - north;
+		return new Rectangle(west, north, width, height);
 	}
 	
 	@Override

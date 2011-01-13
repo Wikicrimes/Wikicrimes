@@ -3,6 +3,7 @@ package org.wikicrimes.util.rotaSegura.geometria;
 import java.awt.Color;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -423,8 +424,21 @@ public class Rota {
 		return sub;
 	}
 	
-	public List<Rota> dividir(Ponto... pontos){
+	public Rota subRotaPorVertices(Ponto p1, Ponto p2) {
+		int i1 = checarIndice(p1);
+		int i2 = checarIndice(p2);
+		if(i1 >= i2) throw new InvalidParameterException("p2 nao esta depois de p1");
+		
+		List<Ponto> sublista = pontos.subList(i1, i2+1);
+		return new Rota(sublista);
+	}
+	
+	public List<Rota> dividirEmPontosExistentes(Ponto... pontos){
 		List<Rota> partes = new LinkedList<Rota>();
+		if(pontos.length == 0) {
+			partes.add(this);
+			return partes;
+		}
 		Ponto p1 = pontos[0];
 		Ponto p2 = null;
 		for(int i=1; i<pontos.length; i++){
@@ -436,17 +450,55 @@ public class Rota {
 		return partes;
 	}
 	
+	public List<Rota> dividirAprox(List<Ponto> pontos){
+		return dividirAprox(pontos.toArray(new Ponto[pontos.size()]));
+	}
+	
 	public List<Rota> dividirAprox(Ponto... pontos){
 		Ponto[] pontosAprox = new Ponto[pontos.length]; 
 		for(int i=0; i<pontos.length; i++){
 			Ponto p = pontos[i];
 			Ponto pAprox = getPontoPerto(p, MAX_APROXIMACAO);
+			if(pAprox == null && passaPor(p)){
+				try {
+					promoverPontoParaVertice(p);
+					pAprox = p;
+				} catch (PontoForaDoCaminhoException e) {
+					e.printStackTrace();
+				}
+			}
+			if(pAprox == null) throw new AssertionError();
 			pontosAprox[i] = pAprox;
 		}
-		return dividir(pontosAprox);
+		return dividirEmPontosExistentes(pontosAprox);
 	}
 	
-	public Ponto intersecao(Segmento segm){
+	public List<Rota> dividir(double tamanhoParte){
+		List<Ponto> ptsDivisores = new ArrayList<Ponto>();
+		ptsDivisores.add(getInicio());
+		double posicao = 0;
+		double tamanho = distanciaPercorrida();
+		Ponto ptAnterior = getInicio();
+		while(posicao+tamanhoParte < tamanho) {
+			Ponto p = buscarPonto(ptAnterior, tamanhoParte);
+			ptsDivisores.add(p);
+			posicao += tamanhoParte;
+			ptAnterior = p;
+		}
+		ptsDivisores.add(getFim());
+		
+		//TODO testar se ta entrando algum elemento nulo em ptsDivisores
+		
+		Ponto[] arrayPtsDivisores = ptsDivisores.toArray(new Ponto[ptsDivisores.size()]);
+		return dividirAprox(arrayPtsDivisores);
+	}
+	
+	public List<Rota> intersecao(Rota rota){
+		//TODO
+		throw new UnsupportedOperationException();
+	}
+	
+	public Ponto intersecaoPonto(Segmento segm){
 		for(Segmento s : getSegmentosReta()){
 			Ponto p = segm.intersecao(s);
 			if(p != null)
@@ -455,9 +507,9 @@ public class Rota {
 		return null;
 	}
 	
-	public Ponto intersecao(Rota rota){
+	public Ponto intersecaoPonto(Rota rota){
 		for(Segmento s : getSegmentosReta()){
-			Ponto p = rota.intersecao(s);
+			Ponto p = rota.intersecaoPonto(s);
 			if(p != null)
 				return p;
 		}
@@ -485,48 +537,63 @@ public class Rota {
 		partesDiferentes.add(resto);
 		return partesDiferentes;
 	}
+	
+	public Ponto buscarPonto(Ponto partida, double dist) {
+		try {
+			promoverPontoParaVertice(partida);
+			return buscarPontoExistente(partida, dist);
+		} catch (PontoForaDoCaminhoException e) {
+			e.printStackTrace();
+			throw new InvalidParameterException("a rota nao passa pelo Ponto 'partida'");
+		}
+	}
 
 	/**
 	 * Percorre a rota a partir do início por "dist" unidades de comprimento e
 	 * retorna o Ponto resultante
 	 */
-	public Ponto buscarPonto(double dist) {
-		return buscarPonto(getInicio(), dist);
+	public Ponto buscarPontoExistente(double dist) {
+		return buscarPontoExistente(getInicio(), dist);
 	}
 
 	/**
 	 * Percorre a rota a partir do Ponto "partida" por "dist" unidades de
 	 * comprimento e retorna o Ponto resultante
 	 */
-	public Ponto buscarPonto(Ponto partida, double dist) {
+	public Ponto buscarPontoExistente(Ponto partida, double dist) {
 		//TODO da pra implementar isso melhor, tipo busca binária
-		boolean chegou = false; // se ja passou pelo ponto "partida"
-		double cont = .0;
-		for (int i = 0; i < pontos.size() - 1; i++) {
+		double distRota = this.distanciaPercorrida();
+		if(dist > distRota)
+			throw new InvalidParameterException("A distancia passada para a busca eh maior do que o tamanho da rota");
+		
+		Rota partidaAteFim = subRotaPorVertices(partida, getFim());
+		double distParte = partidaAteFim.distanciaPercorrida();
+		if(dist > distParte)
+			throw new InvalidParameterException("A distancia passada para a busca eh maior do que o tamanho da rota depois de 'partida'");
+		
+		List<Ponto> pontos = partidaAteFim.getPontos();
+		double cont = distRota - distParte;
+		for (int i = 0; i < pontos.size()-1; i++) {
 			Ponto p1 = pontos.get(i);
 			Ponto p2 = pontos.get(i + 1);
-			if (p1.equals(partida))
-				chegou = true;
 			Segmento s = new Segmento(p1, p2);
 			double compS = s.comprimento();
-			if (chegou) {
-				cont += compS;
-				if (cont > dist) {// o contador acabou de passar da dist, entao estamos no segmento que contem o ponto
-					// tem dois triangulos proporcionais e falta só 2 lados de um deles (os catetos do triangulo pequeno)
-					double hipotGrande = compS;
-					double hipotPequena = dist - cont + hipotGrande; // pedaço de S q ainda entra
-					double razao = hipotGrande / hipotPequena; // razao entre o S inteiro e o pedaço
-					double catetoXGrande = p2.x - p1.x;
-					double catetoYGrande = p2.y - p1.y;
-					double catetoXPeq = catetoXGrande / razao;
-					double catetoYPeq = catetoYGrande / razao;
-					double x = p1.x + catetoXPeq;
-					double y = p1.y + catetoYPeq;
-					return new Ponto((int) Math.round(x), (int) Math.round(y));
-				}
+			cont += compS;
+			if (cont > dist) {// o contador acabou de passar da dist, entao estamos no segmento que contem o ponto
+				// tem dois triangulos proporcionais e falta só 2 lados de um deles (os catetos do triangulo pequeno)
+				double hipotGrande = compS;
+				double hipotPequena = dist - cont + hipotGrande; // pedaço de S q ainda entra
+				double razao = hipotGrande / hipotPequena; // razao entre o S inteiro e o pedaço
+				double catetoXGrande = p2.x - p1.x;
+				double catetoYGrande = p2.y - p1.y;
+				double catetoXPeq = catetoXGrande / razao;
+				double catetoYPeq = catetoYGrande / razao;
+				double x = p1.x + catetoXPeq;
+				double y = p1.y + catetoYPeq;
+				return new Ponto((int) Math.round(x), (int) Math.round(y));
 			}
 		}
-		return null;
+		throw new AssertionError();
 	}
 
 	/**
@@ -585,6 +652,14 @@ public class Rota {
 			pontos.addAll(rota.getPontos());
 		}
 		return Ponto.getBounds(pontos);
+	}
+	
+	public int checarIndice(Ponto p) {
+		int i = pontos.indexOf(p);
+		if(i == -1)
+			throw new InvalidParameterException("p nao eh vertice da rota");
+		else
+			return i;
 	}
 
 }

@@ -99,6 +99,7 @@ public class AlternativasGrafoVisibilidade extends GeradorDeAlternativasAbstrato
 	//      < x >              V > x >
 	//                           V > 
 	public List<Poligono> getPoligonosHotspots(Rectangle bounds, int verticesPulados){
+		//TODO passar a usar a classe HotspotContour e tirar esse metodo daqui
 		
 		//obs: tem um flood fill soh pra marcar as celulas dos hotspots como vistas
 		//     mas pra encontrar o contorno tem q ser caminhando pela borda

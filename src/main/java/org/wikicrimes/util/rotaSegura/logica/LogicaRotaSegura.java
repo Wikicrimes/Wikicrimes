@@ -25,7 +25,7 @@ public class LogicaRotaSegura {
 	private CalculoPerigo calcPerigo;
 	
 	//PARAMETROS
-	static final int GRANULARIDADE_ROTAS = PropertiesLoader.getInt("saferoutes.route_granularity");
+	public static final int GRANULARIDADE_ROTAS = PropertiesLoader.getInt("saferoutes.route_granularity");
 	
 	public LogicaRotaSegura(KernelMap kernel){
 		this.kernel = kernel;
@@ -46,7 +46,7 @@ public class LogicaRotaSegura {
 		boolean eraToleravel = true;
 		for(int i=1; i*GRANULARIDADE_ROTAS<=tam; i++){
 			double dist = i*GRANULARIDADE_ROTAS;
-			fim = rota.buscarPonto(dist);
+			fim = rota.buscarPontoExistente(dist);
 			Rota r = rota.subRota(inicio, fim);
 			if(eraToleravel != calcPerigo.isToleravel(r)){
 				if(anterior != null){ //nao é a primeira iteração
@@ -85,7 +85,7 @@ public class LogicaRotaSegura {
 		boolean eraSeguro = true;
 		for(int i=1; i*GRANULARIDADE_ROTAS<=tam; i++){
 			double dist = i*GRANULARIDADE_ROTAS;
-			fim = caminho.buscarPonto(dist);
+			fim = caminho.buscarPontoExistente(dist);
 			double dif = calcPerigo.perigo(fim)-tol;
 			if(eraSeguro != dif>0){
 				Rota c = caminho.subRota(inicio, fim);
@@ -116,25 +116,36 @@ public class LogicaRotaSegura {
 		}
 		
 		if(iteracao == 0){
+			
+			//TODO rodar essas 2 estrategias denovo em outras iteracoes, 
+			//atualizando soh as ligacoes da origem e destino pro grafo gerado na estrategia 
+			
 			Queue<Rota> altCL = new AlternativasGrafoDeCaminhosLivres(this).getAlternativas(rota);
 //			/*DEBUG*/TesteRotasImg.teste(altCL, "criarAlternativas, CL", this);
 			rotas.addAll(altCL);
+			
+			Queue<Rota> altGV = new AlternativasGrafoVisibilidade(this).getAlternativas(rota);
+//			/*DEBUG*/TesteRotasImg.teste(altGV, "criarAlternativas, GV", this);
+			rotas.addAll(altGV);
+			
+			rotas = dividirRotasGrandes(rotas);
+			
 		}
+		
 		Queue<Rota> altPD = new AlternativasPontoDesvio(this).getAlternativas(rota);
 //		/*DEBUG*/TesteRotasImg.teste(altPD, "criarAlternativas, PD", this);
 		rotas.addAll(altPD);
 		
-		Queue<Rota> altGV = new AlternativasGrafoVisibilidade(this).getAlternativas(rota);
-//		/*DEBUG*/TesteRotasImg.teste(altGV, "criarAlternativas, GV", this);
-		rotas.addAll(altGV);
-		
-		rotas = quebrarRotasGrandes(rotas);
 //		/*DEBUG*/TesteRotasImg.teste(rotas, "criarAlternativas, resultado", this);
 		return rotas;
 	}
 	
-	private Queue<Rota> quebrarRotasGrandes(Queue<Rota> rotas){
-		Queue<Rota> rotas2 = new PriorityQueue<Rota>();
+	/**
+	 * Caso uma rota tenha mais pontos intermediarios do que o limite permitido pela api 
+	 * do GoogleMaps, ela eh dividida em partes menores 
+	 */
+	private Queue<Rota> dividirRotasGrandes(Queue<Rota> rotas){
+		Queue<Rota> rotasDivididas = new PriorityQueue<Rota>();
 		while(!rotas.isEmpty()){
 			RotaPromissora r = (RotaPromissora)rotas.poll();
 			int tamanho = r.size();
@@ -144,19 +155,20 @@ public class LogicaRotaSegura {
 				if(tamanho%max > 0) numPedacos++;
 				for(int i=0; i<numPedacos; i+=max-1){
 					Rota pedaco = new Rota(r.getPontos().subList(i, i+max));
-					rotas2.add(new RotaPromissora(pedaco, r.getPeso()));
+					rotasDivididas.add(new RotaPromissora(pedaco, r.getPeso()));
 				}
 			}else{
-				rotas2.add(r);
+				rotasDivididas.add(r);
 			}
 		}
-		return rotas2;
+		return rotasDivididas;
 	}
 	
 	public void limpar(){
 		grafo = null;
 		kernel = null;
 		calcPerigo = null;
+		rotasJaPassadas = new ArrayList<Rota>();
 	}
 	
 	public GrafoRotas getGrafo() {

@@ -167,6 +167,17 @@ public class ServletRotaSeguraServerSide extends HttpServlet{
 			
 			if(terminado || rotasCandidatas.isEmpty()){
 				List<Rota> rotaResposta = grafo.verticesKMenoresCaminhos(numRotasResposta);
+//				/*TESTE CENARIO*/if(terminado){
+//				/*TESTE CENARIO*/long t2 = System.currentTimeMillis();
+//				/*TESTE CENARIO*/long tempo = (t2-t1)/1000;
+//				/*TESTE CENARIO*/TesteCenariosRotas.setResult("tempo", tempo);
+//				/*TESTE CENARIO*/double distFin = melhorCaminho.distanciaPercorrida();
+//				/*TESTE CENARIO*/TesteCenariosRotas.setResult("distFin", distFin);
+//				/*TESTE CENARIO*/double qualiFin = logicaRota.getCalculoPerigo().perigo(melhorCaminho);
+//				/*TESTE CENARIO*/TesteCenariosRotas.setResult("qualiFin", qualiFin);
+//				/*TESTE CENARIO*/TesteCenariosRotas.setResult("reqGM", iteracao);
+//				/*TESTE CENARIO*/TesteCenariosRotas.salvar();
+//				/*TESTE CENARIO*/}
 				respostaFim(request, response, rotaResposta, formato);
 				if(!terminado){
 					System.err.println("***nao tem mais rotas alternativas");
@@ -174,17 +185,6 @@ public class ServletRotaSeguraServerSide extends HttpServlet{
 				}
 			}
 
-//			/*teste*/if(terminado){
-//			/*teste*/long t2 = System.currentTimeMillis();
-//			/*teste*/long tempo = (t2-t1)/1000;
-//			/*teste*/TesteCenariosRotas.setResult("tempo", tempo);
-//			/*teste*/double distFin = melhorCaminho.distanciaPercorrida();
-//			/*teste*/TesteCenariosRotas.setResult("distFin", distFin);
-//			/*teste*/double qualiFin = logicaRota.getCalculoPerigo().perigo(melhorCaminho);
-//			/*teste*/TesteCenariosRotas.setResult("qualiFin", qualiFin);
-//			/*teste*/TesteCenariosRotas.setResult("reqGM", iteracao);
-//			/*teste*/TesteCenariosRotas.salvar();
-//			/*teste*/}
 			
 		}
 	}
@@ -205,7 +205,7 @@ public class ServletRotaSeguraServerSide extends HttpServlet{
 			Rota rota = rotasNovas.get(i);
 			double custo = rota.distanciaPercorrida(); 
 			double perigo = calcPerigo.perigo(rota);
-			grafo.inserirCaminho(rota, custo, perigo);
+			grafo.inserirRota(rota, custo, perigo);
 			rotasNovas.set(i, new RotaGM(rota, custo, perigo));
 		}
 		rotasCandidatas.reponderar();

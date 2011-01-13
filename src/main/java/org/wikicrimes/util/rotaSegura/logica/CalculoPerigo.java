@@ -17,7 +17,6 @@ import org.wikicrimes.util.rotaSegura.logica.modelo.RotaGM;
 public class CalculoPerigo {
 
 	private KernelMap kernel;
-	private Double baseTolerancia;
 	
 	//PARAMETROS
 	static final double FATOR_TOLERANCIA = PropertiesLoader.getDouble("saferoutes.tolerance_factor");
@@ -26,19 +25,61 @@ public class CalculoPerigo {
 	
 	public CalculoPerigo(LogicaRotaSegura logica) {
 		this.kernel = logica.getKernel();
-		this.baseTolerancia = (1-INFLUENCIA_DISTANCIA) * kernel.getMediaDens()/kernel.getMaxDens();
 	}
 	
+	
+	/**
+	 * Avalia se uma rota eh toleravel ou nao, levando em consideracao
+	 * o valor de perigo e a tolerancia associados a ela.
+	 * 
+	 * Definicao:
+	 * Sejam	p(r) :- perigo da rota r (ver metodo "perigo(Rota)")
+	 * 			t(c) :- tolerancia do cenario c (ver metodo "tolerancia(Rota)")
+	 * 
+	 * Se r eh uma rota no cenario c (origem e destino de r coincidem com os de c), entao
+	 * r eh toleravel se e só se p(r) eh menor ou igual a t(c)
+	 */
 	public boolean isToleravel(Rota rota){
-		double parcelaDistancia = INFLUENCIA_DISTANCIA * rota.distanciaRetaOD(); 
-		double tolerancia = (baseTolerancia + parcelaDistancia) * FATOR_TOLERANCIA;
-		return perigo(rota) <= tolerancia;
+		return perigo(rota) <= tolerancia(rota);
 	}
-
+	
+	/**
+	 * Definicao:
+	 * Sejam	c :- um cenario composto por origem, destino, area e mapa de kernel
+	 * 			t(c) :- tolerancia do cenario c
+	 * 			Lmin(c) :- distancia entre a origem e o destino de c
+	 * 			Dm(c) :- densidade media no mapa de kernel de c
+	 * 			Dmax(c) :- densidade maxima no mapa de kernel de c
+	 * 			Dn(c) = Dm(c)/Dmax(c) :- densidade normalizada
+	 * 			k :- constante que representa a influencia da distancia no resultado
+	 * 			F :- fator de ajuste
+	 * 
+	 * t(c) = Lmin(c) * (k + Dn(c)) * F
+	 */
+	public double tolerancia(Rota rota) {
+		double distMin = rota.distanciaRetaOD();
+		double densMedia = kernel.getMediaDens();
+		double densMax = kernel.getMaxDens();
+		double ajuste = FATOR_TOLERANCIA;
+		double inflDist = INFLUENCIA_DISTANCIA;
+		return distMin*(inflDist+densMedia/densMax)*ajuste;
+	}
+	
 	public double perigo(RotaGM rota){
 		return rota.getPerigo();
 	}
 	
+	/**
+	 * Função que avalia o perigo de uma rota, levando em consideração
+	 * a densidade dos locais por onde ela passa e a distancia total 
+	 * percorrida.
+	 * 
+	 * Definicao:
+	 * Sejam	p(s) :- perigo do segmento s (ver metodo "perigo(Segmento)")
+	 * 			p(r) :- perigo da rota r
+	 *   
+	 * p(r) = Somatorio{p(s)} para cada s contido em r
+	 */
 	public double perigo(Rota rota){
 		
 		if(rota instanceof RotaGM)
@@ -47,17 +88,27 @@ public class CalculoPerigo {
 		if(rota.distanciaPercorrida() == 0)
 			return 0;
 		
-		double valor = 0;
+		double perigoTotal = 0;
 		for(Segmento segm : rota.getSegmentosReta()){
-			valor += perigo(segm); 
+			perigoTotal += perigo(segm); 
 		}
 		
-		return valor;
+		return perigoTotal;
 	}
 	
 	/**
-	 * Soma o valor de perigo de cada célula cortada pelo Segmento.
-	 * Cada valor é multiplicado (ponderado) pelo tamanho da parte do segmento que passa em cima da célula
+	 * Função que avalia o perigo de um segmento de reta, levando em consideração
+	 * a densidade das celulas do mapa de kernel cortadas por ele e seu comprimento.
+	 * 
+	 * Definicoes:
+	 * Sejam	d(c) :- densidade normalizada da celula c (densidade de c / densidade maxima)
+	 * 			t(s) :- tamanho do segmento s contido na celula c
+	 * 			k :- constante que representa a influencia da distancia no resultado 
+	 * 			p(c,s) :- contribuicao da celula c para o perigo do segmento s
+	 * 			p(s) :- perigo do segmento s
+	 *   
+	 * p(c,s) = (k + d(c))*t(s,c)
+	 * p(s) = Somatorio{p(ci,s)} para cada ci cortada por s
 	 */
 	public double perigo(Segmento segm){
 		
@@ -83,20 +134,24 @@ public class CalculoPerigo {
 		
 		//corrigir o caso em q o segm extrapola o mapa de kernel (rota saíndo do viewport do wikicrimes)
 		//TODO talvez seja melhor impedir q isso aconteça, ver depois
-		if(xIni < 0) xIni = 0;
-		if(xFim >= kernelCols) xFim = kernelCols-1;
-		if(yIni < 0) yIni = 0;
-		if(yFim >= kernelRows) yFim = kernelRows-1;
+//		if(xIni < 0) xIni = 0;
+//		if(xFim >= kernelCols) xFim = kernelCols-1;
+//		if(yIni < 0) yIni = 0;
+//		if(yFim >= kernelRows) yFim = kernelRows-1;
+		xIni = NumerosUtil.limitar(xIni, 0, kernelCols-1);
+		xFim = NumerosUtil.limitar(xFim, 0, kernelCols-1);
+		yIni = NumerosUtil.limitar(yIni, 0, kernelRows-1);
+		yFim = NumerosUtil.limitar(yFim, 0, kernelRows-1);
 		
 		//largura e altura do retangulo que contem o segmento
 		int segmCols = xFim-xIni+1;
 		int segmRows = yFim-yIni+1;
 		double razao = (double)segmRows/segmCols;
 
-		/*TESTE*/List<Rectangle> cels = new ArrayList<Rectangle>();
+//		/*TESTE*/List<Rectangle> cels = new ArrayList<Rectangle>();
 		
 		//somar os valores de perigo (ponderados) de cada célula
-		double valor = 0;
+		double contribuicoesDeDensidade = 0;
 		if(xIni==xFim || yIni==yFim){ //passa em todas as celulas do retangulo
 			//um dos 2 fors a seguir so roda uma vez 
 			for(int i=xIni; i<=xFim; i++){
@@ -104,8 +159,8 @@ public class CalculoPerigo {
 					Rectangle cel = new Rectangle(bounds.x + i*node, bounds.y + j*node, node, node);
 					double peso = tamanhoSegmCortandoQuadrado(segm, cel);
 					double d = dens[i][j];
-					valor += d*peso;
-					/*TESTE*/cels.add(cel);
+					contribuicoesDeDensidade += d*peso;
+//					/*TESTE*/cels.add(cel);
 				}
 			}
 		}else{ //evita as celulas que estao longe da diagonal do retangulo
@@ -116,12 +171,13 @@ public class CalculoPerigo {
 				int jFim = (int)Math.ceil(meio + razao);
 				jIni = NumerosUtil.limitar(jIni, yIni, yFim);
 				jFim = NumerosUtil.limitar(jFim, yIni, yFim);
+//				/*DEBUG*/System.out.println("jIni=" + jIni + ", jFim=" + jFim + ", yIni=" + yIni + ", yFim=" + yFim);
 				for(int j=jIni; j<=jFim; j++){
 					Rectangle cel = new Rectangle(bounds.x + i*node, bounds.y + j*node, node, node);
 					double peso = tamanhoSegmCortandoQuadrado(segm, cel);
 					double d = dens[i][j];
-					valor += d*peso;
-					/*TESTE*/cels.add(cel);
+					contribuicoesDeDensidade += d*peso;
+//					/*TESTE*/cels.add(cel);
 				}
 			}
 		}
@@ -134,11 +190,11 @@ public class CalculoPerigo {
 //		/*TESTE*/teste.refresh();
 		
 		//dosar a influencia do perigo e da distancia
-		double parcelaPerigo = (1-INFLUENCIA_DISTANCIA)*valor/kernel.getMaxDens();
+		double parcelaPerigo = contribuicoesDeDensidade/kernel.getMaxDens();
 		double parcelaDistancia = INFLUENCIA_DISTANCIA*segm.comprimento();
-		valor = parcelaPerigo + parcelaDistancia;
+		double perigoDoSegmento = parcelaPerigo + parcelaDistancia;
 		
-		return valor;
+		return perigoDoSegmento;
 	}
 	
 	public double perigo(Ponto p){

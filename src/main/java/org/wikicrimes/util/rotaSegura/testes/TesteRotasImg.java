@@ -22,7 +22,9 @@ import java.util.Queue;
 import javax.imageio.ImageIO;
 
 import org.wikicrimes.util.kernelMap.KernelMap;
-import org.wikicrimes.util.kernelMap.KernelMapRenderer;
+import org.wikicrimes.util.kernelMap.Suavizador;
+import org.wikicrimes.util.kernelMap.renderer.CellBasedRenderer;
+import org.wikicrimes.util.kernelMap.renderer.TransparentToColor;
 import org.wikicrimes.util.rotaSegura.geometria.Poligono;
 import org.wikicrimes.util.rotaSegura.geometria.Ponto;
 import org.wikicrimes.util.rotaSegura.geometria.Rota;
@@ -30,7 +32,6 @@ import org.wikicrimes.util.rotaSegura.geometria.Segmento;
 import org.wikicrimes.util.rotaSegura.logica.Grafo;
 import org.wikicrimes.util.rotaSegura.logica.LogicaRotaSegura;
 import org.wikicrimes.util.rotaSegura.logica.modelo.GrafoRotas;
-import org.wikicrimes.util.rotaSegura.logica.modelo.RotaGM;
 
 /**
  * Representa rotas graficamente, para testes. 
@@ -46,7 +47,7 @@ public class TesteRotasImg {
 	private final int RAIO_VERTICE = 5;
 	public static NumberFormat f = NumberFormat.getNumberInstance();
 	
-	private static String dir = "/home/victor/Desktop/testes/rotas 2010.09.17/novo teste";
+	private static String dir = TesteCenariosRotas.dir;
 	private Image imagem;
 	private String titulo;
 	
@@ -359,6 +360,7 @@ public class TesteRotasImg {
 			for(int i : pontos.keySet()){
 				g.setColor(Color.BLACK);
 				Ponto p = pontos.get(i);
+				/*DEBUG*/if(p == null) { System.out.println("***TesteRotasImg, pintaGrafo(): p=null, i="+i); continue;}
 				pintaPonto(g, p, RAIO_VERTICE); 
 				pintaString(g, String.valueOf(i), p, 5, 1);
 			}
@@ -409,8 +411,9 @@ public class TesteRotasImg {
 	
 	protected void pintaKernel(Graphics g, KernelMap kernel){
 		if(kernel != null){
-			KernelMapRenderer r = new KernelMapRenderer(kernel);
-			Image img = r.pintaKernel();
+			Suavizador r = new Suavizador(kernel);
+			CellBasedRenderer scheme = new TransparentToColor(kernel, Color.RED);
+			Image img = r.pintaKernel(scheme);
 			Rectangle kBounds = kernel.getBounds();
 			int dx1 = xGMtoTeste(limites.x) - BORDA;
 			int dy1 = yGMtoTeste(limites.y) - BORDA;

@@ -33,7 +33,8 @@ public class TesteCenariosRotas extends HttpServlet{
 	private static final String resultadosFileName = "resultados.txt";
 	private static final String cenariosFileName = "cenarios.txt";
 	private static final String paramFileName = "param.txt";
-	private static final String dir = "/home/victor/Desktop/testes/rotas 2010.09.17/novo teste";
+	private static final String toleranciasFileName = "tolerancias.txt";
+	public static final String dir = "/home/victor/Desktop/testes/rotas 2010.12.06/novo teste";
 	
 	private static Map<String,String> result = new HashMap<String, String>();
 	private static Map<String,String> param;
@@ -68,7 +69,7 @@ public class TesteCenariosRotas extends HttpServlet{
 //			b.append("\t" + result.get("distIni"));
 //			b.append("\t" + result.get("qualiIni"));
 			//parametros
-			b.append("\t" + getFatTol());
+//			b.append("\t" + getFatTol());
 			//resultados dependentes dos paramentros
 			b.append("\t" + result.get("distFin"));
 			b.append("\t" + result.get("qualiFin"));
@@ -77,6 +78,7 @@ public class TesteCenariosRotas extends HttpServlet{
 			b.append("\t" + result.get("erro"));
 			b.append("\n");
 			
+			result = new HashMap<String, String>();
 //			System.out.println(b.toString());
 
 			w.write(b.toString());
@@ -104,6 +106,7 @@ public class TesteCenariosRotas extends HttpServlet{
 			
 			}else if(acao.equals("cenarioSequencia")){
 				contCenario++;
+				TesteRotasImg.limpar();
 				String stringCenario = getStringCenarioSequencia();
 				if(stringCenario.equals("fim"))
 					contCenario = 0;
@@ -251,6 +254,24 @@ public class TesteCenariosRotas extends HttpServlet{
 			e.printStackTrace();
 		}
 
+	}
+	
+	public static void writeToleranceToFile(double tol, double distMin, double densMedia, double densMax) {
+		try {
+			File file = new File(dir, toleranciasFileName);
+			if(!file.exists()) {
+				file.createNewFile();
+				Writer w = new FileWriter(file, true);
+				w.append("#cen\ttol\tdistMin\tdensMedia\tdensMax\n");
+				w.close();
+			}
+			Writer w = new FileWriter(file, true);
+			String linha = idCenarioAtual + "\t" + tol + "\t" + distMin + "\t" + densMedia + "\t" + densMax + "\n"; 
+			w.append(linha);
+			w.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }

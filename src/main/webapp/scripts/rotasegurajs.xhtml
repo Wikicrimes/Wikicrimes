@@ -73,6 +73,7 @@
 		html += "</ul>";
 		div.innerHTML = html;
 		div.style.visibility = "visible";
+		idRotaSelecionada = null;
     }
 
     function escondeDivRotasSeguras(){
@@ -87,9 +88,9 @@
 			console.log('carregaRota(), i=' + i + ' maior q rotasSeguras.length=' + rotasSeguras.length);
 			return;
         }
-
+        
         //marcar item da lista
-		if(typeof(idRotaSelecionada) != 'undefined'){
+		if(typeof(idRotaSelecionada) != 'undefined' && idRotaSelecionada != null){
 			var anterior = document.getElementById("rotaSegura"+idRotaSelecionada);
 			//anterior.style["font-weight"] = "lighter";
 			anterior.innerHTML = "<a>rota" + (idRotaSelecionada+1) + "</a>"; 
@@ -528,15 +529,15 @@
 						carregaRota(0);
 					}
 
-					///*teste*/console.log("recebeRespostaRotaSegura(), testeParam=" + testeParam + ", testeCenarioSequencia=" + testeCenarioSequencia);
-					///*teste*/if(linhas[0] == "fim"){
-					///*teste*/	screenshotTeste();
-					///*teste*/}
-					///*teste*/if(testeParam){
-					///*teste*/	continuaTeste();
-					///*teste*/}else{
-					///*teste*/	console.log('fim teste');
-					///*teste*/}
+					/*TESTE CENARIOS*/console.log("recebeRespostaRotaSegura(), testeParam=" + testeParam + ", testeCenarioSequencia=" + testeCenarioSequencia);
+					/*TESTE CENARIOS*/if(linhas[0] == "fim"){
+					/*TESTE CENARIOS*/	//screenshotTeste();
+					/*TESTE CENARIOS*/}
+					/*TESTE CENARIOS*/if(testeParam){
+					/*TESTE CENARIOS*/	continuaTeste();
+					/*TESTE CENARIOS*/}else{
+					/*TESTE CENARIOS*/	console.log('fim teste');
+					/*TESTE CENARIOS*/}
 				}
 			}
 		}
@@ -625,12 +626,17 @@
 			var dataIni = document.getElementById("dataInicial").value;
 			var dataFim = document.getElementById("dataFinal").value;
 
-			alert(  "\ncentro: " + centro + 
+			/*alert(  "\ncentro: " + centro + 
 					"\nzoom: " + zoom +
 					"\norigem: " + origem + 
 					"\ndestino: " + destino +
 					"\ndataIni: " + dataIni +
-					"\ndataFim: " + dataFim );
+					"\ndataFim: " + dataFim);
+			*/
+
+			alert(centro.lat() + "\t" + centro.lng() + "\t" + zoom + "\t" + origem.lat() + 
+					"\t" + origem.lng() + "\t" + destino.lat() + "\t" + destino.lng() + "\t" + 
+					dataIni + "\t" + dataFim);
 
 			contextmenu.style.visibility="hidden";
 		}
@@ -738,10 +744,10 @@
 			for(var i=0; i < rotasSeguras.length; i++){
 				var tempo;
 				if(i==0){
-					tempo = 5000;
+					tempo = 6000;
 				}else{
 					carregaRota(i);
-					tempo = 3000;
+					tempo = 6000;
 				}
 				requisicaoTexto('TesteCenariosRotas', 'acao=screenshot&tempo='+tempo); //manda o servlet tirar a screenshot
 			}

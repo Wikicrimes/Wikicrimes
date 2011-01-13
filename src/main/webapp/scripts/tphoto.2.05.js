@@ -47,6 +47,7 @@
 		if(typeof(d.style.KHTMLOpacity)=='string'){d.style.KHTMLOpacity=c;}
 		if(typeof(d.style.MozOpacity)=='string'){d.style.MozOpacity=c;}
 		if(typeof(d.style.opacity)=='string'){d.style.opacity=c;}
+		opacity = b;
 	}
 
 	GMap2.prototype.addTPhoto=function(a){

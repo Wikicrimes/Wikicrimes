@@ -5,6 +5,7 @@ import static org.wikicrimes.servlet.ServletKernelMap.GRID_NODE;
 import static org.wikicrimes.servlet.ServletKernelMap.IMAGEM_KERNEL;
 import static org.wikicrimes.servlet.ServletKernelMap.getPoints;
 
+import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.image.RenderedImage;
 import java.io.IOException;
@@ -43,7 +44,9 @@ import org.wikicrimes.service.UsuarioService;
 import org.wikicrimes.util.Constantes;
 import org.wikicrimes.util.ServletUtil;
 import org.wikicrimes.util.kernelMap.KernelMap;
-import org.wikicrimes.util.kernelMap.KernelMapRenderer;
+import org.wikicrimes.util.kernelMap.Suavizador;
+import org.wikicrimes.util.kernelMap.renderer.CellBasedRenderer;
+import org.wikicrimes.util.kernelMap.renderer.TransparentToColor;
 import org.wikicrimes.web.FiltroForm;
 
 public class ServletWikiCrimesApi extends HttpServlet {
@@ -524,8 +527,9 @@ public class ServletWikiCrimesApi extends HttpServlet {
 	/*teste*/static int cont;
 	private static void poeImagemNaSessao(KernelMap mapKernel, HttpSession httpSession) throws IOException{
 		if(mapKernel != null){
-			KernelMapRenderer kRend = new KernelMapRenderer(mapKernel);
-			RenderedImage imagem = (RenderedImage)kRend.pintaKernel(); //TODO precisa do zoom pra fazer a suavização
+			Suavizador kRend = new Suavizador(mapKernel);
+			CellBasedRenderer scheme = new TransparentToColor(mapKernel, Color.RED);
+			RenderedImage imagem = (RenderedImage)kRend.pintaKernel(scheme); //TODO precisa do zoom pra fazer a suavização
 			httpSession.setAttribute(IMAGEM_KERNEL, imagem);
 	//		/*teste*/System.out.println(kernel);
 	//		/*teste*/System.out.println("bounds: " + bounds);

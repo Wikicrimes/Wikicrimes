@@ -5,7 +5,6 @@ import static org.wikicrimes.servlet.ServletKernelMap.KERNEL;
 import java.awt.Color;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
@@ -20,7 +19,6 @@ import org.wikicrimes.util.kernelMap.KernelMap;
 import org.wikicrimes.util.kernelMap.PropertiesLoader;
 import org.wikicrimes.util.rotaSegura.geometria.Ponto;
 import org.wikicrimes.util.rotaSegura.geometria.Rota;
-import org.wikicrimes.util.rotaSegura.googlemaps.ServiceURLBuilder;
 import org.wikicrimes.util.rotaSegura.googlemaps.StatusGM;
 import org.wikicrimes.util.rotaSegura.logica.CalculoPerigo;
 import org.wikicrimes.util.rotaSegura.logica.FilaRotasCandidatas;
@@ -48,12 +46,12 @@ public class ServletRotaSeguraClientSide extends HttpServlet {
 	public static final String LOGICA_ROTAS = "LOGICA_ROTAS";
 	private static final String ULTIMA_RESPOSTA = "ULTIMA_RESPOSTA"; //ultima resposta deste servlet. Eh enviada como requisicao pro GoogleMaps
 	private static final String ROTAS_CANDIDATAS = "ROTAS_CANDIDATAS"; //fila de requisições p/ fazer ao GoogleMaps (são rotas)
-//	/*TESTE CENARIO*/private static final String TEMPO_INICIO = "TEMPO_INICIO";
+	/*TESTE CENARIO*/private static final String TEMPO_INICIO = "TEMPO_INICIO";
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-//		/*DEBUG*/System.out.println("keyset: " + request.getParameterMap().keySet() + 
-//				", #" + getContRevisoes(request) + ", " + getStatusGM(request));
+		/*DEBUG*/System.out.println("keyset: " + request.getParameterMap().keySet() + 
+				", #" + getContRevisoes(request) + ", " + getStatusGM(request));
 		
 		try{
 			if(isPrimeiraVez(request))
@@ -63,8 +61,8 @@ public class ServletRotaSeguraClientSide extends HttpServlet {
 			e.printStackTrace();
 			if(!response.isCommitted()){
 				respostaErro(request, response);
-//				/*TESTE CENARIO*/TesteCenariosRotas.setResult("erro", e.getClass() + " : " + e.getMessage());
-//				/*TESTE CENARIO*/TesteCenariosRotas.salvar();
+				/*TESTE CENARIO*/TesteCenariosRotas.setResult("erro", e.getClass() + " : " + e.getMessage());
+				/*TESTE CENARIO*/TesteCenariosRotas.salvar();
 			}
 			limpar(request);
 		}
@@ -80,7 +78,7 @@ public class ServletRotaSeguraClientSide extends HttpServlet {
 		GrafoRotas grafo = new GrafoRotas(rotaGoogleMaps);
 		logicaRota.setGrafo(grafo);
 		
-//		/*TESTE CENARIO*/request.getSession().setAttribute(TEMPO_INICIO, System.currentTimeMillis());
+		/*TESTE CENARIO*/request.getSession().setAttribute(TEMPO_INICIO, System.currentTimeMillis());
 //		/*TESTE CENARIO*/logicaRota.getCalculoPerigo().FATOR_TOLERANCIA = TesteCenariosRotas.getFatTol();
 	}
 	
@@ -94,7 +92,7 @@ public class ServletRotaSeguraClientSide extends HttpServlet {
 		StatusGM status = getStatusGM(request);
 		GrafoRotas grafo = logicaRota.getGrafo();
 		Rota ultimaResp = (Rota)sessao.getAttribute(ULTIMA_RESPOSTA);
-		FilaRotasCandidatas rotasPromissoras = getRotasCandidatas(sessao, logicaRota);
+		FilaRotasCandidatas rotasCandidatas = getRotasCandidatas(sessao, logicaRota);
 		List<Rota> rotasNovas = null;
 		
 		//RECEBE rota do GoogleMaps, bota no grafo, trata erro
@@ -103,6 +101,12 @@ public class ServletRotaSeguraClientSide extends HttpServlet {
 			//recebe a rota obtida do GoogleMaps
 			Rota rotaGoogleMaps = getRota(request);
 			if(isPrimeiraVez(request)){
+//				/*TESTE TOLERANCIA*/double distMin = rotaGoogleMaps.distanciaRetaOD();
+//				/*TESTE TOLERANCIA*/double densMedia = logicaRota.getKernel().getMediaDens();
+//				/*TESTE TOLERANCIA*/double densMax = logicaRota.getKernel().getMaxDens();
+//				/*TESTE TOLERANCIA*/double tol = calcPerigo.tolerancia(rotaGoogleMaps);
+//				/*TESTE TOLERANCIA*/TesteCenariosRotas.writeToleranceToFile(tol, distMin, densMedia, densMax);
+//				/*TESTE TOLERANCIA*/respostaErro(request, response); limpar(request); if(true)return;
 				rotasNovas = new ArrayList<Rota>();
 				rotasNovas.add(rotaGoogleMaps);
 			}else{
@@ -113,10 +117,11 @@ public class ServletRotaSeguraClientSide extends HttpServlet {
 				Rota rota = rotasNovas.get(i);
 				double custo = rota.distanciaPercorrida(); 
 				double perigo = calcPerigo.perigo(rota);
-				grafo.inserirCaminho(rota, custo, perigo);
+//				grafo.inserirRota(rota, custo, perigo);
+				/*TESTE*/grafo.inserirRota(rota, custo, calcPerigo);
 				rotasNovas.set(i, new RotaGM(rota, custo, perigo));
 			}
-			rotasPromissoras.reponderar();
+			rotasCandidatas.reponderar();
 			break;
 		case UNKNOWN_DIRECTIONS: //tinha um ponto no meio do mar, montanha, etc
 			//obs: o case eh vazio mesmo, eh soh pra nao cair no else
@@ -135,14 +140,16 @@ public class ServletRotaSeguraClientSide extends HttpServlet {
 		
 		//RESPOSTA
 		boolean rotaEhToleravel;
+		Rota melhorCaminho = null;
 		try {
-			Rota melhorCaminho = grafo.melhorCaminho();
-//			/*TESTE*/TesteRotasImg teste = new TesteRotasImg(logicaRota.getKernel(), grafo);
-//	//		/*TESTE*/teste.setTituloTesteCenarios(getContRevisoes(request) + ", " + status);
-//			/*TESTE*/teste.setTitulo(iteracao + ", " + status);
-//			/*TESTE*/teste.addRota(melhorCaminho, new Color(0,150,0));
-//			/*TESTE*/if(!isPrimeiraVez(request)) teste.addRota(new Rota(ultimaResp), new Color(100,100,255));
-//			/*TESTE*/teste.salvar();
+			melhorCaminho = grafo.melhorCaminho();
+			/*TESTE*/TesteRotasImg teste = new TesteRotasImg(logicaRota.getKernel(), grafo);
+//			/*TESTE*/teste.setTituloTesteCenarios(getContRevisoes(request) + ", " + status);
+			/*TESTE*/teste.setTitulo(iteracao + ", " + status);
+			/*TESTE*/teste.addRota(melhorCaminho, new Color(0,150,0));
+			/*TESTE*/if(!isPrimeiraVez(request)) teste.addRota(new Rota(ultimaResp), new Color(100,100,255));
+			/*TESTE*/if(status == StatusGM.SUCCESS) teste.addRota(getRota(request), Color.BLUE);
+			/*TESTE*/teste.salvar();
 			rotaEhToleravel = calcPerigo.isToleravel(melhorCaminho); 
 		} catch (NaoTemCaminhoException e1) {
 			rotaEhToleravel = false;
@@ -152,11 +159,11 @@ public class ServletRotaSeguraClientSide extends HttpServlet {
 			if(status == StatusGM.SUCCESS){
 				for(Rota rota : rotasNovas){
 					Queue<Rota> alternativas = logicaRota.criarAlternativas(rota, iteracao); 
-					rotasPromissoras.addAll(alternativas);
+					rotasCandidatas.addAll(alternativas);
 				}
 			}
-			if(!rotasPromissoras.isEmpty()){
-				Rota novaRequisicao = rotasPromissoras.pop();
+			if(!rotasCandidatas.isEmpty()){
+				Rota novaRequisicao = rotasCandidatas.pop();
 				respostaPedeNovoTrecho(request, response, novaRequisicao);
 			}else{
 				List<Rota> rotas = grafo.verticesKMenoresCaminhos(PADRAO_NUM_ROTAS_RESPOSTA);
@@ -166,20 +173,19 @@ public class ServletRotaSeguraClientSide extends HttpServlet {
 			}
 		}else{
 			List<Rota> rotas = grafo.verticesKMenoresCaminhos(PADRAO_NUM_ROTAS_RESPOSTA);
+			/*TESTE CENARIO*/long t1 = (Long)sessao.getAttribute(TEMPO_INICIO);
+			/*TESTE CENARIO*/long t2 = System.currentTimeMillis();
+			/*TESTE CENARIO*/long tempo = (t2-t1)/1000;
+			/*TESTE CENARIO*/TesteCenariosRotas.setResult("tempo", tempo);
+			/*TESTE CENARIO*/double distFin = melhorCaminho.distanciaPercorrida();
+			/*TESTE CENARIO*/TesteCenariosRotas.setResult("distFin", distFin);
+			/*TESTE CENARIO*/double qualiFin = calcPerigo.perigo(melhorCaminho);
+			/*TESTE CENARIO*/TesteCenariosRotas.setResult("qualiFin", qualiFin);
+			/*TESTE CENARIO*/TesteCenariosRotas.setResult("reqGM", getContRevisoes(request));
+			/*TESTE CENARIO*/TesteCenariosRotas.salvar();
 			respostaFim(request, response, rotas);
 			limpar(request);
 		}
-		
-//		/*TESTE CENARIO*/long t1 = (Long)sessao.getAttribute(TEMPO_INICIO);
-//		/*TESTE CENARIO*/long t2 = System.currentTimeMillis();
-//		/*TESTE CENARIO*/long tempo = (t2-t1)/1000;
-//		/*TESTE CENARIO*/TesteCenariosRotas.setResult("tempo", tempo);
-//		/*TESTE CENARIO*/double distFin = melhorCaminho.distanciaPercorrida();
-//		/*TESTE CENARIO*/TesteCenariosRotas.setResult("distFin", distFin);
-//		/*TESTE CENARIO*/double qualiFin = calcPerigo.perigo(melhorCaminho);
-//		/*TESTE CENARIO*/TesteCenariosRotas.setResult("qualiFin", qualiFin);
-//		/*TESTE CENARIO*/TesteCenariosRotas.setResult("reqGM", getContRevisoes(request));
-//		/*TESTE CENARIO*/TesteCenariosRotas.salvar();
 		
 	}
 	

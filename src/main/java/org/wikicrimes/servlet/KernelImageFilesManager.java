@@ -1,5 +1,6 @@
 package org.wikicrimes.servlet;
 
+import java.awt.Color;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
@@ -10,7 +11,9 @@ import javax.imageio.ImageIO;
 import javax.servlet.http.HttpSession;
 
 import org.wikicrimes.util.kernelMap.KernelMap;
-import org.wikicrimes.util.kernelMap.KernelMapRenderer;
+import org.wikicrimes.util.kernelMap.Suavizador;
+import org.wikicrimes.util.kernelMap.renderer.CellBasedRenderer;
+import org.wikicrimes.util.kernelMap.renderer.TransparentToColor;
 
 /**
  * Criação e deleção de imagens relacionadas com Mapa de Kernel.
@@ -87,8 +90,9 @@ public class KernelImageFilesManager {
 	
 	public static String criarImagem(KernelMap kernel, HttpSession sessao){
 		
-		KernelMapRenderer kRend = new KernelMapRenderer(kernel);
-		RenderedImage imagem = (RenderedImage)kRend.pintaKernel();
+		Suavizador kRend = new Suavizador(kernel);
+		CellBasedRenderer scheme = new TransparentToColor(kernel, Color.RED);
+		RenderedImage imagem = (RenderedImage)kRend.pintaKernel(scheme);
 		
 		String fileName = nomeImagem(sessao);
 		String imagePath = realImagePath(sessao);

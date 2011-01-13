@@ -9,8 +9,8 @@ public class GeoData {
     //private String dir = System.getProperty("user.dir"); 
 
     // Uncomment for Linux
-    //private String dir = "/root/workspace/wikicrimes";
-	private String dir = "/home/lourenco/workspace/wikicrimes";
+    private String dir = "/root/workspace/wikicrimes";
+	//private String dir = "/home/lourenco/workspace/wikicrimes";
 	//private String dir = System.getProperty("user.dir");
 	private String sep = System.getProperty("file.separator");
     private  String dbfile = dir + sep + "GeoIP.dat"; 

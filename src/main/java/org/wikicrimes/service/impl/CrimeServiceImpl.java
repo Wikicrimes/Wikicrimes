@@ -517,8 +517,8 @@ public class CrimeServiceImpl extends GenericCrudServiceImpl implements
 
 	@Override
 	public StringBuilder getCrimesInRadius(double latitude, double longitude,
-			double raio, long dataIni, long dataFim) {
-		return crimeDao.getCrimesInRadius(latitude, longitude, raio, dataIni, dataFim);
+			double raio, long dataIni, long dataFim, double credibilidadeMin, double credibilidadeMax) {
+		return crimeDao.getCrimesInRadius(latitude, longitude, raio, dataIni, dataFim, credibilidadeMin, credibilidadeMax);
 	}
 
 }

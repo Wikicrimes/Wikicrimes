@@ -32,19 +32,19 @@ public class AvaliacaoPerigo{
 
 	/**
 	 * @param centro : lat lng
-	 * @param raio : raio do circulo, em km 
+	 * @param raioKm : raio do circulo, em km 
 	 * @param dataInicial : o periodo comeca na dataInicial e termina na data de hoje
 	 * @return um double variando de 0 (densidade minima do mapa) a 1 (densidade maxima do mapa)
 	 * obs:o "mapa" eh um quadrado grande que contem o circulo.
 	 */
-	public double avaliarCirculo(PontoLatLng centro, double raio, Date dataInicial){
+	public double avaliarCirculo(PontoLatLng centro, double raioKm, Date dataInicial, double crediblidadeMin, double crediblidadeMax){
 		
 		//conversoes e mapa de kernel
 		Ponto centroPixel = centro.toPixel(ZOOM);
-		int raioPixel = raioKmToPixel(centro, raio);
+		int raioPixel = raioKmToPixel(centro, raioKm);
 		int lado = raioPixel*PROPORCAO_TAMANHO_MAPA;
 		Rectangle boundsMapa = new Rectangle(centroPixel.x-lado/2, centroPixel.y-lado/2, lado, lado);
-		List<Point> crimes = buscaCrimes(boundsMapa, dataInicial);
+		List<Point> crimes = buscaCrimes(boundsMapa, dataInicial, crediblidadeMin, crediblidadeMax);
 		KernelMap kernel = new KernelMap(NODE_SIZE, BANDWIDTH, boundsMapa, crimes);
 		
 		//calculo de densidades
@@ -85,7 +85,7 @@ public class AvaliacaoPerigo{
 		return densidadeAcumulada/contCelulasCirculo;
 	}
 	
-	private List<Point> buscaCrimes(Rectangle boundsPixel, Date dataInicial){
+	private List<Point> buscaCrimes(Rectangle boundsPixel, Date dataInicial, double credMin, double credMax){
 		
 		Point pixelNO = new Point((int)boundsPixel.getMinX(), (int)boundsPixel.getMinY());
 		Point pixelSE = new Point((int)boundsPixel.getMaxX(), (int)boundsPixel.getMaxY());
@@ -100,6 +100,8 @@ public class AvaliacaoPerigo{
 		params.put("oeste", latlngNO.lng);
 		params.put("dataInicial", dataInicial);
 		params.put("dataFinal", new Date());
+		params.put("credibilidadeInicial", credMin);
+		params.put("credibilidadeFinal", credMax);
 		List<BaseObject> crimes = crimeService.filter(params);
 		List<Point> crimesPixel = ServletKernelMap.toPixel(crimes, ZOOM);
 		

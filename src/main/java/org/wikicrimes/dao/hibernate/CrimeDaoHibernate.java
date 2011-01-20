@@ -567,7 +567,7 @@ public class CrimeDaoHibernate extends GenericCrudDaoHibernate implements
 		return mapa;
 	}
 	
-	public StringBuilder getCrimesInRadius(double latitude, double longitude, double raio,long dataIni, long dataFim){
+	public StringBuilder getCrimesInRadius(double latitude, double longitude, double raio,long dataIni, long dataFim, double credibilidadeMin, double credibilidadeMax){
 		
 		StringBuilder crimes = new StringBuilder(); 
 		
@@ -601,7 +601,7 @@ public class CrimeDaoHibernate extends GenericCrudDaoHibernate implements
 			// Recupera os crimes no raio
 			ps = connect.createStatement();
 			
-			sqlCrimes = "SELECT cri_chave, tipo.tcr_idtipo_crime AS tipoCrime, cri_data as dataCrime, cri_horario as horarioCrime, cri_descricao as descricaoCrime, cri_latitude as latitudeCrime, cri_longitude as longitudeCrime FROM tb_cri_crime AS tcc INNER JOIN tb_tcr_tipo_crime AS tipo ON tipo.tcr_idtipo_crime=tcc.tcr_idtipo_crime AND ("+RAIO_TERRA_KM+" * ACOS( (SIN(PI()* "+latitude+" /180)*SIN(PI() * tcc.cri_latitude/180)) + (COS(PI()* "+latitude+" /180)*COS(PI()*tcc.cri_latitude/180)*COS(PI() * tcc.cri_longitude/180-PI()* "+longitude+" /180))) < "+raio+") AND tcc.cri_status=0 AND (tcc.cri_data BETWEEN '"+dIni.toString()+"' AND '"+dFim.toString()+"') ORDER BY cri_data DESC";
+			sqlCrimes = "SELECT cri_chave, tipo.tcr_idtipo_crime AS tipoCrime, cri_data as dataCrime, cri_horario as horarioCrime, cri_descricao as descricaoCrime, cri_latitude as latitudeCrime, cri_longitude as longitudeCrime FROM tb_cri_crime AS tcc INNER JOIN tb_tcr_tipo_crime AS tipo ON tipo.tcr_idtipo_crime=tcc.tcr_idtipo_crime AND ("+RAIO_TERRA_KM+" * ACOS( (SIN(PI()* "+latitude+" /180)*SIN(PI() * tcc.cri_latitude/180)) + (COS(PI()* "+latitude+" /180)*COS(PI()*tcc.cri_latitude/180)*COS(PI() * tcc.cri_longitude/180-PI()* "+longitude+" /180))) < "+raio+") AND tcc.cri_status=0 AND (tcc.cri_data BETWEEN '"+dIni.toString()+"' AND '"+dFim.toString()+"') AND tcc.cre_credibilidade >=" + credibilidadeMin + " AND tcc.cre_credibilidade <=" + credibilidadeMax + " ORDER BY cri_data DESC";
 			ResultSet rs = ps.executeQuery(sqlCrimes);
 			
 			while(rs.next()) {

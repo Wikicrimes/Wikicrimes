@@ -613,7 +613,7 @@ public class CrimeDaoHibernate extends GenericCrudDaoHibernate implements
 						rs.getString("dataCrime") + "|" + 
 						rs.getString("horarioCrime") + "|" + 
 						rs.getString("descricaoCrime").replaceAll(crimeSeparator, ";") + "|" +
-						rs.getString("credibilidade") +
+						getCredibilidade(rs.getString("credibilidade")) +
 						crimeSeparator);
 			}
 			
@@ -628,6 +628,16 @@ public class CrimeDaoHibernate extends GenericCrudDaoHibernate implements
 		}
 
 		return crimes;
+	}
+	
+	private String getCredibilidade(String cred) {
+		double d = Double.parseDouble(cred);
+		if(d >= 0.54999999)
+			return "2"; //alto
+		else if(d < 0.54999999 && d >= 0.49999999)
+			return "1"; //medio
+		else
+			return "0"; //baixo
 	}
 
 	@Override

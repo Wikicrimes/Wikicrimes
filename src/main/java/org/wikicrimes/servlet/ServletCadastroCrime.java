@@ -1,6 +1,7 @@
 package org.wikicrimes.servlet;
 
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -57,7 +58,15 @@ public class ServletCadastroCrime extends HttpServlet {
 			
 			Crime crime = new Crime();
 			crime.setUsuario(usuario); //ok
-			crime.setDescricao(request.getParameter("desc")); //ok
+			
+			
+			String desc = request.getParameter("desc");
+			try {
+				desc = URLDecoder.decode(desc, "UTF-8");
+			} catch (Exception e) {}
+			
+			crime.setDescricao(desc); //ok
+			
 			crime.setLatitude(Double.parseDouble(request.getParameter("lat"))); //ok
 			crime.setLongitude(Double.parseDouble(request.getParameter("lng"))); //ok
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

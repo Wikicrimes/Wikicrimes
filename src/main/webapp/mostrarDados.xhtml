@@ -157,18 +157,9 @@
 						<h:outputText value="#{messages[mostrarDadosForm.crime.tipoRegistro.nome]}" />
 						<h:outputText value="#{messages['crime.mostra.descricao']}"
 								style="vertical-align: text-top" />
-						<c:if test="#{not empty usuario}">
+						
 							<h:outputText value="#{mostrarDadosForm.crime.descricao}" />
-						</c:if>
-						<c:if test="#{empty usuario}">
-							<h:panelGroup>
-								<h:outputText style="font-size: 11px;" value="#{messages['crime.mostra.descricaologin1']}" />
-								<h:outputLink value="#" onclick="chamaModal();return false">
-									<h:outputText value="login" style="font-size:12px;font-weight:bold"/>
-								</h:outputLink>
-								<h:outputText style="font-size: 11px;" value=" #{messages['crime.mostra.descricaologin3']}" />
-							</h:panelGroup>
-						</c:if>
+						
 						<c:if test="#{mostrarDadosForm.crime.linkNoticia != null and mostrarDadosForm.crime.linkNoticia != ''}">
 							<h:outputText value="#{messages['mostrarinformacoes.linkrelacionado']}" />
 							<h:outputLink value="#{mostrarDadosForm.crime.linkNoticia}" target="_top"><h:outputText value="#{mostrarDadosForm.crime.linkNoticia}" /> </h:outputLink>

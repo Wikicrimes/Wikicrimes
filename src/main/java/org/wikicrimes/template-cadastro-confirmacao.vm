@@ -85,7 +85,7 @@ a:hover { text-decoration: none; }
 	<tr>
 		<td width="25"><img src="_space.gif" width="25" height="1" border="0"></td>	
 		<td width="225"><span class="footerText">Este email foi enviado para [${usuario.email}]<br><strong><unsubscribe>Clique aqui</unsubscribe></strong>, caso <em>não</em> queira mais receber e-mails como este.</span></td>
-		<td width="225" align="right"><img src="/_space.gif" width="1" height="15" border="0"><br><span class="footerText"><strong><a href="#">WikiCrimes.org</a></strong><br>©2007-2010 - <a href="http://www.wikinova.com.br">Wikinova</a> Soluções. Todos os Direitos Reservados<br></span><br><img src="/_space.gif" width="1" height="15" border="0"><br></td>
+		<td width="225" align="right"><img src="/_space.gif" width="1" height="15" border="0"><br><span class="footerText"><strong><a href="#">WikiCrimes.org</a></strong><br>©2007-2011 - <a href="http://www.wikinova.com.br">Wikinova</a> Soluções. Todos os Direitos Reservados<br></span><br><img src="/_space.gif" width="1" height="15" border="0"><br></td>
 
 		<td width="25"><img src="_space.gif" width="25" height="1" border="0"></td>	
 	</tr>

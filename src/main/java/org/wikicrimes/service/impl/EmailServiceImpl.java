@@ -333,7 +333,7 @@ public class EmailServiceImpl extends GenericCrudServiceImpl implements
 							}
 							if (idiomaEmail.equals("pt_BR") || idiomaEmail.equals("pt")){
 								
-							String subject=bundle.getString("usuario.recuperar" + " - WikiCrimes.org");
+							String subject=bundle.getString("usuario.recuperar") + " - WikiCrimes.org";
 							message.setSubject(subject);
 							text = VelocityEngineUtils.mergeTemplateIntoString(
 						               velocityEngine, "org/wikicrimes/template-recupera-senha.vm", model);

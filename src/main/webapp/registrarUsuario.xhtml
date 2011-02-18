@@ -139,18 +139,18 @@
 					<h:panelGrid border="0" columns="2" style="text-align:left">
 						<h:panelGrid border="0" columns="1" style="text-align:left">
 							<h:outputText value="*#{messages['usuario.senha']}:" />
-							<h:inputSecret required="true"
+							<t:inputSecret forceId="true" required="true"
 								value="#{usuarioForm.usuario.senha}" id="senha">
 								<f:validateLength minimum="4" maximum="10" />
-							</h:inputSecret>
+							</t:inputSecret>
 							<h:message styleClass="errorMessage" for="senha" />
 						</h:panelGrid>
 						<h:panelGrid border="0" columns="1" style="text-align:left">
 							<h:outputText value="*#{messages['usuario.ConfirmacaoSenha']}:" />
-							<h:inputSecret required="true" id="confsenha"
+							<t:inputSecret label="#{messages['usuario.ConfirmacaoSenha']}:" required="true" id="confsenha"
 								value="#{usuarioForm.csenha}">
 								<t:validateEqual for="senha" />
-							</h:inputSecret>
+							</t:inputSecret>
 							<h:message styleClass="errorMessage" for="confsenha" />
 						</h:panelGrid>
 					</h:panelGrid>

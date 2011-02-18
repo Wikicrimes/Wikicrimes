@@ -132,12 +132,37 @@
 				var url = 'acao=geraKernel';
 				url += boundsPixelUrlParams(map);
 				url += boundsLatLngUrlParams(map);
+				url += parametrosFiltroCrimes();
 				url += '&zoom=' + map.getZoom();
 				zoomKernel = map.getZoom();
 				//url += pontosUrlParam();
 
 				//console.log("url: " + url);
 				return url;
+			}
+			
+			function parametrosFiltroCrimes(){
+				submeteu=false;					 	
+			    tipoCrime = document.getElementById("tipoCrime").value;
+			    tipoVitima = document.getElementById("tipoVitima").value;  
+			    tipoLocal = document.getElementById("tipoLocal").value;
+			    dataInicial = document.getElementById("dataInicial").value.split("/");
+			    dataFinal = document.getElementById("dataFinal").value.split("/");
+			    horarioInicial = document.getElementById("filtroForm:horarioInicial").value;
+			    horarioFinal = document.getElementById("filtroForm:horarioFinal").value;
+		        entidadeCertificadora = document.getElementById("filtroForm:entidadeCertificadora").value;
+			    var isEntidadeCertificadoraSelecionada = document.getElementById("filtroForm:crimeConfirmadoEntidadeCertificadora").checked;
+                if(isEntidadeCertificadoraSelecionada == false) {
+					document.getElementById("filtroForm:entidadeCertificadora").disabled = true;
+					document.getElementById("filtroForm:entidadeCertificadora").value="";                                                     
+					entidadeCertificadora = "-1"; 
+                }
+				    if (document.getElementById("filtroForm:crimeConfirmadoPositivamente").checked == true )
+					    confirmadosPositivamente = document.getElementById("filtroForm:crimeConfirmadoPositivamente").value;
+			    else
+				    confirmadosPositivamente = "";
+				    
+				return '&tc='+tipoCrime+'&tv='+tipoVitima+'&tl='+document.getElementById("tipoLocal").value+'&di='+dataInicial+'&df='+dataFinal+'&hi='+horarioInicial+'&hf='+horarioFinal +  '&z=' + map.getZoom()+ '&ec=' + entidadeCertificadora + '&cp=' + confirmadosPositivamente +'&id=' + ignoraData;
 			}
 
 			function boundsPixelUrlParams(map){

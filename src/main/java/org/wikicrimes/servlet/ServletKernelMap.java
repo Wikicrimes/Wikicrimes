@@ -10,10 +10,8 @@ import java.io.PrintWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
@@ -32,9 +30,9 @@ import org.wikicrimes.model.Relato;
 import org.wikicrimes.service.CrimeService;
 import org.wikicrimes.util.ServletUtil;
 import org.wikicrimes.util.kernelMap.KernelMap;
-import org.wikicrimes.util.kernelMap.Suavizador;
 import org.wikicrimes.util.kernelMap.LatLngBoundsGM;
 import org.wikicrimes.util.kernelMap.PropertiesLoader;
+import org.wikicrimes.util.kernelMap.Suavizador;
 import org.wikicrimes.util.kernelMap.renderer.CellBasedRenderer;
 import org.wikicrimes.util.kernelMap.renderer.TransparentToColor;
 import org.wikicrimes.util.kernelMap.renderer.WhiteToRed;
@@ -42,7 +40,7 @@ import org.wikicrimes.util.rotaSegura.geometria.Ponto;
 import org.wikicrimes.web.FiltroForm;
 
 /**
- * Trata requisições HTTP para calcular mapa de kernel e gerar imagem.
+ * Trata requisiï¿½ï¿½es HTTP para calcular mapa de kernel e gerar imagem.
  * 
  * @author victor
  */
@@ -82,7 +80,7 @@ public class ServletKernelMap extends HttpServlet {
 				}
 			}else if(acao.equals("pegaImagem")){
 				RenderedImage imagem;
-				//verifica a aplicacao que acionou o servico. o default é wikicrimes
+				//verifica a aplicacao que acionou o servico. o default ï¿½ wikicrimes
 				if(app!= null && app.equals("wikimapps")) {
 					imagem = (RenderedImage)sessao.getAttribute(IMAGEM_KERNEL_WIKIMAPPS);
 				}else{
@@ -113,12 +111,12 @@ public class ServletKernelMap extends HttpServlet {
 		HttpSession sessao = request.getSession();
 		String app = request.getParameter("app");
 		
-		//pega bounds e zoom dos parâmetros de requisição
+		//pega bounds e zoom dos parï¿½metros de requisiï¿½ï¿½o
 		LatLngBoundsGM limitesLatlng = getLimitesLatLng(request);
 		Rectangle limitesPixel = getLimitesPixel(request);
 		int zoom = getZoom(request);
 		
-		//verifica a aplicacao que acionou o servico. o default é wikicrimes
+		//verifica a aplicacao que acionou o servico. o default ï¿½ wikicrimes
 		if(app!= null && app.equals("wikimapps")) {
 			
 			List<Point> pontos = recuperaPontosWikiMapps(limitesLatlng,request.getParameter("url"),request.getParameter("tm"),zoom);
@@ -135,17 +133,37 @@ public class ServletKernelMap extends HttpServlet {
 			
 		}else{
 			
-			//pega crimes
-			FiltroForm filtro = (FiltroForm)sessao.getAttribute("filtroForm");
-			Map<String,Object> params = new HashMap<String, Object>();
-			if(filtro != null)
-				params = filtro.getFiltroMap();
-			params.put("norte", limitesLatlng.norte);
-			params.put("sul", limitesLatlng.sul);
-			params.put("leste", limitesLatlng.leste);
-			params.put("oeste", limitesLatlng.oeste);
+			FiltroForm filtroForm = (FiltroForm) sessao.getAttribute("filtroForm");
+			String tipoCrime = request.getParameter("tc");
+			String tipoVitima = request.getParameter("tv");
+			String tipoLocal = request.getParameter("tl"); // Data - Ex.: 01,01,2008
+			String dataInicial = request.getParameter("di");
+			String dataFinal = request.getParameter("df"); // Horario - Ex.: 5
+			String horarioInicial = request.getParameter("hi");
+			String horarioFinal = request.getParameter("hf");
+			String entidadeCertificadora = request.getParameter("ec");
+			String confirmadosPositivamente = request.getParameter("cp");
+			String norte = limitesLatlng.norte+"";
+			String sul = limitesLatlng.sul+"";
+			String leste = limitesLatlng.leste+"";
+			String oeste = limitesLatlng.oeste+"";
+			String ignoraData = request.getParameter("id");
+			
+			List<BaseObject> crimes = null;
+			
+			if (filtroForm == null) {
+				filtroForm = new FiltroForm();
+				ApplicationContext springContext = WebApplicationContextUtils.getWebApplicationContext(getServletContext());  
+				CrimeService crimeService = (CrimeService)springContext.getBean("crimeService");
+				filtroForm.setCrimeService(crimeService);
+				
+			} 
+			crimes = filtroForm.getCrimesFiltrados(tipoCrime, tipoVitima,
+						tipoLocal, horarioInicial, horarioFinal, dataInicial,
+						dataFinal, entidadeCertificadora, confirmadosPositivamente,
+						norte, sul, leste, oeste, ignoraData,null);		
+			
 //			/*teste*/params.put("maxResults", 100);
-			List<BaseObject> crimes = getCrimeService().filter(params);
 			List<Point> pontos = toPixel(crimes, zoom);
 //			/*TESTE CENARIO*/TesteCenariosRotas.setResult("numCrimes", pontos.size());
 			
@@ -212,7 +230,7 @@ public class ServletKernelMap extends HttpServlet {
 		if(pontosStr == null || pontosStr.isEmpty())
 			return pontos;
 		for(String pontoStr : pontosStr.split("a")){
-			pontos.add(new Ponto(pontoStr).invertido());  //FIXME desfazendo a inversão q foi feita lá no JavaScript
+			pontos.add(new Ponto(pontoStr).invertido());  //FIXME desfazendo a inversï¿½o q foi feita lï¿½ no JavaScript
 		}
 		return pontos;
 	}
@@ -221,15 +239,15 @@ public class ServletKernelMap extends HttpServlet {
 //	String pontosStr = request.getParameter("pontoXY");
 //	List<Ponto> pontos = new LinkedList<Ponto>();
 //	for(String pontoStr : pontosStr.split("a")){
-//		pontos.add(new Ponto(pontoStr).invertido());  //FIXME invertida pq em algum momento posterior isto está sendo invertido novamente
+//		pontos.add(new Ponto(pontoStr).invertido());  //FIXME invertida pq em algum momento posterior isto estï¿½ sendo invertido novamente
 //	}
 //	return pontos;
 //}
 	
 	protected static Rectangle getLimitesPixel(ServletRequest request){
-		//obs: width = east-west não funciona no caso em q a emenda do mapa está aparecendo na tela (a linha entre Japão e EUA) 
-		//width seria negativo já q west>east
-		//por isso o width e o height estão sendo calculado no javascript, usando as coordenadas do centro da tela
+		//obs: width = east-west nï¿½o funciona no caso em q a emenda do mapa estï¿½ aparecendo na tela (a linha entre Japï¿½o e EUA) 
+		//width seria negativo jï¿½ q west>east
+		//por isso o width e o height estï¿½o sendo calculado no javascript, usando as coordenadas do centro da tela
 		String northStr = request.getParameter("northPixel");
 //		String southStr = request.getParameter("southPixel");
 //		String eastStr = request.getParameter("eastPixel");
@@ -253,9 +271,9 @@ public class ServletKernelMap extends HttpServlet {
 	}
 	
 	protected static LatLngBoundsGM getLimitesLatLng(ServletRequest request){
-		//obs: width = east-west não funciona no caso em q a emenda do mapa está aparecendo na tela (a linha entre Japão e EUA) 
-		//width seria negativo já q west>east
-		//por isso o width e o height estão sendo calculado no javascript, usando as coordenadas do centro da tela
+		//obs: width = east-west nï¿½o funciona no caso em q a emenda do mapa estï¿½ aparecendo na tela (a linha entre Japï¿½o e EUA) 
+		//width seria negativo jï¿½ q west>east
+		//por isso o width e o height estï¿½o sendo calculado no javascript, usando as coordenadas do centro da tela
 		String northStr = request.getParameter("northLatLng");
 		String southStr = request.getParameter("southLatLng");
 		String eastStr = request.getParameter("eastLatLng");
@@ -278,14 +296,14 @@ public class ServletKernelMap extends HttpServlet {
 	}
 	
 	/**
-	 * obs: O zoom do GoogleMaps varia de 0 a 19. Zero é o mais de longe. 
+	 * obs: O zoom do GoogleMaps varia de 0 a 19. Zero ï¿½ o mais de longe. 
 	 */
 	protected static int getZoom(ServletRequest request){
 		String zoomStr = request.getParameter("zoom");
 		try{
 			return Integer.parseInt(zoomStr);
 		}catch(NumberFormatException e){
-			throw new AssertionError("problema com o parametro \"zoom\" na requisição. zoom: " + zoomStr);
+			throw new AssertionError("problema com o parametro \"zoom\" na requisiï¿½ï¿½o. zoom: " + zoomStr);
 		}
 	}
 	

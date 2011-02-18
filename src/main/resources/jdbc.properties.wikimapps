@@ -1,6 +1,6 @@
 jdbc.driverClassName=com.mysql.jdbc.Driver
-jdbc.url=jdbc:mysql://192.168.0.1:3306/wikimapps
+jdbc.url=jdbc:mysql://localhost:3306/wikimapps
 jdbc.username=root
-jdbc.password=uniform7
+jdbc.password=root
 
 hibernate.dialect=org.hibernate.dialect.MySQLInnoDBDialect

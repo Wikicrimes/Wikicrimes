@@ -12,10 +12,10 @@ import java.util.Properties;
 
 
 
-// Classe de conexão - uso do padrão Singleton
+// Classe de conexï¿½o - uso do padrï¿½o Singleton
 public class ConexaoBD {
 
-	// Conexão
+	// Conexï¿½o
 	private static ConexaoBD conexaoBD;
 	private static Connection conexao;
 	
@@ -49,7 +49,7 @@ public class ConexaoBD {
 			Class.forName(driverName);
 			 
 
-			// Criando a conexão com o Banco de Dados
+			// Criando a conexï¿½o com o Banco de Dados
 			/*String serverName = rb.getString("serverName");
 			String mydatabase = "wikimapps";*/
 			String url = props.getProperty("jdbc.url");//"jdbc:mysql://" + serverName + "/" + mydatabase; // a
@@ -61,12 +61,12 @@ public class ConexaoBD {
 			conexao = DriverManager.getConnection(url, username, password);
 
 		} catch (ClassNotFoundException e) {
-			// Driver não encontrado
-			System.out.println("O driver expecificado não foi encontrado.");
+			// Driver nï¿½o encontrado
+			System.out.println("O driver expecificado nï¿½o foi encontrado.");
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// Não está conseguindo se conectar ao banco
-			System.err.println("Não foi possível conectar ao Banco de Dados");
+			// Nï¿½o estï¿½ conseguindo se conectar ao banco
+			System.err.println("Nï¿½o foi possï¿½vel conectar ao Banco de Dados");
 			System.err.println(e.getMessage());
 			e.printStackTrace();
 		}

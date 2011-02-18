@@ -18,7 +18,7 @@
 
 <h:messages errorClass="error" layout="table" style="width: 100%"/>
 
-<p>Por favor complete as informa��es abaixo:</p>
+<p><h:outputText value="#{messages['usuario.cadastro.mensagem']}"/></p>
 
 <h:form id="userForm">
 <h:inputHidden value="#{userForm.user.id}">
@@ -32,7 +32,7 @@
 
     <h:outputLabel for="lastName" value="#{messages['user.lastName']}"/>
     
-    <h:inputText value="#{userForm.user.lastName}" id="lastName" required="true"/>
+    <t:inputText value="#{userForm.user.lastName}" label="Sobrenome" id="lastName" required="true"/>
     <h:message for="lastName" styleClass="errorMessage"/>
 
     <h:outputLabel for="birthday" value="#{messages['user.birthday']}"/>

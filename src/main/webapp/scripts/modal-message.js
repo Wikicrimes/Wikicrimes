@@ -405,7 +405,7 @@ function displayMessage(url, width, height, titulo)
     //var messageTitle = '<div class="modalDialog_titleDiv">'+ titulo +'<a href="#"  onclick="closeMessage();return false" >X</a></div>';
     var messageTitle ='<table class="modalDialog_titleArea" width = "100%"><tr><td align="center" width="90%">' + titulo+ '</td><td align="right" width="10%"><img src="http://www.wikicrimes.org/images/close.gif" border="0" WIDTH="14" HEIGHT="14" onclick="closeMessage();return false"> </td><tr><table>'
     //var messageTitle = '<div id="postit_title" class="modalDialog_titleDiv"><b>' + titulo + '<span class="modalDialog_close" ><img src="images/close.gif" border="0" title="Close" margin="10" WIDTH="13" HEIGHT="13" onclick="closeMessage();return false"></b></span></div>';
-    var messageContent = '<iframe src="' + url + '"  class="frame" width="' + (width -20) + '" height="' + (height - 50) + '" frameborder="0" scrolling="auto" ></iframe>';
+    var messageContent = '<iframe src="' + url + '"  class="frame" width="' + (width -20) + '" height="' + (height - 50) + '" frameborder="0" scrolling="auto"></iframe>';
     messageObj.setHtmlContent(messageTitle + messageContent);
     messageObj.setSize(width, height);
     messageObj.display();

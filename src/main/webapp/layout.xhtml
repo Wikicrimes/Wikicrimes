@@ -83,43 +83,51 @@
 		<ui:insert name="head" />
 	</head>
 	<body onload="loadMapa();">
-		
-		<TABLE style="font-size: 12px; font-family: sans-serif;" margin="0" BORDER="0" cellpadding="1" cellspacing="1" width="100%">
-			<TR>
-			    
-			    <TD height="58px" valign="top" colspan="2" style="background: url(#{messages['imagem.topo']}) no-repeat left;"> <ui:insert name="menu"/></TD>
-			    <TH width="160px" valign="top" ROWSPAN="5">
-			    	<div style="overflow: auto hidden; height: 550px; width: 160px; " >	
-			    		<ui:insert name="rightmenu" />
-			    	</div>	
-			    </TH>
-			</TR>
-			
-			<TR>	   
-			    <TD height="20px" colspan = "2">
-			    	<ui:insert name="botoes"/>
-			    </TD> 
-			     		
-			</TR>
-			<TR>
-			    <TD colspan = "2" ><ui:insert name="conteudo" /></TD>
-			</TR>
-			<TR>
-			   
-			    <TD height="80px" colspan = "2">
-				    <div style="font-family: sans-serif;margin:0px;width;100%;height:80px;background-color:#C6E2FF"> 
-				    	<ui:insert name="estatisticas"/>
-				    </div>
-				</TD>
-			</TR>
-			<TR>
-			    <TD align="center" colspan = "2" height="20px">
-					<ui:insert name="footer"/>			
-				</TD>
-			</TR>
-			
-		</TABLE>
+	<div style="width:989px; height:auto; margin-left:auto;	margin-right:auto;position:relative">
+			<TABLE style="font-size: 12px; font-family: sans-serif;" margin="0" BORDER="0" cellpadding="1" cellspacing="1" width="100%">
+				<TR>
+				    
+				    <TD height="58px" valign="top" colspan="2" style="background: url(#{messages['imagem.topo']}) no-repeat left;"> 
+				    	<ui:insert name="menu"/>
+				    	<ui:insert name="idioma"/>
+				    </TD>
+				    
+				</TR>
 				
+				<TR>	   
+				    <TD height="20px" colspan = "2">
+				    	<ui:insert name="botoes"/>
+				    </TD> 
+				     		
+				</TR>
+				<TR>
+				    <TD colspan = "2" ><ui:insert name="conteudo" /></TD>
+				</TR>
+				<TR>
+				   
+				    <TD height="80px" colspan = "2">
+					    <div style="font-family: sans-serif;margin:0px;width;100%;height:80px;background-color:#C6E2FF"> 
+					    	<ui:insert name="estatisticas"/>
+					    </div>
+					</TD>
+				</TR>
+				
+				<TR>
+				    <TD align="left" colspan = "2" height="20px" style="padding-top: 7px;">
+						<div style="overflow: auto hidden; height: 320px; width: 160px; " >	
+				    		<ui:insert name="rightmenu" />
+				    	</div>				
+					</TD>
+				</TR>
+				
+				<TR>
+				    <TD align="center" colspan = "2" height="20px">
+						<ui:insert name="footer"/>			
+					</TD>
+				</TR>
+				
+			</TABLE>
+		</div>
 		<script type="text/javascript">
 				var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." :
 			"http://www.");

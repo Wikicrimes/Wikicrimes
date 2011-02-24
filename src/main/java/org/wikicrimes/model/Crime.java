@@ -99,6 +99,8 @@ public class Crime extends BaseObject {
 	
 	private UsuarioRedeSocial usuarioRedeSocial;
 	
+	private Integer identificadorUK;
+	
 //	TODO Manter lista de Credibilidades para futura atualizacao
 //	private Set<Credibilidade> credibilidades;
 	
@@ -456,6 +458,15 @@ public class Crime extends BaseObject {
 		this.ultimaCredibilidade = ultimaCredibilidade;
 	}
 	
+	
+	public Integer getIdentificadorUK() {
+		return identificadorUK;
+	}
+
+	public void setIdentificadorUK(Integer identificadorUK) {
+		this.identificadorUK = identificadorUK;
+	}
+
 	@Override
 	public String toString() {
 		return "lat:" + latitude + ", lng:" + longitude;

@@ -36,6 +36,8 @@
         <property name="cep" column="CRI_CEP" type="java.lang.String" length="9"/>
         <property name="dataHoraRegistro" column="CRI_DATA_HORA_REGISTRO" type="java.util.Date"/>
         <property name="ultimaCredibilidade" column="CRE_CREDIBILIDADE" type="java.lang.Double"/>
+        
+        <property name="identificadorUK" column="CRI_ID_UK" type="java.lang.Integer" not-null="false"/>
 
         <many-to-one name="tipoVitima" column="TVI_IDTIPO_VITIMA" class="org.wikicrimes.model.TipoVitima" />
         <many-to-one name="tipoLocal" column="TLO_IDTIPO_LOCAL" class="org.wikicrimes.model.TipoLocal" />

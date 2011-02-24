@@ -3,7 +3,6 @@ package org.wikicrimes.servlet;
 import static org.wikicrimes.servlet.ServletRotaSeguraClientSide.corrigirPontasDaRota;
 import static org.wikicrimes.servlet.ServletRotaSeguraClientSide.respostaErro;
 
-import java.awt.Color;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -37,10 +36,9 @@ import org.wikicrimes.util.rotaSegura.googlemaps.StatusGMDirections;
 import org.wikicrimes.util.rotaSegura.logica.CalculoPerigo;
 import org.wikicrimes.util.rotaSegura.logica.FilaRotasCandidatas;
 import org.wikicrimes.util.rotaSegura.logica.LogicaRotaSegura;
+import org.wikicrimes.util.rotaSegura.logica.exceptions.CantFindPath;
 import org.wikicrimes.util.rotaSegura.logica.modelo.GrafoRotas;
 import org.wikicrimes.util.rotaSegura.logica.modelo.RotaGM;
-import org.wikicrimes.util.rotaSegura.logica.modelo.GrafoRotas.NaoTemCaminhoException;
-import org.wikicrimes.util.rotaSegura.testes.TesteRotasImg;
 
 
 @SuppressWarnings("serial")
@@ -91,9 +89,9 @@ public class ServletRotaSeguraServerSide extends HttpServlet{
 		Rota rotaGoogleMaps = getRota(request);
 		FormatoResposta formato = FormatoResposta.getFormatoResposta(request.getParameter("output"));
 		LogicaRotaSegura logicaRota = getLogicaRotaSegura(request);
-		GrafoRotas grafo = new GrafoRotas(rotaGoogleMaps);
-		logicaRota.setGrafo(grafo);
 		CalculoPerigo calcPerigo = logicaRota.getCalculoPerigo();
+		GrafoRotas grafo = new GrafoRotas(rotaGoogleMaps, calcPerigo);
+		logicaRota.setGrafo(grafo);
 		StatusGMDirections status = StatusGMDirections.OK;
 		Rota rotaIdeal = null;
 		FilaRotasCandidatas rotasCandidatas = new FilaRotasCandidatas(calcPerigo, grafo);
@@ -135,7 +133,7 @@ public class ServletRotaSeguraServerSide extends HttpServlet{
 //				/*TESTE*/if(iteracao != 0) teste.addRota(rotaIdeal, new Color(100,100,255));
 //				/*TESTE*/teste.salvar();
 				rotaEhToleravel = calcPerigo.isToleravel(melhorCaminho);
-			} catch (NaoTemCaminhoException e1) {
+			} catch (CantFindPath e1) {
 				rotaEhToleravel = false;
 			}
 			terminado = rotaEhToleravel || iteracao >= MAX_REQUISICOES_GM || forcarTermino;
@@ -166,6 +164,7 @@ public class ServletRotaSeguraServerSide extends HttpServlet{
 			}
 			
 			if(terminado || rotasCandidatas.isEmpty()){
+				double maxWeight = calcPerigo.perigo(grafo.getRotaOriginal());
 				List<Rota> rotaResposta = grafo.verticesKMenoresCaminhos(numRotasResposta);
 //				/*TESTE CENARIO*/if(terminado){
 //				/*TESTE CENARIO*/long t2 = System.currentTimeMillis();

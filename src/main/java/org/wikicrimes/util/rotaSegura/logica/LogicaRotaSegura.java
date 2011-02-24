@@ -46,7 +46,7 @@ public class LogicaRotaSegura {
 		boolean eraToleravel = true;
 		for(int i=1; i*GRANULARIDADE_ROTAS<=tam; i++){
 			double dist = i*GRANULARIDADE_ROTAS;
-			fim = rota.buscarPontoExistente(dist);
+			fim = rota.searchPoint(dist);
 			Rota r = rota.subRota(inicio, fim);
 			if(eraToleravel != calcPerigo.isToleravel(r)){
 				if(anterior != null){ //nao é a primeira iteração
@@ -78,14 +78,14 @@ public class LogicaRotaSegura {
 	public List<Rota> separarPartesPerigosas(Rota caminho){
 		CalculoPerigo calcPerigo = getCalculoPerigo();
 		List<Rota> caminhos = new LinkedList<Rota>();
-		double tol = kernel.getMediaDens()*calcPerigo.FATOR_TOLERANCIA;
+		double tol = kernel.getMediaDens()*CalculoPerigo.FATOR_TOLERANCIA;
 		double tam = caminho.distanciaPercorrida();
 		Ponto inicio = caminho.getInicio();
 		Ponto fim = inicio;
 		boolean eraSeguro = true;
 		for(int i=1; i*GRANULARIDADE_ROTAS<=tam; i++){
 			double dist = i*GRANULARIDADE_ROTAS;
-			fim = caminho.buscarPontoExistente(dist);
+			fim = caminho.searchPoint(dist);
 			double dif = calcPerigo.perigo(fim)-tol;
 			if(eraSeguro != dif>0){
 				Rota c = caminho.subRota(inicio, fim);

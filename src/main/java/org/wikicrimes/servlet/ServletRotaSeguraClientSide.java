@@ -23,9 +23,10 @@ import org.wikicrimes.util.rotaSegura.googlemaps.StatusGM;
 import org.wikicrimes.util.rotaSegura.logica.CalculoPerigo;
 import org.wikicrimes.util.rotaSegura.logica.FilaRotasCandidatas;
 import org.wikicrimes.util.rotaSegura.logica.LogicaRotaSegura;
+import org.wikicrimes.util.rotaSegura.logica.exceptions.CantFindPath;
+import org.wikicrimes.util.rotaSegura.logica.exceptions.VertexNotInGraph;
 import org.wikicrimes.util.rotaSegura.logica.modelo.GrafoRotas;
 import org.wikicrimes.util.rotaSegura.logica.modelo.RotaGM;
-import org.wikicrimes.util.rotaSegura.logica.modelo.GrafoRotas.NaoTemCaminhoException;
 import org.wikicrimes.util.rotaSegura.testes.TesteCenariosRotas;
 import org.wikicrimes.util.rotaSegura.testes.TesteRotasImg;
 
@@ -75,7 +76,8 @@ public class ServletRotaSeguraClientSide extends HttpServlet {
 		
 		//inicializa o GRAFO com a rota original que vai da origem até o destino
 		Rota rotaGoogleMaps = getRota(request);
-		GrafoRotas grafo = new GrafoRotas(rotaGoogleMaps);
+		CalculoPerigo calcPerigo = logicaRota.getCalculoPerigo();
+		GrafoRotas grafo = new GrafoRotas(rotaGoogleMaps, calcPerigo);
 		logicaRota.setGrafo(grafo);
 		
 		/*TESTE CENARIO*/request.getSession().setAttribute(TEMPO_INICIO, System.currentTimeMillis());
@@ -118,7 +120,7 @@ public class ServletRotaSeguraClientSide extends HttpServlet {
 				double custo = rota.distanciaPercorrida(); 
 				double perigo = calcPerigo.perigo(rota);
 //				grafo.inserirRota(rota, custo, perigo);
-				/*TESTE*/grafo.inserirRota(rota, custo, calcPerigo);
+				grafo.inserirRota(rota, custo);
 				rotasNovas.set(i, new RotaGM(rota, custo, perigo));
 			}
 			rotasCandidatas.reponderar();
@@ -151,14 +153,14 @@ public class ServletRotaSeguraClientSide extends HttpServlet {
 			/*TESTE*/if(status == StatusGM.SUCCESS) teste.addRota(getRota(request), Color.BLUE);
 			/*TESTE*/teste.salvar();
 			rotaEhToleravel = calcPerigo.isToleravel(melhorCaminho); 
-		} catch (NaoTemCaminhoException e1) {
+		} catch (CantFindPath e1) {
 			rotaEhToleravel = false;
 		}
 		
 		if(!rotaEhToleravel && iteracao < MAX_REQUISICOES_GM){
 			if(status == StatusGM.SUCCESS){
 				for(Rota rota : rotasNovas){
-					Queue<Rota> alternativas = logicaRota.criarAlternativas(rota, iteracao); 
+					Queue<Rota> alternativas = logicaRota.criarAlternativas(rota, iteracao);
 					rotasCandidatas.addAll(alternativas);
 				}
 			}
@@ -166,12 +168,14 @@ public class ServletRotaSeguraClientSide extends HttpServlet {
 				Rota novaRequisicao = rotasCandidatas.pop();
 				respostaPedeNovoTrecho(request, response, novaRequisicao);
 			}else{
+				double maxWeight = calcPerigo.perigo(grafo.getRotaOriginal());
 				List<Rota> rotas = grafo.verticesKMenoresCaminhos(PADRAO_NUM_ROTAS_RESPOSTA);
 				respostaFim(request, response, rotas);
 				limpar(request);
 				System.err.println("***nao tem mais rotas alternativas");
 			}
 		}else{
+			double maxWeight = calcPerigo.perigo(grafo.getRotaOriginal());
 			List<Rota> rotas = grafo.verticesKMenoresCaminhos(PADRAO_NUM_ROTAS_RESPOSTA);
 			/*TESTE CENARIO*/long t1 = (Long)sessao.getAttribute(TEMPO_INICIO);
 			/*TESTE CENARIO*/long t2 = System.currentTimeMillis();

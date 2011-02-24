@@ -16,7 +16,7 @@ import org.wikicrimes.util.rotaSegura.testes.charts.ResultsModel.Scenario;
 
 public class ResultsLoader {
 
-	static final String dir = "/home/victor/Desktop/testes/rotas 2010.12.06/novo teste";
+	static final String dir = "/home/victor/Desktop/testes/rotas 2010.12.06/novo";
 	private static final String scenariosFileName = "cenarios.txt";
 	private static final String iterationsFileName = "resultados.txt";
 	private static final String manualAppreciationsFileName = "avaliacao.txt";

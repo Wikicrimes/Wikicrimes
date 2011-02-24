@@ -11,9 +11,9 @@ import org.wikicrimes.util.MapaChaveDupla;
 import org.wikicrimes.util.rotaSegura.geometria.Ponto;
 import org.wikicrimes.util.rotaSegura.geometria.Rota;
 import org.wikicrimes.util.rotaSegura.geometria.Segmento;
+import org.wikicrimes.util.rotaSegura.logica.exceptions.CantFindPath;
 import org.wikicrimes.util.rotaSegura.logica.modelo.GrafoRotas;
 import org.wikicrimes.util.rotaSegura.logica.modelo.RotaPromissora;
-import org.wikicrimes.util.rotaSegura.logica.modelo.GrafoRotas.NaoTemCaminhoException;
 
 
 public class FilaRotasCandidatas{
@@ -109,8 +109,8 @@ public class FilaRotasCandidatas{
 				memoizacao.put(f, d, perigoFim);
 			}
 			return perigoComeco + calcPerigo.perigo(rota) + perigoFim;
-		}catch(NaoTemCaminhoException e){
-			/*DEBUG*/System.out.println("***NaoTemCaminhoException, inicio: " + e.inicio + ", fim: "+ e.fim + ", vertice sem pai: "+ e.semPai);
+		}catch(CantFindPath e){
+			/*DEBUG*/System.out.println("***NaoTemCaminhoException, inicio: " + e.start + ", fim: "+ e.end + ", vertice sem pai: "+ e.orphan);
 			return Double.POSITIVE_INFINITY;
 		}
 	}

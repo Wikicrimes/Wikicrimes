@@ -1,7 +1,5 @@
 package org.wikicrimes.util.rotaSegura.testes.charts;
 
-import static org.wikicrimes.util.rotaSegura.testes.charts.ResultsModel.*;
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -9,14 +7,9 @@ import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-
-import javax.imageio.ImageIO;
 
 import org.wikicrimes.util.rotaSegura.testes.charts.ResultsModel.Iteration;
 import org.wikicrimes.util.rotaSegura.testes.charts.ResultsModel.Results;
@@ -197,7 +190,7 @@ public class QualityChartMaker {
 	private void drawBar(int x, int y1, int y2, Color color, Graphics g) {
 		g.setColor(color);
 		RenderedImage rImg = (RenderedImage)image;
-		int h = rImg.getHeight();
+//		int h = rImg.getHeight();
 		g.fillRect(x-6, y1, 12, y2-y1);
 	}
 	

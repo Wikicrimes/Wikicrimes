@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.wikicrimes.model.PontoLatLng;
-import org.wikicrimes.util.rotaSegura.logica.CalculoPerigo;
 
 public class ResultsModel {
 

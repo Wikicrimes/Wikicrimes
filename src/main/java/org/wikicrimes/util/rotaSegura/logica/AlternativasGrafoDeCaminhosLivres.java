@@ -1,6 +1,5 @@
 package org.wikicrimes.util.rotaSegura.logica;
 
-import java.awt.Color;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,9 +12,8 @@ import org.wikicrimes.util.rotaSegura.geometria.Ponto;
 import org.wikicrimes.util.rotaSegura.geometria.Retangulo;
 import org.wikicrimes.util.rotaSegura.geometria.Rota;
 import org.wikicrimes.util.rotaSegura.geometria.Segmento;
+import org.wikicrimes.util.rotaSegura.logica.exceptions.CantFindPath;
 import org.wikicrimes.util.rotaSegura.logica.modelo.RotaPromissora;
-import org.wikicrimes.util.rotaSegura.logica.modelo.GrafoRotas.NaoTemCaminhoException;
-import org.wikicrimes.util.rotaSegura.testes.TesteRotasImg;
 
 public class AlternativasGrafoDeCaminhosLivres extends AlternativasGrafoVisibilidade{
 
@@ -41,7 +39,7 @@ public class AlternativasGrafoDeCaminhosLivres extends AlternativasGrafoVisibili
 				alternativas.offer(rotaPromissora);
 			}
 			return alternativas;
-		} catch (NaoTemCaminhoException e) {
+		} catch (CantFindPath e) {
 			return alternativas;
 		}
 	}

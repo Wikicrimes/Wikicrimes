@@ -34,7 +34,7 @@ public class TesteCenariosRotas extends HttpServlet{
 	private static final String cenariosFileName = "cenarios.txt";
 	private static final String paramFileName = "param.txt";
 	private static final String toleranciasFileName = "tolerancias.txt";
-	public static final String dir = "/home/victor/Desktop/testes/rotas 2010.12.06/novo teste";
+	public static final String dir = "/home/victor/Desktop/testes/rotas 2010.12.06/novo";
 	
 	private static Map<String,String> result = new HashMap<String, String>();
 	private static Map<String,String> param;

@@ -10,8 +10,9 @@ import java.util.Queue;
 import org.wikicrimes.util.kernelMap.PropertiesLoader;
 import org.wikicrimes.util.rotaSegura.geometria.Ponto;
 import org.wikicrimes.util.rotaSegura.geometria.Rota;
+import org.wikicrimes.util.rotaSegura.logica.exceptions.CantFindPath;
+import org.wikicrimes.util.rotaSegura.logica.exceptions.VertexNotInGraph;
 import org.wikicrimes.util.rotaSegura.logica.modelo.RotaPromissora;
-import org.wikicrimes.util.rotaSegura.logica.modelo.GrafoRotas.NaoTemCaminhoException;
 import org.wikicrimes.util.rotaSegura.testes.TesteRotasImg;
 
 public class AlternativasPontoDesvio extends GeradorDeAlternativasAbstrato{
@@ -43,9 +44,17 @@ public class AlternativasPontoDesvio extends GeradorDeAlternativasAbstrato{
 				alternativas.offer(rotaPromissora);
 			}
 			return alternativas;
-		} catch (NaoTemCaminhoException e) {
+		} catch (CantFindPath e) {
+			return alternativas;
+		} catch (VertexNotInGraph e) {
+//			/*DEBUG*/System.err.println(e.getMessage());
+//			/*DEBUG*/TesteRotasImg teste = new TesteRotasImg(logicaRota.getKernel(), grafo);
+//			/*DEBUG*/teste.addRota(rota, Color.ORANGE);
+//			/*DEBUG*/teste.addPonto(e.vertex, Color.MAGENTA);
+//			/*DEBUG*/teste.salvar();
 			return alternativas;
 		}
+		
 	}
 	
 	private Queue<Ponto> getPontosPromissores(Ponto origem, Ponto destino, double maximo){
@@ -145,6 +154,7 @@ public class AlternativasPontoDesvio extends GeradorDeAlternativasAbstrato{
 		return min[x][y];
 	}
 	
+	@SuppressWarnings("serial")
 	private class PontoPromissor extends Ponto{
 		double valor;
 		public PontoPromissor(int x, int y, double valor) {

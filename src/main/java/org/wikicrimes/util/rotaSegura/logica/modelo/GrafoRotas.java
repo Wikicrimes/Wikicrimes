@@ -1,5 +1,6 @@
 package org.wikicrimes.util.rotaSegura.logica.modelo;
 
+import java.awt.Color;
 import java.awt.Rectangle;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
@@ -15,14 +16,16 @@ import org.wikicrimes.util.rotaSegura.geometria.Rota;
 import org.wikicrimes.util.rotaSegura.geometria.Segmento;
 import org.wikicrimes.util.rotaSegura.logica.CalculoPerigo;
 import org.wikicrimes.util.rotaSegura.logica.LogicaRotaSegura;
-import org.wikicrimes.util.rotaSegura.testes.TesteGrafoJung;
+import org.wikicrimes.util.rotaSegura.logica.exceptions.CantFindPath;
+import org.wikicrimes.util.rotaSegura.logica.exceptions.VertexNotInGraph;
+import org.wikicrimes.util.rotaSegura.testes.TesteRotasImg;
 
 
 
 /**
  * @author victor
- * Grafo  dos possíveis caminhos entre a origem e o destino especificados pelo usuário no GoogleMaps.
- * O menor caminho para todo vértice é computado na inserção e remoção de rotas.
+ * Grafo  dos possiveis caminhos entre a origem e o destino especificados pelo usuário no GoogleMaps.
+ * O menor caminho para todo vertice eh computado na inserção e remocao de rotas.
  *	
  */
 public class GrafoRotas {
@@ -33,7 +36,10 @@ public class GrafoRotas {
 	
 	private int numVertices;
 	
-	public GrafoRotas(Rota rotaOriginal){
+	private CalculoPerigo calcPerigo;
+	
+	public GrafoRotas(Rota rotaOriginal, CalculoPerigo calcPerigo){
+		this.calcPerigo = calcPerigo;
 		this.rotaOriginal = rotaOriginal;
 		this.origem = rotaOriginal.getInicio();
 		this.destino = rotaOriginal.getFim();
@@ -60,33 +66,24 @@ public class GrafoRotas {
 		inserirAresta(rota, custo, perigo);
 	}
 	
-	public void inserirRota(Rota rota, double custo, CalculoPerigo calcPerigo){
+	public void inserirRota(Rota rota, double custo){
 		if(rota == null)
 			throw new InvalidParameterException();
 		
-		//ver se passa por vertices existentes
-		List<Ponto> verticesExistentes = new ArrayList<Ponto>();
-		for(VerticeRotas v : vertices.values()) {
-			if(rota.passaPor(v.ponto)) {
-				verticesExistentes.add(v.ponto);
-			}
-		}
-		verticesExistentes.remove(rota.getInicio());
-		verticesExistentes.remove(rota.getFim());
-		List<Rota> rotas1 = rota.dividirAprox(verticesExistentes);
+		//aproveitar vertices existentes
+		//TODO
 		
 		//dividir em partes pequenas
-		List<Rota> rotas2 = new ArrayList<Rota>();
-		for(Rota r : rotas1) {
-			List<Rota> partes = r.dividir(LogicaRotaSegura.GRANULARIDADE_ROTAS);
-			rotas2.addAll(partes);
-		}
+		List<Rota> rotas = new ArrayList<Rota>();
+		/*TESTE*/rotas.add(rota);
+//		List<Rota> partes = rota.divide(LogicaRotaSegura.GRANULARIDADE_ROTAS);
+//		rotas.addAll(partes);
 		
 		//unir partes coincidentes
 		//TODO
 
 		//adicionar cada parte
-		for(Rota parte : rotas2) {
+		for(Rota parte : rotas) {
 			if(parte.size() == 0) continue;
 			double custoProporcional = custo*parte.distanciaPercorrida()/rota.distanciaPercorrida();
 			double perigoParte = calcPerigo.perigo(parte);
@@ -102,10 +99,10 @@ public class GrafoRotas {
 		
 		//TRATAR INTERSECOES
 		
-		//caso 1, caminhos cruzam: criar um vértice
+		//caso 1, caminhos cruzam: criar um vertice
 		//TODO (precisa msm? normalmente o caminho do GM n tende a seguir um anterior, em vez de cruzar?)
 		
-		//caso 2, caminhos tem segmentos de reta em comum: unir a parte em comum em um só caminho e criar vértices nas bifurcações
+		//caso 2, caminhos tem segmentos de reta em comum: unir a parte em comum em um só caminho e criar vertices nas bifurcacoes
 		List<Caminho> partesIteracaoAnterior = new LinkedList<Caminho>();
 		partesIteracaoAnterior.add(caminho);
 		for(Caminho caminhoNoGrafo : getCaminhos()){
@@ -166,6 +163,10 @@ public class GrafoRotas {
 		return destino;
 	}
 	
+	public Rota getRotaOriginal() {
+		return rotaOriginal;
+	}
+	
 	
 	/**
 	 * @return SegmentoReta que vai da ORIGEM ate o DESTINO
@@ -184,7 +185,7 @@ public class GrafoRotas {
 
 	@Override
 	public GrafoRotas clone(){
-		GrafoRotas g = new GrafoRotas(rotaOriginal);
+		GrafoRotas g = new GrafoRotas(rotaOriginal, calcPerigo);
 		
 		List<VerticeRotas> nos = new ArrayList<VerticeRotas>(); 
 		nos.addAll(vertices.values());
@@ -254,15 +255,15 @@ public class GrafoRotas {
 	
 	
 	//CALCULO DE MENOR CAMINHO (Dijkstra)
-	public Rota verticesMelhorCaminho(Ponto origem, Ponto destino) throws NaoTemCaminhoException{
+	public Rota verticesMelhorCaminho(Ponto origem, Ponto destino) throws CantFindPath{
 //		/*TESTE*/String teste = "verticesMelhorCaminho(" + id(origem) + ", " + id(destino) + "): " ;
 
 		VerticeRotas vOrigem = vertices.get(origem);
 		VerticeRotas vDestino = vertices.get(destino); 
 		if(vOrigem == null) 
-			throw new InvalidParameterException(origem + " nao eh um vertice do grafo");
+			throw new VertexNotInGraph(origem);
 		if(vDestino == null)
-			throw new InvalidParameterException(destino + " nao eh um vertice do grafo");
+			throw new VertexNotInGraph(destino);
 		
 		Map<Ponto, VerticeMC> mapaVerticesMC = new HashMap<Ponto, VerticeMC>();
 		
@@ -306,7 +307,7 @@ public class GrafoRotas {
 //				/*DEBUG*/teste.setTitulo("menor caminho de A até B");
 //				/*DEBUG*/teste.addLabel(origem, "A");
 //				/*DEBUG*/teste.addLabel(destino, "B");
-				throw new NaoTemCaminhoException(this,vOrigem,vDestino,vmc);
+				throw new CantFindPath(this,vOrigem,vDestino,vmc);
 			}
 			p = pai.ponto;
 			c.addInicio(p);
@@ -322,7 +323,7 @@ public class GrafoRotas {
 		return c;
 	}
 	
-	public Rota verticesMelhorCaminho() throws NaoTemCaminhoException{
+	public Rota verticesMelhorCaminho() throws CantFindPath{
 		return verticesMelhorCaminho(origem, destino);
 	}
 	
@@ -350,11 +351,11 @@ public class GrafoRotas {
 		return new RotaGM(r, custo, perigo);
 	}
 	
-	public Rota melhorCaminho() throws NaoTemCaminhoException{
+	public Rota melhorCaminho() throws CantFindPath{
 		return getRota(verticesMelhorCaminho().getPontosArray());
 	}
 	
-	public Rota melhorCaminho(Ponto origem, Ponto destino) throws NaoTemCaminhoException{
+	public Rota melhorCaminho(Ponto origem, Ponto destino) throws CantFindPath{
 		return getRota(verticesMelhorCaminho(origem, destino).getPontosArray());
 	}
 	
@@ -393,26 +394,14 @@ public class GrafoRotas {
 		}
 	}
 
-	@SuppressWarnings("serial")
-	public class NaoTemCaminhoException extends Exception{
-		public GrafoRotas grafo;
-		public VerticeRotas inicio, fim, semPai;
-		public NaoTemCaminhoException(GrafoRotas grafo, VerticeRotas inicio, VerticeRotas fim, VerticeRotas semPai) {
-			super();
-			this.grafo = grafo;
-			this.inicio = inicio;
-			this.fim = fim;
-			this.semPai = semPai;
-		}
-	}
-	
-	
 	//CALCULO DE K MENORES CAMINHOS
 	public List<Rota> verticesKMenoresCaminhos(int k){
 		List<Rota> rotas = verticesKMenoresCaminhos(origem, destino, k);
 		return rotas;
 	}
 	public List<Rota> verticesKMenoresCaminhos(Ponto origem, Ponto destino, int k){
+		double maxWeight = calcPerigo.perigo(rotaOriginal);
+		initializeBetterWeights(k, maxWeight);
 		List<RotaPromissora> todas = todosCaminhos(origem, destino);
 		Collections.sort(todas);
 		todas = removeRepetidas(todas);
@@ -421,6 +410,7 @@ public class GrafoRotas {
 			k = todas.size();
 		for(int i=0; i<k; i++)
 			kMenores.add(todas.get(i));
+		this.betterWeights = null;
 		return kMenores;
 	}
 	private List<RotaPromissora> removeRepetidas(List<RotaPromissora> listaOrdenadaPorPeso){
@@ -450,9 +440,9 @@ public class GrafoRotas {
 		VerticeRotas vOrigem = vertices.get(origem);
 		VerticeRotas vDestino = vertices.get(destino); 
 		if(vOrigem == null) 
-			throw new InvalidParameterException(origem + " nao eh um vertice do grafo");
+			throw new VertexNotInGraph(origem);
 		if(vDestino == null)
-			throw new InvalidParameterException(destino + " nao eh um vertice do grafo");
+			throw new VertexNotInGraph(destino);
 		
 		origemKMC = vOrigem;
 		destinoKMC = vDestino;
@@ -463,10 +453,16 @@ public class GrafoRotas {
 	}
 	private VerticeRotas origemKMC, destinoKMC;
 	private List<RotaPromissora> todosCaminhosSubrotina(VerticeRotas origem, VerticeRotas destino, RotaPromissora caminhoAteOrigem){
+
+		/*DEBUG*/TesteRotasImg teste = new TesteRotasImg(this);
+		/*DEBUG*/teste.addRota(caminhoAteOrigem, Color.BLUE);
+		/*DEBUG*/teste.salvar();
+		
 		List<RotaPromissora> caminhos = new ArrayList<RotaPromissora>();
 
 		//condição de parada: qd chega no destino
 		if(origem.equals(destino)){
+			updateBetterWeights(caminhoAteOrigem.getPeso());
 			caminhos.add(caminhoAteOrigem);
 			return caminhos;	
 		}
@@ -474,16 +470,38 @@ public class GrafoRotas {
 		//ramificação
 		for(ArestaRotas a : origem.arestasSaindo){
 			VerticeRotas v = a.sucessor;
-			if(caminhoAteOrigem.contem(v.ponto)) continue;
+			if(caminhoAteOrigem.contem(v.ponto)) continue; //evitar loops
 			Rota caminhoAteV = new Rota(caminhoAteOrigem);
 			caminhoAteV.addFim(v.ponto);
 			double pesoAteV = caminhoAteOrigem.getPeso() + a.perigo;
 			RotaPromissora caminhoAteVEPeso = new RotaPromissora(caminhoAteV, pesoAteV);
+			double pesoRetaVD = calcPerigo.perigo(new Segmento(v.ponto, destino.ponto));
+			if(pesoAteV + pesoRetaVD > getMaxWeight()) return caminhos; //descartar caminhos muito pesados
 			caminhos.addAll(todosCaminhosSubrotina(v, destino, caminhoAteVEPeso));
 		}
 		return caminhos;
 	}
 	
+	private double[] betterWeights;
+	private void initializeBetterWeights(int size, double initialWaight) {
+		betterWeights = new double[size];
+		for(int i=0; i<size; i++) {
+			betterWeights[i] = initialWaight;
+		}
+	}
+	private double getMaxWeight() {
+		return betterWeights[betterWeights.length-1];
+	}
+	private void updateBetterWeights(double newWeight) {
+		//mantem o array ordenado, insere newWeight na posicao certa e descarta o ultimo valor
+		for(int i=0; i<betterWeights.length; i++) {
+			if(newWeight < betterWeights[i]) {
+				double temp = betterWeights[i];
+				betterWeights[i] = newWeight;
+				newWeight = temp;
+			}
+		}
+	}
 	
 	public List<Rota> intersecao(Rota rota){
 		List<Rota> intersecoes = new ArrayList<Rota>();

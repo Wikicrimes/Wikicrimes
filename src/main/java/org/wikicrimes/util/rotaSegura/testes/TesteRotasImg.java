@@ -61,6 +61,7 @@ public class TesteRotasImg {
 	private GrafoRotas grafo;
 	private KernelMap kernel;
 	private Map<String,Label> labels = new HashMap<String,Label>();
+	private String comment = "";
 	
 	public TesteRotasImg(Rectangle bounds){
 		if(!enabled) return;
@@ -153,6 +154,22 @@ public class TesteRotasImg {
 			addPonto(p, cor);
 	}
 	
+	public void addLabeledPoints(List<Ponto> pontos, Color cor) {
+		for(int i=0; i<pontos.size(); i++) {
+			Ponto p = pontos.get(i);
+			addPonto(p, cor);
+			addLabel("_ponto" + i, ""+i, p.x, p.y, cor);
+		}
+	}
+	
+	public void addLabeledPoints(Ponto[] pontos, Color cor) {
+		addLabeledPoints(Arrays.asList(pontos), cor);
+	}
+	
+	public void addPontos(Ponto[] pontos, Color cor) {
+		addPontos(Arrays.asList(pontos), cor);
+	}
+	
 	public void addRota(Rota caminho) {
 		caminhos.add(caminho);
 		coresCaminhos.add(cores[(caminhos.size()-1)%cores.length]);
@@ -218,6 +235,10 @@ public class TesteRotasImg {
 		labels.put(key, new Label(texto,x,y,cor));
 	}
 	
+	public void addComment(String comment) {
+		this.comment += comment;
+	}
+	
 	public static Rectangle getLimites(Ponto... pontos){
 		return getLimites(Arrays.asList(pontos));
 	}
@@ -263,6 +284,7 @@ public class TesteRotasImg {
 		pintaCaminhos(g);
 		pintaPontos(g);
 		pintaLabels(g, labels);
+		pintaComment(g, comment);
 	}
 	
 	protected void pintaSegmentos(Graphics g){
@@ -402,6 +424,11 @@ public class TesteRotasImg {
 		int x = xGMtoTeste(posX);
 		int y = yGMtoTeste(posY);
 		g.drawString(s, x, y);
+	}
+	
+	protected void pintaComment(Graphics g, String s) {
+		g.setColor(Color.BLACK);
+		g.drawString(s, 5, 20);
 	}
 	
 	protected void pintaLabels(Graphics g, Map<String,Label> labels){

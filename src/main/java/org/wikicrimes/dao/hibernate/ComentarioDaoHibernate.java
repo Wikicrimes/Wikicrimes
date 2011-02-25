@@ -15,10 +15,10 @@ public class ComentarioDaoHibernate extends GenericCrudDaoHibernate implements
 		setEntity(Comentario.class);
 	}
 	
-	public List<Comentario> getComentariosByCrime(Long idCrime) {
-		String query = "from Comentario ";
+	public List<Comentario> getComentariosByCrime(String idCrime) {
+		String query = "from Comentario c ";
    	
-    	    query += "where crime = " + idCrime;
+    	    query += "where c.crime.chave = '" + idCrime+"'";
     	    query += " order by dataConfirmacao";
 
     	return getHibernateTemplate().find(query);

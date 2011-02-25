@@ -59,7 +59,7 @@ public class MostrarDadosRelatoForm extends GenericForm {
 		this.emailService = emailService;
 	}
 
-	private Long idRelato;
+	private String idRelato;
 	
 	private String relatoIndicacao;
 	
@@ -109,14 +109,14 @@ public class MostrarDadosRelatoForm extends GenericForm {
 		this.relatoService = relatoService;
 	}
 
-	public Long getIdRelato() {
+	public String getIdRelato() {
 		return idRelato;
 	}
 
-	public void setIdRelato(Long idRelato) {
+	public void setIdRelato(String idRelato) {
 		this.idRelato = idRelato;
 		if (idRelato != null) {
-			relato = (Relato) relatoService.get(idRelato);			
+			relato = (Relato) relatoService.getRelato(idRelato);			
 			confirmacaoRelato.setRelato(relato);
 			List lst = relatoService.listarRazoesSelecionadas(relato);
 			for (Razao razaoSel : (List<Razao>)lst) {
@@ -148,7 +148,7 @@ public class MostrarDadosRelatoForm extends GenericForm {
 			for (Iterator iterator = razoesBanco.iterator(); iterator.hasNext();) {
 				Razao r = (Razao) iterator.next();
 				//11 12 13 14, 18 (A pedido do Vasco nao utilizar essas causas)
-				//Tire as opcoes, proximidade, impunidade, pistolagem, omissão de testemunhas e crime passional .
+				//Tire as opcoes, proximidade, impunidade, pistolagem, omissï¿½o de testemunhas e crime passional .
 				if (r.getIdRazao().intValue() < 11 || r.getIdRazao().intValue() > 14 && r.getIdRazao().intValue() != 18)
 					razoes.add(new SelectItem(r.getIdRazao().toString(),bundle.getString(r.getNome())));
 			}
@@ -198,7 +198,7 @@ public class MostrarDadosRelatoForm extends GenericForm {
 			
 				if(confirmacaoRelatoService.insert(confirmacaoRelato)){
 					relatoService.increntaNumConfirmacoes(confirmacaoRelato.getRelato(),confirmacaoRelato.getConfirma());
-					//verificar se somente é relato de orkut ou de usuario wikicrimes
+					//verificar se somente ï¿½ relato de orkut ou de usuario wikicrimes
 					if (confirmacaoRelato.getRelato().getUsuario()!=null)
 						emailService.enviarEmailNotificacao(confirmacaoRelato, FacesContext.getCurrentInstance().getViewRoot().getLocale().toString());
 					addMessage("confirmacao.realizada", "");
@@ -217,7 +217,7 @@ public class MostrarDadosRelatoForm extends GenericForm {
 //						returnPage = SUCCESS;
 //					} else {
 //						addMessage("errors.geral",
-//								"Erro ao tentar realizar uma confirmação de crime.");
+//								"Erro ao tentar realizar uma confirmaï¿½ï¿½o de crime.");
 //					}				
 //			}		
 

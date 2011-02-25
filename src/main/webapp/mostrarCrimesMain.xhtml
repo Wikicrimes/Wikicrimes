@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC
+"-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+	<br/>
+	
+	<head>
+		<meta http-equiv="Cache-Control" content="no-store" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+		<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+		<link rel="shortcut icon" href="./images/favicon.ico"
+			type="image/x-icon" />
+	</head>
+	
+	<body>
+		<div style="height:150px; margin:0;">
+		<p style="font:bold 20pt sans-serif; color:orange;">Veja +</p>
+		<div style="float:left; margin-top: -25px;">
+		<p style="width:90%; font:bold 16pt sans-serif; color:red; border-bottom: solid 3px red;">Comentados</p>
+		<t:dataTable id="crimes1" var="crime" value="#{mostrarDadosForm.crimeService.crimesMaisComentados}">
+    		<t:column>
+    			<h:outputLink value="/wikicrimes/verCrime.html">
+    				<h:outputText style="font-size:11px" value="#{crime.dataHoraRegistro}" />
+    				<h:outputText style="font-size:11px" value=" | #{fn:substring(crime.descricao,0,45)}..." />
+    				<f:param name="idCrime" value="#{crime.chave}" />
+    			</h:outputLink>
+    		</t:column>
+        </t:dataTable>
+        </div>
+        <div style="float:left; margin-top: -25px;">
+        <p style="width:90%; font:bold 16pt sans-serif; color:red; border-bottom: solid 3px red;">Vistos</p>
+        <t:dataTable id="crimes2" var="crime" value="#{mostrarDadosForm.crimeService.crimesMaisVistos}">
+    		<t:column>
+    			<h:outputLink value="/wikicrimes/verCrime.html">
+    				<h:outputText style="font-size:11px" value="#{crime.dataHoraRegistro}" />
+    				<h:outputText style="font-size:11px" value=" | #{fn:substring(crime.descricao,0,45)}..." />
+    				<f:param name="idCrime" value="#{crime.chave}" />
+    			</h:outputLink>
+    		</t:column>
+        </t:dataTable>
+        </div>
+		</div>
+	</body>
+	
+</html>

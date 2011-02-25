@@ -24,7 +24,7 @@ public interface CrimeDao extends GenericCrudDao {
 	public List<Crime> getCrimesMaisVistos();
 	public List<Crime> getCrimesMaisComentados();
 	public List<Crime> getCrimesMaisConfirmados();
-	public void atualizaContadorCometarios(Long idCrime);
+	public void atualizaContadorCometarios(String idCrime);
 	public Map<String,Integer> contaCrimesArea(double latitude, double longitude, double raio,long dataIni, long dataFim);
 	public StringBuilder getCrimesInRadius(double latitude, double longitude, double raio,long dataIni, long dataFim, double credibilidadeMin, double credibilidadeMax);
 	public boolean realizaAtivacao(String codApp);

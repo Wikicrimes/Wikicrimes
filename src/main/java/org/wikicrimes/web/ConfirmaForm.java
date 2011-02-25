@@ -70,7 +70,7 @@ public class ConfirmaForm extends GenericForm {
 	
 	private List<Comentario> comentarios;
 	
-	private Long idCrime;
+	private String idCrime;
 	
 	private List<SelectItem> razoes = null;
 	
@@ -94,7 +94,7 @@ public class ConfirmaForm extends GenericForm {
 		.getFactory(FactoryFinder.APPLICATION_FACTORY);
 		String bundleName = factory.getApplication().getMessageBundle();
 		ResourceBundle bundle = ResourceBundle.getBundle(bundleName,FacesContext.getCurrentInstance().getViewRoot().getLocale());
-		//retorna lista de motivos com o parametro positivo ou não
+		//retorna lista de motivos com o parametro positivo ou nï¿½o
 		List<TipoConfirmacao> lst = confirmacaoService.getTipoConfirmacoes(getP());
 		for (TipoConfirmacao motivo : lst){
 			if(confirmacao.getIdConfirmacao() != null) {
@@ -150,7 +150,7 @@ public class ConfirmaForm extends GenericForm {
 			for (Iterator iterator = razoesBanco.iterator(); iterator.hasNext();) {
 				Razao r = (Razao) iterator.next();
 				//11 12 13 14, 18 (A pedido do Vasco nao utilizar essas causas)
-				//Tire as opcoes, proximidade, impunidade, pistolagem, omissão de testemunhas e crime passional .
+				//Tire as opcoes, proximidade, impunidade, pistolagem, omissï¿½o de testemunhas e crime passional .
 				if (r.getIdRazao().intValue() < 11 || r.getIdRazao().intValue() > 14 && r.getIdRazao().intValue() != 18)
 					razoes.add(new SelectItem(r.getIdRazao().toString(),bundle.getString(r.getNome())));
 			}
@@ -164,11 +164,11 @@ public class ConfirmaForm extends GenericForm {
 
 	private List<String> razoesSel = new ArrayList<String>();
 
-	public Long getIdCrime() {
+	public String getIdCrime() {
 		return idCrime;
 	}
 
-	public void setIdCrime(Long idCrime) {
+	public void setIdCrime(String idCrime) {
 		this.idCrime = idCrime;
 		if (idCrime != null  && comentarios == null)
 			comentarios= comentarioService.getComentariosByCrime(idCrime);
@@ -233,13 +233,14 @@ public class ConfirmaForm extends GenericForm {
 			return returnPage= SESSAO_EXPIRADA;
 		}
 		try {
-		comentario.setCrime((Crime) crimeService.get(this.getIdCrime()));
+		comentario.setCrime((Crime) crimeService.getCrime(this.getIdCrime()));
 		comentario.setDataConfirmacao(new Date());
 		comentario.setUsuario((Usuario) this.getSessionScope().get("usuario"));
 		comentario.setIp(getIp());
 		comentarioService.salvaComentario(comentario);
 		Crime cAtualizaCont = new Crime();
-		cAtualizaCont.setIdCrime(this.getIdCrime());
+		//cAtualizaCont.setIdCrime(this.getIdCrime());
+		cAtualizaCont.setChave(this.getIdCrime());
 		crimeService.atualizaContadorCometarios(cAtualizaCont);
 		emailService.enviarEmailNotificacao(comentario, FacesContext.getCurrentInstance().getViewRoot().getLocale().toString());
 		returnPage = SUCCESS;
@@ -307,7 +308,7 @@ public class ConfirmaForm extends GenericForm {
 				return "Menor";
 			}
 			if (faixaEtaria.equals(new Long(2))) {
-				return "Até 25 Anos";
+				return "Atï¿½ 25 Anos";
 			}
 			if (faixaEtaria.equals(new Long(3))) {
 				return "Maior que 25 anos";
@@ -467,7 +468,7 @@ public class ConfirmaForm extends GenericForm {
 	}
 	
 	public String confirmaMotivo(){
-		//checa se já foi confirmado
+		//checa se jï¿½ foi confirmado
 		if (confirmacao.getIdConfirmacao()!=null){
 		Confirmacao tempConfirma = confirmacaoService.getConfirmacao(confirmacao.getIdConfirmacao());
 		if (tempConfirma.getConfirma()!=null){
@@ -481,7 +482,7 @@ public class ConfirmaForm extends GenericForm {
 		else
 			confirmacao.setConfirma(Constantes.NAO);
 		confirmacao.setTipoConfirmacao(confirmacaoService.getTipoConfirmacao(new Long(getIdMotivo())));
-		confirmacao.setCrime(((Crime) crimeService.get(getIdCrime())));
+		confirmacao.setCrime(((Crime) crimeService.getCrime(getIdCrime())));
 		return confirma();
 	}
 
@@ -503,7 +504,7 @@ public class ConfirmaForm extends GenericForm {
 					returnPage = SUCCESS;
 				} else {
 					addMessage("errors.geral",
-							"Erro ao tentar realizar uma confirmação de crime.");
+							"Erro ao tentar realizar uma confirmaï¿½ï¿½o de crime.");
 				}
 			}
 			else {
@@ -569,7 +570,7 @@ public class ConfirmaForm extends GenericForm {
 						returnPage = SUCCESS;
 					} else {
 						addMessage("errors.geral",
-								"Erro ao tentar realizar uma confirmação de crime.");
+								"Erro ao tentar realizar uma confirmaï¿½ï¿½o de crime.");
 					}				
 			}		
 

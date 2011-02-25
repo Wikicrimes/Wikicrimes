@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC
+"-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+	<br/>
+	
+	<head>
+		<meta http-equiv="Cache-Control" content="no-store" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+		<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+		<link rel="shortcut icon" href="./images/favicon.ico"
+			type="image/x-icon" />
+		<link rel="stylesheet" type="text/css" href="./styles/wikicrimes.css"
+			title="default" />
+		
+	</head>
+	
+	<f:view>
+		<ui:composition template="layoutCrime.xhtml">
+			<ui:define name="titulo">
+                #{mostrarDadosForm.crime.tipoCrime.descricao} | #{mostrarDadosForm.crime.estado} - #{mostrarDadosForm.crime.cidade} - #{mostrarDadosForm.crime.descricao}
+            </ui:define>
+			<ui:define name="menu">		
+					<ui:include src="header.xhtml" />
+			</ui:define>
+			<ui:define name="idioma">
+					
+				<ui:include src="idioma.xhtml" />
+				
+			</ui:define>
+			
+			<ui:define name="conteudo">
+			<hr /><br clear="both" />
+				
+				<rich:panel>
+					<t:panelGrid>
+						<t:panelGroup>
+							<h:outputLink value="/wikicrimes">
+								<h:outputText value="Pagina Inicial"/>
+							</h:outputLink>
+							<h:outputText value=" >> Detalhe do Crime" />
+						</t:panelGroup>
+					</t:panelGrid>
+				</rich:panel>
+				
+				<div id="detalhecrime">
+					<div id="detalhemapa" style="height: 300px; width: 500px; float: right; margin: 20px;"></div>
+			 		<p><h:outputText value="Na cidade de #{mostrarDadosForm.crime.cidade} - #{mostrarDadosForm.crime.estado} em " />
+			 		<h:outputText value="#{mostrarDadosForm.crime.data}" /></p>
+					<p style="text-align: justify;"><h:outputText value="#{mostrarDadosForm.crime.descricao}" /></p>
+					<div id="divFiltrosAplicados"></div>
+					<div id="loadingPequeno"></div>
+				</div>
+				
+			</ui:define>
+			
+			<ui:define name="crimes">
+				<ui:include src="mostrarCrimesMain.xhtml"/>
+			</ui:define>
+		
+			<ui:define name="footer">
+				<ui:include src="footer.xhtml" />
+				<br/>
+				<br/>
+				<iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.wikicrimes.org&amp;layout=standard&amp;show_faces=true&amp;width=450&amp;action=like&amp;colorscheme=light&amp;height=80" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:80px;" allowTransparency="true"></iframe>
+			</ui:define>
+		</ui:composition>
+	</f:view>
+	
+	</html>

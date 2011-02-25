@@ -19,7 +19,7 @@ public class ComentarioServiceImpl extends GenericCrudServiceImpl implements
 		this.comentarioDao = comentarioDao;
 	}
 	
-	public List<Comentario> getComentariosByCrime(Long idCrime) {
+	public List<Comentario> getComentariosByCrime(String idCrime) {
 		return this.comentarioDao.getComentariosByCrime(idCrime);
 		
 	}

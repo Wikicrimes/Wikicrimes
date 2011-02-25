@@ -17,7 +17,7 @@ public class Crime extends BaseObject {
 	public static Long FEMININO = new Long(0);
 	
 	/**
-	 * Variáveis de Instância
+	 * Variï¿½veis de Instï¿½ncia
 	 */
 	private Long idCrime;
 	
@@ -40,7 +40,7 @@ public class Crime extends BaseObject {
 	
 	private Long qtdComentarios;
 	
-	// Dados da ocorrência
+	// Dados da ocorrï¿½ncia
 	private TipoCrime tipoCrime;
 
 	private TipoRegistro tipoRegistro;
@@ -74,7 +74,7 @@ public class Crime extends BaseObject {
 	
 	private TipoTransporte tipoTransporte;
 
-	// Vítimas
+	// Vï¿½timas
 	private Long qtdMasculino;
 
 	private Long qtdFeminino;

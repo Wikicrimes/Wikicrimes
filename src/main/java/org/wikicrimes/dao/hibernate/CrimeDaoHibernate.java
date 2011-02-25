@@ -83,7 +83,7 @@ public class CrimeDaoHibernate extends GenericCrudDaoHibernate implements
 //		});
 //	}
 
-	// Método que realiza um filtro parametrizado de crimes
+	// Mï¿½todo que realiza um filtro parametrizado de crimes
 	// Usando HQL
 	public List<BaseObject> filter(Map parameters) {
 		boolean entrouTipoLocal = false;
@@ -161,16 +161,16 @@ public class CrimeDaoHibernate extends GenericCrudDaoHibernate implements
 
 		}
 
-		// Certificação de Crimes
+		// Certificaï¿½ï¿½o de Crimes
 		Boolean isCrimeConfirmadoPositivamente = (Boolean) parameters
 				.get("crimeConfirmadoPositivamente");
-		// Certificação por confirmação
+		// Certificaï¿½ï¿½o por confirmaï¿½ï¿½o
 		if (isCrimeConfirmadoPositivamente != null) {
 			if (isCrimeConfirmadoPositivamente)
 				consulta += "(crime.confirmacoesPositivas > crime.confirmacoesNegativas) and ";
 		}
 		
-		// Certificação por Entidade Certificadora
+		// Certificaï¿½ï¿½o por Entidade Certificadora
 		EntidadeCertificadora entidadeCertificadora = null;
 		if (listaEntidadeCertificadora != null)
 			if (listaEntidadeCertificadora.size()>0){
@@ -470,12 +470,12 @@ public class CrimeDaoHibernate extends GenericCrudDaoHibernate implements
 
 
 	@Override
-	public void atualizaContadorCometarios(Long idCrime) {
+	public void atualizaContadorCometarios(String idCrime) {
 		String query = "update Crime set ";
 		query += "CRI_QTD_COMENTARIOS=ifnull(CRI_QTD_COMENTARIOS,0)+1 ";
 		
 		
-		query += " where idCrime=" + idCrime;
+		query += " where chave= '" + idCrime+"'";
 		Session session = getHibernateTemplate().getSessionFactory().openSession();
 		session.createQuery(query).executeUpdate();
 		session.close();
@@ -533,13 +533,13 @@ public class CrimeDaoHibernate extends GenericCrudDaoHibernate implements
 			while(rs.next()){
 				String desc = rs.getString("descricao");
 				
-				if(desc.equalsIgnoreCase("homícidio") || desc.equalsIgnoreCase("tentativa de homicídio")){
-					Integer quant = mapa.get("Homicídio");
+				if(desc.equalsIgnoreCase("homï¿½cidio") || desc.equalsIgnoreCase("tentativa de homicï¿½dio")){
+					Integer quant = mapa.get("Homicï¿½dio");
 					if(quant != null){
 						quant+=new Integer(rs.getString("contador")).intValue();
-						mapa.put("Homicídio",quant);
+						mapa.put("Homicï¿½dio",quant);
 					}else{
-						mapa.put("Homicídio", new Integer(rs.getString("contador")).intValue());
+						mapa.put("Homicï¿½dio", new Integer(rs.getString("contador")).intValue());
 					}
 				}else{
 					if(desc.equalsIgnoreCase("latrocinio")){

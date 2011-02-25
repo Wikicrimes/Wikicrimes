@@ -520,7 +520,14 @@
     		<from-outcome>cidade</from-outcome>
     		<to-view-id>/estatisticaCidade.xhtml</to-view-id>
         </navigation-case>
-	</navigation-rule>	
+	</navigation-rule>
+	
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>verCrime</from-outcome>
+			<to-view-id>/verCrime.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>		
 	
 	<managed-bean>
 		<managed-bean-name>crimeListForm</managed-bean-name>

@@ -380,7 +380,7 @@ public class CrimeServiceImpl extends GenericCrudServiceImpl implements
 	 * leo
 	 */
 	public void atualizaContadorCometarios(Crime crime){
-		this.crimeDao.atualizaContadorCometarios(crime.getIdCrime());
+		this.crimeDao.atualizaContadorCometarios(crime.getChave());
 	}
 	
 

@@ -42,7 +42,7 @@ public class MostrarDadosForm extends GenericForm {
 	
 	private UsuarioService usuarioService;
 
-	private Long idCrime;
+	private String idCrime;
 	
 	private String email1;
 	
@@ -88,14 +88,14 @@ public class MostrarDadosForm extends GenericForm {
 		this.crimeService = crimeService;
 	}
 
-	public Long getIdCrime() {
+	public String getIdCrime() {
 		return idCrime;
 	}
 
-	public void setIdCrime(Long idCrime) {
+	public void setIdCrime(String idCrime) {
 		this.idCrime = idCrime;
 		if (idCrime != null) {
-			crime = (Crime) crimeService.get(idCrime);
+			crime = (Crime) crimeService.getCrime(idCrime);
 			crimeService.atualizaVisualizacoes(crime);
 		}
 	}
@@ -125,7 +125,7 @@ public class MostrarDadosForm extends GenericForm {
 					returnPage = SUCCESS;
 				} else {
 					addMessage("errors.geral",
-							"Erro ao tentar realizar uma confirmação de crime.");
+							"Erro ao tentar realizar uma confirmaï¿½ï¿½o de crime.");
 				}
 			}
 			else {
@@ -239,7 +239,7 @@ public class MostrarDadosForm extends GenericForm {
 				return "Menor";
 			}
 			if (faixaEtaria.equals(new Long(2))) {
-				return "Até 25 Anos";
+				return "Atï¿½ 25 Anos";
 			}
 			if (faixaEtaria.equals(new Long(3))) {
 				return "Maior que 25 anos";

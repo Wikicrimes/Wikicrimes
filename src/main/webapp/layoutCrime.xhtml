@@ -22,7 +22,7 @@
 		<script src="scripts/tphoto.2.05.js" type="text/javascript"></script>
 		<script src="scripts/kernel_maptypecontrol.js" type="text/javascript"></script>
 		<script src="scripts/epoly.js" type="text/javascript"></script>
-		<ui:include src="scripts/wikicrimesjs.xhtml" />
+		<!-- <ui:include src="scripts/wikicrimesjs.xhtml" /> -->
 		<ui:include src="scripts/kernelmapjs.xhtml" />
 		<ui:include src="scripts/areasRisco.xhtml" />
 		<ui:include src="scripts/hint.xhtml" />
@@ -45,44 +45,52 @@
 		<script type="text/javascript" src="./scripts/anylink.js" > </script>
 		<link rel="stylesheet" href="./styles/modal-message.css" type="text/css"/>
 		<script type="text/javascript" src="./scripts/modal-message.js"></script>
-		<script type="text/javascript" src="./scripts/detectBrowser.js"></script> 
-		
+		<script type="text/javascript" src="./scripts/detectBrowser.js"></script> 	
 		<script type="text/javascript">
 			
-			function mostrarModalParceria(){
-				displayMessage('./parceiros.html', 600, 500,'#{messages['colaboracao.titulo']}');
+			function createDetalheMarker(tipoCrime) {
+				var icone = new GIcon();
+				var marker;
+				icone.shadow = "";
+				icone.iconSize = new GSize(14, 24);
+				icone.iconAnchor = new GPoint(2, 24);
+				icone.infoWindowAnchor = new GPoint(9, 2);
+				if (tipoCrime) {
+					if (tipoCrime == 1) {
+						icone.image = "./images/baloes/novoMarcadorVermelha.png";
+					}
+					if (tipoCrime == 2) {
+						icone.image = "./images/baloes/novoMarcadorAzul.png";
+					}
+					if (tipoCrime == 3) {
+						icone.image = "./images/baloes/novoMarcadorAzul.png";
+					}
+					if (tipoCrime == 4) {
+						icone.image = "./images/baloes/novoMarcadorVermelha.png";
+					}
+					if (tipoCrime == 5) {
+						icone.image = "./images/baloes/novoMarcadorLaranja.png";
+					}
+					if (tipoCrime == 6) {
+						icone.image = "./images/baloes/novoMarcadorVerde.png";
+					}					
+				}
+				marker = new GMarker(new GLatLng(#{mostrarDadosForm.crime.latitude}, #{mostrarDadosForm.crime.longitude}), {draggable:false, icon:icone});
+				return marker;
+			}
+		
+			function loadDetalheMapa() {
+				map = new GMap2(document.getElementById("detalhemapa"));
+				map.setCenter(new GLatLng(#{mostrarDadosForm.crime.latitude}, #{mostrarDadosForm.crime.longitude}), 15);
+				map.addOverlay(new createDetalheMarker(#{mostrarDadosForm.crime.tipoCrime.idTipoCrime}));
+				map.setUIToDefault();
 			}
 			
-			function mostrarFaleConosco() {
-				displayMessage('./faleConosco.html', 600, 500,'#{messages['webapp.faleConosco']}');
-			}
-			
-			function showAjuda(url, w, h) {
-			  w += 10;
-			  h += 40;  
-			  wleft = (screen.width - w) / 2;
-			  wtop = (screen.height - h) / 2;
-			  url = url;
-			  var win = window.open(url,
-			    '',
-			    'width=' + w + ', height=' + h + ', ' +
-			    'left=' + wleft + ', top=' + wtop + ', ' +
-			    'location=no, menubar=no, titlebar=no,' +
-			    'status=no, toolbar=no, scrollbars=no, resizable=no');
-			  // Just in case width and height are ignored
-			  win.resizeTo(w, h);
-			  // Just in case left and top are ignored
-			  win.moveTo(wleft, wtop);
-			  win.focus();
-			  
-			  return false;
-			}
-	
-	   </script>
+		</script>
 		
 		<ui:insert name="head" />
 	</head>
-	<body onload="loadMapa();">
+	<body onload="loadDetalheMapa()">
 	<div style="width:989px; height:auto; margin-left:auto;	margin-right:auto;position:relative">
 			<TABLE style="font-size: 12px; font-family: sans-serif;" margin="0" BORDER="0" cellpadding="1" cellspacing="1" width="100%">
 				<TR>
@@ -94,36 +102,14 @@
 				    
 				</TR>
 				
-				<TR>	   
-				    <TD height="20px" colspan = "2">
-				    	<ui:insert name="botoes"/>
-				    </TD> 
-				     		
-				</TR>
 				<TR>
 				    <TD colspan = "2" ><ui:insert name="conteudo" /></TD>
-				</TR>
-				<TR>
-				   
-				    <TD height="80px" colspan = "2">
-					    <div style="font-family: sans-serif;margin:0px;width:100%;height:80px;background-color:#C6E2FF"> 
-					    	<ui:insert name="estatisticas"/>
-					    </div>
-					</TD>
 				</TR>
 				
 				<TR>
 				    <TD align="left" colspan = "2" style="padding-top: 7px;">
 						<div style="font-family:sans-serif; width:100%; margin-top: -25px;">	
 				    		<ui:insert name="crimes" />
-				    	</div>				
-					</TD>
-				</TR>
-				
-				<TR>
-				    <TD align="left" colspan = "2" height="20px" style="padding-top: 7px;">
-						<div style="overflow: auto hidden; height: 320px; width: 160px; " >	
-				    		<ui:insert name="rightmenu" />
 				    	</div>				
 					</TD>
 				</TR>
@@ -146,15 +132,6 @@
 			var pageTracker = _gat._getTracker("UA-3266136-1");
 			pageTracker._initData();
 			pageTracker._trackPageview();
-		</script>
-		<script>
-			//Pog pra funcionar no Chrome
-			/*setTimeout(function(){
-				if(!chamouLoadMapa){
-					loadMapa();
-				}	
-			},50);*/
-			
 		</script>	
 	</body>
 </html>

@@ -202,9 +202,9 @@ public class CrimeForm extends GenericForm {
 //	}
 
 	/**
-	 * Como parâmetro de entrada é passado uma string contendo uma lista de
-	 * emails separadas por vírgulas que são divididas e adicionados em
-	 * confirmação.
+	 * Como parï¿½metro de entrada ï¿½ passado uma string contendo uma lista de
+	 * emails separadas por vï¿½rgulas que sï¿½o divididas e adicionados em
+	 * confirmaï¿½ï¿½o.
 	 * 
 	 * @param c
 	 */
@@ -518,7 +518,7 @@ public class CrimeForm extends GenericForm {
 			
 			//verifica se n e usuario certificador pois se for nao precisa de confirmacoes de email
 		//	if (!usuario.getPerfil().equals(Perfil.CERTIFICADOR)){
-			//Confirmações
+			//Confirmaï¿½ï¿½es
 			boolean digitouEmail = false;	
 //			verifica se os emails sao iguais
 			if (email1.equals(email2) && !email1.equals("") || email1.equals(email3)  && !email1.equals("")  || email1.equals(email4)  && !email1.equals("") || email1.equals(email5)  && !email1.equals("") || email1.equals(email6)  && !email1.equals("") ){
@@ -652,7 +652,7 @@ public class CrimeForm extends GenericForm {
 				addMessage("errors.email.confirmacao","");
 				return null;
 			}
-			//Confirmações
+			//Confirmaï¿½ï¿½es
 			/*	}
 			else {
 				//usuario certificador portanto ele mesmo confirma seu crime
@@ -727,7 +727,7 @@ public class CrimeForm extends GenericForm {
 		itens.add(new SelectItem("9", "9"));
 		itens.add(new SelectItem("10", "10"));
 		itens.add(new SelectItem("11", "Mais de 10"));
-		itens.add(new SelectItem("12", "Não Sei"));
+		itens.add(new SelectItem("12", "Nï¿½o Sei"));
 
 		return itens;
 	}
@@ -747,7 +747,7 @@ public class CrimeForm extends GenericForm {
 		itens.add(new SelectItem("9", "9"));
 		itens.add(new SelectItem("10", "10"));
 		itens.add(new SelectItem("11", "Mais de 10"));
-		itens.add(new SelectItem("12", "Não Sei"));
+		itens.add(new SelectItem("12", "Nï¿½o Sei"));
 
 		return itens;
 	}
@@ -908,7 +908,7 @@ public class CrimeForm extends GenericForm {
 		itens.add(new SelectItem("1", "Menor que 16"));
 		itens.add(new SelectItem("2", "Entre 16 e 25"));
 		itens.add(new SelectItem("3", "Maior que 25"));
-		itens.add(new SelectItem("4", "Não Sei"));
+		itens.add(new SelectItem("4", "Nï¿½o Sei"));
 
 		return itens;
 	}
@@ -1177,6 +1177,22 @@ public class CrimeForm extends GenericForm {
 
     public void setAscending(boolean ascending) {
         this.ascending = ascending;
+    }
+    
+    public List<Crime> getMaisComentados(){
+    	if(crimes == null)
+			crimes = service.getCrimesMaisComentados();
+    	else if(crimes != service.getCrimesMaisComentados())
+    		crimes = service.getCrimesMaisComentados();
+    	return crimes;
+    }
+    
+    public List<Crime> getMaisVistos(){
+    	if(crimes == null)
+    		crimes = service.getCrimesMaisVistos();
+    	else if(crimes != service.getCrimesMaisVistos())
+    		crimes = service.getCrimesMaisVistos();
+    	return crimes;
     }
     
     public List<Crime> getCrimes() {

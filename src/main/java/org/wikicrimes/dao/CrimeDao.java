@@ -10,10 +10,12 @@ public interface CrimeDao extends GenericCrudDao {
 
 	public List<BaseObject> filter(Map parameters);
 	public List<Crime> getByUser(Long idUsuario);
+	public List<Crime> getByTipoPaginado(Long idTipoCrime, Long fr, Long mr);
 	public void incrementaContador(Boolean tipo,Long idCrime);
 	public void incrementaView(Long idCrime);
 	public Integer getQTDCrimesAtivos();
 	public List<Crime> getCrimesSemEstatisticas();
+	public Integer getQtdCrimesByTipo(Long idTipoCrime);
 	public Integer getQtdCrimesByDateInterval(int tipoCrime, String dataInicio, String dataFim);
 	public Integer getQtdCrimesByDateIntervalPais(final int tipoCrime, final String dataInicio, final String dataFim, final String siglaPais);
 	public Integer getQtdCrimesByDateIntervalEstado(final int tipoCrime, final String dataInicio, final String dataFim, final String siglaEstado);

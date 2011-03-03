@@ -61,6 +61,18 @@
 					<p style="text-align: justify;"><h:outputText value="#{mostrarDadosForm.crime.descricao}" /></p>
 					<div id="divFiltrosAplicados"></div>
 					<div id="loadingPequeno"></div>
+					
+					<t:dataTable id="tiposcrimes" var="tipoCrime" value="#{mostrarDadosForm.tiposCrimes}">
+					<t:column>
+						<div>
+							<h:outputLink value="/wikicrimes/listarCrimesTipo.html">
+								<h:outputText value="Veja outros crimes relacionados a " />
+								<h:outputText value="#{tipoCrime.descricao}" />
+								<f:param name="idTipoCrime" value="#{tipoCrime.idTipoCrime}" />
+							</h:outputLink>
+						</div>
+					</t:column>
+					</t:dataTable>
 				</div>
 				
 			</ui:define>

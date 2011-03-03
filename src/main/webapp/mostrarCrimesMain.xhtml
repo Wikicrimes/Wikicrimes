@@ -32,7 +32,12 @@
     		<t:column>
     			<h:outputLink value="/wikicrimes/verCrime.html">
     				<h:outputText style="font-size:11px" value="#{crime.dataHoraRegistro}" />
-    				<h:outputText style="font-size:11px" value=" | #{fn:substring(crime.descricao,0,45)}..." />
+    				<span> | </span>
+    				<h:outputText value="#{fn:length(crime.descricao) le 50 ? fn:substring(crime.descricao,0,fn:length(crime.descricao)) : fn:substring(crime.descricao,0,50)}"/>
+    				<c:if test="#{fn:length(crime.descricao) ge 50}">
+				    	<span>...</span>
+				    </c:if>
+				    <span>...</span>
     				<f:param name="idCrime" value="#{crime.chave}" />
     			</h:outputLink>
     		</t:column>
@@ -44,7 +49,12 @@
     		<t:column>
     			<h:outputLink value="/wikicrimes/verCrime.html">
     				<h:outputText style="font-size:11px" value="#{crime.dataHoraRegistro}" />
-    				<h:outputText style="font-size:11px" value=" | #{fn:substring(crime.descricao,0,45)}..." />
+    				<span> | </span>
+    				<h:outputText value="#{fn:length(crime.descricao) le 50 ? fn:substring(crime.descricao,0,fn:length(crime.descricao)) : fn:substring(crime.descricao,0,50)}"/>
+    				<c:if test="#{fn:length(crime.descricao) ge 50}">
+				    	<span>...</span>
+				    </c:if>
+				    <span>...</span>
     				<f:param name="idCrime" value="#{crime.chave}" />
     			</h:outputLink>
     		</t:column>

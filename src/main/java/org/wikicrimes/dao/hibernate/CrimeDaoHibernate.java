@@ -277,6 +277,32 @@ public class CrimeDaoHibernate extends GenericCrudDaoHibernate implements
 
 		return getHibernateTemplate().find(query);
 	}
+	
+	public List<Crime> getByTipoPaginado(Long idTipoCrime, Long fr, Long mr) {
+		String query = "from Crime c ";
+
+		if (idTipoCrime != null) {
+			query += "where c.tipoCrime.idTipoCrime = " 
+				+ idTipoCrime + " and c.status <> 1 order by c.data desc";
+		}
+		
+		List<Crime> crimes = getSession().createQuery(query).setFirstResult(new Integer(fr.toString())).setMaxResults(new Integer(mr.toString())).list(); 
+		
+		return crimes;
+	}
+	
+	public Integer getQtdCrimesByTipo(final Long idTipoCrime){
+		return (Integer) getHibernateTemplate().execute(
+				new HibernateCallback() {
+					public Object doInHibernate(Session session)
+							throws HibernateException, SQLException {
+						Query query = session
+								.createQuery("select count(*) from Crime c where c.tipoCrime.idTipoCrime="
+										+ idTipoCrime +" and c.status = 0");
+						return ((Long) query.iterate().next()).intValue();
+					}
+				});
+	}
 
 	public Integer getQTDCrimesAtivos() {
 		return (Integer) getHibernateTemplate().execute(

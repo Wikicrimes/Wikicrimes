@@ -866,6 +866,10 @@
             <value>#{param.idCrime}</value>
         </managed-property>
         <managed-property>
+            <property-name>idTipoCrime</property-name>
+            <value>#{param.idTipoCrime}</value>
+        </managed-property>
+        <managed-property>
             <property-name>chaveCr</property-name>
             <value>#{param.chaveCr}</value>
         </managed-property>

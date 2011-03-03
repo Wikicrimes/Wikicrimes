@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC
+"-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+	<br/>
+	
+	<head>
+		<meta http-equiv="Cache-Control" content="no-store" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+		<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+		<link rel="shortcut icon" href="./images/favicon.ico"
+			type="image/x-icon" />
+		<link rel="stylesheet" type="text/css" href="./styles/wikicrimes.css"
+			title="default" />
+		
+	</head>
+	
+	<f:view>
+		<ui:composition template="layoutListaCrimes.xhtml">
+			<ui:define name="titulo">
+                #{mostrarDadosForm.tipoCrime.descricao}
+            </ui:define>
+			<ui:define name="menu">		
+					<ui:include src="header.xhtml" />
+			</ui:define>
+			<ui:define name="idioma">
+					
+				<ui:include src="idioma.xhtml" />
+				
+			</ui:define>
+			
+			<ui:define name="conteudo">
+			<hr /><br clear="both" />
+				
+				<rich:panel>
+					<t:panelGrid>
+						<t:panelGroup>
+							<h:outputLink value="/wikicrimes">
+								<h:outputText value="Pagina Inicial"/>
+							</h:outputLink>
+							<h:outputText value=" >> Crimes >> #{mostrarDadosForm.tipoCrime.descricao}" />
+						</t:panelGroup>
+					</t:panelGrid>
+				</rich:panel>
+				<br />
+				<h:outputText value="#{mostrarDadosForm.qtdByTipoCrime} resultado(s) encontrado(s)" /><br /><br />
+				
+				<t:panelGroup id="listarCrimes" forceId="true">
+					<table>
+						<c:forEach items="#{mostrarDadosForm.crimes}" var="crime" varStatus="contador">
+						<tr>
+							<td>#{crime.data}</td>
+							<td>
+								<h:outputLink value="/wikicrimes/verCrime.html">
+				    				<h:outputText value="#{fn:length(crime.descricao) le 80 ? fn:substring(crime.descricao,0,fn:length(crime.descricao)) : fn:substring(crime.descricao,0,80)}"/>
+				    				<c:if test="#{fn:length(crime.descricao) ge 80}">
+				    					<span>...</span>
+				    				</c:if>
+									<f:param name="idCrime" value="#{crime.chave}"/>
+								</h:outputLink>
+							</td>
+						</tr>
+						</c:forEach>
+					</table>
+				</t:panelGroup>
+				
+				<hr />
+				<h:outputText id="paginaAtual" value="Pagina atual: #{mostrarDadosForm.paginaAtual+1}" /><br />
+				<h:form id="indices">
+					<a4j:commandLink reRender="listarCrimes, paginaAtual, indices"><h:outputText value="Anterior " />                                                                            
+                    	<f:setPropertyActionListener target="#{mostrarDadosForm.paginaAtual}" value="#{mostrarDadosForm.paginaAtual != 0 ? mostrarDadosForm.paginaAtual - 1 : 0}"/>
+                    </a4j:commandLink>
+                    
+                    <c:forEach items="#{mostrarDadosForm.paginacao}" var="pagina">
+						<c:if test="#{(pagina lt mostrarDadosForm.paginaAtual) and (pagina ge mostrarDadosForm.paginaAtual - 3)}">
+							<a4j:commandLink reRender="listarCrimes, paginaAtual, indices">#{pagina + 1}                                                                            
+                       			<f:setPropertyActionListener target="#{mostrarDadosForm.paginaAtual}" value="#{mostrarDadosForm.paginaAtual+(pagina-3)}"/>
+                       		</a4j:commandLink>
+                       	</c:if>
+                       	<span>&nbsp;</span>
+					</c:forEach>
+					
+					<c:forEach items="#{mostrarDadosForm.paginacao}" var="pagina">
+						<c:if test="#{(pagina le mostrarDadosForm.paginaAtual + 3) and (pagina ge mostrarDadosForm.paginaAtual)}">
+							<a4j:commandLink reRender="listarCrimes, paginaAtual, indices">#{pagina + 1}                                                                             
+                       			<f:setPropertyActionListener target="#{mostrarDadosForm.paginaAtual}" value="#{pagina+mostrarDadosForm.paginaAtual}"/>
+                       		</a4j:commandLink>
+                       	</c:if>
+                       	<span>&nbsp;</span>
+					</c:forEach>
+					
+					<a4j:commandLink reRender="listarCrimes, paginaAtual, indices"><h:outputText value="Proximo " />                                                                            
+                    	<f:setPropertyActionListener target="#{mostrarDadosForm.paginaAtual}" value="#{mostrarDadosForm.paginaAtual + 1}"/>
+                    </a4j:commandLink>
+					
+					<t:saveState value="#{mostrarDadosForm.idTipoCrime}"></t:saveState>
+					<t:saveState value="#{mostrarDadosForm.maxPaginacao}"></t:saveState>
+					<t:saveState value="#{mostrarDadosForm.paginaAtual}"></t:saveState>
+                    <t:saveState value="#{mostrarDadosForm.arrayPaginacao}"></t:saveState>
+					
+				</h:form>
+				
+			</ui:define>
+		
+			<ui:define name="footer">
+				<ui:include src="footer.xhtml" />
+				<br/>
+				<br/>
+				<iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.wikicrimes.org&amp;layout=standard&amp;show_faces=true&amp;width=450&amp;action=like&amp;colorscheme=light&amp;height=80" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:80px;" allowTransparency="true"></iframe>
+			</ui:define>
+		</ui:composition>
+	</f:view>
+	
+	</html>

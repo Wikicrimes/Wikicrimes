@@ -45,7 +45,9 @@ public interface CrimeService extends GenericCrudService {
 	public int getQuantidadeCrimesRegistrados();
 	public int getQuantidadeCrimesRegistradosAtivos();
 	public List<Crime> getByUser(Long idUsuario);
+	public List<Crime> getCrimesByTipoPaginado(Long idTipoCrime, Long fr, Long mr);
 	public List<Crime> getCrimesSemEstatisticas();
+	public Integer getQtdCrimesByTipo(Long idTipoCrime);
 	public Integer getQtdCrimesByDateInterval(int tipoCrime, String dataInicio,String dataFim);
 	public Integer getQtdCrimesByDateIntervalPais(final int tipoCrime,final String dataInicio, final String dataFim,final String siglaPais);
 	public Integer getQtdCrimesByDateIntervalEstado(final int tipoCrime,final String dataInicio, final String dataFim,final String siglaEstado);

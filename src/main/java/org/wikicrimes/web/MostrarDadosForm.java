@@ -19,6 +19,7 @@ import org.apache.commons.logging.LogFactory;
 import org.wikicrimes.model.BaseObject;
 import org.wikicrimes.model.Confirmacao;
 import org.wikicrimes.model.Crime;
+import org.wikicrimes.model.TipoCrime;
 import org.wikicrimes.model.Razao;
 import org.wikicrimes.model.TipoRegistro;
 import org.wikicrimes.model.Usuario;
@@ -33,6 +34,8 @@ public class MostrarDadosForm extends GenericForm {
 	private final Log log = LogFactory.getLog(MostrarDadosForm.class);
 
 	private Crime crime = null;
+	
+	private List<Crime> crimes;
 	
 	private Crime crimeEditar;
 	
@@ -53,6 +56,16 @@ public class MostrarDadosForm extends GenericForm {
 	private Confirmacao confirmacao;
 	
 	public ConfirmacaoService confirmacaoService;
+
+	private Long idTipoCrime;
+	
+	private TipoCrime tipoCrime;
+
+	private List<Integer> arrayPaginacao;
+	
+	private Long maxPaginacao = new Long(20);
+	
+	private Long paginaAtual = new Long(0);
 
 	public ConfirmacaoService getConfirmacaoService() {
 		return confirmacaoService;
@@ -652,6 +665,85 @@ public class MostrarDadosForm extends GenericForm {
 		if (chaveCr != null && !chaveCr.equals("")) {
 			crimeEditar = (Crime) crimeService.getCrime(chaveCr);
 		}
+	}
+	
+	public List<Crime> getCrimes(){
+		return crimes;
+	}
+	
+	public List<BaseObject> getTiposCrimes(){
+		return crimeService.getTipoCrimeAll();
+	}
+	
+	public Integer getQtdByTipoCrime(){
+		return crimeService.getQtdCrimesByTipo(idTipoCrime);
+	}
+	
+	public TipoCrime getTipoCrime(){
+		return tipoCrime;
+	}
+	
+	public Long getIdTipoCrime(){
+		return idTipoCrime;
+	}
+	
+	public void setIdTipoCrime(Long idTipoCrime){
+		this.idTipoCrime = idTipoCrime;
+		if(idTipoCrime != null) {
+			tipoCrime = crimeService.getTipoCrime(idTipoCrime);
+			crimes = crimeService.getCrimesByTipoPaginado(idTipoCrime, new Long(0), maxPaginacao);
+		}
+	} 
+	
+	public List<Crime> getCrimesByTipoPaginado(Long fr, Long mr){
+		if(idTipoCrime != null)
+			crimes = crimeService.getCrimesByTipoPaginado(idTipoCrime, fr, mr);
+		return crimes;
+	}
+	
+	public Long getMaxPaginacao(){
+		return maxPaginacao;
+	}
+	
+	public void setMaxPaginacao(Long maxPaginacao){
+		this.maxPaginacao = maxPaginacao;
+	}
+	
+	public List<Integer> getArrayPaginacao() {
+		return arrayPaginacao;
+	}
+
+	public void setArrayPaginacao(List<Integer> arrayPaginacao) {
+		this.arrayPaginacao = arrayPaginacao;
+	}
+
+	public List<Integer> getPaginacao(){
+		if(arrayPaginacao == null){
+			arrayPaginacao = new ArrayList<Integer>();
+			int paginacao = 0;
+			
+			if(crimeService.getQtdCrimesByTipo(idTipoCrime)%maxPaginacao == 0)
+				paginacao = (int) (crimeService.getQtdCrimesByTipo(idTipoCrime)/maxPaginacao);
+			else
+				paginacao = (int) (crimeService.getQtdCrimesByTipo(idTipoCrime)/maxPaginacao) + 1;
+			
+			for(int c = 0; c < paginacao; c++)
+				arrayPaginacao.add(c);
+		}
+			
+		
+		return arrayPaginacao;
+	}
+	
+	public void setPaginaAtual(Long paginaAtual){
+		this.paginaAtual = paginaAtual;
+		if(paginaAtual != 0){
+			crimes = getCrimesByTipoPaginado((paginaAtual*maxPaginacao)+1, maxPaginacao);
+		}
+	}
+	
+	public Long getPaginaAtual(){
+		return paginaAtual;
 	}
 
 }

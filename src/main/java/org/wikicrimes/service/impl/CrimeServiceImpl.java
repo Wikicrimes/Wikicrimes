@@ -20,6 +20,7 @@ import org.wikicrimes.dao.TipoPapelDao;
 import org.wikicrimes.dao.TipoRegistroDao;
 import org.wikicrimes.dao.TipoTransporteDao;
 import org.wikicrimes.dao.TipoVitimaDao;
+import org.wikicrimes.dao.hibernate.CrimeDaoHibernate;
 import org.wikicrimes.model.BaseObject;
 import org.wikicrimes.model.Confirmacao;
 import org.wikicrimes.model.Credibilidade;
@@ -227,6 +228,10 @@ public class CrimeServiceImpl extends GenericCrudServiceImpl implements
 
 	public List<Crime> getByUser(Long idUsuario) {
 		return crimeDao.getByUser(idUsuario);
+	}
+	
+	public List<Crime> getCrimesByTipoPaginado(Long idTipoCrime, Long fr, Long mr) {
+		return crimeDao.getByTipoPaginado(idTipoCrime, fr, mr);
 	}
 	
 	public List<BaseObject> findTipoLocalByTipoVitima(Long idTipoVitima) {
@@ -519,6 +524,10 @@ public class CrimeServiceImpl extends GenericCrudServiceImpl implements
 	public StringBuilder getCrimesInRadius(double latitude, double longitude,
 			double raio, long dataIni, long dataFim, double credibilidadeMin, double credibilidadeMax) {
 		return crimeDao.getCrimesInRadius(latitude, longitude, raio, dataIni, dataFim, credibilidadeMin, credibilidadeMax);
+	}
+	
+	public Integer getQtdCrimesByTipo(Long idTipoCrime){
+		return crimeDao.getQtdCrimesByTipo(idTipoCrime);
 	}
 
 }

@@ -81,9 +81,9 @@
 		
 			function loadDetalheMapa() {
 				map = new GMap2(document.getElementById("detalhemapa"));
+				map.disableDragging();
 				map.setCenter(new GLatLng(#{mostrarDadosForm.crime.latitude}, #{mostrarDadosForm.crime.longitude}), 15);
 				map.addOverlay(new createDetalheMarker(#{mostrarDadosForm.crime.tipoCrime.idTipoCrime}));
-				map.setUIToDefault();
 			}
 			
 		</script>

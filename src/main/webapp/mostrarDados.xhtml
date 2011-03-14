@@ -220,7 +220,7 @@
 					<td> #{messages['mostrardados.permalink']} (<a href="" onmouseover="Tip('#{messages['crime.mostra.permalink']}', BALLOON, true, ABOVE, true, OFFSETX, -100);"  >?</a>) </td>
 				</tr>
 				<tr align="left">
-						<td> <input type="text" readonly="readonly" style="font-size: 10px;" onclick="this.select();" value="http://www.wikicrimes.org/main.html?idcrime=#{mostrarDadosForm.crime.chave}" size="55"/> </td>
+						<td> <input type="text" readonly="readonly" style="font-size: 10px;" onclick="this.select();" value="http://www.wikicrimes.org/verCrime.html?idCrime=#{mostrarDadosForm.crime.chave}" size="55"/> </td>
 				</tr>
 				<c:if test="#{usuario.perfil.nome == 'CERTIFICADOR'|| usuario.perfil.nome == 'ADMINISTRADOR'}">
 					<tr align="left">

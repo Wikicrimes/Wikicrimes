@@ -60,7 +60,14 @@
 			 		<h:outputText value="#{mostrarDadosForm.crime.dataHoraRegistro}">
 			 			<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
 			 		</h:outputText></p>
+			 		
 					<p style="text-align: justify;"><h:outputText value="#{mostrarDadosForm.crime.descricao}" /></p>
+					<div style="float:right">
+						<h:outputLink value="/wikicrimes/main.html">
+							<h:outputText value="Veja o crime no mapa interativo"/>
+							<f:param name="idcrime" value="#{mostrarDadosForm.crime.chave}"/>
+						</h:outputLink>
+					</div>
 					<div id="divFiltrosAplicados"></div>
 					<div id="loadingPequeno"></div>
 					

@@ -16,7 +16,7 @@ body,input {
 }
 
 a, a:visited {
-    color: #6DA6E2;
+    color: #1874CD;
     text-decoration: none;
     font-weight: bold;
 }
@@ -184,6 +184,25 @@ img {
 }
 
 /* NOVO */
+
+.topcrimes {
+	height: 25px;
+	padding-left: 40px;
+	font: normal 22px sans-serif;
+	background: url(../images/icones_sites/sprite2.png) no-repeat left bottom;
+}
+
+.toptitulo {
+	font: normal 18px sans-serif;
+}
+
+#footer {
+	background-color: #BCD2EE;
+}
+
+#footer a, #footer a:visited {
+	color: #1874CD;
+}
 
 .pagination{
 padding: 2px;

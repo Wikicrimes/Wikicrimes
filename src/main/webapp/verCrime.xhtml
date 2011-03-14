@@ -46,7 +46,7 @@
 				<rich:panel>
 					<t:panelGrid>
 						<t:panelGroup>
-							<h:outputLink value="/wikicrimes">
+							<h:outputLink value="/">
 								<h:outputText value="Pagina Inicial"/>
 							</h:outputLink>
 							<h:outputText value=" >> Detalhe do Crime" />
@@ -62,12 +62,7 @@
 			 		</h:outputText></p>
 			 		
 					<p style="text-align: justify;"><h:outputText value="#{mostrarDadosForm.crime.descricao}" /></p>
-					<div style="float:right">
-						<h:outputLink value="main.html">
-							<h:outputText value="Veja o crime no mapa interativo"/>
-							<f:param name="idcrime" value="#{mostrarDadosForm.crime.chave}"/>
-						</h:outputLink>
-					</div>
+					
 					<div id="divFiltrosAplicados"></div>
 					<div id="loadingPequeno"></div>
 					
@@ -82,6 +77,12 @@
 						</div>
 					</t:column>
 					</t:dataTable>
+				</div>
+				<div style="margin-top:20px;margin-left:770px;">
+					<h:outputLink value="main.html">
+						<h:outputText value="Veja o crime no mapa interativo"/>
+						<f:param name="idcrime" value="#{mostrarDadosForm.crime.chave}"/>
+					</h:outputLink>
 				</div>
 			</ui:define>
 			

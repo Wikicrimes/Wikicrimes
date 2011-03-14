@@ -63,7 +63,7 @@
 			 		
 					<p style="text-align: justify;"><h:outputText value="#{mostrarDadosForm.crime.descricao}" /></p>
 					<div style="float:right">
-						<h:outputLink value="/wikicrimes/main.html">
+						<h:outputLink value="main.html">
 							<h:outputText value="Veja o crime no mapa interativo"/>
 							<f:param name="idcrime" value="#{mostrarDadosForm.crime.chave}"/>
 						</h:outputLink>
@@ -74,7 +74,7 @@
 					<t:dataTable id="tiposcrimes" var="tipoCrime" value="#{mostrarDadosForm.tiposCrimes}">
 					<t:column>
 						<div>
-							<h:outputLink value="/wikicrimes/listarCrimesTipo.html">
+							<h:outputLink value="listarCrimesTipo.html">
 								<h:outputText value="Veja outros crimes relacionados a " />
 								<h:outputText value="#{tipoCrime.descricao}" />
 								<f:param name="idTipoCrime" value="#{tipoCrime.idTipoCrime}" />

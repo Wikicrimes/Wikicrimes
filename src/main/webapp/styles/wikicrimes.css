@@ -17,13 +17,11 @@ body,input {
 
 a, a:visited {
     color: #6DA6E2;
-    background-color: #FFFFFF;
     text-decoration: none;
     font-weight: bold;
 }
 
 a:hover {
-    background-color: #FFFFFF;
     color: inherit;
     font-weight: bold;
     text-decoration: underline;
@@ -183,4 +181,63 @@ img {
 	display: block;
 	padding:30px 8px 0;				
  	background: url(../gadget/img/balao/bubble_baixo.gif) no-repeat bottom;			
+}
+
+/* NOVO */
+
+.pagination{
+padding: 2px;
+}
+
+.pagination ul{
+margin: 0;
+padding: 0;
+text-align: left; /*Set to "right" to right align pagination interface*/
+font-size: 12px;
+}
+
+.pagination li{
+list-style-type: none;
+display: inline;
+padding-bottom: 1px;
+margin-right: 5px;
+}
+
+.pagination a, .pagination a:visited{
+padding: 0 5px;
+/*border: 1px solid #9aafe5;*/
+border: 1px solid #2763A5;
+text-decoration: none;
+background-color: #6DA6E2;
+color: #fff;
+/*color: #2e6ab1;*/
+}
+
+.pagination a:hover, .pagination a:active{
+/*border: 1px solid #2b66a5;*/
+border: 1px solid #9aafe5;
+color: #2e6ab1;
+background-color: #fff;
+}
+
+.pagination a.currentpage{
+background-color: #2e6ab1;
+color: #FFF !important;
+border-color: #2b66a5;
+font-weight: bold;
+cursor: default;
+}
+
+.pagination a.disablelink, .pagination a.disablelink:hover{
+background-color: white;
+cursor: default;
+color: #929292;
+border-color: #929292;
+font-weight: normal !important;
+}
+
+.pagination a.prevnext{
+font-weight: bold;
+margin-right: 25px;
+margin-left: 25px;
 }

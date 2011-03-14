@@ -24,43 +24,51 @@
 	</head>
 	
 	<body>
-		<div style="height:150px; margin:0;">
-		<p style="font:bold 20pt sans-serif; color:orange;">Veja +</p>
-		<div style="float:left; margin-top: -25px;">
-		<p style="width:90%; font:bold 16pt sans-serif; color:red; border-bottom: solid 3px red;">Comentados</p>
-		<t:dataTable id="crimes1" var="crime" value="#{mostrarDadosForm.crimeService.crimesMaisComentados}">
-    		<t:column>
-    			<h:outputLink value="/wikicrimes/verCrime.html">
-    				<h:outputText style="font-size:11px" value="#{crime.dataHoraRegistro}" />
-    				<span> | </span>
-    				<h:outputText value="#{fn:length(crime.descricao) le 50 ? fn:substring(crime.descricao,0,fn:length(crime.descricao)) : fn:substring(crime.descricao,0,50)}"/>
-    				<c:if test="#{fn:length(crime.descricao) ge 50}">
-				    	<span>...</span>
-				    </c:if>
-				    <span>...</span>
-    				<f:param name="idCrime" value="#{crime.chave}" />
-    			</h:outputLink>
-    		</t:column>
-        </t:dataTable>
-        </div>
-        <div style="float:left; margin-top: -25px;">
-        <p style="width:90%; font:bold 16pt sans-serif; color:red; border-bottom: solid 3px red;">Vistos</p>
-        <t:dataTable id="crimes2" var="crime" value="#{mostrarDadosForm.crimeService.crimesMaisVistos}">
-    		<t:column>
-    			<h:outputLink value="/wikicrimes/verCrime.html">
-    				<h:outputText style="font-size:11px" value="#{crime.dataHoraRegistro}" />
-    				<span> | </span>
-    				<h:outputText value="#{fn:length(crime.descricao) le 50 ? fn:substring(crime.descricao,0,fn:length(crime.descricao)) : fn:substring(crime.descricao,0,50)}"/>
-    				<c:if test="#{fn:length(crime.descricao) ge 50}">
-				    	<span>...</span>
-				    </c:if>
-				    <span>...</span>
-    				<f:param name="idCrime" value="#{crime.chave}" />
-    			</h:outputLink>
-    		</t:column>
-        </t:dataTable>
-        </div>
-		</div>
+		<table>
+			<tr>
+				<td><p style="font:bold 20pt sans-serif; color:orange;">Veja +</p></td>
+			</tr>
+			<tr>
+				<td>
+					<p style="width:90%; font:bold 16pt sans-serif; color:red; border-bottom: solid 3px red;">Comentados</p>
+					<t:dataTable id="crimes1" var="crime" value="#{mostrarDadosForm.crimeService.crimesMaisComentados}">
+			    		<t:column>
+			    			<h:outputLink value="/wikicrimes/verCrime.html">
+			    				<h:outputText style="font-size:11px" value="#{crime.dataHoraRegistro}">
+			    					<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+			    				</h:outputText>
+			    				<span> | </span>
+			    				<h:outputText value="#{fn:length(crime.descricao) le 45 ? fn:substring(crime.descricao,0,fn:length(crime.descricao)) : fn:substring(crime.descricao,0,45)}"/>
+			    				<c:if test="#{fn:length(crime.descricao) ge 45}">
+							    	<span>...</span>
+							    </c:if>
+							    <span>...</span>
+			    				<f:param name="idCrime" value="#{crime.chave}" />
+			    			</h:outputLink>
+			    		</t:column>
+        			</t:dataTable>
+				</td>
+				<td>
+					<p style="width:90%; font:bold 16pt sans-serif; color:red; border-bottom: solid 3px red;">Vistos</p>
+			        <t:dataTable id="crimes2" var="crime" value="#{mostrarDadosForm.crimeService.crimesMaisVistos}">
+			    		<t:column>
+			    			<h:outputLink value="/wikicrimes/verCrime.html">
+			    				<h:outputText style="font-size:11px" value="#{crime.dataHoraRegistro}">
+			    					<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+			    				</h:outputText>
+			    				<span> | </span>
+			    				<h:outputText value="#{fn:length(crime.descricao) le 45 ? fn:substring(crime.descricao,0,fn:length(crime.descricao)) : fn:substring(crime.descricao,0,45)}"/>
+			    				<c:if test="#{fn:length(crime.descricao) ge 45}">
+							    	<span>...</span>
+							    </c:if>
+							    <span>...</span>
+			    				<f:param name="idCrime" value="#{crime.chave}" />
+			    			</h:outputLink>
+			    		</t:column>
+			        </t:dataTable>
+				</td>
+			</tr>
+		</table>
 	</body>
 	
 </html>

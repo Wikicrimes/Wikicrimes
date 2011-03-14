@@ -57,7 +57,9 @@
 				<div id="detalhecrime">
 					<div id="detalhemapa" style="height: 300px; width: 500px; float: right; margin: 20px;"></div>
 			 		<p><h:outputText value="Na cidade de #{mostrarDadosForm.crime.cidade} - #{mostrarDadosForm.crime.estado} em " />
-			 		<h:outputText value="#{mostrarDadosForm.crime.data}" /></p>
+			 		<h:outputText value="#{mostrarDadosForm.crime.dataHoraRegistro}">
+			 			<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+			 		</h:outputText></p>
 					<p style="text-align: justify;"><h:outputText value="#{mostrarDadosForm.crime.descricao}" /></p>
 					<div id="divFiltrosAplicados"></div>
 					<div id="loadingPequeno"></div>
@@ -74,11 +76,12 @@
 					</t:column>
 					</t:dataTable>
 				</div>
-				
+				<hr style="border: 0; border-top: 2px #A9A9A9 dotted;" />
 			</ui:define>
 			
 			<ui:define name="crimes">
 				<ui:include src="mostrarCrimesMain.xhtml"/>
+				<hr style="border: 0; border-top: 2px #A9A9A9 dotted;" />
 			</ui:define>
 		
 			<ui:define name="footer">

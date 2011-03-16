@@ -47,8 +47,10 @@
 					<t:panelGrid>
 						<t:panelGroup>
 							<h:outputLink value="/">
+								<h:outputText value="#{messages['pagina.inicial']}"/>
 								<h:outputText value="#{messages['page.main']}"/>
 							</h:outputLink>
+							<h:outputText value=" >> #{messages['ver.crime']}" />
 							<h:outputText value=" >> #{messages['page.crime']}" />
 						</t:panelGroup>
 					</t:panelGrid>
@@ -56,6 +58,10 @@
 				
 				<div id="detalhecrime">
 					<div id="detalhemapa" style="height: 300px; width: 500px; float: right; margin: 20px;"></div>
+			 		<p><h:outputText value="#{messages['crime.titulo']} #{mostrarDadosForm.crime.cidade} - #{mostrarDadosForm.crime.estado} em " />
+			 		<h:outputText value="#{mostrarDadosForm.crime.dataHoraRegistro}">
+			 			<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+			 		</h:outputText></p>
 			 		<p><h:outputFormat value="#{messages['crime.titulo']}"> 
 			 			<f:param value="#{mostrarDadosForm.crime.cidade}"/>
 			 			<f:param value="#{mostrarDadosForm.crime.estado}"/> 
@@ -82,6 +88,7 @@
 				</div>
 				<div style="margin-top:20px;margin-left:770px;">
 					<h:outputLink value="main.html">
+						<h:outputText value="#{messages['crime.mapa.interativo']}"/>
 						<h:outputText value="#{messages['crime.mapainterativo']}"/>
 						<f:param name="idcrime" value="#{mostrarDadosForm.crime.chave}"/>
 					</h:outputLink>

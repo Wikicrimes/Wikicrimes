@@ -47,19 +47,21 @@
 					<t:panelGrid>
 						<t:panelGroup>
 							<h:outputLink value="/">
-								<h:outputText value="Pagina Inicial"/>
+								<h:outputText value="#{messages['page.main']}"/>
 							</h:outputLink>
-							<h:outputText value=" >> Detalhe do Crime" />
+							<h:outputText value=" >> #{messages['page.crime']}" />
 						</t:panelGroup>
 					</t:panelGrid>
 				</rich:panel>
 				
 				<div id="detalhecrime">
 					<div id="detalhemapa" style="height: 300px; width: 500px; float: right; margin: 20px;"></div>
-			 		<p><h:outputText value="Na cidade de #{mostrarDadosForm.crime.cidade} - #{mostrarDadosForm.crime.estado} em " />
-			 		<h:outputText value="#{mostrarDadosForm.crime.dataHoraRegistro}">
-			 			<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
-			 		</h:outputText></p>
+			 		<p><h:outputFormat value="#{messages['crime.titulo']}"> 
+			 			<f:param value="#{mostrarDadosForm.crime.cidade}"/>
+			 			<f:param value="#{mostrarDadosForm.crime.estado}"/> 
+			 			<f:param value="#{mostrarDadosForm.crime.dataHoraRegistro}"/>
+			 			<f:convertDateTime pattern="#{messages['crime.data.formato']}" />
+			 		</h:outputFormat></p>
 			 		
 					<p style="text-align: justify;"><h:outputText value="#{mostrarDadosForm.crime.descricao}" /></p>
 					
@@ -70,8 +72,8 @@
 					<t:column>
 						<div>
 							<h:outputLink value="listarCrimesTipo.html">
-								<h:outputText value="Veja outros crimes relacionados a " />
-								<h:outputText value="#{tipoCrime.descricao}" />
+								<h:outputText value="#{messages['crime.relacionados']} " />
+								<h:outputText value="#{messages[tipoCrime.nome]}" />
 								<f:param name="idTipoCrime" value="#{tipoCrime.idTipoCrime}" />
 							</h:outputLink>
 						</div>
@@ -80,10 +82,11 @@
 				</div>
 				<div style="margin-top:20px;margin-left:770px;">
 					<h:outputLink value="main.html">
-						<h:outputText value="Veja o crime no mapa interativo"/>
+						<h:outputText value="#{messages['crime.mapainterativo']}"/>
 						<f:param name="idcrime" value="#{mostrarDadosForm.crime.chave}"/>
 					</h:outputLink>
 				</div>
+				<t:saveState value="#{mostrarDadosForm.idCrime}"></t:saveState>
 			</ui:define>
 			
 			<ui:define name="crimes">

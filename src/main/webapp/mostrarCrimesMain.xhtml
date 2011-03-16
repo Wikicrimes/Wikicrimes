@@ -30,12 +30,12 @@
 			</tr>
 			<tr>
 				<td width="510px">
-					<p class="toptitulo">+ Comentados</p>
+					<p class="toptitulo">#{messages['crimes.maiscomentados']}</p>
 					<t:dataTable id="crimes1" var="crime" value="#{mostrarDadosForm.crimeService.crimesMaisComentados}">
 			    		<t:column>
-			    			<h:outputLink value="/verCrime.html">
+			    			<h:outputLink value="verCrime.html">
 			    				<h:outputText style="font-size:11px" value="#{crime.dataHoraRegistro}">
-			    					<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+			    					<f:convertDateTime pattern="#{messages['crime.data.formato']}" />
 			    				</h:outputText>
 			    				<span> | </span>
 			    				<h:outputText value="#{fn:length(crime.descricao) le 40 ? fn:substring(crime.descricao,0,fn:length(crime.descricao)) : fn:substring(crime.descricao,0,40)}"/>
@@ -49,12 +49,12 @@
         			</t:dataTable>
 				</td>
 				<td width="510px">
-					<p class="toptitulo">+ Vistos</p>
+					<p class="toptitulo">#{messages['crimes.maisvistos']}</p>
 			        <t:dataTable id="crimes2" var="crime" value="#{mostrarDadosForm.crimeService.crimesMaisVistos}">
 			    		<t:column>
-			    			<h:outputLink value="/verCrime.html">
+			    			<h:outputLink value="verCrime.html">
 			    				<h:outputText style="font-size:11px" value="#{crime.dataHoraRegistro}">
-			    					<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+			    					<f:convertDateTime pattern="#{messages['crime.data.formato']}" />
 			    				</h:outputText>
 			    				<span> | </span>
 			    				<h:outputText value="#{fn:length(crime.descricao) le 40 ? fn:substring(crime.descricao,0,fn:length(crime.descricao)) : fn:substring(crime.descricao,0,40)}"/>

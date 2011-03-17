@@ -55,26 +55,25 @@
 						</t:panelGroup>
 					</t:panelGrid>
 				</rich:panel>
-				
+					
 				<div id="detalhecrime">
 					<div id="detalhemapa" style="height: 300px; width: 500px; float: right; margin: 20px;"></div>
 
 					<div typeof="v:Event">
-				    <p>
-				    
+				    <p>			    
 				    <span property="v:summary" content="#{mostrarDadosForm.sumarioCrime}" />
 				    <span property="v:eventType" content="#{mostrarDadosForm.categoriaCrime}" />
 				    
+				    <h:outputText value="#{messages['crime.titulo.prefixo']} "/>
 				    <span rel="v:location">
 				    	<span typeof="v:Organization">
 				    		<span rel="v:address">
-				    			<h:outputText value="Na cidade de " />
-				    			 <span property="v:locality">
-				    				<h:outputText value="#{mostrarDadosForm.crime.cidade}" />
+				    			<span property="v:locality">
+				    				<h:outputText value="#{mostrarDadosForm.crime.cidade}"/>
 				    			</span>
-				    			<h:outputText value=" - " />
+				    			<h:outputText value=" #{messages['crime.titulo.infixo']} "/>
 				    			<span property="v:region">
-				    			<h:outputText value="#{mostrarDadosForm.crime.estado} " />
+				    				<h:outputText value="#{mostrarDadosForm.crime.estado}"/>
 				    			</span>				    			
 			 				</span>
 			 				<span rel="v:geo">
@@ -83,10 +82,12 @@
 			 				</span>
 			 			</span>
 			 		</span>
-			 		<h:outputText value="em " />
-			 		<span property="v:startDate" content="#{mostrarDadosForm.ISODate}">				 		
-				 		<h:outputText value="#{mostrarDadosForm.crime.data}" />
-			 		</span>
+			 					 		
+			 		<span property="v:startDate" content="#{mostrarDadosForm.ISODate}">	
+			 			<h:outputText value=" - #{mostrarDadosForm.crime.dataHoraRegistro}">
+			    			<f:convertDateTime pattern="#{messages['crime.data.formato']}" />
+			    		</h:outputText>			 		
+			 		</span>			 		
 			 		</p>
 			 		
 					<p style="text-align: justify;">
@@ -95,16 +96,6 @@
 					</span>
 					</p>
 					</div>
-
-			 		<p><h:outputFormat value="#{messages['crime.titulo']}"> 
-			 			<f:param value="#{mostrarDadosForm.crime.cidade}"/>
-			 			<f:param value="#{mostrarDadosForm.crime.estado}"/> 
-			 			<f:param value="#{mostrarDadosForm.crime.dataHoraRegistro}"/>
-			 			<f:convertDateTime pattern="#{messages['crime.data.formato']}" />
-			 		</h:outputFormat></p>
-			 		
-					<p style="text-align: justify;"><h:outputText value="#{mostrarDadosForm.crime.descricao}" /></p>
-
 					
 					<div id="divFiltrosAplicados"></div>
 					<div id="loadingPequeno"></div>

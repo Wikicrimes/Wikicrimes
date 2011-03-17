@@ -11,7 +11,8 @@
 	xmlns:t="http://myfaces.apache.org/tomahawk"
 	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
 	xmlns:rich="http://richfaces.org/rich"
-	xmlns:a4j="http://richfaces.org/a4j">
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:v="http://rdf.data-vocabulary.org/#">
 	<br/>
 	
 	<head>
@@ -27,6 +28,7 @@
 	</head>
 	
 	<f:view>
+		<f:loadBundle var="messages" basename="messages" />
 		<ui:composition template="layoutCrime.xhtml">
 			<ui:define name="titulo">
                 #{mostrarDadosForm.crime.tipoCrime.descricao} | #{mostrarDadosForm.crime.estado} - #{mostrarDadosForm.crime.cidade} - #{mostrarDadosForm.crime.descricao}
@@ -56,6 +58,44 @@
 				
 				<div id="detalhecrime">
 					<div id="detalhemapa" style="height: 300px; width: 500px; float: right; margin: 20px;"></div>
+<<<<<<< .mine
+					<div typeof="v:Event">
+				    <p>
+				    
+				    <span property="v:summary" content="#{mostrarDadosForm.sumarioCrime}" />
+				    <span property="v:eventType" content="#{mostrarDadosForm.categoriaCrime}" />
+				    
+				    <span rel="v:location">
+				    	<span typeof="v:Organization">
+				    		<span rel="v:address">
+				    			<h:outputText value="Na cidade de " />
+				    			 <span property="v:locality">
+				    				<h:outputText value="#{mostrarDadosForm.crime.cidade}" />
+				    			</span>
+				    			<h:outputText value=" - " />
+				    			<span property="v:region">
+				    			<h:outputText value="#{mostrarDadosForm.crime.estado} " />
+				    			</span>				    			
+			 				</span>
+			 				<span rel="v:geo">
+			 					<span property="v:latitude" content="#{mostrarDadosForm.crime.latitude}" ></span>
+          						<span property="v:longitude" content="#{mostrarDadosForm.crime.longitude}" ></span>
+			 				</span>
+			 			</span>
+			 		</span>
+			 		<h:outputText value="em " />
+			 		<span property="v:startDate" content="#{mostrarDadosForm.ISODate}">				 		
+				 		<h:outputText value="#{mostrarDadosForm.crime.data}" />
+			 		</span>
+			 		</p>
+			 		
+					<p style="text-align: justify;">
+					<span property="v:description">
+						<h:outputText value="#{mostrarDadosForm.crime.descricao}" />
+					</span>
+					</p>
+					</div>
+=======
 			 		<p><h:outputFormat value="#{messages['crime.titulo']}"> 
 			 			<f:param value="#{mostrarDadosForm.crime.cidade}"/>
 			 			<f:param value="#{mostrarDadosForm.crime.estado}"/> 
@@ -64,6 +104,7 @@
 			 		</h:outputFormat></p>
 			 		
 					<p style="text-align: justify;"><h:outputText value="#{mostrarDadosForm.crime.descricao}" /></p>
+>>>>>>> .r619
 					
 					<div id="divFiltrosAplicados"></div>
 					<div id="loadingPequeno"></div>

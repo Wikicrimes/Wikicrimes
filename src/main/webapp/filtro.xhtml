@@ -47,7 +47,7 @@
 	z-index: 99;
 	opacity: .95;
 	-moz-opacity: 0.95;
-	filter: alpha(opacity =   95);
+	filter: alpha(opacity = 95);
 	color: #000000;
 	font-family: helvetica, verdana, sans;
 	font-size: 12px;
@@ -64,7 +64,7 @@
 	z-index: 99;
 	opacity: .95;
 	-moz-opacity: 0.95;
-	filter: alpha(opacity =   95);
+	filter: alpha(opacity = 95);
 	color: #000000;
 	font-family: helvetica, verdana, sans;
 	font-size: 12px;
@@ -573,7 +573,85 @@
 		<table border="0" style="margin-left:0; position: absolute; left: 0;">
 			<tr>
 				<td>
-					<rich:panel style="width:670px; height:325px; text-align: center;"
+                                    <table>
+                                        <th>
+                                            <td>Videos Wikicrimes</td>
+                                        </th>
+                                        <tr>
+                                            <td>
+                                                <div id="videodiv" style="margin-left:20px; padding-top: 7px; float: left">
+						<div id="verVideo" style="width: 160; height: 40;"><img width="300" height="260" style="cursor: pointer" src="./images/video.png" /></div>
+						<div style="padding-top: 5px; max-width: 300px;">
+							<h:outputText style="font-size:12px;" value="#{messages['video.titulo1']}" />
+						</div>
+
+						<div id="fundovideo" style="width: 0; height: 0; display: none; background-color: black; position: fixed; z-index: 100; right: 100; top: 380;"
+							align="right">
+						</div>
+						<div id="video" style="width: 0; height: 0; display: none; background-color: null; position: fixed; z-index: 100; right: 100; top: 380;" align="right">
+
+							<div style="width: 100%; height: 100%; z-index: 100; padding: 0px;" align="center">
+								<div style="width: 100%; height: 26px; postion: fixed; z-index: 100;"></div>
+								<div class="dr-pnl rich-panel" style="width: 600px; height: 400px; z-index: 100;" align="center">
+									<div style="width: 100%; height: 30px; z-index: 100;" align="center" >
+										<div class="dr-pnl-h rich-panel-header" style="width: 99%; height: 30px; z-index: 100;" align="right" >
+											<div  id="fecharVideo" style="cursor : pointer; width: 40px; height: 20px; color: black; font-size: 18px; postion: fixed; right: 5px; top: 0; z-index: 100;">
+												X
+											</div>
+										</div>
+									</div>
+									<div style="width: 100%; height: 92%; z-index: 100;" align="center" >
+										<div id="conteudoVideo" style="width: 0px; height: 0px; z-index: 100;">
+											<object
+												width="100%" height="100%" style="z-index: 100;">
+												<param name="movie" value="http://www.youtube.com/v/LesfLXQ1mkg"></param>
+												<embed src="http://www.youtube.com/v/LesfLXQ1mkg" type="application/x-shockwave-flash" width="100%" height="100%" style="z-index: 100;"></embed>
+											</object>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						</div>
+
+						<div id="videodiv2" style="margin-right:20px;padding-top: 5px; float: right;">
+						<div id="verVideo2" style="width: 160; height: 40;"><img width="300" height="260" style="cursor: pointer" src="./images/vasconoted3.png" /></div>
+						<div style="padding-top: 5px; max-width: 300px;" >
+							<h:outputText style="font-size:12px" value="#{messages['video.titulo2']}" />
+						</div>
+
+						<div id="fundovideo2" style="width: 0; height: 0; display: none; background-color: black; position: fixed; z-index: 100; right: 100; top: 380;"
+							align="right">
+						</div>
+						<div id="video2" style="width: 0; height: 0; display: none; background-color: null; position: fixed; z-index: 100; right: 100; top: 380;" align="right">
+
+							<div style="width: 100%; height: 100%; z-index: 100; padding: 0px;" align="center">
+								<div style="width: 100%; height: 26px; postion: fixed; z-index: 100;"></div>
+								<div class="dr-pnl rich-panel" style="width: 600px; height: 400px; z-index: 100;" align="center">
+									<div style="width: 100%; height: 30px; z-index: 100;" align="center" >
+										<div class="dr-pnl-h rich-panel-header" style="width: 99%; height: 30px; z-index: 100;" align="right" >
+											<div  id="fecharVideo2" style="cursor : pointer; width: 40px; height: 20px; color: black; font-size: 18px; postion: fixed; right: 5px; top: 0; z-index: 100;">
+												X
+											</div>
+										</div>
+									</div>
+									<div style="width: 100%; height: 92%; z-index: 100;" align="center" >
+										<div id="conteudoVideo2" style="width: 0px; height: 0px; z-index: 100;">
+											<object
+												width="100%" height="100%" style="z-index: 100;">
+												<param name="movie2" value="http://www.youtube.com/v/QAVUhyJTFMM"></param>
+												<embed src="http://www.youtube.com/v/QAVUhyJTFMM" type="application/x-shockwave-flash" width="100%" height="100%" style="z-index: 100;"></embed>
+											</object>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+                                            </td>
+                                        </tr>
+                                    </table>
+					<!--<rich:panel style="width:670px; height:325px; text-align: center;"
 						header="Videos WikiCrimes">
 						   
 						<div id="videodiv" style="margin-left:20px; padding-top: 7px; float: left">
@@ -645,10 +723,34 @@
 							</div>
 						</div>
 					</div>	
-					</rich:panel>
+					</rich:panel>-->
 				</td>
 				<td style="padding-left: 10px;">
-					<rich:panel id="divMobile" style="width:294px; height:325px; text-align: center;"
+                                    <table>
+                                        <th>
+                                            <td>#{messages['modal.wikicrimes.mobile']}</td>
+                                        </th>
+                                        <tr>
+                                            <td>
+                                                <div style="padding: 6px; ">
+							<h:outputText style="font-size:14px" value="#{messages['modal.wikicrimes.mobile.msg']}" />
+							<br/>
+							<div style="padding-top: 5px; float: left;">
+								<a target="_BLANK" href="http://itunes.apple.com/br/app/wikicrimes/id399776422?mt=8">
+									<img src="./images/icones_sites/iphone.jpg"/>
+								</a>
+							</div>
+							<div style="padding-top: 10px; float: right;">
+								<a target="_BLANK" href="http://www.pointgphone.com/applications-android/social/org.wikicrimes">
+									<img src="./images/icones_sites/android.gif"/>
+								</a>
+							</div>
+							<div style="left:0; margin-top: 85px;"><h:outputText style="font-size:12px" value="#{messages['modal.wikicrimes.mobile.msg.explicacao']}" /></div>
+						</div>
+                                            </td>
+                                        </tr>
+                                    </table>
+					<!--<rich:panel id="divMobile" style="width:294px; height:325px; text-align: center;"
 						header="#{messages['modal.wikicrimes.mobile']}">
 						<div style="padding: 6px; ">
 							<h:outputText style="font-size:14px" value="#{messages['modal.wikicrimes.mobile.msg']}" />
@@ -665,7 +767,7 @@
 							</div>
 							<div style="left:0; margin-top: 85px;"><h:outputText style="font-size:12px" value="#{messages['modal.wikicrimes.mobile.msg.explicacao']}" /></div>
 						</div>
-					</rich:panel>
+					</rich:panel>-->
 				</td>
 			</tr>
 		</table>

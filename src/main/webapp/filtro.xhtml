@@ -572,13 +572,15 @@
 		<!-- Fim da Pesquisa -->
 		<table border="0" style="margin-left:0; position: absolute; left: 0;">
 			<tr>
-				<td width="500px">
+				<td>
 						<table>
-						<tr><td><p class="toptitulo">Videos Wikicrimes</p></td></tr>
-						<tr><td>
+						<tr><td colspan="2"><p class="toptitulo">Videos Wikicrimes</p><hr style="border: 0; border-top: 2px #A9A9A9 dotted;" /></td></tr>
+						<tr><td valign="top">
 						<div id="videodiv" style="margin-left:20px; padding-top: 7px;">
-						<div id="verVideo" style="width: 160; height: 40;"><img width="200" height="160" style="cursor: pointer" src="./images/video.png" /></div>
-						<div style="padding-top: 5px; max-width: 300px;">
+						<div id="verVideo" style="width: 160; height: 40;">
+						<img width="200" height="160" style="cursor: pointer" src="./images/video.png" />
+						</div>
+						<div style="padding-top: 5px; max-width: 200px;">
 							<h:outputText style="font-size:12px;" value="#{messages['video.titulo1']}" />
 						</div>
 						
@@ -610,10 +612,12 @@
 							</div>
 						</div>
 						</div>
-						</td><td>
-						<div id="videodiv2" style="margin-right:20px;padding-top: 5px;">
-						<div id="verVideo2" style="width: 160; height: 40;"><img width="200" height="160" style="cursor: pointer" src="./images/vasconoted3.png" /></div>
-						<div style="padding-top: 5px; max-width: 300px;" >
+						</td><td valign="top">
+						<div id="videodiv2" style="margin-right:20px;padding-top: 7px;">
+						<div id="verVideo2" style="width: 160; height: 40;">
+						<img width="200" height="160" style="cursor: pointer" src="./images/vasconoted3.png" />
+						</div>
+						<div style="padding-top: 5px; max-width: 200px;" >
 							<h:outputText style="font-size:12px" value="#{messages['video.titulo2']}" />
 						</div>
 						
@@ -646,32 +650,35 @@
 						</div>
 					</div></td></tr></table>	
 				</td>
-				<td width="510px">
+				<td width="35px">&nsbp;</td>
+				<td width="500px">
+				<div style="margin-top:-45px">
                                     <table>
                                         <tr>
-                                            <td><p class="toptitulo">#{messages['modal.wikicrimes.mobile']}</p></td>
+                                            <td><p class="toptitulo">#{messages['modal.wikicrimes.mobile']}</p><hr style="border: 0; border-top: 2px #A9A9A9 dotted;" /></td>
                                         </tr>
                                         <tr>
                                             <td>
-                                                <div style="padding: 6px; text-align:center">
+                                                <div style="text-align:center">
 							<p><h:outputText style="font-size:14px;" value="#{messages['modal.wikicrimes.mobile.msg']}" /></p>
-							<div style="text-align:center">
+							<div style="width:200px; float:left; margin-left: 20px;">
 								<a target="_BLANK" href="http://itunes.apple.com/br/app/wikicrimes/id399776422?mt=8">
 									<img src="./images/icones_sites/iphone.jpg"/>
 								</a>
 							</div>
 							
-							<div style="text-align:center">
+							<div style="width:200px; float:left; margin-left: 20px;">
 								<a target="_BLANK" href="http://www.pointgphone.com/applications-android/social/org.wikicrimes">
 									<img src="./images/icones_sites/android.gif"/>
 								</a>
 							</div>
 							
-							<div style="left:0;"><p style="text-align: justify"><h:outputText style="font-size:12px" value="#{messages['modal.wikicrimes.mobile.msg.explicacao']}" /></p></div>
+							<div style="padding-top: 50px;"><p style="text-align: justify"><h:outputText style="font-size:12px" value="#{messages['modal.wikicrimes.mobile.msg.explicacao']}" /></p></div>
 						</div>
                                             </td>
                                         </tr>
                                     </table>
+                                    </div>
 				</td>
 			</tr>
 		</table>

@@ -29,7 +29,7 @@
 				<td colspan="2"><p class="topcrimes">Top WikiCrimes</p><hr style="border: 0; border-top: 2px #A9A9A9 dotted;" /></td>
 			</tr>
 			<tr>
-				<td width="510px">
+				<td width="510px" height="170px" valign="top">
 					<p class="toptitulo">#{messages['crimes.maiscomentados']}</p>
 					<t:dataTable id="crimes1" var="crime" value="#{mostrarDadosForm.crimeService.crimesMaisComentados}">
 			    		<t:column>
@@ -48,7 +48,7 @@
 			    		</t:column>
         			</t:dataTable>
 				</td>
-				<td width="510px">
+				<td width="510px" height="170px" valign="top">
 					<p class="toptitulo">#{messages['crimes.maisvistos']}</p>
 			        <t:dataTable id="crimes2" var="crime" value="#{mostrarDadosForm.crimeService.crimesMaisVistos}">
 			    		<t:column>

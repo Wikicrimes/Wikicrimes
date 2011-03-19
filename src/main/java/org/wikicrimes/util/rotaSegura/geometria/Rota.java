@@ -13,7 +13,6 @@ import java.util.List;
 import org.wikicrimes.util.kernelMap.PropertiesLoader;
 import org.wikicrimes.util.rotaSegura.testes.TesteRotasImg;
 
-import com.sun.xml.internal.fastinfoset.util.ContiguousCharArrayArray;
 
 /**
  * Conjunto de coordenadas ou conjunto de segmentos de reta ligados.
@@ -24,7 +23,7 @@ public class Rota {
 
 	private List<Ponto> pontos;
 	
-	private final static int MAX_APROXIMACAO = PropertiesLoader.getInt("saferoutes.point_approximation_limit"); //distancia máxima entre pontos na obtenção de pontos e rotas aproximadas
+	private final static int MAX_APROXIMACAO = PropertiesLoader.getInt("saferoutes.point_approximation_limit"); //distancia mï¿½xima entre pontos na obtenï¿½ï¿½o de pontos e rotas aproximadas
 
 	public Rota() {
 		pontos = new LinkedList<Ponto>();
@@ -104,7 +103,7 @@ public class Rota {
 	}
 
 	/**
-	 * Adiciona todas as Coordenadas da rota passada como parâmetro no fim desta
+	 * Adiciona todas as Coordenadas da rota passada como parï¿½metro no fim desta
 	 * Rota
 	 */
 	public void addFim(Rota rota) {
@@ -129,7 +128,7 @@ public class Rota {
 		} else {
 			throw new RuntimeException(
 					"tentou-se adicionar um SegmentoReta a uma Rota, "
-							+ "mas o início do SegmentoReta é diferente do fim da rota");
+							+ "mas o inï¿½cio do SegmentoReta ï¿½ diferente do fim da rota");
 		}
 	}
 
@@ -156,7 +155,7 @@ public class Rota {
 	}
 
 	/**
-	 * @return as Coordenadas que compôem a Rota
+	 * @return as Coordenadas que compï¿½em a Rota
 	 */
 	public List<Ponto> getPontos() {
 		return pontos;
@@ -167,7 +166,7 @@ public class Rota {
 	}
 	
 	/**
-	 * @return os SegmentosReta que compôem a Rota. É equivalente ao
+	 * @return os SegmentosReta que compï¿½em a Rota. ï¿½ equivalente ao
 	 *         getCoordenadas.
 	 */
 	public List<Segmento> getSegmentosReta() {
@@ -216,7 +215,7 @@ public class Rota {
 	}
 
 	/**
-	 * @return distância (reta) entre a ORIGEM e o DESTINO
+	 * @return distï¿½ncia (reta) entre a ORIGEM e o DESTINO
 	 */
 	public double distanciaRetaOD() {
 		return new Segmento(getInicio(), getFim()).comprimento();
@@ -247,11 +246,11 @@ public class Rota {
 	}
 	
 	/**
-	 * Verifica se esta rota contém um ponto próximo do passado por parametro.<br>
-	 * Motivação desta aproximação: Precisa-se comparar a rota segura gerada
+	 * Verifica se esta rota contï¿½m um ponto prï¿½ximo do passado por parametro.<br>
+	 * Motivaï¿½ï¿½o desta aproximaï¿½ï¿½o: Precisa-se comparar a rota segura gerada
 	 * pelo server com a rota gerada pelo googlemaps (a partir da primeira).
-	 * Esta segunda rota deveria conter pontos idênticos a todos os pontos
-	 * daquela primeira rota, mas isto não acontece (se um dos pontos não cair
+	 * Esta segunda rota deveria conter pontos idï¿½nticos a todos os pontos
+	 * daquela primeira rota, mas isto nï¿½o acontece (se um dos pontos nï¿½o cair
 	 * dentro de uma rua, por ex.).
 	 */
 	public boolean contemPerto(Ponto p, int distMax) {
@@ -259,26 +258,26 @@ public class Rota {
 	}
 
 	/**
-	 * Obtém uma coordenada que pertence à rota e que é a mais próxima da
-	 * coordenada passada por parâmetro.<br>
-	 * Motivação desta aproximação: Precisa-se comparar a rota segura gerada
-	 * pela lógica de rotas seguras com a rota gerada pelo googlemaps (a partir
-	 * da primeira). Esta segunda rota deveria conter pontos idênticos a todos
+	 * Obtï¿½m uma coordenada que pertence ï¿½ rota e que ï¿½ a mais prï¿½xima da
+	 * coordenada passada por parï¿½metro.<br>
+	 * Motivaï¿½ï¿½o desta aproximaï¿½ï¿½o: Precisa-se comparar a rota segura gerada
+	 * pela lï¿½gica de rotas seguras com a rota gerada pelo googlemaps (a partir
+	 * da primeira). Esta segunda rota deveria conter pontos idï¿½nticos a todos
 	 * os pontos daquela primeira rota, mas isto nem sempre acontece (por ex: se
-	 * um dos pontos cair dentro de um quarteirão).
+	 * um dos pontos cair dentro de um quarteirï¿½o).
 	 */
 	public Ponto getPontoPerto(Ponto p, int distMax) {
 
 		if (p == null)
 			return null;
 
-		// sobrescreve o método equals para esta Coordenada
+		// sobrescreve o mï¿½todo equals para esta Coordenada
 		PontoAproximado ptAproximado = new PontoAproximado(p.x, p.y);
 
 		int index = -1;
 		while (ptAproximado.proximidade <= distMax && index == -1) {
-			index = pontos.indexOf(ptAproximado); // indice da coordenada próxima (a qual foi identificada pelo metodo equals)
-			// (todas as comparações feitas neste método indexOf usarão a implementação do equals de CoordenadaAproximada)
+			index = pontos.indexOf(ptAproximado); // indice da coordenada prï¿½xima (a qual foi identificada pelo metodo equals)
+			// (todas as comparaï¿½ï¿½es feitas neste mï¿½todo indexOf usarï¿½o a implementaï¿½ï¿½o do equals de CoordenadaAproximada)
 			ptAproximado.proximidade++;
 		}
 
@@ -289,7 +288,7 @@ public class Rota {
 	}
 
 	/**
-	 * Obtém os pontos desta rota que correspondem a pontos aproximados aos de
+	 * Obtï¿½m os pontos desta rota que correspondem a pontos aproximados aos de
 	 * uma outra rota semelhante. Obs: espera-se que a "outraRota" tenha menos
 	 * pontos do que esta
 	 */
@@ -304,9 +303,9 @@ public class Rota {
 	}
 
 	/**
-	 * O intuito desta classe é sobrescrever o método equals de Coordenada para
-	 * ser usado nos métodos getCoordenadaAproximada() e containsAproximado().
-	 * Esta implementação do método equals reconhece Coordenadas próximas como
+	 * O intuito desta classe ï¿½ sobrescrever o mï¿½todo equals de Coordenada para
+	 * ser usado nos mï¿½todos getCoordenadaAproximada() e containsAproximado().
+	 * Esta implementaï¿½ï¿½o do mï¿½todo equals reconhece Coordenadas prï¿½ximas como
 	 * se fossem iguais.
 	 */
 	@SuppressWarnings("serial")
@@ -315,7 +314,7 @@ public class Rota {
 			super(x, y);
 		}
 
-		// método equals aproximado (basta estar perto pra ser considerado
+		// mï¿½todo equals aproximado (basta estar perto pra ser considerado
 		// "igual")
 		private int proximidade;
 
@@ -550,7 +549,7 @@ public class Rota {
 				}
 				resto = resto.subRota(fimSegm, fimResto);
 			}else{
-				//TODO caso passar por um pedaço de "s"
+				//TODO caso passar por um pedaï¿½o de "s"
 			}
 		}
 		partesDiferentes.add(resto);
@@ -568,7 +567,7 @@ public class Rota {
 	}
 
 	/**
-	 * Percorre a rota a partir do início por "dist" unidades de comprimento e
+	 * Percorre a rota a partir do inï¿½cio por "dist" unidades de comprimento e
 	 * retorna o Ponto resultante
 	 */
 	public Ponto searchPoint(double distance) {
@@ -604,10 +603,10 @@ public class Rota {
 			double compS = s.comprimento();
 			cont += compS;
 			if (cont > distance) {// o contador acabou de passar da dist, entao estamos no segmento que contem o ponto
-				// tem dois triangulos proporcionais e falta só 2 lados de um deles (os catetos do triangulo pequeno)
+				// tem dois triangulos proporcionais e falta sï¿½ 2 lados de um deles (os catetos do triangulo pequeno)
 				double hipotGrande = compS;
-				double hipotPequena = distance - cont + hipotGrande; // pedaço de S q ainda entra
-				double razao = hipotGrande / hipotPequena; // razao entre o S inteiro e o pedaço
+				double hipotPequena = distance - cont + hipotGrande; // pedaï¿½o de S q ainda entra
+				double razao = hipotGrande / hipotPequena; // razao entre o S inteiro e o pedaï¿½o
 				double catetoXGrande = p2.x - p1.x;
 				double catetoYGrande = p2.y - p1.y;
 				double catetoXPeq = catetoXGrande / razao;
@@ -633,11 +632,11 @@ public class Rota {
 	 * de comprimento e retorna o Ponto resultante
 	 */
 	public Ponto buscarPontoVoltando(Ponto partida, double dist) {
-		//TODO da pra implementar isso melhor, tipo busca binária
+		//TODO da pra implementar isso melhor, tipo busca binï¿½ria
 		boolean chegou = false; // se ja passou pelo ponto "partida"
 		double cont = .0; // vai acumulando a distancia percorrida a medida que
 							// anda no for abaixo
-		// as 2 variáveis acima são objetos (wrappers) pq precisam ser
+		// as 2 variï¿½veis acima sï¿½o objetos (wrappers) pq precisam ser
 		// modificadas dentro da "subrotinaBuscaPonto"
 		for (int i = pontos.size() - 1; i > 0; i--) {
 			Ponto p1 = pontos.get(i);
@@ -649,10 +648,10 @@ public class Rota {
 			if (chegou) {
 				cont += compS;
 				if (cont > dist) {// o contador acabou de passar da dist, entao estamos no segmento que contem o ponto
-					// tem dois triangulos proporcionais e falta só 2 lados de um deles (os catetos do triangulo pequeno)
+					// tem dois triangulos proporcionais e falta sï¿½ 2 lados de um deles (os catetos do triangulo pequeno)
 					double hipotGrande = compS;
-					double hipotPequena = dist - cont + hipotGrande; // pedaço de S q ainda entra
-					double razao = hipotGrande / hipotPequena; // razao entre o S inteiro e o pedaço
+					double hipotPequena = dist - cont + hipotGrande; // pedaï¿½o de S q ainda entra
+					double razao = hipotGrande / hipotPequena; // razao entre o S inteiro e o pedaï¿½o
 					double catetoXGrande = p2.x - p1.x;
 					double catetoYGrande = p2.y - p1.y;
 					double catetoXPeq = catetoXGrande / razao;

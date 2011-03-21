@@ -56,12 +56,21 @@
 				
 				<div id="detalhecrime">
 					<div id="detalhemapa" style="height: 300px; width: 500px; float: right; margin: 20px;"></div>
+					
+					<c:if test="#{mostrarDadosForm.crime.cidade != null}">
 			 		<p><h:outputFormat value="#{messages['crime.titulo']}"> 
 			 			<f:param value="#{mostrarDadosForm.crime.cidade}"/>
 			 			<f:param value="#{mostrarDadosForm.crime.estado}"/> 
 			 			<f:param value="#{mostrarDadosForm.crime.dataHoraRegistro}"/>
 			 			<f:convertDateTime pattern="#{messages['crime.data.formato']}" />
 			 		</h:outputFormat></p>
+			 		</c:if>
+			 		<c:if test="#{mostrarDadosForm.crime.cidade == null}">
+			 		<p><h:outputFormat value="#{messages['crime.titulo2']}"> 
+			 			<f:param value="#{mostrarDadosForm.crime.dataHoraRegistro}"/>
+			 			<f:convertDateTime pattern="#{messages['crime.data.formato']}" />
+			 		</h:outputFormat></p>
+			 		</c:if>
 			 		
 					<p style="text-align: justify;"><h:outputText value="#{mostrarDadosForm.crime.descricao}" /></p>
 					

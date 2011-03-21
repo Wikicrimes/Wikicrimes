@@ -737,11 +737,14 @@ public class MostrarDadosForm extends GenericForm {
 	
 	public void setPaginaAtual(Long paginaAtual){
 		this.paginaAtual = paginaAtual;
-		if(paginaAtual == 0){
-			crimes = getCrimesByTipoPaginado(paginaAtual, maxPaginacao);
-		}
-		if(paginaAtual > 0){
-			crimes = getCrimesByTipoPaginado((paginaAtual*maxPaginacao)+1, maxPaginacao);
+		if(paginaAtual != null){
+			this.paginaAtual = paginaAtual-1;
+			if(this.paginaAtual == 0){
+				crimes = getCrimesByTipoPaginado(this.paginaAtual, maxPaginacao);
+			}
+			if(this.paginaAtual > 0){
+				crimes = getCrimesByTipoPaginado((this.paginaAtual*maxPaginacao)+1, maxPaginacao);
+			}
 		}
 	}
 	

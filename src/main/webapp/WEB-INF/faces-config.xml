@@ -873,6 +873,10 @@
             <property-name>chaveCr</property-name>
             <value>#{param.chaveCr}</value>
         </managed-property>
+        <managed-property>
+            <property-name>paginaAtual</property-name>
+            <value>#{param.paginaAtual}</value>
+        </managed-property>
     </managed-bean>
     
     <managed-bean>

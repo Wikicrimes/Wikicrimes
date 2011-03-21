@@ -87,85 +87,164 @@
 				<div class="pagination">
 					<ul>
 						<li>
-							<a4j:commandLink reRender="listarCrimes, paginaAtual, indices" styleClass="#{mostrarDadosForm.paginaAtual == 0 ? 'prevnext disablelink' : 'prevnext'}"><h:outputText value="#{messages['page.prev']} " />                                                                            
+							<!--<a4j:commandLink reRender="listarCrimes, paginaAtual, indices" styleClass="#{mostrarDadosForm.paginaAtual == 0 ? 'prevnext disablelink' : 'prevnext'}"><h:outputText value="#{messages['page.prev']} " />                                                                            
 			                    	<f:setPropertyActionListener target="#{mostrarDadosForm.paginaAtual}" value="#{mostrarDadosForm.paginaAtual == 0 ? mostrarDadosForm.paginaAtual : mostrarDadosForm.paginaAtual - 1}"/>
 		                   		</a4j:commandLink>
+						-->
+						<h:outputLink styleClass="#{mostrarDadosForm.paginaAtual == 0 ? 'prevnext disablelink' : 'prevnext'}" value="listarCrimesTipo.html">
+		                    	<h:outputText value="#{messages['page.prev']}"/>
+		                    	<f:param name="idTipoCrime" value="#{mostrarDadosForm.idTipoCrime}"/>
+		                    	<f:param name="paginaAtual" value="#{mostrarDadosForm.paginaAtual == 0 ? mostrarDadosForm.paginaAtual + 1 : mostrarDadosForm.paginaAtual}"/>
+		                </h:outputLink>
 						</li>
 						<c:if test="#{mostrarDadosForm.paginaAtual == mostrarDadosForm.sizeArrayPaginacao-1}" >
 							<li>
-		                    <a4j:commandLink reRender="listarCrimes, paginaAtual, indices" >#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual]-3}                                                                          
+		                    <!--<a4j:commandLink reRender="listarCrimes, paginaAtual, indices" >#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual]-3}                                                                          
 		                       	<f:setPropertyActionListener target="#{mostrarDadosForm.paginaAtual}" value="#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual-4]}"/>
 		                    </a4j:commandLink>
+							-->
+							<h:outputLink value="listarCrimesTipo.html">
+		                    	<h:outputText value="#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual]-3}"/>
+		                    	<f:param name="idTipoCrime" value="#{mostrarDadosForm.idTipoCrime}"/>
+		                    	<f:param name="paginaAtual" value="#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual-3]}"/>
+		                	</h:outputLink>
 							</li>
 							<li>
-							<a4j:commandLink reRender="listarCrimes, paginaAtual, indices">#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual]-2}                                                                          
+							<!--<a4j:commandLink reRender="listarCrimes, paginaAtual, indices">#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual]-2}                                                                          
 		                       	<f:setPropertyActionListener target="#{mostrarDadosForm.paginaAtual}" value="#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual-3]}"/>
 		                    </a4j:commandLink>
+							-->
+							<h:outputLink value="listarCrimesTipo.html">
+		                    	<h:outputText value="#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual]-3}"/>
+		                    	<f:param name="idTipoCrime" value="#{mostrarDadosForm.idTipoCrime}"/>
+		                    	<f:param name="paginaAtual" value="#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual-3]}"/>
+		                	</h:outputLink>
 							</li>
 						</c:if>
 						<c:if test="#{mostrarDadosForm.paginaAtual == mostrarDadosForm.sizeArrayPaginacao-2}" >
 							<li>
-							<a4j:commandLink reRender="listarCrimes, paginaAtual, indices">#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual]-2}                                                                          
+							<!--<a4j:commandLink reRender="listarCrimes, paginaAtual, indices">#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual]-2}                                                                          
 		                       	<f:setPropertyActionListener target="#{mostrarDadosForm.paginaAtual}" value="#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual-3]}"/>
 		                    </a4j:commandLink>
+							-->
+							<h:outputLink value="listarCrimesTipo.html">
+		                    	<h:outputText value="#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual]-2}"/>
+		                    	<f:param name="idTipoCrime" value="#{mostrarDadosForm.idTipoCrime}"/>
+		                    	<f:param name="paginaAtual" value="#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual-2]}"/>
+		                	</h:outputLink>
 							</li>
 						</c:if>
 						<c:if test="#{mostrarDadosForm.paginaAtual gt 1}" >
 		                    <li>
-		                    <a4j:commandLink reRender="listarCrimes, paginaAtual, indices">#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual]-1}                                                                          
+		                    <!--<a4j:commandLink reRender="listarCrimes, paginaAtual, indices">#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual]-1}                                                                          
 		                       	<f:setPropertyActionListener target="#{mostrarDadosForm.paginaAtual}" value="#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual-2]}"/>
 		                    </a4j:commandLink>
+		                    -->
+		                    <h:outputLink value="listarCrimesTipo.html">
+		                    	<h:outputText value="#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual]-1}"/>
+		                    	<f:param name="idTipoCrime" value="#{mostrarDadosForm.idTipoCrime}"/>
+		                    	<f:param name="paginaAtual" value="#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual-1]}"/>
+		                	</h:outputLink>
 		                    </li>
 		                </c:if>
 		                <c:if test="#{mostrarDadosForm.paginaAtual gt 0}" >
 		                    <li>
-		                    <a4j:commandLink reRender="listarCrimes, paginaAtual, indices">#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual]}                                                                          
+		                    <!--<a4j:commandLink reRender="listarCrimes, paginaAtual, indices">#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual]}                                                                          
 		                       	<f:setPropertyActionListener target="#{mostrarDadosForm.paginaAtual}" value="#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual-1]}"/>
 		                    </a4j:commandLink>
+		                    -->
+		                    <h:outputLink value="listarCrimesTipo.html">
+		                    	<h:outputText value="#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual]}"/>
+		                    	<f:param name="idTipoCrime" value="#{mostrarDadosForm.idTipoCrime}"/>
+		                    	<f:param name="paginaAtual" value="#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual]}"/>
+		                	</h:outputLink>
 		                    </li>
 		                </c:if>
 	                    <li>
-							<a4j:commandLink reRender="listarCrimes, paginaAtual, indices" styleClass="currentpage">#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual]+1}                                                                          
+							<!--<a4j:commandLink reRender="listarCrimes, paginaAtual, indices" styleClass="currentpage">#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual]+1}                                                                          
 		                       	<f:setPropertyActionListener target="#{mostrarDadosForm.paginaAtual}" value="#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual]}"/>
 		                    </a4j:commandLink>
+	                    -->
+	                    <h:outputLink styleClass="currentpage" value="listarCrimesTipo.html">
+		                    	<h:outputText value="#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual]+1}"/>
+		                    	<f:param name="idTipoCrime" value="#{mostrarDadosForm.idTipoCrime}"/>
+		                    	<f:param name="paginaAtual" value="#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual+1]}"/>
+		                </h:outputLink>
 	                    </li>
 		               <c:if test="#{mostrarDadosForm.paginaAtual+1 lt mostrarDadosForm.sizeArrayPaginacao}" >
 		                    <li>
-		                    <a4j:commandLink reRender="listarCrimes, paginaAtual, indices">#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual]+2}                                                                           
+		                    <!--<a4j:commandLink reRender="listarCrimes, paginaAtual, indices">#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual]+2}                                                                           
 		                       	<f:setPropertyActionListener target="#{mostrarDadosForm.paginaAtual}" value="#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual+1]}"/>
 		                    </a4j:commandLink>
+		                	-->
+		                	<h:outputLink value="listarCrimesTipo.html">
+		                    	<h:outputText value="#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual]+2}"/>
+		                    	<f:param name="idTipoCrime" value="#{mostrarDadosForm.idTipoCrime}"/>
+		                    	<f:param name="paginaAtual" value="#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual+2]}"/>
+		                	</h:outputLink>
 		                	</li>
 		                </c:if>
 		                <c:if test="#{mostrarDadosForm.paginaAtual+2 lt mostrarDadosForm.sizeArrayPaginacao}" >
 		                    <li>
-		                    <a4j:commandLink reRender="listarCrimes, paginaAtual, indices">#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual]+3}                                                                          
+		                    <!--<a4j:commandLink reRender="listarCrimes, paginaAtual, indices">#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual]+3}                                                                          
 		                       	<f:setPropertyActionListener target="#{mostrarDadosForm.paginaAtual}" value="#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual+2]}"/>
 		                    </a4j:commandLink>
+							-->
+							<h:outputLink value="listarCrimesTipo.html">
+		                    	<h:outputText value="#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual]+3}"/>
+		                    	<f:param name="idTipoCrime" value="#{mostrarDadosForm.idTipoCrime}"/>
+		                    	<f:param name="paginaAtual" value="#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual+3]}"/>
+		                	</h:outputLink>
 							</li>
 						</c:if>
 						<c:if test="#{mostrarDadosForm.paginaAtual == 0}" >
 							<li>
-		                    <a4j:commandLink reRender="listarCrimes, paginaAtual, indices">#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual]+4}                                                                          
+		                    <!--<a4j:commandLink reRender="listarCrimes, paginaAtual, indices">#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual]+4}                                                                          
 		                       	<f:setPropertyActionListener target="#{mostrarDadosForm.paginaAtual}" value="#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual+3]}"/>
 		                    </a4j:commandLink>
+							-->
+							<h:outputLink value="listarCrimesTipo.html">
+		                    	<h:outputText value="#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual]+4}"/>
+		                    	<f:param name="idTipoCrime" value="#{mostrarDadosForm.idTipoCrime}"/>
+		                    	<f:param name="paginaAtual" value="#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual+4]}"/>
+		                	</h:outputLink>
 							</li>
 							<li>
-							<a4j:commandLink reRender="listarCrimes, paginaAtual, indices">#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual]+5}                                                                          
+							<!--<a4j:commandLink reRender="listarCrimes, paginaAtual, indices">#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual]+5}                                                                          
 		                       	<f:setPropertyActionListener target="#{mostrarDadosForm.paginaAtual}" value="#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual+4]}"/>
 		                    </a4j:commandLink>
+							-->
+							<h:outputLink value="listarCrimesTipo.html">
+		                    	<h:outputText value="#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual]+5}"/>
+		                    	<f:param name="idTipoCrime" value="#{mostrarDadosForm.idTipoCrime}"/>
+		                    	<f:param name="paginaAtual" value="#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual+5]}"/>
+		                	</h:outputLink>
 							</li>
 						</c:if>
 						<c:if test="#{mostrarDadosForm.paginaAtual == 1}" >
 							<li>
-							<a4j:commandLink reRender="listarCrimes, paginaAtual, indices">#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual]+4}                                                                          
+							<!--<a4j:commandLink reRender="listarCrimes, paginaAtual, indices">#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual]+4}                                                                          
 		                       	<f:setPropertyActionListener target="#{mostrarDadosForm.paginaAtual}" value="#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual+3]}"/>
 		                    </a4j:commandLink>
+							-->
+							<h:outputLink value="listarCrimesTipo.html">
+		                    	<h:outputText value="#{mostrarDadosForm.paginaAtual+4}"/>
+		                    	<f:param name="idTipoCrime" value="#{mostrarDadosForm.idTipoCrime}"/>
+		                    	<f:param name="paginaAtual" value="#{mostrarDadosForm.paginaAtual+4}"/>
+		                    </h:outputLink>
 							</li>
 						</c:if>
 	                    <li>
-							<a4j:commandLink reRender="listarCrimes, paginaAtual, indices" styleClass="#{mostrarDadosForm.paginaAtual lt mostrarDadosForm.sizeArrayPaginacao-1 ? 'prevnext' : 'prevnext disablelink'}"><h:outputText value="#{messages['page.next']} " />                                                                            
+							
+							<!--<a4j:commandLink reRender="listarCrimes, paginaAtual, indices" styleClass="#{mostrarDadosForm.paginaAtual lt mostrarDadosForm.sizeArrayPaginacao-1 ? 'prevnext' : 'prevnext disablelink'}"><h:outputText value="#{messages['page.next']} " />                                                                            
 		                    	<f:setPropertyActionListener target="#{mostrarDadosForm.paginaAtual}" value="#{mostrarDadosForm.paginaAtual lt mostrarDadosForm.sizeArrayPaginacao-1 ? mostrarDadosForm.paginaAtual+1 : mostrarDadosForm.sizeArrayPaginacao-1}"/>
 		                    </a4j:commandLink>
+		                    -->
+		                    <h:outputLink styleClass="#{mostrarDadosForm.paginaAtual lt mostrarDadosForm.sizeArrayPaginacao-1 ? 'prevnext' : 'prevnext disablelink'}" value="listarCrimesTipo.html">
+		                    	<h:outputText value="#{messages['page.next']}"/>
+		                    	<f:param name="idTipoCrime" value="#{mostrarDadosForm.idTipoCrime}"/>
+		                    	<f:param name="paginaAtual" value="#{mostrarDadosForm.paginaAtual lt mostrarDadosForm.sizeArrayPaginacao-1 ? mostrarDadosForm.paginaAtual+2 : mostrarDadosForm.sizeArrayPaginacao-1}"/>
+		                    </h:outputLink>
 	                	</li>
 					</ul>
 				</div>

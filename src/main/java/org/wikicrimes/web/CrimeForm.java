@@ -11,6 +11,7 @@ import java.util.Set;
 import javax.faces.FactoryFinder;
 import javax.faces.application.ApplicationFactory;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 import javax.security.auth.login.LoginException;
 import javax.servlet.http.HttpServletRequest;
@@ -127,8 +128,9 @@ public class CrimeForm extends GenericForm {
 
 	public void setTipoCrime(Long id) {
 		tipoCrime = id;
-		if (tipoCrime != null) {
+		if (tipoCrime != null && tipoCrime != 0) {
 			crime.setTipoCrime(service.getTipoCrime(tipoCrime));
+			tipoVitimaItens = null;
 		}
 	}
 	
@@ -160,7 +162,7 @@ public class CrimeForm extends GenericForm {
 	 */
 	public void setTipoLocal(Long id) {
 		tipoLocal = id;
-		if (tipoLocal != null) {
+		if (tipoLocal != null && tipoLocal != 0) {
 			crime.setTipoLocal(service.getTipoLocal(tipoLocal));
 		}
 	}
@@ -172,7 +174,7 @@ public class CrimeForm extends GenericForm {
 	public void setTipoVitima(Long id) {
 		tipoVitima = id;	
 		
-		if (tipoCrime != null) {
+		if (tipoCrime != null && tipoCrime != 0 && tipoVitima != 0) {
 			crime.setTipoVitima(service.getTipoVitima(tipoVitima));
 			populateTipoLocalItens();
 		}
@@ -260,8 +262,10 @@ public class CrimeForm extends GenericForm {
 	 * @return
 	 */
 	public String getTipoPapel() {
-		if (crime.getTipoPapel() != null) {
+		if (crime.getTipoPapel() != null && crime.getTipoPapel().getIdTipoPapel() != 0) {
 			return crime.getTipoPapel().getIdTipoPapel().toString();
+		}else{
+			tipoPapelItens = null;
 		}
 
 		return "";
@@ -770,7 +774,7 @@ public class CrimeForm extends GenericForm {
 		List<SelectItem> itens = new ArrayList<SelectItem>();
 		List<BaseObject> result = service.getTipoTransporteAll();
 		
-		itens.add(new SelectItem("0", "Selecione"));
+		itens.add(new SelectItem("", "Selecione"));
 
 		for (int i = 0; i < result.size(); i++) {
 			TipoTransporte tipoTransporte = (TipoTransporte) result.get(i);
@@ -784,31 +788,34 @@ public class CrimeForm extends GenericForm {
 	}
 	
 	public void populateTipoVitimaItens() {
-		List<SelectItem> itens = new ArrayList<SelectItem>();
-
-		List<BaseObject> result = new ArrayList();
-		if (tipoCrime != null && !tipoCrime.equals("0")) {
-			Long idTipoCrime = Long.valueOf(getTipoCrime());
-			result = service.findTipoVitimaByTipoCrime(idTipoCrime);
-		} else {
-			result = service.getTipoVitimaAll();
-		}
-
-		itens.add(new SelectItem("0", "Selecione"));
-		
-		for (int i = 0; i < result.size(); i++) {
-			TipoVitima tipoVitima = (TipoVitima) result.get(i);
-			String id = tipoVitima.getIdTipoVitima().toString();
-			String nome = tipoVitima.getNome();
-
-			itens.add(new SelectItem(id, nome));
-		}
-		
-		if (result.size() <= 0) {
-			itens.clear();
-		}
-		
-		tipoVitimaItens = itens;
+		if(tipoVitimaItens == null){	
+			List<SelectItem> itens = new ArrayList<SelectItem>();
+			
+			List<BaseObject> result = new ArrayList();
+			if (tipoCrime != null && !tipoCrime.equals(new Long(0))) {
+				Long idTipoCrime = Long.valueOf(getTipoCrime());
+				result = service.findTipoVitimaByTipoCrime(idTipoCrime);
+				itens.add(new SelectItem("", "Selecione"));
+			} else {
+				//result = service.getTipoVitimaAll();
+				itens.add(new SelectItem("0", "Selecione um tipo de crime"));
+			}
+	
+			
+			for (int i = 0; i < result.size(); i++) {
+				TipoVitima tipoVitima = (TipoVitima) result.get(i);
+				String id = tipoVitima.getIdTipoVitima().toString();
+				String nome = tipoVitima.getNome();
+	
+				itens.add(new SelectItem(id, getMessage(nome,"")));
+			}
+	
+			//		if (result.size() <= 0) {
+	//			itens.clear();
+	//		}
+			
+			tipoVitimaItens = itens;
+		}	
 	}
 
 	/**
@@ -826,13 +833,16 @@ public class CrimeForm extends GenericForm {
 		if (tipoVitima != null && !tipoVitima.equals("0")) {
 			if(tipoVitima == 3 || tipoVitima == 4 || tipoVitima == 5 || tipoVitima == 6 || tipoVitima == 7 || tipoVitima == 8 || tipoVitima == 9 ){
 				result = service.findTipoLocalByTipoVitima(new Long(1));
-			}else{			
-				Long tipoVitima = Long.valueOf(getTipoVitima());
-				result = service.findTipoLocalByTipoVitima(tipoVitima);
+			}else{		
+				if(tipoVitima == 10){
+					result = service.getTipoLocalAll();
+				}else{
+					Long tipoVitima = Long.valueOf(getTipoVitima());
+					result = service.findTipoLocalByTipoVitima(tipoVitima);
+				}
 			}	
-		}		
-		else {
-			result = service.getTipoLocalAll();
+		}else {
+			itens.add(new SelectItem("0", "Selecione"));
 		}
 		
 		for (int i = 0; i < result.size(); i++) {
@@ -845,7 +855,6 @@ public class CrimeForm extends GenericForm {
 		
 		if (result.size() <= 0) {
 			itens.clear();
-			itens.add(new SelectItem("0", "Nenhum"));
 		}
 
 		tipoLocalItens = itens;
@@ -855,7 +864,31 @@ public class CrimeForm extends GenericForm {
 	 * @return
 	 */
 	public List getTipoLocalItens() {
-		
+		List<SelectItem> itens = new ArrayList<SelectItem>();
+		if(tipoVitima != null && tipoVitima != 0){
+			if(tipoLocalItens == null){
+				List<BaseObject> result = service.getTipoLocalAll();
+				for (int i = 0; i < result.size(); i++) {
+					TipoLocal tipoLocal = (TipoLocal) result.get(i);
+					String id = tipoLocal.getIdTipoLocal().toString();
+					String nome = tipoLocal.getNome();
+					
+					itens.add(new SelectItem(id, getMessage(nome,"")));
+				}
+				
+				if (result.size() <= 0) {
+					itens.clear();
+					itens.add(new SelectItem("0", "Nenhum"));
+				}
+	
+				tipoLocalItens = itens;
+				
+			}
+		}else{
+			itens.clear();
+			//itens.add(new SelectItem("", "Selecione um tipo de vítima"));
+			tipoLocalItens = itens;
+		}
 		return tipoLocalItens;
 	}
 
@@ -912,30 +945,37 @@ public class CrimeForm extends GenericForm {
 
 		return itens;
 	}
+	
+	public int getTamanhoTipoPapelItens(){
+			return getTipoPapelItens().size();
+	}
 
 	/**
 	 * @return
 	 */
 	public List<SelectItem> getTipoPapelItens() {
-		if (tipoPapelItens==null) {
-		List<SelectItem> itens = new ArrayList<SelectItem>();
-		List<BaseObject> result = service.getTipoPapelAll();
-		
-		
-		for (int i = 0; i < result.size(); i++) {
-			TipoPapel tipoPapel = (TipoPapel) result.get(i);
-			String id = tipoPapel.getIdTipoPapel().toString();
-			String nome = tipoPapel.getNome();
-
-			if(!(tipoVitima==6 && tipoPapel.getIdTipoPapel()==1)) {
-				itens.add(new SelectItem(id, getMessage(nome,"")));
-			}
-		}
-		tipoPapelItens=itens;
-		return itens;
-		}
-		else 
+		if(tipoVitima == null){
+			List<SelectItem> itens = new ArrayList<SelectItem>();
+			itens.add(new SelectItem("", "Selecione um tipo de vítima"));
+			tipoPapelItens = itens;
 			return tipoPapelItens;
+		}else{
+				List<SelectItem> itens = new ArrayList<SelectItem>();
+				List<BaseObject> result = service.getTipoPapelAll();
+				
+				itens.add(new SelectItem("", "Selecione"));
+				for (int i = 0; i < result.size(); i++) {
+					TipoPapel tipoPapel = (TipoPapel) result.get(i);
+					String id = tipoPapel.getIdTipoPapel().toString();
+					String nome = tipoPapel.getNome();
+		
+					if(!(tipoVitima==6 && tipoPapel.getIdTipoPapel()==1)) {
+						itens.add(new SelectItem(id, getMessage(nome,"")));
+					}
+				}
+				tipoPapelItens=itens;
+				return itens;
+		}
 	}
 
 	/**
@@ -1057,6 +1097,7 @@ public class CrimeForm extends GenericForm {
 
 		return itens;
 	}
+	
 
 	public UsuarioService getUsuarioService() {
 		return usuarioService;
@@ -1247,5 +1288,6 @@ public class CrimeForm extends GenericForm {
 	public void setMensagemConf(String mensagemConf) {
 		this.mensagemConf = mensagemConf;
 	}
+	
 
 }

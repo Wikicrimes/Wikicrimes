@@ -11,8 +11,35 @@
 	xmlns:t="http://myfaces.apache.org/tomahawk"
 	xmlns:rich="http://richfaces.org/rich"
 	xmlns:a4j="http://richfaces.org/a4j">
-	<br/>
 	
+<body>
+	<div>
+		<p class="toptitulo" align="left"><h:outputText value="#{messages['message.facebook']}"	title="#{messages['message.facebook']}" /></p>
+		<hr style="border: 0; border-top: 2px #A9A9A9 dotted;" />
+	</div>
+	<div style="width: 100%;">
+		<iframe id = "iframeCurtir" src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.wikicrimes.org&amp;layout=standard&amp;show_faces=true&amp;width=450&amp;action=like&amp;colorscheme=light&amp;height=80" scrolling="no" frameborder="0" style="margin-top: 5px;  border:none; overflow:hidden; width: 100%; height:80px;" allowTransparency="true"></iframe>
+	</div>
+	<br/>
+<!--	<table style="width: 100%;">-->
+<!--		<tr><td><p class="toptitulo" align="center"><h:outputText value="#{messages['message.facebook']}"-->
+<!--			title="#{messages['message.facebook']}" /></p><hr style="border: 0; border-top: 2px #A9A9A9 dotted;" /></td></tr>-->
+<!--		<tr>-->
+<!--			<td style="text-align: center; width: 100%;">-->
+<!--				<div style="text-align: center">-->
+<!--					<iframe id = "iframeCurtir" src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.wikicrimes.org&amp;layout=standard&amp;show_faces=true&amp;width=450&amp;action=like&amp;colorscheme=light&amp;height=80" scrolling="no" frameborder="0" style="margin-top: 5px;  border:none; overflow:hidden; width:100%; height:80px;" allowTransparency="true"></iframe>-->
+<!--				</div>-->
+<!--				<br/>			-->
+<!--			</td>-->
+<!--		</tr>-->
+<!--	</table>-->
+	
+						
+<!--	<rich:panel id="divCurtir" style="width:982px; height:90px; text-align: center;"-->
+<!--		header="#{messages['message.facebook']}">-->
+<!--		<iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.wikicrimes.org&amp;layout=standard&amp;show_faces=true&amp;width=450&amp;action=like&amp;colorscheme=light&amp;height=80" scrolling="no" frameborder="0" style="margin-top: 5px; border:none; overflow:hidden; width:450px; height:80px;" allowTransparency="true"></iframe>-->
+<!--	</rich:panel>		-->
+	<br/>
 	<h:outputLink value="#" onclick="displayMessage('./quemSomos.html', 600, 250,'#{messages['titulo.quemsomos']}');return false" >
 		<h:outputText value="#{messages['webapp.quemSomos']}"
 			title="#{messages['webapp.quemsomoshint']}" />
@@ -24,6 +51,13 @@
 		<h:outputText value="#{messages['webapp.faleConosco']}" 
 			title="#{messages['webapp.faleconoscohint']}" />
 	</h:outputLink>
+	|
+	<h:outputText value=" "  
+			/>
+	<h:outputLink value="#"  onclick="return showAjuda('http://74.55.152.242:8080/cs/livehelp.php?department=1', 580, 500);" > 
+		<h:outputText value="#{messages['webapp.ajudaOnLine']}" 
+			title="#{messages['webapp.ajudaOnLineHint']}" />
+	</h:outputLink>						  
 	|
 	<h:outputText value=" "  
 			/>
@@ -45,4 +79,5 @@
 		<h:outputText value="#{messages['webapp.sobre']}"  
 			title="#{messages['webapp.sobrehint']}" />
 	</h:outputLink>
+</body>
 </html>

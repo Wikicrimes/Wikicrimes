@@ -54,7 +54,7 @@
 			<a onclick="setPodeRegistrar(true,6,2);" style="font-size:10px;">#{messages['menu.relato.drogas']}</a>
 		</div>
 		-->		
-<!-- Caso o usuário esteja logado -->
+<!-- Caso o usuï¿½rio esteja logado -->
 		<a4j:form id="pesquisaGenerica">
 			<a4j:commandButton value=""
 					id="btnBuscaGenerica" reRender="painelMostraDadosPesqGen" action="#{filtroForm.pesquisarGenericamente}" style="display: none"/>
@@ -63,12 +63,12 @@
 				<t:panelGrid columns="2" cellpadding="0" cellspacing="0">
 					<c:if test="#{!empty usuario}">	
 						<t:panelGrid width="130px">	
-							<h:outputLink value="#" onclick="mostraDivTelaEscolhaRegistroTipoCrime();return false;">
+							<h:outputLink value="#" onclick="marcarCrimeMapaLocalizacao(true);/*mostraDivTelaEscolhaRegistroTipoCrime();*/return false;">
 								<h:outputText style="font-size:13px" value="#{messages['botoes.registro.crime']}" />
 							</h:outputLink>
 						</t:panelGrid>
 						<t:panelGrid>								 
-							<h:outputLink value="#" onclick="mostraDivTelaEscolhaRegistroTipoDenuncia();return false;">
+							<h:outputLink value="#" onclick="marcarCrimeMapaLocalizacao(false);/*mostraDivTelaEscolhaRegistroTipoDenuncia();*/return false;">
 								<h:outputText style="font-size:13px" value="#{messages['botoes.registro.denuncia']}" />
 							</h:outputLink>
 						</t:panelGrid>
@@ -107,7 +107,7 @@
 			<script>				
 			/* <![CDATA[ */						
 				function submeteFormularioPesquisaGenerica(){
-					//************* MAPA DE KERNEL início************************
+					//************* MAPA DE KERNEL inï¿½cio************************
 					//ajeita o problema de ficar tela vermelha no Chrome
 					apagaMapaKernel();
 					//*************** MAPA DE KERNEL fim*************************
@@ -141,20 +141,22 @@
 				function fechaDivPesquisaGenerica(){
 					document.getElementById("divPesquisaGenerica").style.visibility = 'hidden';
 				}
-				
+				var regCrime;
 				function mostraDivTelaEscolhaRegistroTipoCrime(){
 					mostrarCarregandoPequeno();
-					document.getElementById("formReRenderRegistroCrimes:btRegistroCrimeSubmit").click();	
+					//document.getElementById("formReRenderRegistroCrimes:btRegistroCrimeSubmit").click();
+					marcarCrimeMapaLocalizacao(true);
 					setPodeRegistrar(false, 0);
 					fechaDivTelaEscolhaRegistroTipoDenuncia();
 				}
 				function fechaDivTelaEscolhaRegistroTipoCrime(){
 					document.getElementById("divTelaEscolhaRegistroTipoCrime").style.visibility = 'hidden';
 				}
-
+				
 				function mostraDivTelaEscolhaRegistroTipoDenuncia(){
 					mostrarCarregandoPequeno();
-					document.getElementById("formReRenderRegistroDenuncia:btRegistroDenunciaSubmit").click();
+					marcarCrimeMapaLocalizacao(false);
+					//document.getElementById("formReRenderRegistroDenuncia:btRegistroDenunciaSubmit").click();
 					setPodeRegistrar(false, 0);
 					fechaDivTelaEscolhaRegistroTipoCrime();
 					

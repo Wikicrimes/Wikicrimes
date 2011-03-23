@@ -171,13 +171,14 @@
 				var icone = new GIcon();
 				var marker;
 				icone.shadow = "";
-				 	
 				//alert("crimeDestacado="+idCrimeDestacado+"          idCrime="+idCrime);
 				idCrimeDestacado = idCrimeDestacado.replace("\r","");	
 					
 				icone.iconSize = new GSize(14, 24);	
 				icone.iconAnchor = new GPoint(2, 24);
 				icone.infoWindowAnchor = new GPoint(9, 2);
+				icone.iconAnchor = new GPoint(18, 66);
+				icone.iconSize = new GSize(42, 68);		
 				if(idCrimeDestacado == idCrime){
 					icone.iconAnchor = new GPoint(18, 66);
 					icone.iconSize = new GSize(42, 68);			
@@ -214,6 +215,7 @@
 						icone.image = "./images/baloes/laranja.png";
 					}
 				}
+				
 				
 				marker = new CrimeMarker(point, {draggable:true, icon:icone, title:texto });
 				marker.idTipoCrime = tipoCrime;

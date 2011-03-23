@@ -29,6 +29,7 @@
 			</c:if>    
 			<c:if test="#{empty usuario}">
 				load(#{filtroForm.latMapa},#{filtroForm.lngMapa},#{filtroForm.zoomMapa});
+				
 				if("#{rpx_usuario_sem_email}" == "sim"){
 					mostrarModalSolicitandoEmail();
 		 		}		
@@ -471,7 +472,7 @@
 			
 			  // Call this function when the page has been loaded
 			function load(_lat, _long, _zoom) {
-				
+				  
 				document.getElementById("loading").style.visibility = "visible";
 				map = new GMap2(document.getElementById("map"));
 				map.setCenter(new GLatLng(_lat, _long), _zoom);
@@ -560,7 +561,7 @@
 					infoTT.style.visibility="hidden";		
 				});
 				GEvent.addListener(map, "click", function (overlay, latLng) {
-
+					
 					//*********************** ROTAS SEGURAS INICIO ****************************				
 					//contextmenu.style.visibility="hidden";
 					//*********************** ROTAS SEGURAS FIM ****************************
@@ -689,12 +690,11 @@
 			
 			}
 			function setPodeRegistrar(valor, idTipo, idSub) {	
-				fechaDivTelaEscolhaRegistroTipoCrime();
-				fechaDivTelaEscolhaRegistroTipoDenuncia();
-				if(!estaDesenhandoArea){	
+				if(!estaDesenhandoArea){
 					podeRegistrar = valor;
 					idTipoCrime = idTipo;
 					idSubTipoCrime = idSub;
+					
 					if (podeRegistrar) {
 						removerPoligono();
 					    selecionarComando(map, 'nenhum');
@@ -703,10 +703,11 @@
 						if (crime != null) {
 							crime.hide();
 						}
-						crime = null;
-						crime = createMarkerTemp(map.getCenter(), idTipoCrime);
-						map.addOverlay(crime);
+						
+						marcarMapaPrincipal(localizacao);
+						
 					} else {
+						
 						if (crime != null) {
 							crime.hide();
 						}
@@ -768,7 +769,10 @@
 				var latitude = this.getLatLng().lat();
 				var longitude = this.getLatLng().lng();
 				//width='500' height='180'
-				var myHtml = "<iframe src='./registrarCrime.html?tipoCrime=" + idTipoCrime + "&tipoVitima=" + idSubTipoCrime + "&latitude=" + latitude + "&longitude=" + longitude + "' width='515' height='205' frameborder='0'></iframe>";
+				idTipoCrime = 5;
+				idSubTipoCrime = 1;
+				//var myHtml = "<iframe src='./registrarCrime.html?tipoCrime=" + idTipoCrime + "&tipoVitima=" + idSubTipoCrime + "&latitude=" + latitude + "&longitude=" + longitude + "' width='515' height='205' frameborder='0'></iframe>";
+				var myHtml = "<iframe src='./registrarCrime.html?latitude=" + latitude + "&longitude=" + longitude + "' width='515' height='205' frameborder='0'></iframe>";
 				this.openInfoWindowHtml(myHtml, 600);
 			}, confirmaCrime:function (idConfirmacao) {
 				var latitude = this.getLatLng().lat();
@@ -885,10 +889,10 @@
 			function createMarkerTemp(point, tipoCrime) {
 				var icone = new GIcon();
 				var marker;
-				//icone.shadow = "./images/baloes/shadow50.png";
 				icone.iconSize = new GSize(23, 34);
 				icone.iconAnchor = new GPoint(2, 34);
-				icone.infoWindowAnchor = new GPoint(9, 2);				
+				icone.infoWindowAnchor = new GPoint(9, 2);
+				
 				if (tipoCrime) {
 					if (tipoCrime == 1) {
 						icone.image = "./images/baloes/marcadorTempVermelho.png";
@@ -909,6 +913,11 @@
 						icone.image = "./images/baloes/marcadorTempVerde.png";
 					}					
 				}
+				if(tipoCrime == 0){
+					icone.image = "./images/baloes/marcadorNeutro.png"
+				}
+				
+				marker = new CrimeMarker(point, {draggable:true, icon:icone});
 				marker = new CrimeMarker(point, {draggable:true, icon:icone});
 				marker.idTipoCrime = tipoCrime;
 				return marker;

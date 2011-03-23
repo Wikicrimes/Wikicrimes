@@ -61,7 +61,7 @@ CrimeMarker.prototype = Object.extend(new GMarker(new GLatLng(0, 0)), {
     mostrarDados: function(idCrime) {
         var myHtml = "<iframe src='/wikicrimes/mostrarDados.html?idCrime="+idCrime+"' width='400' height='150' frameborder='0'></iframe>";
         var myHtml2 = "<iframe src='/wikicrimes/mostrarInformacoes.html?idCrime="+idCrime+"' width='400' height='150' frameborder='0'></iframe>";
-        this.openInfoWindowTabsHtml([new GInfoWindowTab('Dados',myHtml),new GInfoWindowTab('Comentários',myHtml2)]);
+        this.openInfoWindowTabsHtml([new GInfoWindowTab('Dados',myHtml),new GInfoWindowTab('Comentï¿½rios',myHtml2)]);
     }
 
 });
@@ -69,7 +69,7 @@ CrimeMarker.prototype = Object.extend(new GMarker(new GLatLng(0, 0)), {
 /**
 *
 */
-function createMarker(point, tipoCrime)  {
+function createMarker(point, tipoCrime, zoom)  {
 	 var icone = new GIcon(G_DEFAULT_ICON);
 	 var marker;
 	 icone.shadow="";
@@ -87,7 +87,7 @@ function createMarker(point, tipoCrime)  {
                
        }
       
-	    marker = new CrimeMarker(point, {draggable: true, icon: icone});
+	    marker = new CrimeMarker(point, zoom,{draggable: true, icon: icone});
 	    marker.idTipoCrime=tipoCrime;
 	    
     return marker;

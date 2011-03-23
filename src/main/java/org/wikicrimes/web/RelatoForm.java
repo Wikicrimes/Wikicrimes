@@ -405,7 +405,6 @@ public class RelatoForm extends GenericForm {
 			e.printStackTrace();
 			addMessage("errors.geral", e.getMessage());
 		}
-
 		return returnPage;
 	}
 
@@ -431,7 +430,12 @@ public class RelatoForm extends GenericForm {
 
 	public void setTipoRelato(String tipoRelato) {
 		this.tipoRelato = tipoRelato;
+//		if(tipoRelato != null && (tipoRelato.endsWith("false") || this.tipoRelato.equals("6"))){
+//			this.tipoRelato = "6";
+//		}else{
 		if (this.tipoRelato != null) relato.setTipoRelato(tipoRelato);
+		//}
+		
 	}
 
 	public String getSubTipoRelato() {
@@ -439,8 +443,10 @@ public class RelatoForm extends GenericForm {
 	}
 
 	public void setSubTipoRelato(String subTipoRelato) {
-		this.subTipoRelato = subTipoRelato;
-		if (this.subTipoRelato != null) relato.setSubTipoRelato(subTipoRelato);		
+		if (subTipoRelato != null){ 
+				this.subTipoRelato = subTipoRelato;
+				relato.setSubTipoRelato(subTipoRelato);
+		}
 	}
 
 	public RelatoService getService() {
@@ -503,7 +509,7 @@ public class RelatoForm extends GenericForm {
 			for (Iterator<BaseObject> iterator = razoesBanco.iterator(); iterator.hasNext();) {
 				Razao r = (Razao) iterator.next();
 				//9 11 12 13 14 16 18 (A pedido do Vasco nao utilizar essas causas)
-				//Tire as opcoes, proximidade, impunidade, pistolagem, omissão de testemunhas e crime passional .
+				//Tire as opcoes, proximidade, impunidade, pistolagem, omissï¿½o de testemunhas e crime passional .
 				if (r.getIdRazao().intValue() != 18 && r.getIdRazao().intValue() != 16 && r.getIdRazao().intValue() != 9 && (r.getIdRazao().intValue() < 11 || r.getIdRazao().intValue() > 14)){
 					razoes.add(new SelectItem(r.getIdRazao().toString(),bundle.getString(r.getNome())));					
 				}				

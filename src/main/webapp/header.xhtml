@@ -30,11 +30,23 @@
 				<td><h:outputLink value="#"
 					onclick="displayMessage('./registrarUsuario.html', 600, 350,'#{messages['usuario.registrar']}');return false;">
 					<h:outputText value="#{messages['usuario.registre']}" />
-				</h:outputLink></td>
+				</h:outputLink> |</td>
+				
+				<td >
+					<h:outputLink value="#" onclick="displayMessage('#{messages['webapp.localAjuda']}', 650, 400,'#{messages['usuario.ajuda']}');">
+					<h:outputText value="#{messages['usuario.ajuda']}"
+						title="#{messages['usuario.ajudaWikicrimes']}"/>
+					</h:outputLink>									
+				</td>
+				<td>
+					<a href="#{request.contextPath}/rss" styleClass="estiloImagem">
+					<t:graphicImage url="/images/feed-icon-14x14.png" style="border: 0;"/>								
+					</a>
+				</td>
 
 			</tr>
 			<tr>
-				<td colspan="3" style="padding-top: 0; margin-top: 0;">
+				<td colspan="5" style="padding-top: 0; margin-top: 0;">
 				
 				<div align="right"><br />
 				<br />
@@ -132,7 +144,7 @@
 
 	<script>
 			/* <![CDATA[ */
-			
+				
 				function loginCasoPrecise(tipo, msg){
 					var precisaLogin = #{usuario == null}; 
 					if(precisaLogin)

@@ -1,6 +1,7 @@
 package org.wikicrimes.web;
 
 import java.text.MessageFormat;
+import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -164,8 +165,12 @@ public class GenericForm implements Form {
 		ApplicationFactory factory = (ApplicationFactory) FactoryFinder
 				.getFactory(FactoryFinder.APPLICATION_FACTORY);
 		String bundleName = factory.getApplication().getMessageBundle();
-		ResourceBundle messages = ResourceBundle.getBundle(bundleName,FacesContext.getCurrentInstance().getViewRoot().getLocale());
-
+		ResourceBundle messages = null;
+		try{
+			messages = ResourceBundle.getBundle(bundleName,FacesContext.getCurrentInstance().getViewRoot().getLocale());
+		}catch (Exception e) {
+			messages = ResourceBundle.getBundle(bundleName,new Locale("en"));
+		}	
 		// it's even more work to format a message with args
 		MessageFormat form = new MessageFormat(messages.getString(key));
 

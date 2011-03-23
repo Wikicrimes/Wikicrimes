@@ -8,41 +8,39 @@
 	xmlns:t="http://myfaces.apache.org/tomahawk">
 
 <h:form>
-<table border="0" width="160px" cellspacing="0" cellpadding="0" style="position: absolute; right: 0; margin-top: 30px;">
+<table border="0" cellspacing="0" cellpadding="0" style="position: absolute; right: 0; margin-top: 30px;">
 	<tr >
 		<td>
-			<t:commandLink immediate="true" action="#{localeForm.MudaLocale}">
-				<f:param value="pt" name="languageCode" />
-				<h:graphicImage value="/images/flags/Brazil.gif"></h:graphicImage>
-			</t:commandLink>
-
-			<t:commandLink immediate="true" action="#{localeForm.MudaLocale}">
-				<f:param value="en" name="languageCode" />
-				<h:graphicImage value="/images/flags/USA.png"></h:graphicImage>
-			</t:commandLink>
-			<t:commandLink immediate="true" action="#{localeForm.MudaLocale}">
-				<f:param value="fr" name="languageCode" />
-				<h:graphicImage value="/images/flags/French.PNG"></h:graphicImage>
-			</t:commandLink>
-			<t:commandLink immediate="true" action="#{localeForm.MudaLocale}">
-				<f:param value="es" name="languageCode" />
-				<h:graphicImage value="/images/flags/Spain.gif"></h:graphicImage>
-			</t:commandLink>
-			<t:commandLink immediate="true" action="#{localeForm.MudaLocale}">
-				<f:param value="it" name="languageCode" />
-				<h:graphicImage value="/images/flags/Italy.png"></h:graphicImage>
-			</t:commandLink>
-		</td>
-		<td >
-			<h:outputLink value="#" onclick="displayMessage('#{messages['webapp.localAjuda']}', 650, 400,'#{messages['usuario.ajuda']}');">
-				<h:outputText value="#{messages['usuario.ajuda']}"
-					title="#{messages['usuario.ajudaWikicrimes']}"/>
-			</h:outputLink>									
-		</td>
-		<td>
-			<a href="#{request.contextPath}/rss" styleClass="estiloImagem">
-				<t:graphicImage url="/images/feed-icon-14x14.png" style="border: 0;"/>								
-			</a>
+			<div style="margin-right: 2px; float: left">
+				<t:commandLink immediate="true" action="#{localeForm.MudaLocale}">
+					<f:param value="pt" name="languageCode" />
+					<h:graphicImage value="/images/flags/Brazil.gif"></h:graphicImage>
+				</t:commandLink>
+			</div>
+			<div style="margin-right: 2px;margin-left:2px; float: left">
+				<t:commandLink immediate="true" action="#{localeForm.MudaLocale}">
+					<f:param value="en" name="languageCode" />
+					<h:graphicImage value="/images/flags/USA.png"></h:graphicImage>
+				</t:commandLink>
+			</div>
+			<div style="margin-right: 2px;margin-left:2px; float: left">
+				<t:commandLink immediate="true" action="#{localeForm.MudaLocale}">
+					<f:param value="fr" name="languageCode" />
+					<h:graphicImage value="/images/flags/French.PNG"></h:graphicImage>
+				</t:commandLink>
+			</div>
+			<div style="margin-right: 2px;margin-left:2px; float: left">
+				<t:commandLink immediate="true" action="#{localeForm.MudaLocale}">
+					<f:param value="es" name="languageCode" />
+					<h:graphicImage value="/images/flags/Spain.gif"></h:graphicImage>
+				</t:commandLink>
+			</div>
+			<div style="margin-left:2px; float: left">
+				<t:commandLink immediate="true" action="#{localeForm.MudaLocale}">
+					<f:param value="it" name="languageCode" />
+					<h:graphicImage value="/images/flags/Italy.png"></h:graphicImage>
+				</t:commandLink>
+			</div>
 		</td>
 	</tr>
 </table>

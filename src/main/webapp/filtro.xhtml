@@ -341,7 +341,8 @@
 		<h:inputHidden id="latMapa" value="#{filtroForm.latMapa}" />
 		<h:inputHidden id="lngMapa" value="#{filtroForm.lngMapa}" />
 
-		<div id="divTelaKML"><!-- KML--> <rich:panel style="width:300px"
+		<div id="divTelaKML"><!-- KML--> 
+		<rich:panel style="width:300px"
 			id="panelKML" header="#{messages['titulo.kml']}">
 			<t:panelGrid border="0" columns="1" cellpadding="1" cellspacing="1"
 				style="margin:0px;text-align:left;align:left">
@@ -573,9 +574,13 @@
 		<table border="0" style="margin-left:0; position: absolute; left: 0;">
 			<tr>
 				<td>
-						<table>
-						<tr><td colspan="2"><p class="toptitulo">Videos Wikicrimes</p><hr style="border: 0; border-top: 2px #A9A9A9 dotted;" /></td></tr>
-						<tr><td valign="top">
+					<table>
+						<tr>
+							<td colspan="2" style=""><p class="toptitulo">Videos Wikicrimes</p><hr style="border: 0; border-top: 2px #A9A9A9 dotted;" />
+							</td>
+						</tr>
+						<tr>
+						<td valign="top">
 						<div id="videodiv" style="margin-left:20px; padding-top: 7px;">
 						<div id="verVideo" style="width: 160; height: 40;">
 						<img width="200" height="160" style="cursor: pointer" src="./images/video.png" />
@@ -612,7 +617,8 @@
 							</div>
 						</div>
 						</div>
-						</td><td valign="top">
+						</td>
+						<td valign="top">
 						<div id="videodiv2" style="margin-right:20px;padding-top: 7px;">
 						<div id="verVideo2" style="width: 160; height: 40;">
 						<img width="200" height="160" style="cursor: pointer" src="./images/vasconoted3.png" />
@@ -652,7 +658,7 @@
 				</td>
 				<td width="35px">&nsbp;</td>
 				<td width="500px">
-				<div style="margin-top:-45px">
+				<div>
                                     <table>
                                         <tr>
                                             <td><p class="toptitulo">#{messages['modal.wikicrimes.mobile']}</p><hr style="border: 0; border-top: 2px #A9A9A9 dotted;" /></td>
@@ -673,7 +679,7 @@
 								</a>
 							</div>
 							
-							<div style="padding-top: 50px;"><p style="text-align:justify"><h:outputText style="font-size:12px" value="#{messages['modal.wikicrimes.mobile.msg.explicacao']}" /></p></div>
+							<div style="padding-top: 92px;"><p style="text-align:justify"><h:outputText style="font-size:12px" value="#{messages['modal.wikicrimes.mobile.msg.explicacao']}" /></p></div>
 						</div>
                                             </td>
                                         </tr>

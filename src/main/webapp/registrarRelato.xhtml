@@ -27,6 +27,7 @@
 	margin-left: -18px;
 }
 </style>
+
 <script type="text/javascript" src="./scripts/calendar.js"></script>
 <script type="text/javascript" src="./scripts/calendar-setup.js"></script>
 <script type="text/javascript" src="./scripts/lang/calendar-en.js"></script>
@@ -37,22 +38,49 @@
 </c:if>
 
 </head>
+<script>
+	function organizarPainelFormulario(combo){
+		var tipoRelato = 6;
+		var subTipoRelato = combo.value;
+		document.getElementById('relatoForm:tipoRelato').value = tipoRelato;
+		document.getElementById('relatoForm:subTipoRelato').value = subTipoRelato;
+		document.getElementById('subTipoForm:btnTipoRelato').click();
+		
+	}
+</script>
 <body>
 
 <f:view>
 	<!-- > locale="#{facesContext.externalContext.request.locale}" -->
 	<f:loadBundle var="messages" basename="messages" />
-	<h:form id="relatoForm">
-
-		<h:inputHidden required="true" value="#{relatoForm.latitude}"
-			id="latitude" />
-		<h:inputHidden required="true" value="#{relatoForm.longitude}"
-			id="longitude" />
-		<h:inputHidden value="#{relatoForm.tipoRelato}" id="tipoRelato" />
-		<h:inputHidden value="#{relatoForm.subTipoRelato}" id="subTipoRelato" />
+		
 
 		<h:panelGrid border="0" columns="1"
 			style="font-size: 11px; font-family: sans-serif;text-align:left;">
+			<h:form id="subTipoForm">
+			<div id="topoBalao"><b>#{messages['crime.topo.relato']}</b></div>
+			
+			<h:outputText value="#{messages['relato.obrigatorio']}" />
+			<br/>
+			<br/>
+			<h:outputText value="#{messages['que.tipo.relato.deseja.registrar']}"/>
+			<br/>
+			<a4j:commandButton value="" 
+								id="btnTipoRelato" reRender="painelFormulario" style="display: none"/>
+			<h:selectOneMenu required="true" value="#{relatoForm.subTipoRelato}" onchange="organizarPainelFormulario(this);" style="font-size: 11px; font-family: sans-serif;" id="subTipoRelato" >
+					<f:selectItem itemValue="" itemLabel="#{messages['usuario.Selecione']}"></f:selectItem>
+					<f:selectItem itemValue="4" itemLabel="#{messages['menu.relato.alcohol.abuse']}"></f:selectItem>
+					<f:selectItem itemValue="6" itemLabel="#{messages['menu.relato.child.abuse']}"></f:selectItem>
+					<f:selectItem itemValue="1" itemLabel="#{messages['menu.relato.areasperigosas']}"></f:selectItem>
+					<f:selectItem itemValue="2" itemLabel="#{messages['menu.relato.drogas']}"></f:selectItem>
+					<f:selectItem itemValue="3" itemLabel="#{messages['menu.relato.shebeen.location']}"></f:selectItem>
+					<f:selectItem itemValue="5" itemLabel="#{messages['menu.relato.woman.abuse']}"></f:selectItem>
+			</h:selectOneMenu>
+			<h:message styleClass="errorMessage" for="subTipoRelato" />	
+		    </h:form>
+		 	
+		   <!--		
+
 			<c:if test="#{relatoForm.relato.subTipoRelato == 1}">
 				<div id="topoBalao"><b>#{messages['crime.topo.relatoviolencia']}</b>
 				</div>
@@ -83,165 +111,282 @@
 				</div>
 
 			</c:if>
-			<c:if test="#{relatoForm.relato.subTipoRelato == 6}">
-				    <t:panelGrid columns="1" cellpadding="0" cellspacing="0">
-					
-                        <h:outputText value="#{messages['tutor.informar.tipo.violencia']}"/>
-                        <h:message styleClass="errorMessage"
-						for="tipoViolenciaEscolaRelato" />
-                        <h:selectOneMenu required="true"
-						style="font-size: 11px; font-family: sans-serif;"
-						value="#{relatoForm.relato.tipoViolenciaEscolaRelato.idTipoViolenciaEscolaRelato}"
-						id="tipoViolenciaEscolaRelato" >
-						<f:selectItem itemLabel="#{messages['usuario.Selecione']}"
-							itemValue="-1" />
-						<f:selectItem
-							itemLabel="#{messages['tipo.violencia.relato.bullying']}"
-							itemValue="1" />
-						<f:selectItem
-							itemLabel="#{messages['tipo.violencia.relato.assedio.sexual']}"
-							itemValue="2" />
-						<f:selectItem
-							itemLabel="#{messages['tipo.violencia.relato.violencia.sexual']}"
-							itemValue="3" />
-						<f:selectItem
-							itemLabel="#{messages['tipo.violencia.relato.roubo']}"
-							itemValue="4" />
-						<t:saveState value="#{relatoForm.relato}" />
-						<a4j:support event="onchange" action="#{relatoForm.mostrarTipoAgressor}" ajaxSingle="true"
-							reRender="opicoesTipoViolencia"  />
-					</h:selectOneMenu>
-				</t:panelGrid>
+			-->
+			<h:form id="relatoForm">
+			<h:panelGroup id="painelFormulario">
+			
+				<h:message styleClass="errorMessage" for="subTipoRelato" />
+				<h:inputHidden required="true" value="#{relatoForm.latitude}"
+				id="latitude" />
+				<h:inputHidden required="true" value="#{relatoForm.longitude}"
+				id="longitude" />
 				
-				<t:panelGrid id="opicoesTipoViolencia" columns="2">
-					<c:if test="#{relatoForm.relato.tipoViolenciaEscolaRelato.idTipoViolenciaEscolaRelato == 1}">	
-						<t:panelGroup>
-							<t:panelGrid columns="1" cellpadding="0" cellspacing="0">
-								<h:outputText value="#{messages['tutor.informar.tipo.agressor']}"/>
-								<h:message styleClass="errorMessage"
-									for="tipoAgressorRelato" />
-								<t:selectOneMenu required="true"
-									style="font-size: 11px; font-family: sans-serif;"
-									value="#{relatoForm.relato.tipoAgressorRelato.idTipoAgressorRelato}"
-									id="tipoAgressorRelato"  >
-									<f:selectItem itemLabel="#{messages['usuario.Selecione']}"
-										itemValue="-1" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.agressor.relato.autor.unico.connhecido']}"
-										itemValue="1" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.agressor.relato.autor.unico.desconnhecido']}"
-										itemValue="2" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.agressor.relato.gangue.conhecida']}"
-										itemValue="3" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.agressor.relato.gangue.desconhecida']}"
-										itemValue="4" />							
-								</t:selectOneMenu>
-							</t:panelGrid>	
-						</t:panelGroup>
+				<h:inputHidden required="true" value="#{relatoForm.tipoRelato}" 
+				id="tipoRelato" />
+				<h:inputHidden required="true" value="#{relatoForm.subTipoRelato}" 
+				id="subTipoRelato" />
+				<t:saveState value="#{relatoForm.longitude}"/>
+				<t:saveState value="#{relatoForm.latitude}"/>
+				<t:saveState value="#{relatoForm.tipoRelato}"/>
+				<t:saveState value="#{relatoForm.subTipoRelato}"/>
+				
+				
+				<c:if test="#{relatoForm.relato.subTipoRelato == 6}">
+					    <t:panelGrid columns="1" cellpadding="0" cellspacing="0">
 						
-						<t:panelGroup>
-							<t:panelGrid columns="1" cellpadding="0" cellspacing="0">
-								<h:outputText value="#{messages['tutor.informar.tipo.agressão']}"/>
-								<h:message styleClass="errorMessage"
-									for="tipoAgressorAmeaca" />
-								<t:selectOneMenu required="true"
-									style="font-size: 11px; font-family: sans-serif;"
-									value="#{relatoForm.relato.tipoConsequenciaRelato.idTipoConsequenciaRelato}"
-									id="tipoAgressorAmeaca" >
-									<f:selectItem itemLabel="#{messages['usuario.Selecione']}"
-										itemValue="-1" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.consequencia.relato.sem.lesao']}"
-										itemValue="1" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.consequencia.relato.ameaca']}"
-										itemValue="2" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.consequencia.relato.lesao']}"
-										itemValue="3" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.consequencia.relato.ameaca.lesao']}"
-										itemValue="4" />
-									
-								</t:selectOneMenu>
-							</t:panelGrid>	
-						</t:panelGroup>
-						
-						<t:panelGroup>
-							<t:panelGrid columns="1" cellpadding="0" cellspacing="0">
-								<h:outputText value="#{messages['tutor.informar.tipo.relato']}"/>
-								<h:message styleClass="errorMessage"
-									for="tipoAgressorAmeacaRelatoReport" />
-								<t:selectOneMenu required="true"
-									style="font-size: 11px; font-family: sans-serif;"
-									value="#{relatoForm.relato.tipoReportRelato.idTipoReportRelato}"
-									id="tipoAgressorAmeacaRelatoReport" >
-									<f:selectItem itemLabel="#{messages['usuario.Selecione']}"
-										itemValue="-1" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.report.relato.ninguem']}"
-										itemValue="9" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.report.relato.pais']}"
-										itemValue="2" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.report.relato.escola']}"
-										itemValue="1" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.report.relato.escola.e.pais']}"
-										itemValue="3" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.report.relato.escola.arquivo.caso.policia']}"
-										itemValue="12" />								
-								</t:selectOneMenu>
-							</t:panelGrid>	
-						</t:panelGroup>
-						
-						<t:panelGroup>
-							<t:panelGrid columns="1" cellpadding="0" cellspacing="0">
-								<h:outputText value="#{messages['tutor.informar.tipo.localidade']}"/>
-								<h:message styleClass="errorMessage"
-									for="tipoAgressorRelatoLocalizacao" />
-								<t:selectOneMenu required="true"
-									style="font-size: 11px; font-family: sans-serif;"
-									value="#{relatoForm.relato.tipoLocalizacaoRelato.idTipoLocalizacaoRelato}"
-									id="tipoAgressorRelatoLocalizacao" >
-									<f:selectItem itemLabel="#{messages['usuario.Selecione']}"
-										itemValue="-1" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.localizacao.relato.escola']}"
-										itemValue="1" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.localizacao.relato.arredores.escola']}"
-										itemValue="2" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.localizacao.relato.banheiros.escola']}"
-										itemValue="3" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.localizacao.relato.caminho.escola']}"
-										itemValue="4" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.localizacao.relato.voltando.escola']}"
-										itemValue="5" />
-									
-								</t:selectOneMenu>
-							</t:panelGrid>	
-						</t:panelGroup>
-					</c:if>	
+	                        <h:outputText value="#{messages['tutor.informar.tipo.violencia']}"/>
+	                        <h:message styleClass="errorMessage"
+							for="tipoViolenciaEscolaRelato" />
+	                        <h:selectOneMenu required="true"
+							style="font-size: 11px; font-family: sans-serif;"
+							value="#{relatoForm.relato.tipoViolenciaEscolaRelato.idTipoViolenciaEscolaRelato}"
+							id="tipoViolenciaEscolaRelato" >
+							<f:selectItem itemLabel="#{messages['usuario.Selecione']}"
+								itemValue="-1" />
+							<f:selectItem
+								itemLabel="#{messages['tipo.violencia.relato.bullying']}"
+								itemValue="1" />
+							<f:selectItem
+								itemLabel="#{messages['tipo.violencia.relato.assedio.sexual']}"
+								itemValue="2" />
+							<f:selectItem
+								itemLabel="#{messages['tipo.violencia.relato.violencia.sexual']}"
+								itemValue="3" />
+							<f:selectItem
+								itemLabel="#{messages['tipo.violencia.relato.roubo']}"
+								itemValue="4" />
+							<t:saveState value="#{relatoForm.relato}" />
+							<a4j:support event="onchange" action="#{relatoForm.mostrarTipoAgressor}" ajaxSingle="true"
+								reRender="opicoesTipoViolencia"  />
+						</h:selectOneMenu>
+					</t:panelGrid>
 					
-					<c:if test="#{relatoForm.relato.tipoViolenciaEscolaRelato.idTipoViolenciaEscolaRelato == 2}">
-						<t:panelGroup>
-							<t:panelGrid columns="1" cellpadding="0" cellspacing="0">					
-			                    <h:outputText value="#{messages['tutor.informar.tipo.agressor']}"/>
-			                    <h:message styleClass="errorMessage"
-										for="tipoAgressorRelato1" />
-			                	<t:selectOneMenu
+					<t:panelGrid id="opicoesTipoViolencia" columns="2">
+						<c:if test="#{relatoForm.relato.tipoViolenciaEscolaRelato.idTipoViolenciaEscolaRelato == 1}">	
+							<t:panelGroup>
+								<t:panelGrid columns="1" cellpadding="0" cellspacing="0">
+									<h:outputText value="#{messages['tutor.informar.tipo.agressor']}"/>
+									<h:message styleClass="errorMessage"
+										for="tipoAgressorRelato" />
+									<t:selectOneMenu required="true"
 										style="font-size: 11px; font-family: sans-serif;"
 										value="#{relatoForm.relato.tipoAgressorRelato.idTipoAgressorRelato}"
-										id="tipoAgressorRelato1" >
+										id="tipoAgressorRelato"  >
+										<f:selectItem itemLabel="#{messages['usuario.Selecione']}"
+											itemValue="-1" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.agressor.relato.autor.unico.connhecido']}"
+											itemValue="1" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.agressor.relato.autor.unico.desconnhecido']}"
+											itemValue="2" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.agressor.relato.gangue.conhecida']}"
+											itemValue="3" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.agressor.relato.gangue.desconhecida']}"
+											itemValue="4" />							
+									</t:selectOneMenu>
+								</t:panelGrid>	
+							</t:panelGroup>
+							
+							<t:panelGroup>
+								<t:panelGrid columns="1" cellpadding="0" cellspacing="0">
+									<h:outputText value="#{messages['tutor.informar.tipo.agressao']}"/>
+									<h:message styleClass="errorMessage"
+										for="tipoAgressorAmeaca" />
+									<t:selectOneMenu required="true"
+										style="font-size: 11px; font-family: sans-serif;"
+										value="#{relatoForm.relato.tipoConsequenciaRelato.idTipoConsequenciaRelato}"
+										id="tipoAgressorAmeaca" >
+										<f:selectItem itemLabel="#{messages['usuario.Selecione']}"
+											itemValue="-1" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.consequencia.relato.sem.lesao']}"
+											itemValue="1" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.consequencia.relato.ameaca']}"
+											itemValue="2" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.consequencia.relato.lesao']}"
+											itemValue="3" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.consequencia.relato.ameaca.lesao']}"
+											itemValue="4" />
+										
+									</t:selectOneMenu>
+								</t:panelGrid>	
+							</t:panelGroup>
+							
+							<t:panelGroup>
+								<t:panelGrid columns="1" cellpadding="0" cellspacing="0">
+									<h:outputText value="#{messages['tutor.informar.tipo.relato']}"/>
+									<h:message styleClass="errorMessage"
+										for="tipoAgressorAmeacaRelatoReport" />
+									<t:selectOneMenu required="true"
+										style="font-size: 11px; font-family: sans-serif;"
+										value="#{relatoForm.relato.tipoReportRelato.idTipoReportRelato}"
+										id="tipoAgressorAmeacaRelatoReport" >
+										<f:selectItem itemLabel="#{messages['usuario.Selecione']}"
+											itemValue="-1" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.report.relato.ninguem']}"
+											itemValue="9" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.report.relato.pais']}"
+											itemValue="2" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.report.relato.escola']}"
+											itemValue="1" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.report.relato.escola.e.pais']}"
+											itemValue="3" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.report.relato.escola.arquivo.caso.policia']}"
+											itemValue="12" />								
+									</t:selectOneMenu>
+								</t:panelGrid>	
+							</t:panelGroup>
+							
+							<t:panelGroup>
+								<t:panelGrid columns="1" cellpadding="0" cellspacing="0">
+									<h:outputText value="#{messages['tutor.informar.tipo.localidade']}"/>
+									<h:message styleClass="errorMessage"
+										for="tipoAgressorRelatoLocalizacao" />
+									<t:selectOneMenu required="true"
+										style="font-size: 11px; font-family: sans-serif;"
+										value="#{relatoForm.relato.tipoLocalizacaoRelato.idTipoLocalizacaoRelato}"
+										id="tipoAgressorRelatoLocalizacao" >
+										<f:selectItem itemLabel="#{messages['usuario.Selecione']}"
+											itemValue="-1" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.localizacao.relato.escola']}"
+											itemValue="1" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.localizacao.relato.arredores.escola']}"
+											itemValue="2" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.localizacao.relato.banheiros.escola']}"
+											itemValue="3" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.localizacao.relato.caminho.escola']}"
+											itemValue="4" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.localizacao.relato.voltando.escola']}"
+											itemValue="5" />
+										
+									</t:selectOneMenu>
+								</t:panelGrid>	
+							</t:panelGroup>
+						</c:if>	
+						
+						<c:if test="#{relatoForm.relato.tipoViolenciaEscolaRelato.idTipoViolenciaEscolaRelato == 2}">
+							<t:panelGroup>
+								<t:panelGrid columns="1" cellpadding="0" cellspacing="0">					
+				                    <h:outputText value="#{messages['tutor.informar.tipo.agressor']}"/>
+				                    <h:message styleClass="errorMessage"
+											for="tipoAgressorRelato1" />
+				                	<t:selectOneMenu
+											style="font-size: 11px; font-family: sans-serif;"
+											value="#{relatoForm.relato.tipoAgressorRelato.idTipoAgressorRelato}"
+											id="tipoAgressorRelato1" >
+											<f:selectItem itemLabel="#{messages['usuario.Selecione']}"
+												itemValue="-1" />
+											<f:selectItem
+												itemLabel="#{messages['tipo.agressor.relato.professor']}"
+												itemValue="5" />
+											<f:selectItem
+												itemLabel="#{messages['tipo.agressor.relato.estudante']}"
+												itemValue="6" />
+											<f:selectItem
+												itemLabel="#{messages['tipo.agressor.relato.autor.unico.connhecido']}"
+												itemValue="1" />
+											<f:selectItem
+												itemLabel="#{messages['tipo.agressor.relato.autor.unico.desconnhecido']}"
+												itemValue="2" />
+											<f:selectItem
+												itemLabel="#{messages['tipo.agressor.relato.gangue.desconhecida']}"
+												itemValue="4" />
+											<t:saveState value="#{relatoForm.relato}" />
+											<a4j:support event="onchange" ajaxSingle="true"
+												reRender="comboTipoAmeaca1" />
+									</t:selectOneMenu>
+								</t:panelGrid>							
+							</t:panelGroup>
+							
+							<t:panelGroup>
+								<t:panelGrid columns="1" cellpadding="0" cellspacing="0">				
+				                    <h:outputText value="#{messages['tutor.informar.tipo.relato']}"/>
+				                    <h:message styleClass="errorMessage"
+											for="tipoAgressorAmeacaRelatoReport1" />
+				                	<t:selectOneMenu
+										style="font-size: 11px; font-family: sans-serif;"
+										value="#{relatoForm.relato.tipoReportRelato.idTipoReportRelato}"
+										id="tipoAgressorAmeacaRelatoReport1" >
+										<f:selectItem itemLabel="#{messages['usuario.Selecione']}"
+											itemValue="-1" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.report.relato.ninguem']}"
+											itemValue="9" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.report.relato.pais']}"
+											itemValue="2" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.report.relato.escola']}"
+											itemValue="1" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.report.relato.escola.e.pais']}"
+											itemValue="3" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.report.relato.escola.arquivo.caso.policia']}"
+											itemValue="12" />						
+									 </t:selectOneMenu>
+								</t:panelGrid>	 
+								
+							</t:panelGroup>
+							
+							<t:panelGroup>
+								<t:panelGrid columns="1" cellpadding="0" cellspacing="0">					
+				                    <h:outputText value="#{messages['tutor.informar.tipo.localidade']}"/>
+				                    <h:message styleClass="errorMessage"
+											for="tipoAgressorRelatoLocalizacao1" />
+				                	<t:selectOneMenu
+										style="font-size: 11px; font-family: sans-serif;"
+										value="#{relatoForm.relato.tipoLocalizacaoRelato.idTipoLocalizacaoRelato}"
+										id="tipoAgressorRelatoLocalizacao1" >
+										<f:selectItem itemLabel="#{messages['usuario.Selecione']}"
+											itemValue="-1" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.localizacao.relato.escola']}"
+											itemValue="1" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.localizacao.relato.arredores.escola']}"
+											itemValue="2" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.localizacao.relato.banheiros.escola']}"
+											itemValue="3" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.localizacao.relato.caminho.escola']}"
+											itemValue="4" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.localizacao.relato.voltando.escola']}"
+											itemValue="5" />
+										
+									</t:selectOneMenu>
+								</t:panelGrid>	
+								
+							</t:panelGroup>
+						</c:if>
+						
+						<c:if test="#{relatoForm.relato.tipoViolenciaEscolaRelato.idTipoViolenciaEscolaRelato == 3}">
+							<t:panelGroup>
+								<t:panelGrid columns="1" cellpadding="0" cellspacing="0">					
+				                    <h:outputText value="#{messages['tutor.informar.tipo.agressor']}"/>
+				                    <h:message styleClass="errorMessage"
+											for="tipoAgressorRelato2" />
+				                	<t:selectOneMenu style="font-size: 11px; font-family: sans-serif;"
+										value="#{relatoForm.relato.tipoAgressorRelato.idTipoAgressorRelato}"
+										id="tipoAgressorRelato2">
 										<f:selectItem itemLabel="#{messages['usuario.Selecione']}"
 											itemValue="-1" />
 										<f:selectItem
@@ -254,377 +399,280 @@
 											itemLabel="#{messages['tipo.agressor.relato.autor.unico.connhecido']}"
 											itemValue="1" />
 										<f:selectItem
-											itemLabel="#{messages['tipo.agressor.relato.autor.unico.desconnhecido']}"
-											itemValue="2" />
+											itemLabel="#{messages['tipo.agressor.relato.desconhecido']}"
+											itemValue="7" />
 										<f:selectItem
 											itemLabel="#{messages['tipo.agressor.relato.gangue.desconhecida']}"
+											itemValue="4" />								
+									</t:selectOneMenu>
+								</t:panelGrid>	
+								
+							</t:panelGroup>
+							
+							<t:panelGroup>					
+			                    <t:panelGrid columns="1" cellpadding="0" cellspacing="0">
+				                    <h:outputText value="#{messages['tutor.informar.tipo.agressï¿½o']}"/>
+				                    <h:message styleClass="errorMessage"
+											for="tipoAgressorAmeaca2" />
+				                	<t:selectOneMenu
+										style="font-size: 11px; font-family: sans-serif;"
+										value="#{relatoForm.relato.tipoConsequenciaRelato.idTipoConsequenciaRelato}"
+										id="tipoAgressorAmeaca2" >
+										<f:selectItem itemLabel="#{messages['usuario.Selecione']}"
+											itemValue="-1" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.consequencia.relato.sem.lesao']}"
+											itemValue="1" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.consequencia.relato.ameaca']}"
+											itemValue="2" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.consequencia.relato.lesao']}"
+											itemValue="3" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.consequencia.relato.ameaca.lesao']}"
+											itemValue="4" />								
+									</t:selectOneMenu>
+								</t:panelGrid>	
+								
+							</t:panelGroup>
+							
+							<t:panelGroup>
+								<t:panelGrid columns="1" cellpadding="0" cellspacing="0">					
+				                    <h:outputText value=" #{messages['tutor.informar.tipo.relato']}"/>
+				                    <h:message styleClass="errorMessage"
+											for="tipoAgressorAmeacaRelatoReport2" />
+				                	<t:selectOneMenu
+										style="font-size: 11px; font-family: sans-serif;"
+										value="#{relatoForm.relato.tipoReportRelato.idTipoReportRelato}"
+										id="tipoAgressorAmeacaRelatoReport2" >
+										<f:selectItem itemLabel="#{messages['usuario.Selecione']}"
+											itemValue="-1" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.report.relato.ninguem']}"
+											itemValue="9" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.report.relato.pais']}"
+											itemValue="2" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.report.relato.escola']}"
+											itemValue="1" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.report.relato.policia']}"
+											itemValue="5" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.report.relato.medico']}"
 											itemValue="4" />
+									    <f:selectItem
+											itemLabel="#{messages['tipo.report.relato.medico.e.policia']}"
+											itemValue="6" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.report.relato.pais.e.medico']}"
+											itemValue="7" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.report.relato.escola.medico']}"
+											itemValue="10" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.report.relato.pais.medico.policia']}"
+											itemValue="8" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.report.relato.escola.medico.policia']}"
+											itemValue="11" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.report.relato.escola.arquivo.caso.policia']}"
+											itemValue="12" />									
+									</t:selectOneMenu>
+								</t:panelGrid>	
+								
+							</t:panelGroup>
+							
+							<t:panelGroup>
+								<t:panelGrid columns="1" cellpadding="0" cellspacing="0">					
+				                    <h:outputText value="#{messages['tutor.informar.tipo.localidade']}"/>
+				                    <h:message styleClass="errorMessage"
+											for="tipoAgressorRelatoLocalizacao2" />
+				                	<t:selectOneMenu
+										style="font-size: 11px; font-family: sans-serif;"
+										value="#{relatoForm.relato.tipoLocalizacaoRelato.idTipoLocalizacaoRelato}"
+										id="tipoAgressorRelatoLocalizacao2">
+										<f:selectItem itemLabel="#{messages['usuario.Selecione']}"
+											itemValue="-1" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.localizacao.relato.escola']}"
+											itemValue="1" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.localizacao.relato.arredores.escola']}"
+											itemValue="2" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.localizacao.relato.banheiros.escola']}"
+											itemValue="3" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.localizacao.relato.caminho.escola']}"
+											itemValue="4" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.localizacao.relato.voltando.escola']}"
+											itemValue="5" />							
+									</t:selectOneMenu>
+								</t:panelGrid>	
+		
+							</t:panelGroup>
+						</c:if>
+						
+						<c:if test="#{relatoForm.relato.tipoViolenciaEscolaRelato.idTipoViolenciaEscolaRelato == 4}">
+							<t:panelGroup>
+								<t:panelGrid columns="1" cellpadding="0" cellspacing="0">				
+				                    <h:outputText value="#{messages['tutor.informar.tipo.roubo']}"/>
+				                    <h:message styleClass="errorMessage"
+											for="tipoAgressorBemRoubado" />
+				                	<t:selectOneMenu style="font-size: 11px; font-family: sans-serif;"
+										value="#{relatoForm.relato.tipoBemRoubadoRelato.idTipoBemRoubadoRelato}"
+										id="tipoAgressorBemRoubado" >
+										<f:selectItem itemLabel="#{messages['usuario.Selecione']}"
+											itemValue="-1" />
+										<f:selectItem itemLabel="#{messages['tipo.bem.roubado.celular']}"
+											itemValue="1" />
+										<f:selectItem itemLabel="#{messages['tipo.bem.roubado.mp3']}"
+											itemValue="2" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.bem.roubado.outro.aparelho']}"
+											itemValue="3" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.bem.roubado.dinheiro']}"
+											itemValue="4" />
+										<f:selectItem itemLabel="#{messages['tipo.bem.roubado.comida']}"
+											itemValue="5" />								
+									</t:selectOneMenu>
+								</t:panelGrid>	
+								
+							</t:panelGroup>
+							
+							<t:panelGroup>
+								<t:panelGrid columns="1" cellpadding="0" cellspacing="0">					
+				                    <h:outputText value="#{messages['tutor.informar.tipo.agressï¿½o']}"/>
+				                    <h:message styleClass="errorMessage"
+											for="tipoAgressorAmeaca3" />
+				                	<t:selectOneMenu
+										style="font-size: 11px; font-family: sans-serif;"
+										value="#{relatoForm.relato.tipoConsequenciaRelato.idTipoConsequenciaRelato}"
+										id="tipoAgressorAmeaca3" >
+										<f:selectItem itemLabel="#{messages['usuario.Selecione']}"
+											itemValue="-1" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.consequencia.relato.sem.lesao']}"
+											itemValue="1" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.consequencia.relato.ameaca']}"
+											itemValue="2" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.consequencia.relato.lesao']}"
+											itemValue="3" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.consequencia.relato.ameaca.lesao']}"
+											itemValue="4" />								
+									</t:selectOneMenu>
+								</t:panelGrid>	
+								
+							</t:panelGroup>
+							
+							<t:panelGroup>
+								<t:panelGrid columns="1" cellpadding="0" cellspacing="0">					
+				                    <h:outputText value=" #{messages['tutor.informar.tipo.relato']}"/>
+				                    <h:message styleClass="errorMessage"
+											for="tipoAgressorAmeacaRelatoReport3" />
+				                	<t:selectOneMenu
+										style="font-size: 11px; font-family: sans-serif;"
+										value="#{relatoForm.relato.tipoReportRelato.idTipoReportRelato}"
+										id="tipoAgressorAmeacaRelatoReport3">
+										<f:selectItem itemLabel="#{messages['usuario.Selecione']}"
+											itemValue="-1" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.report.relato.ninguem']}"
+											itemValue="9" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.report.relato.pais']}"
+											itemValue="2" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.report.relato.escola']}"
+											itemValue="1" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.report.relato.escola.e.pais']}"
+											itemValue="3" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.report.relato.escola.arquivo.caso.policia']}"
+											itemValue="12" />
 										<t:saveState value="#{relatoForm.relato}" />
 										<a4j:support event="onchange" ajaxSingle="true"
-											reRender="comboTipoAmeaca1" />
-								</t:selectOneMenu>
-							</t:panelGrid>							
-						</t:panelGroup>
-						
-						<t:panelGroup>
-							<t:panelGrid columns="1" cellpadding="0" cellspacing="0">				
-			                    <h:outputText value="#{messages['tutor.informar.tipo.relato']}"/>
-			                    <h:message styleClass="errorMessage"
-										for="tipoAgressorAmeacaRelatoReport1" />
-			                	<t:selectOneMenu
-									style="font-size: 11px; font-family: sans-serif;"
-									value="#{relatoForm.relato.tipoReportRelato.idTipoReportRelato}"
-									id="tipoAgressorAmeacaRelatoReport1" >
-									<f:selectItem itemLabel="#{messages['usuario.Selecione']}"
-										itemValue="-1" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.report.relato.ninguem']}"
-										itemValue="9" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.report.relato.pais']}"
-										itemValue="2" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.report.relato.escola']}"
-										itemValue="1" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.report.relato.escola.e.pais']}"
-										itemValue="3" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.report.relato.escola.arquivo.caso.policia']}"
-										itemValue="12" />						
-								 </t:selectOneMenu>
-							</t:panelGrid>	 
+											reRender="comboTipoLocalidade3" />
+									</t:selectOneMenu>
+								</t:panelGrid>	
+								
+							</t:panelGroup>
 							
-						</t:panelGroup>
-						
-						<t:panelGroup>
-							<t:panelGrid columns="1" cellpadding="0" cellspacing="0">					
-			                    <h:outputText value="#{messages['tutor.informar.tipo.localidade']}"/>
-			                    <h:message styleClass="errorMessage"
-										for="tipoAgressorRelatoLocalizacao1" />
-			                	<t:selectOneMenu
-									style="font-size: 11px; font-family: sans-serif;"
-									value="#{relatoForm.relato.tipoLocalizacaoRelato.idTipoLocalizacaoRelato}"
-									id="tipoAgressorRelatoLocalizacao1" >
-									<f:selectItem itemLabel="#{messages['usuario.Selecione']}"
-										itemValue="-1" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.localizacao.relato.escola']}"
-										itemValue="1" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.localizacao.relato.arredores.escola']}"
-										itemValue="2" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.localizacao.relato.banheiros.escola']}"
-										itemValue="3" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.localizacao.relato.caminho.escola']}"
-										itemValue="4" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.localizacao.relato.voltando.escola']}"
-										itemValue="5" />
-									
-								</t:selectOneMenu>
-							</t:panelGrid>	
-							
-						</t:panelGroup>
-					</c:if>
+							<t:panelGroup>
+								<t:panelGrid columns="1" cellpadding="0" cellspacing="0">					
+				                    <h:outputText value="#{messages['tutor.informar.tipo.localidade']}"/>
+				                    <h:message styleClass="errorMessage"
+											for="tipoAgressorRelatoLocalizacao3" />
+				                	<t:selectOneMenu
+										style="font-size: 11px; font-family: sans-serif;"
+										value="#{relatoForm.relato.tipoLocalizacaoRelato.idTipoLocalizacaoRelato}"
+										id="tipoAgressorRelatoLocalizacao3" >
+										<f:selectItem itemLabel="#{messages['usuario.Selecione']}"
+											itemValue="-1" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.localizacao.relato.escola']}"
+											itemValue="1" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.localizacao.relato.arredores.escola']}"
+											itemValue="2" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.localizacao.relato.banheiros.escola']}"
+											itemValue="3" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.localizacao.relato.caminho.escola']}"
+											itemValue="4" />
+										<f:selectItem
+											itemLabel="#{messages['tipo.localizacao.relato.voltando.escola']}"
+											itemValue="5" />
+										<t:saveState value="#{relatoForm.relato}" />
+									</t:selectOneMenu>
+								</t:panelGrid>	
+		
+							</t:panelGroup>
+						</c:if>				
+					</t:panelGrid>
 					
-					<c:if test="#{relatoForm.relato.tipoViolenciaEscolaRelato.idTipoViolenciaEscolaRelato == 3}">
-						<t:panelGroup>
-							<t:panelGrid columns="1" cellpadding="0" cellspacing="0">					
-			                    <h:outputText value="#{messages['tutor.informar.tipo.agressor']}"/>
-			                    <h:message styleClass="errorMessage"
-										for="tipoAgressorRelato2" />
-			                	<t:selectOneMenu style="font-size: 11px; font-family: sans-serif;"
-									value="#{relatoForm.relato.tipoAgressorRelato.idTipoAgressorRelato}"
-									id="tipoAgressorRelato2">
-									<f:selectItem itemLabel="#{messages['usuario.Selecione']}"
-										itemValue="-1" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.agressor.relato.professor']}"
-										itemValue="5" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.agressor.relato.estudante']}"
-										itemValue="6" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.agressor.relato.autor.unico.connhecido']}"
-										itemValue="1" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.agressor.relato.desconhecido']}"
-										itemValue="7" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.agressor.relato.gangue.desconhecida']}"
-										itemValue="4" />								
-								</t:selectOneMenu>
-							</t:panelGrid>	
-							
-						</t:panelGroup>
-						
-						<t:panelGroup>					
-		                    <t:panelGrid columns="1" cellpadding="0" cellspacing="0">
-			                    <h:outputText value="#{messages['tutor.informar.tipo.agressão']}"/>
-			                    <h:message styleClass="errorMessage"
-										for="tipoAgressorAmeaca2" />
-			                	<t:selectOneMenu
-									style="font-size: 11px; font-family: sans-serif;"
-									value="#{relatoForm.relato.tipoConsequenciaRelato.idTipoConsequenciaRelato}"
-									id="tipoAgressorAmeaca2" >
-									<f:selectItem itemLabel="#{messages['usuario.Selecione']}"
-										itemValue="-1" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.consequencia.relato.sem.lesao']}"
-										itemValue="1" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.consequencia.relato.ameaca']}"
-										itemValue="2" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.consequencia.relato.lesao']}"
-										itemValue="3" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.consequencia.relato.ameaca.lesao']}"
-										itemValue="4" />								
-								</t:selectOneMenu>
-							</t:panelGrid>	
-							
-						</t:panelGroup>
-						
-						<t:panelGroup>
-							<t:panelGrid columns="1" cellpadding="0" cellspacing="0">					
-			                    <h:outputText value=" #{messages['tutor.informar.tipo.relato']}"/>
-			                    <h:message styleClass="errorMessage"
-										for="tipoAgressorAmeacaRelatoReport2" />
-			                	<t:selectOneMenu
-									style="font-size: 11px; font-family: sans-serif;"
-									value="#{relatoForm.relato.tipoReportRelato.idTipoReportRelato}"
-									id="tipoAgressorAmeacaRelatoReport2" >
-									<f:selectItem itemLabel="#{messages['usuario.Selecione']}"
-										itemValue="-1" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.report.relato.ninguem']}"
-										itemValue="9" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.report.relato.pais']}"
-										itemValue="2" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.report.relato.escola']}"
-										itemValue="1" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.report.relato.policia']}"
-										itemValue="5" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.report.relato.medico']}"
-										itemValue="4" />
-								    <f:selectItem
-										itemLabel="#{messages['tipo.report.relato.medico.e.policia']}"
-										itemValue="6" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.report.relato.pais.e.medico']}"
-										itemValue="7" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.report.relato.escola.medico']}"
-										itemValue="10" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.report.relato.pais.medico.policia']}"
-										itemValue="8" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.report.relato.escola.medico.policia']}"
-										itemValue="11" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.report.relato.escola.arquivo.caso.policia']}"
-										itemValue="12" />									
-								</t:selectOneMenu>
-							</t:panelGrid>	
-							
-						</t:panelGroup>
-						
-						<t:panelGroup>
-							<t:panelGrid columns="1" cellpadding="0" cellspacing="0">					
-			                    <h:outputText value="#{messages['tutor.informar.tipo.localidade']}"/>
-			                    <h:message styleClass="errorMessage"
-										for="tipoAgressorRelatoLocalizacao2" />
-			                	<t:selectOneMenu
-									style="font-size: 11px; font-family: sans-serif;"
-									value="#{relatoForm.relato.tipoLocalizacaoRelato.idTipoLocalizacaoRelato}"
-									id="tipoAgressorRelatoLocalizacao2">
-									<f:selectItem itemLabel="#{messages['usuario.Selecione']}"
-										itemValue="-1" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.localizacao.relato.escola']}"
-										itemValue="1" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.localizacao.relato.arredores.escola']}"
-										itemValue="2" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.localizacao.relato.banheiros.escola']}"
-										itemValue="3" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.localizacao.relato.caminho.escola']}"
-										itemValue="4" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.localizacao.relato.voltando.escola']}"
-										itemValue="5" />							
-								</t:selectOneMenu>
-							</t:panelGrid>	
-	
-						</t:panelGroup>
-					</c:if>
-					
-					<c:if test="#{relatoForm.relato.tipoViolenciaEscolaRelato.idTipoViolenciaEscolaRelato == 4}">
-						<t:panelGroup>
-							<t:panelGrid columns="1" cellpadding="0" cellspacing="0">				
-			                    <h:outputText value="#{messages['tutor.informar.tipo.roubo']}"/>
-			                    <h:message styleClass="errorMessage"
-										for="tipoAgressorBemRoubado" />
-			                	<t:selectOneMenu style="font-size: 11px; font-family: sans-serif;"
-									value="#{relatoForm.relato.tipoBemRoubadoRelato.idTipoBemRoubadoRelato}"
-									id="tipoAgressorBemRoubado" >
-									<f:selectItem itemLabel="#{messages['usuario.Selecione']}"
-										itemValue="-1" />
-									<f:selectItem itemLabel="#{messages['tipo.bem.roubado.celular']}"
-										itemValue="1" />
-									<f:selectItem itemLabel="#{messages['tipo.bem.roubado.mp3']}"
-										itemValue="2" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.bem.roubado.outro.aparelho']}"
-										itemValue="3" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.bem.roubado.dinheiro']}"
-										itemValue="4" />
-									<f:selectItem itemLabel="#{messages['tipo.bem.roubado.comida']}"
-										itemValue="5" />								
-								</t:selectOneMenu>
-							</t:panelGrid>	
-							
-						</t:panelGroup>
-						
-						<t:panelGroup>
-							<t:panelGrid columns="1" cellpadding="0" cellspacing="0">					
-			                    <h:outputText value="#{messages['tutor.informar.tipo.agressão']}"/>
-			                    <h:message styleClass="errorMessage"
-										for="tipoAgressorAmeaca3" />
-			                	<t:selectOneMenu
-									style="font-size: 11px; font-family: sans-serif;"
-									value="#{relatoForm.relato.tipoConsequenciaRelato.idTipoConsequenciaRelato}"
-									id="tipoAgressorAmeaca3" >
-									<f:selectItem itemLabel="#{messages['usuario.Selecione']}"
-										itemValue="-1" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.consequencia.relato.sem.lesao']}"
-										itemValue="1" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.consequencia.relato.ameaca']}"
-										itemValue="2" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.consequencia.relato.lesao']}"
-										itemValue="3" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.consequencia.relato.ameaca.lesao']}"
-										itemValue="4" />								
-								</t:selectOneMenu>
-							</t:panelGrid>	
-							
-						</t:panelGroup>
-						
-						<t:panelGroup>
-							<t:panelGrid columns="1" cellpadding="0" cellspacing="0">					
-			                    <h:outputText value=" #{messages['tutor.informar.tipo.relato']}"/>
-			                    <h:message styleClass="errorMessage"
-										for="tipoAgressorAmeacaRelatoReport3" />
-			                	<t:selectOneMenu
-									style="font-size: 11px; font-family: sans-serif;"
-									value="#{relatoForm.relato.tipoReportRelato.idTipoReportRelato}"
-									id="tipoAgressorAmeacaRelatoReport3">
-									<f:selectItem itemLabel="#{messages['usuario.Selecione']}"
-										itemValue="-1" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.report.relato.ninguem']}"
-										itemValue="9" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.report.relato.pais']}"
-										itemValue="2" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.report.relato.escola']}"
-										itemValue="1" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.report.relato.escola.e.pais']}"
-										itemValue="3" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.report.relato.escola.arquivo.caso.policia']}"
-										itemValue="12" />
-									<t:saveState value="#{relatoForm.relato}" />
-									<a4j:support event="onchange" ajaxSingle="true"
-										reRender="comboTipoLocalidade3" />
-								</t:selectOneMenu>
-							</t:panelGrid>	
-							
-						</t:panelGroup>
-						
-						<t:panelGroup>
-							<t:panelGrid columns="1" cellpadding="0" cellspacing="0">					
-			                    <h:outputText value="#{messages['tutor.informar.tipo.localidade']}"/>
-			                    <h:message styleClass="errorMessage"
-										for="tipoAgressorRelatoLocalizacao3" />
-			                	<t:selectOneMenu
-									style="font-size: 11px; font-family: sans-serif;"
-									value="#{relatoForm.relato.tipoLocalizacaoRelato.idTipoLocalizacaoRelato}"
-									id="tipoAgressorRelatoLocalizacao3" >
-									<f:selectItem itemLabel="#{messages['usuario.Selecione']}"
-										itemValue="-1" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.localizacao.relato.escola']}"
-										itemValue="1" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.localizacao.relato.arredores.escola']}"
-										itemValue="2" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.localizacao.relato.banheiros.escola']}"
-										itemValue="3" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.localizacao.relato.caminho.escola']}"
-										itemValue="4" />
-									<f:selectItem
-										itemLabel="#{messages['tipo.localizacao.relato.voltando.escola']}"
-										itemValue="5" />
-									<t:saveState value="#{relatoForm.relato}" />
-								</t:selectOneMenu>
-							</t:panelGrid>	
-	
-						</t:panelGroup>
-					</c:if>				
-				</t:panelGrid>
+				</c:if>
 				
-			</c:if>
-			
-			<c:if test="#{relatoForm.relato.subTipoRelato != 6}">
-				<h:outputText value="#{messages['relato.periodo']}(*)"
-					style="vertical-align: text-top; font-size: 11px;" />
+				<c:if test="#{relatoForm.relato.subTipoRelato != 6}">
+					<h:outputText value="#{messages['relato.periodo']}(*)"
+						style="vertical-align: text-top; font-size: 11px;" />
+		
+					<c:if test="#{not empty message}">
+						<c:if test="#{message == messages['errors.periodo'] }">
+							<h:outputText value="#{message}" styleClass="errorMessage" />
+						</c:if>
+					</c:if>	
 	
-				<c:if test="#{not empty message}">
-					<c:if test="#{message == messages['errors.periodo'] }">
-						<h:outputText value="#{message}" styleClass="errorMessage" />
-					</c:if>
+					<h:panelGrid columns="4">
+						<h:selectBooleanCheckbox value="#{relatoForm.madrugada}">
+							<h:outputText value="#{messages['relato.madrugada']}" />
+						</h:selectBooleanCheckbox>
+		                    &nbsp;
+		                    <h:selectBooleanCheckbox value="#{relatoForm.manha}">
+							<h:outputText value="#{messages['relato.manha']}" />
+						</h:selectBooleanCheckbox>
+		                    &nbsp;
+		                    <h:selectBooleanCheckbox value="#{relatoForm.tarde}">
+							<h:outputText value="#{messages['relato.tarde']}" />
+						</h:selectBooleanCheckbox>
+		                    &nbsp;
+		                    <h:selectBooleanCheckbox value="#{relatoForm.noite}">
+							<h:outputText value="#{messages['relato.noite']}" />
+						</h:selectBooleanCheckbox>
+					</h:panelGrid>
 				</c:if>	
-
-				<h:panelGrid columns="4">
-					<h:selectBooleanCheckbox value="#{relatoForm.madrugada}">
-						<h:outputText value="#{messages['relato.madrugada']}" />
-					</h:selectBooleanCheckbox>
-	                    &nbsp;
-	                    <h:selectBooleanCheckbox value="#{relatoForm.manha}">
-						<h:outputText value="#{messages['relato.manha']}" />
-					</h:selectBooleanCheckbox>
-	                    &nbsp;
-	                    <h:selectBooleanCheckbox value="#{relatoForm.tarde}">
-						<h:outputText value="#{messages['relato.tarde']}" />
-					</h:selectBooleanCheckbox>
-	                    &nbsp;
-	                    <h:selectBooleanCheckbox value="#{relatoForm.noite}">
-						<h:outputText value="#{messages['relato.noite']}" />
-					</h:selectBooleanCheckbox>
-				</h:panelGrid>
-			</c:if>	
-
+		</h:panelGroup>
 			<h:panelGrid>
 				<h:outputText value="#{messages['relato.descricao']}(*)"
 					style="vertical-align: text-top; font-size: 11px;" />
@@ -734,14 +782,12 @@
 					cols="38" rows="5"/>
 			</h:panelGrid>
 
-			<h:outputText value="#{messages['relato.obrigatorio']}" />
-
 			<h:commandButton value="#{messages['crime.btn.registrar']}"
 				id="btnRegistrar" action="#{relatoForm.insert}" styleClass="button" />
-
+		</h:form>
 		</h:panelGrid>
 
-	</h:form>
+	
 </f:view>
 </body>
 </html>

@@ -115,9 +115,9 @@
 		                    </a4j:commandLink>
 							-->
 							<h:outputLink value="listarCrimesTipo.html">
-		                    	<h:outputText value="#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual]-3}"/>
+		                    	<h:outputText value="#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual]-2}"/>
 		                    	<f:param name="idTipoCrime" value="#{mostrarDadosForm.idTipoCrime}"/>
-		                    	<f:param name="paginaAtual" value="#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual-3]}"/>
+		                    	<f:param name="paginaAtual" value="#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual-2]}"/>
 		                	</h:outputLink>
 							</li>
 						</c:if>
@@ -168,7 +168,7 @@
 	                    <h:outputLink styleClass="currentpage" value="listarCrimesTipo.html">
 		                    	<h:outputText value="#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual]+1}"/>
 		                    	<f:param name="idTipoCrime" value="#{mostrarDadosForm.idTipoCrime}"/>
-		                    	<f:param name="paginaAtual" value="#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual+1]}"/>
+		                    	<f:param name="paginaAtual" value="#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual]+1}"/>
 		                </h:outputLink>
 	                    </li>
 		               <c:if test="#{mostrarDadosForm.paginaAtual+1 lt mostrarDadosForm.sizeArrayPaginacao}" >
@@ -180,7 +180,7 @@
 		                	<h:outputLink value="listarCrimesTipo.html">
 		                    	<h:outputText value="#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual]+2}"/>
 		                    	<f:param name="idTipoCrime" value="#{mostrarDadosForm.idTipoCrime}"/>
-		                    	<f:param name="paginaAtual" value="#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual+2]}"/>
+		                    	<f:param name="paginaAtual" value="#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual+1]+1}"/>
 		                	</h:outputLink>
 		                	</li>
 		                </c:if>
@@ -193,7 +193,7 @@
 							<h:outputLink value="listarCrimesTipo.html">
 		                    	<h:outputText value="#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual]+3}"/>
 		                    	<f:param name="idTipoCrime" value="#{mostrarDadosForm.idTipoCrime}"/>
-		                    	<f:param name="paginaAtual" value="#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual+3]}"/>
+		                    	<f:param name="paginaAtual" value="#{mostrarDadosForm.paginacao[mostrarDadosForm.paginaAtual+2]+1}"/>
 		                	</h:outputLink>
 							</li>
 						</c:if>
@@ -243,7 +243,7 @@
 		                    <h:outputLink styleClass="#{mostrarDadosForm.paginaAtual lt mostrarDadosForm.sizeArrayPaginacao-1 ? 'prevnext' : 'prevnext disablelink'}" value="listarCrimesTipo.html">
 		                    	<h:outputText value="#{messages['page.next']}"/>
 		                    	<f:param name="idTipoCrime" value="#{mostrarDadosForm.idTipoCrime}"/>
-		                    	<f:param name="paginaAtual" value="#{mostrarDadosForm.paginaAtual lt mostrarDadosForm.sizeArrayPaginacao-1 ? mostrarDadosForm.paginaAtual+2 : mostrarDadosForm.sizeArrayPaginacao-1}"/>
+		                    	<f:param name="paginaAtual" value="#{mostrarDadosForm.paginaAtual lt mostrarDadosForm.sizeArrayPaginacao-1 ? mostrarDadosForm.paginaAtual+2 : mostrarDadosForm.sizeArrayPaginacao}"/>
 		                    </h:outputLink>
 	                	</li>
 					</ul>

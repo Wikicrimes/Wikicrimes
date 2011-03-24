@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
-import org.wikicrimes.util.kernelMap.KernelMap;
-import org.wikicrimes.util.kernelMap.PropertiesLoader;
+import org.wikicrimes.util.kernelmap.KernelMap;
+import org.wikicrimes.util.kernelmap.PropertiesLoader;
 import org.wikicrimes.util.rotaSegura.geometria.Ponto;
 import org.wikicrimes.util.rotaSegura.geometria.Rota;
 import org.wikicrimes.util.rotaSegura.googlemaps.ConstantesGM;
@@ -16,7 +16,7 @@ import org.wikicrimes.util.rotaSegura.logica.modelo.RotaPromissora;
 
 /**
  * @author victor
- *	Agrupa a lógica para cálculo de rotas seguras. Um objeto LogicaRotaSegura calcula rotas para o MapaKernel associado a ele.
+ *	Agrupa a lï¿½gica para cï¿½lculo de rotas seguras. Um objeto LogicaRotaSegura calcula rotas para o MapaKernel associado a ele.
  */
 public class LogicaRotaSegura {
 	
@@ -32,11 +32,11 @@ public class LogicaRotaSegura {
 	}
 	
 	/**
-	 * Divide um caminho em partes toleráveis e partes não toleráveis.
-	 * problema: se vc tem 2 caminhos toleráveis, ao juntar pode dar um caminho nao tolerável, já q a distancia percorrida aumenta
+	 * Divide um caminho em partes tolerï¿½veis e partes nï¿½o tolerï¿½veis.
+	 * problema: se vc tem 2 caminhos tolerï¿½veis, ao juntar pode dar um caminho nao tolerï¿½vel, jï¿½ q a distancia percorrida aumenta
 	 */
 	public List<Rota> separarRotasToleraveis(Rota rota){
-		//TODO nao ta prestando pq qd c junta 2 pedaços toleraveis, o resultado pode nao ser
+		//TODO nao ta prestando pq qd c junta 2 pedaï¿½os toleraveis, o resultado pode nao ser
 		CalculoPerigo calcPerigo = getCalculoPerigo();
 		List<Rota> rotas = new LinkedList<Rota>();
 		double tam = rota.distanciaPercorrida();
@@ -49,7 +49,7 @@ public class LogicaRotaSegura {
 			fim = rota.searchPoint(dist);
 			Rota r = rota.subRota(inicio, fim);
 			if(eraToleravel != calcPerigo.isToleravel(r)){
-				if(anterior != null){ //nao é a primeira iteração
+				if(anterior != null){ //nao ï¿½ a primeira iteraï¿½ï¿½o
 					rotas.add(anterior);
 					inicio = anterior.getFim();
 					r = rota.subRota(inicio, fim);
@@ -59,21 +59,21 @@ public class LogicaRotaSegura {
 			anterior = r;
 		}
 		
-		//ultima vez (o q restou da ultima iteracao até o fim do caminho)
+		//ultima vez (o q restou da ultima iteracao atï¿½ o fim do caminho)
 		fim = rota.getFim();
 		Rota r = rota.subRota(inicio, fim);
 		if(eraToleravel != calcPerigo.isToleravel(r) && anterior != null){
 			rotas.add(anterior); //parte anterior
 			r = rota.subRota(anterior.getFim(), fim); //parte q mudou
 		}
-		rotas.add(r); //parte q mudou (se entrou no if) OU parte anterior até o fim (se eraToleravel==isToleravel(c)) OU a rota inteira (se anterior==null)
+		rotas.add(r); //parte q mudou (se entrou no if) OU parte anterior atï¿½ o fim (se eraToleravel==isToleravel(c)) OU a rota inteira (se anterior==null)
 		
 		return rotas;
 	}
 	
 	/**
-	 * Dividir um caminho entre partes que passam em áreas perigosas e partes que passam em áreas seguras.
-	 * A distância não é considerada.
+	 * Dividir um caminho entre partes que passam em ï¿½reas perigosas e partes que passam em ï¿½reas seguras.
+	 * A distï¿½ncia nï¿½o ï¿½ considerada.
 	 */
 	public List<Rota> separarPartesPerigosas(Rota caminho){
 		CalculoPerigo calcPerigo = getCalculoPerigo();

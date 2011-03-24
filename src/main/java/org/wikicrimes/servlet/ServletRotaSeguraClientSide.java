@@ -15,8 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.wikicrimes.util.kernelMap.KernelMap;
-import org.wikicrimes.util.kernelMap.PropertiesLoader;
+import org.wikicrimes.util.kernelmap.KernelMap;
+import org.wikicrimes.util.kernelmap.PropertiesLoader;
 import org.wikicrimes.util.rotaSegura.geometria.Ponto;
 import org.wikicrimes.util.rotaSegura.geometria.Rota;
 import org.wikicrimes.util.rotaSegura.googlemaps.StatusGM;
@@ -31,8 +31,8 @@ import org.wikicrimes.util.rotaSegura.testes.TesteCenariosRotas;
 import org.wikicrimes.util.rotaSegura.testes.TesteRotasImg;
 
 /**
- * Trata requisições HTTP para calcular rotas seguras.
- * Chama um método do ServletKernelMap para calcular mapa de kernel.
+ * Trata requisiï¿½ï¿½es HTTP para calcular rotas seguras.
+ * Chama um mï¿½todo do ServletKernelMap para calcular mapa de kernel.
  * 
  * @author victor
  */
@@ -46,7 +46,7 @@ public class ServletRotaSeguraClientSide extends HttpServlet {
 	//chaves para atributos de sessao
 	public static final String LOGICA_ROTAS = "LOGICA_ROTAS";
 	private static final String ULTIMA_RESPOSTA = "ULTIMA_RESPOSTA"; //ultima resposta deste servlet. Eh enviada como requisicao pro GoogleMaps
-	private static final String ROTAS_CANDIDATAS = "ROTAS_CANDIDATAS"; //fila de requisições p/ fazer ao GoogleMaps (são rotas)
+	private static final String ROTAS_CANDIDATAS = "ROTAS_CANDIDATAS"; //fila de requisiï¿½ï¿½es p/ fazer ao GoogleMaps (sï¿½o rotas)
 	/*TESTE CENARIO*/private static final String TEMPO_INICIO = "TEMPO_INICIO";
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -71,10 +71,10 @@ public class ServletRotaSeguraClientSide extends HttpServlet {
 	
 	private void primeiraExecucao(HttpServletRequest request) throws IOException, ServletException{
 		
-		//inicialização dos objetos principais
+		//inicializaï¿½ï¿½o dos objetos principais
 		LogicaRotaSegura logicaRota = getLogicaRotaSegura(request);
 		
-		//inicializa o GRAFO com a rota original que vai da origem até o destino
+		//inicializa o GRAFO com a rota original que vai da origem atï¿½ o destino
 		Rota rotaGoogleMaps = getRota(request);
 		CalculoPerigo calcPerigo = logicaRota.getCalculoPerigo();
 		GrafoRotas grafo = new GrafoRotas(rotaGoogleMaps, calcPerigo);
@@ -86,7 +86,7 @@ public class ServletRotaSeguraClientSide extends HttpServlet {
 	
 	private void metodoPrincipal(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 
-		//inicialização dos objetos principais
+		//inicializaï¿½ï¿½o dos objetos principais
 		HttpSession sessao = request.getSession();
 		int iteracao = getContRevisoes(request); 
 		LogicaRotaSegura logicaRota = getLogicaRotaSegura(request);
@@ -195,7 +195,7 @@ public class ServletRotaSeguraClientSide extends HttpServlet {
 	
 	
 	/**
-	 * Faz uma limpeza nos objetos da sessão, preparando pra uma próxima série de requisições do mesmo usuário
+	 * Faz uma limpeza nos objetos da sessï¿½o, preparando pra uma prï¿½xima sï¿½rie de requisiï¿½ï¿½es do mesmo usuï¿½rio
 	 */
 	private void limpar(HttpServletRequest request) throws IOException, ServletException{
 		HttpSession sessao = request.getSession();
@@ -210,7 +210,7 @@ public class ServletRotaSeguraClientSide extends HttpServlet {
 	
 	private void respostaPedeNovoTrecho(HttpServletRequest request, HttpServletResponse response, Rota trecho) throws IOException{
 //		/*DEBUG*/System.out.println("PEDE NOVO TRECHO, contRev=" + getContRevisoes(request));
-		request.getSession().setAttribute(ULTIMA_RESPOSTA, trecho); //necessário caso de o erro TOO_MANY_QUERIES no GM
+		request.getSession().setAttribute(ULTIMA_RESPOSTA, trecho); //necessï¿½rio caso de o erro TOO_MANY_QUERIES no GM
 		PrintWriter out = response.getWriter();
 		out.println("continua");
 		out.println(trecho.invertida());	//rota segura gerada
@@ -291,7 +291,7 @@ public class ServletRotaSeguraClientSide extends HttpServlet {
 	public static LogicaRotaSegura getLogicaRotaSegura(HttpServletRequest request) throws ServletException, IOException{
 		HttpSession sessao = request.getSession();
 		if(!isLogicaRotasNaSessao(request)){ 
-			//primeira requisição, com a rota original
+			//primeira requisiï¿½ï¿½o, com a rota original
 			KernelMap kernel = (KernelMap)sessao.getAttribute(KERNEL);
 			if(kernel == null) throw new RuntimeException("kernel null");
 			LogicaRotaSegura logicaRotas = new LogicaRotaSegura(kernel);

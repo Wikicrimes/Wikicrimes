@@ -5,9 +5,8 @@ import static org.wikicrimes.servlet.ServletKernelMap.GRID_NODE;
 import static org.wikicrimes.servlet.ServletKernelMap.IMAGEM_KERNEL;
 import static org.wikicrimes.servlet.ServletKernelMap.getPoints;
 
-import java.awt.Color;
+import java.awt.Image;
 import java.awt.Rectangle;
-import java.awt.image.RenderedImage;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
@@ -43,10 +42,10 @@ import org.wikicrimes.service.CrimeService;
 import org.wikicrimes.service.UsuarioService;
 import org.wikicrimes.util.Constantes;
 import org.wikicrimes.util.ServletUtil;
-import org.wikicrimes.util.kernelMap.KernelMap;
-import org.wikicrimes.util.kernelMap.Suavizador;
-import org.wikicrimes.util.kernelMap.renderer.CellBasedRenderer;
-import org.wikicrimes.util.kernelMap.renderer.TransparentToColor;
+import org.wikicrimes.util.kernelmap.KernelMap;
+import org.wikicrimes.util.kernelmap.renderer.KMRFactory;
+import org.wikicrimes.util.kernelmap.renderer.KernelMapRenderer;
+import org.wikicrimes.util.statistics.Param;
 import org.wikicrimes.web.FiltroForm;
 
 public class ServletWikiCrimesApi extends HttpServlet {
@@ -76,10 +75,10 @@ public class ServletWikiCrimesApi extends HttpServlet {
 		
 //		/*teste*/System.out.println("acao: " + acao);
 		if(acao.equalsIgnoreCase("pegaImagem")){
-			RenderedImage imagem = (RenderedImage)sessao.getAttribute(IMAGEM_KERNEL);
+			Image imagem = (Image)sessao.getAttribute(IMAGEM_KERNEL);
 //			sessao.removeAttribute(IMAGEM_KERNEL);
 			if(imagem != null)
-				ServletUtil.enviarImagem(response, imagem);
+				ServletUtil.sendImage(response, imagem);
 		}else{
 		
 			PrintWriter out = response.getWriter();
@@ -322,7 +321,7 @@ public class ServletWikiCrimesApi extends HttpServlet {
 		realContextPath += barra + "images" + barra + "KernelMap"+ barra; 
 	
 		
-		//Verifica se a imagem já chegou no cliente
+		//Verifica se a imagem jï¿½ chegou no cliente
 		if(request.getParameter("deletaImagem") != null){
 //			Thread thread = new ThreadImage(realContextPath + imagemDiretorioAleatorio);
 //			thread.start();
@@ -398,7 +397,7 @@ public class ServletWikiCrimesApi extends HttpServlet {
 //			RenderedImage imagem = (RenderedImage)kRend.pintaKernel();
 //			httpSession.setAttribute(IMAGEM_KERNEL, imagem);
 			
-			//Envia informações resultates para o cliente
+			//Envia informaï¿½ï¿½es resultates para o cliente
 			resposta.put("topLeftX", westPixel);
 			resposta.put("topLeftY", northPixel);
 			resposta.put("bottomRightX", eastPixel);
@@ -507,14 +506,14 @@ public class ServletWikiCrimesApi extends HttpServlet {
 			//calcula o mapa de kernel e gera a imagem
 			mapKernel = new KernelMap(GRID_NODE, BANDWIDTH, limitesPixel, getPoints(pontoXY)) ;
 			
-			//Envia informações resultates para o cliente
+			//Envia informaï¿½ï¿½es resultates para o cliente
 			resposta.put("topLeftX", westPixel);
 			resposta.put("topLeftY", northPixel);
 			resposta.put("bottomRightX", eastPixel);
 			resposta.put("bottomRightY", southPixel);
 			resposta.put("nada", "NADA");
 			resposta.put("statuRes", "concluido");
-			poeImagemNaSessao(mapKernel, httpSession);
+			poeImagemNaSessao(mapKernel, httpSession, request);
 		}else{
 			resposta.put("statuRes", "nadaAinda");
 		}
@@ -525,11 +524,11 @@ public class ServletWikiCrimesApi extends HttpServlet {
 	}
 	
 	/*teste*/static int cont;
-	private static void poeImagemNaSessao(KernelMap mapKernel, HttpSession httpSession) throws IOException{
-		if(mapKernel != null){
-			Suavizador kRend = new Suavizador(mapKernel);
-			CellBasedRenderer scheme = new TransparentToColor(mapKernel, Color.RED);
-			RenderedImage imagem = (RenderedImage)kRend.pintaKernel(scheme); //TODO precisa do zoom pra fazer a suavização
+	private static void poeImagemNaSessao(KernelMap kernel, HttpSession httpSession, HttpServletRequest request) throws IOException{
+		if(kernel != null){
+			boolean isIE = ServletUtil.isClientUsingIE(request);
+			KernelMapRenderer renderer = KMRFactory.getDefaultRenderer(kernel, isIE);
+			Image imagem = renderer.renderImage();
 			httpSession.setAttribute(IMAGEM_KERNEL, imagem);
 	//		/*teste*/System.out.println(kernel);
 	//		/*teste*/System.out.println("bounds: " + bounds);

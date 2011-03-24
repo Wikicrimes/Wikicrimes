@@ -2,7 +2,7 @@ package org.wikicrimes.util.rotaSegura.logica;
 
 import java.util.List;
 
-import org.wikicrimes.util.kernelMap.PropertiesLoader;
+import org.wikicrimes.util.kernelmap.PropertiesLoader;
 import org.wikicrimes.util.rotaSegura.geometria.Ponto;
 import org.wikicrimes.util.rotaSegura.geometria.Rota;
 import org.wikicrimes.util.rotaSegura.geometria.Segmento;
@@ -11,16 +11,16 @@ import org.wikicrimes.util.rotaSegura.geometria.Segmento;
 public class Refinamento {
 	
 	
-	private final static double TOLERANCIA_ARRODEIO = PropertiesLoader.getInt("saferoutes.refinement.loop_prunning_tolerance"); //quanto menor, mais arodeios serão corrigidos pelo algorítmo
-	private final static int TOLERANCIA_APROXIMACAO = PropertiesLoader.getInt("saferoutes.point_approximation_limit"); //distancia máxima entre pontos na obtenção de pontos e rotas aproximadas
+	private final static double TOLERANCIA_ARRODEIO = PropertiesLoader.getInt("saferoutes.refinement.loop_prunning_tolerance"); //quanto menor, mais arodeios serï¿½o corrigidos pelo algorï¿½tmo
+	private final static int TOLERANCIA_APROXIMACAO = PropertiesLoader.getInt("saferoutes.point_approximation_limit"); //distancia mï¿½xima entre pontos na obtenï¿½ï¿½o de pontos e rotas aproximadas
 	
 	
 	/**
 	 * Detecta e elimina "arrodeios".
-	 * Este problema ocorre qd o googlemaps faz uma arrodeio desnecessário para alcancar um ponto da "rota segura" calculada pelo server 
+	 * Este problema ocorre qd o googlemaps faz uma arrodeio desnecessï¿½rio para alcancar um ponto da "rota segura" calculada pelo server 
 	 * que ficou fora do caminho preferido pelo GoogleMaps.
-	 * A solução é mover este ponto para um local próximo ao início ou fim do arrodeio, que são bem próximos um do outro.
-	 * Obs: se for detectada um "arrodeio", a "modelo" será modificada por este método
+	 * A soluï¿½ï¿½o ï¿½ mover este ponto para um local prï¿½ximo ao inï¿½cio ou fim do arrodeio, que sï¿½o bem prï¿½ximos um do outro.
+	 * Obs: se for detectada um "arrodeio", a "modelo" serï¿½ modificada por este mï¿½todo
 	 */
 	public static boolean refinaRota(Rota modelo, Rota resultado){
 		//obs: 
@@ -37,22 +37,22 @@ public class Refinamento {
 		boolean temArrodeio = false;
 		List<Ponto> pontos = resultado.getPontos();
 		for(int i=0; i<pontos.size(); i++){
-			Ponto p1 = pontos.get(i); //p1 é cada uma das coordenadas de toda a "resultado"
+			Ponto p1 = pontos.get(i); //p1 ï¿½ cada uma das coordenadas de toda a "resultado"
 			for(int j=i+1; j<pontos.size(); j++){
-				Ponto p2 = pontos.get(j); //p2 é cada uma das coordenadas subsequentes à p1
+				Ponto p2 = pontos.get(j); //p2 ï¿½ cada uma das coordenadas subsequentes ï¿½ p1
 				double distReta = new Segmento(p1,p2).comprimento(); //distancia entre p1 e p2 em linha reta
 				
-				//trecho de p1 até p2
+				//trecho de p1 atï¿½ p2
 				Rota trecho = new Rota();
 				for(int k=i; k<=j; k++){
 					trecho.addFim(pontos.get(k));
 				}
 				double distCurva = trecho.distanciaPercorrida(); //distancia entre p1 e p2 seguindo a curva da rota
 				
-				double distLimite = distReta * TOLERANCIA_ARRODEIO; //distancia limite para o contorno não ser considerado "arrodeio"
-																	//este limite é arbitrário
+				double distLimite = distReta * TOLERANCIA_ARRODEIO; //distancia limite para o contorno nï¿½o ser considerado "arrodeio"
+																	//este limite ï¿½ arbitrï¿½rio
 				if(distCurva > distLimite){
-					Ponto ida = p1; //p1 é começo de um "arrodeio", agora tem q ver qual é o fim (p2 com menor distância reta até p1)
+					Ponto ida = p1; //p1 ï¿½ comeï¿½o de um "arrodeio", agora tem q ver qual ï¿½ o fim (p2 com menor distï¿½ncia reta atï¿½ p1)
 					
 					int indiceVolta = encontraFimArrodeio(resultado, i, j); //identifica o fim do "arrodeio"
 					Ponto volta = pontos.get(indiceVolta);
@@ -95,14 +95,14 @@ public class Refinamento {
 		Rota resultadoAprox = resultado.getRotaAproximada(modelo, TOLERANCIA_APROXIMACAO); //pontos da "resultado" que mais se aproximam dos pontos da "modelo"
 		Ponto aux = ida;
 		while(!resultadoAprox.contem(aux) && aux != null){
-			aux = resultado.pontoAnterior(aux); //caminhando pra tras na "resultado" até encontrar um ponto que exista na "resultado"Aprox
+			aux = resultado.pontoAnterior(aux); //caminhando pra tras na "resultado" atï¿½ encontrar um ponto que exista na "resultado"Aprox
 		}
 		
-		Ponto ptAnteriorGoogleMapsAproxServidor = aux; //pt na "resultado" q está próximo a um ponto na "modelo" e vem antes da ida
+		Ponto ptAnteriorGoogleMapsAproxServidor = aux; //pt na "resultado" q estï¿½ prï¿½ximo a um ponto na "modelo" e vem antes da ida
 		Ponto ptAnteriorServidor = modelo.getPontoPerto(ptAnteriorGoogleMapsAproxServidor, TOLERANCIA_APROXIMACAO);
 		
 		if(ptAnteriorGoogleMapsAproxServidor == null || ptAnteriorServidor == null){
-			throw new RuntimeException("limite de aproximação excedido");
+			throw new RuntimeException("limite de aproximaï¿½ï¿½o excedido");
 		}
 		
 		Ponto pontoCausadorDoArrodeio = modelo.pontoPosterior(ptAnteriorServidor); //o ponto que deve estar na ponta da ida e volta

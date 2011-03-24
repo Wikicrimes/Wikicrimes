@@ -1,6 +1,6 @@
 package org.wikicrimes.servlet;
 
-import java.awt.Color;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.RenderedImage;
@@ -29,27 +29,24 @@ import org.wikicrimes.model.PontoLatLng;
 import org.wikicrimes.model.Relato;
 import org.wikicrimes.service.CrimeService;
 import org.wikicrimes.util.ServletUtil;
-import org.wikicrimes.util.kernelMap.KernelMap;
-import org.wikicrimes.util.kernelMap.LatLngBoundsGM;
-import org.wikicrimes.util.kernelMap.PropertiesLoader;
-import org.wikicrimes.util.kernelMap.Suavizador;
-import org.wikicrimes.util.kernelMap.renderer.CellBasedRenderer;
-import org.wikicrimes.util.kernelMap.renderer.TransparentToColor;
-import org.wikicrimes.util.kernelMap.renderer.WhiteToRed;
+import org.wikicrimes.util.kernelmap.KernelMap;
+import org.wikicrimes.util.kernelmap.LatLngBoundsGM;
+import org.wikicrimes.util.kernelmap.PropertiesLoader;
+import org.wikicrimes.util.kernelmap.renderer.CellBasedKMR;
+import org.wikicrimes.util.kernelmap.renderer.KMRFactory;
+import org.wikicrimes.util.kernelmap.renderer.KernelMapRenderer;
+import org.wikicrimes.util.kernelmap.renderer.ZoomDepenantKMR;
 import org.wikicrimes.util.rotaSegura.geometria.Ponto;
 import org.wikicrimes.web.FiltroForm;
 
 /**
- * Trata requisi��es HTTP para calcular mapa de kernel e gerar imagem.
- * 
- * @author victor
+ * Trata requisicoes HTTP para calcular mapa de kernel e gerar imagem.
  */
 @SuppressWarnings("serial")
 public class ServletKernelMap extends HttpServlet {
 	
 	public final static String IMAGEM_KERNEL = "IMAGEM_KERNEL"; //imagem renderizada do mapa de kernel
 	public final static String IMAGEM_KERNEL_WIKIMAPPS = "IMAGEM_KERNEL_WIKIMAPPS";
-	public final static String DENSIDADES = "DENSIDADES"; //matriz de densidades do mapa de kernel
 	public final static String KERNEL = "KERNEL"; //objeto MapaKernel
 	
 	public final static int GRID_NODE = PropertiesLoader.getInt("kernelmap.nodesize");
@@ -66,7 +63,7 @@ public class ServletKernelMap extends HttpServlet {
 			response.setDateHeader("Expires", 0);
 			response.setCharacterEncoding("iso-8859-1");
 			
-	//		/*teste*/System.out.println(request.getParameterMap().keySet() + " - pontoXY:" + request.getParameter("pontoXY"));
+	//		/*DEBUG*/System.out.println(request.getParameterMap().keySet() + " - pontoXY:" + request.getParameter("pontoXY"));
 			
 			String acao = request.getParameter("acao");
 			String app = request.getParameter("app");
@@ -74,23 +71,23 @@ public class ServletKernelMap extends HttpServlet {
 			if(acao.equals("geraKernel")){
 				//calcular o mapa de kernel e criar imagens
 				if(app!= null && app.equals("wikimapps")) {
-					ServletUtil.enviarImagem(response, gerarMapaKernel(request));
+					ServletUtil.sendImage(response, gerarMapaKernel(request));
 				}else{
 					gerarMapaKernel(request);
 				}
 			}else if(acao.equals("pegaImagem")){
-				RenderedImage imagem;
+				Image imagem;
 				//verifica a aplicacao que acionou o servico. o default � wikicrimes
 				if(app!= null && app.equals("wikimapps")) {
-					imagem = (RenderedImage)sessao.getAttribute(IMAGEM_KERNEL_WIKIMAPPS);
+					imagem = (Image)sessao.getAttribute(IMAGEM_KERNEL_WIKIMAPPS);
 				}else{
-					imagem = (RenderedImage)sessao.getAttribute(IMAGEM_KERNEL);
+					imagem = (Image)sessao.getAttribute(IMAGEM_KERNEL);
 				}
 				if(imagem != null)
-					ServletUtil.enviarImagem(response, imagem);
+					ServletUtil.sendImage(response, imagem);
 			}else if(acao.equals("pegaInfo")){
 				KernelMap kernel = (KernelMap)sessao.getAttribute(KERNEL);
-				double[][] dens = kernel.getDensidadeGrid();
+				double[][] dens = kernel.getDensityGrid();
 				enviarInfo(request, response, dens);
 			}
 		}catch (Exception e) {
@@ -107,28 +104,23 @@ public class ServletKernelMap extends HttpServlet {
 		}
 	}
 
-	protected RenderedImage gerarMapaKernel(HttpServletRequest request){
+	protected Image gerarMapaKernel(HttpServletRequest request){
 		HttpSession sessao = request.getSession();
 		String app = request.getParameter("app");
 		
-		//pega bounds e zoom dos par�metros de requisi��o
+		//pega bounds e zoom dos parametros de requisicao
 		LatLngBoundsGM limitesLatlng = getLimitesLatLng(request);
 		Rectangle limitesPixel = getLimitesPixel(request);
 		int zoom = getZoom(request);
 		
-		//verifica a aplicacao que acionou o servico. o default � wikicrimes
+		//verifica a aplicacao que acionou o servico. o default eh wikicrimes
 		if(app!= null && app.equals("wikimapps")) {
 			
 			List<Point> pontos = recuperaPontosWikiMapps(limitesLatlng,request.getParameter("url"),request.getParameter("tm"),zoom);
 			KernelMap kernel = new KernelMap(GRID_NODE, BANDWIDTH, limitesPixel, pontos);			
-			Suavizador kRend = new Suavizador(kernel);
 			boolean isIE = ServletUtil.isClientUsingIE(request); 
-			CellBasedRenderer scheme;
-			if(isIE)
-				scheme = new WhiteToRed(kernel);
-			else
-				scheme = new TransparentToColor(kernel, Color.RED);
-			RenderedImage imagem = (RenderedImage)kRend.pintaKernelSuavizado(scheme, zoom);
+			KernelMapRenderer renderer = KMRFactory.getDefaultRenderer(kernel, isIE);
+			Image imagem = renderer.renderImage();
 			return imagem;	
 			
 		}else{
@@ -173,14 +165,9 @@ public class ServletKernelMap extends HttpServlet {
 //			/*TESTE CENARIO*/TesteCenariosRotas.setResult("densMedia", kernel.getMediaDens());
 //			/*TESTE CENARIO*/TesteCenariosRotas.setResult("densMax", kernel.getMaxDens());
 			
-			Suavizador kRend = new Suavizador(kernel);
 			boolean isIE = ServletUtil.isClientUsingIE(request); 
-			CellBasedRenderer scheme;
-			if(isIE)
-				scheme = new WhiteToRed(kernel);
-			else
-				scheme = new TransparentToColor(kernel, Color.RED);
-			RenderedImage imagem = (RenderedImage)kRend.pintaKernelSuavizado(scheme, zoom);
+			KernelMapRenderer renderer = KMRFactory.getDefaultRenderer(kernel, isIE);
+			Image imagem = renderer.renderImage();
 			sessao.setAttribute(IMAGEM_KERNEL, imagem);
 			return imagem;
 		

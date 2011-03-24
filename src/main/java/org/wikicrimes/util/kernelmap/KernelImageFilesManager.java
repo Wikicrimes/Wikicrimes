@@ -1,6 +1,6 @@
-package org.wikicrimes.servlet;
+package org.wikicrimes.util.kernelmap;
 
-import java.awt.Color;
+import java.awt.Image;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
@@ -10,15 +10,13 @@ import java.util.TimerTask;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpSession;
 
-import org.wikicrimes.util.kernelMap.KernelMap;
-import org.wikicrimes.util.kernelMap.Suavizador;
-import org.wikicrimes.util.kernelMap.renderer.CellBasedRenderer;
-import org.wikicrimes.util.kernelMap.renderer.TransparentToColor;
+import org.wikicrimes.util.kernelmap.renderer.KMRFactory;
+import org.wikicrimes.util.kernelmap.renderer.KernelMapRenderer;
 
 /**
- * Criação e deleção de imagens relacionadas com Mapa de Kernel.
- * Obs: A implementação do Mapa de Kernel gera imagens com um endereço similar a 
- * "/images/KernelMap/[id-da-sessão]/". Esta classe gerencia a criação e deleção das imagens.
+ * Criacao e delecao de imagens relacionadas com Mapa de Kernel.
+ * Obs: A implementacao do Mapa de Kernel gera imagens com um endereco similar a 
+ * "/images/KernelMap/[id-da-sessao]/". Esta classe gerencia a criacao e delecao das imagens.
  * 
  * @author victor
  */
@@ -29,7 +27,7 @@ public class KernelImageFilesManager {
 	
 	
 	/**
-	 * Deleta o diretório e imagens (de Mapa de Kernel) relacionados a uma única sessão 
+	 * Deleta o diretorio e imagens (de Mapa de Kernel) relacionados a uma unica sessao 
 	 */
 	public static void deletaImagem(HttpSession sessao){
 		String imagePath = realImagePath(sessao);
@@ -38,10 +36,10 @@ public class KernelImageFilesManager {
 	}
 	
 	/**
-	 * Deleta um diretório qualquer contendo imagens PNG.
+	 * Deleta um diretorio qualquer contendo imagens PNG.
 	 */
 	private static void deletaArquivo(final File dir){
-		//obs: a deleção é agendade para alguns segundos mais tarde
+		//obs: a delecao eh agendade para alguns segundos mais tarde
 		//pra corrigir um bug q acontecia ocasionalmente de a imagem ser deletada antes de ser exibida
 		
 		TimerTask task = 
@@ -64,11 +62,11 @@ public class KernelImageFilesManager {
 					}
 					
 					//deleta o arquivo (de menor numero)
-					//if(menorFile.getName().endsWith(".png")) //segurança, pra n deletar outras coisas 
+					//if(menorFile.getName().endsWith(".png")) //seguranca, pra n deletar outras coisas 
 					menorFile.delete();
 				}
 				
-				//deleta o diretório se tiver ficado vazio
+				//deleta o diretorio se tiver ficado vazio
 				new Timer().schedule(deletaDir, 10000);
 				
 			}
@@ -76,7 +74,7 @@ public class KernelImageFilesManager {
 			TimerTask deletaDir = 
 				new TimerTask(){
 				public void run() {
-					//deleta só se tiver ficado vazio
+					//deleta so se tiver ficado vazio
 					File[] files = dir.listFiles();
 					if(files != null && files.length == 0)
 						dir.delete();
@@ -90,15 +88,14 @@ public class KernelImageFilesManager {
 	
 	public static String criarImagem(KernelMap kernel, HttpSession sessao){
 		
-		Suavizador kRend = new Suavizador(kernel);
-		CellBasedRenderer scheme = new TransparentToColor(kernel, Color.RED);
-		RenderedImage imagem = (RenderedImage)kRend.pintaKernel(scheme);
+		KernelMapRenderer renderer = KMRFactory.getDefaultRenderer(kernel);
+		Image imagem = renderer.renderImage();
 		
 		String fileName = nomeImagem(sessao);
 		String imagePath = realImagePath(sessao);
 		try {
 			new File(imagePath).mkdirs();
-			ImageIO.write(imagem, "PNG", new File(imagePath, fileName));
+			ImageIO.write((RenderedImage)imagem, "PNG", new File(imagePath, fileName));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

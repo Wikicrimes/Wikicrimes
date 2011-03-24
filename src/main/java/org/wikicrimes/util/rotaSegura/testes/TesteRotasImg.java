@@ -21,10 +21,9 @@ import java.util.Queue;
 
 import javax.imageio.ImageIO;
 
-import org.wikicrimes.util.kernelMap.KernelMap;
-import org.wikicrimes.util.kernelMap.Suavizador;
-import org.wikicrimes.util.kernelMap.renderer.CellBasedRenderer;
-import org.wikicrimes.util.kernelMap.renderer.TransparentToColor;
+import org.wikicrimes.util.kernelmap.KernelMap;
+import org.wikicrimes.util.kernelmap.renderer.KMRFactory;
+import org.wikicrimes.util.kernelmap.renderer.KernelMapRenderer;
 import org.wikicrimes.util.rotaSegura.geometria.Poligono;
 import org.wikicrimes.util.rotaSegura.geometria.Ponto;
 import org.wikicrimes.util.rotaSegura.geometria.Rota;
@@ -438,9 +437,8 @@ public class TesteRotasImg {
 	
 	protected void pintaKernel(Graphics g, KernelMap kernel){
 		if(kernel != null){
-			Suavizador r = new Suavizador(kernel);
-			CellBasedRenderer scheme = new TransparentToColor(kernel, Color.RED);
-			Image img = r.pintaKernel(scheme);
+			KernelMapRenderer renderer = KMRFactory.getDefaultRenderer(kernel);
+			Image img = renderer.renderImage();
 			Rectangle kBounds = kernel.getBounds();
 			int dx1 = xGMtoTeste(limites.x) - BORDA;
 			int dy1 = yGMtoTeste(limites.y) - BORDA;

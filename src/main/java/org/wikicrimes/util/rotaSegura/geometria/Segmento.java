@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import org.wikicrimes.util.kernelMap.PropertiesLoader;
+import org.wikicrimes.util.kernelmap.PropertiesLoader;
 
 /**
  * Segmento de reta que compoe parte de uma rota
@@ -36,7 +36,7 @@ public class Segmento {
 	
 	
 	/**
-	 * Um segmento de reta da origem até o fim de uma rota
+	 * Um segmento de reta da origem atï¿½ o fim de uma rota
 	 */
 	public Segmento(Rota rota){
 		this(rota.getInicio(), rota.getFim());
@@ -44,7 +44,7 @@ public class Segmento {
 	
 	
 	/**
-	 * Corrdenada do início deste segmento de reta
+	 * Corrdenada do inï¿½cio deste segmento de reta
 	 */
 	public Ponto getInicio(){
 		return inicio;
@@ -68,7 +68,7 @@ public class Segmento {
 	}
 	
 	/**
-	 * Inverte o X e Y dos pontos deste SegmentoReta para gerar um novo. Obs: Não troca do início pelo fim. 
+	 * Inverte o X e Y dos pontos deste SegmentoReta para gerar um novo. Obs: Nï¿½o troca do inï¿½cio pelo fim. 
 	 */
 	public Segmento invertido(){
 		return new Segmento(getInicio().invertido(), getFim().invertido());
@@ -89,7 +89,7 @@ public class Segmento {
 	}
 	
 	/**
-	 * O coeficiente A da equação reduzida da reta. A tangente do ângulo. 
+	 * O coeficiente A da equaï¿½ï¿½o reduzida da reta. A tangente do ï¿½ngulo. 
 	 */
 	public double coefA(){
 		double catetoAdj = this.getFim().getX() - this.getInicio().getX();
@@ -98,7 +98,7 @@ public class Segmento {
 	}
 	
 	/**
-	 * O coeficiente B da equação reduzida da reta. O termo independente.
+	 * O coeficiente B da equaï¿½ï¿½o reduzida da reta. O termo independente.
 	 */
 	public double coefB(){
 		int x1 = getInicio().x;
@@ -118,10 +118,10 @@ public class Segmento {
 	}
 	
 	/**
-	 * Distância entre um ponto e a reta correspondente a este SegmentoReta. Não é do ponto ao segmento estritamente falando.
+	 * Distï¿½ncia entre um ponto e a reta correspondente a este SegmentoReta. Nï¿½o ï¿½ do ponto ao segmento estritamente falando.
 	 */
 	public double distanciaPontoReta(Ponto p){
-		//termos da equação gerl da reta
+		//termos da equaï¿½ï¿½o gerl da reta
 		double a = coefA();
 		double b = -1;
 		double c = coefB();
@@ -225,7 +225,7 @@ public class Segmento {
 	}	
 	
 	/**
-	 * Não conta se a interseção for entre o inicio ou fim de um Segmento e o inicio ou fim do outro. 
+	 * Nï¿½o conta se a interseï¿½ï¿½o for entre o inicio ou fim de um Segmento e o inicio ou fim do outro. 
 	 */
 	public boolean intersectaAlgumForaPontas(Collection<Segmento> segms){
 		boolean intersectaAlgum = false;
@@ -259,7 +259,7 @@ public class Segmento {
 				return this;
 			if(segm.comprimento() <= 2*TOLERANCIA_PONTOS_IGUAIS)
 				return this;
-			//exclui os pontos repetidos, tem q ficar só 2
+			//exclui os pontos repetidos, tem q ficar sï¿½ 2
 			for(int i=0; i<ptsComum.size(); i++){
 				for(int j=0; j<ptsComum.size(); j++){
 					if(j==i) continue;

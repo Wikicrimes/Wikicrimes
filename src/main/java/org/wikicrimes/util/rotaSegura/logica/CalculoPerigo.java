@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.wikicrimes.util.NumerosUtil;
-import org.wikicrimes.util.kernelMap.KernelMap;
-import org.wikicrimes.util.kernelMap.PropertiesLoader;
+import org.wikicrimes.util.kernelmap.KernelMap;
+import org.wikicrimes.util.kernelmap.PropertiesLoader;
 import org.wikicrimes.util.rotaSegura.geometria.Ponto;
 import org.wikicrimes.util.rotaSegura.geometria.Rota;
 import org.wikicrimes.util.rotaSegura.geometria.Segmento;
@@ -37,7 +37,7 @@ public class CalculoPerigo {
 	 * 			t(c) :- tolerancia do cenario c (ver metodo "tolerancia(Rota)")
 	 * 
 	 * Se r eh uma rota no cenario c (origem e destino de r coincidem com os de c), entao
-	 * r eh toleravel se e só se p(r) eh menor ou igual a t(c)
+	 * r eh toleravel se e sï¿½ se p(r) eh menor ou igual a t(c)
 	 */
 	public boolean isToleravel(Rota rota){
 		return perigo(rota) <= tolerancia(rota);
@@ -70,7 +70,7 @@ public class CalculoPerigo {
 	}
 	
 	/**
-	 * Função que avalia o perigo de uma rota, levando em consideração
+	 * Funï¿½ï¿½o que avalia o perigo de uma rota, levando em consideraï¿½ï¿½o
 	 * a densidade dos locais por onde ela passa e a distancia total 
 	 * percorrida.
 	 * 
@@ -97,7 +97,7 @@ public class CalculoPerigo {
 	}
 	
 	/**
-	 * Função que avalia o perigo de um segmento de reta, levando em consideração
+	 * Funï¿½ï¿½o que avalia o perigo de um segmento de reta, levando em consideraï¿½ï¿½o
 	 * a densidade das celulas do mapa de kernel cortadas por ele e seu comprimento.
 	 * 
 	 * Definicoes:
@@ -113,7 +113,7 @@ public class CalculoPerigo {
 	public double perigo(Segmento segm){
 		
 		Rectangle bounds = kernel.getBounds();
-		double[][] dens = kernel.getDensidadeGrid();
+		double[][] dens = kernel.getDensityGrid();
 		int node = kernel.getNodeSize();
 
 		//largura e altura do mapa de kernel
@@ -132,8 +132,8 @@ public class CalculoPerigo {
 		if(xIni > xFim){ int aux=xIni; xIni=xFim; xFim=aux;}
 		if(yIni > yFim){ int aux=yIni; yIni=yFim; yFim=aux;}
 		
-		//corrigir o caso em q o segm extrapola o mapa de kernel (rota saíndo do viewport do wikicrimes)
-		//TODO talvez seja melhor impedir q isso aconteça, ver depois
+		//corrigir o caso em q o segm extrapola o mapa de kernel (rota saï¿½ndo do viewport do wikicrimes)
+		//TODO talvez seja melhor impedir q isso aconteï¿½a, ver depois
 //		if(xIni < 0) xIni = 0;
 //		if(xFim >= kernelCols) xFim = kernelCols-1;
 //		if(yIni < 0) yIni = 0;
@@ -150,7 +150,7 @@ public class CalculoPerigo {
 
 //		/*TESTE*/List<Rectangle> cels = new ArrayList<Rectangle>();
 		
-		//somar os valores de perigo (ponderados) de cada célula
+		//somar os valores de perigo (ponderados) de cada cï¿½lula
 		double contribuicoesDeDensidade = 0;
 		if(xIni==xFim || yIni==yFim){ //passa em todas as celulas do retangulo
 			//um dos 2 fors a seguir so roda uma vez 
@@ -199,7 +199,7 @@ public class CalculoPerigo {
 	
 	public double perigo(Ponto p){
 		Rectangle bounds = kernel.getBounds();
-		double[][] dens = kernel.getDensidadeGrid();
+		double[][] dens = kernel.getDensityGrid();
 		int node = kernel.getNodeSize();
 		
 		int x = (p.x-bounds.x)/node;
@@ -212,21 +212,21 @@ public class CalculoPerigo {
 		List<Ponto> intersecoes = listaIntersecoes(segm, celula);
 		
 		if(intersecoes.size() == 1) 
-			return 0.0; //o segm toca no canto da célula mas não entra
+			return 0.0; //o segm toca no canto da cï¿½lula mas nï¿½o entra
 		
 		double tam = 0.0;
 		Ponto ini = segm.getInicio();
 		Ponto fim = segm.getFim();
 		if(!intersecoes.isEmpty()){
-			//tem 2 pontos de interseção
+			//tem 2 pontos de interseï¿½ï¿½o
 			
 			if(celula.contains(ini) && celula.contains(fim)){
-				//o segmento está completamente contido na célula
+				//o segmento estï¿½ completamente contido na cï¿½lula
 				tam = segm.comprimento();
 			}else{
 				
 				if(celula.contains(ini) || celula.contains(fim)){
-					//um dos limites do segmento está dentro da célula
+					//um dos limites do segmento estï¿½ dentro da cï¿½lula
 					Ponto dentro = null, fora = null;
 					if(celula.contains(ini)){
 						dentro = ini;
@@ -238,7 +238,7 @@ public class CalculoPerigo {
 						
 					if(new Segmento(intersecoes.get(0), fora).comprimento() 
 							> new Segmento(intersecoes.get(1), fora).comprimento())
-						intersecoes.remove(0); //remove o q tá mais longe do FORA
+						intersecoes.remove(0); //remove o q tï¿½ mais longe do FORA
 					else
 						intersecoes.remove(1);
 					
@@ -254,17 +254,17 @@ public class CalculoPerigo {
 	}
 	
 	/**
-	 * Lista os pontos de interseção de uma reta em um retângulo.
+	 * Lista os pontos de interseï¿½ï¿½o de uma reta em um retï¿½ngulo.
 	 */
 	private List<Ponto> listaIntersecoes(Segmento reta, Rectangle retangulo){
-		Set<Ponto> intersecoes = new HashSet<Ponto>(); //usando um Set pra descartar os pontos idênticos (se a reta passar no canto da célula, vão ter 2 idênticos, ex: NORTE e OESTE, se for no canto superior esquerdo)
+		Set<Ponto> intersecoes = new HashSet<Ponto>(); //usando um Set pra descartar os pontos idï¿½nticos (se a reta passar no canto da cï¿½lula, vï¿½o ter 2 idï¿½nticos, ex: NORTE e OESTE, se for no canto superior esquerdo)
 		
 		double a = reta.coefA();
 		double b = reta.coefB();
 		if(!Double.isInfinite(a) && !Double.isInfinite(b)){
 			double corte;
 			//norte
-			corte = (retangulo.y - b) / a; //o valor de X do ponto onde a reta corta o limite norte da célula (que é uma outra reta)
+			corte = (retangulo.y - b) / a; //o valor de X do ponto onde a reta corta o limite norte da cï¿½lula (que ï¿½ uma outra reta)
 			if(corte >= retangulo.x && corte <= retangulo.x+retangulo.width)
 				intersecoes.add(new Ponto((int)Math.round(corte), retangulo.y));
 			//sul
@@ -272,7 +272,7 @@ public class CalculoPerigo {
 			if(corte >= retangulo.x && corte <= retangulo.x+retangulo.width)
 				intersecoes.add(new Ponto((int)Math.round(corte), retangulo.y+retangulo.height));
 			//oeste
-			corte = a*retangulo.x + b; //o valor de Y do ponto onde a reta corta o limite oeste da célula
+			corte = a*retangulo.x + b; //o valor de Y do ponto onde a reta corta o limite oeste da cï¿½lula
 			if(corte >= retangulo.y && corte <= retangulo.y+retangulo.height)
 				intersecoes.add(new Ponto(retangulo.x, (int)Math.round(corte)));
 			//leste
@@ -287,7 +287,7 @@ public class CalculoPerigo {
 		
 		/*teste*/
 		if(intersecoes.size()>2){
-			throw new AssertionError(intersecoes.size()+" pontos. Só pode ter 0, 1 ou 2 pontos de interseção");
+			throw new AssertionError(intersecoes.size()+" pontos. Sï¿½ pode ter 0, 1 ou 2 pontos de interseï¿½ï¿½o");
 		}
 		/*teste*/
 		

@@ -43,6 +43,7 @@ public class TesteRefinamento extends TesteRotasFrame{
 		return painel;
 	}
 
+	@SuppressWarnings("serial")
 	class PainelTesteRefinamento extends PainelTeste {
 	
 		Rota rota;

@@ -40,7 +40,7 @@ import org.wikicrimes.web.ImagemMapaForm;
 
 
 /**
- * Trata requisições para gerar imagens do mapa. Fala com a Google Static Maps API.
+ * Trata requisiï¿½ï¿½es para gerar imagens do mapa. Fala com a Google Static Maps API.
  * 
  * @author victor
  */
@@ -48,7 +48,7 @@ public class ServletImagemMapa extends HttpServlet {
 
 	private ImagemMapaService service;
 	private CrimeService crimeService;
-	private final int MARGEM = 10; //margem do polígono em relação à borda da imagem
+	private final int MARGEM = 10; //margem do polï¿½gono em relaï¿½ï¿½o ï¿½ borda da imagem
 	
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
@@ -65,7 +65,7 @@ public class ServletImagemMapa extends HttpServlet {
 				//recupera os dados no banco (objeto ImagemMapa)
 				ImagemMapa im = service.get(Integer.valueOf(id));
 				
-				//pega a imgaem (só o mapa) pela Google Static Maps API
+				//pega a imgaem (sï¿½ o mapa) pela Google Static Maps API
 				String urlGSM = constroiUrlGSM(im);
 //				/*teste*/System.out.println("urlGSM: " + urlGSM);
 				URL urlImagem = new URL(urlGSM);
@@ -77,7 +77,7 @@ public class ServletImagemMapa extends HttpServlet {
 				//pinta os marcadores por cima
 				pintaMarcadores(im, imagemMapa, sessao);
 				
-				ServletUtil.enviarImagem(resp, imagemMapa);
+				ServletUtil.sendImage(resp, imagemMapa);
 			}
 		}
 	}
@@ -108,7 +108,7 @@ public class ServletImagemMapa extends HttpServlet {
 			//persistencia
 			long id = constroiImagemMapa(centroLat, centroLng, zoom, width, height, poligono, north, south, east, west, sessao);
 			
-			//envia o URL q dá acesso à imagem dentro dum html com outras informações
+			//envia o URL q dï¿½ acesso ï¿½ imagem dentro dum html com outras informaï¿½ï¿½es
 			PrintWriter out = resp.getWriter();
 			String urlImagemMapa =  req.getScheme() + "://" + req.getServerName() + ":" 
 									+ req.getServerPort() + req.getContextPath() + "/img.html?id=" + id; 
@@ -132,7 +132,7 @@ public class ServletImagemMapa extends HttpServlet {
 		im.setWidth(Integer.valueOf(width));
 		im.setHeight(Integer.valueOf(height));
 		
-		//políono
+		//polï¿½ono
 		List<PontoLatLng> vertices = im.setPoligonoAndReturn(poligono);
 		service.save(vertices);
 		
@@ -182,7 +182,7 @@ public class ServletImagemMapa extends HttpServlet {
 		    con.disconnect();
 		} catch (IOException e) {
 			e.printStackTrace();
-			throw new AssertionError("não veio a imagem do Google Static Maps API.\n" + e.getMessage());
+			throw new AssertionError("nï¿½o veio a imagem do Google Static Maps API.\n" + e.getMessage());
 		}
 		return imagem;
 	}

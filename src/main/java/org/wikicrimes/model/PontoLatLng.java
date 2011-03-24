@@ -5,7 +5,7 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.wikicrimes.util.kernelMap.LatLngBoundsGM;
+import org.wikicrimes.util.kernelmap.LatLngBoundsGM;
 import org.wikicrimes.util.rotaSegura.geometria.Ponto;
 
 @SuppressWarnings("serial")
@@ -102,9 +102,17 @@ public class PontoLatLng extends BaseObject {
 		return new PontoLatLng(lat, lng);
 	}
 	
-	public static double distanciaKM(PontoLatLng p, PontoLatLng q) {
+	public static double distanceKM(PontoLatLng p, PontoLatLng q) {
 		double distanciaLatLng = Point.distance(p.lng, p.lat, q.lng, q.lat);
 		return distanciaLatLng * KM_POR_GRAU;
+	}
+	
+	public static double distanceKmToPixels(double km, int zoom) {
+		PontoLatLng l1 = new PontoLatLng(0,0);
+		PontoLatLng l2 = l1.transladarKm(km, 0);
+		Ponto p1 = l1.toPixel(zoom);
+		Ponto p2 = l2.toPixel(zoom);
+		return Ponto.distancia(p1, p2);
 	}
 	
 	public static PontoLatLng medio(PontoLatLng p, PontoLatLng q) {

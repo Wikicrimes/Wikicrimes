@@ -22,9 +22,9 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.wikicrimes.model.PontoLatLng;
 import org.wikicrimes.service.CrimeService;
 import org.wikicrimes.util.DataUtil;
-import org.wikicrimes.util.kernelMap.KernelMap;
-import org.wikicrimes.util.kernelMap.KernelMapUtil;
-import org.wikicrimes.util.kernelMap.PropertiesLoader;
+import org.wikicrimes.util.kernelmap.KernelMap;
+import org.wikicrimes.util.kernelmap.KernelMapUtil;
+import org.wikicrimes.util.kernelmap.PropertiesLoader;
 import org.wikicrimes.util.rotaSegura.ParametroInvalidoRotaSeguraException;
 import org.wikicrimes.util.rotaSegura.geometria.Ponto;
 import org.wikicrimes.util.rotaSegura.geometria.Rota;
@@ -246,7 +246,7 @@ public class ServletRotaSeguraServerSide extends HttpServlet{
 				Ponto destino = new PontoLatLng(request.getParameter("destino")).toPixel(zoom);
 				retaOD = new Rota(origem, destino);
 			}catch (Exception e) {
-				throw new ParametroInvalidoRotaSeguraException("Valores inválidos em pelo menos um dos parâmetros 'origem' e 'destino'");
+				throw new ParametroInvalidoRotaSeguraException("Valores invï¿½lidos em pelo menos um dos parï¿½metros 'origem' e 'destino'");
 			}
 			Document kml = KMLRouteHandler.getKML(retaOD, zoom);
 			return KMLRouteHandler.getRoute(kml, zoom);
@@ -269,7 +269,7 @@ public class ServletRotaSeguraServerSide extends HttpServlet{
 			int zoom = getZoom(request);
 			PontoLatLng origem = new PontoLatLng(request.getParameter("origem"));
 			PontoLatLng destino = new PontoLatLng(request.getParameter("destino"));
-			double distancia = PontoLatLng.distanciaKM(origem,destino);
+			double distancia = PontoLatLng.distanceKM(origem,destino);
 			PontoLatLng centro = PontoLatLng.medio(origem, destino);
 			Date dataInicial = DataUtil.moveData(new Date(), 0, 0, -PADRAO_ANOS_ATRAS);
 			KernelMap kernel = KernelMapUtil.fazerKernelMap(centro, distancia*2, zoom, getCrimeService(), dataInicial);

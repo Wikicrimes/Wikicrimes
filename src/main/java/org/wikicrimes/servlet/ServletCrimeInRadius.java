@@ -15,7 +15,7 @@ import org.wikicrimes.model.MobileRequestLog;
 import org.wikicrimes.model.PontoLatLng;
 import org.wikicrimes.service.CrimeService;
 import org.wikicrimes.service.LogService;
-import org.wikicrimes.util.kernelMap.AvaliacaoPerigo;
+import org.wikicrimes.util.kernelmap.AvaliacaoPerigo;
 
 public class ServletCrimeInRadius extends HttpServlet {
 

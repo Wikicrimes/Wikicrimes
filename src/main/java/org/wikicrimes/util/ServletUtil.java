@@ -1,5 +1,6 @@
 package org.wikicrimes.util;
 
+import java.awt.Image;
 import java.awt.image.RenderedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -35,11 +36,11 @@ public class ServletUtil {
 		return getClientBrowser(req) == Browser.INTERNET_EXPLORER;
 	}
 	
-	public static void enviarImagem(HttpServletResponse response, RenderedImage imagem) throws IOException{
+	public static void sendImage(HttpServletResponse response, Image imagem) throws IOException{
 		//manda a imagem gerada pelo KernelMapRenderer
 		response.setContentType("image/png");
 		OutputStream out = response.getOutputStream();
-		ImageIO.write(imagem, "PNG", out);
+		ImageIO.write((RenderedImage)imagem, "PNG", out);
 	}
 	
 	public static String fazerRequisicao(URL url) throws IOException{

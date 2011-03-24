@@ -68,6 +68,7 @@ public class KMLRouteHandler {
 		return null;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public static Rota getRoute(Document kml, int zoom) throws DirectionsAPIRequestException{
 
 		StatusGMDirections status = getStatus(kml); 

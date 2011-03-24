@@ -10,9 +10,9 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.wikicrimes.util.kernelMap.PropertiesLoader;
+import org.wikicrimes.util.kernelmap.PropertiesLoader;
 import org.wikicrimes.util.rotaSegura.testes.TesteRotasImg;
-
+ 
 
 /**
  * Conjunto de coordenadas ou conjunto de segmentos de reta ligados.

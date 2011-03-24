@@ -9,7 +9,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.wikicrimes.util.GeneralHashFunctionLibrary;
-import org.wikicrimes.util.kernelMap.PropertiesLoader;
+import org.wikicrimes.util.kernelmap.PropertiesLoader;
 
 /**
  * x: longitude
@@ -27,9 +27,9 @@ public class Ponto extends Point{
 	
 	public Ponto(double x, double y){
 		if(x > Integer.MAX_VALUE || x < Integer.MIN_VALUE || java.lang.Double.isNaN(x))
-			throw new InvalidParameterException("X ("+ x +") não pode ser representado num INT");
+			throw new InvalidParameterException("X ("+ x +") nï¿½o pode ser representado num INT");
 		if(y > Integer.MAX_VALUE || y < Integer.MIN_VALUE || java.lang.Double.isNaN(y))
-			throw new InvalidParameterException("Y ("+ y +") não pode ser representado num INT");
+			throw new InvalidParameterException("Y ("+ y +") nï¿½o pode ser representado num INT");
 		
 		this.x = (int)Math.round(x);
 		this.y = (int)Math.round(y);

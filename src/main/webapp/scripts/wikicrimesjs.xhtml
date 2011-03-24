@@ -527,30 +527,38 @@
 				GEvent.addListener(map, "infowindowbeforeclose", function (latLng) {
 					podeCarregarCrimes = true;
 					selecionarComando(map, 'mao');
-					if (crime != null) {
+					/*if (crime == null) {
 						crime.hide();
-					}
-					if (crime2 != null) {
+						map.removeOverlay(crime);
+					}*/
+					//if (crime2 != null) {
+						//alert(crime2.getRegistrado());
+						//alert(crime2.getEvento());
+						crime2.hide();
+						map.removeOverlay(crime2);
+						
 						if (crime2.getRegistrado() != 1) {
 							crime2.hide();
 							map.removeOverlay(crime2);
 							crime2 = null;
 						} else {
 							if (crime2.getEvento() != 1) {
-			
 								GEvent.addListener(crime2, "click", function () {
-										if(crime2.idTipoCrime == 6)
+										if(crime2.idTipoCrime == 6){
 											crime2.mostrarDadosRelato();
-										else 
+										}				
+										else{ 
 											crime2.mostrarDados();
+										}
 								});
 								crime2.setEvento(1);
 			
 							}
 						}
-					}
+					//}
 					podeCarregarCrimes=true;
 					crime = null;
+					crime2 = null;
 				});
 				GEvent.addListener(map, "singlerightclick", function (overlay, latLng) {
 					if (podeRegistrar) {
@@ -803,6 +811,7 @@
 			}, registrarRelato:function (idTipoRelato, idSubTipoRelato) {
 				var latitude = this.getLatLng().lat();
 				var longitude = this.getLatLng().lng();
+				idSubTipoRelato = '';
 				var myHtml = "<iframe src='./registrarRelato.html?tipoRelato=" + idTipoRelato + "&subTipoRelato=" + idSubTipoRelato + "&latitude=" + latitude + "&longitude=" + longitude + "' width='600' height='180' frameborder='0'></iframe>";
 				this.openInfoWindowHtml(myHtml, 600);
 			}

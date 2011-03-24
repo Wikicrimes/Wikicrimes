@@ -112,19 +112,18 @@
 
 
 
-                <h:inputHidden required="true" value="#{confirmaForm.confirmacao.crime.idCrime}" id="idCrime"/>
+                <h:inputHidden required="true" value="#{confirmaForm.confirmacao.crime.chave}" id="idCrime"/>
                 <h:inputHidden required="true" value="#{confirmaForm.idConfirmacao}" id="idConfirmacao"/>
                 
                 <h:outputText value="#{messages['confirmacao.pergunta']}" style="vertical-align: text-top"/>
 				<h:outputText />
 				<br/><br/>
-				
 				<t:div style="align: center;">
-                	<h:commandButton value="#{messages['webapp.btn.sim']} " id="btnSim" onclick="parent.displayMessage('./tipoConfirmacao.html?idCrime='+'#{confirmaForm.crime.idCrime}'+ '&amp;p=true' + '&amp;idConfirmacao=' + '#{confirmaForm.idConfirmacao}', 380, 200,'#{messages['confirmacao.pergunta.pq.motivo']}');return false;" styleClass="button"/>
+                	<h:commandButton value="#{messages['webapp.btn.sim']} " id="btnSim" onclick="parent.displayMessage('./tipoConfirmacao.html?idCrime='+'#{confirmaForm.crime.chave}'+ '&amp;p=true' + '&amp;idConfirmacao=' + '#{confirmaForm.idConfirmacao}', 380, 200,'#{messages['confirmacao.pergunta.pq.motivo']}');return false;" styleClass="button"/>
    	            	<h:outputText value=" "/>
-   	            	<h:commandButton value=" #{messages['webapp.btn.nao']}" id="btnNao" onclick="parent.displayMessage('./tipoConfirmacao.html?idCrime='+'#{confirmaForm.crime.idCrime}' + '&amp;p=false' + '&amp;idConfirmacao=' + '#{confirmaForm.idConfirmacao}', 400, 200,'#{messages['confirmacao.pergunta.pq.motivo']}');return false;" styleClass="button"/>
+   	            	<h:commandButton value=" #{messages['webapp.btn.nao']}" id="btnNao" onclick="parent.displayMessage('./tipoConfirmacao.html?idCrime='+'#{confirmaForm.crime.chave}' + '&amp;p=false' + '&amp;idConfirmacao=' + '#{confirmaForm.idConfirmacao}', 400, 200,'#{messages['confirmacao.pergunta.pq.motivo']}');return false;" styleClass="button"/>
 					<h:outputText value=" "/>
-					<h:outputLink value="#" onclick="parent.displayMessage('./abuso.html?idCrime=' + '#{mostrarDadosForm.crime.idCrime}',450,410,'#{messages['abuso.titulo']}');return false;" >
+					<h:outputLink value="#" onclick="parent.displayMessage('./abuso.html?idCrime=' + '#{mostrarDadosForm.crime.chave}',450,410,'#{messages['abuso.titulo']}');return false;" >
 						<h:graphicImage value="/images/denuncia2.jpg" title="#{messages['abuso.hint']}" style="vertical-align:middle; padding-bottom:5px;"/>
 					</h:outputLink>
 				

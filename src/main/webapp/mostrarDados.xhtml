@@ -196,9 +196,9 @@
 				<br/><br/>
 				
 				<t:div style="align: center;">
-                	<h:commandButton style="font-size: 11px; font-family: sans-serif;" value="#{messages['webapp.btn.sim']} " id="btnSim" onclick="parent.displayMessage('./tipoConfirmacao.html?idCrime='+'#{mostrarDadosForm.crime.idCrime}'+ '&amp;p=true', 380, 200,'#{messages['confirmacao.pergunta.pq.motivo']}');return false;" styleClass="button"/>
+                	<h:commandButton style="font-size: 11px; font-family: sans-serif;" value="#{messages['webapp.btn.sim']} " id="btnSim" onclick="parent.displayMessage('./tipoConfirmacao.html?idCrime='+'#{mostrarDadosForm.crime.chave}'+ '&amp;p=true', 380, 200,'#{messages['confirmacao.pergunta.pq.motivo']}');return false;" styleClass="button"/>
    	            	<h:outputText value=" "/>
-   	            	<h:commandButton style="font-size: 11px; font-family: sans-serif;" value=" #{messages['webapp.btn.nao']}" id="btnNao" onclick="parent.displayMessage('./tipoConfirmacao.html?idCrime='+'#{mostrarDadosForm.crime.idCrime}' + '&amp;p=false', 400, 200,'#{messages['confirmacao.pergunta.pq.motivo']}');return false;" styleClass="button"/>
+   	            	<h:commandButton style="font-size: 11px; font-family: sans-serif;" value=" #{messages['webapp.btn.nao']}" id="btnNao" onclick="parent.displayMessage('./tipoConfirmacao.html?idCrime='+'#{mostrarDadosForm.crime.chave}' + '&amp;p=false', 400, 200,'#{messages['confirmacao.pergunta.pq.motivo']}');return false;" styleClass="button"/>
 				<h:outputText value=" "/>
 																		
 				<h:outputLink value="#" onclick="parent.displayMessage('./abuso.html?idCrime=' + '#{mostrarDadosForm.crime.idCrime}',450,410,'#{messages['abuso.hint']}');return false;" >

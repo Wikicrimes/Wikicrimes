@@ -18,7 +18,7 @@ public class ComentarioDaoHibernate extends GenericCrudDaoHibernate implements
 	public List<Comentario> getComentariosByCrime(String idCrime) {
 		String query = "from Comentario c ";
    	
-    	    query += "where c.crime.chave = '" + idCrime+"'";
+    	    query += "where c.crime.chave = '" + idCrime +"'";
     	    query += " order by dataConfirmacao";
 
     	return getHibernateTemplate().find(query);

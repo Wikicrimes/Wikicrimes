@@ -534,6 +534,7 @@
 					//if (crime2 != null) {
 						//alert(crime2.getRegistrado());
 						//alert(crime2.getEvento());
+					if (crime2 != null){
 						crime2.hide();
 						map.removeOverlay(crime2);
 						
@@ -555,10 +556,12 @@
 			
 							}
 						}
-					//}
+						
+					}
 					podeCarregarCrimes=true;
 					crime = null;
 					crime2 = null;
+					
 				});
 				GEvent.addListener(map, "singlerightclick", function (overlay, latLng) {
 					if (podeRegistrar) {

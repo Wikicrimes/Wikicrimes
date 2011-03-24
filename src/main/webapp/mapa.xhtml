@@ -362,16 +362,15 @@
 			mapaLocalizacaoX = map.getCenter().lat();
 			mapaLocalizacaoY = map.getCenter().lng();
 			localizacao = center;
+			var rua = document.getElementById('rua').value;
+		    var ruaTrim = replaceAll(rua,' ','');
+			if(ruaTrim == null || ruaTrim == 'undefined' || ruaTrim == ''){
+				jQuery('#btnConfirmar').css('background-color', 'gray');
+	      		jQuery('#btnConfirmar').css('border','none');
+	      		jQuery('#btnConfirmar').attr('disabled','true');
+			}			
 			getAddress(new GOverlay(),new GLatLng(mapaLocalizacaoX,mapaLocalizacaoY), function(){
-				showLocalMapaLocalizacao(function(){
-					var rua = document.getElementById('rua').value;
-				    var ruaTrim = replaceAll(rua,' ','');
-					if(ruaTrim == null && ruaTrim == 'undefined' && ruaTrim == ''){
-						jQuery('#btnConfirmar').css('background-color', 'gray');
-			      		jQuery('#btnConfirmar').css('border','none');
-			      		jQuery('#btnConfirmar').attr('disabled','true');
-					}				
-				});
+				showLocalMapaLocalizacao();
 				
 			});
 		}
@@ -511,7 +510,9 @@
 							mapaLocalizacaoX = crimeRegistro.getLatLng().lat();
 							mapaLocalizacaoY = crimeRegistro.getLatLng().lng();
 							var pos = new GLatLng(mapaLocalizacaoX, mapaLocalizacaoY);
-							localizacao = pos;
+							localizacao =pos;
+							point = pos;
+							zoomRegistro = mapaRegistro.getZoom();
 						});
 					  	mapaRegistro.addOverlay(crimeRegistro);
 			      	}else{
@@ -555,7 +556,7 @@
 				
 			crime2.disableDragging();
 			map.enableDragging();
-			map.setCenter(latLng, zoomRegistro);
+			map.setCenter(localizacao, zoomRegistro);
 			atualiza=true;
 			atualizaGrupos=true;
 		
@@ -606,7 +607,6 @@
 			icone.iconAnchor = new GPoint(2, 34);
 			icone.infoWindowAnchor = new GPoint(9, 2);
 			icone.image = "./images/baloes/marcadorNeutro.png"
-			marker = new CrimeMarker(point, {draggable:true, icon:icone});
 			marker = new CrimeMarker(point, {draggable:true, icon:icone});
 			marker.idTipoCrime = tipoCrime;
 			return marker;

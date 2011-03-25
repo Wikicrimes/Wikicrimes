@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.util.Arrays;
 
 import org.wikicrimes.util.kernelmap.KernelMap;
 
@@ -46,10 +45,10 @@ public abstract class CellBasedKMR extends KernelMapRenderer{
 			}
 		}
 		
-		/*DEBUG*/System.out.println("CELULAS POR INTERVALO, " + Arrays.toString(count));
+//		/*DEBUG*/System.out.println("CELULAS POR INTERVALO, " + Arrays.toString(count));
 		return buffer;
 	}
-	/*DEBUG*/int[] count = new int[9];
+//	/*DEBUG*/int[] count = new int[9];
 	
 	public abstract Color renderCell(double density);
 	

@@ -273,8 +273,8 @@
 	
 	<servlet>
 		<servlet-name>ServletKernelMap</servlet-name>
-<!--	<servlet-class>org.wikicrimes.servlet.ServletKernelMap</servlet-class>   -->
-		<servlet-class>org.wikicrimes.util.statistics.StatisticsServlet</servlet-class>
+		<servlet-class>org.wikicrimes.servlet.ServletKernelMap</servlet-class>  
+<!--		<servlet-class>org.wikicrimes.util.statistics.StatisticsServlet</servlet-class> -->
 	</servlet>
 
 	<servlet-mapping>

@@ -55,6 +55,7 @@
 				</rich:panel>
 				
 				<div id="detalhecrime">
+					
 					<div id="detalhemapa" style="height: 300px; width: 500px; float: right; margin: 20px;"></div>
 					
 					<c:if test="#{mostrarDadosForm.crime.cidade != null}">
@@ -73,12 +74,21 @@
 			 		</c:if>
 			 		
 					<p style="text-align: justify;"><h:outputText value="#{mostrarDadosForm.crime.descricao}" /></p>
+					<c:if test="#{mostrarDadosForm.crime.linkNoticia}">
 					<p style="text-align: justify;">Fonte:<br/>
 						<h:outputLink target="_blank" value="#{mostrarDadosForm.crime.linkNoticia}">
 							<h:outputText value="#{mostrarDadosForm.crime.linkNoticia}"/>
 						</h:outputLink>
 					</p>
+					</c:if>
+					<div>
+					<h:outputLink value="main.html">
+						<h:outputText value="#{messages['crime.mapainterativo']}"/>
+						<f:param name="idcrime" value="#{mostrarDadosForm.crime.chave}"/>
+					</h:outputLink>
+					</div>
 					
+					<hr/>
 					<div id="divFiltrosAplicados"></div>
 					<div id="loadingPequeno"></div>
 					
@@ -94,12 +104,6 @@
 						</div>
 					</t:column>
 					</t:dataTable>
-				</div>
-				<div style="margin-top:20px;margin-left:770px;">
-					<h:outputLink value="main.html">
-						<h:outputText value="#{messages['crime.mapainterativo']}"/>
-						<f:param name="idcrime" value="#{mostrarDadosForm.crime.chave}"/>
-					</h:outputLink>
 				</div>
 				<t:saveState value="#{mostrarDadosForm.idCrime}"></t:saveState>
 			</ui:define>

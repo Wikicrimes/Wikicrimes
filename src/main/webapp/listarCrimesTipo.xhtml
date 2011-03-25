@@ -68,7 +68,7 @@
 								</h:outputText>
 							</td>
 							<td width="860px">				
-								<h:outputLink value="/verCrime.html">
+								<h:outputLink value="verCrime.html">
 				    				<h:outputText value="#{fn:length(crime.descricao) le 105 ? fn:substring(crime.descricao,0,fn:length(crime.descricao)) : fn:substring(crime.descricao,0,105)}"/>
 				    				<c:if test="#{fn:length(crime.descricao) ge 105}">
 				    					<span>...</span>

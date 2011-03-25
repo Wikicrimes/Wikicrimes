@@ -73,6 +73,11 @@
 			 		</c:if>
 			 		
 					<p style="text-align: justify;"><h:outputText value="#{mostrarDadosForm.crime.descricao}" /></p>
+					<p style="text-align: justify;">Fonte:<br/>
+						<h:outputLink target="_blank" value="#{mostrarDadosForm.crime.linkNoticia}">
+							<h:outputText value="#{mostrarDadosForm.crime.linkNoticia}"/>
+						</h:outputLink>
+					</p>
 					
 					<div id="divFiltrosAplicados"></div>
 					<div id="loadingPequeno"></div>

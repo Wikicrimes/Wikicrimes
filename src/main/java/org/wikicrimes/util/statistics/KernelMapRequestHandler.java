@@ -48,7 +48,7 @@ public class KernelMapRequestHandler {
 		List<Point> points = pointsRetriever.getPoints();
 		int zoom = Param.getZoom(request);
 		double bandwidth = getZoomDependantBandwidth(zoom);
-//		/*DEBUG*/System.out.println("BANDWIDTH: " + bandwidth);
+		/*DEBUG*/System.out.println("ZOOM: " + zoom + ", BANDWIDTH: " + bandwidth);
 		KernelMap kernel = new KernelMap(DEFAULT_NODE_SIZE, bandwidth, limitesPixel, points);
 		boolean isIE = ServletUtil.isClientUsingIE(request); 
 		KernelMapRenderer renderer = KMRFactory.getDefaultRenderer(kernel, isIE);
@@ -60,9 +60,24 @@ public class KernelMapRequestHandler {
 	}
 	
 	private double getZoomDependantBandwidth(int zoom) {
+		//zoom do googlemaps vai de 0 (longe) a 19 (perto)
 //		double bandwidthKm = 1;
 //		double bandwidth = PontoLatLng.distanceKmToPixels(bandwidthKm, zoom);
-		return Math.max(DEFAULT_BANDWIDTH, DEFAULT_BANDWIDTH + (2*zoom-20));
+//		return Math.max(DEFAULT_BANDWIDTH, DEFAULT_BANDWIDTH + (2*zoom-20));
+		int closeLimit = 10;
+		int farLimit = 4;
+		if(zoom > closeLimit) {
+			return DEFAULT_BANDWIDTH;
+		}else if(zoom < farLimit) {
+			return 2*DEFAULT_BANDWIDTH;
+		}else {
+			double maxZoom = closeLimit;
+			double minZoom = farLimit;
+			double maxFactor = 2;
+			double minFactor = 1;
+			double factor = maxFactor - (maxFactor-minFactor)*(zoom-minZoom)/(maxZoom-minZoom);
+			return factor*DEFAULT_BANDWIDTH;
+		}
 	}
 	
 	@SuppressWarnings("unchecked")

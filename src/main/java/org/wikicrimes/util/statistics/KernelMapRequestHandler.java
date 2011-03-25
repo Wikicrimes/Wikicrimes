@@ -48,7 +48,7 @@ public class KernelMapRequestHandler {
 		List<Point> points = pointsRetriever.getPoints();
 		int zoom = Param.getZoom(request);
 		double bandwidth = getZoomDependantBandwidth(zoom);
-		/*DEBUG*/System.out.println("ZOOM: " + zoom + ", BANDWIDTH: " + bandwidth);
+		/*DEBUG*///System.out.println("ZOOM: " + zoom + ", BANDWIDTH: " + bandwidth);
 		KernelMap kernel = new KernelMap(DEFAULT_NODE_SIZE, bandwidth, limitesPixel, points);
 		boolean isIE = ServletUtil.isClientUsingIE(request); 
 		KernelMapRenderer renderer = KMRFactory.getDefaultRenderer(kernel, isIE);

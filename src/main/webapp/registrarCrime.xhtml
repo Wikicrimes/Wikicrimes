@@ -226,7 +226,20 @@
 										converterId="wikicrimes.WikiSearchCrimesDataConverter" />
 								</t:inputText>
 								<t:graphicImage id="triggerData" forceId="true" value="/images/btns/btnCalendar.gif" style="display:inline; cursor:pointer;"/>
-							
+								<script type="text/javascript">
+									function limpaData(){
+										document.getElementById("data").value="";
+									}	
+									
+								    Calendar.setup(
+								    {
+								      inputField  : "data",         // ID of the input field
+								      ifFormat    : "#{messages['date.format.calendar']}",    // the date format
+								      button      : "triggerData",       // ID of the button
+								      weekNumbers : false
+								    }
+								  	);
+								</script>
 							<c:if test="#{not empty message}">
 							<c:if test="#{message == messages['errors.dataMaior'] }">
 								<h:outputText value="#{message}" styleClass="errorMessage" />
@@ -485,20 +498,7 @@
 			</h:panelGrid>
 
 
-		<script type="text/javascript">
-			function limpaData(){
-				document.getElementById("data").value="";
-			}	
-			
-		    Calendar.setup(
-		    {
-		      inputField  : "data",         // ID of the input field
-		      ifFormat    : "#{messages['date.format.calendar']}",    // the date format
-		      button      : "triggerData",       // ID of the button
-		      weekNumbers : false
-		    }
-		  	);
-		</script>
+		
 </f:view>
 		<script type="text/javascript">
 		/* <![CDATA[ */

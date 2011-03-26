@@ -47,7 +47,7 @@ public class FiltroForm extends GenericForm {
 	
 	private RelatoService relatoService;
 	
-	private String tutorAtivado = "1";
+	private String tutorAtivado = "0";
 	
 	private String urlKML;
 
@@ -69,7 +69,7 @@ public class FiltroForm extends GenericForm {
 
 	private String zoomMapa = "4";
 	
-	//Pesquisa genérica
+	//Pesquisa genï¿½rica
 	
 	private String tipoPesquisaSel;
 	
@@ -77,7 +77,7 @@ public class FiltroForm extends GenericForm {
 	
 	private List<Crime> crimesRespostaPesqGen = new ArrayList<Crime>();
 	
-	//Pesquisa genérica
+	//Pesquisa genï¿½rica
 	//Controle 10 mais
 	
 	private List<Crime> dezMais = null;

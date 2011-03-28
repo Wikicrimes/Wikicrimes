@@ -124,7 +124,9 @@
 	<f:view > <!-- > locale="#{facesContext.externalContext.request.locale}" -->
 			<f:loadBundle var="messages" basename="messages" />
 			<h:panelGrid border="0" columns="1" style="font-size: 11px; font-family: sans-serif;text-align:left">
-			  
+				
+				<h:form id="formTipoCrime">
+					
 				<div id="topoBalao"><b>#{messages['crime.registro.topo.cadastro']}</b></div> 			
 				<c:if test="#{not empty message}">				
 					<c:if test="#{(message != messages['errors.email.confirmacao']) and (message != messages['errors.dataMaior']) and (message != messages['errors.razao']) and (message != messages['errors.embed.invaliado'])}">
@@ -137,7 +139,6 @@
 						value="(*)#{messages['crime.registro.campoobrigatorio']}"
 						style="font-size: 10px; text-align:right" />
 				</h:panelGrid>
-				<h:form id="formTipoCrime">
 					<!--  Dados Gerais -->
 				<h:panelGrid border="0" align ="center" style="font-size: 11px; font-family: sans-serif;" columns="2" width="480">
 						

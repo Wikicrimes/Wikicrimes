@@ -1,0 +1,166 @@
+@charset "utf-8";
+/* Início -  Definições da caixa MODAL */
+#mascara {
+  position:fixed;
+  width: 100%;
+  height: 100%;
+  left:0px;
+  top:0px;
+  z-index: 90;
+  background-color:#000;
+  opacity: .2;
+  filter: alpha(opacity=20);
+  display:none;
+}
+
+#branco {
+	width: 500px;
+	height: 500px;
+	position: fixed;
+	left:0px;
+    top:0px;
+	background-color:#FFF;
+	z-index: 95;
+	display: none;
+}
+
+#modal
+{	
+	
+   	left:0px;
+    top: 0px;
+	display: none;
+    position: fixed;	
+	z-index: 100;
+}
+
+#xfecha{
+	position:absolute;
+	z-index: 120;
+	width: 29px;
+	height: 29px;
+topo_dir{
+	width:12px;
+	height: 12px;
+	background-image:url(../images/bg_modal_top_dir.png);
+	background-repeat:no-repeat;
+	float:left;
+}
+
+#corpo_esq{
+	width:12px;
+	background-image:url(../images/bg_modal_esq.png);
+	background-repeat:repeat-y;
+	float:left;
+}
+
+#corpo_meio{
+	
+	background-color: #FFF;
+	float:left;
+}
+
+
+#corpo_dir{
+	width:12px;
+	background-image:url(../images/bg_modal_dir.png);
+	background-repeat:repeat-y;
+	float:left;
+}
+
+#bottom_esq{
+	width:12px;
+	height: 12px;
+	background-image:url(../images/bg_modal_bottom_esq.png);
+	background-repeat:no-repeat;
+	float:left;
+}
+
+#bottom_meio{
+	
+	height: 12px;
+	background-image:url(../images/bg_modal_bottom.png);
+	background-repeat:repeat-x;
+	float:left;
+}
+
+#bottom_dir{
+	width:12px;
+	height: 12px;
+	background-image:url(../images/bg_modal_bottom_dir.png);
+	background-repeat:no-repeat;
+	float:left;
+}	position: absolute;
+	right:-5px;
+	top: -5px;
+}
+
+#topo_esq{
+	width:12px;
+	height: 12px;
+	background-image:url(../images/bg_modal_top_esq.png);
+	background-repeat:no-repeat;
+	float:left;
+}
+
+
+#topo_meio{
+	height: 12px;
+	background-image:url(../images/bg_modal_top.png);
+	background-repeat:repeat-x;
+	float:left;
+}
+
+
+#topo_dir{
+	width:12px;
+	height: 12px;
+	background-image:url(../images/bg_modal_top_dir.png);
+	background-repeat:no-repeat;
+	float:left;
+}
+
+#corpo_esq{
+	width:12px;
+	background-image:url(../images/bg_modal_esq.png);
+	background-repeat:repeat-y;
+	float:left;
+}
+
+#corpo_meio{
+	
+	background-color: #FFF;
+	float:left;
+}
+
+
+#corpo_dir{
+	width:12px;
+	background-image:url(../images/bg_modal_dir.png);
+	background-repeat:repeat-y;
+	float:left;
+}
+
+#bottom_esq{
+	width:12px;
+	height: 12px;
+	background-image:url(../images/bg_modal_bottom_esq.png);
+	background-repeat:no-repeat;
+	float:left;
+}
+
+#bottom_meio{
+	
+	height: 12px;
+	background-image:url(../images/bg_modal_bottom.png);
+	background-repeat:repeat-x;
+	float:left;
+}
+
+#bottom_dir{
+	width:12px;
+	height: 12px;
+	background-image:url(../images/bg_modal_bottom_dir.png);
+	background-repeat:no-repeat;
+	float:left;
+}

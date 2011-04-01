@@ -174,7 +174,7 @@
 			}
 
 			function mostrarPainelLogin(url){
-				displayMessage(url, 740, 320,'Login');
+				openModal(url, 742, 320,'Login');
 				return false;
 			}	
 
@@ -527,6 +527,7 @@
 				GEvent.addListener(map, "infowindowbeforeclose", function (latLng) {
 					podeCarregarCrimes = true;
 					selecionarComando(map, 'mao');
+					GEvent.trigger(map,"moveend");
 					/*if (crime == null) {
 						crime.hide();
 						map.removeOverlay(crime);

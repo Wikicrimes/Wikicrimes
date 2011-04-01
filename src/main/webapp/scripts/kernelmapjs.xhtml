@@ -101,8 +101,8 @@
 					//aindaCarregando = false;		
 				}
 			}
-			
 			function apagaMapaKernel(){
+				
 				map.removeTPhoto(photo);
 				if(!isJanelaAreaRiscoVisible())
 					desmarcaHotspot();
@@ -110,9 +110,9 @@
 			
 			function pintaMapaKernel(){
 				exibeImagemMapaKernel();
-				/*if(statusLegenda=='visivel'){
+				if(statusLegenda=='visivel'){
 					atualizaLegendaKernel();
-				}*/
+				}
 			}
 			
 			function atualizaDensidades(){
@@ -449,14 +449,14 @@
 				html+="     		<td align='center' colspan='2'> <b id='tituloLegenda'> #{messages['wikicrimes.legenda.densidade']}" +"</b> <img width='12px' height='12px' src='./images/maximizar.png' onclick='mostraEscondeLeganda();' style='font-size: 12px;cursor: pointer;'/> </td>";
 				html+="         </tr>";
 				html+="     	<tr align='left'>";
-				html+="     		<td align='right'> <img style='width:20px; height:6em;' src='./images/gradiente2.png' />";
+				html+="     		<td align='right'> <img style='width:20px; height:6em;' src='./images/gradiente.png' />";
 				html+="     		<td align='left' id='valoresLegendaKernel' >";
 				html+="					<table align='left' cellpading='0' cellspacing='0' style='padding:4px;'>";
-				html+="     				<tr> <td> #{messages['wikicrimes.legenda.densidade.alta']} </td> </tr>";
+				html+="     				<tr> <td> 0 </td> </tr>";
 				html+="         			<tr> <td> &nbsp; </td></tr>";
-				html+="     				<tr> <td> #{messages['wikicrimes.legenda.densidade.media']} </td> </tr>";
+				html+="     				<tr> <td> 0 </td> </tr>";
 				html+="         			<tr> <td> &nbsp; </td></tr>";
-				html+="     				<tr> <td> #{messages['wikicrimes.legenda.densidade.baixa']} </td> </tr>";
+				html+="     				<tr> <td> 0 </td> </tr>";
 				html+="					</table>";
 				html+="     		</td>";
 				html+="         </tr>";
@@ -465,8 +465,7 @@
 				return html;
 			}
 
-			//numeros na legenda, foi trocado por alta/media/baixa, no futuro deverah ser numeros denovo, em crimes por kmquadrado
-			/*function atualizaLegendaKernel(){
+			function atualizaLegendaKernel(){
 
 				var html="<table align='left' cellpading='0' cellspacing='0' style='padding:4px;'>";
 				html+="	<tr> <td>"+ arredonda(densMax) + "</td> </tr>";
@@ -481,7 +480,7 @@
 				if(div)
 					div.innerHTML = html;
 
-			}*/
+			}
 
 			function arredonda(num){
 				return Math.round(10000*num)/100;

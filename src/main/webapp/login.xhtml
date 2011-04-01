@@ -72,7 +72,7 @@
 									action="#{usuarioForm.login}"
 									styleClass="button" />	
 								<a4j:commandButton value="#{messages['usuario.btn.cancelar']}" id="btnCancelar"
-									onclick="parent.closeMessage(); return false;"
+									onclick="parent.closeModal('modal');/*parent.closeMessage()/;*/return false;"
 									action="#{usuarioForm.clearAll}"
 									styleClass="button" style="margin-left:10px"/>
 									
@@ -97,7 +97,6 @@
 											
 							//console.log('login.xhtml, 1');
 							if(#{usuario != null}){
-								
 								//console.log('login.xhtml, 2');				
 								var tipoRegistro = document.getElementById("usuarioForm2:tipoRegistro").value;
 								if(tipoRegistro=='4'){
@@ -106,7 +105,8 @@
 								if( tipoRegistro != '4' ){
 									//console.log('login.xhtml, 3');
 									parent.document.getElementById("formReRenderLogin:btLoginSubmit").click();
-									parent.closeMessage();
+									
+									parent.closeModal('modal');
 									var idCrime = document.getElementById("usuarioForm2:idCrime").value;
 									var temCrime = false;
 									var temRelato = false;
@@ -194,8 +194,10 @@
 									}
 									
 								}	
+								
 							}
-						/* ]]> */		
+							
+							/* ]]> */		
 						</script>
 						</div>
 						

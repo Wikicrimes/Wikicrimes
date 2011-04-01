@@ -17,6 +17,7 @@
 	
 		<script	src="http://maps.google.com/maps?file=api&amp;v=2&amp;oe=iso-8859-1&amp;hl=#{messages['webapp.locale']}&amp;key=#{messages['chave.googlemaps']}"
 			type="text/javascript"/>
+			
 		<script type="text/javascript" src="scripts/elabel.js"/>
 		<script type="text/javascript" src="scripts/comandosMapa.js"/>	
 		<script src="scripts/tphoto.2.05.js" type="text/javascript"></script>
@@ -87,7 +88,7 @@
 			<TABLE style="font-size: 12px; font-family: sans-serif;" margin="0" BORDER="0" cellpadding="1" cellspacing="1" width="100%">
 				<TR>
 				    
-				    <TD height="68px" valign="top" colspan="2" style="background: url(#{messages['imagem.topo']}) no-repeat left;"> 
+				    <TD height="58px" valign="top" colspan="2" style="background: url(#{messages['imagem.topo']}) no-repeat left;"> 
 				    	<ui:insert name="menu"/>
 				    	<ui:insert name="idioma"/>
 				    </TD>
@@ -135,6 +136,30 @@
 				</TR>
 				
 			</TABLE>
+		</div>
+		<div id="mascara" onclick="closeModal('modal')">&nbsp;</div>
+		<div id="branco">&nbsp;</div>
+		<div id="modal">
+			<div id="xfecha"><a href="#" onclick="closeModal('modal')"><img border="0" src="./images/bt_modal_fechar.png" width="29" height="29" /></a></div>
+			<div id="modal_cima">
+	    		<div id="topo_esq">&nbsp;</div>
+	       		<div id="topo_meio">&nbsp;</div>
+	       		<div id="topo_dir">&nbsp;</div>
+		   </div>
+		   <div id="modal_corpo">
+		   	<div id="corpo_esq">&nbsp;</div>
+		       <div id="corpo_meio">
+		       <!-- Aqui pode ser colocado o conteúdo -->
+		 		<div id = "modalConteudo"></div>
+		       <!-- Aqui pode ser colocado o conteúdo -->
+		       </div>
+		       <div id="corpo_dir">&nbsp;</div>
+		</div>    	   
+		<div id="modal_bottom">
+		  	<div id="bottom_esq">&nbsp;</div>
+		       <div id="bottom_meio">&nbsp;</div>
+		       <div id="bottom_dir">&nbsp;</div>
+		</div>    	   
 		</div>
 		<script type="text/javascript">
 				var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." :

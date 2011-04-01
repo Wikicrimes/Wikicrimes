@@ -566,7 +566,6 @@
 		infoTT.style.visibility="hidden";
 		}
 	
-		
 		function confirmar(){
 			var pais = document.getElementById("pais").value = '';
 			var estado = document.getElementById("estado").value = '';
@@ -579,7 +578,6 @@
 				jQuery('#trBotoes').fadeIn('slow');
 				jQuery('#trEstatistica').fadeIn('slow');
 				jQuery('#map').fadeIn('slow',function(){
-					
 					apagaMapaKernel();
 					marcarCrimeMapa(true);
 				});

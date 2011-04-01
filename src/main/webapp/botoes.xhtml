@@ -22,7 +22,7 @@
 			content="text/html; charset=iso-8859-1" />
 	</head>
 	<body>
-	
+	<br/>
 		<!--  <div id="anylinkmenu1" class="anylinkcss">
 
 			<a onclick="setPodeRegistrar(true,4,1);" style="font-size:10px;">#{messages['menu.roubo.roubopessoa']}</a>
@@ -55,6 +55,8 @@
 		</div>
 		-->		
 <!-- Caso o usu�rio esteja logado -->
+		
+			
 		<a4j:form id="pesquisaGenerica">
 			<a4j:commandButton value=""
 					id="btnBuscaGenerica" reRender="painelMostraDadosPesqGen" action="#{filtroForm.pesquisarGenericamente}" style="display: none"/>
@@ -88,6 +90,7 @@
 				</t:panelGrid>
 				<t:panelGrid align="right" cellpadding="0" cellspacing="0" columns="3">		
 					<t:panelGrid cellpadding="0" cellspacing="0">
+						
 						<t:selectOneMenu value="#{filtroForm.tipoPesquisaSel}" id="tipoPesquisa">
 							<f:selectItem itemLabel="#{messages['webapp.btn.procurar']}" itemValue="0"/>
 							<f:selectItem itemLabel="#{messages['botoes.combo.endereco']}" itemValue="1"/>
@@ -103,7 +106,15 @@
 					</t:panelGrid>
 				</t:panelGrid>
 				
-			</t:panelGrid>								
+			</t:panelGrid>	
+			<t:panelGrid align="right" style = "right:0px;" cellpadding="0" cellspacing="0" columns="3">
+				<t:panelGrid cellpadding="0" cellspacing="0" colspan = "3">
+					<h:outputText
+							value="#{filtroForm.quantidadeCrimes} #{messages['titulo.crimesRegistrados']}"
+							style="font-size:12px; font-weight: bold; text-align: center; margin-top: 2px;" />
+				</t:panelGrid>
+			</t:panelGrid>
+										
 			<script>				
 			/* <![CDATA[ */						
 				function submeteFormularioPesquisaGenerica(){
@@ -180,7 +191,7 @@
 			</script>
 			
 		</a4j:form>
-		
+		<br/>
 	</body>
 </html>
 

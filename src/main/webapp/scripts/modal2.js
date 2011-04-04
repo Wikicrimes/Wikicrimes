@@ -1,5 +1,7 @@
-function openModal(url,largura,altura, titulo)
-		{
+function openModal(url,largura,altura, titulo, a)
+		{		
+				jQuery(a).css('cursor','pointer');
+				jQuery(a).removeAttr('href');
 				var divID = 'modal';
 				var larguraJanela = 0;
 				var alturaJanela = 0;

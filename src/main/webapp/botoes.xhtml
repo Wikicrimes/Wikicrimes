@@ -62,7 +62,7 @@
 					id="btnBuscaGenerica" reRender="painelMostraDadosPesqGen" action="#{filtroForm.pesquisarGenericamente}" style="display: none"/>
 			
 		<t:panelGrid cellpadding="0" cellspacing="0" columns="2" width="100%">
-				<t:panelGrid columns="2" cellpadding="0" cellspacing="0">
+				<t:panelGrid columns="3" cellpadding="0" cellspacing="0">
 					<c:if test="#{!empty usuario}">	
 						<t:panelGrid width="130px">	
 							<h:outputLink value="#" onclick="marcarCrimeMapaLocalizacao(true);/*mostraDivTelaEscolhaRegistroTipoCrime();*/return false;">
@@ -77,17 +77,23 @@
 					</c:if>
 					<c:if test="#{empty usuario}">
 						<t:panelGrid width="130px">	
-							<h:outputLink value="#" onclick="mostrarPainelLogin('./login.html?mensagemLogin=#{messages['usuario.informacao']}&amp;tipoRegistro=1')">
+							<h:outputLink value="#" onclick="mostrarPainelLogin('./login.html?mensagemLogin=#{messages['usuario.informacao']}&amp;tipoRegistro=1', this)">
 								<h:outputText style="font-size:13px" value="#{messages['botoes.registro.crime']}" />
 							</h:outputLink>
 						</t:panelGrid>
 						<t:panelGrid>								 
-							<h:outputLink value="#" onclick="mostrarPainelLogin('./login.html?mensagemLogin=#{messages['usuario.informacao.denuncia']}&amp;tipoRegistro=2')">
-								<h:outputText style="font-size:13px" value="#{messages['botoes.registro.denuncia']}" />
+							<h:outputLink value="#" onclick="mostrarPainelLogin('./login.html?mensagemLogin=#{messages['usuario.informacao.denuncia']}&amp;tipoRegistro=2', this)">
+								<h:outputText style="font-size:13px;" value="#{messages['botoes.registro.denuncia']}" />
 							</h:outputLink>
 						</t:panelGrid>	
 					</c:if>
+					<t:panelGrid style = "padding-left: 50px;">		
+						<h:outputText
+								value="#{filtroForm.quantidadeCrimes} #{messages['titulo.crimesRegistrados']}"
+								style="font-size:12px; text-align: right; margin-top: 2px; color: gray;" />
+					</t:panelGrid>
 				</t:panelGrid>
+				
 				<t:panelGrid align="right" cellpadding="0" cellspacing="0" columns="3">		
 					<t:panelGrid cellpadding="0" cellspacing="0">
 						
@@ -107,13 +113,6 @@
 				</t:panelGrid>
 				
 			</t:panelGrid>	
-			<t:panelGrid align="right" style = "right:0px;" cellpadding="0" cellspacing="0" columns="3">
-				<t:panelGrid cellpadding="0" cellspacing="0" colspan = "3">
-					<h:outputText
-							value="#{filtroForm.quantidadeCrimes} #{messages['titulo.crimesRegistrados']}"
-							style="font-size:12px; font-weight: bold; text-align: center; margin-top: 2px;" />
-				</t:panelGrid>
-			</t:panelGrid>
 										
 			<script>				
 			/* <![CDATA[ */						

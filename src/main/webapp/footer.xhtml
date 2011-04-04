@@ -40,14 +40,14 @@
 <!--		<iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.wikicrimes.org&amp;layout=standard&amp;show_faces=true&amp;width=450&amp;action=like&amp;colorscheme=light&amp;height=80" scrolling="no" frameborder="0" style="margin-top: 5px; border:none; overflow:hidden; width:450px; height:80px;" allowTransparency="true"></iframe>-->
 <!--	</rich:panel>		-->
 	<br/>
-	<h:outputLink value="#" onclick="openModal('./quemSomos.html',600,250, '#{messages['titulo.quemsomos']}');" >
+	<h:outputLink value="#" onclick="openModal('./quemSomos.html',600,320, '#{messages['titulo.quemsomos']}', this);" >
 		<h:outputText value="#{messages['webapp.quemSomos']}"
 			title="#{messages['webapp.quemsomoshint']}" />
 	</h:outputLink>
 	|
 	<h:outputText value=" "  
 			/>
-	<h:outputLink value="#" onclick="openModal('./faleConosco.html', 600, 450,'#{messages['webapp.faleConosco']}');return false" >
+	<h:outputLink value="#" onclick="openModal('./faleConosco.html', 600, 450,'#{messages['webapp.faleConosco']}', this);return false" >
 		<h:outputText value="#{messages['webapp.faleConosco']}" 
 			title="#{messages['webapp.faleconoscohint']}" />
 	</h:outputLink>
@@ -61,21 +61,21 @@
 	|
 	<h:outputText value=" "  
 			/>
-	<h:outputLink value="#" onclick="openModal('./perguntasFrequentes.html',730, 250,'#{messages['webapp.perguntasFrequentes']}');return false;">
+	<h:outputLink value="#" onclick="openModal('./perguntasFrequentes.html',730, 250,'#{messages['webapp.perguntasFrequentes']}', this);return false;">
 		<h:outputText value="#{messages['webapp.perguntasFrequentes']}"  
 			title="#{messages['webapp.perguntasfrequenteshint']}" />
 	</h:outputLink>							
 	|
 	<h:outputText value=" "  
 			/>
-	<h:outputLink value="#" onclick="openModal('./termosUso.html', 730, 400,'#{messages['webapp.termosUso']}');return false" >
+	<h:outputLink value="#" onclick="openModal('./termosUso.html', 730, 400,'#{messages['webapp.termosUso']}', this);return false" >
 		<h:outputText value="#{messages['webapp.termosUso']}" 
 			title="#{messages['webapp.termosusohint']}" />
 	</h:outputLink>						
 	|
 	<h:outputText value=" "  
 			/>
-	<h:outputLink value="#"  onclick="openModal('./sobre.html', 600, 200,'#{messages['webapp.sobre']}');return false" >
+	<h:outputLink value="#"  onclick="openModal('./sobre.html', 600, 230,'#{messages['webapp.sobre']}', this);return false" >
 		<h:outputText value="#{messages['webapp.sobre']}"  
 			title="#{messages['webapp.sobrehint']}" />
 	</h:outputLink>

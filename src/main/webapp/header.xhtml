@@ -32,12 +32,12 @@
 					<h:outputText value="Login" />
 				</h:outputLink> |</td>
 				<td><h:outputLink value="#"
-					onclick="displayMessage('./registrarUsuario.html', 600, 350,'#{messages['usuario.registrar']}');return false;">
+					onclick="openModal('./registrarUsuario.html', 600, 350,'#{messages['usuario.registrar']}', this);return false;">
 					<h:outputText value="#{messages['usuario.registre']}" />
 				</h:outputLink> |</td>
 				
 				<td >
-					<h:outputLink value="#" onclick="displayMessage('#{messages['webapp.localAjuda']}', 650, 400,'#{messages['usuario.ajuda']}');">
+					<h:outputLink value="#" onclick="openModal('#{messages['webapp.localAjuda']}', 650, 400,'#{messages['usuario.ajuda']}', this);">
 					<h:outputText value="#{messages['usuario.ajuda']}"
 						title="#{messages['usuario.ajudaWikicrimes']}"/>
 					</h:outputLink>									

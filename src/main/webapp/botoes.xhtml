@@ -22,8 +22,7 @@
 			content="text/html; charset=iso-8859-1" />
 	</head>
 	<body>
-	<br/>
-		<!--  <div id="anylinkmenu1" class="anylinkcss">
+			<!--  <div id="anylinkmenu1" class="anylinkcss">
 
 			<a onclick="setPodeRegistrar(true,4,1);" style="font-size:10px;">#{messages['menu.roubo.roubopessoa']}</a>
 			<a onclick="setPodeRegistrar(true,4,2);" style="font-size:10px;">#{messages['menu.roubo.roubopropriedade']}</a>
@@ -61,7 +60,7 @@
 			<a4j:commandButton value=""
 					id="btnBuscaGenerica" reRender="painelMostraDadosPesqGen" action="#{filtroForm.pesquisarGenericamente}" style="display: none"/>
 			
-		<t:panelGrid cellpadding="0" cellspacing="0" columns="2" width="100%">
+		<t:panelGrid cellpadding="0" cellspacing="0" columns="2" width="100%" style="margin-top:5px;">
 				<t:panelGrid columns="3" cellpadding="0" cellspacing="0">
 					<c:if test="#{!empty usuario}">	
 						<t:panelGrid width="130px">	
@@ -94,7 +93,7 @@
 					</t:panelGrid>
 				</t:panelGrid>
 				
-				<t:panelGrid align="right" cellpadding="0" cellspacing="0" columns="3">		
+				<t:panelGrid align="right" cellpadding="0" cellspacing="0" columns="3" style="margin-bottom: 5px;" >		
 					<t:panelGrid cellpadding="0" cellspacing="0">
 						
 						<t:selectOneMenu value="#{filtroForm.tipoPesquisaSel}" id="tipoPesquisa">
@@ -174,7 +173,7 @@
 				function fechaDivTelaEscolhaRegistroTipoDenuncia(){
 					document.getElementById("divTelaEscolhaRegistroTipoDenuncia").style.visibility = 'hidden';
 				}
-				
+				>
 				function fechaDivPesquisaGenericaChamandoMostraDados(chave, lat, lng){
 					idconf = null;
 					mostrarCrimeMapa(chave, lat, lng);
@@ -190,7 +189,7 @@
 			</script>
 			
 		</a4j:form>
-		<br/>
+	
 	</body>
 </html>
 

@@ -70,7 +70,7 @@
 					<td>|</td>
 					  
 					<td><h:outputLink value="#"
-						onclick="displayMessage('./mostrarReputacao.html', 1000, 488,'#{messages['usuario.reputacao']}');return false">
+						onclick="openModal('./mostrarReputacao.html', 1000, 488,'#{messages['usuario.reputacao']}');return false">
 						<h:outputText
 							value=" #{messages['usuario.reputacao']} "
 							title="#{messages['usuario.reputacao.hint']}" />
@@ -78,7 +78,7 @@
 					<td>|</td>
 					
 					<td><h:outputLink value="#"
-						onclick="displayMessage('./listarAreas.html', 420, 200,'#{messages['webapp.area.titulo.minhasareas']}');return false">
+						onclick="openModal('./listarAreas.html', 420, 200,'#{messages['webapp.area.titulo.minhasareas']}');return false">
 						<h:outputText
 							value=" #{messages['webapp.area.titulo.minhasareas']} "
 							title="#{messages['webapp.area.titulo.minhasareas']}" />
@@ -86,13 +86,13 @@
 					<td>|</td>
 
 					<td><h:outputLink value="#"
-						onclick="displayMessage('./listarCrimes.html', 800, 350,'#{messages['usuario.denuncias']}');return false">
+						onclick="openModal('./listarCrimes.html', 800, 350,'#{messages['usuario.denuncias']}');return false">
 						<h:outputText value=" #{messages['usuario.denuncias']} "
 							title="#{messages['usuario.denuncias.hint']}" />
 					</h:outputLink></td>
 					<td>|</td>
 					<td><h:outputLink value="#"
-						onclick="displayMessage('./editarPreferencias.html', 650, 400,'#{messages['usuario.conta']}');return false">
+						onclick="openModal('./editarPreferencias.html', 650, 400,'#{messages['usuario.conta']}');return false">
 						<h:outputText value=" #{messages['usuario.conta']} "
 							title="#{messages['usuario.conta.hint']}" />
 					</h:outputLink></td>

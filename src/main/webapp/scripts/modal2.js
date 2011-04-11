@@ -65,7 +65,8 @@ function openModal(url,largura,altura, titulo, a)
 				document.getElementById('corpo_dir').style.height = alturaCorpopx;
 				//document.getElementById('xfecha').style.marginLeft = larguraTopo;
 				//document.body.style.overflow='hidden';
-				jQuery('#modalConteudo').append("<div style ='text-align: center; font-size: 15px; margin-top: 3px;'>" + titulo + "</div>");
+				jQuery('#modalConteudo').append("<div style ='text-align: left; font-size: 15px; margin-top: 3px; margin-left:20px;'>" + titulo + "</div>");
+				
 				jQuery('#modalConteudo').append('<iframe src=' + url + '  class="frame" width=' + (largura -33) + ' height=' + (altura - 50) + ' frameborder="0" scrolling="auto"></iframe>');
 				
 			}
@@ -78,3 +79,4 @@ function openModal(url,largura,altura, titulo, a)
 				//Limpar div de conteudo;
 				jQuery('#modalConteudo').html('');
 			}
+		

@@ -379,9 +379,10 @@
 		</rich:panel></div>
 
 
-		<div id="divTelaFiltro"><!-- Pesquisa --> <rich:panel
-			style="width:300px" id="panelFiltro"
-			header="#{messages['titulo.pesquisaCrimes']}">
+		<div id="divTelaFiltro"><!-- Pesquisa -->
+			<h:outputText value="#{messages['titulo.pesquisaCrimes']}"
+						style="font-size:11px;" />
+			<div><h1></h1></div>
 			<t:panelGrid border="0" columns="2" cellpadding="1" cellspacing="1"
 				style="margin:0px;text-align:left;align:left">
 				<t:panelGroup colspan="2">
@@ -569,7 +570,7 @@
 					onclick="esconderFiltro();selecionarComando(map, 'mao');//comentado pq esse era o limpar filtro. limpaUrl();limpaFiltro(); return false;"
 					styleClass="button" />
 			</h:panelGrid>
-		</rich:panel></div>
+		</div>
 		<!-- Fim da Pesquisa -->
 		<table border="0" style="margin-left:0; position: absolute; left: 0;">
 			<tr>

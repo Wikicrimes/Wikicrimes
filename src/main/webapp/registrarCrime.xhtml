@@ -57,45 +57,7 @@
 		function addSltSubTipo(){
 			document.getElementById('crimeForm:tipoCrime').value = document.getElementById('formTipoCrime:tipoCrime').value;
 			document.getElementById('formTipoCrime:btnTipoCrime').click();	
-			//var tipoLocal = document.getElementById('crimeForm:tipoLocal');
-			//limparCombo(tipoLocal);
-			
-			/*var tpCrime =  document.getElementById('crimeForm:tipoCrime').value;
-			
-			//document.getElementById('crimeForm:tipoCrime').value = tpCrime;
-			//document.getElementById('crimeForm:tipoVitima').value = '';
-			
-			
-			var comboSubTipo = document.getElementById('crimeForm:tipoVitima');
-			limparCombo(comboSubTipo);
-			if(tpCrime==1){
-				$(comboSubTipo).append('<option value = "">Selecione um sub-tipo.</option>');
-				$(comboSubTipo).append('<option value = "4,1">#{messages["menu.roubo.roubopessoa"]}</option>');
-				$(comboSubTipo).append('<option value = "1,2">#{messages["menu.roubo.tentativaroubopropriedade"]}</option>');
-				$(comboSubTipo).append('<option value = "1,1">#{messages["menu.roubo.tentativaroubopessoa"]}</option>');
-				$(comboSubTipo).append('<option value = "1,2">#{messages["menu.roubo.tentativaroubopropriedade"]}</option>');
-			}
-			if(tpCrime==2){
-				$(comboSubTipo).append('<option value = "">Selecione um sub-tipo.</option>');
-				$(comboSubTipo).append('<option value = "3,1">#{messages["menu.furto.furtopessoa"]}</option>');
-				$(comboSubTipo).append('<option value = "3,2">#{messages["menu.furto.furtopropriedade"]}</option>');
-				$(comboSubTipo).append('<option value = "2,1">#{messages["menu.furto.tentativafurtopessoa"]}</option>');
-				$(comboSubTipo).append('<option value = "2,2">#{messages["menu.furto.tentativafurtopropriedade"]}</option>');
-			}
-			if(tpCrime==3){
-				$(comboSubTipo).append('<option value = "">Selecione um sub-tipo.</option>');
-				$(comboSubTipo).append('<option value = "5,3">#{messages["menu.violencia.rixasbrigas"]}</option>');
-				$(comboSubTipo).append('<option value = "5,4">#{messages["menu.violencia.violenciadomestica"]}</option>');
-				$(comboSubTipo).append('<option value = "5,5">#{messages["menu.violencia.abusoautoridade"]}</option>');
-				$(comboSubTipo).append('<option value = "5,6">#{messages["menu.violencia.homicidio"]}</option>');
-				$(comboSubTipo).append('<option value = "5,7">#{messages["menu.violencia.tentativahomicidio"]}</option>');
-				$(comboSubTipo).append('<option value = "5,8">#{messages["menu.violencia.latrocinio"]}</option>');
-				$(comboSubTipo).append('<option value = "5,9">#{messages["menu.violencia.atentadoaopudor"]}</option>');
-			}
-			if(tpCrime == 'Selecione...'){
-				$(comboSubTipo).append('<option value = "">#{messages["usuario.Selecione.Crime"]}</option>');
-			}*/
-			
+						
 			
 		}
 		
@@ -119,7 +81,7 @@
 	</head>
 
 	<body >
-
+ 
 
 	<f:view > <!-- > locale="#{facesContext.externalContext.request.locale}" -->
 			<f:loadBundle var="messages" basename="messages" />
@@ -129,17 +91,17 @@
 				<t:panelGrid  cellpadding="0" cellspacing="0" columns="3" width="100%">
 						<div id = "topoBalao"><b>#{messages['crime.registro.topo.cadastro']}</b></div>
 				</t:panelGrid>
+				<h:panelGrid>
+					<h:outputText
+						value="(*)#{messages['crime.registro.campoobrigatorio']}"
+						style="font-size: 10px; text-align:right" />
+				</h:panelGrid>
 				<c:if test="#{not empty message}">				
 					<c:if test="#{(message != messages['errors.email.confirmacao']) and (message != messages['errors.dataMaior']) and (message != messages['errors.razao']) and (message != messages['errors.embed.invaliado'])}">
 					
 						<h:outputText value="#{message}" styleClass="message" />
 					</c:if>	
 				</c:if>
-				<h:panelGrid >
-					<h:outputText
-						value="(*)#{messages['crime.registro.campoobrigatorio']}"
-						style="font-size: 10px; text-align:right" />
-				</h:panelGrid>
 					<!--  Dados Gerais -->
 				<h:panelGrid border="0" align ="center" style="font-size: 11px; font-family: sans-serif;" columns="2" width="480">
 						

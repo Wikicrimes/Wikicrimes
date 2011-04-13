@@ -37,8 +37,174 @@
 	<script type="text/javascript" src="./scripts/lang/calendar-br.js"></script>
 </c:if>
 <style>
+
+#mascaraFiltro {
+  position:fixed;
+  width: 100%;
+  height: 100%;
+  left:0px;
+  top:0px;
+  z-index: 90;
+  background-color:#000;
+  opacity: .2;
+  filter: alpha(opacity=20);
+  display:none;
+}
+
+#brancoFiltro {
+	width: 500px;
+	height: 500px;
+	position: fixed;
+	left:0px;
+    top:0px;
+	background-color:#FFF;
+	z-index: 95;
+	display: none;
+}
+
+#modalFiltro
+{	
+	
+   	left:0px;
+    top: 0px;
+	display: none;
+    position: fixed;	
+	z-index: 100;
+}
+
+#xfechaFiltro{
+	position:absolute;
+	z-index: 120;
+	width: 29px;
+	height: 29px;
+topo_dirFiltro{
+	width:12px;
+	height: 12px;
+	background-image:url(./images/bg_modal_top_dir.png);
+	background-repeat:no-repeat;
+	float:left;
+}
+
+#corpo_esqFiltro{
+	width:12px;
+	background-image:url(./images/bg_modal_esq.png);
+	background-repeat:repeat-y;
+	float:left;
+}
+
+#corpo_meioFiltro{
+	
+	background-color: #FFF;
+	float:left;
+}
+
+
+#corpo_dirFiltro{
+	width:12px;
+	background-image:url(./images/bg_modal_dir.png);
+	background-repeat:repeat-y;
+	float:left;
+}
+
+#bottom_esqFiltro{
+	width:12px;
+	height: 12px;
+	background-image:url(./images/bg_modal_bottom_esq.png);
+	background-repeat:no-repeat;
+	float:left;
+}
+
+#bottom_meioFiltro{
+	
+	height: 12px;
+	background-image:url(./images/bg_modal_bottom.png);
+	background-repeat:repeat-x;
+	float:left;
+}
+
+#bottom_dirFiltro{
+	width:12px;
+	height: 12px;
+	background-image:url(./images/bg_modal_bottom_dir.png);
+	background-repeat:no-repeat;
+	float:left;
+}	position: absolute;
+	right:-5px;
+	top: -5px;
+}
+
+#topo_esqFiltro{
+	width:12px;
+	height: 12px;
+	background-image:url(./images/bg_modal_top_esq.png);
+	background-repeat:no-repeat;
+	float:left;
+}
+
+
+#topo_meioFiltro{
+	height: 12px;
+	background-image:url(./images/bg_modal_top.png);
+	background-repeat:repeat-x;
+	float:left;
+}
+
+
+#topo_dirFiltro{
+	width:12px;
+	height: 12px;
+	background-image:url(./images/bg_modal_top_dir.png);
+	background-repeat:no-repeat;
+	float:left;
+}
+
+#corpo_esqFiltro{
+	width:12px;
+	background-image:url(./images/bg_modal_esq.png);
+	background-repeat:repeat-y;
+	float:left;
+}
+
+#corpo_meioFiltro{
+	
+	background-color: #FFF;
+	float:left;
+}
+
+
+#corpo_dirFiltro{
+	width:12px;
+	background-image:url(./images/bg_modal_dir.png);
+	background-repeat:repeat-y;
+	float:left;
+}
+
+#bottom_esqFiltro{
+	width:12px;
+	height: 12px;
+	background-image:url(./images/bg_modal_bottom_esq.png);
+	background-repeat:no-repeat;
+	float:left;
+}
+
+#bottom_meioFiltro{
+	
+	height: 12px;
+	background-image:url(./images/bg_modal_bottom.png);
+	background-repeat:repeat-x;
+	float:left;
+}
+
+#bottom_dirFiltro{
+	width:12px;
+	height: 12px;
+	background-image:url(./images/bg_modal_bottom_dir.png);
+	background-repeat:no-repeat;
+	float:left;
+}
+
 #divTelaFiltro {
-	position: absolute;
+	/*position: absolute;
 	top: -300px;
 	left: 36%;
 	text-align: center;
@@ -52,7 +218,7 @@
 	font-family: helvetica, verdana, sans;
 	font-size: 12px;
 	visibility: hidden;
-	background-color: #ffffff;
+	background-color: #ffffff;*/
 }
 #divTelaKML {
 	position: absolute;
@@ -378,204 +544,227 @@
 			</h:panelGrid>
 		</rich:panel></div>
 
-
-		<div id="divTelaFiltro"><!-- Pesquisa -->
-			<h:outputText value="#{messages['titulo.pesquisaCrimes']}"
-						style="font-size:11px;" />
-			<div><h1></h1></div>
-			<t:panelGrid border="0" columns="2" cellpadding="1" cellspacing="1"
-				style="margin:0px;text-align:left;align:left">
-				<t:panelGroup colspan="2">
-					<h:outputText
-						value="#{messages['estatisticas.area.visivel.tipo.crime']}:" />
-				</t:panelGroup>
-				<t:selectOneMenu style="font-size:10px;"
-					value="#{filtroForm.tipoCrime}" required="false" id="tipoCrime"
-					forceId="true" onchange="changeTipoVitima();">
-					<f:selectItem itemLabel="#{messages['filtro.option.todosCrimes']}"
-						itemValue="0" />
-					<f:selectItem itemLabel="#{messages['filtro.option.furto']}"
-						itemValue="3" />
-					<f:selectItem itemLabel="#{messages['filtro.option.roubo']}"
-						itemValue="4" />
-					<f:selectItem
-						itemLabel="#{messages['filtro.option.tentativaFurto']}"
-						itemValue="2" />
-					<f:selectItem
-						itemLabel="#{messages['filtro.option.tentativaRoubo']}"
-						itemValue="1" />
-					<f:selectItem itemLabel="#{messages['filtro.option.violencia']}"
-						itemValue="5" />
-				</t:selectOneMenu>
-				<h:panelGroup border="0">
-					<select style="font-size: 10px;" id="tipoVitimaNew"
-						onchange="dwr.util.setValue('tipoVitima', dwr.util.getValue(this.id)); changeTipoLocal();">
-					</select>
-				</h:panelGroup>
-				<t:panelGroup colspan="2">
-					<h:outputText
-						value="#{messages['estatisticas.area.visivel.tipo.local']}:" />
-				</t:panelGroup>
-				<t:panelGroup colspan="2" border="0">
-					<select style="font-size: 10px;" id="tipoLocalNew"
-						onchange="dwr.util.setValue('tipoLocal', dwr.util.getValue(this.id));">
-					</select>
-				</t:panelGroup>
-			</t:panelGrid>
-			<t:panelGrid border="0" columns="3" cellpadding="1" cellspacing="1"
-				style="margin:0px;text-align:left;align:left">
-				<t:panelGroup colspan="3">
-					<h:outputText value="#{messages['crime.filtro.periodo']}:"
-						style="font-size:11px;" />
-				</t:panelGroup>
-				<h:outputText
-					value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" />
-
-				<h:panelGroup border="0">
-					<t:inputText id="dataInicial" onkeyup="limpaDataInicial();"
-						forceId="true" value="#{filtroForm.dataInicial}"
-						style="font-size:10px;" size="10">
-						<f:converter
-							converterId="wikicrimes.WikiSearchCrimesDataConverter" />
-					</t:inputText>
-					<t:graphicImage id="triggerINI" forceId="true"
-						value="/images/btns/btnCalendar.gif"
-						style="display:inline; cursor:pointer;" />
-					<h:outputText value="#{messages['filtro.label.acrase']}"
-						style="font-size:11px;" />
-				</h:panelGroup>
-				<h:panelGroup border="0">
-					<t:inputText id="dataFinal" forceId="true"
-						onkeyup="limpaDataFinal();" value="#{filtroForm.dataFinal}"
-						style="font-size:10px;" size="10">
-						<f:converter
-							converterId="wikicrimes.WikiSearchCrimesDataConverter" />
-					</t:inputText>
-					<t:graphicImage id="triggerDF" forceId="true"
-						value="/images/btns/btnCalendar.gif"
-						style="display:inline; cursor:pointer;" />
-				</h:panelGroup>
-			</t:panelGrid>
-
-			<!-- Filtros Avan�ados -->
-			<t:panelGrid border="0" columns="3" cellpadding="1" cellspacing="1"
-				style="margin:0px;text-align:left;align:left">
-				<t:panelGroup colspan="3">
-					<h:outputText value="#{messages['crime.filtro.horario']}:"
-						style="font-size:11px;" />
-				</t:panelGroup>
-
-				<h:outputText
-					value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" />
-				<h:panelGroup border="0">
-					<h:selectOneMenu value="#{filtroForm.horarioInicial}"
-						style="font-size:10px;" id="horarioInicial">
-						<f:selectItem itemLabel="#{messages['filtro.btn.qualquer']}"
-							itemValue="-1" />
-						<f:selectItems value="#{filtroForm.horarioItens}" />
-					</h:selectOneMenu>
-
-					<h:outputText value="#{messages['filtro.label.acrase']}"
-						style="font-size:11px;" />
-				</h:panelGroup>
-				<h:selectOneMenu value="#{filtroForm.horarioFinal}"
-					style="font-size:10px; " id="horarioFinal">
-					<f:selectItem itemLabel="#{messages['filtro.btn.qualquer']}"
-						itemValue="-1" />
-					<f:selectItems value="#{filtroForm.horarioItens}" />
-				</h:selectOneMenu>
-			</t:panelGrid>
-
-			<t:panelGrid border="0" cellpadding="1" cellspacing="1" 
-				style="margin:0px;text-align:left;align:left">
-				
-				<h:outputText value="#{messages['crime.credibilidade.nivel']}"
-					style="vertical-align: text-top; font-size:11px;" />
-					
-				<h:panelGrid columns="3" border="0">
-					<h:outputText value="#{messages['crime.credibilidade.nivel.inicial']}: "
-						style="vertical-align: text-top; font-size:11px;" />
-					
-					<rich:inputNumberSlider id="idCredInicial" value="#{filtroForm.credibilidadeInicial}" 
-						minValue="0" maxValue="100" step="1" showInput="false">
-						<a4j:support event="onchange" reRender="idCredFinal,idValorCredInic,idValorCredFinal"/>
-					</rich:inputNumberSlider>
-					
-					<h:outputText id="idValorCredInic" value="#{filtroForm.credibilidadeInicial}%"/>
-					
-					<h:outputText value="#{messages['crime.credibilidade.nivel.final']}: "
-						style="vertical-align: text-top; font-size:11px;" />
-					
-					<rich:inputNumberSlider id="idCredFinal" value="#{filtroForm.credibilidadeFinal}" 
-						minValue="#{filtroForm.credibilidadeInicial}" maxValue="100" step="1" showInput="false">
-						<a4j:support event="onchange" reRender="idValorCredFinal"/>
-					</rich:inputNumberSlider>
-					
-					<h:outputText id="idValorCredFinal" value="#{filtroForm.credibilidadeFinal}%"/>
-				</h:panelGrid>
-				
-			</t:panelGrid>
+		<div id="mascaraFiltro" onclick="closeModal('modalFiltro')">&nbsp;</div>
+		<div id="brancoFiltro">&nbsp;</div>
+		<div id="modalFiltro">
+			<div id="xfechaFiltro"><a onclick="closeModalFiltro('modalFiltro')" style = "cursor: pointer;"><img border="0" src="./images/bt_modal_fechar.png" width="29" height="29" /></a></div>
+			<div id="modal_cimaFiltro">
+	    		<div id="topo_esqFiltro">&nbsp;</div>
+	       		<div id="topo_meioFiltro">&nbsp;</div>
+	       		<div id="topo_dirFiltro">&nbsp;</div>
+		   </div>
+		   <div id="modal_corpoFiltro">
+		   	<div id="corpo_esqFiltro">&nbsp;</div>
+		       <div id="corpo_meioFiltro">
+		       <!-- Aqui pode ser colocado o conteúdo -->
+		      	<div id = "divTituloFiltro" style="left: 0;"></div>
+		 		<div id = "divTelaFiltro" style="margin-left: 15px;">
+						<div><h1></h1></div>
+						<t:panelGrid border="0" columns="2" cellpadding="1" cellspacing="1"
+							style="margin:0px;text-align:left;align:left">
+							<t:panelGroup colspan="2">
+								<h:outputText
+									value="#{messages['estatisticas.area.visivel.tipo.crime']}:" />
+							</t:panelGroup>
+							<t:selectOneMenu style="font-size:10px;"
+								value="#{filtroForm.tipoCrime}" required="false" id="tipoCrime"
+								forceId="true" onchange="changeTipoVitima();">
+								<f:selectItem itemLabel="#{messages['filtro.option.todosCrimes']}"
+									itemValue="0" />
+								<f:selectItem itemLabel="#{messages['filtro.option.furto']}"
+									itemValue="3" />
+								<f:selectItem itemLabel="#{messages['filtro.option.roubo']}"
+									itemValue="4" />
+								<f:selectItem
+									itemLabel="#{messages['filtro.option.tentativaFurto']}"
+									itemValue="2" />
+								<f:selectItem
+									itemLabel="#{messages['filtro.option.tentativaRoubo']}"
+									itemValue="1" />
+								<f:selectItem itemLabel="#{messages['filtro.option.violencia']}"
+									itemValue="5" />
+							</t:selectOneMenu>
+							<h:panelGroup border="0">
+								<select style="font-size: 10px;" id="tipoVitimaNew"
+									onchange="dwr.util.setValue('tipoVitima', dwr.util.getValue(this.id)); changeTipoLocal();">
+								</select>
+							</h:panelGroup>
+							<t:panelGroup colspan="2">
+								<h:outputText
+									value="#{messages['estatisticas.area.visivel.tipo.local']}:" />
+							</t:panelGroup>
+							<t:panelGroup colspan="2" border="0">
+								<select style="font-size: 10px;" id="tipoLocalNew"
+									onchange="dwr.util.setValue('tipoLocal', dwr.util.getValue(this.id));">
+								</select>
+							</t:panelGroup>
+						</t:panelGrid>
+						<t:panelGrid border="0" columns="3" cellpadding="1" cellspacing="1"
+							style="margin:0px;text-align:left;align:left">
+							<t:panelGroup colspan="3">
+								<h:outputText value="#{messages['crime.filtro.periodo']}:"
+									style="font-size:11px;" />
+							</t:panelGroup>
+							<h:outputText
+								value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" />
 			
-
-			<t:panelGrid border="0" cellpadding="1" cellspacing="1"
-				style="margin:0px;text-align:left;align:left">
-				<h:outputText value="#{messages['crime.filtro.certificacao']}:"
-					style="vertical-align: text-top; font-size:11px;" />
-				<h:panelGrid border="0" columns="2" cellpadding="0" cellspacing="0">
-
-					<h:selectBooleanCheckbox
-						value="#{filtroForm.crimeConfirmadoPositivamente}"
-						id="crimeConfirmadoPositivamente" style="font-size:11px;">
-					</h:selectBooleanCheckbox>
-
-					<h:outputText
-						value="#{messages['crime.filtro.option.certificadoPositivamente']}"
-						style="font-size:10px;" />
-
-					<h:selectBooleanCheckbox id="crimeConfirmadoEntidadeCertificadora"
-						value="#{filtroForm.crimeConfirmadoEntCer}"
-						style="font-size:11px;"
-						onclick="habilitaListaEntidadeCertificadora();">
-					</h:selectBooleanCheckbox>
-
-					<h:outputText
-						value="#{messages['crime.filtro.option.entidadeCertificadora']}"
-						style="font-size:10px;" />
-				</h:panelGrid>
-				<h:selectOneMenu style="font-size:10px"
-					value="#{filtroForm.entidadeCertificadora}"
-					id="entidadeCertificadora">
-					<f:selectItems value="#{filtroForm.entidadeCertificadoraItens}" />
-				</h:selectOneMenu>
-				<!-- FIM Filtro por n�vel de confiabilidade  -->
-				<!-- Inser��o de um c�digo javaScript para resolu��o dos problemas com a propriedade disable do componente "selectOneMenu"-->
-				<script type="text/javascript">
+							<h:panelGroup border="0">
+								<t:inputText id="dataInicial" onkeyup="limpaDataInicial();"
+									forceId="true" value="#{filtroForm.dataInicial}"
+									style="font-size:10px;" size="10">
+									<f:converter
+										converterId="wikicrimes.WikiSearchCrimesDataConverter" />
+								</t:inputText>
+								<t:graphicImage id="triggerINI" forceId="true"
+									value="/images/btns/btnCalendar.gif"
+									style="display:inline; cursor:pointer;" />
+								<h:outputText value="#{messages['filtro.label.acrase']}"
+									style="font-size:11px;" />
+							</h:panelGroup>
+							<h:panelGroup border="0">
+								<t:inputText id="dataFinal" forceId="true"
+									onkeyup="limpaDataFinal();" value="#{filtroForm.dataFinal}"
+									style="font-size:10px;" size="10">
+									<f:converter
+										converterId="wikicrimes.WikiSearchCrimesDataConverter" />
+								</t:inputText>
+								<t:graphicImage id="triggerDF" forceId="true"
+									value="/images/btns/btnCalendar.gif"
+									style="display:inline; cursor:pointer;" />
+							</h:panelGroup>
+						</t:panelGrid>
+			
+						<!-- Filtros Avan�ados -->
+						<t:panelGrid border="0" columns="3" cellpadding="1" cellspacing="1"
+							style="margin:0px;text-align:left;align:left">
+							<t:panelGroup colspan="3">
+								<h:outputText value="#{messages['crime.filtro.horario']}:"
+									style="font-size:11px;" />
+							</t:panelGroup>
+			
+							<h:outputText
+								value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" />
+							<h:panelGroup border="0">
+								<h:selectOneMenu value="#{filtroForm.horarioInicial}"
+									style="font-size:10px;" id="horarioInicial">
+									<f:selectItem itemLabel="#{messages['filtro.btn.qualquer']}"
+										itemValue="-1" />
+									<f:selectItems value="#{filtroForm.horarioItens}" />
+								</h:selectOneMenu>
+			
+								<h:outputText value="#{messages['filtro.label.acrase']}"
+									style="font-size:11px;" />
+							</h:panelGroup>
+							<h:selectOneMenu value="#{filtroForm.horarioFinal}"
+								style="font-size:10px; " id="horarioFinal">
+								<f:selectItem itemLabel="#{messages['filtro.btn.qualquer']}"
+									itemValue="-1" />
+								<f:selectItems value="#{filtroForm.horarioItens}" />
+							</h:selectOneMenu>
+						</t:panelGrid>
+			
+						<t:panelGrid border="0" cellpadding="1" cellspacing="1" 
+							style="margin:0px;text-align:left;align:left">
 							
-								var isEntidadeCertificadoraSelecionada = document.getElementById("filtroForm:crimeConfirmadoEntidadeCertificadora").checked;
-								if(isEntidadeCertificadoraSelecionada == false) {
-									document.getElementById("filtroForm:entidadeCertificadora").disabled = true;
-									document.getElementById("filtroForm:entidadeCertificadora").itemValue = "";
-									}
-							</script>
-				<!-- update vazio somente para gravar na sessao os parametros do mapa (lat,lng,zoom) -->
-			</t:panelGrid>
-
-			<h:panelGrid border="0" columns="2">
-				<a4j:commandButton value="#{messages['filtro.btn.atualizar']}"
-					id="btnAtualizar" action="#{filtroForm.update}" styleClass="button"
-					onclick="esconderFiltro();selecionarComando(map, 'mao'); getUserMapConfig(); limpaUrl();setaSubmeteuFiltro();atualizaMapa();" />
-
-				<a4j:commandButton value="#{messages['faleconosco.cancelar']}"
-					id="btnCancelar"
-					onclick="esconderFiltro();selecionarComando(map, 'mao');//comentado pq esse era o limpar filtro. limpaUrl();limpaFiltro(); return false;"
-					styleClass="button" />
-			</h:panelGrid>
-		</div>
+							<h:outputText value="#{messages['crime.credibilidade.nivel']}"
+								style="vertical-align: text-top; font-size:11px;" />
+								
+							<h:panelGrid columns="3" border="0">
+								<h:outputText value="#{messages['crime.credibilidade.nivel.inicial']}: "
+									style="vertical-align: text-top; font-size:11px;" />
+								
+								<rich:inputNumberSlider id="idCredInicial" value="#{filtroForm.credibilidadeInicial}" 
+									minValue="0" maxValue="100" step="1" showInput="false">
+									<a4j:support event="onchange" reRender="idCredFinal,idValorCredInic,idValorCredFinal"/>
+								</rich:inputNumberSlider>
+								
+								<h:outputText id="idValorCredInic" value="#{filtroForm.credibilidadeInicial}%"/>
+								
+								<h:outputText value="#{messages['crime.credibilidade.nivel.final']}: "
+									style="vertical-align: text-top; font-size:11px;" />
+								
+								<rich:inputNumberSlider id="idCredFinal" value="#{filtroForm.credibilidadeFinal}" 
+									minValue="#{filtroForm.credibilidadeInicial}" maxValue="100" step="1" showInput="false">
+									<a4j:support event="onchange" reRender="idValorCredFinal"/>
+								</rich:inputNumberSlider>
+								
+								<h:outputText id="idValorCredFinal" value="#{filtroForm.credibilidadeFinal}%"/>
+							</h:panelGrid>
+							
+						</t:panelGrid>
+						
+			
+						<t:panelGrid border="0" cellpadding="1" cellspacing="1"
+							style="margin:0px;text-align:left;align:left">
+							<h:outputText value="#{messages['crime.filtro.certificacao']}:"
+								style="vertical-align: text-top; font-size:11px;" />
+							<h:panelGrid border="0" columns="2" cellpadding="0" cellspacing="0">
+			
+								<h:selectBooleanCheckbox
+									value="#{filtroForm.crimeConfirmadoPositivamente}"
+									id="crimeConfirmadoPositivamente" style="font-size:11px;">
+								</h:selectBooleanCheckbox>
+			
+								<h:outputText
+									value="#{messages['crime.filtro.option.certificadoPositivamente']}"
+									style="font-size:10px;" />
+			
+								<h:selectBooleanCheckbox id="crimeConfirmadoEntidadeCertificadora"
+									value="#{filtroForm.crimeConfirmadoEntCer}"
+									style="font-size:11px;"
+									onclick="habilitaListaEntidadeCertificadora();">
+								</h:selectBooleanCheckbox>
+			
+								<h:outputText
+									value="#{messages['crime.filtro.option.entidadeCertificadora']}"
+									style="font-size:10px;" />
+							</h:panelGrid>
+							<h:selectOneMenu style="font-size:10px"
+								value="#{filtroForm.entidadeCertificadora}"
+								id="entidadeCertificadora">
+								<f:selectItems value="#{filtroForm.entidadeCertificadoraItens}" />
+							</h:selectOneMenu>
+							<!-- FIM Filtro por n�vel de confiabilidade  -->
+							<!-- Inser��o de um c�digo javaScript para resolu��o dos problemas com a propriedade disable do componente "selectOneMenu"-->
+							<script type="text/javascript">
+										
+											var isEntidadeCertificadoraSelecionada = document.getElementById("filtroForm:crimeConfirmadoEntidadeCertificadora").checked;
+											if(isEntidadeCertificadoraSelecionada == false) {
+												document.getElementById("filtroForm:entidadeCertificadora").disabled = true;
+												document.getElementById("filtroForm:entidadeCertificadora").itemValue = "";
+												}
+										</script>
+							<!-- update vazio somente para gravar na sessao os parametros do mapa (lat,lng,zoom) -->
+						</t:panelGrid>
+			
+						<h:panelGrid border="0" columns="2">
+							<a4j:commandButton value="#{messages['filtro.btn.atualizar']}"
+								id="btnAtualizar" action="#{filtroForm.update}" styleClass="button"
+								onclick="esconderFiltro();selecionarComando(map, 'mao'); getUserMapConfig(); limpaUrl();setaSubmeteuFiltro();atualizaMapa();" />
+			
+							<a4j:commandButton value="#{messages['faleconosco.cancelar']}"
+								id="btnCancelar"
+								onclick="esconderFiltro();selecionarComando(map, 'mao');//comentado pq esse era o limpar filtro. limpaUrl();limpaFiltro(); return false;"
+								styleClass="button" />
+						</h:panelGrid>
+		 		
+		 		</div>
+		       <!-- Aqui pode ser colocado o conteúdo -->
+		       </div>
+		       <div id="corpo_dirFiltro">&nbsp;</div>
+			</div>
+			<div id="modal_bottomFiltro">
+		  		<div id="bottom_esqFiltro">&nbsp;</div>
+		       	<div id="bottom_meioFiltro">&nbsp;</div>
+		       	<div id="bottom_dirFiltro">&nbsp;</div>
+			</div>      	   
+		</div>    	   
+			
 		<!-- Fim da Pesquisa -->
 		<table border="0" style="margin-left:0; position: absolute; left: 0;">
 			<tr>
 				<td>
-					<table style="margin-top: 10px; max-height: 400px; ">
+					<table style="margin-top: 10px; max-height: 400px; width: 500px;">
 						<tr>
 							<td colspan="2" style=""><p class="toptitulo">Videos Wikicrimes</p><hr style="border: 0; border-top: 2px #A9A9A9 dotted;" />
 							</td>
@@ -589,34 +778,6 @@
 						<div style="padding-top: 5px; max-width: 200px;">
 							<h:outputText style="font-size:12px;" value="#{messages['video.titulo1']}" />
 						</div>
-						
-						<div id="fundovideo" style="width: 0; height: 0; display: none; background-color: black; position: fixed; z-index: 100; right: 100; top: 380;"
-							align="right">
-						</div>	
-						<div id="video" style="width: 0; height: 0; display: none; background-color: null; position: fixed; z-index: 100; right: 100; top: 380;" align="right">
-						
-							<div style="width: 100%; height: 100%; z-index: 100; padding: 0px;" align="center">
-								<div style="width: 100%; height: 26px; postion: fixed; z-index: 100;"></div>
-								<div class="dr-pnl rich-panel" style="width: 600px; height: 400px; z-index: 100;" align="center">
-									<div style="width: 100%; height: 30px; z-index: 100;" align="center" >
-										<div class="dr-pnl-h rich-panel-header" style="width: 99%; height: 30px; z-index: 100;" align="right" >
-											<div  id="fecharVideo" style="cursor : pointer; width: 40px; height: 20px; color: black; font-size: 18px; postion: fixed; right: 5px; top: 0; z-index: 100;">
-												X
-											</div>
-										</div>
-									</div>
-									<div style="width: 100%; height: 92%; z-index: 100;" align="center" >
-										<div id="conteudoVideo" style="width: 0px; height: 0px; z-index: 100;">
-											<object
-												width="100%" height="100%" style="z-index: 100;">
-												<param name="movie" value="http://www.youtube.com/v/LesfLXQ1mkg"></param>
-												<embed src="http://www.youtube.com/v/LesfLXQ1mkg" type="application/x-shockwave-flash" width="100%" height="100%" style="z-index: 100;"></embed> 
-											</object>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
 						</div>
 						</td>
 						<td valign="top">
@@ -627,39 +788,11 @@
 						<div style="padding-top: 5px; max-width: 200px;" >
 							<h:outputText style="font-size:12px" value="#{messages['video.titulo2']}" />
 						</div>
-						
-						<div id="fundovideo2" style="width: 0; height: 0; display: none; background-color: black; position: fixed; z-index: 100; right: 100; top: 380;"
-							align="right">
-						</div>	
-						<div id="video2" style="width: 0; height: 0; display: none; background-color: null; position: fixed; z-index: 100; right: 100; top: 380;" align="right">
-						
-							<div style="width: 100%; height: 100%; z-index: 100; padding: 0px;" align="center">
-								<div style="width: 100%; height: 26px; postion: fixed; z-index: 100;"></div>
-								<div class="dr-pnl rich-panel" style="width: 600px; height: 400px; z-index: 100;" align="center">
-									<div style="width: 100%; height: 30px; z-index: 100;" align="center" >
-										<div class="dr-pnl-h rich-panel-header" style="width: 99%; height: 30px; z-index: 100;" align="right" >
-											<div  id="fecharVideo2" style="cursor : pointer; width: 40px; height: 20px; color: black; font-size: 18px; postion: fixed; right: 5px; top: 0; z-index: 100;">
-												X
-											</div>
-										</div>
-									</div>
-									<div style="width: 100%; height: 92%; z-index: 100;" align="center" >
-										<div id="conteudoVideo2" style="width: 0px; height: 0px; z-index: 100;">
-											<object
-												width="100%" height="100%" style="z-index: 100;">
-												<param name="movie2" value="http://www.youtube.com/v/QAVUhyJTFMM"></param>
-												<embed src="http://www.youtube.com/v/QAVUhyJTFMM" type="application/x-shockwave-flash" width="100%" height="100%" style="z-index: 100;"></embed> 
-											</object>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
 					</div></td></tr></table>	
 				</td>
 				<td width="10px">&nsbp;</td>
-				<td width="500px">
-                      <table style="margin-top: 10px;">
+				<td width="478px">
+                      <table style="margin-top: 10px; width: 478px;">
                             <tr>
                             	<td valign="top"><p class="toptitulo">#{messages['modal.wikicrimes.mobile']}</p><hr style="border: 0; border-top: 2px #A9A9A9 dotted;" /></td>
                             </tr>
@@ -1578,147 +1711,17 @@
 <script type="text/javascript" src="http://github.com/malsup/corner/raw/master/jquery.corner.js?v2.09"></script>
 <script type="text/javascript"> 
 			
-		    // animation
-		        jQuery.noConflict();
+		   // animation
+		   jQuery.noConflict();
 				
-		        jQuery('#verVideo').click(function(){
-		
-			        jQuery('#video').animate({
-		                  	right: 100,
-		                    top: 115,  	
-		                    width:  0,
-		                    height: 0,
-		                    opacity: 0
-		            }, 0 );
-			              
-		        	jQuery('#fundovideo').animate({
-	                  	right: 100,
-	                    top: 140,  	
-	                    width:  0,
-	                    height: 0,
-	                    opacity: 0
-	              	}, 0 );
-	              	  
-		        	jQuery('#conteudoVideo').animate({	
-		                  width:  0,
-		                  height: 0
-		            }, 0 );
-		              
-			        jQuery('#video').animate({
-			                  	right: 0,
-			                    top: 0,
-			                    width:  '100%',
-			                    height: '100%',
-			                    opacity: 1
-			        }, 1000 );
-
-			        jQuery('#fundovideo').animate({
-	                  	right: 0,
-	                    top: 0,
-	                    width:  '100%',
-	                    height: '100%'
-	            	}, 0 );  
-			        jQuery('#fundovideo').animate({
-		                   opacity: 0.6
-		            }, 1000 );
-		            
-			        jQuery('#conteudoVideo').animate({
-			                  width:  '100%',
-			                  height: '100%'
-			        }, 1000 );
-			        
-			});
-			        
-			jQuery('#fecharVideo').click(function(){
-		        	jQuery('#video').animate({
-		                  	right: 0,
-		                    top: 0,  	
-		                    width:  0,
-		                    height: 0,
-		                    opacity: 0
-		              }, 1000 );
-		        	jQuery('#fundovideo').animate({
-	                    opacity: 0
-	              	}, 1000 ); 
-		        	jQuery('#fundovideo').animate({
-	                  	right: 0,
-	                    top: 0,  	
-	                    width:  0,
-	                    height: 0
-	              	}, 0 );
-		        	jQuery('#conteudoVideo').animate({	
-		                  width:  0,
-		                  height: 0
-		              }, 1000 );
-			});
-
+		   jQuery('#verVideo').click(function(){
+		   		openModal('./video1.html',470, 375,'#{messages['video.titulo1']}', this)	        	
+		   });
+			
 			jQuery('#verVideo2').click(function(){
-		
-		        jQuery('#video2').animate({
-	                  	right: 100,
-	                    top: 270,  	
-	                    width:  0,
-	                    height: 0,
-	                    opacity: 0
-	            }, 0 );
-	            
-	        	jQuery('#fundovideo2').animate({
-                  	right: 100,
-                    top: 270,  	
-                    width:  0,
-                    height: 0,
-                    opacity: 0
-              	}, 0 );
-              	
-	        	jQuery('#conteudoVideo2').animate({	
-	                  width:  0,
-	                  height: 0
-	            }, 0 );
-	              
-		        jQuery('#video2').animate({
-                  	right: 0,
-                    top: 0,
-                    width:  '100%',
-                    height: '100%',
-                    opacity: 1
-		        }, 1000 );
-		        jQuery('#fundovideo2').animate({
-                  	right: 0,
-                    top: 0,
-                    width:  '100%',
-                    height: '100%'
-              	}, 0 );
-	        	jQuery('#fundovideo2').animate({
-                    opacity: 0.6
-              	}, 1000 );
-	        	jQuery('#conteudoVideo2').animate({
-	                  width:  '100%',
-	                  height: '100%'
-	            }, 1000 );
-		   });
-		        
-		   jQuery('#fecharVideo2').click(function(){
-	        	jQuery('#video2').animate({
-	                  	right: 0,
-	                    top: 270,  	
-	                    width:  0,
-	                    height: 0,
-	                    opacity: 0
-	            }, 1000 );
-		        jQuery('#fundovideo2').animate({
-                    opacity: 0
-           		}, 1000 );
-		        jQuery('#fundovideo2').animate({
-                  	right: 100,
-                    top: 270,  	
-                    width:  0,
-                    height: 0
-            	}, 0 ); 
-		        jQuery('#conteudoVideo2').animate({	
-	                 	width:  0,
-	                	height: 0
-		        }, 1000 );
-		   });
+				openModal('./video2.html',470, 375,'#{messages['video.titulo2']}', this)
+		    });
+	
 				
 		</script>
 

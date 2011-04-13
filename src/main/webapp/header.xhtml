@@ -21,7 +21,7 @@
 
 <body>
 <t:panelGroup id="painelPrincipaLoginLogout">
-	<h1 style="font-size: 10px; position: absolute; top: 40px; left: 25px; color: gray; font-family: sans-serif;">#{messages['wikicrimes.slogan']}</h1>
+	<h1 style="font-size: 10px; position: absolute; top: 35px; left: 3px; color: gray; font-family: sans-serif;">#{messages['wikicrimes.slogan']}</h1>
 	<c:if test="#{empty usuario}">
 		
 		<table align="right" cellpadding="1" cellspacing="0" border="0">
@@ -63,10 +63,11 @@
 
 					<td><h:outputText value="#{usuario.email} " /></td>
 					<td>|</td>
-					<td><a4j:commandLink value=" Logout "
-						reRender="pesquisaGenerica, painelPrincipaLoginLogout, divMobile"
-						action="#{usuarioForm.logout}" immediate="true"
-						onclick="onLogout()" /></td>
+						<td><h:outputLink value="#"
+						onclick="openModal('./editarPreferencias.html', 650, 400,'#{messages['usuario.conta']}');return false">
+						<h:outputText value=" #{messages['usuario.conta']} "
+							title="#{messages['usuario.conta.hint']}" />
+					</h:outputLink></td>					
 					<td>|</td>
 					  
 					<td><h:outputLink value="#"
@@ -91,12 +92,10 @@
 							title="#{messages['usuario.denuncias.hint']}" />
 					</h:outputLink></td>
 					<td>|</td>
-					<td><h:outputLink value="#"
-						onclick="openModal('./editarPreferencias.html', 650, 400,'#{messages['usuario.conta']}');return false">
-						<h:outputText value=" #{messages['usuario.conta']} "
-							title="#{messages['usuario.conta.hint']}" />
-					</h:outputLink></td>
-
+					<td><a4j:commandLink value=" Logout "
+						reRender="pesquisaGenerica, painelPrincipaLoginLogout, divMobile"
+						action="#{usuarioForm.logout}" immediate="true"
+						onclick="onLogout()" /></td>
 				</tr>
 				
 			</table>
@@ -167,7 +166,7 @@
 
 				function gerarEmbedded(){
 					if(#{usuario != null}){
-						displayMessage('./geradorEmbedded.html', 900, 510,'#{messages["mapaEmbedded.estado.mapa"]}');
+						openModal('./geradorEmbedded.html', 900, 510,'#{messages["mapaEmbedded.estado.mapa"]}');
 					}else{
 						mostrarPainelLogin('./login.html');
 					}	

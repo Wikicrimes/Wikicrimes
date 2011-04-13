@@ -366,7 +366,7 @@
 		    var ruaTrim = replaceAll(rua,' ','');
 			if(ruaTrim == null || ruaTrim == 'undefined' || ruaTrim == ''){
 				jQuery('#btnConfirmar').css('background-color', 'gray');
-	      		jQuery('#btnConfirmar').css('border','none');
+	      		/*jQuery('#btnConfirmar').css('border','none');*/
 	      		jQuery('#btnConfirmar').attr('disabled','true');
 			}			
 			getAddress(new GOverlay(),new GLatLng(mapaLocalizacaoX,mapaLocalizacaoY), function(){
@@ -392,13 +392,17 @@
 		    		if(place.AddressDetails.Country.CountryName != null){
 		    			var pais = place.AddressDetails.Country.CountryName;
 				       	document.getElementById('pais').value = pais;
-				       	if(place.AddressDetails.Country.AdministrativeArea.AdministrativeAreaName != null){
-				       		var estado = place.AddressDetails.Country.AdministrativeArea.AdministrativeAreaName;
-							document.getElementById('estado').value = estado;
-							if(place.AddressDetails.Country.AdministrativeArea.Locality.LocalityName != null){
-								var cidade = place.AddressDetails.Country.AdministrativeArea.Locality.LocalityName;
-						       	document.getElementById('cidade').value = cidade;
-							}
+				       	if(place.AddressDetails.Country.AdministrativeArea != null){
+					       	if(place.AddressDetails.Country.AdministrativeArea.AdministrativeAreaName != null){
+					       		var estado = place.AddressDetails.Country.AdministrativeArea.AdministrativeAreaName;
+								document.getElementById('estado').value = estado;
+								if(place.AddressDetails.Country.AdministrativeArea.Locality != null){
+									if(place.AddressDetails.Country.AdministrativeArea.Locality.LocalityName != null){
+										var cidade = place.AddressDetails.Country.AdministrativeArea.Locality.LocalityName;
+								       	document.getElementById('cidade').value = cidade;
+									}
+								}
+					       	}
 				       	}
 		    		}
 		    			
@@ -416,7 +420,6 @@
 		function mostrarMapaQuatro(valor){
 			if(valor.length == 0){
 				jQuery('#btnConfirmar').css('background-color', 'gray');
-	      		jQuery('#btnConfirmar').css('border','none');
 	      		jQuery('#btnConfirmar').attr('disabled','true');
 			}
 		}
@@ -497,8 +500,7 @@
 				    var ruaTrim = replaceAll(rua,' ','');
 				     
 				  	if(ruaTrim != null && ruaTrim != 'undefined' && ruaTrim != ''){
-				  		jQuery('#btnConfirmar').css('background-color', '');
-				  		jQuery('#btnConfirmar').css('border','');
+				  		jQuery('#btnConfirmar').css('background-color', '#6DA6E2');
 				  		jQuery('#btnConfirmar').removeAttr('disabled');
 				  		
 				  		mapaRegistro.openInfoWindowHtml(point,html);
@@ -517,7 +519,6 @@
 					  	mapaRegistro.addOverlay(crimeRegistro);
 			      	}else{
 			      		jQuery('#btnConfirmar').css('background-color', 'gray');
-			      		jQuery('#btnConfirmar').css('border','none');
 			      		jQuery('#btnConfirmar').attr('disabled','true');
 			      	}
 		    	  

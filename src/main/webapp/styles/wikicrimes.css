@@ -10,11 +10,18 @@ body{
 	
 }
 
+
 body,input {
 	font-size: 11px; 
 	font-family: sans-serif;
 }
 
+input[type=text]{
+	border-style: groove;
+	height: 16px;
+	border-color:#C0C0C0;
+		
+}
 a, a:visited {
     color: #1874CD;
     text-decoration: none;
@@ -31,8 +38,9 @@ a:hover {
     padding: 2px;
     background-color: #6DA6E2;
     color: #FFFFFF;
-    border: 1px solid #2763A5; 
+    /*border: 2px solid #2763A5;*/ 
     font-size: 11px;
+    
 }
 
 .button-disabled {

@@ -1290,15 +1290,11 @@
 			
 			
 			function mostrarFiltro(){
-				document.getElementById("divTelaFiltro").style.visibility = "visible";
-				document.getElementById("divTelaFiltro").style.top = "96px";
-				document.getElementById("divTelaFiltro").style.left = "36%";
+				openModalFiltro('340', '400', '#{messages['titulo.pesquisaCrimes']}');
 			}
 
 			function esconderFiltro(){
-				document.getElementById("divTelaFiltro").style.visibility = "hidden";
-				document.getElementById("divTelaFiltro").style.top = "-300px";
-				document.getElementById("divTelaFiltro").style.left = "36%";
+				closeModalFiltro('modalFiltro');
 			}
 
 

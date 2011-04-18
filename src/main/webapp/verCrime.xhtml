@@ -59,7 +59,13 @@
 					<div id="detalhemapa" style="height: 300px; width: 500px; float: right; margin: 20px;"></div>
 					
 					<c:if test="#{mostrarDadosForm.crime.cidade != null}">
-			 		<p><h:outputFormat value="#{messages['crime.titulo']}"> 
+			 		<p><h:outputFormat value="#{messages['crime.titulo']}">
+			 		 	<c:if test="#{mostrarDadosForm.crime.tipoCrime.idTipoCrime != 5}">
+			 			<f:param value="#{mostrarDadosForm.crime.tipoCrime.descricao}"/>
+			 			</c:if>
+			 			<c:if test="#{mostrarDadosForm.crime.tipoCrime.idTipoCrime == 5}">
+			 			<f:param value="#{mostrarDadosForm.crime.tipoVitima.descricao}"/>
+			 			</c:if>
 			 			<f:param value="#{mostrarDadosForm.crime.cidade}"/>
 			 			<f:param value="#{mostrarDadosForm.crime.estado}"/> 
 			 			<f:param value="#{mostrarDadosForm.crime.dataHoraRegistro}"/>

@@ -230,8 +230,8 @@
 										
 					<t:commandButton id="btnRegistrar" forceId="true"
 						value="#{messages['usuario.btn.registrar']}" onclick="getCityLatLng(); return false;" styleClass="button" disabled="true" />
-					<h:commandButton id="cancel"  value="#{messages['faleconosco.cancelar']}" 
-						onclick="parent.closeMessage();return false" styleClass="button" style="margin-left:10px"/>
+					<input type="button" id="cancel" value="#{messages['faleconosco.cancelar']}" 
+						onclick="parent.closeModal('modal');return false" class="button" style="margin-left:10px"/>
 					
 					<script type="text/javascript">
 						function habilitaBtnRegistrar() {

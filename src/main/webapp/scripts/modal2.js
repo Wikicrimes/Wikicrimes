@@ -40,7 +40,7 @@ function openModal(url,largura,altura, titulo, a)
 				var larguraBottom = largura - 24;
 				var larguraTopopx = larguraTopo + "px";
 				var larguraBottompx = larguraBottom + "px";
-				var alturaCorpo = altura - 5;
+				var alturaCorpo = altura;
 				var alturaCorpopx = alturaCorpo + "px";
 				var larguraTopoMeio = larguraTopo - 12;
 				var larguraTopoMeiopx = larguraTopoMeio  + "px";
@@ -66,7 +66,7 @@ function openModal(url,largura,altura, titulo, a)
 				//document.getElementById('xfecha').style.marginLeft = larguraTopo;
 				//document.body.style.overflow='hidden';
 				
-				jQuery('#modalConteudo').append("<img src='images/popUpIcon.png' style = 'float: left; float: left; margin-top:0px; margin-left: 5px; margin-right: 5px; margin-bottom: 0px;'/><h1 style = 'font-size: small; color: gray; padding-top: 5px;'>" + titulo + "</h1></br>");
+				jQuery('#modalConteudo').append("<img src='images/popUpIcon.png' style = 'float: left; float: left; margin-top:0px; margin-left: 5px; margin-right: 5px; margin-bottom: 0px;'/><h1 style = 'font-size: small; color: gray; padding-top: 5px;'>" + titulo + "</h1>");
 				jQuery('#modalConteudo').append("<hr style='border: 0; border-top: 2px #A9A9A9 dotted; margin: 0px;'/>");
 				jQuery('#modalConteudo').append('<iframe src=' + url + '  class="frame" width=' + (largura -33) + ' height=' + (altura - 50) + ' frameborder="0" scrolling="auto"></iframe>');
 				
@@ -148,7 +148,7 @@ function openModal(url,largura,altura, titulo, a)
 					document.getElementById('corpo_esqFiltro').style.height = alturaCorpopx;
 					document.getElementById('corpo_dirFiltro').style.height = alturaCorpopx;
 					
-					jQuery('#divTituloFiltro').append("<img src='images/popUpIcon.png' style = 'float: left; float: left; margin-top:0px; margin-left: 5px; margin-right: 5px; margin-bottom: 0px;'/><h1 style = 'font-size: small; color: gray; padding-top: 5px;'>" + titulo + "</h1></br>");
+					jQuery('#divTituloFiltro').append("<img src='images/popUpIcon.png' style = 'float: left; float: left; margin-top:0px; margin-left: 5px; margin-right: 5px; margin-bottom: 0px;'/><h1 style = 'font-size: small; color: gray; padding-top: 5px;'>" + titulo + "</h1>");
 					jQuery('#divTituloFiltro').append("<hr style='border: 0; border-top: 2px #A9A9A9 dotted; margin: 0px;'/>");
 					
 				}

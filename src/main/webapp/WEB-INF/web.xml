@@ -369,7 +369,7 @@
 		<url-pattern>/ServletIphone</url-pattern>
 	</servlet-mapping>
 	
-<!-- TESTE esses servlets nao devem ser usados em produção-->
+<!-- TESTE esses servlets nao devem ser usados em produção
 	<servlet>
 		<servlet-name>TesteCenariosRotas</servlet-name>
 		<servlet-class>org.wikicrimes.util.rotaSegura.testes.TesteCenariosRotas</servlet-class>
@@ -394,7 +394,7 @@
 		<servlet-name>ServletCrimesHotSpots</servlet-name>
 		<url-pattern>/ServletCrimesHotSpots</url-pattern>
 	</servlet-mapping>
-<!-- FIM TESTE -->
+	FIM TESTE -->
 
 	<servlet>
 		<servlet-name>CrimeRatioServlet</servlet-name>

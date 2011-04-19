@@ -762,38 +762,4 @@ public class MostrarDadosForm extends GenericForm {
 		SimpleDateFormat isoDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 		return isoDate.format(date);
 	}
-	
-	public String getCategoriaCrime() {
-		ResourceBundle bundle = ResourceBundle.getBundle("messages", (Locale)facesContext.getExternalContext().getRequestLocale());
-		String tipoCrime = bundle.getString(getCrime().getTipoCrime().getNome());
-		
-		if (tipoCrime != null) { 
-			if (tipoCrime.equalsIgnoreCase("Outro")) {
-				tipoCrime = bundle.getString(getCrime().getTipoVitima().getNome());
-			}
-		}
-		
-		return tipoCrime;
-	}
-	
-	public String getSumarioCrime() {
-		ResourceBundle bundle = ResourceBundle.getBundle("messages", (Locale)facesContext.getExternalContext().getRequestLocale());
-		String tipoCrime = bundle.getString(getCrime().getTipoCrime().getNome());
-		String tipoVitima = bundle.getString(getCrime().getTipoVitima().getNome());
-		String localidade = bundle.getString(getCrime().getTipoLocal().getNome());
-		
-		if (tipoCrime.equalsIgnoreCase("Outro")) {
-			tipoCrime = "Violência";
-			tipoVitima = "Pessoa";
-		}
-				
-		if (localidade.equalsIgnoreCase("Outros")) {
-			localidade = "";
-		}
-		else {
-			localidade = " em " + localidade;
-		}
-
-		return tipoCrime + localidade + " a " +	tipoVitima ;
-	}
 }

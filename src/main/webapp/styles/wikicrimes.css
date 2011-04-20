@@ -16,7 +16,7 @@ body,input {
 	font-family: sans-serif;
 }
 
-input[type=text]{
+input[type=text],[type=password]{
 	border-style: groove;
 	height: 16px;
 	border-color:#C0C0C0;

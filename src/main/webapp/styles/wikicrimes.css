@@ -196,8 +196,7 @@ img {
 .topcrimes {
 	height: 25px;
 	padding-left: 40px;
-	font: normal 22px sans-serif;
-	background: url(../images/icones_sites/sprite2.png) no-repeat left bottom;
+	font: normal 22px sans-serif;	
 }
 
 .toptitulo {

@@ -196,7 +196,8 @@ img {
 .topcrimes {
 	height: 25px;
 	padding-left: 40px;
-	font: normal 22px sans-serif;	
+	font: normal 22px sans-serif;
+	background: url(../images/icones_sites/stats.png) no-repeat bottom;
 }
 
 .toptitulo {

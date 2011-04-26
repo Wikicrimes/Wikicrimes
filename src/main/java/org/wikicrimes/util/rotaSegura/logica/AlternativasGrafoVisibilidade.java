@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
-import org.wikicrimes.util.NumerosUtil;
+import org.wikicrimes.util.Util;
 import org.wikicrimes.util.rotaSegura.geometria.Poligono;
 import org.wikicrimes.util.rotaSegura.geometria.Ponto;
 import org.wikicrimes.util.rotaSegura.geometria.Rota;
@@ -20,7 +20,7 @@ public class AlternativasGrafoVisibilidade extends GeradorDeAlternativasAbstrato
 	private static final int DETALHAMENTO_POLIGONOS = 4; //qt maior, menos detalhe (mais vertices descartados)
 	private static final double AJUSTE_PERIGO_MAXIMO = 1.7; //se tirar isso o metodo "todos caminhos" descarta tudo e retorna vazio (nao sei pq :/)
 	
-	public AlternativasGrafoVisibilidade(LogicaRotaSegura logica) {
+	public AlternativasGrafoVisibilidade(SafeRouteCalculator logica) {
 		super(logica);
 	}
 
@@ -87,9 +87,9 @@ public class AlternativasGrafoVisibilidade extends GeradorDeAlternativasAbstrato
 	}
 	
 	//FIXME tem um problema
-	//em cada passo da caminhada pela borda, n tao sendo processadas só as 3 células como na ilustracao 1 (como foi planejado)
-	//ta sendo processado como na ilustracao 2, pq não ta "voltando" pro "x" antes de ir pra cima e pra esquerda (erro de implementação mesmo)  
-	//só q, ao corrigir isso, pára de funcionar 
+	//em cada passo da caminhada pela borda, n tao sendo processadas sï¿½ as 3 cï¿½lulas como na ilustracao 1 (como foi planejado)
+	//ta sendo processado como na ilustracao 2, pq nï¿½o ta "voltando" pro "x" antes de ir pra cima e pra esquerda (erro de implementaï¿½ï¿½o mesmo)  
+	//sï¿½ q, ao corrigir isso, pï¿½ra de funcionar 
 	//pq acontece com mais frequencia de nao achar "celula fora do hotspot" procurando na area menor (ilustracao 1)
 	//
 	//  1 			     2       < ^
@@ -109,7 +109,7 @@ public class AlternativasGrafoVisibilidade extends GeradorDeAlternativasAbstrato
 		if(kernel.getMaxDens() == 0)
 			return polis;
 		
-		final int perto = 1; //fecha o poligono msm se o inicio e fim msm nao tiverem se encontrado, se estiverem a esta distância
+		final int perto = 1; //fecha o poligono msm se o inicio e fim msm nao tiverem se encontrado, se estiverem a esta distï¿½ncia
 		final int minimoIteracoes = 10;
 		Ponto p1 = new Ponto(bounds.x, bounds.y);
 		Ponto p2 = new Ponto(bounds.x + bounds.width, bounds.y + bounds.height);
@@ -117,10 +117,10 @@ public class AlternativasGrafoVisibilidade extends GeradorDeAlternativasAbstrato
 		Point g2 = kernel.pixelParaGrid(p2);
 		int cols = kernel.getCols();
 		int rows = kernel.getRows();
-		int xIni = NumerosUtil.limitar(g1.x, 0, cols);
-		int xFim = NumerosUtil.limitar(g2.x, 0, cols);
-		int yIni = NumerosUtil.limitar(g1.y, 0, rows);
-		int yFim = NumerosUtil.limitar(g2.y, 0, rows);
+		int xIni = Util.limit(g1.x, 0, cols);
+		int xFim = Util.limit(g2.x, 0, cols);
+		int yIni = Util.limit(g1.y, 0, rows);
+		int yFim = Util.limit(g2.y, 0, rows);
 
 		boolean[][] visto = new boolean[cols][rows];
 		for(int i=xIni; i<xFim; i++){
@@ -301,7 +301,7 @@ public class AlternativasGrafoVisibilidade extends GeradorDeAlternativasAbstrato
 	*/
 	
 	private Grafo<Ponto> getGrafoVisibilidade(List<Poligono> poligonos, Ponto... pontos){
-		CalculoPerigo calcPerigo = new CalculoPerigo(logica);
+		Perigo calcPerigo = new Perigo(logica);
 		
 		//vertices de poligonos + pontos
 		List<Ponto> vertices = new ArrayList<Ponto>();

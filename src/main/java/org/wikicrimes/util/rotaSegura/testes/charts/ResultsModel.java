@@ -97,7 +97,10 @@ public class ResultsModel {
 			else if(b.results.satisfactoryStop == null)
 				return -1;
 			else
-				return a.results.satisfactoryStop - b.results.satisfactoryStop;
+				if(a.results.satisfactoryStop != b.results.satisfactoryStop)
+					return a.results.satisfactoryStop - b.results.satisfactoryStop;
+				else
+					return a.results.firstImprovement - b.results.firstImprovement;
 		}
 	};
 	

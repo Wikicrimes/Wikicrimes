@@ -17,6 +17,7 @@ import org.wikicrimes.util.rotaSegura.testes.charts.ResultsModel.Scenario;
 public class ResultsLoader {
 
 	static final String dir = "/home/victor/Desktop/testes/rotas 2010.12.06/novo";
+//	static final String dir = "/home/victor/Desktop/testes/rotas 2010.12.06/teste7 (pontos random, sem priorityqueue)";
 	private static final String scenariosFileName = "cenarios.txt";
 	private static final String iterationsFileName = "resultados.txt";
 	private static final String manualAppreciationsFileName = "avaliacao.txt";
@@ -140,17 +141,19 @@ public class ResultsLoader {
 				
 				int id = Integer.valueOf(split[0]);
 				
-				Integer algorithmStop = null;
+				Integer satisfactoryStop = null;
 				if(!split[1].equals("-"))
-					algorithmStop = Integer.valueOf(split[1]);
+					satisfactoryStop = Integer.valueOf(split[1]);
 				
-				Integer manualStop = null;
+				Integer firstImprovement = null;
 				if(split.length > 2)
-					manualStop = Integer.valueOf(split[2]);
+					firstImprovement = Integer.valueOf(split[2]);
+				else
+					firstImprovement = satisfactoryStop;
 				
 				Scenario cenario = results.scenarios.get(id);
-				cenario.results.satisfactoryStop = algorithmStop;
-				cenario.results.firstImprovement = manualStop;
+				cenario.results.satisfactoryStop = satisfactoryStop;
+				cenario.results.firstImprovement = firstImprovement;
 				
 			}
 			

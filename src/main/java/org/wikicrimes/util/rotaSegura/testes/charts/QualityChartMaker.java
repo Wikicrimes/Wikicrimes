@@ -51,8 +51,8 @@ public class QualityChartMaker {
 //		Collections.sort(scenarios, ResultsModel.toleranceComparator);
 //		Collections.sort(scenarios, ResultsModel.minDistanceComparator);
 //		Collections.sort(scenarios, ResultsModel.dangerComparator);
-		Collections.sort(scenarios, ResultsModel.stopQualityComparator);
-//		Collections.sort(scenarios, ResultsModel.startQualityComparator);
+//		Collections.sort(scenarios, ResultsModel.stopQualityComparator);
+		Collections.sort(scenarios, ResultsModel.startQualityComparator);
 		for(Scenario scenario : scenarios) {
 			
 			Results results = scenario.results;
@@ -189,7 +189,7 @@ public class QualityChartMaker {
 	
 	private void drawBar(int x, int y1, int y2, Color color, Graphics g) {
 		g.setColor(color);
-		RenderedImage rImg = (RenderedImage)image;
+//		RenderedImage rImg = (RenderedImage)image;
 //		int h = rImg.getHeight();
 		g.fillRect(x-6, y1, 12, y2-y1);
 	}

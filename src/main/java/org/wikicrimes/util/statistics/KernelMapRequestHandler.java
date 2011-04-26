@@ -3,60 +3,54 @@ package org.wikicrimes.util.statistics;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.wikicrimes.util.ServletUtil;
 import org.wikicrimes.util.kernelmap.KernelMap;
 import org.wikicrimes.util.kernelmap.PropertiesLoader;
 import org.wikicrimes.util.kernelmap.renderer.KMRFactory;
 import org.wikicrimes.util.kernelmap.renderer.KernelMapRenderer;
-import org.wikicrimes.util.statistics.Param.Application;
 
 public class KernelMapRequestHandler {
 
-	private final static String KERNEL_MAP_IMAGES = "KERNEL_MAP_IMAGES"; //imagem renderizada do mapa de kernel
-	private final static String KERNEL_MAP_OBJECTS = "KERNEL_MAP_OBJECTS"; //objeto MapaKernel
-	
 	private final static int DEFAULT_NODE_SIZE = PropertiesLoader.getInt("kernelmap.nodesize");
 	private final static int DEFAULT_BANDWIDTH = PropertiesLoader.getInt("kernelmap.bandwidth");
 	
-	private ServletContext context;
-	private HttpSession session;
 	private HttpServletRequest request;
-	private HttpServletResponse response;
+	private List<Point> points;
+	private Rectangle pixelBounds;
 	
-	public KernelMapRequestHandler(HttpServletRequest request, HttpServletResponse response, ServletContext context) {
+	private KernelMap kernel;
+	private Image image;
+	
+	private KernelMapRequestHandler(HttpServletRequest request) {
 		this.request = request;
-		this.response = response;
-		this.context = context;
-		this.session = request.getSession();
 	}
 	
-	public Image generateKernelMap(){
-		Rectangle limitesPixel = Param.getLimitesPixel(request);
-
-		EventsRetriever pointsRetriever = EventsRetriever.getEventsRetriever(request, context);
-		List<Point> points = pointsRetriever.getPoints();
+	public KernelMapRequestHandler(HttpServletRequest request, List<Point> points, Rectangle pixelBounds) {
+		this(request);
+		this.points = points;
+		this.pixelBounds = pixelBounds;
+		generateKernelMap();
+	}
+	
+	public KernelMapRequestHandler(HttpServletRequest request, List<Point> points) {
+		this(request, points, Param.getPixelBounds(request));
+	}
+	
+	private void generateKernelMap(){
 		int zoom = Param.getZoom(request);
-		double bandwidth = getZoomDependantBandwidth(zoom);
-		/*DEBUG*///System.out.println("ZOOM: " + zoom + ", BANDWIDTH: " + bandwidth);
-		KernelMap kernel = new KernelMap(DEFAULT_NODE_SIZE, bandwidth, limitesPixel, points);
+//		double bandwidth = getZoomDependantBandwidth(zoom);
+		double bandwidth = DEFAULT_BANDWIDTH;
+		kernel = new KernelMap(DEFAULT_NODE_SIZE, bandwidth, pixelBounds, points);
 		boolean isIE = ServletUtil.isClientUsingIE(request); 
 		KernelMapRenderer renderer = KMRFactory.getDefaultRenderer(kernel, isIE);
-		Image image = renderer.renderImage();
-
-		saveInSession(kernel, image);
-
-		return image;
+		image = renderer.renderImage();
+//		/*TESTE CENARIO*/TesteCenariosRotas.setResult("numCrimes", points.size());
+//		/*TESTE CENARIO*/TesteCenariosRotas.setResult("densMedia", kernel.getMediaDens());
+//		/*TESTE CENARIO*/TesteCenariosRotas.setResult("densMax", kernel.getMaxDens());
 	}
 	
 	private double getZoomDependantBandwidth(int zoom) {
@@ -79,67 +73,13 @@ public class KernelMapRequestHandler {
 			return factor*DEFAULT_BANDWIDTH;
 		}
 	}
-	
-	@SuppressWarnings("unchecked")
-	private void saveInSession(KernelMap kernel, Image image) {
-		Application app = Param.getApplication(request);
-		
-		Map<Application,KernelMap> kernels = (Map<Application,KernelMap>)session.getAttribute(KERNEL_MAP_OBJECTS);
-		if(kernels == null)
-			kernels = new HashMap<Application, KernelMap>();
-		kernels.put(app, kernel);
-		session.setAttribute(KERNEL_MAP_OBJECTS, kernels);
-		
-		Map<Application,Image> images = (Map<Application,Image>)session.getAttribute(KERNEL_MAP_IMAGES);
-		if(images == null)
-			images = new HashMap<Application, Image>();
-		images.put(app, image);
-		session.setAttribute(KERNEL_MAP_IMAGES, images);
-	}
-	
-	@SuppressWarnings("unchecked")
-	public KernelMap getKernelMapFromSession() {
-		Application app = Param.getApplication(request);
-		Map<String,KernelMap> map = (Map<String,KernelMap>)session.getAttribute(KERNEL_MAP_OBJECTS);
-		KernelMap kernel = map.get(app);
+
+	public KernelMap getKernel() {
 		return kernel;
 	}
-	
-	@SuppressWarnings("unchecked")
-	public Image getImageFromSession() {
-		Application app = Param.getApplication(request);
-		Map<String,Image> map = (Map<String,Image>)session.getAttribute(KERNEL_MAP_IMAGES);
-		return map.get(app);
-	}
-	
-	public void sendKernelMapInfo(double[][] dens) throws IOException{
-		//manda a matriz de densidades gerada pelo KernelMap
-		response.setContentType("text/plain");
-		PrintWriter out = response.getWriter();
-		
-		//nodeSize
-		out.println(DEFAULT_NODE_SIZE);
-		out.println(DEFAULT_BANDWIDTH);
 
-		//estatisticas
-		KernelMap kernel = getKernelMapFromSession();
-		if(kernel == null) {
-			out.println("\n\n\n");
-		}else {
-			out.println(kernel.getMaxDens());
-			out.println(kernel.getMediaDens());
-			out.println(kernel.getMinDens()); 
-		}
-		
-		//grid
-		if(dens != null)
-			for(double[] coluna : dens){
-				for(double d : coluna){
-					out.print(d + ",");
-				}
-				out.println();
-			}
-		out.close();
+	public Image getImage() {
+		return image;
 	}
 	
 }

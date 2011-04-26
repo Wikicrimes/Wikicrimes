@@ -10,8 +10,9 @@ import java.util.Map;
 import org.wikicrimes.model.BaseObject;
 import org.wikicrimes.model.PontoLatLng;
 import org.wikicrimes.service.CrimeService;
-import org.wikicrimes.servlet.ServletKernelMap;
 import org.wikicrimes.util.rotaSegura.geometria.Ponto;
+import org.wikicrimes.util.statistics.KernelMapRequestHandler;
+import org.wikicrimes.util.statistics.WikiCrimesEventsRetriever;
 
 public class KernelMapUtil {
 
@@ -55,7 +56,7 @@ public class KernelMapUtil {
 		params.put("dataInicial", dataInicial);
 		params.put("dataFinal", new Date());
 		List<BaseObject> crimes = crimeService.filter(params);
-		List<Point> crimesPixel = ServletKernelMap.toPixel(crimes, zoom);
+		List<Point> crimesPixel = WikiCrimesEventsRetriever.toPixel(crimes, zoom);
 		
 		return crimesPixel;
 	}

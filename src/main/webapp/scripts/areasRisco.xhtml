@@ -38,7 +38,6 @@
 			function ativaMarcacaoHotspot(){
 				//mousemove listener
 				mousemoveHotspot = GEvent.addListener(map, "mousemove", function (latlng) {
-
 					//marcar apenas em determinados niveis zoom
 					if(zoomKernel < 11 || zoomKernel > 14){
 						return;
@@ -129,11 +128,12 @@
 			//LOGIGA PRA MARCAR CONTORNO DO HOTSPOT
 			
 			function encontraContorno(celulaInicial){
-				//inicializa
+				/*//inicializa
 				var visitado = new Array();
-				for(var i=0; i<gridDensidades.length; i++){
+				var cols = statistics.kernel.cols;
+				for(var i=0; i<cols; i++){
 					visitado[i] = new Array();
-				}
+				}*/
 
 				//encontra o contorno
 				//flood(celulaInicial);
@@ -169,9 +169,9 @@
 			}
 */
 			//TODO tem um problema
-			//em cada passo da caminhada pela borda, n tao sendo processadas s� as 3 c�lulas como na ilustracao 1 (como foi planejado)
-			//ta sendo processado como na ilustracao 2, pq n�o ta "voltando" pro "x" antes de ir pra cima e pra esquerda (erro de implementa��o mesmo)  
-			//s� q, ao corrigir isso, p�ra de funcionar 
+			//em cada passo da caminhada pela borda, n tao sendo processadas so as 3 celulas como na ilustracao 1 (como foi planejado)
+			//ta sendo processado como na ilustracao 2, pq nao ta "voltando" pro "x" antes de ir pra cima e pra esquerda (erro de implementacao mesmo)  
+			//so q, ao corrigir isso, para de funcionar 
 			//pq acontece com mais frequencia de nao achar "celula fora do hotspot" procurando na area menor (ilustracao 1)
 			//
 			//  1 			     2       < ^
@@ -222,11 +222,11 @@
 			}
 
 			function isCelulaNoHotspot(celula){
-				if(gridDensidades == undefined)
-					return false;
-				if(gridDensidades[celula.x] == undefined)
-					return false;
-				return gridDensidades[celula.x][celula.y] >= limiteDensHotspot;
+				if(statistics == undefined) return;
+				var grid = statistics.kernel.booleanGrid;
+				if(grid == undefined || grid[celula.x] == undefined) return false;
+				var cell = grid[celula.x][celula.y];
+				return cell == 1;
 			}
 
 			var norte = 0;
@@ -264,6 +264,8 @@
 			}
 
 			function latLongToGrid(latlng){
+				if(statistics == undefined) return;
+				var nodeSize = statistics.kernel.nodeSize;
 				var clickPixel = map.getCurrentMapType().getProjection().fromLatLngToPixel(latlng, map.getZoom());
 				var x = clickPixel.x-westPixel;
 				var y = clickPixel.y-northPixel;
@@ -273,6 +275,8 @@
 			}
 
 			function gridToLatlng(posGrid){
+				if(statistics == undefined) return;
+				var nodeSize = statistics.kernel.nodeSize;
 				var xPixel = westPixel + posGrid.x * nodeSize;
 				var yPixel = northPixel + posGrid.y * nodeSize;
 				var posPixel = new GPoint(xPixel,yPixel);

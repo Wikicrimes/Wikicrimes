@@ -18,7 +18,7 @@ public class JSONRouteHandler {
 
 	public static JSONObject getJSON(Rota rota, int zoom) throws IOException{
 		URL url = ServiceURLBuilder.getUrlJSON(rota, zoom);
-		String jsonStr = ServletUtil.fazerRequisicao(url);
+		String jsonStr = ServletUtil.requestText(url);
 		JSONObject json = JSONObject.fromObject(jsonStr); 
 		return json;
 	}
@@ -35,7 +35,7 @@ public class JSONRouteHandler {
 				
 				//pega JSON de cada rota (requisicao ao GM)
 				URL urlGoogleAPI = ServiceURLBuilder.getUrlJSON(rota, zoom);
-				String jsonStr = ServletUtil.fazerRequisicao(urlGoogleAPI);
+				String jsonStr = ServletUtil.requestText(urlGoogleAPI);
 				
 				//pega o 'route' e adiciona no json q reune todas as rotas
 				JSONObject json = JSONObject.fromObject(jsonStr);

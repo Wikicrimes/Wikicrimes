@@ -43,8 +43,6 @@
 		    var podeMudarModoKernel = true; //pq qd abre a janela arearisco, tem que ficar sempre kernel desligado
 
 			function ativaMapaKernel(primeiraVez){
-				//console.log("ativaMapaKernel()");
-			    //if(!aindaCarregando && !kernelEnable){
 			    if(!kernelEnable){
 				  	kernelEnable = true;
 				  	selecionarComando(map, 'kernel');
@@ -55,10 +53,9 @@
 				  	if(statusLegenda=='visivel')
 						wikicrimesDiv.innerHTML = htmlLegenda();
 					if(!primeiraVez){
-				  		atualizaDensidades();
+				  		//updateStatistics();
 						pintaMapaKernel();
 					}
-				  	//comentar as 2 linhas abaixo pra desativar a funcionalidade de Areas de Risco
 					if(!isJanelaAreaRiscoVisible())
 				  		ativaMarcacaoHotspot();
 			  	}	
@@ -66,19 +63,17 @@
 
 			function desativaMapaKernel(){
 				removeHintComandosMapa();
-				//if(!aindaCarregando){
-					kernelEnable = false;
-					mostraCrimesAgrupador();
-					selecionarComando(map, 'mao');
-					apagaMapaKernel();
-					mostraMarcadores();
-					podeCarregarCrimes=true;
-					if(statusLegenda=='visivel')
-						wikicrimesDiv.innerHTML = htmlLegenda();
-					//comentar as 2 linhas abaixo pra desativar a funcionalidade de Areas de Risco
-					if(!isJanelaAreaRiscoVisible())
-						desativaMarcacaoHotspot();
-				//}
+				kernelEnable = false;
+				mostraCrimesAgrupador();
+				selecionarComando(map, 'mao');
+				console.log("apagaMapaKernel() em desativaMapaKernel");
+				apagaMapaKernel();
+				mostraMarcadores();
+				podeCarregarCrimes=true;
+				if(statusLegenda=='visivel')
+					wikicrimesDiv.innerHTML = htmlLegenda();
+				if(!isJanelaAreaRiscoVisible())
+					desativaMarcacaoHotspot();
 			}
 
 			function crimeKernelMap(lng, lat, crimeMarker){
@@ -90,6 +85,7 @@
 			function zeraArrayCrimes(){
 				arrayCrimesLatLng = new Array();
 				index = 0;	
+				console.log("apagaMapaKernel() em zeraArrayCrimes");
 				apagaMapaKernel();
 				desabilitaBotaoKernel();
 			}
@@ -98,11 +94,9 @@
 				if (me != null && me.kernelLayer != null){
 					me.kernelLayer.disable();
 					me.toggleButton_(kernelDiv.firstChild, me.kernelLayer.getEnabled());
-					//aindaCarregando = false;		
 				}
 			}
 			function apagaMapaKernel(){
-				
 				map.removeTPhoto(photo);
 				if(!isJanelaAreaRiscoVisible())
 					desmarcaHotspot();
@@ -111,33 +105,49 @@
 			function pintaMapaKernel(){
 				exibeImagemMapaKernel();
 				if(statusLegenda=='visivel'){
-					atualizaLegendaKernel();
+					//atualizaLegendaKernel();
 				}
 			}
 			
-			function atualizaDensidades(){
-				//console.log("atualizaDensidades()");
-				var url = constroiURLMapaKernel();
-				var req = requisicaoGeraKernelMap(url);
+			function updateStatistics(farZoom){
+				var action = farZoom? "full" : "events";
+				var url = buildStatisticsUrl(action);
+				var req = requestStatistics(url);
 				if (req.readyState == 4 && req.status == 200){
-					req = pegaGridDensidades();
+					statistics = eval("(" + req.responseText + ")");
+					if(farZoom){
+						uncompressBooleanGrid();
+					}else{
+						constroiMarcadores();
+					}
 				}
-				return req;
+			}
+
+			function uncompressBooleanGrid(){
+				var str = statistics.kernel.booleanGrid;
+				if(!str) return;
+				var lines = str.split("\n");
+				var array = new Array();
+				for(var i=0; i<lines.length; i++){
+					array[i] = new Array();
+					var col = lines[i];
+					for(var j=0; j<col.length; j++){
+						array[i][j] = col[j];
+					}
+				}
+				statistics.kernel.booleanGrid = array;
 			}
 			
-			function constroiURLMapaKernel(){
+			function buildStatisticsUrl(action){
 				jaMostrouAjudaHotSpot = true;
 				
-				//Adiciona os parametros da requisicao
-				var url = 'acao=geraKernel';
+				var url = 'action=' + action;
 				url += boundsPixelUrlParams(map);
 				url += boundsLatLngUrlParams(map);
 				url += parametrosFiltroCrimes();
 				url += '&zoom=' + map.getZoom();
 				zoomKernel = map.getZoom();
-				//url += pontosUrlParam();
 
-				//console.log("url: " + url);
 				return url;
 			}
 			
@@ -182,6 +192,7 @@
 				var centroPixel = latlngToPixel(centroLatLng);
 				var width = (eastPixel - westPixel);
 				var height = (southPixel - northPixel);
+				
 				//correcao problema das emendas do mapa (linhas com latitude 0 e longitude 0)
 				if(width < 0)
 					width = centroPixel.x < westPixel ? 2*(eastPixel-centroPixel.x) : 2*(centroPixel.x-westPixel);
@@ -206,6 +217,7 @@
 				var centroPixel = latlngToPixel(centroLatLng);
 				var width = (eastPixel - westPixel);
 				var height = (southPixel - northPixel);
+				
 				//correcao problema das emendas do mapa (linhas com latitude 0 e longitude 0)
 				if(width < 0)
 					width = centroPixel.x < westPixel ? 2*(eastPixel-centroPixel.x) : 2*(centroPixel.x-westPixel);
@@ -232,6 +244,7 @@
 				var centroLatLng = bounds.getCenter();
 				var width = (eastLatLng - westLatLng);
 				var height = (southLatLng - northLatLng);
+				
 				//correcao problema das emendas do mapa (linhas com latitude 0 e longitude 0)
 				if(width < 0)
 					width = centroLatLng.x < westLatLng ? 2*(eastLatLng-centroLatLng.x) : 2*(centroLatLng.x-westLatLng);
@@ -277,15 +290,15 @@
 				return str;
 			}
 
-			function requisicaoGeraKernelMap(url) {
-				//console.log("requisicaoGeraKernelMap()");
+			function requestStatistics(url) {
+				//console.log("requestStatistics()");
 				//alert("contrev: " + contrev);
 			     http_request = GXmlHttp.create();
 			     if (http_request.overrideMimeType) {
 			        http_request.overrideMimeType('text/xml');
 			     }
 			     //Espera retorno do servidor
-			     http_request.open('POST', 'ServletKernelMap', false);
+			     http_request.open('POST', 'statistics', false);
 				 http_request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
 				 http_request.send(url);
 
@@ -309,20 +322,18 @@
 				if (map.getZoom() == zoomKernel){
 			  		//aindaCarregando = false;
 
-					photo = new TPhoto();
-					photo.id = 'addphoto';
-	
-					//alert('exibeImagemMapaKernel');
-					photo.src = "ServletKernelMap?acao=pegaImagem&nocache=" + new Date();
+			  		photo = new TPhoto();
+					photo.id = 'kernelImage' + new Date().getTime();
 					photo.percentOpacity = IE? 50 : 100; //no IE, a imagem vem opaca, precisa de transparencia aqui
 					photo.anchorTopLeft = new GLatLng(lat1,lon1);
 					photo.anchorBottomRight = new GLatLng(lat2,lon2);
-			  		map.addTPhoto(photo);
+					photo.src = "statistics?action=getImage&nocache=" + new Date().getTime();
+					map.addTPhoto(photo);
+			  		
 			  	}else{
 					console.log('zoom diferente no metodo exibeImagemMapaKernel()');
 			  	}
 			}
-
 
 			function escondeMarcadores(){
 				for (i = 0; i < arrayCrimesLatLng.length; i++){
@@ -387,56 +398,11 @@
 			//******************************************************************
 			//INFORMACOES DO MAPA DE KERNEL
 			
-			var gridDensidades;
-			var nodeSize;
-			var bandwidth;
-			var densMax;
-			var densMedia;
-			var limiteDensHotspot; //limite a partir do qual um valor de densidade eh considerado parte de hotspot
+			var statistics;
 			var densLimiteInfKernel = .01; //se a densMax for menor que isso, o mapa de kernel nao deve ser exibido (pra evitar hotspots de poucos crimes)
 			var densLimiteSupMarcadores = .01;
 			var zoomLimiteSupKernel = 15;
 			var zoomLimiteInfMarcadores = 15;
-			
-			function pegaGridDensidades(){
-				http_request = GXmlHttp.create();
-				if (http_request.overrideMimeType)
-					http_request.overrideMimeType('text/xml');
-				http_request.open('POST', 'ServletKernelMap', false);
-				http_request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-				http_request.send('acao=pegaInfo');
-				
-				if (http_request.readyState == 4 && http_request.status == 200) {
-					var respostaString = http_request.responseText;
-					gridDensidades = new Array();
-					var linhas = respostaString.split('\n');
-
-					//nodeSize e estatisticas
-					nodeSize = parseInt(linhas[0]);
-					bandwidth = parseInt(linhas[1]);
-					densMax = parseFloat(linhas[2]);
-					densMedia = parseFloat(linhas[3]);
-					densMin = parseFloat(linhas[4]);
-					limiteDensHotspot = 0.5 * densMax;
-
-					//grid
-					var comeco = 5; //indice da primeira linha que tem valores do grid
-					for(var i=comeco; i<linhas.length; i++){
-						var col = new Array(); //uma linha da resposta corresponde a uma coluna do grid de densidades
-						var nums = linhas[i].split(',');
-						for(var j=0; j<nums.length; j++){
-							col[j] = parseFloat(nums[j]);
-						}
-						//alert('col: ' + col);
-						gridDensidades[i-comeco] = col;
-					}
-					//alert('gridDensidades[10]: ' + gridDensidades[10]);
-				} 
-
-				return http_request;
-			}
-
-
 			
 
 			//******************************************************************
@@ -467,13 +433,14 @@
 
 			function atualizaLegendaKernel(){
 
+				var kernel = statistics.kernel;
+				
 				var html="<table align='left' cellpading='0' cellspacing='0' style='padding:4px;'>";
-				html+="	<tr> <td>"+ arredonda(densMax) + "</td> </tr>";
+				html+="	<tr> <td>"+ arredonda(kernel.maxDensity) + "</td> </tr>";
 				html+="	<tr><td> &nbsp; </td></tr>";
-				html+="	<tr> <td>"+ arredonda(0.5 * densMax) + "</td> </tr>";
-				//html+="	<tr> <td>"+ arredonda(densMedia) + "</td> </tr>";
+				html+="	<tr> <td>"+ arredonda(kernel.avgDensity) + "</td> </tr>";
 				html+="	<tr><td> &nbsp; </td></tr>";
-				html+="	<tr> <td>"+ arredonda(densMin) + "</td> </tr>";
+				html+="	<tr> <td>"+ arredonda(kernel.minDensity) + "</td> </tr>";
 				html+="</table>";
 				
 				var div = document.getElementById('valoresLegendaKernel');
@@ -486,34 +453,24 @@
 				return Math.round(10000*num)/100;
 			}
 
-			/*
-			function densToMetros2(num){
-				var pt1 = pixelToLatlng(new GPoint(0,0));
-				var pt2 = pixelToLatlng(new GPoint(0,nodeSize));
-				var pt3 = pixelToLatlng(new GPoint(nodeSize,nodeSize));
-				var pt4 = pixelToLatlng(new GPoint(nodeSize,0)); 
-				var poly = new GPolygon([pt1,pt2,pt3,pt4]);
-				var latlngNodeSize = Math.sqrt( poly.getArea() );
-				return arredonda( num/latlngNodeSize );
-			}
-			*/
-
 
 			//******************************************************************
 			//UTILIDADES
 
 			function pixelToLatlng(pixel, zoom){
+				var proj = map.getCurrentMapType().getProjection();
 				if(zoom)
-					return map.getCurrentMapType().getProjection().fromPixelToLatLng(pixel, zoom);
+					return proj.fromPixelToLatLng(pixel, zoom);
 				else
-					return map.getCurrentMapType().getProjection().fromPixelToLatLng(pixel, map.getZoom());
+					return proj.fromPixelToLatLng(pixel, map.getZoom());
 			}
 
 			function latlngToPixel(latlng, zoom){
+				var proj = map.getCurrentMapType().getProjection();
 				if(zoom)
-					return map.getCurrentMapType().getProjection().fromLatLngToPixel(latlng, zoom);
+					return proj.fromLatLngToPixel(latlng, zoom);
 				else
-					return map.getCurrentMapType().getProjection().fromLatLngToPixel(latlng, map.getZoom());
+					return proj.fromLatLngToPixel(latlng, map.getZoom());
 			}
 			
 

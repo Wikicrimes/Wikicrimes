@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
 import java.util.List;
@@ -65,11 +66,9 @@ public class ServletImagemMapa extends HttpServlet {
 				//recupera os dados no banco (objeto ImagemMapa)
 				ImagemMapa im = service.get(Integer.valueOf(id));
 				
-				//pega a imgaem (s� o mapa) pela Google Static Maps API
-				String urlGSM = constroiUrlGSM(im);
-//				/*teste*/System.out.println("urlGSM: " + urlGSM);
-				URL urlImagem = new URL(urlGSM);
-				BufferedImage imagemMapa = requisicaoImagemGM(urlImagem);
+				//pega a imgaem (so o mapa) pela Google Static Maps API
+				URL urlImagem = constroiUrlGSM(im);
+				BufferedImage imagemMapa = ServletUtil.requestImage(urlImagem);
 				
 				//pinta o poligono por cima
 				pintaPoligono(im, imagemMapa);
@@ -108,7 +107,7 @@ public class ServletImagemMapa extends HttpServlet {
 			//persistencia
 			long id = constroiImagemMapa(centroLat, centroLng, zoom, width, height, poligono, north, south, east, west, sessao);
 			
-			//envia o URL q d� acesso � imagem dentro dum html com outras informa��es
+			//envia o URL q da acesso a imagem dentro dum html com outras informacoes
 			PrintWriter out = resp.getWriter();
 			String urlImagemMapa =  req.getScheme() + "://" + req.getServerName() + ":" 
 									+ req.getServerPort() + req.getContextPath() + "/img.html?id=" + id; 
@@ -132,7 +131,7 @@ public class ServletImagemMapa extends HttpServlet {
 		im.setWidth(Integer.valueOf(width));
 		im.setHeight(Integer.valueOf(height));
 		
-		//pol�ono
+		//poligono
 		List<PontoLatLng> vertices = im.setPoligonoAndReturn(poligono);
 		service.save(vertices);
 		
@@ -158,33 +157,13 @@ public class ServletImagemMapa extends HttpServlet {
 		return im.getIdImagemMapa();
 	}
 	
-	private String constroiUrlGSM(ImagemMapa im){
+	private URL constroiUrlGSM(ImagemMapa im) throws MalformedURLException{
 		//GSM = Google Static Maps
 		PontoLatLng ponto = im.getCentro();
 		String urlMapaLimpo = "http://maps.google.com/maps/api/staticmap?center=" + ponto.getLatitude() +","+ ponto.getLongitude() 
 			+ "&zoom=" + im.getZoom() + "&size=" + (im.getWidth()+MARGEM*2) + "x" + (im.getHeight()+MARGEM*2) + "&sensor=false";
 //			+ "&markers=" + latlngs;
-		return urlMapaLimpo;
-	}
-	
-	private BufferedImage requisicaoImagemGM(URL url){
-		BufferedImage imagem = null;
-		try {
-			
-		    //acessar url
-		    HttpURLConnection con = (HttpURLConnection)url.openConnection();
-		    con.connect();
-		    
-		    //receber resposta
-		    ImageInputStream input = new MemoryCacheImageInputStream(con.getInputStream()); 
-		    imagem = ImageIO.read(input);
-		    
-		    con.disconnect();
-		} catch (IOException e) {
-			e.printStackTrace();
-			throw new AssertionError("n�o veio a imagem do Google Static Maps API.\n" + e.getMessage());
-		}
-		return imagem;
+		return new URL(urlMapaLimpo);
 	}
 	
 	private void pintaPoligono(ImagemMapa im, Image imagem){

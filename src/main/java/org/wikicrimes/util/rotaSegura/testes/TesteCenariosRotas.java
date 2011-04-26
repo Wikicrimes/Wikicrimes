@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.wikicrimes.util.NumerosUtil;
+import org.wikicrimes.util.Util;
 
 
 @SuppressWarnings("serial")
@@ -45,7 +45,7 @@ public class TesteCenariosRotas extends HttpServlet{
 	public static void setResult(String key, Object value){
 		if(value instanceof Double || value instanceof Float){
 			double d = Double.parseDouble(value.toString());
-			value = NumerosUtil.roundToDecimals(d, 5);
+			value = Util.roundWithDecimals(d, 5);
 		}
 		result.put(key, String.valueOf(value));
 	}
@@ -60,7 +60,7 @@ public class TesteCenariosRotas extends HttpServlet{
 			String[] cenario = stringCenarioAtual.split("\t");  
 			b.append("\t" + cenario[0]); //id
 			b.append("\t" + cenario[1]); //nome
-			//resultado direto do cenário
+			//resultado direto do cenï¿½rio
 //			b.append("\t" + result.get("numCrimes"));
 //			b.append("\t" + result.get("densMedia"));
 //			b.append("\t" + result.get("densMax"));
@@ -91,7 +91,7 @@ public class TesteCenariosRotas extends HttpServlet{
 	
 
 	
-	//ler cenário do txt e passar pro javascript
+	//ler cenï¿½rio do txt e passar pro javascript
 	private static int contParam = 0;
 	private static int contCenario = 0;
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{

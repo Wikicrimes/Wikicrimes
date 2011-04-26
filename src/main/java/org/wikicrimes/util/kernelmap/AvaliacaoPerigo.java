@@ -10,8 +10,8 @@ import java.util.Map;
 import org.wikicrimes.model.BaseObject;
 import org.wikicrimes.model.PontoLatLng;
 import org.wikicrimes.service.CrimeService;
-import org.wikicrimes.servlet.ServletKernelMap;
 import org.wikicrimes.util.rotaSegura.geometria.Ponto;
+import org.wikicrimes.util.statistics.WikiCrimesEventsRetriever;
 
 
 public class AvaliacaoPerigo{
@@ -103,7 +103,7 @@ public class AvaliacaoPerigo{
 		params.put("credibilidadeInicial", credMin);
 		params.put("credibilidadeFinal", credMax);
 		List<BaseObject> crimes = crimeService.filter(params);
-		List<Point> crimesPixel = ServletKernelMap.toPixel(crimes, ZOOM);
+		List<Point> crimesPixel = WikiCrimesEventsRetriever.toPixel(crimes, ZOOM);
 		
 		return crimesPixel;
 	}

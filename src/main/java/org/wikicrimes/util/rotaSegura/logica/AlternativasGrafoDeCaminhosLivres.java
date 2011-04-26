@@ -17,7 +17,7 @@ import org.wikicrimes.util.rotaSegura.logica.modelo.RotaPromissora;
 
 public class AlternativasGrafoDeCaminhosLivres extends AlternativasGrafoVisibilidade{
 
-	public AlternativasGrafoDeCaminhosLivres(LogicaRotaSegura logica) {
+	public AlternativasGrafoDeCaminhosLivres(SafeRouteCalculator logica) {
 		super(logica);
 	}
 	

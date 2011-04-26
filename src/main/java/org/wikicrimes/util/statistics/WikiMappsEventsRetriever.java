@@ -12,18 +12,19 @@ import org.wikicrimes.model.PontoLatLng;
 import org.wikicrimes.servlet.ConexaoBD;
 import org.wikicrimes.util.kernelmap.LatLngBoundsGM;
 
-public class WikimappsEventsRetriever extends EventsRetriever{
+public class WikiMappsEventsRetriever extends EventsRetriever<Point>{
 
 	
 	private HttpServletRequest request;
 
-	public WikimappsEventsRetriever(HttpServletRequest request) {
+	public WikiMappsEventsRetriever(HttpServletRequest request) {
 		super();
 		this.request = request;
+		this.points = retrievePoints();
 	}
 
-	public List<Point> getPoints(){
-		LatLngBoundsGM limitesLatLng = Param.getLimitesLatLng(request);
+	public List<Point> retrievePoints(){
+		LatLngBoundsGM limitesLatLng = Param.getLatLngBounds(request);
 		int zoom = Param.getZoom(request);
 		String url = request.getParameter("url");
 		String tm = request.getParameter("tm");
@@ -63,4 +64,11 @@ public class WikimappsEventsRetriever extends EventsRetriever{
 		return pontos;
 	}
 	
+	public List<Point> getPoints(){
+		return points;
+	}
+	
+	public List<Point> getEvents(){
+		return points;
+	}
 }

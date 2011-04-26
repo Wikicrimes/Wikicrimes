@@ -39,6 +39,7 @@ public interface CrimeService extends GenericCrudService {
 	public List<BaseObject> getTipoVitimaAll();
 	public TipoVitima getTipoVitima(Long id);
 	public List<BaseObject> filter(Map parameters);
+	public List<BaseObject> filterIncludeReasons(Map parameters);
 	public void atualizaContador(Boolean tipo, Crime crime);
 	public void atualizaVisualizacoes(Crime crime);
 	public void atualizaContadorCometarios(Crime crime);

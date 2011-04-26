@@ -2,7 +2,7 @@ package org.wikicrimes.util.kernelmap.renderer;
 
 import java.awt.Color;
 
-import org.wikicrimes.util.NumerosUtil;
+import org.wikicrimes.util.Util;
 import org.wikicrimes.util.kernelmap.KernelMap;
 
 /**
@@ -36,9 +36,9 @@ public class WhiteToColorKMR extends CellBasedKMR{
 		float b = colorComponents[2];
 //		b = 1-x-b+b*x;
 		b = x*(1-b)+b;
-		r = (float)NumerosUtil.limitar(r, 0, 1);
-		g = (float)NumerosUtil.limitar(g, 0, 1);
-		b = (float)NumerosUtil.limitar(b, 0, 1);
+		r = (float)Util.limit(r, 0, 1);
+		g = (float)Util.limit(g, 0, 1);
+		b = (float)Util.limit(b, 0, 1);
 		return new Color(r,g,b);
 	}
 	

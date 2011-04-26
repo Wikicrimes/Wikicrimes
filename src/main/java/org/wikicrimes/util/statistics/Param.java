@@ -13,7 +13,7 @@ public class Param {
 	public static class Keys{
 		
 		private static final String application = "app";
-		private static final String action = "acao";
+		private static final String action = "action";
 		private static final String zoom = "zoom";
 		
 		private static class PixelBounds{
@@ -41,7 +41,7 @@ public class Param {
 	}
 	
 	public static enum Action{
-		GERA_KERNEL, PEGA_IMAGEM, PEGA_INFO;
+		FULL_STATISTICS, KERNEL_MAP_ONLY, GET_IMAGE, GET_JSON, EVENTS;
 	}
 	
 	public static Application getApplication(HttpServletRequest request) {
@@ -58,12 +58,16 @@ public class Param {
 	
 	public static Action getAction(ServletRequest request) {
 		String app = request.getParameter(Keys.action);
-		if(app.equals("geraKernel"))
-			return Action.GERA_KERNEL;
-		else if(app.equals("pegaImagem"))
-			return Action.PEGA_IMAGEM;
-		else if(app.equals("pegaInfo"))
-			return Action.PEGA_INFO;
+		if(app.equals("full"))
+			return Action.FULL_STATISTICS;
+		else if(app.equals("kernel"))
+			return Action.KERNEL_MAP_ONLY;
+		else if(app.equals("getJson"))
+			return Action.GET_JSON;
+		else if(app.equals("getImage"))
+			return Action.GET_IMAGE;
+		else if(app.equals("events"))
+			return Action.EVENTS;
 		else
 			throw new InvalidParameterException(app);
 	}
@@ -81,7 +85,7 @@ public class Param {
 		}
 	}
 	
-	public static Rectangle getLimitesPixel(ServletRequest request){
+	public static Rectangle getPixelBounds(ServletRequest request){
 		//obs: width = east-west nao funciona no caso em q a emenda do mapa esta aparecendo na tela (a linha entre Japao e EUA) 
 		//width seria negativo ja q west>east
 		//por isso o width e o height estao sendo calculado no javascript, usando as coordenadas do centro da tela
@@ -105,7 +109,7 @@ public class Param {
 		}
 	}
 	
-	public static LatLngBoundsGM getLimitesLatLng(ServletRequest request){
+	public static LatLngBoundsGM getLatLngBounds(ServletRequest request){
 		//obs: width = east-west nao funciona no caso em q a emenda do mapa esta aparecendo na tela (a linha entre Japao e EUA) 
 		//width seria negativo ja q west>east
 		//por isso o width e o height estao sendo calculado no javascript, usando as coordenadas do centro da tela

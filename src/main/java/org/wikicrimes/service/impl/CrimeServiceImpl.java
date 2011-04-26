@@ -20,7 +20,6 @@ import org.wikicrimes.dao.TipoPapelDao;
 import org.wikicrimes.dao.TipoRegistroDao;
 import org.wikicrimes.dao.TipoTransporteDao;
 import org.wikicrimes.dao.TipoVitimaDao;
-import org.wikicrimes.dao.hibernate.CrimeDaoHibernate;
 import org.wikicrimes.model.BaseObject;
 import org.wikicrimes.model.Confirmacao;
 import org.wikicrimes.model.Credibilidade;
@@ -28,8 +27,9 @@ import org.wikicrimes.model.Crime;
 import org.wikicrimes.model.CrimeRazao;
 import org.wikicrimes.model.CrimeVitima;
 import org.wikicrimes.model.EntidadeCertificadora;
-import org.wikicrimes.model.MobileRequestLog;
 import org.wikicrimes.model.Razao;
+import org.wikicrimes.model.Relato;
+import org.wikicrimes.model.RelatoRazao;
 import org.wikicrimes.model.TipoArmaUsada;
 import org.wikicrimes.model.TipoConfirmacao;
 import org.wikicrimes.model.TipoCrime;
@@ -355,6 +355,27 @@ public class CrimeServiceImpl extends GenericCrudServiceImpl implements
 
 	public List<BaseObject> filter(Map parameters) {
 		return crimeDao.filter(parameters);
+	}
+	
+	public List<BaseObject> filterIncludeReasons(Map parameters) {
+		List<BaseObject> crimes = crimeDao.filter(parameters);
+		for(BaseObject o : crimes) {
+			if(o instanceof Crime) {
+				Crime c = (Crime)o;
+				for(CrimeRazao cr : c.getRazoes()) {
+					Hibernate.initialize(cr);
+					Hibernate.initialize(cr.getRazao().getDescricao());
+				}
+			}else if(o instanceof Relato) {
+				Relato r = (Relato)o;
+				for(RelatoRazao cr : r.getRazoes()) {
+					Hibernate.initialize(cr);
+					Hibernate.initialize(cr.getRazao());
+					Hibernate.initialize(cr.getRazao().getDescricao());
+				}
+			}
+		}
+		return crimes;
 	}
 
 	public CrimeDao getCrimeDao() {

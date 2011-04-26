@@ -405,7 +405,8 @@ public class FiltroForm extends GenericForm {
 		return (Relato) relatoService.getRelato(chave);
 	}
 
-	public List<BaseObject> getRelatosFiltrados(String norte, String sul, String leste, String oeste,String dataInicial, String dataFinal, boolean recuperar){
+	public List<BaseObject> getRelatosFiltrados(String norte, String sul, String leste, 
+			String oeste,String dataInicial, String dataFinal, boolean recuperar){
 		Map parameters = new HashMap();
 		
 		//viewport
@@ -455,7 +456,55 @@ public class FiltroForm extends GenericForm {
 	public List<BaseObject> getCrimesFiltrados(String tipoCrime,
 			String tipoVitima, String tipoLocal, String horarioInicial,
 			String horarioFinal, String dataInicial, String dataFinal,
-			String entidadeCertificadora, String crimeConfirmadoPositivamente2, String norte, String sul, String leste, String oeste, String ignoraData, String emailUsuario) {
+			String entidadeCertificadora, String crimeConfirmadoPositivamente2,
+			String norte, String sul, String leste, String oeste, 
+			String ignoraData, String emailUsuario){
+		try {
+			Map params = getCrimeFilterParameters(tipoCrime, tipoVitima, tipoLocal, 
+					horarioInicial, horarioFinal, dataInicial, dataFinal, 
+					entidadeCertificadora, crimeConfirmadoPositivamente2, 
+					norte, sul, leste, oeste, ignoraData, emailUsuario);
+					
+			List<BaseObject> result = crimeService.filter(params);
+			undoIgnoreStuff(result, ignoraData);
+			return result;
+			
+		}catch (Exception e) {
+			System.err.println(e.getMessage());
+			e.printStackTrace();
+			addMessage("errors.geral", e.getMessage());
+			return crimes;
+		}
+	}
+	
+	public List<BaseObject> filterCrimesIncludeReasons(String tipoCrime,
+			String tipoVitima, String tipoLocal, String horarioInicial,
+			String horarioFinal, String dataInicial, String dataFinal,
+			String entidadeCertificadora, String crimeConfirmadoPositivamente2,
+			String norte, String sul, String leste, String oeste, 
+			String ignoraData, String emailUsuario){
+		try {
+			Map params = getCrimeFilterParameters(tipoCrime, tipoVitima, tipoLocal, 
+					horarioInicial, horarioFinal, dataInicial, dataFinal, 
+					entidadeCertificadora, crimeConfirmadoPositivamente2, 
+					norte, sul, leste, oeste, ignoraData, emailUsuario);
+					
+			List<BaseObject> result = crimeService.filterIncludeReasons(params);
+			undoIgnoreStuff(result, ignoraData);
+			return result;
+			
+		}catch (Exception e) {
+			System.err.println(e.getMessage());
+			e.printStackTrace();
+			addMessage("errors.geral", e.getMessage());
+			return crimes;
+		}
+	}
+	
+	private Map getCrimeFilterParameters(String tipoCrime,
+			String tipoVitima, String tipoLocal, String horarioInicial,
+			String horarioFinal, String dataInicial, String dataFinal,
+			String entidadeCertificadora, String crimeConfirmadoPositivamente2, String norte, String sul, String leste, String oeste, String ignoraData, String emailUsuario) throws ParseException {
 		List<BaseObject> crimes = new ArrayList<BaseObject>();
 		//se e' o primeira vez
 		if(ignoraData!=null){
@@ -465,111 +514,101 @@ public class FiltroForm extends GenericForm {
 				
 			}
 		}	
+	
+		Map parameters = new HashMap();
+		parameters.put("credibilidadeInicial", credibilidadeInicial / 100);
+		parameters.put("credibilidadeFinal", credibilidadeFinal / 100);
 		
-		try {
-			Map parameters = new HashMap();
-			
-			parameters.put("credibilidadeInicial", credibilidadeInicial / 100);
-			parameters.put("credibilidadeFinal", credibilidadeFinal / 100);
-			
-			if (emailUsuario != null && !emailUsuario.equalsIgnoreCase("") && !emailUsuario.equalsIgnoreCase("undefined")) {
-				parameters.put("emailUsuario", emailUsuario);
-			}
-			
-			if (tipoCrime != null && !tipoCrime.equals("0") && tipoCrime != "") {
-				parameters.put("tipoCrime", new TipoCrime(new Long(tipoCrime)));
-			}
-
-			if (tipoVitima != null && !tipoVitima.equals("0")
-					&& tipoVitima != "") {
-				parameters.put("tipoVitima", new TipoVitima(
-						new Long(tipoVitima)));
-			}
-
-			if (tipoLocal != null && !tipoLocal.equals("0") && tipoLocal != "") {
-				parameters.put("tipoLocal", new TipoLocal(new Long(tipoLocal)));
-			}
-
-			if (horarioInicial != null && horarioInicial != "" && !horarioInicial.equals("-1")) {
-				parameters.put("horarioInicial", Long.parseLong(horarioInicial));
-			}
-
-			if (horarioFinal != null && horarioFinal != "" && !horarioFinal.equals("-1")) {
-				parameters.put("horarioFinal", Long.parseLong(horarioFinal));
-			}
-
-			if (dataInicial != null && dataInicial != "") {
-				String pattern = "dd,MM,yyyy";
-				SimpleDateFormat sdf = new SimpleDateFormat(pattern);
-				Date data = sdf.parse(dataInicial);
-				parameters.put("dataInicial", data);
-			}
-
-			if (dataFinal != null && dataFinal != "") {
-				String pattern = "dd,MM,yyyy";
-				SimpleDateFormat sdf = new SimpleDateFormat(pattern);
-				Date data = sdf.parse(dataFinal);
-				parameters.put("dataFinal", data);
-			}
-			//viewport
-			if (norte != null && sul != null && leste != null && oeste != null ){
-				if (!norte.equals("undefined"))					
-					parameters.put("norte", Double.parseDouble(norte));
-				if (!sul.equals("undefined"))
-					parameters.put("sul", Double.parseDouble(sul));
-				if (!leste.equals("undefined"))
-					parameters.put("leste", Double.parseDouble(leste));
-				if (!oeste.equals("undefined"))
-					parameters.put("oeste", Double.parseDouble(oeste));
-				
-			}
-			
-			if (maxResults != null)
-				parameters.put("maxResults", this.getMaxResults());
-			if (entidadeCertificadora != null
-					&& !entidadeCertificadora.equals("0") && !entidadeCertificadora.equals("-1")
-					&& entidadeCertificadora != "") {
-				List<BaseObject> entidadesCertificadoras = new ArrayList<BaseObject>();
-				String[] idsEntidades = entidadeCertificadora.split(" ");
-				for (String idEntidade : idsEntidades)
-					entidadesCertificadoras.add(new EntidadeCertificadora(Long
-							.parseLong(idEntidade)));
-				parameters
-						.put("entidadeCertificadora", entidadesCertificadoras);
-			}
-			//se entidadeCertificadora igual a Todas 
-			if (entidadeCertificadora != null
-					&& entidadeCertificadora.equals("0") && !entidadeCertificadora.equals("-1")) {
-				List<BaseObject> entidadesCertificadoras = new ArrayList<BaseObject>();
-				parameters
-						.put("entidadeCertificadora", entidadesCertificadoras);
-			}
-			if (crimeConfirmadoPositivamente2 != null && crimeConfirmadoPositivamente2 != ""
-					) {
-				
-				parameters.put("crimeConfirmadoPositivamente", new Boolean(crimeConfirmadoPositivamente2));
-
-			}
-			List<BaseObject> result=  crimeService.filter(parameters);
-			if(ignoraData!=null){
-				if (primeiraVez || ignoraData.equals("true")) {
-					setMaxResults(null);
-					if (result !=null && result.size()>0)
-						setDataInicial(((Crime) result.get(result.size()-1)).getData());
-					primeiraVez=false;
-				}
-			}	
-			 return result;
-			
-			 
-
-		} catch (Exception e) {
-			System.err.println(e.getMessage());
-			e.printStackTrace();
-			addMessage("errors.geral", e.getMessage());
+		if (emailUsuario != null && !emailUsuario.equalsIgnoreCase("") && !emailUsuario.equalsIgnoreCase("undefined")) {
+			parameters.put("emailUsuario", emailUsuario);
+		}
+		
+		if (tipoCrime != null && !tipoCrime.equals("0") && tipoCrime != "") {
+			parameters.put("tipoCrime", new TipoCrime(new Long(tipoCrime)));
 		}
 
-		return crimes;
+		if (tipoVitima != null && !tipoVitima.equals("0")
+				&& tipoVitima != "") {
+			parameters.put("tipoVitima", new TipoVitima(
+					new Long(tipoVitima)));
+		}
+
+		if (tipoLocal != null && !tipoLocal.equals("0") && tipoLocal != "") {
+			parameters.put("tipoLocal", new TipoLocal(new Long(tipoLocal)));
+		}
+
+		if (horarioInicial != null && horarioInicial != "" && !horarioInicial.equals("-1")) {
+			parameters.put("horarioInicial", Long.parseLong(horarioInicial));
+		}
+
+		if (horarioFinal != null && horarioFinal != "" && !horarioFinal.equals("-1")) {
+			parameters.put("horarioFinal", Long.parseLong(horarioFinal));
+		}
+
+		if (dataInicial != null && dataInicial != "") {
+			String pattern = "dd,MM,yyyy";
+			SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+			Date data = sdf.parse(dataInicial);
+			parameters.put("dataInicial", data);
+		}
+
+		if (dataFinal != null && dataFinal != "") {
+			String pattern = "dd,MM,yyyy";
+			SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+			Date data = sdf.parse(dataFinal);
+			parameters.put("dataFinal", data);
+		}
+		//viewport
+		if (norte != null && sul != null && leste != null && oeste != null ){
+			if (!norte.equals("undefined"))					
+				parameters.put("norte", Double.parseDouble(norte));
+			if (!sul.equals("undefined"))
+				parameters.put("sul", Double.parseDouble(sul));
+			if (!leste.equals("undefined"))
+				parameters.put("leste", Double.parseDouble(leste));
+			if (!oeste.equals("undefined"))
+				parameters.put("oeste", Double.parseDouble(oeste));
+			
+		}
+		
+		if (maxResults != null)
+			parameters.put("maxResults", this.getMaxResults());
+		if (entidadeCertificadora != null
+				&& !entidadeCertificadora.equals("0") && !entidadeCertificadora.equals("-1")
+				&& entidadeCertificadora != "") {
+			List<BaseObject> entidadesCertificadoras = new ArrayList<BaseObject>();
+			String[] idsEntidades = entidadeCertificadora.split(" ");
+			for (String idEntidade : idsEntidades)
+				entidadesCertificadoras.add(new EntidadeCertificadora(Long
+						.parseLong(idEntidade)));
+			parameters
+					.put("entidadeCertificadora", entidadesCertificadoras);
+		}
+		//se entidadeCertificadora igual a Todas 
+		if (entidadeCertificadora != null
+				&& entidadeCertificadora.equals("0") && !entidadeCertificadora.equals("-1")) {
+			List<BaseObject> entidadesCertificadoras = new ArrayList<BaseObject>();
+			parameters
+					.put("entidadeCertificadora", entidadesCertificadoras);
+		}
+		if (crimeConfirmadoPositivamente2 != null && crimeConfirmadoPositivamente2 != ""
+				) {
+			
+			parameters.put("crimeConfirmadoPositivamente", new Boolean(crimeConfirmadoPositivamente2));
+
+		}
+		return parameters;
+	}
+	
+	private void undoIgnoreStuff(List<BaseObject> result, String ignoraData){
+		if(ignoraData!=null){
+			if (primeiraVez || ignoraData.equals("true")) {
+				setMaxResults(null);
+				if (result !=null && result.size()>0)
+					setDataInicial(((Crime) result.get(result.size()-1)).getData());
+				primeiraVez=false;
+			}
+		}	
 	}
 
 	public String showAll() {

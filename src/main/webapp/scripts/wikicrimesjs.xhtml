@@ -91,13 +91,6 @@
 				var filtrou=false;
 				var mudouZoom;
 
-				//tutor
-				var acoesUsuario = {};
-				acoesUsuario['qtd_move_map'] = 0;
-				acoesUsuario['qtd_mostrar_dados'] = 0;	
-				//tutor
-				
-				
 				browser=navigator.appName;
 				check=browser.indexOf("Microsoft");
 				if (check!=-1) IE=true;
@@ -191,7 +184,7 @@
 			    	alert("#{messages['menu.mensagem.erro']}");
 			    } 
 			    else {
-			    	  //informando tutor que o usu�rio j� usou a busca por endere�o	  
+			    	  //informando tutor que o usuario ja usou a busca por endereco	  
 			    	  jaMostrouAjudaPesquisa = true;
 				      place = response.Placemark[0];
 				      point = new GLatLng(place.Point.coordinates[1],place.Point.coordinates[0]);
@@ -240,7 +233,7 @@
 			   	podeCarregarCrimes=false;
 			   	if(point != null)			  
 		        	map.setCenter(point,zoom);		        
-			   	ignoraData="true";
+			   	ignoraData="false";
 			   	filtrou=false;
 		   	  	tempDataMaisAntiga= new Date();
 		        atualizaMapa();
@@ -575,7 +568,7 @@
 				GEvent.addListener(map, "click", function (overlay, latLng) {
 					
 					//*********************** ROTAS SEGURAS INICIO ****************************				
-					//contextmenu.style.visibility="hidden";
+					contextmenu.style.visibility="hidden";
 					//*********************** ROTAS SEGURAS FIM ****************************
 				
 					if (podeRegistrar) {
@@ -614,26 +607,11 @@
 
 				GEvent.addListener(map, "zoomend", function (overlay, latLng) {
 					mudouZoom = true;
-					acoesUsuario['zoom'] = map.getZoom();
-					alertarTutorDeAcaoDoUsuario(acoesUsuario,"zoom_map");
 					if(map.getZoom() >= 15) showDivComment();
 					else hideDivComment();
 					//GEvent.trigger(map,"moveend");
 				});
 				
-				GEvent.addListener(map, "dragend", function (overlay, latLng) {
-					acoesUsuario['qtd_move_map'] = acoesUsuario['qtd_move_map'] + 1;
-					alertarTutorDeAcaoDoUsuario(acoesUsuario, "move_map");
-					//if(usuarioEstaLogado()){   				  
-						//renovaSessao=true;
-					//}	
-							   
-				});
-				if('#{filtroForm.tutorAtivado}'=='0')
-					tutorEstaAtivado = false;
-				else
-					if('#{filtroForm.tutorAtivado}'=='1')
-						tutorEstaAtivado = true;		
 				//setTimeout(reqRenovaSessao,60000*9+30000);
 				
 			//*********************** Kernel Map INICIO ****************************	
@@ -643,7 +621,7 @@
 			//*********************** Kernel Map FIM ****************************	
 			//*********************** ROTAS SEGURAS INICIO ****************************
 			//menu popup pra desenvolvimento, c testes pra rota segura, etc
-				//controleMenu(map);
+				controleMenu(map);
 			//*********************** ROTAS SEGURAS FIM ****************************
 				
 				GEvent.trigger(map,"moveend");
@@ -798,9 +776,6 @@
 				this.openInfoWindowHtml(myHtml, 400);
 			}, mostrarDados:function () {
 				podeCarregarCrimes = false;
-				acoesUsuario['qtd_mostrar_dados'] = acoesUsuario['qtd_mostrar_dados'] + 1;
-				alertarTutorDeAcaoDoUsuario(acoesUsuario, "mostrar_dados");	
-
 				var myHtml = "<iframe src='./mostrarDados.html?idCrime=" + this.idCrime + "' width='420' height='150' frameborder='0' style='z-index: 98;'></iframe>";
 				var myHtml2 = "<iframe src='./mostrarInformacoes.html?idCrime=" + this.idCrime + "' width='420' height='150' frameborder='0' style='z-index: 98;' ></iframe>";
 				this.openInfoWindowTabsHtml([new GInfoWindowTab('#{messages["crimes.tabs.titulo.dados"]}', myHtml), 

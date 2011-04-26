@@ -7,10 +7,10 @@ public abstract class GeradorDeAlternativasAbstrato {
 
 	protected GrafoRotas grafo;
 	protected KernelMap kernel;
-	protected LogicaRotaSegura logica;
-	protected CalculoPerigo calcPerigo;
+	protected SafeRouteCalculator logica;
+	protected Perigo calcPerigo;
 	
-	public GeradorDeAlternativasAbstrato(LogicaRotaSegura logica) {
+	public GeradorDeAlternativasAbstrato(SafeRouteCalculator logica) {
 		this.logica = logica;
 		this.grafo = logica.getGrafo();
 		this.kernel = logica.getKernel();

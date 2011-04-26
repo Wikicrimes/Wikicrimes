@@ -33,9 +33,9 @@ import org.wikicrimes.util.rotaSegura.googlemaps.FormatoResposta;
 import org.wikicrimes.util.rotaSegura.googlemaps.JSONRouteHandler;
 import org.wikicrimes.util.rotaSegura.googlemaps.KMLRouteHandler;
 import org.wikicrimes.util.rotaSegura.googlemaps.StatusGMDirections;
-import org.wikicrimes.util.rotaSegura.logica.CalculoPerigo;
+import org.wikicrimes.util.rotaSegura.logica.Perigo;
 import org.wikicrimes.util.rotaSegura.logica.FilaRotasCandidatas;
-import org.wikicrimes.util.rotaSegura.logica.LogicaRotaSegura;
+import org.wikicrimes.util.rotaSegura.logica.SafeRouteCalculator;
 import org.wikicrimes.util.rotaSegura.logica.exceptions.CantFindPath;
 import org.wikicrimes.util.rotaSegura.logica.modelo.GrafoRotas;
 import org.wikicrimes.util.rotaSegura.logica.modelo.RotaGM;
@@ -88,8 +88,8 @@ public class ServletRotaSeguraServerSide extends HttpServlet{
 		int numRotasResposta = getNumRotasResposta(request);
 		Rota rotaGoogleMaps = getRota(request);
 		FormatoResposta formato = FormatoResposta.getFormatoResposta(request.getParameter("output"));
-		LogicaRotaSegura logicaRota = getLogicaRotaSegura(request);
-		CalculoPerigo calcPerigo = logicaRota.getCalculoPerigo();
+		SafeRouteCalculator logicaRota = getLogicaRotaSegura(request);
+		Perigo calcPerigo = logicaRota.getCalculoPerigo();
 		GrafoRotas grafo = new GrafoRotas(rotaGoogleMaps, calcPerigo);
 		logicaRota.setGrafo(grafo);
 		StatusGMDirections status = StatusGMDirections.OK;
@@ -189,9 +189,9 @@ public class ServletRotaSeguraServerSide extends HttpServlet{
 	}
 	
 	private void recebeRota(int contReq, Rota rotaIdeal, Rota rotaGoogleMaps,  
-			LogicaRotaSegura logicaRota, List<Rota> rotasNovas, FilaRotasCandidatas rotasCandidatas){
+			SafeRouteCalculator logicaRota, List<Rota> rotasNovas, FilaRotasCandidatas rotasCandidatas){
 		GrafoRotas grafo = logicaRota.getGrafo();
-		CalculoPerigo calcPerigo = logicaRota.getCalculoPerigo();
+		Perigo calcPerigo = logicaRota.getCalculoPerigo();
 		rotasNovas.clear();
 		if(contReq == 0){
 			rotasNovas.add(rotaGoogleMaps);
@@ -257,7 +257,7 @@ public class ServletRotaSeguraServerSide extends HttpServlet{
 		}
 	}
 	
-	public LogicaRotaSegura getLogicaRotaSegura(HttpServletRequest request) throws ServletException, IOException{
+	public SafeRouteCalculator getLogicaRotaSegura(HttpServletRequest request) throws ServletException, IOException{
 		
 		//chamada vinda do wikicrimes
 		FormatoResposta formato = FormatoResposta.getFormatoResposta(request.getParameter("output")); 
@@ -273,7 +273,7 @@ public class ServletRotaSeguraServerSide extends HttpServlet{
 			PontoLatLng centro = PontoLatLng.medio(origem, destino);
 			Date dataInicial = DataUtil.moveData(new Date(), 0, 0, -PADRAO_ANOS_ATRAS);
 			KernelMap kernel = KernelMapUtil.fazerKernelMap(centro, distancia*2, zoom, getCrimeService(), dataInicial);
-			LogicaRotaSegura logicaRotas = new LogicaRotaSegura(kernel);
+			SafeRouteCalculator logicaRotas = new SafeRouteCalculator(kernel);
 			return logicaRotas;
 		}
 	}
@@ -312,7 +312,7 @@ public class ServletRotaSeguraServerSide extends HttpServlet{
 	
 	private void limpar(HttpServletRequest request) throws IOException, ServletException{
 		HttpSession sessao = request.getSession();
-		LogicaRotaSegura logicaRotas = getLogicaRotaSegura(request);
+		SafeRouteCalculator logicaRotas = getLogicaRotaSegura(request);
 		logicaRotas.limpar();
 		sessao.removeAttribute(ServletRotaSeguraClientSide.LOGICA_ROTAS);
 //		/*TESTE*/TesteRotasImg.limpar();

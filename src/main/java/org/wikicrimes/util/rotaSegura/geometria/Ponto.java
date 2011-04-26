@@ -27,9 +27,9 @@ public class Ponto extends Point{
 	
 	public Ponto(double x, double y){
 		if(x > Integer.MAX_VALUE || x < Integer.MIN_VALUE || java.lang.Double.isNaN(x))
-			throw new InvalidParameterException("X ("+ x +") n�o pode ser representado num INT");
+			throw new InvalidParameterException("X ("+ x +") nao pode ser representado num INT");
 		if(y > Integer.MAX_VALUE || y < Integer.MIN_VALUE || java.lang.Double.isNaN(y))
-			throw new InvalidParameterException("Y ("+ y +") n�o pode ser representado num INT");
+			throw new InvalidParameterException("Y ("+ y +") nao pode ser representado num INT");
 		
 		this.x = (int)Math.round(x);
 		this.y = (int)Math.round(y);

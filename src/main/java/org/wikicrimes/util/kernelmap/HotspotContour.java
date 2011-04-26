@@ -6,7 +6,7 @@ import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.wikicrimes.util.NumerosUtil;
+import org.wikicrimes.util.Util;
 import org.wikicrimes.util.rotaSegura.geometria.Poligono;
 import org.wikicrimes.util.rotaSegura.geometria.Ponto;
 
@@ -57,10 +57,10 @@ public class HotspotContour{
 		Point g2 = kernel.pixelParaGrid(p2);
 		int cols = kernel.getCols();
 		int rows = kernel.getRows();
-		int xIni = NumerosUtil.limitar(g1.x, 0, cols);
-		int xFim = NumerosUtil.limitar(g2.x, 0, cols);
-		int yIni = NumerosUtil.limitar(g1.y, 0, rows);
-		int yFim = NumerosUtil.limitar(g2.y, 0, rows);
+		int xIni = Util.limit(g1.x, 0, cols);
+		int xFim = Util.limit(g2.x, 0, cols);
+		int yIni = Util.limit(g1.y, 0, rows);
+		int yFim = Util.limit(g2.y, 0, rows);
 
 		boolean[][] visto = new boolean[cols][rows];
 		for(int i=xIni; i<xFim; i++){

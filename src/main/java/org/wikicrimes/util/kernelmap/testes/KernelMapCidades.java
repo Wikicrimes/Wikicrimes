@@ -27,14 +27,12 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.wikicrimes.model.BaseObject;
 import org.wikicrimes.model.PontoLatLng;
 import org.wikicrimes.service.CrimeService;
-import org.wikicrimes.servlet.ServletKernelMap;
 import org.wikicrimes.util.MapaChaveDupla;
 import org.wikicrimes.util.kernelmap.KernelMap;
 import org.wikicrimes.util.kernelmap.LatLngBoundsGM;
-import org.wikicrimes.util.kernelmap.renderer.CellBasedKMR;
 import org.wikicrimes.util.kernelmap.renderer.KMRFactory;
 import org.wikicrimes.util.kernelmap.renderer.KernelMapRenderer;
-import org.wikicrimes.util.kernelmap.renderer.ZoomDepenantKMR;
+import org.wikicrimes.util.statistics.WikiCrimesEventsRetriever;
 
 //pro Douglas, 04/08/2010
 public class KernelMapCidades extends HttpServlet {
@@ -160,8 +158,8 @@ public class KernelMapCidades extends HttpServlet {
 		params.put("leste", boundsLatLng.leste);
 		params.put("oeste", boundsLatLng.oeste);
 		List<BaseObject> crimes = getCrimeService().filter(params);
-		List<Point> crimesPixel = ServletKernelMap.toPixel(crimes, ZOOM);
-		System.out.print(", criando mapa de crimes para cada c�ula");
+		List<Point> crimesPixel = WikiCrimesEventsRetriever.toPixel(crimes, ZOOM);
+		System.out.print(", criando mapa de crimes para cada ceula");
 		MapaChaveDupla<Integer, Integer, List<BaseObject>> mapaCrimesDeCadaCelula = mapaCrimesDeCadaCelula(boundsPixel, NODE_SIZE, crimesPixel, crimes);
 		System.out.print(", calculando densidades");
 		KernelMap kernel = new KernelMap(NODE_SIZE, BANDWIDTH, boundsPixel, crimesPixel);

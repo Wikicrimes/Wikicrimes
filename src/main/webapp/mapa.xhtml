@@ -528,7 +528,7 @@
 			   	podeCarregarCrimes=false;
 			   	if(point != null)			  
 			   		mapaRegistro.setCenter(point,zoom);		        
-			   	ignoraData="true";
+			   	ignoraData="false";
 			   	filtrou=false;
 		   	  	tempDataMaisAntiga= new Date();
 		        atualizaMapaLocalizacao();
@@ -579,6 +579,7 @@
 				jQuery('#trBotoes').fadeIn('slow');
 				jQuery('#trEstatistica').fadeIn('slow');
 				jQuery('#map').fadeIn('slow',function(){
+					console.log("apagaMapaKernel() em mapa.xhtml");
 					apagaMapaKernel();
 					marcarCrimeMapa(true);
 				});

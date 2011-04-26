@@ -25,7 +25,7 @@ public class KMLRouteHandler {
 		Document kml = null;
 		try {
 			URL url = ServiceURLBuilder.getUrlKML(rota, zoom);
-			String kmlStr = ServletUtil.fazerRequisicao(url);
+			String kmlStr = ServletUtil.requestText(url);
 			SAXBuilder builder = new SAXBuilder();
 			kml = builder.build(new StringReader(kmlStr));
 		} catch (JDOMException e) {

@@ -272,17 +272,14 @@
 	</servlet-mapping>
 	
 	<servlet>
-		<servlet-name>ServletKernelMap</servlet-name>
-		<servlet-class>org.wikicrimes.servlet.ServletKernelMap</servlet-class>  
-<!--		<servlet-class>org.wikicrimes.util.statistics.StatisticsServlet</servlet-class> -->
+		<servlet-name>StatisticsServlet</servlet-name>
+		<servlet-class>org.wikicrimes.servlet.StatisticsServlet</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
-		<servlet-name>ServletKernelMap</servlet-name>
-		<url-pattern>/ServletKernelMap</url-pattern>
+		<servlet-name>StatisticsServlet</servlet-name>
+		<url-pattern>/statistics</url-pattern>
 	</servlet-mapping>
-	
-	
 	
 	<servlet>
 		<servlet-name>ServletImagemMapa</servlet-name>
@@ -380,7 +377,7 @@
 	</servlet-mapping>
 	<servlet>
 		<servlet-name>KernelMapCidades</servlet-name>
-		<servlet-class>org.wikicrimes.util.kernelMap.testes.KernelMapCidades</servlet-class>
+		<servlet-class>org.wikicrimes.util.kernelmap.testes.KernelMapCidades</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>KernelMapCidades</servlet-name>
@@ -388,7 +385,7 @@
 	</servlet-mapping>
 	<servlet>
 		<servlet-name>ServletCrimesHotSpots</servlet-name>
-		<servlet-class>org.wikicrimes.util.kernelMap.testes.ServletCrimesHotSpots</servlet-class>
+		<servlet-class>org.wikicrimes.util.kernelmap.testes.ServletCrimesHotSpots</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>ServletCrimesHotSpots</servlet-name>

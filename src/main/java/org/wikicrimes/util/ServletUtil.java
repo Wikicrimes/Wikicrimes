@@ -1,17 +1,26 @@
 package org.wikicrimes.util;
 
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLEncoder;
 
 import javax.imageio.ImageIO;
+import javax.imageio.stream.ImageInputStream;
+import javax.imageio.stream.MemoryCacheImageInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import net.sf.json.JSONObject;
 
 public class ServletUtil {
 
@@ -36,6 +45,20 @@ public class ServletUtil {
 		return getClientBrowser(req) == Browser.INTERNET_EXPLORER;
 	}
 	
+	public static void noCache(HttpServletResponse response) {
+		response.setContentType("text/plain");
+		response.setHeader("Pragma", "no-cache");
+		response.setHeader("Cache-Control", "no-cache");
+		response.setDateHeader("Expires", 0);
+		response.setCharacterEncoding("iso-8859-1");
+	}
+	
+	public static void sendText(HttpServletResponse response, String text) throws IOException{
+		PrintWriter out = response.getWriter();
+		out.print(text);
+		out.flush();
+	}
+	
 	public static void sendImage(HttpServletResponse response, Image imagem) throws IOException{
 		//manda a imagem gerada pelo KernelMapRenderer
 		response.setContentType("image/png");
@@ -43,7 +66,12 @@ public class ServletUtil {
 		ImageIO.write((RenderedImage)imagem, "PNG", out);
 	}
 	
-	public static String fazerRequisicao(URL url) throws IOException{
+	public static void sendJson(HttpServletResponse response, JSONObject json) throws IOException{
+		response.setContentType("application/json");
+		json.write(response.getWriter());
+	}
+	
+	public static String requestText(URL url) throws IOException{
 		StringBuilder str = new StringBuilder();
 		URLConnection con;
 		try {
@@ -59,6 +87,33 @@ public class ServletUtil {
 		}
 		
 		return str.toString();
+	}
+	
+	public static BufferedImage requestImage(URL url){
+		BufferedImage imagem = null;
+		try {
+			
+		    //acessar url
+		    HttpURLConnection con = (HttpURLConnection)url.openConnection();
+		    con.connect();
+		    
+		    //receber resposta
+		    ImageInputStream input = new MemoryCacheImageInputStream(con.getInputStream()); 
+		    imagem = ImageIO.read(input);
+		    
+		    con.disconnect();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return imagem;
+	}
+	
+	public static String urlEncode(String str) {
+		try {
+			return URLEncoder.encode(str, "UTF-8");
+		}catch (UnsupportedEncodingException e) {
+			throw new RuntimeException();
+		}
 	}
 	
 }

@@ -4,7 +4,6 @@
 	function TPhoto(){}
 
 	TPhoto.prototype.initialize=function(a){
-		//alert('initialize');
 		this.parentMap=a;
 		var b=document.createElement('img');
 		b.style.display='none';
@@ -12,23 +11,20 @@
 		b.setAttribute('src',this.src);
 		b.style.position='absolute';
 		b.style.zIndex=1;
-		//b.style.behavior = "url(/styles/iepngfix/iepngfix.htc)"; //pra funcionar a tranparência no IE
+		//b.style.behavior = "url(/styles/iepngfix/iepngfix.htc)"; //pra funcionar a tranparï¿½ncia no IE
 		this.mapTray=a.getPane(G_MAP_MAP_PANE);
 		this.mapTray.appendChild(b);
 		this.setPosition(a);
 		b.style.display='block';
 		if(this.percentOpacity){this.setOpacity(this.percentOpacity);}
-		GEvent.bind(a,"zoomend",this,function(){this.setPosition(a)});
-		GEvent.bind(a,"moveend",this,function(){this.setPosition(a)});
+		this.zoomend = GEvent.bind(a,"zoomend", this, function(){this.setPosition(a)});
+		this.moveend = GEvent.bind(a,"moveend", this, function(){this.setPosition(a)});
 	}
 
 	TPhoto.prototype.setPosition=function(a){
-		//alert('setPosition');
 		var d=this.parentMap.fromLatLngToDivPixel(this.anchorTopLeft);
 		var e=this.parentMap.fromLatLngToDivPixel(this.anchorBottomRight);
 		var x=document.getElementById(this.id);
-		
-		//alert('x: ' + x);
 		if(x != null){
 			x.style.top=d.y+'px';
 			x.style.left=d.x+'px';
@@ -39,7 +35,6 @@
 	}
 
 	TPhoto.prototype.setOpacity=function(b){
-		//alert('setOpacity');
 		if(b<0){b=0;}  if(b>=100){b=100;}
 		var c=b/100;
 		var d=document.getElementById(this.id);
@@ -51,18 +46,22 @@
 	}
 
 	GMap2.prototype.addTPhoto=function(a){
-		//alert('addTPhoto');
 		a.initialize(this);
 	}
 
 	GMap2.prototype.removeTPhoto=function(a){
-		//alert('removeTPhoto');
 		try{
-		var b=document.getElementById(a.id);
+			GEvent.removeListener(a.moveend);
+			GEvent.removeListener(a.zoomend);
+			var b=document.getElementById(a.id);
 			if(b != null){
 				this.getPane(G_MAP_MAP_PANE).removeChild(b);
 				delete(b);
+			}else{
+				console.log("[tphoto.2.05.js] erro: b == null");
 			}
-		}catch(e){}
+		}catch(e){
+			//console.log("[tphoto.2.05.js] erro: " + e);
+		}
 		
 	}

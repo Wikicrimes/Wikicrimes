@@ -9,9 +9,10 @@ public class VertexNotInGraph extends RuntimeException {
 	public Ponto vertex;
 	public GrafoRotas grafo;
 
-	public VertexNotInGraph(Ponto vertex) {
+	public VertexNotInGraph(GrafoRotas grafo, Ponto vertex) {
 		super();
 		this.vertex = vertex;
+		this.grafo = grafo;
 	}
 	
 	@Override

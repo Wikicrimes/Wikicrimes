@@ -19,21 +19,23 @@ import org.wikicrimes.util.rotaSegura.logica.modelo.RotaPromissora;
 public class FilaRotasCandidatas{
 
 	private PriorityQueue<Rota> rotasCandidatas;
+//	/*TESTE*/private Queue<Rota> rotasCandidatas;
 	private List<Rota> rotasJaUsadas;
 	
-	private CalculoPerigo calcPerigo;
+	private Perigo calcPerigo;
 	private GrafoRotas grafo;
 	
-	public FilaRotasCandidatas(CalculoPerigo calcPerigo, GrafoRotas grafo) {
+	public FilaRotasCandidatas(Perigo calcPerigo, GrafoRotas grafo) {
 		rotasCandidatas = new PriorityQueue<Rota>();
+//		/*TESTE*/rotasCandidatas = new ArrayDeque<Rota>();
 		rotasJaUsadas = new ArrayList<Rota>();
 		this.calcPerigo = calcPerigo;
 		this.grafo = grafo;
 	}
 	
-	public void add(Rota rota) {
-		rotasCandidatas.add(rota);
-	}
+//	public void add(Rota rota) {
+//		rotasCandidatas.add(rota);
+//	}
 	
 	public void addAll(Collection<Rota> rotas) {
 		rotasCandidatas.addAll(rotas);
@@ -114,5 +116,5 @@ public class FilaRotasCandidatas{
 			return Double.POSITIVE_INFINITY;
 		}
 	}
-
+	
 }

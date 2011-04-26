@@ -29,7 +29,7 @@ import org.wikicrimes.util.rotaSegura.geometria.Ponto;
 import org.wikicrimes.util.rotaSegura.geometria.Rota;
 import org.wikicrimes.util.rotaSegura.geometria.Segmento;
 import org.wikicrimes.util.rotaSegura.logica.Grafo;
-import org.wikicrimes.util.rotaSegura.logica.LogicaRotaSegura;
+import org.wikicrimes.util.rotaSegura.logica.SafeRouteCalculator;
 import org.wikicrimes.util.rotaSegura.logica.modelo.GrafoRotas;
 
 /**
@@ -492,7 +492,7 @@ public class TesteRotasImg {
 		}
 	}
 	
-	public static void teste(Rota rota, String titulo, LogicaRotaSegura logicaRota, Object... labels) {
+	public static void teste(Rota rota, String titulo, SafeRouteCalculator logicaRota, Object... labels) {
 		TesteRotasImg teste = new TesteRotasImg(logicaRota.getKernel(), logicaRota.getGrafo());
 		teste.setTitulo(titulo);
 		teste.addRota(rota, Color.BLUE);
@@ -500,7 +500,7 @@ public class TesteRotasImg {
 		teste.salvar();
 	}
 	
-	public static void teste(Collection<Rota> rotas, String titulo, LogicaRotaSegura logicaRota, Object... labels) {
+	public static void teste(Collection<Rota> rotas, String titulo, SafeRouteCalculator logicaRota, Object... labels) {
 		TesteRotasImg teste = new TesteRotasImg(logicaRota.getKernel(), logicaRota.getGrafo());
 		teste.setTitulo(titulo);
 		for(Rota rota : rotas) {
@@ -510,7 +510,7 @@ public class TesteRotasImg {
 		teste.salvar();
 	}
 	
-	public static void teste(Queue<Rota> rotas, String titulo, LogicaRotaSegura logicaRota, Object... labels) {
+	public static void teste(Queue<Rota> rotas, String titulo, SafeRouteCalculator logicaRota, Object... labels) {
 		TesteRotasImg teste = new TesteRotasImg(logicaRota.getKernel(), logicaRota.getGrafo());
 		teste.setTitulo(titulo);
 		int size = rotas.size();

@@ -1,6 +1,5 @@
 package org.wikicrimes.util.rotaSegura.geometria;
 
-import java.awt.Color;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.security.InvalidParameterException;
@@ -11,7 +10,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.wikicrimes.util.kernelmap.PropertiesLoader;
-import org.wikicrimes.util.rotaSegura.testes.TesteRotasImg;
  
 
 /**

@@ -10,34 +10,32 @@ import org.wikicrimes.util.kernelmap.KernelMap;
 import org.wikicrimes.util.kernelmap.PropertiesLoader;
 import org.wikicrimes.util.rotaSegura.geometria.Ponto;
 import org.wikicrimes.util.rotaSegura.geometria.Rota;
-import org.wikicrimes.util.rotaSegura.googlemaps.ConstantesGM;
 import org.wikicrimes.util.rotaSegura.logica.modelo.GrafoRotas;
-import org.wikicrimes.util.rotaSegura.logica.modelo.RotaPromissora;
 
 /**
  * @author victor
- *	Agrupa a l�gica para c�lculo de rotas seguras. Um objeto LogicaRotaSegura calcula rotas para o MapaKernel associado a ele.
+ *	Agrupa a logica para calculo de rotas seguras. Um objeto LogicaRotaSegura calcula rotas para o MapaKernel associado a ele.
  */
-public class LogicaRotaSegura {
+public class SafeRouteCalculator {
 	
 	private KernelMap kernel;
 	private GrafoRotas grafo;
-	private CalculoPerigo calcPerigo;
+	private Perigo calcPerigo;
 	
 	//PARAMETROS
 	public static final int GRANULARIDADE_ROTAS = PropertiesLoader.getInt("saferoutes.route_granularity");
 	
-	public LogicaRotaSegura(KernelMap kernel){
+	public SafeRouteCalculator(KernelMap kernel){
 		this.kernel = kernel;
 	}
 	
 	/**
-	 * Divide um caminho em partes toler�veis e partes n�o toler�veis.
-	 * problema: se vc tem 2 caminhos toler�veis, ao juntar pode dar um caminho nao toler�vel, j� q a distancia percorrida aumenta
+	 * Divide um caminho em partes toleraveis e partes nao toleraveis.
+	 * problema: se vc tem 2 caminhos toleraveis, ao juntar pode dar um caminho nao toleravel, ja q a distancia percorrida aumenta
 	 */
 	public List<Rota> separarRotasToleraveis(Rota rota){
-		//TODO nao ta prestando pq qd c junta 2 peda�os toleraveis, o resultado pode nao ser
-		CalculoPerigo calcPerigo = getCalculoPerigo();
+		//TODO nao ta prestando pq qd c junta 2 pedacos toleraveis, o resultado pode nao ser
+		Perigo calcPerigo = getCalculoPerigo();
 		List<Rota> rotas = new LinkedList<Rota>();
 		double tam = rota.distanciaPercorrida();
 		Ponto inicio = rota.getInicio();
@@ -49,7 +47,7 @@ public class LogicaRotaSegura {
 			fim = rota.searchPoint(dist);
 			Rota r = rota.subRota(inicio, fim);
 			if(eraToleravel != calcPerigo.isToleravel(r)){
-				if(anterior != null){ //nao � a primeira itera��o
+				if(anterior != null){ //nao eh a primeira iteracao
 					rotas.add(anterior);
 					inicio = anterior.getFim();
 					r = rota.subRota(inicio, fim);
@@ -59,26 +57,26 @@ public class LogicaRotaSegura {
 			anterior = r;
 		}
 		
-		//ultima vez (o q restou da ultima iteracao at� o fim do caminho)
+		//ultima vez (o q restou da ultima iteracao ateh o fim do caminho)
 		fim = rota.getFim();
 		Rota r = rota.subRota(inicio, fim);
 		if(eraToleravel != calcPerigo.isToleravel(r) && anterior != null){
 			rotas.add(anterior); //parte anterior
 			r = rota.subRota(anterior.getFim(), fim); //parte q mudou
 		}
-		rotas.add(r); //parte q mudou (se entrou no if) OU parte anterior at� o fim (se eraToleravel==isToleravel(c)) OU a rota inteira (se anterior==null)
+		rotas.add(r); //parte q mudou (se entrou no if) OU parte anterior ateh o fim (se eraToleravel==isToleravel(c)) OU a rota inteira (se anterior==null)
 		
 		return rotas;
 	}
 	
 	/**
-	 * Dividir um caminho entre partes que passam em �reas perigosas e partes que passam em �reas seguras.
-	 * A dist�ncia n�o � considerada.
+	 * Dividir um caminho entre partes que passam em areas perigosas e partes que passam em areas seguras.
+	 * A distancia nao eh considerada.
 	 */
 	public List<Rota> separarPartesPerigosas(Rota caminho){
-		CalculoPerigo calcPerigo = getCalculoPerigo();
+		Perigo calcPerigo = getCalculoPerigo();
 		List<Rota> caminhos = new LinkedList<Rota>();
-		double tol = kernel.getMediaDens()*CalculoPerigo.FATOR_TOLERANCIA;
+		double tol = kernel.getMediaDens()*Perigo.FATOR_TOLERANCIA;
 		double tam = caminho.distanciaPercorrida();
 		Ponto inicio = caminho.getInicio();
 		Ponto fim = inicio;
@@ -120,48 +118,26 @@ public class LogicaRotaSegura {
 			//TODO rodar essas 2 estrategias denovo em outras iteracoes, 
 			//atualizando soh as ligacoes da origem e destino pro grafo gerado na estrategia 
 			
-			Queue<Rota> altCL = new AlternativasGrafoDeCaminhosLivres(this).getAlternativas(rota);
+//			Queue<Rota> altCL = new AlternativasGrafoDeCaminhosLivres(this).getAlternativas(rota);
 //			/*DEBUG*/TesteRotasImg.teste(altCL, "criarAlternativas, CL", this);
-			rotas.addAll(altCL);
-			
-			Queue<Rota> altGV = new AlternativasGrafoVisibilidade(this).getAlternativas(rota);
+//			rotas.addAll(altCL);
+//			
+//			Queue<Rota> altGV = new AlternativasGrafoVisibilidade(this).getAlternativas(rota);
 //			/*DEBUG*/TesteRotasImg.teste(altGV, "criarAlternativas, GV", this);
-			rotas.addAll(altGV);
-			
-			rotas = dividirRotasGrandes(rotas);
+//			rotas.addAll(altGV);
 			
 		}
 		
-		Queue<Rota> altPD = new AlternativasPontoDesvio(this).getAlternativas(rota);
+//		Queue<Rota> altPD = new AlternativasPontoDesvio(this).getAlternativas(rota);
 //		/*DEBUG*/TesteRotasImg.teste(altPD, "criarAlternativas, PD", this);
-		rotas.addAll(altPD);
+//		rotas.addAll(altPD);
+		
+		Queue<Rota> altR = new AlternativasRandom(this).getAlternativas(rota);
+//		/*DEBUG*/TesteRotasImg.teste(altR, "criarAlternativas, R", this);
+		rotas.addAll(altR);
 		
 //		/*DEBUG*/TesteRotasImg.teste(rotas, "criarAlternativas, resultado", this);
 		return rotas;
-	}
-	
-	/**
-	 * Caso uma rota tenha mais pontos intermediarios do que o limite permitido pela api 
-	 * do GoogleMaps, ela eh dividida em partes menores 
-	 */
-	private Queue<Rota> dividirRotasGrandes(Queue<Rota> rotas){
-		Queue<Rota> rotasDivididas = new PriorityQueue<Rota>();
-		while(!rotas.isEmpty()){
-			RotaPromissora r = (RotaPromissora)rotas.poll();
-			int tamanho = r.size();
-			int max = ConstantesGM.DIRECTIONS_MAX_WAYPOINTS;
-			if(tamanho > max){
-				int numPedacos = tamanho / max;
-				if(tamanho%max > 0) numPedacos++;
-				for(int i=0; i<numPedacos; i+=max-1){
-					Rota pedaco = new Rota(r.getPontos().subList(i, i+max));
-					rotasDivididas.add(new RotaPromissora(pedaco, r.getPeso()));
-				}
-			}else{
-				rotasDivididas.add(r);
-			}
-		}
-		return rotasDivididas;
 	}
 	
 	public void limpar(){
@@ -180,9 +156,9 @@ public class LogicaRotaSegura {
 	public KernelMap getKernel() {
 		return kernel;
 	}
-	public CalculoPerigo getCalculoPerigo(){
+	public Perigo getCalculoPerigo(){
 		if(calcPerigo == null)
-			calcPerigo = new CalculoPerigo(this);
+			calcPerigo = new Perigo(this);
 		return calcPerigo;
 	}
 }

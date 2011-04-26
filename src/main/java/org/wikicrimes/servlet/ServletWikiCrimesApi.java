@@ -1,11 +1,7 @@
 package org.wikicrimes.servlet;
 
-import static org.wikicrimes.servlet.ServletKernelMap.BANDWIDTH;
-import static org.wikicrimes.servlet.ServletKernelMap.GRID_NODE;
-import static org.wikicrimes.servlet.ServletKernelMap.IMAGEM_KERNEL;
-import static org.wikicrimes.servlet.ServletKernelMap.getPoints;
-
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -15,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Semaphore;
@@ -42,10 +39,9 @@ import org.wikicrimes.service.CrimeService;
 import org.wikicrimes.service.UsuarioService;
 import org.wikicrimes.util.Constantes;
 import org.wikicrimes.util.ServletUtil;
-import org.wikicrimes.util.kernelmap.KernelMap;
-import org.wikicrimes.util.kernelmap.renderer.KMRFactory;
-import org.wikicrimes.util.kernelmap.renderer.KernelMapRenderer;
-import org.wikicrimes.util.statistics.Param;
+import org.wikicrimes.util.rotaSegura.geometria.Ponto;
+import org.wikicrimes.util.statistics.KernelMapRequestHandler;
+import org.wikicrimes.util.statistics.SessionBuffer;
 import org.wikicrimes.web.FiltroForm;
 
 public class ServletWikiCrimesApi extends HttpServlet {
@@ -56,7 +52,7 @@ public class ServletWikiCrimesApi extends HttpServlet {
 	//Auto incremento da imagem
 	public static int idImage = 2;
 	public static Semaphore semaphore = new Semaphore(1);
-	private static String barra = "/";	
+//	private static String barra = "/";	
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 	throws ServletException, IOException {
@@ -70,13 +66,13 @@ public class ServletWikiCrimesApi extends HttpServlet {
 		response.setHeader("Cache-Control", "no-cache");
 		response.setDateHeader("Expires", 0);
 		response.setCharacterEncoding("iso-8859-1");
-		HttpSession sessao = request.getSession();
 		String acao = request.getParameter("acao");
+		
+		SessionBuffer sessionBuffer = new SessionBuffer(request);
 		
 //		/*teste*/System.out.println("acao: " + acao);
 		if(acao.equalsIgnoreCase("pegaImagem")){
-			Image imagem = (Image)sessao.getAttribute(IMAGEM_KERNEL);
-//			sessao.removeAttribute(IMAGEM_KERNEL);
+			Image imagem = sessionBuffer.getKernelMapImage();
 			if(imagem != null)
 				ServletUtil.sendImage(response, imagem);
 		}else{
@@ -416,7 +412,7 @@ public class ServletWikiCrimesApi extends HttpServlet {
 	
 	
 	private static void gerarKernelMap(HttpServletRequest request, HttpServletResponse response, PrintWriter outW) throws IOException{
-		KernelMap mapKernel = null;
+//		KernelMap mapKernel = null;
 		PrintWriter saida = null;
 		saida = new PrintWriter(outW, true);
 		JSONObject resposta = new JSONObject();
@@ -501,19 +497,19 @@ public class ServletWikiCrimesApi extends HttpServlet {
 				httpSession.removeAttribute("pontoXY");
 				
 			}
-			Rectangle limitesPixel = new Rectangle(westPixel, northPixel, widthTela, heightTela);
+			Rectangle pixelBounds = new Rectangle(westPixel, northPixel, widthTela, heightTela);
+			List<Point> points = getPoints("pontoXY");
+			KernelMapRequestHandler kmrh = new KernelMapRequestHandler(request, points, pixelBounds);
+			SessionBuffer sessionBuffer = new SessionBuffer(request);
+			sessionBuffer.saveKernelMap(kmrh.getKernel(), kmrh.getImage());
 			
-			//calcula o mapa de kernel e gera a imagem
-			mapKernel = new KernelMap(GRID_NODE, BANDWIDTH, limitesPixel, getPoints(pontoXY)) ;
-			
-			//Envia informa��es resultates para o cliente
+			//Envia informacoes resultates para o cliente
 			resposta.put("topLeftX", westPixel);
 			resposta.put("topLeftY", northPixel);
 			resposta.put("bottomRightX", eastPixel);
 			resposta.put("bottomRightY", southPixel);
 			resposta.put("nada", "NADA");
 			resposta.put("statuRes", "concluido");
-			poeImagemNaSessao(mapKernel, httpSession, request);
 		}else{
 			resposta.put("statuRes", "nadaAinda");
 		}
@@ -523,18 +519,13 @@ public class ServletWikiCrimesApi extends HttpServlet {
 		
 	}
 	
-	/*teste*/static int cont;
-	private static void poeImagemNaSessao(KernelMap kernel, HttpSession httpSession, HttpServletRequest request) throws IOException{
-		if(kernel != null){
-			boolean isIE = ServletUtil.isClientUsingIE(request);
-			KernelMapRenderer renderer = KMRFactory.getDefaultRenderer(kernel, isIE);
-			Image imagem = renderer.renderImage();
-			httpSession.setAttribute(IMAGEM_KERNEL, imagem);
-	//		/*teste*/System.out.println(kernel);
-	//		/*teste*/System.out.println("bounds: " + bounds);
-	//		/*teste*/System.out.println("parameterNames: " + request.getParameterMap().keySet());
-	//		/*teste*/System.out.println("pontoXY: " + request.getParameter("pontos"));
-//			/*teste*/ImageIO.write(imagem, "PNG", new File("/home/victor/Desktop/teste/" + ++cont + ".png"));
+	private static List<Point> getPoints(String pontosStr){
+		List<Point> pontos = new LinkedList<Point>();
+		if(pontosStr == null || pontosStr.isEmpty())
+			return pontos;
+		for(String pontoStr : pontosStr.split("a")){
+			pontos.add(new Ponto(pontoStr).invertido());  //FIXME desfazendo a inversao q foi feita la no JavaScript
 		}
+		return pontos;
 	}
 }

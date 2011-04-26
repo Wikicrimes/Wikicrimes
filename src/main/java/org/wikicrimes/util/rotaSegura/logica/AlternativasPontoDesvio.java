@@ -19,7 +19,7 @@ public class AlternativasPontoDesvio extends GeradorDeAlternativasAbstrato{
 
 	private static final int DETALHE_PONTOS_PROMISSORES = PropertiesLoader.getInt("saferoutes.promising_points_grid_resolution");
 	
-	public AlternativasPontoDesvio(LogicaRotaSegura logica) {
+	public AlternativasPontoDesvio(SafeRouteCalculator logica) {
 		super(logica);
 	}
 	
@@ -45,13 +45,6 @@ public class AlternativasPontoDesvio extends GeradorDeAlternativasAbstrato{
 			}
 			return alternativas;
 		} catch (CantFindPath e) {
-			return alternativas;
-		} catch (VertexNotInGraph e) {
-//			/*DEBUG*/System.err.println(e.getMessage());
-//			/*DEBUG*/TesteRotasImg teste = new TesteRotasImg(logicaRota.getKernel(), grafo);
-//			/*DEBUG*/teste.addRota(rota, Color.ORANGE);
-//			/*DEBUG*/teste.addPonto(e.vertex, Color.MAGENTA);
-//			/*DEBUG*/teste.salvar();
 			return alternativas;
 		}
 		

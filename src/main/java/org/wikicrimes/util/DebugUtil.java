@@ -1,5 +1,6 @@
 package org.wikicrimes.util;
 
+import java.awt.Image;
 import java.awt.image.RenderedImage;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -10,7 +11,8 @@ import javax.imageio.ImageIO;
 
 public class DebugUtil {
 
-	private static String dir = "/home/victor/Desktop/testes/rotas 2010.09.17/novo teste";
+//	private static String dir = "/home/victor/Desktop/testes/rotas 2010.09.17/novo teste";
+	private static String dir = "/home/victor/Desktop";
 
 	public static void stringToFile(String fileNames, String str) {
 		try {
@@ -30,12 +32,12 @@ public class DebugUtil {
 		DebugUtil.dir = dir;
 	}
 	
-	public static void saveImage(String fileName, RenderedImage imagem){
+	public static void saveImage(String fileName, Image imagem){
 		try {
-			ImageIO.write(imagem, "PNG", new File(dir, fileName));
+			ImageIO.write((RenderedImage)imagem, "PNG", new File(dir, fileName));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-
+	
 }

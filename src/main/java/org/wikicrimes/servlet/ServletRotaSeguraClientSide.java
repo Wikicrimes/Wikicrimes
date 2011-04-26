@@ -1,7 +1,5 @@
 package org.wikicrimes.servlet;
 
-import static org.wikicrimes.servlet.ServletKernelMap.KERNEL;
-
 import java.awt.Color;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -20,19 +18,20 @@ import org.wikicrimes.util.kernelmap.PropertiesLoader;
 import org.wikicrimes.util.rotaSegura.geometria.Ponto;
 import org.wikicrimes.util.rotaSegura.geometria.Rota;
 import org.wikicrimes.util.rotaSegura.googlemaps.StatusGM;
-import org.wikicrimes.util.rotaSegura.logica.CalculoPerigo;
 import org.wikicrimes.util.rotaSegura.logica.FilaRotasCandidatas;
-import org.wikicrimes.util.rotaSegura.logica.LogicaRotaSegura;
+import org.wikicrimes.util.rotaSegura.logica.Perigo;
+import org.wikicrimes.util.rotaSegura.logica.SafeRouteCalculator;
 import org.wikicrimes.util.rotaSegura.logica.exceptions.CantFindPath;
-import org.wikicrimes.util.rotaSegura.logica.exceptions.VertexNotInGraph;
 import org.wikicrimes.util.rotaSegura.logica.modelo.GrafoRotas;
 import org.wikicrimes.util.rotaSegura.logica.modelo.RotaGM;
 import org.wikicrimes.util.rotaSegura.testes.TesteCenariosRotas;
 import org.wikicrimes.util.rotaSegura.testes.TesteRotasImg;
+import org.wikicrimes.util.statistics.KernelMapRequestHandler;
+import org.wikicrimes.util.statistics.SessionBuffer;
 
 /**
- * Trata requisi��es HTTP para calcular rotas seguras.
- * Chama um m�todo do ServletKernelMap para calcular mapa de kernel.
+ * Trata requisicoes HTTP para calcular rotas seguras.
+ * Chama um metodo do ServletKernelMap para calcular mapa de kernel.
  * 
  * @author victor
  */
@@ -46,7 +45,8 @@ public class ServletRotaSeguraClientSide extends HttpServlet {
 	//chaves para atributos de sessao
 	public static final String LOGICA_ROTAS = "LOGICA_ROTAS";
 	private static final String ULTIMA_RESPOSTA = "ULTIMA_RESPOSTA"; //ultima resposta deste servlet. Eh enviada como requisicao pro GoogleMaps
-	private static final String ROTAS_CANDIDATAS = "ROTAS_CANDIDATAS"; //fila de requisi��es p/ fazer ao GoogleMaps (s�o rotas)
+	private static final String ROTAS_CANDIDATAS = "ROTAS_CANDIDATAS"; //fila de requisicoes p/ fazer ao GoogleMaps (sao rotas)
+//	private static final String LONG_ROUTE_REQUEST = "LONG_ROUTE_REQUEST"; //objeto q gerencia a requisicao repartida de rotas longas
 	/*TESTE CENARIO*/private static final String TEMPO_INICIO = "TEMPO_INICIO";
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -71,12 +71,12 @@ public class ServletRotaSeguraClientSide extends HttpServlet {
 	
 	private void primeiraExecucao(HttpServletRequest request) throws IOException, ServletException{
 		
-		//inicializa��o dos objetos principais
-		LogicaRotaSegura logicaRota = getLogicaRotaSegura(request);
+		//inicializacao dos objetos principais
+		SafeRouteCalculator logicaRota = getLogicaRotaSegura(request);
 		
-		//inicializa o GRAFO com a rota original que vai da origem at� o destino
+		//inicializa o GRAFO com a rota original que vai da origem ate o destino
 		Rota rotaGoogleMaps = getRota(request);
-		CalculoPerigo calcPerigo = logicaRota.getCalculoPerigo();
+		Perigo calcPerigo = logicaRota.getCalculoPerigo();
 		GrafoRotas grafo = new GrafoRotas(rotaGoogleMaps, calcPerigo);
 		logicaRota.setGrafo(grafo);
 		
@@ -86,11 +86,11 @@ public class ServletRotaSeguraClientSide extends HttpServlet {
 	
 	private void metodoPrincipal(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 
-		//inicializa��o dos objetos principais
+		//inicializacao dos objetos principais
 		HttpSession sessao = request.getSession();
 		int iteracao = getContRevisoes(request); 
-		LogicaRotaSegura logicaRota = getLogicaRotaSegura(request);
-		CalculoPerigo calcPerigo = logicaRota.getCalculoPerigo();
+		SafeRouteCalculator logicaRota = getLogicaRotaSegura(request);
+		Perigo calcPerigo = logicaRota.getCalculoPerigo();
 		StatusGM status = getStatusGM(request);
 		GrafoRotas grafo = logicaRota.getGrafo();
 		Rota ultimaResp = (Rota)sessao.getAttribute(ULTIMA_RESPOSTA);
@@ -102,6 +102,13 @@ public class ServletRotaSeguraClientSide extends HttpServlet {
 		case SUCCESS:
 			//recebe a rota obtida do GoogleMaps
 			Rota rotaGoogleMaps = getRota(request);
+//			LongRouteRequest lrr = manageLongRoute(request, response, rotaGoogleMaps);
+//			if(lrr != null) {
+//				if(lrr.isDone())
+//					rotaGoogleMaps = lrr.getRealRoute();
+//				else
+//					return;
+//			}
 			if(isPrimeiraVez(request)){
 //				/*TESTE TOLERANCIA*/double distMin = rotaGoogleMaps.distanciaRetaOD();
 //				/*TESTE TOLERANCIA*/double densMedia = logicaRota.getKernel().getMediaDens();
@@ -168,14 +175,27 @@ public class ServletRotaSeguraClientSide extends HttpServlet {
 				Rota novaRequisicao = rotasCandidatas.pop();
 				respostaPedeNovoTrecho(request, response, novaRequisicao);
 			}else{
-				double maxWeight = calcPerigo.perigo(grafo.getRotaOriginal());
+//				double maxWeight = calcPerigo.perigo(grafo.getRotaOriginal());
 				List<Rota> rotas = grafo.verticesKMenoresCaminhos(PADRAO_NUM_ROTAS_RESPOSTA);
 				respostaFim(request, response, rotas);
 				limpar(request);
 				System.err.println("***nao tem mais rotas alternativas");
 			}
+			
+			/*TESTE CENARIO*/long t1 = (Long)sessao.getAttribute(TEMPO_INICIO);
+			/*TESTE CENARIO*/long t2 = System.currentTimeMillis();
+			/*TESTE CENARIO*/long tempo = (t2-t1)/1000;
+			/*TESTE CENARIO*/TesteCenariosRotas.setResult("tempo", tempo);
+			/*TESTE CENARIO*/double distFin = melhorCaminho.distanciaPercorrida();
+			/*TESTE CENARIO*/TesteCenariosRotas.setResult("distFin", distFin);
+			/*TESTE CENARIO*/double qualiFin = calcPerigo.perigo(melhorCaminho);
+			/*TESTE CENARIO*/TesteCenariosRotas.setResult("qualiFin", qualiFin);
+			/*TESTE CENARIO*/TesteCenariosRotas.setResult("reqGM", getContRevisoes(request));
+			/*TESTE CENARIO*/TesteCenariosRotas.salvar();
+			
 		}else{
-			double maxWeight = calcPerigo.perigo(grafo.getRotaOriginal());
+
+			//			double maxWeight = calcPerigo.perigo(grafo.getRotaOriginal());
 			List<Rota> rotas = grafo.verticesKMenoresCaminhos(PADRAO_NUM_ROTAS_RESPOSTA);
 			/*TESTE CENARIO*/long t1 = (Long)sessao.getAttribute(TEMPO_INICIO);
 			/*TESTE CENARIO*/long t2 = System.currentTimeMillis();
@@ -191,15 +211,31 @@ public class ServletRotaSeguraClientSide extends HttpServlet {
 			limpar(request);
 		}
 		
+		
 	}
+	
+//	private LongRouteRequest manageLongRoute(HttpServletRequest request, HttpServletResponse response, Rota realRoutePart) throws IOException {
+//		LongRouteRequest lrr = (LongRouteRequest)request.getSession().getAttribute(LONG_ROUTE_REQUEST);
+//		if(lrr == null)
+//			return null;
+//		lrr.haveResponse(realRoutePart);
+//		if(lrr.isDone()) {
+//			request.getSession().removeAttribute(LONG_ROUTE_REQUEST);
+//			return lrr;
+//		}else {
+//			Rota nextPart = lrr.nextPart();
+//			respostaPedeNovoTrecho(request, response, nextPart);
+//			return lrr;
+//		}
+//	}
 	
 	
 	/**
-	 * Faz uma limpeza nos objetos da sess�o, preparando pra uma pr�xima s�rie de requisi��es do mesmo usu�rio
+	 * Faz uma limpeza nos objetos da sessao, preparando pra uma proxima serie de requisicoes do mesmo usuario
 	 */
 	private void limpar(HttpServletRequest request) throws IOException, ServletException{
 		HttpSession sessao = request.getSession();
-		LogicaRotaSegura logicaRotas = getLogicaRotaSegura(request);
+		SafeRouteCalculator logicaRotas = getLogicaRotaSegura(request);
 		logicaRotas.limpar();
 		sessao.removeAttribute(LOGICA_ROTAS);
 		sessao.removeAttribute(ULTIMA_RESPOSTA);
@@ -210,7 +246,12 @@ public class ServletRotaSeguraClientSide extends HttpServlet {
 	
 	private void respostaPedeNovoTrecho(HttpServletRequest request, HttpServletResponse response, Rota trecho) throws IOException{
 //		/*DEBUG*/System.out.println("PEDE NOVO TRECHO, contRev=" + getContRevisoes(request));
-		request.getSession().setAttribute(ULTIMA_RESPOSTA, trecho); //necess�rio caso de o erro TOO_MANY_QUERIES no GM
+		request.getSession().setAttribute(ULTIMA_RESPOSTA, trecho); //necessario caso de o erro TOO_MANY_QUERIES no GM
+//		if(LongRouteRequest.isTooLong(trecho)) {
+//			LongRouteRequest lrr = new LongRouteRequest(trecho);
+//			trecho = lrr.nextPart();
+//			request.getSession().setAttribute(LONG_ROUTE_REQUEST, lrr); 
+//		}
 		PrintWriter out = response.getWriter();
 		out.println("continua");
 		out.println(trecho.invertida());	//rota segura gerada
@@ -288,25 +329,27 @@ public class ServletRotaSeguraClientSide extends HttpServlet {
 		return getContRevisoes(request)==0 || !isLogicaRotasNaSessao(request);
 	}
 	
-	public static LogicaRotaSegura getLogicaRotaSegura(HttpServletRequest request) throws ServletException, IOException{
+	public static SafeRouteCalculator getLogicaRotaSegura(HttpServletRequest request) throws ServletException, IOException{
 		HttpSession sessao = request.getSession();
 		if(!isLogicaRotasNaSessao(request)){ 
-			//primeira requisi��o, com a rota original
-			KernelMap kernel = (KernelMap)sessao.getAttribute(KERNEL);
+			//primeira requisicao, com a rota original
+//			KernelMap kernel = (KernelMap)sessao.getAttribute(KERNEL);
+			SessionBuffer sessionBuffer = new SessionBuffer(request);
+			KernelMap kernel = sessionBuffer.getKernelMap();
 			if(kernel == null) throw new RuntimeException("kernel null");
-			LogicaRotaSegura logicaRotas = new LogicaRotaSegura(kernel);
+			SafeRouteCalculator logicaRotas = new SafeRouteCalculator(kernel);
 			sessao.setAttribute(LOGICA_ROTAS, logicaRotas);
 		}
-		LogicaRotaSegura logicaRotas = (LogicaRotaSegura)sessao.getAttribute(LOGICA_ROTAS);
+		SafeRouteCalculator logicaRotas = (SafeRouteCalculator)sessao.getAttribute(LOGICA_ROTAS);
 		return logicaRotas;
 	}
 	
 	public static boolean isLogicaRotasNaSessao(HttpServletRequest request){
 		HttpSession sessao = request.getSession();
-		return sessao.getAttribute(LOGICA_ROTAS) != null && sessao.getAttribute(LOGICA_ROTAS) instanceof LogicaRotaSegura;
+		return sessao.getAttribute(LOGICA_ROTAS) != null && sessao.getAttribute(LOGICA_ROTAS) instanceof SafeRouteCalculator;
 	}
 	
-	private FilaRotasCandidatas getRotasCandidatas(HttpSession sessao, LogicaRotaSegura logicaRota) {
+	private FilaRotasCandidatas getRotasCandidatas(HttpSession sessao, SafeRouteCalculator logicaRota) {
 		FilaRotasCandidatas rotas = (FilaRotasCandidatas)sessao.getAttribute(ROTAS_CANDIDATAS);
 		if(rotas == null) {
 			rotas = new FilaRotasCandidatas(logicaRota.getCalculoPerigo(), logicaRota.getGrafo());

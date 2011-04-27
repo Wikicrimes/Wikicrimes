@@ -24,7 +24,9 @@ import org.wikicrimes.util.statistics.Param.Action;
 @SuppressWarnings("serial")
 public class StatisticsServlet extends HttpServlet{
 
-	//TODO o filtro ta trazendo 600 as vezes e 13000 outras vezes
+	//TODO requisicao qd fecha o balao da pesquisa do mapa
+	//TODO organizar acoes
+	//TODO hierarquizar bottleneckfinder
 	
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {

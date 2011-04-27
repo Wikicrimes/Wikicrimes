@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class BottleneckFinder {
 
-	private static boolean on = false;
+	private static boolean on = true;
 	
 	private String title;
 	private List<String> labels;

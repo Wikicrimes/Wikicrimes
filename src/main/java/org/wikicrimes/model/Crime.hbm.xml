@@ -36,6 +36,7 @@
         <property name="cep" column="CRI_CEP" type="java.lang.String" length="9"/>
         <property name="dataHoraRegistro" column="CRI_DATA_HORA_REGISTRO" type="java.util.Date"/>
         <property name="ultimaCredibilidade" column="CRE_CREDIBILIDADE" type="java.lang.Double"/>
+        <property name="cacheEstatisticas" column="CRI_CACHE_ESTATISTICAS" type="java.lang.String" length="20"/>
         
         <property name="identificadorUK" column="CRI_ID_UK" type="java.lang.Integer" not-null="false"/>
 
@@ -59,7 +60,7 @@
             <one-to-many class="org.wikicrimes.model.Confirmacao"/>
         </set>
         
-		<set name="razoes" table="TB_CRZ_CRIME_RAZAO" lazy="false">
+		<set name="razoes" table="TB_CRZ_CRIME_RAZAO" lazy="true">
             <key><column name="CRZ_IDCRIME" not-null="true" /></key>
             <one-to-many class="org.wikicrimes.model.CrimeRazao"/>
         </set>

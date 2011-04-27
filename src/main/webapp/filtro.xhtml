@@ -911,7 +911,6 @@ topo_dirFiltro{
 				//*********************** MAPA DE KERNEL INICIO ****************************
 							selecionarComando(map, 'mao');							
 							kernelEnable = false;
-							console.log("apagaMapaKernel() em verificaPermalink");
 							apagaMapaKernel();
 							if(statusLegenda=='visivel')
 								wikicrimesDiv.innerHTML = htmlLegenda();
@@ -943,7 +942,6 @@ topo_dirFiltro{
 									desativaMapaKernel();
 								}else{
 									//updateStatistics();
-									console.log("apagaMapaKernel() em updateKernelGUI");
 									apagaMapaKernel();
 									pintaMapaKernel();
 								}

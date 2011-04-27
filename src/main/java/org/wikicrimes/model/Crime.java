@@ -17,7 +17,7 @@ public class Crime extends BaseObject {
 	public static Long FEMININO = new Long(0);
 	
 	/**
-	 * Vari�veis de Inst�ncia
+	 * Variaveis de Instancia
 	 */
 	private Long idCrime;
 	
@@ -74,7 +74,7 @@ public class Crime extends BaseObject {
 	
 	private TipoTransporte tipoTransporte;
 
-	// V�timas
+	// Vitimas
 	private Long qtdMasculino;
 
 	private Long qtdFeminino;
@@ -105,6 +105,8 @@ public class Crime extends BaseObject {
 //	private Set<Credibilidade> credibilidades;
 	
 	private Double ultimaCredibilidade;
+	
+	private String cacheEstatisticas;
 	
 
 	public UsuarioRedeSocial getUsuarioRedeSocial() {
@@ -458,13 +460,20 @@ public class Crime extends BaseObject {
 		this.ultimaCredibilidade = ultimaCredibilidade;
 	}
 	
-	
 	public Integer getIdentificadorUK() {
 		return identificadorUK;
 	}
 
 	public void setIdentificadorUK(Integer identificadorUK) {
 		this.identificadorUK = identificadorUK;
+	}
+
+	public String getCacheEstatisticas() {
+		return cacheEstatisticas;
+	}
+	
+	public void setCacheEstatisticas(String cacheEstatisticas) {
+		this.cacheEstatisticas = cacheEstatisticas;
 	}
 
 	@Override

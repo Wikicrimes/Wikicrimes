@@ -32,6 +32,7 @@ import org.wikicrimes.service.CrimeService;
 import org.wikicrimes.service.EstatisticaService;
 import org.wikicrimes.service.RelatoService;
 import org.wikicrimes.service.UsuarioService;
+import org.wikicrimes.util.BottleneckFinder;
 import org.wikicrimes.util.GeoData;
 import org.wikicrimes.util.Horario;
 
@@ -464,32 +465,7 @@ public class FiltroForm extends GenericForm {
 					horarioInicial, horarioFinal, dataInicial, dataFinal, 
 					entidadeCertificadora, crimeConfirmadoPositivamente2, 
 					norte, sul, leste, oeste, ignoraData, emailUsuario);
-					
 			List<BaseObject> result = crimeService.filter(params);
-			undoIgnoreStuff(result, ignoraData);
-			return result;
-			
-		}catch (Exception e) {
-			System.err.println(e.getMessage());
-			e.printStackTrace();
-			addMessage("errors.geral", e.getMessage());
-			return crimes;
-		}
-	}
-	
-	public List<BaseObject> filterCrimesIncludeReasons(String tipoCrime,
-			String tipoVitima, String tipoLocal, String horarioInicial,
-			String horarioFinal, String dataInicial, String dataFinal,
-			String entidadeCertificadora, String crimeConfirmadoPositivamente2,
-			String norte, String sul, String leste, String oeste, 
-			String ignoraData, String emailUsuario){
-		try {
-			Map params = getCrimeFilterParameters(tipoCrime, tipoVitima, tipoLocal, 
-					horarioInicial, horarioFinal, dataInicial, dataFinal, 
-					entidadeCertificadora, crimeConfirmadoPositivamente2, 
-					norte, sul, leste, oeste, ignoraData, emailUsuario);
-					
-			List<BaseObject> result = crimeService.filterIncludeReasons(params);
 			undoIgnoreStuff(result, ignoraData);
 			return result;
 			

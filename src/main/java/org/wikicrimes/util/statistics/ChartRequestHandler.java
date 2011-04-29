@@ -23,7 +23,7 @@ public class ChartRequestHandler {
 	private void makeCharts() {
 		int totalEvents = events.getTotalEvents();
 		Map<String,Integer> types = events.getTypeHistogram();
-		typesChart = makeTypesChartUrl(types, totalEvents, "A52A2A|0066FF|006600|FF9933", 200, 70);
+		typesChart = makeTypesChartUrl(types, totalEvents, "A52A2A|0066FF|FF9933|006600", 200, 70);
 		int totalReasons = events.getTotalReasons();
 		Map<String,Integer> reasons = events.getReasonHistogram();
 		reasonsChart = makeReasonsChartUrl(reasons, totalReasons, "CD5C5C", 300, 70);

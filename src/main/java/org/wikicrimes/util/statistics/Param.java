@@ -13,7 +13,7 @@ public class Param {
 	public static class Keys{
 		
 		private static final String application = "app";
-		private static final String action = "action";
+		private static final String actions = "actions";
 		private static final String zoom = "zoom";
 		
 		private static class PixelBounds{
@@ -40,10 +40,6 @@ public class Param {
 		WIKICRIMES, WIKIMAPPS;
 	}
 	
-	public static enum Action{
-		FULL_STATISTICS, KERNEL_MAP_ONLY, GET_IMAGE, GET_JSON, EVENTS;
-	}
-	
 	public static Application getApplication(HttpServletRequest request) {
 		String app = request.getParameter(Keys.application);
 		if(app == null)
@@ -56,22 +52,61 @@ public class Param {
 			throw new InvalidParameterException(app);
 	}
 	
-	public static Action getAction(ServletRequest request) {
-		String app = request.getParameter(Keys.action);
-		if(app.equals("full"))
-			return Action.FULL_STATISTICS;
-		else if(app.equals("kernel"))
-			return Action.KERNEL_MAP_ONLY;
-		else if(app.equals("getJson"))
-			return Action.GET_JSON;
-		else if(app.equals("getImage"))
-			return Action.GET_IMAGE;
-		else if(app.equals("events"))
-			return Action.EVENTS;
-		else
-			throw new InvalidParameterException(app);
+	public static class Actions{
+		
+		private boolean kernel;
+		private boolean charts;
+		private boolean events;
+		private boolean json;
+		private boolean image;
+		
+		public boolean generateKernelMap() {
+			return kernel;
+		}
+		
+		public boolean generateCharts() {
+			return charts;
+		}
+		
+		public boolean includeEventsInJson() {
+			return events;
+		}
+		
+		public boolean getJson() {
+			return json;
+		}
+		
+		public boolean getKernelMapImage() {
+			return image;
+		}
+		
+		public boolean needEventsFromDB() {
+			return kernel | charts | events; 
+		}
+		
 	}
-
+	
+	public static Actions getActions(ServletRequest request) {
+		String actionsStr = request.getParameter(Keys.actions);
+		String[] actionStrArray = actionsStr.split("\\|");
+		Actions actions = new Actions();
+		for(int i=0; i<actionStrArray.length; i++) {
+			if(actionStrArray[i].equalsIgnoreCase("kernel"))
+				actions.kernel = true;
+			else if(actionStrArray[i].equalsIgnoreCase("charts"))
+				actions.charts = true;
+			else if(actionStrArray[i].equalsIgnoreCase("events"))
+				actions.events = true;
+			else if(actionStrArray[i].equalsIgnoreCase("json"))
+				actions.json = true;
+			else if(actionStrArray[i].equalsIgnoreCase("image"))
+				actions.image = true;
+			else
+				throw new InvalidParameterException(actionsStr);
+		}
+		return actions;
+	}
+	
 	
 	/**
 	 * obs: O zoom do GoogleMaps varia de 0 a 19. Zero eh o mais de longe. 

@@ -39,7 +39,7 @@ public class SessionBuffer {
 		res.kernelmapImg = img;
 	}
 	
-	public void saveChartsUrl(String typeChartUrl, String reasonChartUrl) {
+	public void saveChartsUrls(String typeChartUrl, String reasonChartUrl) {
 		res.typesChartUrl = typeChartUrl;
 		res.reasonsChartUrl = reasonChartUrl;
 	}

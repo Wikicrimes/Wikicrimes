@@ -16,7 +16,6 @@ import org.wikicrimes.model.BaseObject;
 import org.wikicrimes.model.Crime;
 import org.wikicrimes.model.PontoLatLng;
 import org.wikicrimes.model.Razao;
-import org.wikicrimes.model.Relato;
 import org.wikicrimes.service.CrimeService;
 import org.wikicrimes.service.RazaoService;
 import org.wikicrimes.util.Util;
@@ -36,7 +35,11 @@ public class WikiCrimesEventsRetriever extends EventsRetriever<BaseObject>{
 	
 	private boolean includePoints;
 	private boolean includeHistograms;
+	private boolean includeReports;
 
+	protected List<Point> points;
+	protected List<BaseObject> events;
+	
 	public WikiCrimesEventsRetriever(HttpServletRequest request, ServletContext context) {
 		this.request = request;
 		this.context = context;
@@ -44,17 +47,19 @@ public class WikiCrimesEventsRetriever extends EventsRetriever<BaseObject>{
 		load();
 	}
 	
-	public WikiCrimesEventsRetriever(HttpServletRequest request, ServletContext context, boolean includePoints, boolean includeHistograms) {
+	public WikiCrimesEventsRetriever(HttpServletRequest request, ServletContext context, 
+			boolean toPixel, boolean includeHistograms, boolean includeReports) {
 		this.request = request;
 		this.context = context;
 		this.session = request.getSession();
-		this.includePoints = includePoints;
+		this.includePoints = toPixel;
 		this.includeHistograms = includeHistograms;
+		this.includeReports = includeReports;
 		load();
 	}
 	
 	private void load() {
-		events = retrieveEvents(includeHistograms); 
+		retrieveEvents();
 		this.totalEvents = events.size();
 		if(includePoints) {
 			int zoom = Param.getZoom(request);
@@ -65,7 +70,7 @@ public class WikiCrimesEventsRetriever extends EventsRetriever<BaseObject>{
 		}
 	}
 	
-	private List<BaseObject> retrieveEvents(boolean includeReasons){
+	private void retrieveEvents(){
 		
 		LatLngBoundsGM limitesLatlng = Param.getLatLngBounds(request);
 		
@@ -85,12 +90,15 @@ public class WikiCrimesEventsRetriever extends EventsRetriever<BaseObject>{
 		String oeste = limitesLatlng.oeste+"";
 		String ignoraData = request.getParameter("id");
 		
-		List<BaseObject> events = filtroForm.getCrimesFiltrados(tipoCrime, tipoVitima,
+		events = filtroForm.getCrimesFiltrados(tipoCrime, tipoVitima,
 				tipoLocal, horarioInicial, horarioFinal, dataInicial,
 				dataFinal, entidadeCertificadora, confirmadosPositivamente,
-				norte, sul, leste, oeste, ignoraData,null);
+				norte, sul, leste, oeste, ignoraData, null);
 		
-		return events;
+		if(includeReports) {
+			List<BaseObject> reports = filtroForm.getRelatosFiltrados(norte, sul, leste, oeste, dataInicial, dataFinal, true);
+			events.addAll(reports);
+		}
 	}
 	
 	public static List<Point> toPixel(List<BaseObject> crimes, int zoom){
@@ -115,6 +123,7 @@ public class WikiCrimesEventsRetriever extends EventsRetriever<BaseObject>{
 	private void countTypesAndReasons() {
 		for(BaseObject event : events) {
 			
+			if(!(event instanceof Crime)) continue;
 			Crime c = (Crime)event;
 			String[] attrStr = c.getCacheEstatisticas().split("\\|");
 			
@@ -208,7 +217,7 @@ public class WikiCrimesEventsRetriever extends EventsRetriever<BaseObject>{
 	public List<BaseObject> getEvents(){
 		return events; 
 	}
-
+		
 	public Map<String, Integer> getTypeHistogram() {
 		return typeHistogram;
 	}

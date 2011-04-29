@@ -423,29 +423,27 @@ public class FiltroForm extends GenericForm {
 			
 		}
 		if (dataInicial != null && dataInicial != "") {
-			String pattern = "dd,MM,yyyy";
-			SimpleDateFormat sdf = new SimpleDateFormat(pattern);
-			Date data = null;
 			try {
+				String pattern = "dd,MM,yyyy";
+				SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+				Date data = null;
 				data = sdf.parse(dataInicial);
+				parameters.put("dataInicial", data);
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.err.println("FiltroForm -> dataInicial mal formatada: " + dataInicial);
 			}
-			parameters.put("dataInicial", data);
 		}
 
 		if (dataFinal != null && dataFinal != "") {
-			String pattern = "dd,MM,yyyy";
-			SimpleDateFormat sdf = new SimpleDateFormat(pattern);
-			Date data = null;
 			try {
+				String pattern = "dd,MM,yyyy";
+				SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+				Date data = null;
 				data = sdf.parse(dataFinal);
+				parameters.put("dataFinal", data);
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.err.println("FiltroForm -> dataInicial mal formatada: " + dataInicial);
 			}
-			parameters.put("dataFinal", data);
 		}
 		if(relatoService != null && recuperar)
 			return relatoService.filter(parameters);
@@ -522,10 +520,14 @@ public class FiltroForm extends GenericForm {
 		}
 
 		if (dataInicial != null && dataInicial != "") {
-			String pattern = "dd,MM,yyyy";
-			SimpleDateFormat sdf = new SimpleDateFormat(pattern);
-			Date data = sdf.parse(dataInicial);
-			parameters.put("dataInicial", data);
+			try {
+				String pattern = "dd,MM,yyyy";
+				SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+				Date data = sdf.parse(dataInicial);
+				parameters.put("dataInicial", data);
+			}catch(ParseException e) {
+				System.err.println("FiltroForm -> dataInicial mal formatada: " + dataInicial);
+			}
 		}
 
 		if (dataFinal != null && dataFinal != "") {

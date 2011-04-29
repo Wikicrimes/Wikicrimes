@@ -7,7 +7,6 @@ import java.util.Set;
 
 import org.wikicrimes.model.BaseObject;
 import org.wikicrimes.model.Crime;
-import org.wikicrimes.model.CrimeRazao;
 import org.wikicrimes.model.Relato;
 import org.wikicrimes.model.RelatoRazao;
 
@@ -32,39 +31,22 @@ public class CrimeStringBuilder{
 				s.append(crime.getLongitude());
 				s.append("|");
 				s.append(crime.getIdCrime()); 
-				if (crime.getTipoVitima() != null) {
-					s.append("|");
-					s.append(crime.getTipoVitima().getIdTipoVitima());
-				} else {
-					s.append("|");
-				}
 				s.append("|");
 				s.append(sdf.format(crime.getData()));
-				Set<CrimeRazao> razoes =  crime.getRazoes();
-				StringBuilder razoesTexto = new StringBuilder();
-				if(razoes != null){
-					for (Iterator<CrimeRazao> iterator = razoes.iterator(); iterator.hasNext();) {
-						CrimeRazao crimeRazao = (CrimeRazao) iterator.next();
-						razoesTexto.append(crimeRazao.getRazao().getIdRazao().toString());
-						razoesTexto.append(",");
-					}
-				}	
-				s.append("|");
-				s.append(razoesTexto);
-				String desc10Letras = "";
-				if (crime.getDescricao().length() > 10)
-					desc10Letras = crime.getDescricao().substring(0, 10)
-							+ "...";
-				else
-					desc10Letras=crime.getDescricao().substring(0,crime.getDescricao().length());
-				s.append("|");
-				s.append(desc10Letras.replaceAll("\\|", "").replaceAll("\\\n", ""));
-				s.append("|");
-				s.append(crime.getVisualizacoes());
-				s.append("|");
-				s.append(crime.getQtdComentarios());
-				s.append("|");
-				s.append(crime.getConfirmacoesPositivas());
+//				String desc10Letras = "";
+//				if (crime.getDescricao().length() > 10)
+//					desc10Letras = crime.getDescricao().substring(0, 10)
+//							+ "...";
+//				else
+//					desc10Letras=crime.getDescricao().substring(0,crime.getDescricao().length());
+//				s.append("|");
+//				s.append(desc10Letras.replaceAll("\\|", "").replaceAll("\\\n", ""));
+//				s.append("|");
+//				s.append(crime.getVisualizacoes());
+//				s.append("|");
+//				s.append(crime.getQtdComentarios());
+//				s.append("|");
+//				s.append(crime.getConfirmacoesPositivas());
 			}else {
 				relato = (Relato) events.get(i);
 				

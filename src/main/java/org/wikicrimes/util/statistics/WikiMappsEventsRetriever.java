@@ -16,6 +16,7 @@ public class WikiMappsEventsRetriever extends EventsRetriever<Point>{
 
 	
 	private HttpServletRequest request;
+	private List<Point> points;
 
 	public WikiMappsEventsRetriever(HttpServletRequest request) {
 		super();

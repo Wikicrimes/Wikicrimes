@@ -468,7 +468,6 @@ topo_dirFiltro{
 					qtd_furtos = 0;
 					qtd_outros = 0;
 					qtd_denuncias = 0;
-					zeraEstatisticasRazoes();
 					zeraArrayCrimes();
 					map.clearOverlays();
 					crimesAtuais = {}							
@@ -954,72 +953,6 @@ topo_dirFiltro{
 							mudouZoom = false;
 					}
 					
-					function zeraEstatisticasRazoes(){
-						arrayEstatisticasQtd[1] = 0;
-						arrayEstatisticasQtd[2] = 0;
-						arrayEstatisticasQtd[3] = 0;
-						arrayEstatisticasQtd[4] = 0;
-						arrayEstatisticasQtd[5] = 0;
-						arrayEstatisticasQtd[6] = 0;
-						arrayEstatisticasQtd[7] = 0;
-						arrayEstatisticasQtd[8] = 0;
-						arrayEstatisticasQtd[9] = 0;
-						arrayEstatisticasQtd[10] = 0;
-						arrayEstatisticasQtd[11] = 0;
-						arrayEstatisticasQtd[12] = 0;
-						arrayEstatisticasQtd[13] = 0;
-						arrayEstatisticasQtd[14] = 0;
-						arrayEstatisticasQtd[15] = 0;
-						arrayEstatisticasQtd[16] = 0;
-						arrayEstatisticasQtd[17] = 0;
-						arrayEstatisticasQtd[18] = 0;
-						arrayEstatisticasQtd[19] = 0;
-						arrayEstatisticasQtd[20] = 0;
-					}	
-
-					var arrayEstatisticasQtd = new Array();
-					var arrayEstatisticasDescricao = new Array();
-					arrayEstatisticasDescricao[1] = "#{messages['razao.ma.iluminacao']}";
-					arrayEstatisticasDescricao[2] = "#{messages['razao.falta.lazer.jovens']}";
-					arrayEstatisticasDescricao[3] = "#{messages['razao.desemprego']}";
-					arrayEstatisticasDescricao[4] = "#{messages['razao.facil.acesso.fuga']}";
-					arrayEstatisticasDescricao[5] = "#{messages['razao.disputas.gangues']}";
-					arrayEstatisticasDescricao[6] = "#{messages['razao.trafico']}";
-					arrayEstatisticasDescricao[7] = "#{messages['razao.alcool.excesso']}";
-					arrayEstatisticasDescricao[8] = "#{messages['razao.criancas.ruas']}";
-					arrayEstatisticasDescricao[9] = "#{messages['razao.alta.cons.pessoas']}";
-					arrayEstatisticasDescricao[10] = "#{messages['razao.falta.policiamento']}";
-					arrayEstatisticasDescricao[11] = "#{messages['razao.omissao.testemunha']}";
-					arrayEstatisticasDescricao[12] = "#{messages['razao.regiao.perigosa']}";
-					arrayEstatisticasDescricao[13] = "#{messages['razao.impunidade.penal']}";
-					arrayEstatisticasDescricao[14] = "#{messages['razao.pistolagem']}";
-					arrayEstatisticasDescricao[15] = "#{messages['razao.violencia.policial']}";
-					arrayEstatisticasDescricao[16] = "#{messages['razao.falta.moradia']}";
-					arrayEstatisticasDescricao[17] = "#{messages['razao.crime.organizado']}";
-					arrayEstatisticasDescricao[18] = "#{messages['razao.crime.passional']}";
-					arrayEstatisticasDescricao[19] = "#{messages['razao.outros']}";
-					arrayEstatisticasDescricao[20] = "#{messages['razao.naosei']}";
-					
-								
-						
-					function atualizaEstatisticasRazoes(razoesTexto){
-						if(razoesTexto){ //obs: ver pq ta vindo undefined as vezes, n�o devia
-							var arrayRazoesOcorrencia = razoesTexto.split(",");
-							if(arrayRazoesOcorrencia[0] != undefined && arrayRazoesOcorrencia[0] != null && arrayRazoesOcorrencia[0] != ''){
-								arrayEstatisticasQtd[parseInt(arrayRazoesOcorrencia[0])]++;
-							}
-							if(arrayRazoesOcorrencia[1] != undefined && arrayRazoesOcorrencia[1] != null && arrayRazoesOcorrencia[1] != ''){
-								arrayEstatisticasQtd[parseInt(arrayRazoesOcorrencia[1])]++;	
-							}		
-							if(arrayRazoesOcorrencia[2] != undefined && arrayRazoesOcorrencia[2] != null && arrayRazoesOcorrencia[2] != ''){
-								arrayEstatisticasQtd[parseInt(arrayRazoesOcorrencia[2])]++;	
-							}		
-							if(arrayRazoesOcorrencia[3] != undefined && arrayRazoesOcorrencia[3] != null && arrayRazoesOcorrencia[3] != ''){
-								arrayEstatisticasQtd[parseInt(arrayRazoesOcorrencia[3])]++;
-							}
-						}
-					}
-
 					// Ler os dados do arquivo texto enviado pelo servidor e constr�i os marcadores de crimes
 					function constroiMarcadores() {
 						var crimes = statistics.events;
@@ -1046,7 +979,7 @@ topo_dirFiltro{
 						      	var lat = dadosCrimeLinha[2];
 	   					   	 	var long = dadosCrimeLinha[3];
  						       	var idCrime2 = dadosCrimeLinha[4];
- 						        var dataCrime = dadosCrimeLinha[6];
+ 						        var dataCrime = dadosCrimeLinha[5];
  						        if(dataCrime != undefined){
  	 						    	var dia=dataCrime.substring(0,2);
 	 						        var mes = dataCrime.substring(3,5);	
@@ -1059,23 +992,8 @@ topo_dirFiltro{
 		 						        }
 									}
  						        }
- 						        var razoes = dadosCrimeLinha[7];
- 						        atualizaEstatisticasRazoes(razoes);	
  						        if (id==idCrime2)
  						        	id=idCrime;
- 						            if (idTipoCrime == 1 || idTipoCrime == 4)
- 						            	qtd_roubos++;
- 						            if (idTipoCrime == 2 || idTipoCrime == 3)
- 						            	qtd_furtos++;		
- 						            if (idTipoCrime == 5)
- 						            	qtd_outros++;					                	
- 						            if (idTipoCrime == 6) {
-										qtd_denuncias++;
-						                //if(map.getZoom() >= 15){		
-							                 //addComment(idCrime, descricao);
-						                	 //showDivComment();
-						                //}  								                  								                  						                
-						            }
  						           	if(!crimesAtuais[idCrime])	{
 		   					        	// Cria o marcador
 							            var marcador = createMarkerId(new GLatLng(lat, long),idTipoCrime,idCrime,dataCrime);

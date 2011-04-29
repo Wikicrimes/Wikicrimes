@@ -19,69 +19,68 @@ import org.wikicrimes.util.statistics.KernelMapRequestHandler;
 import org.wikicrimes.util.statistics.Param;
 import org.wikicrimes.util.statistics.SessionBuffer;
 import org.wikicrimes.util.statistics.WikiCrimesEventsRetriever;
-import org.wikicrimes.util.statistics.Param.Action;
+import org.wikicrimes.util.statistics.Param.Actions;
 
 @SuppressWarnings("serial")
 public class StatisticsServlet extends HttpServlet{
 
-	//TODO requisicao qd fecha o balao da pesquisa do mapa
-	//TODO organizar acoes
 	//TODO hierarquizar bottleneckfinder
+	//TODO medir tempos denovo
+	//TODO ajeitar contornos
+	//TODO pegar do properties no chartrequesthandler
 	
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		try{
-			doPost(req, resp);
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
+		main(request, response);
 	}
 	
-	protected void doPost(HttpServletRequest request, HttpServletResponse response){
-		
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		main(request, response);
+	}
+	
+	private void main(HttpServletRequest request, HttpServletResponse response){
 		try{
 			
 			ServletUtil.noCache(response);
 			ServletContext context = getServletContext();
 			SessionBuffer sessionBuffer = new SessionBuffer(request);
-			Action action = Param.getAction(request);
+			Actions actions = Param.getActions(request);
 			
-			switch(action) {
-			case FULL_STATISTICS:
-				WikiCrimesEventsRetriever events = new WikiCrimesEventsRetriever(request, context, true, true);
-				KernelMapRequestHandler kernelHandler = new KernelMapRequestHandler(request, events.getPoints());
-				ChartRequestHandler chartHandler = new ChartRequestHandler(events);
+			if(actions.needEventsFromDB()) {
+				boolean needPixel = actions.generateKernelMap();
+				boolean needHistograms = actions.generateCharts();
+				boolean needReports = actions.includeEventsInJson();
+				WikiCrimesEventsRetriever events = new WikiCrimesEventsRetriever(request, context, needPixel, needHistograms, needReports);
 				sessionBuffer.saveTotalEvents(events.getTotalEvents());
-				sessionBuffer.saveKernelMap(kernelHandler.getKernel(), kernelHandler.getImage());
-				sessionBuffer.saveChartsUrl(chartHandler.getTypesChart(), chartHandler.getReasonsChart());
-			case GET_JSON:
+			
+				if(actions.generateKernelMap()) {
+					KernelMapRequestHandler kernelHandler = new KernelMapRequestHandler(request, events.getPoints());
+					sessionBuffer.saveKernelMap(kernelHandler.getKernel(), kernelHandler.getImage());
+				}
+				
+				if(actions.generateCharts()) {
+					ChartRequestHandler chartHandler = new ChartRequestHandler(events);
+					sessionBuffer.saveChartsUrls(chartHandler.getTypesChart(), chartHandler.getReasonsChart());
+				}
+				
+				if(actions.includeEventsInJson()) {
+					String crimesString = CrimeStringBuilder.buildString(events.getEvents());
+					sessionBuffer.saveEvents(crimesString);
+				}
+			}
+			
+			if(actions.getJson()) {
 				JSONObject json = generateJSON(sessionBuffer);
 				ServletUtil.sendJson(response, json);
-				break;
-			case KERNEL_MAP_ONLY:
-				WikiCrimesEventsRetriever events2 = new WikiCrimesEventsRetriever(request, context, true, false);
-				KernelMapRequestHandler kernelHandler2 = new KernelMapRequestHandler(request, events2.getPoints());
-				sessionBuffer.saveKernelMap(kernelHandler2.getKernel(), kernelHandler2.getImage());
-			case GET_IMAGE:
-				Image image1 = sessionBuffer.getKernelMapImage();
-				ServletUtil.sendImage(response, image1);
-				break;
-			case EVENTS:
-				WikiCrimesEventsRetriever events3 = new WikiCrimesEventsRetriever(request, context, false, true);
-				String crimesString = CrimeStringBuilder.buildString(events3.getEvents());
-				ChartRequestHandler chartHandler2 = new ChartRequestHandler(events3);
-				sessionBuffer.saveTotalEvents(events3.getTotalEvents());
-				sessionBuffer.saveEvents(crimesString);
-				sessionBuffer.saveChartsUrl(chartHandler2.getTypesChart(), chartHandler2.getReasonsChart());
-				JSONObject json2 = generateJSON(sessionBuffer);
-				ServletUtil.sendJson(response, json2);
-				break;
+			}else if(actions.getKernelMapImage()){
+				Image image = sessionBuffer.getKernelMapImage();
+				ServletUtil.sendImage(response, image);
 			}
 			
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 	}
 	
 	private JSONObject generateJSON(SessionBuffer ses) {

@@ -108,8 +108,8 @@
 			}
 			
 			function updateStatistics(farZoom){
-				var action = farZoom? "full" : "events";
-				var url = buildStatisticsUrl(action);
+				var actions = (farZoom? "kernel" : "events") + "|charts|json";
+				var url = buildStatisticsUrl(actions);
 				var req = requestStatistics(url);
 				if (req.readyState == 4 && req.status == 200){
 					statistics = eval("(" + req.responseText + ")");
@@ -139,7 +139,7 @@
 			function buildStatisticsUrl(action){
 				jaMostrouAjudaHotSpot = true;
 				
-				var url = 'action=' + action;
+				var url = 'actions=' + action;
 				url += boundsPixelUrlParams(map);
 				url += boundsLatLngUrlParams(map);
 				url += parametrosFiltroCrimes();
@@ -325,7 +325,7 @@
 					photo.percentOpacity = IE? 50 : 100; //no IE, a imagem vem opaca, precisa de transparencia aqui
 					photo.anchorTopLeft = new GLatLng(lat1,lon1);
 					photo.anchorBottomRight = new GLatLng(lat2,lon2);
-					photo.src = "statistics?action=getImage&nocache=" + new Date().getTime();
+					photo.src = "statistics?actions=image&nocache=" + new Date().getTime();
 					map.addTPhoto(photo);
 			  		
 			  	}else{

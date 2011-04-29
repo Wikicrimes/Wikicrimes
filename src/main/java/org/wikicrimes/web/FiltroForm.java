@@ -32,7 +32,7 @@ import org.wikicrimes.service.CrimeService;
 import org.wikicrimes.service.EstatisticaService;
 import org.wikicrimes.service.RelatoService;
 import org.wikicrimes.service.UsuarioService;
-import org.wikicrimes.util.BottleneckFinder;
+import org.wikicrimes.util.TimeTest;
 import org.wikicrimes.util.GeoData;
 import org.wikicrimes.util.Horario;
 

@@ -23,7 +23,7 @@ public class ChartRequestHandler {
 	private void makeCharts() {
 		int totalEvents = events.getTotalEvents();
 		Map<String,Integer> types = events.getTypeHistogram();
-		typesChart = makeTypesChartUrl(types, totalEvents, "A52A2A|0066FF|FF9933|006600", 200, 70);
+		typesChart = makeTypesChartUrl(types, totalEvents, "A52A2A|0066FF|006600|FF9933", 200, 70);
 		int totalReasons = events.getTotalReasons();
 		Map<String,Integer> reasons = events.getReasonHistogram();
 		reasonsChart = makeReasonsChartUrl(reasons, totalReasons, "CD5C5C", 300, 70);
@@ -38,14 +38,14 @@ public class ChartRequestHandler {
 		List<Double> values = new ArrayList<Double>(4); 
 		values.add(r + tr);
 		values.add(f + tf);
-		values.add(v);
 		values.add(total - (r + tr + f + tf + v));
+		values.add(v);
 		List<String> labels = new ArrayList<String>(4);
 		labels.add(format("Roubo", values.get(0), total));
 		labels.add(format("Furto", values.get(1), total));
-		labels.add(format("Violência", values.get(2), total));
+		labels.add(format("Denúncia", values.get(2), total));
 		labels.add(format("Outro", values.get(3), total));
-		removeZeros(labels, values);
+//		removeZeros(labels, values);
 		return makeChartApiUrl("p", values, width, 70, labels, colors);
 	}
 	

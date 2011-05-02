@@ -18,7 +18,7 @@ function constroiHtmlAlerta(){
 	html_alerta+="<tr> <td colspan = '4' > <div style='color:red;' id = 'erroTurno'> </div> </td>  </tr>";
 	html_alerta+="<tr> <td> <input type='checkbox' id='cMadrugada' name='cMadrugada'/> </td> <td> "+prefs.getMsg("madrugada")+" </td> <td> <input type='checkbox' id='cManha' name='cManha'/> </td> <td> "+prefs.getMsg("manha")+"</td> </tr>";
 	html_alerta+="<tr> <td> <input type='checkbox' id='cTarde' name='cTarde'/> </td> <td> "+prefs.getMsg("tarde")+"</td> <td> <input type='checkbox' id='cNoite' name='cNoite'/> </td> <td> "+prefs.getMsg("noite")+"</td> </tr>";
-	html_alerta+="<tr> <td colspan = '4'><b> "+prefs.getMsg("causa.motivo.ocorr�ncia1")+" <br/> "+prefs.getMsg("causa.motivo.ocorr�ncia2")+":(*) </b> </td>  </tr>";
+	html_alerta+="<tr> <td colspan = '4'><b> "+prefs.getMsg("causa.motivo.ocorrencia1")+" <br/> "+prefs.getMsg("causa.motivo.ocorrencia2")+":(*) </b> </td>  </tr>";
 	html_alerta+="<tr> <td colspan = '4' > <div style='color:red;' id = 'erroRazoes'> </div> </td>  </tr>";
 	html_alerta+="<tr> <td>	<input type='checkbox' id='razao1' name='cIluP'/> </td> <td > "+prefs.getMsg("ma.iluminacao.publica")+" </td> <td> <input type='checkbox' id='razao2' name='cFalLazJovens'/> </td> <td > "+prefs.getMsg("ausencia.lazer.jovens")+" </td> </tr>";
 	html_alerta+="<tr> <td> <input type='checkbox' id='razao3' name='cDesReg'/> </td> <td > "+prefs.getMsg("desemprego.regiao")+" </td> <td> <input type='checkbox' id='razao4' name='cFacilAcesFuga'/> </td> <td > "+prefs.getMsg("facil.acesso.fuga")+" </td> </tr>";
@@ -40,21 +40,21 @@ function constroiHtmlAlerta(){
 function constroiHtmlAlertaCrime(tipoCrime){
 	var htmTextoVitima = '';
 	var htmlTipoVitima = '';
-	var htmlTipoLocal = "<option value='1'> Via P�blica </option> <option value='2'> Transporte Coletivo </option> <option value='3'> Estabelecimento Comercial </option> <option value='4'> Resid�ncia </option> <option value='5'> Escolas </option> <option value='8'> Banco </option> <option value='9'> Farm�cia </option> <option value='10'> Posto de Gasolina </option> <option value='11'> Lot�rica </option> <option value='12'> Ve�culo </option> <option value='13'> Shopping </option> <option value='14'> Pra�a P�blica </option> <option value='6'> Outros </option> ";
+	var htmlTipoLocal = "<option value='1'> Via P&uacute;blica </option> <option value='2'> Tr&acirc;nsporte Coletivo </option> <option value='3'> Estabelecimento Comercial </option> <option value='4'> Resid&ecirc;ncia </option> <option value='5'> Escolas </option> <option value='8'> Banco </option> <option value='9'> Farm&aacute;cia </option> <option value='10'> Posto de Gasolina </option> <option value='11'> Lot&eacute;rica </option> <option value='12'> Ve&iacute;culo </option> <option value='13'> Shopping </option> <option value='14'> Pra&ccedil;a P&uacute;blica </option> <option value='6'> Outros </option> ";
 	if(tipoCrime=='1' || tipoCrime=='4'){
-		htmlTipoVitima = "<option value='1'> � Pessoa </option> <option value='2'> � Propriedade </option>";
+		htmlTipoVitima = "<option value='1'> &Agrave; Pessoa </option> <option value='2'> &Agrave; Propriedade </option>";
 		htmTextoVitima = prefs.getMsg("alerta.tipo.roubo");
 	}	
 	if(tipoCrime=='2' || tipoCrime=='3'){
-		htmlTipoVitima = "<option value='1'> � Pessoa </option> <option value='2'> � Propriedade </option>";
+		htmlTipoVitima = "<option value='1'> &Agrave; Pessoa </option> <option value='2'> &Agrave; Propriedade </option>";
 		htmTextoVitima = prefs.getMsg("alerta.tipo.furto");
 	}
 	if(tipoCrime=='5'){
-		htmlTipoVitima = "<option value='3'> Rixas ou Brigas </option> <option value='4'> � Viol�ncia Dom�stica </option> <option value='5'> Abuso de Autoridade </option> <option value='6'> Homic�dio</option> <option value='7'> Tentativa de Homic�dio </option> <option value='8'> Latroc�nio </option>";
+		htmlTipoVitima = "<option value='3'> Rixas ou Brigas </option> <option value='4'>Viol&ecirc;ncia Dom&eacute;stica </option> <option value='5'> Abuso de Autoridade </option> <option value='6'> Homic&iacute;dio</option> <option value='7'> Tentativa de Homic&iacute;dio </option> <option value='8'> Latroc&iacute;nio </option>";
 		htmTextoVitima = prefs.getMsg("alerta.tipo.crime");
 	}
 		
-	var html_alerta="<div style='width:100%; height:180px ;overflow: auto;'><div id='topoAlerta'> <b> "+prefs.getMsg("titulo.registrar.alerta")+"(Crime) </b> </div> <br/> <br/> <table style='font-family:Arial, sans-serif;  font-size: 11px;'>";
+	var html_alerta = "<table style='font-family:Arial, sans-serif;  font-size: 11px;'>";
 	html_alerta+="<tr> <td colspan = '2' > <b> "+ htmTextoVitima +":(*) </b> </td> <td colspan = '2' > <b>"+ prefs.getMsg("alerta.tipo.local")+":(*) </b> </td>  </tr>";
 	html_alerta+="<tr> <td colspan = '2' > <div style='color:red;' id = 'erroTipoVitima'> </div> </td>  <td colspan = '2' > <div style='color:red;' id = 'erroTipoLocal'> </div> </td>  </tr>";
 	html_alerta+="<tr> <td colspan = '2' > <select style='font-size: 12px; border: 1px solid #2763a5;' name='tipoVitima' id='tipoVitima'> <option value=''>"+prefs.getMsg("selecione")+"</option> "+ htmlTipoVitima +" </select> </td> <td colspan = '2' > <select style='font-size: 12px; border: 1px solid #2763a5;' name='tipoLocal' id='tipoLocal'> <option value=''>"+prefs.getMsg("selecione")+"</option>"+ htmlTipoLocal +"</select> </td>  </tr>";
@@ -66,11 +66,11 @@ function constroiHtmlAlertaCrime(tipoCrime){
 	html_alerta+="<tr> <td colspan = '2' > <input style='font-size: 12px; border: 1px solid #2763a5;' type='text' id='qtdV' name='qtdV' size='2' maxlength='2'/></td> <td colspan = '2' > <input style='font-size: 12px; border: 1px solid #2763a5;' type='text' id='qtdC' name='qtdC' size='2' maxlength='2'/> </td>  </tr>";
 	html_alerta+="<tr> <td colspan = '4' > <b> "+ prefs.getMsg("alerta.tipo.arma.usada")+":(*) </b> </td></tr>";
 	html_alerta+="<tr> <td colspan = '4' > <div style='color:red;' id = 'erroArmaUsada'> </div> </td> </tr>";
-	html_alerta+="<tr> <td colspan = '4' > <select style='font-size: 12px; border: 1px solid #2763a5;' name='armaUsada' id='armaUsada'> <option value=''>"+prefs.getMsg("selecione")+"</option> <option value='1'>N�o</option> <option value='2'>Fogo</option> <option value='3'>Branca</option> <option value='4'>N�o Sei</option> </select> </td> </tr>"
+	html_alerta+="<tr> <td colspan = '4' > <select style='font-size: 12px; border: 1px solid #2763a5;' name='armaUsada' id='armaUsada'> <option value=''>"+prefs.getMsg("selecione")+"</option> <option value='1'>N&atilde;o</option> <option value='2'>Fogo</option> <option value='3'>Branca</option> <option value='4'>N&atilde;o Sei</option> </select> </td> </tr>"
 	html_alerta+="<tr> <td colspan = '4' > <b> "+ prefs.getMsg("alerta.tipo.relacao.crime")+"(*) </b> </td></tr>";
-	html_alerta+="<tr> <td colspan='4'> <input type='radio' id='rcrime' onclick='setRadioRCrime(this.value)' name='rcrime' value='1' checked> V�tima <input type='radio' onclick='setRadioRCrime(this.value)' name='rcrime' value='2' > Testemunha <input type='radio' onclick='setRadioRCrime(this.value)' name='rcrime' value='3'> Tive Conhecimento </td> </tr>"
+	html_alerta+="<tr> <td colspan='4'> <input type='radio' id='rcrime' onclick='setRadioRCrime(this.value)' name='rcrime' value='1' checked> V&iacute;tima <input type='radio' onclick='setRadioRCrime(this.value)' name='rcrime' value='2' > Testemunha <input type='radio' onclick='setRadioRCrime(this.value)' name='rcrime' value='3'> Tive Conhecimento </td> </tr>"
 	html_alerta+="<tr> <td colspan = '4' > <b>  "+ prefs.getMsg("alerta.tipo.pol.info")+"(*) </b> </td></tr>";
-	html_alerta+="<tr> <td colspan='4'> <input type='radio' onclick='setRadioPolInfo(this.value)' id='polinfo' name='polinfo' value='1' checked> Sim (190) <input type='radio' id='polinfo' onclick='setRadioPolInfo(this.value)' name='polinfo' value='2' > Sim (Delegacia) <input type='radio' id='polinfo' name='polinfo' onclick='setRadioPolInfo(this.value)' value='3'> N�o <input type='radio' id='polinfo' onclick='setRadioPolInfo(this.value)' name='polinfo' value='4'> N�o Sei</td> </tr>"	
+	html_alerta+="<tr> <td colspan='4'> <input type='radio' onclick='setRadioPolInfo(this.value)' id='polinfo' name='polinfo' value='1' checked> Sim (190) <input type='radio' id='polinfo' onclick='setRadioPolInfo(this.value)' name='polinfo' value='2' > Sim (Delegacia) <input type='radio' id='polinfo' name='polinfo' onclick='setRadioPolInfo(this.value)' value='3'> N&atilde;o <input type='radio' id='polinfo' onclick='setRadioPolInfo(this.value)' name='polinfo' value='4'> N&atilde;o Sei</td> </tr>"	
 	html_alerta+="<tr> <td colspan = '4' > <b> "+prefs.getMsg("desc.alerta")+":(*) </b> </td>  </tr>";
 	html_alerta+="<tr> <td colspan = '4' > <div style='color:red;' id = 'erroDesc'> </div> </td>  </tr>";
 	html_alerta+="<tr><td colspan = '4'> <TEXTAREA NAME='desc_alerta' id='desc_alerta' style='font-size: 12px; border: 1px solid #2763a5;' COLS='38' ROWS='6'></TEXTAREA> </td></tr>";
@@ -87,7 +87,7 @@ function constroiHtmlAlertaCrime(tipoCrime){
 	html_alerta+="<tr> <td> <input type='checkbox' id='razao17' name='cCriOrg'/> </td> <td > "+prefs.getMsg("crime.organizado")+" </td> <td> <input type='checkbox' id='razao18' name='cCriPas'/> </td> <td > "+prefs.getMsg("crime.passional")+" </td> </tr>";
 	html_alerta+="<tr> <td> <input type='checkbox' id='razao19' name='cOutros'/> </td> <td > "+prefs.getMsg("outros")+" </td> <td> <input type='checkbox' id='razao20' name='cNaoSei'/> </td> <td > "+prefs.getMsg("nao.sei")+" </td> </tr>";					
 	html_alerta+="<tr><td colspan = '4'> <input type='hidden' id='tipoCrime' value='"+tipoCrime+"'> <input style='font-family: Arial, Helvetica, sans-serif; font-size: 10px;	font-weight: bold; margin: 1; padding: 1; background-color: #6da6e2; color: white;	border: 1px solid #2763a5;' onclick='validaFormRegistroAlertaCrime();' type='button' value='"+prefs.getMsg("enviar")+"'/> </td></tr>";				
-	html_alerta+="</table></div>";
+	html_alerta+="</table>";
 	return html_alerta;
 }				
 //fun��o que constroi o html da tela de registro de alerta de Crime
@@ -652,9 +652,9 @@ function escolherTipoCrime(){
 	mostraDivSelecaoAlerta('400px','150px',constroiTelaEscolhaTipoCrime());
 }
 
-function constroiModoal(conteudo, wPixel, hPixel,titulo, distanciaTopo, distanciaEsquerda){	
-	var htmlModal = '<div style="background-color: white; width: '+wPixel+'px; height: '+hPixel+'px;overflow: auto;border: 1px solid black" >';
-	htmlModal += ' 		<div align="center" style="font-family:Arial, sans-serif;  font-size: 11px;  background-color: #2763a5;  border-style: solid;  ;border: 1px solid black;  width: '+(wPixel-2)+'px;  height: 14px;  color: #ffffff;  font: bold;"><table cellpadding="0" CELLSPACING = "0" width = "100%" style = "color: #ffffff; font-family:Arial, sans-serif;  font-size: 11px;"><tr><td align="left"><b align="left">'+titulo+'</b></td> <td align="right"><b style="cursor: pointer;" onclick="fecharModal();" align="right"> X</b></td></tr> </table> </div>';
+function constroiModoal(conteudo, wPixel, hPixel,titulo, distanciaTopo, distanciaEsquerda,rolagem){	
+	var htmlModal = '<div style="background-color: white; width: '+(rolagem?wPixel+16:wPixel)+'px; height: '+hPixel+'px;overflow: auto;border: 1px solid black" >';
+	htmlModal += ' 		<div style="font-family:Arial, sans-serif;  font-size: 11px;  background-color: #2763a5;  border-style: solid;  ;border: 1px solid black;  width: '+(wPixel-2)+'px;  height: 14px;  color: #ffffff;  font: bold;"><table cellpadding="0" CELLSPACING = "0" width = "100%" style = "color: #ffffff; font-family:Arial, sans-serif;  font-size: 11px;"><tr><td align="left"><b align="left">'+titulo+'</b></td> <td align="right"><b style="cursor: pointer;" onclick="fecharModal();'+(rolagem?'cancelarRegistroCrime();':'')+'" align="right"> X</b></td></tr> </table> </div>';
 	htmlModal += conteudo;
 	htmlModal += '	</div>';	
 	document.getElementById("divModal").innerHTML = htmlModal;	

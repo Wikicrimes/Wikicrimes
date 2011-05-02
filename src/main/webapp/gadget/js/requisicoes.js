@@ -371,7 +371,7 @@ function repostaRequisicaoRegistrarAlertaCrime(obj){
 		google.maps.event.trigger(map,'idle');
 		executaRequisicaoRelatosMaisRecentes();
 		addToActivityStream(1);
-		infowindow.close();
+		fecharModal();
 	}
 	
 }

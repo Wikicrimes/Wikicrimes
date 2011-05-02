@@ -394,18 +394,21 @@ function mostraJanelaRegistroCrime(tipoCrime){
 	marcadorAlertaAmigos.setMap(null);
 	marcadorAlertaAmigos=criaMarcador(novoCrime, null);
 	desabilitaTutor(2000);
-	marcadorAlertaAmigos.setMap(map);   	
-	infowindow.setContent(constroiHtmlAlertaCrime(tipoCrime));
-	infowindow.open(map,marcadorAlertaAmigos);
-	google.maps.event.addListener(infowindow, "closeclick", function (latLng) {
-		if(!auxRegistrouAlerta)
-			marcadorAlertaAmigos.setMap(null);
-		
-		map.setCenter(new google.maps.LatLng(marcadorAlertaAmigos.getPosition().lat(),marcadorAlertaAmigos.getPosition().lng()+0.0000001),map.getZoom());	
-		auxRegistrouAlerta = false;
-		estaRegistrando = false;
-		podeCarregarCrimes = true;
-	});
+	marcadorAlertaAmigos.setMap(map);
+	constroiModoal(constroiHtmlAlertaCrime(tipoCrime),438,540,prefs.getMsg("titulo.registrar.alerta")+"(Crime)",2,25,true);
+
+}
+
+function cancelarRegistroCrime(){
+	if (!auxRegistrouAlerta)
+		marcadorAlertaAmigos.setMap(null);
+
+	map.setCenter(new google.maps.LatLng(marcadorAlertaAmigos.getPosition()
+			.lat(), marcadorAlertaAmigos.getPosition().lng() + 0.0000001), map
+			.getZoom());
+	auxRegistrouAlerta = false;
+	estaRegistrando = false;
+	podeCarregarCrimes = true;
 }
 
 function registrarCrime(tipoCrime){
@@ -624,20 +627,20 @@ function replaceAll(string, token, newtoken) {
 }
 
 function codificaCaracteres(descricao){
-	descricao = replaceAll(descricao,"�","aagudo");
-	descricao = replaceAll(descricao,"�","eagudo");
-	descricao = replaceAll(descricao,"�","iagudo");
-	descricao = replaceAll(descricao,"�","oagudo");
-	descricao = replaceAll(descricao,"�","uagudo");
-	descricao = replaceAll(descricao,"�","acircu");
-	descricao = replaceAll(descricao,"�","ecircu");
-	descricao = replaceAll(descricao,"�","icircu");
-	descricao = replaceAll(descricao,"�","ocircu");
-	descricao = replaceAll(descricao,"�","ucircu");
-	descricao = replaceAll(descricao,"�","cagudo");
-	descricao = replaceAll(descricao,"�","atil");
-	descricao = replaceAll(descricao,"�","otil");
-	descricao = replaceAll(descricao,"�","acrase");
+	descricao = replaceAll(descricao,"á","aagudo");
+	descricao = replaceAll(descricao,"é","eagudo");
+	descricao = replaceAll(descricao,"í","iagudo");
+	descricao = replaceAll(descricao,"ó","oagudo");
+	descricao = replaceAll(descricao,"ú","uagudo");
+	descricao = replaceAll(descricao,"â","acircu");
+	descricao = replaceAll(descricao,"ê","ecircu");
+	descricao = replaceAll(descricao,"î","icircu");
+	descricao = replaceAll(descricao,"ô","ocircu");
+	descricao = replaceAll(descricao,"û","ucircu");
+	descricao = replaceAll(descricao,"ç","cagudo");
+	descricao = replaceAll(descricao,"ã","atil");
+	descricao = replaceAll(descricao,"ô","otil");
+	descricao = replaceAll(descricao,"à","acrase");
 	return descricao;
 }
 

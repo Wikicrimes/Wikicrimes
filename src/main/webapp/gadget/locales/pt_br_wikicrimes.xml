@@ -97,6 +97,8 @@
 	<!-- Registrar Usuário(Não é usuario do wikicrimes) -->
 	
 	<!-- Modal Fale Conosco -->
+	<msg name="msg.email.seu.email">Seu Email</msg>
+	<msg name="msg.email.mensagem">Mensagem</msg>
 	<msg name="msg.email.fale.conosco">Mande-nos uma mensagem com sugestões, denuncias, críticas e/ou comentários.Teremos o maior prazer de escutá-lo e buscaremos sempre que possível respondê-lo.</msg>
 	<msg name="enviar">enviar</msg>	
 	<!-- Modal Fale Conosco -->
@@ -128,8 +130,8 @@
 	<msg name="tarde"> Tarde (12:00 as 17:59) </msg>
 	<msg name="noite"> Noite (18:00 as 23:59) </msg>
 	<msg name="madrugada"> Madrugada (00:00 as 04:59) </msg>
-	<msg name="causa.motivo.ocorrência1"> Diga-nos o que você considera como causa/motivo desta </msg>
-	<msg name="causa.motivo.ocorrência2"> ocorrência. Marque no minimo 1 e no máximo 4 opções </msg>
+	<msg name="causa.motivo.ocorrencia1"> Diga-nos o que você considera como causa/motivo desta </msg>
+	<msg name="causa.motivo.ocorrencia2"> ocorrência. Marque no minimo 1 e no máximo 4 opções </msg>
 	<msg name="ma.iluminacao.publica"> Má iluminação pública </msg> 	   	 
 	<msg name="ausencia.lazer.jovens">Ausência de lazer para os jovens</msg>
 	<msg name="desemprego.regiao">Desemprego na regiao</msg>

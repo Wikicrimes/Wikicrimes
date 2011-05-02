@@ -2,9 +2,9 @@
 function initialize() {
 	if(opensocial.getEnvironment().getDomain() == 'orkut.com')
 		nomeRedeSocial = 'orkut';
-	//Este método se encontra o arquivo requisicoes.js
+	//Este mï¿½todo se encontra o arquivo requisicoes.js
 	getPessoas();
-	//Este método se encontra o arquivo requisicoes.js	   				   					 			
+	//Este mï¿½todo se encontra o arquivo requisicoes.js	   				   					 			
 }
 
 function getViewName() {	
@@ -62,7 +62,7 @@ function montaTelaApp(latitude, longitude, zoom){
 			map.setZoom(zoom);
 		}	
 		
-		google.maps.event.addListener(map, "tilesloaded", function() {
+		google.maps.event.addListener(map, "idle", function() {
 			if (podeCarregarCrimes) {
         	    limpaTela=false;
 			 	atualizaMapa();
@@ -624,20 +624,20 @@ function replaceAll(string, token, newtoken) {
 }
 
 function codificaCaracteres(descricao){
-	descricao = replaceAll(descricao,"á","aagudo");
-	descricao = replaceAll(descricao,"é","eagudo");
-	descricao = replaceAll(descricao,"í","iagudo");
-	descricao = replaceAll(descricao,"ó","oagudo");
-	descricao = replaceAll(descricao,"ú","uagudo");
-	descricao = replaceAll(descricao,"â","acircu");
-	descricao = replaceAll(descricao,"ê","ecircu");
-	descricao = replaceAll(descricao,"î","icircu");
-	descricao = replaceAll(descricao,"ô","ocircu");
-	descricao = replaceAll(descricao,"û","ucircu");
-	descricao = replaceAll(descricao,"ç","cagudo");
-	descricao = replaceAll(descricao,"ã","atil");
-	descricao = replaceAll(descricao,"õ","otil");
-	descricao = replaceAll(descricao,"à","acrase");
+	descricao = replaceAll(descricao,"ï¿½","aagudo");
+	descricao = replaceAll(descricao,"ï¿½","eagudo");
+	descricao = replaceAll(descricao,"ï¿½","iagudo");
+	descricao = replaceAll(descricao,"ï¿½","oagudo");
+	descricao = replaceAll(descricao,"ï¿½","uagudo");
+	descricao = replaceAll(descricao,"ï¿½","acircu");
+	descricao = replaceAll(descricao,"ï¿½","ecircu");
+	descricao = replaceAll(descricao,"ï¿½","icircu");
+	descricao = replaceAll(descricao,"ï¿½","ocircu");
+	descricao = replaceAll(descricao,"ï¿½","ucircu");
+	descricao = replaceAll(descricao,"ï¿½","cagudo");
+	descricao = replaceAll(descricao,"ï¿½","atil");
+	descricao = replaceAll(descricao,"ï¿½","otil");
+	descricao = replaceAll(descricao,"ï¿½","acrase");
 	return descricao;
 }
 
@@ -677,7 +677,7 @@ function submitEnter(e){
 function convideSeusAmigos() {
 
 	var params = {};
-	params[opensocial.Message.Field.TITLE] = "Alerte seus amigos sobre regiões perigosas com WikiCrimes Social.";
+	params[opensocial.Message.Field.TITLE] = "Alerte seus amigos sobre regiï¿½es perigosas com WikiCrimes Social.";
 	var body = usuarioRedeSocial.nome+" lhe indicou para conhecer o aplicativo do Wikicrimes no orkut. Acesse http://www.orkut.com.br/Main#AppInfo.aspx?appUrl=http%3A%2F%2Fwww.wikicrimes.org%2Fgadget%2Fwikicrimes.xml&objs=&sn=&ref=SR e adicione o aplicativo"; 
 	var message = opensocial.newMessage(body, params);
 	opensocial.requestSendMessage(opensocial.DataRequest.Group.VIEWER_FRIENDS, message); 
@@ -882,7 +882,7 @@ function mostrarPerguntaConfRepasse(idNotificacao,tipoRepasse){
 }
 
 function mostrarModalFaleConosco(){
-	constroiModoal(conteudoFaleConosco(),372,240,prefs.getMsg('fale.conosco'),25,25);	
+	constroiModoal(conteudoFaleConosco(),420,270,prefs.getMsg('fale.conosco'),25,25);	
 }
 
 function mostrarModalConfiguracoes(){
@@ -976,7 +976,7 @@ function prepararComentarNotificacao(idNotificacao, tipoNotificacao){
    			htmlComentarios += "<br> <input style='font-family: Arial, Helvetica, sans-serif; font-size: 10px;	font-weight: bold; margin: 1; padding: 1; background-color: #6da6e2; color: white;	border: 1px solid #2763a5;' type='button' value ='"+prefs.getMsg("salvar")+"' onclick='executaRequisicaoComentarNotificacao(\""+idNotificacao+"\");' /> <input style='font-family: Arial, Helvetica, sans-serif; font-size: 10px;	font-weight: bold; margin: 1; padding: 1; background-color: #6da6e2; color: white;	border: 1px solid #2763a5;' type='button' value ='"+prefs.getMsg("cancelar")+"' onclick='descartarComentario();' /> <hr/>";
    		else
    			htmlComentarios += "<br> <input style='font-family: Arial, Helvetica, sans-serif; font-size: 10px;	font-weight: bold; margin: 1; padding: 1; background-color: #6da6e2; color: white;	border: 1px solid #2763a5;' type='button' value ='"+prefs.getMsg("salvar")+"' onclick='executaRequisicaoComentarNotificacaoCrime(\""+idNotificacao+"\");' /> <input style='font-family: Arial, Helvetica, sans-serif; font-size: 10px;	font-weight: bold; margin: 1; padding: 1; background-color: #6da6e2; color: white;	border: 1px solid #2763a5;' type='button' value ='"+prefs.getMsg("cancelar")+"' onclick='descartarComentario();' /> <hr/>";
-   		if(document.getElementById('comentarios').innerHTML == '<br>Nenhum comentário sobre esse alerta')
+   		if(document.getElementById('comentarios').innerHTML == '<br>Nenhum comentï¿½rio sobre esse alerta')
     		document.getElementById('comentarios').innerHTML = '';	
     	document.getElementById('comentarios').innerHTML = htmlComentarios + document.getElementById('comentarios').innerHTML;
     	document.getElementById('desc_comentario').focus();

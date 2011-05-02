@@ -1,4 +1,4 @@
-//função que constroi o html de um amigo			
+//funï¿½ï¿½o que constroi o html de um amigo			
 function constroiHtml(amigo){
 	var html_amigo="<div style='width:368;'><div id='topoAlerta'> <b> "+prefs.getMsg("dados.do.seu.amigo")+" </b> </div> <br/> <br/> <table style='font-family:Arial, sans-serif;  font-size: 11px;'>";
 	html_amigo+="<tr> <td rowspan='1'> <a target='_blank' href='" + amigo.linkPerfil + "'> <img width='46' height='56' src='" + amigo.foto + "' /> </a> </td> <td> <b> "+prefs.getMsg("nome")+" : </b> </td> <td align='left'> " + amigo.nome + " </td>  </tr>";
@@ -6,9 +6,9 @@ function constroiHtml(amigo){
 	html_amigo+="</table>";
 	return html_amigo;
 }			
-//função que constroi o html de um amigo
+//funï¿½ï¿½o que constroi o html de um amigo
 
-//função que constroi o html da tela de registro de alerta			
+//funï¿½ï¿½o que constroi o html da tela de registro de alerta			
 function constroiHtmlAlerta(){
 	var html_alerta="<div style='width:100%; height:150px ;overflow: auto;'><div id='topoAlerta'> <b> "+prefs.getMsg("titulo.registrar.alerta")+" </b> </div> <br/> <br/> <table style='font-family:Arial, sans-serif;  font-size: 11px;'>";
 	html_alerta+="<tr> <td colspan = '4' > <b> "+prefs.getMsg("desc.alerta")+":(*) </b> </td>  </tr>";
@@ -18,7 +18,7 @@ function constroiHtmlAlerta(){
 	html_alerta+="<tr> <td colspan = '4' > <div style='color:red;' id = 'erroTurno'> </div> </td>  </tr>";
 	html_alerta+="<tr> <td> <input type='checkbox' id='cMadrugada' name='cMadrugada'/> </td> <td> "+prefs.getMsg("madrugada")+" </td> <td> <input type='checkbox' id='cManha' name='cManha'/> </td> <td> "+prefs.getMsg("manha")+"</td> </tr>";
 	html_alerta+="<tr> <td> <input type='checkbox' id='cTarde' name='cTarde'/> </td> <td> "+prefs.getMsg("tarde")+"</td> <td> <input type='checkbox' id='cNoite' name='cNoite'/> </td> <td> "+prefs.getMsg("noite")+"</td> </tr>";
-	html_alerta+="<tr> <td colspan = '4'><b> "+prefs.getMsg("causa.motivo.ocorrência1")+" <br/> "+prefs.getMsg("causa.motivo.ocorrência2")+":(*) </b> </td>  </tr>";
+	html_alerta+="<tr> <td colspan = '4'><b> "+prefs.getMsg("causa.motivo.ocorrï¿½ncia1")+" <br/> "+prefs.getMsg("causa.motivo.ocorrï¿½ncia2")+":(*) </b> </td>  </tr>";
 	html_alerta+="<tr> <td colspan = '4' > <div style='color:red;' id = 'erroRazoes'> </div> </td>  </tr>";
 	html_alerta+="<tr> <td>	<input type='checkbox' id='razao1' name='cIluP'/> </td> <td > "+prefs.getMsg("ma.iluminacao.publica")+" </td> <td> <input type='checkbox' id='razao2' name='cFalLazJovens'/> </td> <td > "+prefs.getMsg("ausencia.lazer.jovens")+" </td> </tr>";
 	html_alerta+="<tr> <td> <input type='checkbox' id='razao3' name='cDesReg'/> </td> <td > "+prefs.getMsg("desemprego.regiao")+" </td> <td> <input type='checkbox' id='razao4' name='cFacilAcesFuga'/> </td> <td > "+prefs.getMsg("facil.acesso.fuga")+" </td> </tr>";
@@ -34,23 +34,23 @@ function constroiHtmlAlerta(){
 	html_alerta+="</table></div>";
 	return html_alerta;
 }				
-//função que constroi o html da tela de registro de alerta
+//funï¿½ï¿½o que constroi o html da tela de registro de alerta
 
-//função que constroi o html da tela de registro de alerta de Crime		
+//funï¿½ï¿½o que constroi o html da tela de registro de alerta de Crime		
 function constroiHtmlAlertaCrime(tipoCrime){
 	var htmTextoVitima = '';
 	var htmlTipoVitima = '';
-	var htmlTipoLocal = "<option value='1'> Via Pública </option> <option value='2'> Transporte Coletivo </option> <option value='3'> Estabelecimento Comercial </option> <option value='4'> Residência </option> <option value='5'> Escolas </option> <option value='8'> Banco </option> <option value='9'> Farmácia </option> <option value='10'> Posto de Gasolina </option> <option value='11'> Lotérica </option> <option value='12'> Veículo </option> <option value='13'> Shopping </option> <option value='14'> Praça Pública </option> <option value='6'> Outros </option> ";
+	var htmlTipoLocal = "<option value='1'> Via Pï¿½blica </option> <option value='2'> Transporte Coletivo </option> <option value='3'> Estabelecimento Comercial </option> <option value='4'> Residï¿½ncia </option> <option value='5'> Escolas </option> <option value='8'> Banco </option> <option value='9'> Farmï¿½cia </option> <option value='10'> Posto de Gasolina </option> <option value='11'> Lotï¿½rica </option> <option value='12'> Veï¿½culo </option> <option value='13'> Shopping </option> <option value='14'> Praï¿½a Pï¿½blica </option> <option value='6'> Outros </option> ";
 	if(tipoCrime=='1' || tipoCrime=='4'){
-		htmlTipoVitima = "<option value='1'> à Pessoa </option> <option value='2'> à Propriedade </option>";
+		htmlTipoVitima = "<option value='1'> ï¿½ Pessoa </option> <option value='2'> ï¿½ Propriedade </option>";
 		htmTextoVitima = prefs.getMsg("alerta.tipo.roubo");
 	}	
 	if(tipoCrime=='2' || tipoCrime=='3'){
-		htmlTipoVitima = "<option value='1'> à Pessoa </option> <option value='2'> à Propriedade </option>";
+		htmlTipoVitima = "<option value='1'> ï¿½ Pessoa </option> <option value='2'> ï¿½ Propriedade </option>";
 		htmTextoVitima = prefs.getMsg("alerta.tipo.furto");
 	}
 	if(tipoCrime=='5'){
-		htmlTipoVitima = "<option value='3'> Rixas ou Brigas </option> <option value='4'> à Violência Doméstica </option> <option value='5'> Abuso de Autoridade </option> <option value='6'> Homicídio</option> <option value='7'> Tentativa de Homicídio </option> <option value='8'> Latrocínio </option>";
+		htmlTipoVitima = "<option value='3'> Rixas ou Brigas </option> <option value='4'> ï¿½ Violï¿½ncia Domï¿½stica </option> <option value='5'> Abuso de Autoridade </option> <option value='6'> Homicï¿½dio</option> <option value='7'> Tentativa de Homicï¿½dio </option> <option value='8'> Latrocï¿½nio </option>";
 		htmTextoVitima = prefs.getMsg("alerta.tipo.crime");
 	}
 		
@@ -66,15 +66,15 @@ function constroiHtmlAlertaCrime(tipoCrime){
 	html_alerta+="<tr> <td colspan = '2' > <input style='font-size: 12px; border: 1px solid #2763a5;' type='text' id='qtdV' name='qtdV' size='2' maxlength='2'/></td> <td colspan = '2' > <input style='font-size: 12px; border: 1px solid #2763a5;' type='text' id='qtdC' name='qtdC' size='2' maxlength='2'/> </td>  </tr>";
 	html_alerta+="<tr> <td colspan = '4' > <b> "+ prefs.getMsg("alerta.tipo.arma.usada")+":(*) </b> </td></tr>";
 	html_alerta+="<tr> <td colspan = '4' > <div style='color:red;' id = 'erroArmaUsada'> </div> </td> </tr>";
-	html_alerta+="<tr> <td colspan = '4' > <select style='font-size: 12px; border: 1px solid #2763a5;' name='armaUsada' id='armaUsada'> <option value=''>"+prefs.getMsg("selecione")+"</option> <option value='1'>Não</option> <option value='2'>Fogo</option> <option value='3'>Branca</option> <option value='4'>Não Sei</option> </select> </td> </tr>"
+	html_alerta+="<tr> <td colspan = '4' > <select style='font-size: 12px; border: 1px solid #2763a5;' name='armaUsada' id='armaUsada'> <option value=''>"+prefs.getMsg("selecione")+"</option> <option value='1'>Nï¿½o</option> <option value='2'>Fogo</option> <option value='3'>Branca</option> <option value='4'>Nï¿½o Sei</option> </select> </td> </tr>"
 	html_alerta+="<tr> <td colspan = '4' > <b> "+ prefs.getMsg("alerta.tipo.relacao.crime")+"(*) </b> </td></tr>";
-	html_alerta+="<tr> <td colspan='4'> <input type='radio' id='rcrime' onclick='setRadioRCrime(this.value)' name='rcrime' value='1' checked> Vítima <input type='radio' onclick='setRadioRCrime(this.value)' name='rcrime' value='2' > Testemunha <input type='radio' onclick='setRadioRCrime(this.value)' name='rcrime' value='3'> Tive Conhecimento </td> </tr>"
+	html_alerta+="<tr> <td colspan='4'> <input type='radio' id='rcrime' onclick='setRadioRCrime(this.value)' name='rcrime' value='1' checked> Vï¿½tima <input type='radio' onclick='setRadioRCrime(this.value)' name='rcrime' value='2' > Testemunha <input type='radio' onclick='setRadioRCrime(this.value)' name='rcrime' value='3'> Tive Conhecimento </td> </tr>"
 	html_alerta+="<tr> <td colspan = '4' > <b>  "+ prefs.getMsg("alerta.tipo.pol.info")+"(*) </b> </td></tr>";
-	html_alerta+="<tr> <td colspan='4'> <input type='radio' onclick='setRadioPolInfo(this.value)' id='polinfo' name='polinfo' value='1' checked> Sim (190) <input type='radio' id='polinfo' onclick='setRadioPolInfo(this.value)' name='polinfo' value='2' > Sim (Delegacia) <input type='radio' id='polinfo' name='polinfo' onclick='setRadioPolInfo(this.value)' value='3'> Não <input type='radio' id='polinfo' onclick='setRadioPolInfo(this.value)' name='polinfo' value='4'> Não Sei</td> </tr>"	
+	html_alerta+="<tr> <td colspan='4'> <input type='radio' onclick='setRadioPolInfo(this.value)' id='polinfo' name='polinfo' value='1' checked> Sim (190) <input type='radio' id='polinfo' onclick='setRadioPolInfo(this.value)' name='polinfo' value='2' > Sim (Delegacia) <input type='radio' id='polinfo' name='polinfo' onclick='setRadioPolInfo(this.value)' value='3'> Nï¿½o <input type='radio' id='polinfo' onclick='setRadioPolInfo(this.value)' name='polinfo' value='4'> Nï¿½o Sei</td> </tr>"	
 	html_alerta+="<tr> <td colspan = '4' > <b> "+prefs.getMsg("desc.alerta")+":(*) </b> </td>  </tr>";
 	html_alerta+="<tr> <td colspan = '4' > <div style='color:red;' id = 'erroDesc'> </div> </td>  </tr>";
 	html_alerta+="<tr><td colspan = '4'> <TEXTAREA NAME='desc_alerta' id='desc_alerta' style='font-size: 12px; border: 1px solid #2763a5;' COLS='38' ROWS='6'></TEXTAREA> </td></tr>";
-	html_alerta+="<tr> <td colspan = '4'><b> "+prefs.getMsg("causa.motivo.ocorrência1")+" <br/> "+prefs.getMsg("causa.motivo.ocorrência2")+":(*) </b> </td>  </tr>";
+	html_alerta+="<tr> <td colspan = '4'><b> "+prefs.getMsg("causa.motivo.ocorrencia1")+" <br/> "+prefs.getMsg("causa.motivo.ocorrencia2")+":(*) </b> </td>  </tr>";
 	html_alerta+="<tr> <td colspan = '4' > <div style='color:red;' id = 'erroRazoes'> </div> </td>  </tr>";
 	html_alerta+="<tr> <td>	<input style='font-size: 12px; border: 1px solid #2763a5;' type='checkbox' id='razao1' name='cIluP'/> </td> <td > "+prefs.getMsg("ma.iluminacao.publica")+" </td> <td> <input type='checkbox' id='razao2' name='cFalLazJovens'/> </td> <td > "+prefs.getMsg("ausencia.lazer.jovens")+" </td> </tr>";
 	html_alerta+="<tr> <td> <input type='checkbox' id='razao3' name='cDesReg'/> </td> <td > "+prefs.getMsg("desemprego.regiao")+" </td> <td> <input type='checkbox' id='razao4' name='cFacilAcesFuga'/> </td> <td > "+prefs.getMsg("facil.acesso.fuga")+" </td> </tr>";
@@ -90,7 +90,7 @@ function constroiHtmlAlertaCrime(tipoCrime){
 	html_alerta+="</table></div>";
 	return html_alerta;
 }				
-//função que constroi o html da tela de registro de alerta de Crime
+//funï¿½ï¿½o que constroi o html da tela de registro de alerta de Crime
 
 
 function chamarTelaLogin(){
@@ -690,19 +690,32 @@ function conteudoAtividade(tipoAtividade){
 }
 
 function conteudoFaleConosco(){
-	var html = '		<table style="font-family:Arial, sans-serif;  font-size: 11px;padding: 0.2em;"><br>';
+	var html = '		<table style="font-family:Arial, sans-serif;  font-size: 11px;padding: 10px;">';
 	html += '				<tr>';
 	html += '					<td colspan="2">';
 	html += '						'+prefs.getMsg("msg.email.fale.conosco");
 	html += '					</td>';
 	html += '				</tr>';
 	html += '				<tr>';
-	html += '					<td colspan="2">';
+	html += '					<td align="left" colspan="1" width="60px">';
+	html += '						'+prefs.getMsg("msg.email.seu.email")+':';
+	html += '					</td>';
+	html += '					<td align="left" colspan="1">';
+	html += '						<input style="font-size: 12px; border: 1px solid #2763a5;width:260px" type="text" id="email_fale_conosco"/>';
+	html += '					</td>';
+	html += '				</tr>';
+	html += '				<tr>';
+	html += '					<td align="left" colspan="2">';
+	html += '						'+prefs.getMsg("msg.email.mensagem")+':';
+	html += '					</td>';
+	html += '				</tr>';
+	html += '				<tr>';
+	html += '					<td align="left" colspan="2">';
 	html += '						<TEXTAREA NAME="desc_fale_conosco" id="desc_fale_conosco" style="font-size: 12px; border: 1px solid #2763a5;" COLS="48" ROWS="6"></TEXTAREA>';
 	html += '					</td>';
 	html += '				</tr>';
 	html += '				<tr>';
-	html += '					<td>';
+	html += '					<td align="left">';
 	html += '						<input type="button" value="'+prefs.getMsg("enviar")+'" onclick="executaRequisicaoFaleConosco();" style="font-family: Arial, Helvetica, sans-serif; font-size: 10px;	font-weight: bold; margin: 1; padding: 1; background-color: #6da6e2; color: white;	border: 1px solid #2763a5;"/>';
 	html += '					</td>';
 	html += '					<td>';

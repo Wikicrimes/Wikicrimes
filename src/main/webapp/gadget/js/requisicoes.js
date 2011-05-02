@@ -1,4 +1,4 @@
-//Solicita da rede social os dados do usuário logado e de seus amigos
+//Solicita da rede social os dados do usuï¿½rio logado e de seus amigos
 function getPessoas(){	
 	//document.getElementById("content_info").innerHTML = "<img src='"+linkAplication+"/images/spinner.gif'> </img><b>Carregando dados do seus amigos...</b>";
 	var req = opensocial.newDataRequest();
@@ -16,7 +16,7 @@ function getPessoas(){
 	req.send(carregarAmigos);
 };
 
-//Resposta com os dados do usuário logado e de seus amigos
+//Resposta com os dados do usuï¿½rio logado e de seus amigos
 function carregarAmigos(dataResponse) {								
 	var usuario = dataResponse.get('usuario').getData();
 	var endereco =usuario.getField(opensocial.Person.Field.ADDRESSES);
@@ -50,7 +50,7 @@ function carregarAmigos(dataResponse) {
 	executaRequisicaoVerificarRegistro();    
 };
 
-//Executa requisição para recuperar os crimes do banco
+//Executa requisiï¿½ï¿½o para recuperar os crimes do banco
 function executaRequisicaoListagem() {
 	
 	var b = map.getBounds();
@@ -68,12 +68,12 @@ function executaRequisicaoListagem() {
 	gadgets.io.makeRequest(url, respostaRequisicaoListagem, params);				
 }
 
-//Resposta requisição para recuperar os crimes do banco
+//Resposta requisiï¿½ï¿½o para recuperar os crimes do banco
 function respostaRequisicaoListagem(obj){
 	var responseText = obj.data.getElementsByTagName("dados").item(0).getAttribute("texto");
 	
 	if(responseText == "nao_permitir")
-		alert("Você não tem permissão para acessar essa funcionalidade");
+		alert("Vocï¿½ nï¿½o tem permissï¿½o para acessar essa funcionalidade");
 	else	
 		montaArrayCrimes(responseText);
 }
@@ -93,7 +93,7 @@ function respostaRequisicaoVerificarRegistro(obj){
 	var responseText =obj.data.getElementsByTagName("dados").item(0).getAttribute("texto");
 	
 	if(responseText == "nao_permitir"){
-		alert("Você não tem permissão para acessar essa funcionalidade");
+		alert("Vocï¿½ nï¿½o tem permissï¿½o para acessar essa funcionalidade");
 		return;
 	}
 		
@@ -141,7 +141,7 @@ function executaRequisicaoRelatosMaisRecentes() {
 function repostaRequisicaoRelatosMaisRecentes(obj){
 	var responseText = obj.data.getElementsByTagName("dados").item(0).getAttribute("texto");
 	if(responseText == "nao_permitir"){
-		alert("Você não tem permissão para acessar essa funcionalidade");
+		alert("Vocï¿½ nï¿½o tem permissï¿½o para acessar essa funcionalidade");
 		return;
 	}
 	listarRelatosMaisRecentes(responseText);
@@ -186,7 +186,7 @@ function executaRequisicaoRecuperaComentarios(chaveRelato) {
 function repostaRequisicaoRecuperaComentarios(obj){
 	var responseText = obj.data.getElementsByTagName("dados").item(0).getAttribute("texto");
 	if(responseText == "nao_permitir"){
-		alert("Você não tem permissão para acessar essa funcionalidade");
+		alert("Vocï¿½ nï¿½o tem permissï¿½o para acessar essa funcionalidade");
 		return;
 	}
 	listarComentarios(responseText,1);
@@ -204,7 +204,7 @@ function executaRequisicaoRecuperaComentariosCrime(chaveRelato) {
 function repostaRequisicaoRecuperaComentariosCrime(obj){
 	var responseText = obj.data.getElementsByTagName("dados").item(0).getAttribute("texto");
 	if(responseText == "nao_permitir"){
-		alert("Você não tem permissão para acessar essa funcionalidade");
+		alert("Vocï¿½ nï¿½o tem permissï¿½o para acessar essa funcionalidade");
 		return;
 	}
 	listarComentarios(responseText,0);
@@ -238,7 +238,7 @@ function repostaRequisicaoRealizaLogin(obj){
 	var responseText = obj.data.getElementsByTagName("dados").item(0).getAttribute("texto");
 	
 	if(responseText == "nao_permitir"){
-		alert("Você não tem permissão para acessar essa funcionalidade");
+		alert("Vocï¿½ nï¿½o tem permissï¿½o para acessar essa funcionalidade");
 		return;
 	}
 	
@@ -275,7 +275,7 @@ function respostaRequisicaoRegistraUsuarioOrkut(obj){
 	var responseText = obj.data.getElementsByTagName("dados").item(0).getAttribute("texto");
 	
 	if(responseText == "nao_permitir"){
-		alert("Você não tem permissão para acessar essa funcionalidade");
+		alert("Vocï¿½ nï¿½o tem permissï¿½o para acessar essa funcionalidade");
 		return;
 	}
 	
@@ -309,7 +309,7 @@ function respostaRequisicaoRegistraUsuarioWikiCrimes(obj){
 	var responseText = obj.data.getElementsByTagName("dados").item(0).getAttribute("texto");
 	
 	if(responseText == "nao_permitir"){
-		alert("Você não tem permissão para acessar essa funcionalidade");
+		alert("Vocï¿½ nï¿½o tem permissï¿½o para acessar essa funcionalidade");
 		return;
 	}
 	
@@ -360,13 +360,15 @@ function repostaRequisicaoRegistrarAlertaCrime(obj){
 	polInfo="1";
 	rcrime="1";	
 	if(responseText == "nao_permitir"){
-		alert("Você não tem permissão para acessar essa funcionalidade");
+		alert("Vocï¿½ nï¿½o tem permissï¿½o para acessar essa funcionalidade");
 		return;
 	}
 	
 	if(responseText=='ok'){
 		auxRegistrouAlerta = true;			
 		mostrarMensagem('success', prefs.getMsg("alerta.registrado"),true);
+		podeCarregarCrimes = true;
+		google.maps.event.trigger(map,'idle');
 		executaRequisicaoRelatosMaisRecentes();
 		addToActivityStream(1);
 		infowindow.close();
@@ -418,7 +420,7 @@ function repostaRequisicaoRegistrarAlerta(obj){
 	var responseText = obj.data.getElementsByTagName("dados").item(0).getAttribute("texto");
 	
 	if(responseText == "nao_permitir"){
-		alert("Você não tem permissão para acessar essa funcionalidade");
+		alert("Vocï¿½ nï¿½o tem permissï¿½o para acessar essa funcionalidade");
 		return;
 	}
 	
@@ -450,7 +452,7 @@ function respostaRequisicaoSalvarConfiguracoes(obj) {
    var responseText = obj.data.getElementsByTagName("dados").item(0).getAttribute("texto");
 	
 	if(responseText == "nao_permitir"){
-		alert("Você não tem permissão para acessar essa funcionalidade");
+		alert("Vocï¿½ nï¿½o tem permissï¿½o para acessar essa funcionalidade");
 		return;
 	}
 	
@@ -488,7 +490,7 @@ function respostaRequisicaoComentarNotificacao(obj) {
 	var responseText = obj.data.getElementsByTagName("dados").item(0).getAttribute("texto");
 	
 	if(responseText == "nao_permitir"){
-		alert("Você não tem permissão para acessar essa funcionalidade");
+		alert("Vocï¿½ nï¿½o tem permissï¿½o para acessar essa funcionalidade");
 		return;
 	}
 	
@@ -520,7 +522,7 @@ function respostaRequisicaoComentarNotificacaoCrime(obj) {
 	var responseText = obj.data.getElementsByTagName("dados").item(0).getAttribute("texto");
 	
 	if(responseText == "nao_permitir"){
-		alert("Você não tem permissão para acessar essa funcionalidade");
+		alert("Vocï¿½ nï¿½o tem permissï¿½o para acessar essa funcionalidade");
 		return;
 	}
 	
@@ -553,7 +555,7 @@ function respostaRequisicaoConfirmarNotificacao(obj) {
 	
 	
 	if(responseText == "nao_permitir"){
-		alert("Você não tem permissão para acessar essa funcionalidade");
+		alert("Vocï¿½ nï¿½o tem permissï¿½o para acessar essa funcionalidade");
 		return;
 	}
 	
@@ -584,7 +586,7 @@ function respostaRequisicaoConfirmarNotificacaoCrime(obj) {
 	var responseText = obj.data.getElementsByTagName("dados").item(0).getAttribute("texto");				  
 	
 	if(responseText == "nao_permitir"){
-		alert("Você não tem permissão para acessar essa funcionalidade");
+		alert("Vocï¿½ nï¿½o tem permissï¿½o para acessar essa funcionalidade");
 		return;
 	}
 	
@@ -624,7 +626,7 @@ function respostaRequisicaoRepassarRelato(obj) {
 	var responseText = obj.data.getElementsByTagName("dados").item(0).getAttribute("texto");				  
 	
 	if(responseText == "nao_permitir"){
-		alert("Você não tem permissão para acessar essa funcionalidade");
+		alert("Vocï¿½ nï¿½o tem permissï¿½o para acessar essa funcionalidade");
 		return;
 	}
 	
@@ -666,7 +668,7 @@ function respostaRequisicaoRepassarCrime(obj) {
 	var responseText = obj.data.getElementsByTagName("dados").item(0).getAttribute("texto");				  
 	
 	if(responseText == "nao_permitir"){
-		alert("Você não tem permissão para acessar essa funcionalidade");
+		alert("Vocï¿½ nï¿½o tem permissï¿½o para acessar essa funcionalidade");
 		return;
 	}
 	
@@ -682,10 +684,11 @@ function respostaRequisicaoRepassarCrime(obj) {
 
 function executaRequisicaoFaleConosco() {			     	
 	var params = {};
+	var emailFaleConosco = document.getElementById('email_fale_conosco').value;
 	var descricao = document.getElementById('desc_fale_conosco').value;
 	descricao = codificaCaracteres(descricao);
 	params[gadgets.io.RequestParameters.AUTHORIZATION] = gadgets.io.AuthorizationType.SIGNED;
-	params[gadgets.io.RequestParameters.POST_DATA] = 'acao=faleConosco&idUsuarioRedeSocial='+usuarioRedeSocial.idUsuario+'&dominioRedeSocial='+opensocial.getEnvironment().getDomain()+'&descFaleConosco='+descricao;
+	params[gadgets.io.RequestParameters.POST_DATA] = 'acao=faleConosco&idUsuarioRedeSocial='+usuarioRedeSocial.idUsuario+'&dominioRedeSocial='+opensocial.getEnvironment().getDomain()+'&descFaleConosco='+descricao+'&email='+emailFaleConosco;
 	params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.POST;				  
 	params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.DOM;
 	var url = linkAplication+"ServletOpensocial";					
@@ -697,7 +700,7 @@ function respostaRequisicaoFaleConosco(obj) {
 	var responseText = obj.data.getElementsByTagName("dados").item(0).getAttribute("texto");
 	
 	if(responseText == "nao_permitir"){
-		alert("Você não tem permissão para acessar essa funcionalidade");
+		alert("Vocï¿½ nï¿½o tem permissï¿½o para acessar essa funcionalidade");
 		return;
 	}
 	

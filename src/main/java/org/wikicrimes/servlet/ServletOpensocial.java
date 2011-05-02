@@ -155,13 +155,7 @@ public class ServletOpensocial extends HttpServlet {
 					RedeSocial rs = new RedeSocial();
 					rs.setDominioRedeSocial(dominioRedesocial);
 					urs.setRedeSocial(rs);
-					UsuarioRedeSocial ursBanco = opensocialService
-							.getUsuarioRedeSocial(urs).get(0);
-					String emailUsuario = "";
-					if (ursBanco.getUsuario() == null)
-						emailUsuario = "wikicrimes@wikicrimes.org";
-					else
-						emailUsuario = ursBanco.getUsuario().getEmail();
+					String emailUsuario = request.getParameter("email");
 					EmailService service = (EmailService) ctx
 							.getBean("emailService");
 					service.enviarEmail("Id do Usuario:" + idUsuarioRedeSocial,
@@ -204,7 +198,7 @@ public class ServletOpensocial extends HttpServlet {
 				opensocialService.registrarBaseObject(cr);
 				System.out.println("[" + new Date() + "] "
 						+ ursBanco.getIdUsuarioDentroRedeSocial()
-						+ " registrou um comentário");
+						+ " registrou um comentï¿½rio");
 				resposta = "ok";
 			}
 			
@@ -237,7 +231,7 @@ public class ServletOpensocial extends HttpServlet {
 				opensocialService.registrarBaseObject(comentario);
 				System.out.println("[" + new Date() + "] "
 						+ ursBanco.getIdUsuarioDentroRedeSocial()
-						+ " registrou um comentário");
+						+ " registrou um comentï¿½rio");
 				resposta = "ok";
 			}
 			
@@ -352,6 +346,7 @@ public class ServletOpensocial extends HttpServlet {
 				c.setDescricao(descricao);
 				c.setConfirmacoesNegativas(new Long(0));
 				c.setConfirmacoesPositivas(new Long(0));
+				c.setCacheEstatisticas(tipoCrime+"|"+tipoVitima);
 				UsuarioRedeSocial urs = new UsuarioRedeSocial();
 				urs.setIdUsuarioDentroRedeSocial(idUsuarioRedesocial);
 				RedeSocial rs = new RedeSocial();
@@ -827,7 +822,7 @@ public class ServletOpensocial extends HttpServlet {
 						resposta += "#" + crime.getLatitude();
 						resposta += "#" + crime.getLongitude();
 						resposta += "#" + crime.getTipoCrime().getNome();
-						resposta += "#" + crime.getIdCrime();
+						resposta += "#" + crime.getChave();
 						resposta += "#|";
 							
 					}
@@ -1173,7 +1168,7 @@ public class ServletOpensocial extends HttpServlet {
 					.bindResource(sf, new SessionHolder(s));
 		}catch (Exception e) {
 			// TODO: handle exception
-			System.out.println("Sessão já aberta!");
+			System.out.println("Sessï¿½o jï¿½ aberta!");
 		}	
 		// setup code here
 	}
@@ -1190,20 +1185,20 @@ public class ServletOpensocial extends HttpServlet {
 	}
 	
 	protected static String codificaCaracteres(String descComentario){
-		descComentario = descComentario.replaceAll("aagudo", "á");
-		descComentario = descComentario.replaceAll("eagudo", "é");
-		descComentario = descComentario.replaceAll("iagudo", "í");
-		descComentario = descComentario.replaceAll("oagudo", "ó");
-		descComentario = descComentario.replaceAll("uagudo", "ú");
-		descComentario = descComentario.replaceAll("acircu", "â");
-		descComentario = descComentario.replaceAll("ecircu", "ê");
-		descComentario = descComentario.replaceAll("icircu", "î");
-		descComentario = descComentario.replaceAll("ocircu", "ô");
-		descComentario = descComentario.replaceAll("ucircu", "û");
-		descComentario = descComentario.replaceAll("cagudo", "ç");
-		descComentario = descComentario.replaceAll("atil", "ã");
-		descComentario = descComentario.replaceAll("otil", "õ");
-		descComentario = descComentario.replaceAll("acrase", "à");
+		descComentario = descComentario.replaceAll("aagudo", "ï¿½");
+		descComentario = descComentario.replaceAll("eagudo", "ï¿½");
+		descComentario = descComentario.replaceAll("iagudo", "ï¿½");
+		descComentario = descComentario.replaceAll("oagudo", "ï¿½");
+		descComentario = descComentario.replaceAll("uagudo", "ï¿½");
+		descComentario = descComentario.replaceAll("acircu", "ï¿½");
+		descComentario = descComentario.replaceAll("ecircu", "ï¿½");
+		descComentario = descComentario.replaceAll("icircu", "ï¿½");
+		descComentario = descComentario.replaceAll("ocircu", "ï¿½");
+		descComentario = descComentario.replaceAll("ucircu", "ï¿½");
+		descComentario = descComentario.replaceAll("cagudo", "ï¿½");
+		descComentario = descComentario.replaceAll("atil", "ï¿½");
+		descComentario = descComentario.replaceAll("otil", "ï¿½");
+		descComentario = descComentario.replaceAll("acrase", "ï¿½");
 		return descComentario;
 	}
 }

@@ -33,8 +33,8 @@ public class ServletCrimeInRadius extends HttpServlet {
 		double lng = Double.parseDouble(request.getParameter("lng"));
 		long initDateMilliSeconds = Long.parseLong(request.getParameter("initDate"));
 		long finalDateMilliSeconds = Long.parseLong(request.getParameter("finalDate"));
-		double credibilidadeMin = Double.parseDouble(request.getParameter("credMin"));
-		double credibilidadeMax = Double.parseDouble(request.getParameter("credMax"));
+		double credibilidadeMin = Double.parseDouble(request.getParameter("credMin")==null?"0.0":request.getParameter("credMin"));
+		double credibilidadeMax = Double.parseDouble(request.getParameter("credMax")==null?"1.0":request.getParameter("credMax"));
 		double radius = Double.parseDouble(request.getParameter("radius"));
 		
 		StringBuilder crimes = getService().getCrimesInRadius(lat, lng, radius, 

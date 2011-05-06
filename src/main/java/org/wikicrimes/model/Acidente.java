@@ -14,6 +14,8 @@ public class Acidente extends BaseObject {
 	private String descricao;
 	
 	private String chave;
+	//{vf- vítimas fatais |  pc- pontos críticos}
+	private String tipo;
 	
 	private Double latitude;
 	
@@ -67,6 +69,14 @@ public class Acidente extends BaseObject {
 
 	public void setDataHoraRegistro(Date dataHoraRegistro) {
 		this.dataHoraRegistro = dataHoraRegistro;
-	}    
+	}
+
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
 	
 }

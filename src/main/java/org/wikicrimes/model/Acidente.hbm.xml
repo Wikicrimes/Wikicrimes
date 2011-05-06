@@ -10,6 +10,7 @@
         </id>
 		
         <property name="chave" column="ACI_CHAVE" type="java.lang.String"/>
+        <property name="tipo" column="ACI_TIPO" type="java.lang.String"/>
         <property name="descricao" length="450" column="ACI_DESCRICAO" type="java.lang.String" not-null="true"/>
         <property name="latitude" column="ACI_LATITUDE" type="java.lang.Double" not-null="true"/>
         <property name="longitude" column="ACI_LONGITUDE" type="java.lang.Double" not-null="true"/>

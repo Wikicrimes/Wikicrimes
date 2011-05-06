@@ -156,6 +156,12 @@
 		<property name="emailService" ref="emailService" />		
 	</bean>
 	
+	<bean id="acidenteService"
+		class="org.wikicrimes.service.impl.AcidenteServiceImpl">
+		<property name="dao" ref="acidenteDao" />
+		<property name="acidenteDao" ref="acidenteDao" />				
+	</bean>
+	
 	<bean id="logService"
 		class="org.wikicrimes.service.impl.LogServiceImpl">
 		<property name="mobileRequestLogDao" ref="mobileRequestLogDao" />				

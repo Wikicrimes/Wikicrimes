@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC
+"-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:jsp="http://java.sun.com/JSP/Page">
+
+<head>
+		<title>Relatos | WikiCrimes.org</title>
+<meta http-equiv="Cache-Control" content="no-store" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+
+<link rel="shortcut icon" href="./images/favicon.ico"
+	type="image/x-icon" />
+<link rel="stylesheet" type="text/css" href="./styles/wikicrimes.css"
+	title="default" />
+
+<script type="text/javascript">
+
+</script>
+
+
+</head>
+
+<body style="overflow-x: hidden">
+
+
+<script type="text/javascript" src="scripts/wz_tooltip.js"></script>
+<script type="text/javascript" src="scripts/tip_balloon.js"></script>
+<style type="text/css">
+a:link,a:visited,a:active {
+	text-decoration: underline;
+	background: #FFFFFF;
+}
+
+a:hover {
+	text-decoration: underline;
+	color: #000;
+	background: #FFFFCC;
+	cursor: pointer;
+}
+</style>
+
+<f:loadBundle var="messages" basename="messages" />
+
+<div id="topoBalao"><b>#{messages['label.delegacia']}</b></div>
+<c:if test="#{not empty message}">
+						<h:outputText value="#{message}" styleClass="message" />
+</c:if>
+<h:panelGrid border="0"
+	style="font-size: 11px; font-family: sans-serif;" columns="1">
+	
+	<h:form id="delegaciaForm">
+		<h:inputHidden required="true"
+			value="#{delegaciaForm.chave}" id="idDelegacia" />
+		<h:panelGrid border="0" columns="1" style="text-align:left">
+				<h:outputText value="#{delegaciaForm.delegacia.descricao}"
+					style="vertical-align: text-top" />
+				<h:outputText value="#{delegaciaForm.delegacia.endereco}"
+					style="vertical-align: text-top" />
+				<h:outputText value="#{messages['label.delegacia.telefone']} #{delegaciaForm.delegacia.telefone}"
+					style="vertical-align: text-top" />
+		</h:panelGrid>
+
+	</h:form>
+</h:panelGrid>
+
+</body>
+</html>

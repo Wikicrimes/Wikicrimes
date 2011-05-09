@@ -731,6 +731,23 @@
 	</managed-bean>
 	
 	<managed-bean>
+		<managed-bean-name>delegaciaForm</managed-bean-name>
+		<managed-bean-class>
+			org.wikicrimes.web.DelegaciaForm
+		</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+		<managed-property>
+			<property-name>delegaciaService</property-name>
+			<value>#{delegaciaService}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>chave</property-name>
+			<value>#{param.chave}</value>
+		</managed-property>
+		
+  	</managed-bean>
+	
+	<managed-bean>
 		<managed-bean-name>areaForm</managed-bean-name>
 		<managed-bean-class>
 			org.wikicrimes.web.AreaForm

@@ -31,6 +31,7 @@
                  <value>org/wikicrimes/model/Crime.hbm.xml</value>
                  <value>org/wikicrimes/model/CrimeCelular.hbm.xml</value>
                  <value>org/wikicrimes/model/CrimeVitima.hbm.xml</value>
+                 <value>org/wikicrimes/model/Delegacia.hbm.xml</value>
                  <value>org/wikicrimes/model/TipoArmaUsada.hbm.xml</value>
                  <value>org/wikicrimes/model/TipoCrime.hbm.xml</value>
                  <value>org/wikicrimes/model/TipoAgressorRelato.hbm.xml</value>
@@ -92,6 +93,10 @@
     </bean>
 
     <bean id="crimeDao" class="org.wikicrimes.dao.hibernate.CrimeDaoHibernate">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    
+     <bean id="delegaciaDao" class="org.wikicrimes.dao.hibernate.DelegaciaDaoHibernate">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     

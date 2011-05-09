@@ -126,6 +126,11 @@
 		<property name="razaoDao" ref="razaoDao" />
 		<property name="credibilidadeDao" ref="credibilidadeDao" />
 	</bean>
+	
+	<bean id="delegaciaService"
+		class="org.wikicrimes.service.impl.DelegaciaServiceImpl">
+		<property name="delegaciaDao" ref="delegaciaDao" />
+	</bean>
 
 	<bean id="razaoService"
 		class="org.wikicrimes.service.impl.RazaoServiceImpl">

@@ -553,10 +553,10 @@
 				});
 				
 				GEvent.addListener(map, "moveend", function() {
+					podeCarregarCrimes = true;
 					if (podeCarregarCrimes) {
 			            limpaTela=false;
 					 	atualizaMapa();
-						
 						if(map.getZoom() >= 15) showDivComment();
 						else hideDivComment();
 				  	}
@@ -732,11 +732,13 @@
 				var myHtml = "<iframe src='./confirmaRelato.html?idConfirmacaoRelato=" + idConfirmacao + "' width='400' height='180' frameborder='0'></iframe>";
 				this.openInfoWindowHtml(myHtml, 400);
 			}, mostrarDados:function () {
-				podeCarregarCrimes = false;
-				var myHtml = "<iframe src='./mostrarDados.html?idCrime=" + this.idCrime + "' width='420' height='150' frameborder='0' style='z-index: 98;'></iframe>";
-				var myHtml2 = "<iframe src='./mostrarInformacoes.html?idCrime=" + this.idCrime + "' width='420' height='150' frameborder='0' style='z-index: 98;' ></iframe>";
-				this.openInfoWindowTabsHtml([new GInfoWindowTab('#{messages["crimes.tabs.titulo.dados"]}', myHtml), 
-				             				new GInfoWindowTab('#{messages["crimes.tabs.titulo.comentarios"]}', myHtml2)]);
+				if(this.idTipoCrime != 7){
+					podeCarregarCrimes = false;
+					var myHtml = "<iframe src='./mostrarDados.html?idCrime=" + this.idCrime + "' width='420' height='150' frameborder='0' style='z-index: 98;'></iframe>";
+					var myHtml2 = "<iframe src='./mostrarInformacoes.html?idCrime=" + this.idCrime + "' width='420' height='150' frameborder='0' style='z-index: 98;' ></iframe>";
+					this.openInfoWindowTabsHtml([new GInfoWindowTab('#{messages["crimes.tabs.titulo.dados"]}', myHtml), 
+					             				new GInfoWindowTab('#{messages["crimes.tabs.titulo.comentarios"]}', myHtml2)]);
+				}
 			}, mostrarDadosRelato:function () {
 				podeCarregarCrimes = false;
 				var myHtml = "<iframe src='./mostrarDadosRelato.html?idRelato=" + this.idCrime + "' width='400' height='150' frameborder='0' style='z-index: 98;'></iframe>";
@@ -750,6 +752,10 @@
 				idSubTipoRelato = '';
 				var myHtml = "<iframe src='./registrarRelato.html?tipoRelato=" + idTipoRelato + "&subTipoRelato=" + idSubTipoRelato + "&latitude=" + latitude + "&longitude=" + longitude + "' width='600' height='180' frameborder='0'></iframe>";
 				this.openInfoWindowHtml(myHtml, 600);
+			}, mostrarDadosDelegacia:function () {
+				podeCarregarCrimes = false;
+				var myHtml = "<iframe src='./mostrarDadosDelegacia.html?chave=" + this.idCrime + "' width='400' height='150' frameborder='0' style='z-index: 98;'></iframe>";
+				this.openInfoWindowHtml(myHtml, 600);
 			}
 			});
 			
@@ -760,7 +766,11 @@
 				var icone = new GIcon();
 				var marker;
 				icone.shadow = "";
-				icone.iconSize = new GSize(14, 24);
+				if (tipoCrime == 7) {
+					icone.iconSize = new GSize(24, 24);
+				}else{
+					icone.iconSize = new GSize(14, 24);
+				}
 				icone.iconAnchor = new GPoint(2, 24);
 				icone.infoWindowAnchor = new GPoint(9, 2);
 				if (tipoCrime) {
@@ -781,19 +791,27 @@
 					}
 					if (tipoCrime == 6) {
 						icone.image = "./images/baloes/novoMarcadorVerde.png";
-					}					
+					}	
+					if (tipoCrime == 7) {
+						icone.image = "./images/delegacia.png";
+					}	
+					
 				}
-				
-				
 				marker = new CrimeMarker(point, {draggable:true, icon:icone});
 				marker.idTipoCrime = tipoCrime;
 				GEvent.addListener(marker, "click", function () {
-										podeCarregarCrimes=false;											
-										if(marker.idTipoCrime == 6)
-											marker.mostrarDadosRelato();
-										else 
-											marker.mostrarDados();
-									});
+					podeCarregarCrimes=false;											
+					if(marker.idTipoCrime == 6){
+						marker.mostrarDadosRelato();
+					}else{
+						if(marker.idTipoCrime == 7){
+							marker.mostrarDadosDelegacia();
+						}else{
+							marker.mostrarDados();
+						}
+					}
+				});
+				
 				return marker;
 			}
 			function createMarkerId(point, tipoCrime, idCrime, texto) {
@@ -1163,10 +1181,10 @@
 				html+="     		<td align='center'> <img width='14px' height='24px' src='./images/baloes/novoMarcadorAzul.png' />  </td> <td> "+ "#{messages['tipocrime.furto']}" +"  </td>";
 				html+="         </tr>"
 				html+="     	<tr>";
-				html+="     		<td align='center'> <img width='14px' height='24px' src='./images/baloes/novoMarcadorVerde.png' />  </td> <td> "+ "#{messages['abuso.texto']}" +"  </td>";
+				html+="     		<td align='center'> <img width='14px' height='24px' src='./images/baloes/novoMarcadorLaranja.png' />  </td> <td> "+ "#{messages['tipocrime.violencia']}" +"  </td>";
 				html+="         </tr>"
 				html+="     	<tr>";
-				html+="     		<td align='center'> <img width='14px' height='24px' src='./images/baloes/novoMarcadorLaranja.png' />  </td> <td> "+ "#{messages['tipocrime.outro']}" +"  </td>";
+				html+="     		<td align='center'> <img width='14px' height='24px' src='./images/baloes/novoMarcadorVerde.png' />  </td> <td> "+ "#{messages['tipocrime.outro']}" +"  </td>";
 				html+="         </tr>"	
 				html += "	</table>";
 				return html;

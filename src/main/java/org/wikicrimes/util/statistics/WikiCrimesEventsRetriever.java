@@ -17,6 +17,7 @@ import org.wikicrimes.model.Crime;
 import org.wikicrimes.model.PontoLatLng;
 import org.wikicrimes.model.Razao;
 import org.wikicrimes.service.CrimeService;
+import org.wikicrimes.service.DelegaciaService;
 import org.wikicrimes.service.RazaoService;
 import org.wikicrimes.util.Util;
 import org.wikicrimes.util.kernelmap.LatLngBoundsGM;
@@ -98,6 +99,8 @@ public class WikiCrimesEventsRetriever extends EventsRetriever<BaseObject>{
 		if(includeReports) {
 			List<BaseObject> reports = filtroForm.getRelatosFiltrados(norte, sul, leste, oeste, dataInicial, dataFinal, true);
 			events.addAll(reports);
+			reports = filtroForm.getDelegaciasFiltrados(norte, sul, leste, oeste);
+			events.addAll(reports);		
 		}
 	}
 	
@@ -121,23 +124,24 @@ public class WikiCrimesEventsRetriever extends EventsRetriever<BaseObject>{
 	}
 	
 	private void countTypesAndReasons() {
+	
 		for(BaseObject event : events) {
 			
 			if(!(event instanceof Crime)) continue;
 			Crime c = (Crime)event;
-			String[] attrStr = c.getCacheEstatisticas().split("\\|");
-			
-			if(attrStr.length > 0) {
-				String type = attrStr[0];
-				increment(typeHistogram, type);
-			}
+				String[] attrStr = c.getCacheEstatisticas().split("\\|");
 
-			if(attrStr.length > 2) {
-				String[] reasons = attrStr[2].split(",");
-				for(String reason : reasons) {
-					increment(reasonHistogram, reason);
+				if(attrStr.length > 0) {
+					String type = attrStr[0];
+					increment(typeHistogram, type);
 				}
-			}
+				
+				if(attrStr.length > 2) {
+					String[] reasons = attrStr[2].split(",");
+					for(String reason : reasons) {
+						increment(reasonHistogram, reason);
+					}
+				}
 		}
 	}
 	
@@ -200,6 +204,11 @@ public class WikiCrimesEventsRetriever extends EventsRetriever<BaseObject>{
 			ApplicationContext springContext = WebApplicationContextUtils.getWebApplicationContext(context);
 			CrimeService service = (CrimeService)springContext.getBean("crimeService");
 			filtroForm.setCrimeService(service);
+		}
+		if(filtroForm.getDelegaciaService() == null){
+			ApplicationContext springContext = WebApplicationContextUtils.getWebApplicationContext(context);
+			DelegaciaService delegaciaService = (DelegaciaService)springContext.getBean("delegaciaService");
+			filtroForm.setDelegaciaService(delegaciaService);
 		}
 		return filtroForm;
 	}

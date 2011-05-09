@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.wikicrimes.model.BaseObject;
 import org.wikicrimes.model.Crime;
+import org.wikicrimes.model.Delegacia;
 import org.wikicrimes.model.Relato;
 import org.wikicrimes.model.RelatoRazao;
 
@@ -19,6 +20,7 @@ public class CrimeStringBuilder{
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		Crime crime = null;
 		Relato relato = null;
+		Delegacia delegacia = null;
 		for (int i = 0; i < events.size(); i++) {
 			if (events.get(i) instanceof Crime) {
 				crime = (Crime) events.get(i);
@@ -47,7 +49,7 @@ public class CrimeStringBuilder{
 //				s.append(crime.getQtdComentarios());
 //				s.append("|");
 //				s.append(crime.getConfirmacoesPositivas());
-			}else {
+			}else if(events.get(i) instanceof Relato) {
 				relato = (Relato) events.get(i);
 				
 				s.append(relato.getChave());
@@ -79,6 +81,16 @@ public class CrimeStringBuilder{
 				}
 				s.append("|");
 				s.append(razoesTexto);
+			} else if (events.get(i) instanceof Delegacia){
+				delegacia = (Delegacia) events.get(i);
+				
+				s.append(delegacia.getChave());
+				s.append("|");
+				s.append(delegacia.getTipoDelegacia());
+				s.append("|");
+				s.append(delegacia.getLatitude());
+				s.append("|");
+				s.append(delegacia.getLongitude());
 			}
 			s.append("\n");
 		}

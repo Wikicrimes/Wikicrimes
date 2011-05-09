@@ -29,6 +29,7 @@ import org.wikicrimes.model.TipoLocal;
 import org.wikicrimes.model.TipoVitima;
 import org.wikicrimes.model.Usuario;
 import org.wikicrimes.service.CrimeService;
+import org.wikicrimes.service.DelegaciaService;
 import org.wikicrimes.service.EstatisticaService;
 import org.wikicrimes.service.RelatoService;
 import org.wikicrimes.service.UsuarioService;
@@ -46,6 +47,8 @@ public class FiltroForm extends GenericForm {
 	private UsuarioService usuarioService;
 	
 	private RelatoService relatoService;
+	
+	private DelegaciaService delegaciaService;
 	
 	private String tutorAtivado = "0";
 	
@@ -404,9 +407,24 @@ public class FiltroForm extends GenericForm {
 	public Relato getRelato(String chave){
 		return (Relato) relatoService.getRelato(chave);
 	}
-
-	public List<BaseObject> getRelatosFiltrados(String norte, String sul, String leste, 
-			String oeste,String dataInicial, String dataFinal, boolean recuperar){
+	
+	public List<BaseObject> getDelegaciasFiltrados(String norte, String sul, String leste, String oeste){
+		Map parameters = new HashMap();
+		if (norte != null && sul != null && leste != null && oeste != null ){
+			if (!norte.equals("undefined"))					
+				parameters.put("norte", Double.parseDouble(norte));
+			if (!sul.equals("undefined"))
+				parameters.put("sul", Double.parseDouble(sul));
+			if (!leste.equals("undefined"))
+				parameters.put("leste", Double.parseDouble(leste));
+			if (!oeste.equals("undefined"))
+				parameters.put("oeste", Double.parseDouble(oeste));
+			
+		}
+		List<BaseObject> delegacias = delegaciaService.filter(parameters);
+		return delegacias;
+	}
+	public List<BaseObject> getRelatosFiltrados(String norte, String sul, String leste, String oeste,String dataInicial, String dataFinal, boolean recuperar){
 		Map parameters = new HashMap();
 		
 		//viewport
@@ -640,6 +658,14 @@ public class FiltroForm extends GenericForm {
 
 	public void setCrimeService(CrimeService crimeService) {
 		this.crimeService = crimeService;
+	}
+	
+	public void setDelegaciaService(DelegaciaService delegaciaService) {
+		this.delegaciaService = delegaciaService;
+	}
+	
+	public DelegaciaService getDelegaciaService(){
+		return this.delegaciaService;
 	}
 
 	public Long getHorarioInicial() {

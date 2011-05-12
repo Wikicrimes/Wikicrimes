@@ -248,6 +248,8 @@ topo_dirFiltro{
 	  		var pairs = query.split("&");
 	  		var temhash = location.hash;
 	  		var idconf;
+	  		var eventId;
+	  		var eventType;
 	  		var id;
 	  		var idRelato;
 	  		var i=0;
@@ -266,13 +268,13 @@ topo_dirFiltro{
 			var confirmadosPositivamente;
 			var http_request = null;
 			var submeteu=true;
-
+			var isUpdatingMap=false;
 			
 	  		for (var i=0;i<pairs.length;i++) {
 				var pos = pairs[i].indexOf("=");
 				var argname = pairs[i].substring(0,pos).toLowerCase();
 				var value = pairs[i].substring(pos+1).toLowerCase();
-		  		if (argname == "idcrime") {
+				if (argname == "idcrime") {
 	  				if (temhash == "") {
 	  					
 	  					id = unescape(value);
@@ -343,11 +345,6 @@ topo_dirFiltro{
 					15:'#{messages["filtro.option.outros"]}'
 					
 			};
-			function limpaUrl(){
-					location.hash=";";
-					id="";
-
-			}
 			
 			function makeTipoVitima() {
 				dwr.util.removeAllOptions('tipoVitimaNew');
@@ -470,6 +467,7 @@ topo_dirFiltro{
 					qtd_denuncias = 0;
 					zeraArrayCrimes();
 					map.clearOverlays();
+					/*DEBUG*/console.log("limpa crimesAtuais");
 					crimesAtuais = {}							
 					
 				}
@@ -739,7 +737,7 @@ topo_dirFiltro{
 						<h:panelGrid border="0" columns="2">
 							<a4j:commandButton value="#{messages['filtro.btn.atualizar']}"
 								id="btnAtualizar" action="#{filtroForm.update}" styleClass="button"
-								onclick="esconderFiltro();selecionarComando(map, 'mao'); getUserMapConfig(); limpaUrl();setaSubmeteuFiltro();atualizaMapa();" />
+								onclick="esconderFiltro();selecionarComando(map, 'mao'); getUserMapConfig(); setaSubmeteuFiltro();atualizaMapa();" />
 			
 							<a4j:commandButton value="#{messages['faleconosco.cancelar']}"
 								id="btnCancelar"
@@ -879,185 +877,172 @@ topo_dirFiltro{
 
 					document.getElementById('divFiltrosAplicados').innerHTML = filtrosHtml;
 				}
-	
-				function verificaPermalink(){
 
-	                    if (id || idRelato) {
-		                    var idSelPerma;
-		                    if(id)
-		                    	idSelPerma = id;
-		                    else{
-		                    	idSelPerma = idRelato;
-								idRelato = "";
-		                    }	
-       						var marker=	crimesAtuais[idSelPerma];
-       						podeCarregarCrimes=false;               					
-							map.setCenter(marker.getLatLng(),15);
-							map.addOverlay(marker);	
-							if(idconf){
-								if(marker.idTipoCrime == '6')	
-									marker.confirmaRelato(idconf);
-								else							
-									marker.confirmaCrime(idconf);
-							}	
-							else{
-								if(marker.idTipoCrime == '6')	
-									marker.mostrarDadosRelato();
-								else																				
-									marker.mostrarDados();
-							}
-							limpaUrl();
-				//*********************** MAPA DE KERNEL INICIO ****************************
-							selecionarComando(map, 'mao');							
-							kernelEnable = false;
-							apagaMapaKernel();
-							if(statusLegenda=='visivel')
-								wikicrimesDiv.innerHTML = htmlLegenda();
-				//************************ MAPA DE KERNEL FIM ******************************					
-        				}
+				function atualizaMapa(){
+					if(isUpdatingMap) return;
+					isUpdatingMap = true;
+					mostrarCarregandoPequeno();
+					verificaFiltrosAplicados();
+					var farZoom = map.getZoom() <= zoomLimiteSupKernel;
+					if(eventId)
+						farZoom = false;
+					updateStatistics(farZoom, eventId, eventType);
+					updateStatisticsGUI();
+					if(eventId)
+						centerOnEvent();
+					updateKernelGUI();
+					escondeCarregandoPequeno();
+					document.getElementById("loading").style.visibility='hidden';
+					isUpdatingMap = false;
 				}
-						 
-					function atualizaMapa(){
-						mostrarCarregandoPequeno();
-						verificaFiltrosAplicados();
-						var farZoom = map.getZoom() < zoomLimiteSupKernel;
-						updateStatistics(farZoom);
-						updateStatisticsGUI();
-						updateKernelGUI();
-						escondeCarregandoPequeno();
-						document.getElementById("loading").style.visibility='hidden';
-					}
 
-					function updateStatisticsGUI(){
-						document.getElementById('divQtdeCrimesFiltrados').innerHTML = statistics.totalEvents;
-						document.getElementById('graficoEstatisticasAV').innerHTML="<img title='#{messages['estatisticas.area.visivel.titulo.graf.ocorrencias']}' src='" + statistics.charts.types + "'/>";
-						document.getElementById('graficoRazoesAV').innerHTML="<img title='#{messages['estatisticas.area.visivel.titulo.graf.causas']}' src='" + statistics.charts.reasons + "'/>";
-					}
+				function forceMapUpdate(){
+					isUpdatingMap = false;
+					atualizaMapa();
+				}
 
-					function updateKernelGUI(){
-						if(podeMudarModoKernel)
-							if(kernelEnable){
-								if(mudouZoom && map.getZoom() >= zoomLimiteSupKernel){
-									desativaMapaKernel();
-								}else{
-									//updateStatistics();
-									apagaMapaKernel();
-									pintaMapaKernel();
-								}
+				function centerOnEvent(){
+					var center = new GLatLng(statistics.center.lat, statistics.center.lng);
+					map.setCenter(center, zoomLimiteInfMarcadores);
+					//*DEBUG*/console.log('1, eventId=' + eventId);
+					//*DEBUG*/var s="";for(var c in crimesAtuais) s+=c+", ";console.log("crimesAtuais=" + s); 
+					var marker = crimesAtuais[eventId];
+					//*DEBUG*/console.log('2, marker=' + marker);
+					map.addOverlay(marker);
+					showMarkerInfo(marker);
+					//*DEBUG*/console.log('3');
+					eventId = null;
+					eventType = null;
+				}
+
+				function updateStatisticsGUI(){
+					document.getElementById('divQtdeCrimesFiltrados').innerHTML = statistics.totalEvents;
+					document.getElementById('graficoEstatisticasAV').innerHTML="<img title='#{messages['estatisticas.area.visivel.titulo.graf.ocorrencias']}' src='" + statistics.charts.types + "'/>";
+					document.getElementById('graficoRazoesAV').innerHTML="<img title='#{messages['estatisticas.area.visivel.titulo.graf.causas']}' src='" + statistics.charts.reasons + "'/>";
+				}
+
+				function updateKernelGUI(){
+					if(podeMudarModoKernel)
+						if(kernelEnable){
+							if(mudouZoom && map.getZoom() > zoomLimiteSupKernel){
+								desativaMapaKernel();
 							}else{
-								if(mudouZoom)
-								if(map.getZoom() < zoomLimiteInfMarcadores){
-									ativaMapaKernel();
-								}
+								apagaMapaKernel();
+								pintaMapaKernel();
 							}
-							mudouZoom = false;
-					}
-					
-					// Ler os dados do arquivo texto enviado pelo servidor e constr�i os marcadores de crimes
-					function constroiMarcadores() {
-						var crimes = statistics.events;
-						if(crimes){ 
-							linhas = crimes.split("\n");
-							//document.getElementById('divQtdeCrimesFiltrados').innerHTML = linhas.length-1;
-							i=0;
-							window.setTimeout(plotaMarcadores,1);	
 						}else{
-	        	           	document.getElementById("loading").style.visibility='hidden';
-	        	           	hideDivComment();
-					 	}
-					}
-					
+							if(mudouZoom)
+							if(map.getZoom() < zoomLimiteInfMarcadores){
+								ativaMapaKernel();
+							}
+						}
+						mudouZoom = false;
+				}
+				
+				// Ler os dados do arquivo texto enviado pelo servidor e constr�i os marcadores de crimes
+				function constroiMarcadores() {
+					var crimes = statistics.events;
+					if(crimes){ 
+						linhas = crimes.split("\n");
+						//document.getElementById('divQtdeCrimesFiltrados').innerHTML = linhas.length-1;
+						i=0;
+						//window.setTimeout(plotaMarcadores,1);
+						plotaMarcadores();
+					}else{
+        	           	document.getElementById("loading").style.visibility='hidden';
+        	           	hideDivComment();
+				 	}
+				}
+				
 
-					function plotaMarcadores() {
-					   	limpaCrimesOutOfBounds(id, idRelato);
-			      		if (i < linhas.length-1){
-							var keep=Math.min(i + 30000, linhas.length-1);
-							while (i < keep){
-							    var dadosCrimeLinha = linhas[i].split("|");
-						      	var idCrime = dadosCrimeLinha[0];						            	
-						      	var idTipoCrime = dadosCrimeLinha[1];
-						      	var lat = dadosCrimeLinha[2];
-	   					   	 	var long = dadosCrimeLinha[3];
- 						       	var idCrime2 = dadosCrimeLinha[4];
- 						        var dataCrime = dadosCrimeLinha[5];
- 						        if(dataCrime != undefined){
- 	 						    	var dia=dataCrime.substring(0,2);
-	 						        var mes = dataCrime.substring(3,5);	
-	 						        var ano = dataCrime.substring(6,10);
-	 						        if (!filtrou) {
-		 						    	var tempDataCrime = new Date(ano,mes-1,dia);
-		 						        if (tempDataCrime < tempDataMaisAntiga){
-		 						        	dataMaisAntiga=dataCrime;
-		 						            tempDataMaisAntiga=tempDataCrime;
-		 						        }
+				function plotaMarcadores() {
+					//*DEBUG*/console.log("plotaMarcadores");
+				   	limpaCrimesOutOfBounds(id, idRelato);
+		      		if (i < linhas.length-1){
+						var keep=Math.min(i + 30000, linhas.length-1);
+						while (i < keep){
+						    var dadosCrimeLinha = linhas[i].split("|");
+					      	var idCrime = dadosCrimeLinha[0];						            	
+					      	var idTipoCrime = dadosCrimeLinha[1];
+					      	var lat = dadosCrimeLinha[2];
+   					   	 	var long = dadosCrimeLinha[3];
+						       	var idCrime2 = dadosCrimeLinha[4];
+						        var dataCrime = dadosCrimeLinha[5];
+						        if(dataCrime != undefined){
+	 						    	var dia=dataCrime.substring(0,2);
+ 						        var mes = dataCrime.substring(3,5);	
+ 						        var ano = dataCrime.substring(6,10);
+ 						        if (!filtrou) {
+	 						    	var tempDataCrime = new Date(ano,mes-1,dia);
+	 						        if (tempDataCrime < tempDataMaisAntiga){
+	 						        	dataMaisAntiga=dataCrime;
+	 						            tempDataMaisAntiga=tempDataCrime;
+	 						        }
+								}
+						        }
+						        if (id==idCrime2)
+						        	id=idCrime;
+						           	if(!crimesAtuais[idCrime])	{
+	   					        	// Cria o marcador
+						            var marcador = createMarkerId(new GLatLng(lat, long),idTipoCrime,idCrime,dataCrime);
+									crimesAtuais[idCrime]=marcador;
+				//*********************** Kernel Map INICIO ****************************
+				//coleta os crimes pra serem mandados pro servlet q gera o mapa de kernel
+				//o if � pra n�o deixar plotar os marcadores qd o mapa de kernel estiver ligado
+									arrayCrimesLatLng[index] = new crimeKernelMap(long, lat, marcador);
+									++index;
+									if(!kernelEnable 
+										//nao plotar marcadores qd o modo kernel for ser habilitado por mudan�a de zoom
+											&& !(podeMudarModoKernel 
+											&& (mudouZoom) 
+											&& map.getZoom() <= zoomLimiteInfMarcadores))  
+				//*********************** Kernel Map FIM ****************************
+										// Google Agrupadores: Preenchendo Vetor de marcadores
+										map.addOverlay(marcador);
+										
 									}
- 						        }
- 						        if (id==idCrime2)
- 						        	id=idCrime;
- 						           	if(!crimesAtuais[idCrime])	{
-		   					        	// Cria o marcador
-							            var marcador = createMarkerId(new GLatLng(lat, long),idTipoCrime,idCrime,dataCrime);
-										crimesAtuais[idCrime]=marcador;
-					//*********************** Kernel Map INICIO ****************************
-					//coleta os crimes pra serem mandados pro servlet q gera o mapa de kernel
-					//o if � pra n�o deixar plotar os marcadores qd o mapa de kernel estiver ligado
-										arrayCrimesLatLng[index] = new crimeKernelMap(long, lat, marcador);
-										++index;
-										if(!kernelEnable 
-											//nao plotar marcadores qd o modo kernel for ser habilitado por mudan�a de zoom
-												&& !(podeMudarModoKernel 
-												&& (mudouZoom) 
-												&& map.getZoom() <= zoomLimiteInfMarcadores))  
-					//*********************** Kernel Map FIM ****************************
-											// Google Agrupadores: Preenchendo Vetor de marcadores
-											map.addOverlay(marcador);
-											
-										}
-						            		
-							      		i++
-							      			
-						      		}
-						      		if (document.getElementById("loading")){
-										 var datainicial = document.getElementById("dataInicial").value;
-						      			 var datafinal = document.getElementById("dataFinal").value;
-							      		 document.getElementById("loadingMessage").innerHTML= "#{messages['webapp.carregando.crimes']} "  + i + " #{messages['webapp.carregando.de']} " +  (linhas.length-1) +  "<br/> #{messages['webapp.carregando.periodo']}: " + datainicial + " #{messages['webapp.carregando.a']} " + datafinal;		           				    
-						      		}
-						      		window.setTimeout(plotaMarcadores,1);			      				
-			      				}
-			      				else {
-			      					//atualizaEstatisticasAreaVisivel();
-				      				verificaPermalink();
-        	                		 document.getElementById("loading").style.visibility='hidden';
-        	                		 document.getElementById("loadingMessage").innerHTML="#{messages['webapp.carregando.crimes']}".
-        	                		 i=0;
-			      				}
+					            		
+						      		i++
+						      			
+					      		}
+					      		if (document.getElementById("loading")){
+									 var datainicial = document.getElementById("dataInicial").value;
+					      			 var datafinal = document.getElementById("dataFinal").value;
+						      		 document.getElementById("loadingMessage").innerHTML= "#{messages['webapp.carregando.crimes']} "  + i + " #{messages['webapp.carregando.de']} " +  (linhas.length-1) +  "<br/> #{messages['webapp.carregando.periodo']}: " + datainicial + " #{messages['webapp.carregando.a']} " + datafinal;		           				    
+					      		}
+					      		//window.setTimeout(plotaMarcadores,1);			      				
+		      				}
+		      				else {
+       	                		 document.getElementById("loading").style.visibility='hidden';
+       	                		 document.getElementById("loadingMessage").innerHTML="#{messages['webapp.carregando.crimes']}".
+       	                		 i=0;
+		      				}
+			      			if (!filtrou) {
+			      				document.getElementById("dataInicial").value=dataMaisAntiga;
+			      				verificaFiltrosAplicados();
+			      				dataInicial=dataMaisAntiga.split("/");	
+			      			}
+		      		}						
+				  
+				   function plotaEstados() {
+  	                		 document.getElementById("loading").style.visibility='hidden';   	                		     		 
+  	                		 i=0;
+  	                		 totalCrimes=0;
+			      		while (i < linhas.length-1){
+	      		     		var dadosCrimeLinha = linhas[i].split("|");
+			            	var sigla = dadosCrimeLinha[0];
+			            	var qtd = dadosCrimeLinha[1];
+			            	var lat = dadosCrimeLinha[2];
+ 					           	var long = dadosCrimeLinha[3];
 
-				      			if (!filtrou) {
-				      				document.getElementById("dataInicial").value=dataMaisAntiga;
-				      				verificaFiltrosAplicados();
-				      				dataInicial=dataMaisAntiga.split("/");	
-				      			}				      				
-			      		}						
-					  
-					   function plotaEstados() {
-   	                		 document.getElementById("loading").style.visibility='hidden';   	                		     		 
-   	                		 i=0;
-   	                		 totalCrimes=0;
-				      		while (i < linhas.length-1){
-		      		     		var dadosCrimeLinha = linhas[i].split("|");
-				            	var sigla = dadosCrimeLinha[0];
-				            	var qtd = dadosCrimeLinha[1];
-				            	var lat = dadosCrimeLinha[2];
-  					           	var long = dadosCrimeLinha[3];
-
-  					           	totalCrimes+=parseInt(qtd);
-  					                  // Cria o marcador
-				                var marcador = createMarkerGroup(new GLatLng(lat, long),sigla + ' (' + qtd + ')');
-								      	// Adiciona o marcador ao mapa
-								
-						      	i++
-						     }        	                	
-			      		}
+ 					           	totalCrimes+=parseInt(qtd);
+ 					                  // Cria o marcador
+			                var marcador = createMarkerGroup(new GLatLng(lat, long),sigla + ' (' + qtd + ')');
+							      	// Adiciona o marcador ao mapa
+							
+					      	i++
+					     }        	                	
+		      		}
 
 					function setaSubmeteuFiltro(){
 						submeteu = true;

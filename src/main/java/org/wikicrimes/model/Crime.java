@@ -3,7 +3,7 @@ package org.wikicrimes.model;
 import java.util.Date;
 import java.util.Set;
 
-public class Crime extends BaseObject {
+public class Crime extends GeoEvent {
 
 	private static final long serialVersionUID = -8178805938830754193L;
 
@@ -131,6 +131,11 @@ public class Crime extends BaseObject {
 
 	public void setIdCrime(Long idCrime) {
 		this.idCrime = idCrime;
+	}
+	
+	@Override
+	public Long getId() {
+		return idCrime;
 	}
 
 	public Set<Confirmacao> getConfirmacoes() {

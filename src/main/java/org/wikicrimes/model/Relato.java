@@ -3,7 +3,7 @@ package org.wikicrimes.model;
 import java.util.Date;
 import java.util.Set;
 
-public class Relato extends BaseObject {
+public class Relato extends GeoEvent{
 	
 	/**
 	 * 
@@ -127,6 +127,11 @@ public class Relato extends BaseObject {
 
 	public void setIdRelato(Long idRelato) {
 		this.idRelato = idRelato;
+	}
+	
+	@Override
+	public Long getId() {
+		return idRelato;
 	}
 
 	public String getDescricao() {

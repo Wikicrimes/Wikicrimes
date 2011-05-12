@@ -10,8 +10,12 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:t="http://myfaces.apache.org/tomahawk">
 
-	
+	<div style="visibility:hidden; position:absolute" >
+		<h1>Wikicrimes - mapping crimes collaboratively</h1>
+	</div>
+		
 	<f:loadBundle var="messages" basename="messages" />
+	
 	<script>
 	 var chamouLoadMapa = false;
 	 var podeFecharModal = true;
@@ -468,21 +472,26 @@
 				  
 				document.getElementById("loading").style.visibility = "visible";
 				map = new GMap2(document.getElementById("map"));
-				map.setCenter(new GLatLng(_lat, _long), _zoom);
 				map.addControl(new LegendaWikicrimes());
 				map.disableScrollWheelZoom();
 				map.addControl(new ComandoEmbed());
-				
+				map.setCenter(new GLatLng(_lat, _long), _zoom);
+					
 				//mostraComandosLogado(map);
 				selecionarComando(map, 'mao');
 				map.setUIToDefault();
 				new GKeyboardHandler(map);
-				
+			
 				// Marcador Temporário
 				var infoTT = document.createElement("div");
 				var posMarcador = null;
-				
-			
+
+				//evento passado por parametro
+				eventId = '#{param.eventId}';
+				eventType = '#{param.eventType}';
+				/*TEMP*/if(!eventId){ eventId = '#{param.idcrime}'; eventType = 'crime';}
+				/*TEMP*/if(!eventId){ eventId = '#{param.idrelato}'; eventType = 'relato'; }
+				idConfirmacao = '#{param.idconf}';
 				
 				setPodeRegistrar(false, 0);
 				GEvent.addListener(map, "mousemove", function (latLng) {
@@ -525,7 +534,7 @@
 				GEvent.addListener(map, "click", function (overlay, latLng) {
 					
 					//*********************** ROTAS SEGURAS INICIO ****************************				
-					contextmenu.style.visibility="hidden";
+					//contextmenu.style.visibility="hidden";
 					//*********************** ROTAS SEGURAS FIM ****************************
 				
 					if (podeRegistrar) {
@@ -553,8 +562,7 @@
 				});
 				
 				GEvent.addListener(map, "moveend", function() {
-					podeCarregarCrimes = true;
-					if (podeCarregarCrimes) {
+					if (!isUpdatingMap) {
 			            limpaTela=false;
 					 	atualizaMapa();
 						if(map.getZoom() >= 15) showDivComment();
@@ -578,9 +586,9 @@
 			//*********************** Kernel Map FIM ****************************	
 			//*********************** ROTAS SEGURAS INICIO ****************************
 			//menu popup pra desenvolvimento, c testes pra rota segura, etc
-				controleMenu(map);
+				//controleMenu(map);
 			//*********************** ROTAS SEGURAS FIM ****************************
-				
+
 				GEvent.trigger(map,"moveend");
 			}
 			
@@ -758,6 +766,17 @@
 				this.openInfoWindowHtml(myHtml, 600);
 			}
 			});
+
+			function showMarkerInfo(marker){
+				if(idConfirmacao){
+					if(eventType == 'crime')
+						marker.confirmaCrime(idConfirmacao);
+					else if(eventType == 'relato')
+						marker.confirmaRelato(idConfirmacao);
+				}else{
+					GEvent.trigger(marker, "click");
+				}
+			}
 			
 			/**
 			*
@@ -891,33 +910,8 @@
 				showWindow=true;
 			}
 			
-			function atualizaCrimes(){
-				//limpa
-				map.clearOverlays();
-				//fronteiras
-			    var b = map.getBounds();
-				var norte = b.getNorthEast().lat();
-			    var sul = b.getSouthWest().lat();
-			    var leste =b.getNorthEast().lng();
-			    var oeste =b.getSouthWest().lng();
-				var getVars= '&n=' +norte.toUrlValue() + '&s=' +sul.toUrlValue()+ '&e=' +leste.toUrlValue()+ '&w=' +oeste.toUrlValue();
-				
-				//requisicao AJAX 
-				var request = GXmlHttp.create();
-				request.open('GET','ServletManipuladorTXT?'+getVars,true);
-				request.onreadystatechange = function () {
-					if (request.readyState == 4) {
-						var jscript = request.responseText;
-						
-					}
-				}
-			
-			}
-			
 			function limpaCrimesOutOfBounds(id, idRelato) {
 				var mapBounds = map.getBounds();		
-			 
-			  
 			 //loop para checar crimes fora do viewport apaga todos os crimes fora do viewport com excecao do id
 		 		for (k in crimesAtuais) {
 					if (!mapBounds.contains(crimesAtuais[k].getPoint())){
@@ -1058,8 +1052,9 @@
 
 			function mostrarCrimeMapa(chave,lat, lng){
 //********************************** KERNEL MAP INICIO *********************************************
-				if(kernelEnable)
+				if(kernelEnable){
 					desativaMapaKernel();
+				}
 //********************************** KERNEL MAP FIM ************************************************				
 				idconf = null;
 				map.closeInfoWindow();				

@@ -17,10 +17,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.jdom.Document;
-import org.springframework.context.ApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
+import org.jdom.output.XMLOutputter;
 import org.wikicrimes.model.PontoLatLng;
-import org.wikicrimes.service.CrimeService;
 import org.wikicrimes.util.DataUtil;
 import org.wikicrimes.util.kernelmap.KernelMap;
 import org.wikicrimes.util.kernelmap.KernelMapUtil;
@@ -33,8 +31,8 @@ import org.wikicrimes.util.rotaSegura.googlemaps.FormatoResposta;
 import org.wikicrimes.util.rotaSegura.googlemaps.JSONRouteHandler;
 import org.wikicrimes.util.rotaSegura.googlemaps.KMLRouteHandler;
 import org.wikicrimes.util.rotaSegura.googlemaps.StatusGMDirections;
-import org.wikicrimes.util.rotaSegura.logica.Perigo;
 import org.wikicrimes.util.rotaSegura.logica.FilaRotasCandidatas;
+import org.wikicrimes.util.rotaSegura.logica.Perigo;
 import org.wikicrimes.util.rotaSegura.logica.SafeRouteCalculator;
 import org.wikicrimes.util.rotaSegura.logica.exceptions.CantFindPath;
 import org.wikicrimes.util.rotaSegura.logica.modelo.GrafoRotas;
@@ -65,8 +63,10 @@ public class ServletRotaSeguraServerSide extends HttpServlet{
 		try{
 			metodoPrincipal(request, response);
 		}catch(ParametroInvalidoRotaSeguraException e){
+			e.printStackTrace();
 			respostaErro(request, response, e.getMessage());
 		}catch(DirectionsAPIRequestException e){
+			e.printStackTrace();
 			respostaErro(request, response, e.getMessage());
 		}catch(Throwable e){
 			e.printStackTrace();
@@ -164,7 +164,7 @@ public class ServletRotaSeguraServerSide extends HttpServlet{
 			}
 			
 			if(terminado || rotasCandidatas.isEmpty()){
-				double maxWeight = calcPerigo.perigo(grafo.getRotaOriginal());
+//				double maxWeight = calcPerigo.perigo(grafo.getRotaOriginal());
 				List<Rota> rotaResposta = grafo.verticesKMenoresCaminhos(numRotasResposta);
 //				/*TESTE CENARIO*/if(terminado){
 //				/*TESTE CENARIO*/long t2 = System.currentTimeMillis();
@@ -246,7 +246,7 @@ public class ServletRotaSeguraServerSide extends HttpServlet{
 				Ponto destino = new PontoLatLng(request.getParameter("destino")).toPixel(zoom);
 				retaOD = new Rota(origem, destino);
 			}catch (Exception e) {
-				throw new ParametroInvalidoRotaSeguraException("Valores inv�lidos em pelo menos um dos par�metros 'origem' e 'destino'");
+				throw new ParametroInvalidoRotaSeguraException("Valores invalidos em pelo menos um dos parametros 'origem' e 'destino'");
 			}
 			Document kml = KMLRouteHandler.getKML(retaOD, zoom);
 			return KMLRouteHandler.getRoute(kml, zoom);
@@ -272,7 +272,8 @@ public class ServletRotaSeguraServerSide extends HttpServlet{
 			double distancia = PontoLatLng.distanceKM(origem,destino);
 			PontoLatLng centro = PontoLatLng.medio(origem, destino);
 			Date dataInicial = DataUtil.moveData(new Date(), 0, 0, -PADRAO_ANOS_ATRAS);
-			KernelMap kernel = KernelMapUtil.fazerKernelMap(centro, distancia*2, zoom, getCrimeService(), dataInicial);
+			String eventos = request.getParameter("eventos");
+			KernelMap kernel = KernelMapUtil.fazerKernelMap(centro, distancia*2, zoom, getServletContext(), eventos, dataInicial);
 			SafeRouteCalculator logicaRotas = new SafeRouteCalculator(kernel);
 			return logicaRotas;
 		}
@@ -300,10 +301,10 @@ public class ServletRotaSeguraServerSide extends HttpServlet{
 		case KML:
 //			response.setContentType("text/xml");
 			response.setContentType("application/vnd.google-earth.kml+xml");
-			out = response.getWriter();
 			zoom = getZoom(request);
-			String kml = KMLRouteHandler.getKML(rotas, zoom);
-			out.println(kml);
+			Document kml = KMLRouteHandler.getKML(rotas, zoom);
+			XMLOutputter xmlOut = new XMLOutputter();
+			xmlOut.output(kml, response.getWriter());
 			return;
 		}
 		
@@ -317,15 +318,6 @@ public class ServletRotaSeguraServerSide extends HttpServlet{
 		sessao.removeAttribute(ServletRotaSeguraClientSide.LOGICA_ROTAS);
 //		/*TESTE*/TesteRotasImg.limpar();
 		System.gc();
-	}
-
-	private CrimeService crimeService;
-	protected CrimeService getCrimeService(){
-		if(crimeService == null){
-			ApplicationContext springContext = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
-			crimeService = (CrimeService)springContext.getBean("crimeService");
-		}
-		return crimeService;
 	}
 	
 }

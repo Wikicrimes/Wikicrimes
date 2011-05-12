@@ -51,10 +51,12 @@ public class LatLngBoundsGM {
 				inferiorDireito.getLongitude(), superiorEsquerdo.getLongitude());
 	}
 	
-	public LatLngBoundsGM(PontoLatLng centro, int widthPixel, int heightPixel, int zoom) {
-		Point centroPixel = centro.toPixel(zoom);
-		Point noPixel = new Point(centroPixel.x - widthPixel/2, centroPixel.y - heightPixel/2);
-		Point sePixel = new Point(centroPixel.x + widthPixel/2, centroPixel.y + heightPixel/2);
+	public LatLngBoundsGM(PontoLatLng center, int widthPixel, int heightPixel, int zoom) {
+		Point centerPixel = center.toPixel(zoom);
+		int dx = widthPixel/2;
+		int dy = heightPixel/2;
+		Point noPixel = new Point(centerPixel.x - dx, centerPixel.y - dy);
+		Point sePixel = new Point(centerPixel.x + dx, centerPixel.y + dy);
 		PontoLatLng noLatLng = PontoLatLng.fromPixel(noPixel, zoom);
 		PontoLatLng seLatLng = PontoLatLng.fromPixel(sePixel, zoom);
 		this.norte = noLatLng.lat;

@@ -92,14 +92,20 @@ public class PontoLatLng extends BaseObject {
 	}
 	
 	/**
-	 * @param x: kms para leste (negativo vai pra oeste)
-	 * @param y: kms para sul (negativo vai pra norte)
+	 * @param dx: kms para leste (negativo vai pra oeste)
+	 * @param dy: kms para sul (negativo vai pra norte)
 	 */
-	public PontoLatLng transladarKm(double x, double y) {
-		double lat = this.lat - y/KM_POR_GRAU;
-		double lng = this.lng + x/KM_POR_GRAU;
+	public PontoLatLng transladarKm(double dx, double dy) {
+		double lat = this.lat - dy/KM_POR_GRAU;
+		double lng = this.lng + dx/KM_POR_GRAU;
 		//TODO tratar qd o lat passa de +-90 graus ou o lng passa de +-180
 		return new PontoLatLng(lat, lng);
+	}
+	
+	public PontoLatLng transladarPixel(int dx, int dy, int zoom) {
+		Point p = this.toPixel(zoom);
+		p.translate(dx, dy);
+		return PontoLatLng.fromPixel(p, zoom);
 	}
 	
 	public static double distanceKM(PontoLatLng p, PontoLatLng q) {

@@ -112,7 +112,7 @@ public class FilaRotasCandidatas{
 			}
 			return perigoComeco + calcPerigo.perigo(rota) + perigoFim;
 		}catch(CantFindPath e){
-			/*DEBUG*/System.out.println("***NaoTemCaminhoException, inicio: " + e.start + ", fim: "+ e.end + ", vertice sem pai: "+ e.orphan);
+//			/*DEBUG*/System.out.println("***NaoTemCaminhoException, inicio: " + e.start + ", fim: "+ e.end + ", vertice sem pai: "+ e.orphan);
 			return Double.POSITIVE_INFINITY;
 		}
 	}

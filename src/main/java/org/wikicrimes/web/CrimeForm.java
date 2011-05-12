@@ -11,7 +11,6 @@ import java.util.Set;
 import javax.faces.FactoryFinder;
 import javax.faces.application.ApplicationFactory;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 import javax.security.auth.login.LoginException;
 import javax.servlet.http.HttpServletRequest;

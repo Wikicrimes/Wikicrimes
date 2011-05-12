@@ -598,9 +598,10 @@
 		function rotaStringToArrayGLatLng(str){
 			var array = new Array();
 			var stringsRotas = str.split(";");
+			var zoom = map.getZoom;
 			for(var i = 0; i < stringsRotas.length; i++){
 				var coordenadas = stringsRotas[i].split(",");
-				var swRota = map.getCurrentMapType().getProjection().fromPixelToLatLng(new GPoint(coordenadas[1], coordenadas[0]), zoomKernel, true);
+				var swRota = map.getCurrentMapType().getProjection().fromPixelToLatLng(new GPoint(coordenadas[1], coordenadas[0]), zoom, true);
 				var lonRota = swRota.lng();
 				var latRota = swRota.lat();
 				array[i] = new GLatLng(latRota, lonRota);

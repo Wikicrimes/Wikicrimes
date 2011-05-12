@@ -26,7 +26,6 @@ import org.wikicrimes.util.rotaSegura.logica.modelo.GrafoRotas;
 import org.wikicrimes.util.rotaSegura.logica.modelo.RotaGM;
 import org.wikicrimes.util.rotaSegura.testes.TesteCenariosRotas;
 import org.wikicrimes.util.rotaSegura.testes.TesteRotasImg;
-import org.wikicrimes.util.statistics.KernelMapRequestHandler;
 import org.wikicrimes.util.statistics.SessionBuffer;
 
 /**

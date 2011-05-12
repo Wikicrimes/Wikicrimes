@@ -72,4 +72,9 @@ public class WikiMappsEventsRetriever extends EventsRetriever<Point>{
 	public List<Point> getEvents(){
 		return points;
 	}
+	
+	@Override
+	public int getTotalEvents() {
+		return points.size();
+	}
 }

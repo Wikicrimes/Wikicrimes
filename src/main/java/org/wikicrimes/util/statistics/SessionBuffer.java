@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.wikicrimes.model.PontoLatLng;
 import org.wikicrimes.util.kernelmap.KernelMap;
 import org.wikicrimes.util.statistics.Param.Application;
 
@@ -52,6 +53,10 @@ public class SessionBuffer {
 		res.events = events;
 	}
 	
+	public void saveCenter(PontoLatLng center) {
+		res.center = center;
+	}
+	
 	public KernelMap getKernelMap() {
 		return res.kernelMapObj;
 	}
@@ -76,6 +81,10 @@ public class SessionBuffer {
 		return res.events;
 	}
 	
+	public PontoLatLng getCenter() {
+		return res.center;
+	}
+	
 }
 
 class StatReqResults{
@@ -83,4 +92,5 @@ class StatReqResults{
 	Image kernelmapImg;
 	KernelMap kernelMapObj;
 	String typesChartUrl, reasonsChartUrl, events;
+	PontoLatLng center;
 }

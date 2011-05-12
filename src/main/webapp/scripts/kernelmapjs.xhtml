@@ -16,7 +16,7 @@
 			
 			var arrayCrimesLatLng = new Array();
 			var index = 0;
-		    var zoomKernel;
+		    var lastKernelRequest;
 		    var photo = new TPhoto();
 			var northPixel;
 			var southPixel;
@@ -107,9 +107,8 @@
 				}
 			}
 			
-			function updateStatistics(farZoom){
-				var actions = (farZoom? "kernel" : "events") + "|charts|json";
-				var url = buildStatisticsUrl(actions);
+			function updateStatistics(farZoom, eventId, eventType){
+				var url = buildStatisticsUrl(farZoom, eventId, eventType);
 				var req = requestStatistics(url);
 				if (req.readyState == 4 && req.status == 200){
 					statistics = eval("(" + req.responseText + ")");
@@ -136,17 +135,33 @@
 				statistics.kernel.booleanGrid = array;
 			}
 			
-			function buildStatisticsUrl(action){
-				jaMostrouAjudaHotSpot = true;
-				
-				var url = 'actions=' + action;
-				url += boundsPixelUrlParams(map);
-				url += boundsLatLngUrlParams(map);
+			function buildStatisticsUrl(farZoom, eventId, eventType){
+				lastKernelRequest = {};
+				var url ='';
+				if(farZoom){
+					url += 'actions=kernel|charts|json';
+					url += boundsPixelUrlParams(map);
+				}else{
+					url += 'actions=events|charts|json';
+				}
+				if(eventId && eventType){
+					url += pixelSizeUrlParams();
+					url += '&eventId=' + eventId + '&eventType=' + eventType;
+					url += '&zoom=' + zoomLimiteInfMarcadores;
+				}else{
+					url += boundsLatLngUrlParams(map);
+					url += '&zoom=' + map.getZoom();
+					lastKernelRequest.zoom = map.getZoom();
+				}
 				url += parametrosFiltroCrimes();
-				url += '&zoom=' + map.getZoom();
-				zoomKernel = map.getZoom();
-
 				return url;
+			}
+
+			function pixelSizeUrlParams(){
+				var div = document.getElementById("map");
+				var w = div.clientWidth;
+				var h = div.clientHeight;
+				return "&widthPixel=" + w + "&heightPixel=" + h;
 			}
 			
 			function parametrosFiltroCrimes(){
@@ -184,6 +199,10 @@
 				eastPixel = nePixel.x;
 				westPixel = swPixel.x;
 				var str = '&northPixel=' + northPixel + '&southPixel=' + southPixel + '&eastPixel=' + eastPixel + '&westPixel=' + westPixel;
+				lastKernelRequest.north = northPixel;
+				lastKernelRequest.south = southPixel;
+				lastKernelRequest.west = westPixel;
+				lastKernelRequest.east = eastPixel;
 
 				//altura e largra
 				var centroLatLng = bounds.getCenter();
@@ -284,13 +303,10 @@
 				if(str.charAt(str.length-1) == '|')
 					str = str.substring(0, str.length-2);
 
-				//console.log("pontosLatLngUrlParam(), cont: " + cont);   
 				return str;
 			}
 
 			function requestStatistics(url) {
-				//console.log("requestStatistics()");
-				//alert("contrev: " + contrev);
 			     http_request = GXmlHttp.create();
 			     if (http_request.overrideMimeType) {
 			        http_request.overrideMimeType('text/xml');
@@ -317,7 +333,7 @@
 				var lat2 = south;
 				var lon2 = east;
 
-				if (map.getZoom() == zoomKernel){
+				if (validateKernelImage()){
 			  		//aindaCarregando = false;
 
 			  		photo = new TPhoto();
@@ -329,8 +345,23 @@
 					map.addTPhoto(photo);
 			  		
 			  	}else{
-					console.log('zoom diferente no metodo exibeImagemMapaKernel()');
+					//console.log('zoom diferente no metodo exibeImagemMapaKernel()');
+					forceMapUpdate();
 			  	}
+			}
+
+			function validateKernelImage(){
+				var bounds = map.getBounds();
+				var nePixel = latlngToPixel(bounds.getNorthEast());
+				var swPixel = latlngToPixel(bounds.getSouthWest());
+				if(lastKernelRequest.zoom == map.getZoom()
+					&& lastKernelRequest.north == nePixel.y
+					&& lastKernelRequest.south == swPixel.y
+					&& lastKernelRequest.east == nePixel.x
+					&& lastKernelRequest.west == swPixel.x)
+					return true;
+				else
+					return false;
 			}
 
 			function escondeMarcadores(){
@@ -353,8 +384,7 @@
 				for (k in crimesAtuais) {
 					map.addOverlay(crimesAtuais[k]);
 			 	} 	
-				
-				setTimeout(atualizaMapa, 1000);
+				atualizaMapa();
 			}		
 			
 			function crimesTelaPixel(){
@@ -363,13 +393,13 @@
 				arrayCrimesPixel = new Array();	
 				
 				//recupera o zoom atual
-				zoomKernel = map.getZoom();
+				var zoom = map.getZoom();
 				bounds = map.getBounds();
 				
 				for (i=0, j=0; i < arrayCrimesLatLng.length; i++){
 					//Convete o latlng em pixel
 					var latlng = new GLatLng(arrayCrimesLatLng[i].lat, arrayCrimesLatLng[i].lng);
-					var sw = map.getCurrentMapType().getProjection().fromLatLngToPixel(latlng, zoomKernel);
+					var sw = map.getCurrentMapType().getProjection().fromLatLngToPixel(latlng, zoom);
 					
 					arrayCrimesLatLng[i].crimeMarker.hide();
 					
@@ -399,8 +429,8 @@
 			var statistics;
 			var densLimiteInfKernel = .01; //se a densMax for menor que isso, o mapa de kernel nao deve ser exibido (pra evitar hotspots de poucos crimes)
 			var densLimiteSupMarcadores = .01;
-			var zoomLimiteSupKernel = 15;
-			var zoomLimiteInfMarcadores = 15;
+			var zoomLimiteSupKernel = 16;
+			var zoomLimiteInfMarcadores = 17;
 			
 
 			//******************************************************************

@@ -34,6 +34,11 @@ public class Param {
 			private static final String height = "heightLatLng";
 		}
 		
+		private static class CenteredEvent {
+			private static final String id = "eventId";
+			private static final String type = "eventType";
+		}
+		
 	}
 	
 	public static enum Application{
@@ -68,7 +73,7 @@ public class Param {
 			return charts;
 		}
 		
-		public boolean includeEventsInJson() {
+		public boolean sendEvents() {
 			return events;
 		}
 		
@@ -120,6 +125,55 @@ public class Param {
 		}
 	}
 	
+	public static class CenteredEvent {
+		public final String id;
+		public final EventType type;
+		public final int viewportWidth;
+		public final int viewportHeight;
+		
+		private CenteredEvent(String id, EventType type, int viewportWidth, int viewportHeight) {
+			this.id = id;
+			this.type = type;
+			this.viewportWidth = viewportWidth;
+			this.viewportHeight = viewportHeight;
+		}
+	}
+	
+	public static CenteredEvent getCenteredEvent(ServletRequest request){
+		String id = request.getParameter(Keys.CenteredEvent.id);
+		EventType type = EventType.from(request);
+		/*TEMP*/if(id == null) {
+		/*TEMP*/	id = request.getParameter("idcrime");
+		/*TEMP*/	type = EventType.CRIME;
+		/*TEMP*/}
+		/*TEMP*/if(id == null) {
+		/*TEMP*/	id = request.getParameter("idrelato");
+		/*TEMP*/	type = EventType.REPORT;
+		/*TEMP*/}
+		if(id == null) return null;
+		int width = Integer.parseInt(request.getParameter(Keys.PixelBounds.width));
+		int height = Integer.parseInt(request.getParameter(Keys.PixelBounds.height));
+		return new CenteredEvent(id, type, width, height);
+	}
+	
+	public static enum EventType{
+		CRIME, REPORT, POLICE_STATION;
+		
+		private static EventType from(ServletRequest request){
+			String type = request.getParameter(Keys.CenteredEvent.type);
+			if(type == null)
+				return null;
+			if(type.equals("crime"))
+				return CRIME;
+			if(type.equals("denuncia"))
+				return REPORT;
+			else if(type.equals("delegacia"))
+				return POLICE_STATION;
+			else
+				return null;
+		}
+	}
+	
 	public static Rectangle getPixelBounds(ServletRequest request){
 		//obs: width = east-west nao funciona no caso em q a emenda do mapa esta aparecendo na tela (a linha entre Japao e EUA) 
 		//width seria negativo ja q west>east
@@ -163,10 +217,14 @@ public class Param {
 			double height = Double.parseDouble(heightStr);
 			return new LatLngBoundsGM(north, south, east, west, width, height);
 		}catch(NumberFormatException e){
-			throw new InvalidParameterException("parametro faltando no getLimitesPixel. " +
-					"northLatLng: " + northStr + ", southLatLng: " + southStr + ", eastLatLng: "
-					+ eastStr + ", westLatLng: " + westStr + ", widthLatLng: " + widthStr
-					+ ", heightLatLng: " + heightStr );
+//			throw new InvalidParameterException("parametro faltando no getLimitesPixel. " +
+//					"northLatLng: " + northStr + ", southLatLng: " + southStr + ", eastLatLng: "
+//					+ eastStr + ", westLatLng: " + westStr + ", widthLatLng: " + widthStr
+//					+ ", heightLatLng: " + heightStr );
+			return null;
 		}
 	}
+	
+	
+	
 }

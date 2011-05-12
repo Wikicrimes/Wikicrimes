@@ -75,6 +75,8 @@ public class CrimeServiceImpl extends GenericCrudServiceImpl implements
 	
 	public boolean insert(BaseObject bo , List<Razao> razoes)
 	{
+		setCacheEstatisticas((Crime)bo, razoes);
+		
 		boolean retorno = insert(bo);
 		
 		for (Razao razao : razoes) {
@@ -83,7 +85,23 @@ public class CrimeServiceImpl extends GenericCrudServiceImpl implements
 			cr.setCrime((Crime)bo);
 			razaoDao.save(cr);
 		}
+		
+		
 		return retorno;
+	}
+	
+	private void setCacheEstatisticas(Crime crime, List<Razao> razoes) {
+		StringBuilder str = new StringBuilder();
+		str.append(crime.getTipoCrime().getIdTipoCrime());
+		str.append("|");
+		str.append(crime.getTipoVitima().getIdTipoVitima());
+		str.append("|");
+		for(Razao r : razoes) {
+			str.append(r.getIdRazao());
+			str.append(",");
+		}
+		str.delete(str.length()-1, str.length());
+		crime.setCacheEstatisticas(str.toString());
 	}
 
 	public boolean insert(BaseObject bo) 

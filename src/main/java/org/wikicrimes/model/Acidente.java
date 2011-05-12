@@ -2,7 +2,7 @@ package org.wikicrimes.model;
 
 import java.util.Date;
 
-public class Acidente extends BaseObject {	
+public class Acidente extends GeoEvent {	
 
 	/**
 	 * 
@@ -29,6 +29,11 @@ public class Acidente extends BaseObject {
 
 	public void setIdAcidente(Long idAcidente) {
 		this.idAcidente = idAcidente;
+	}
+	
+	@Override
+	public Long getId() {
+		return idAcidente;
 	}
 
 	public String getDescricao() {

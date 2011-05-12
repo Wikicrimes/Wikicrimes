@@ -13,7 +13,6 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
-import org.jdom.output.XMLOutputter;
 import org.wikicrimes.model.PontoLatLng;
 import org.wikicrimes.util.ServletUtil;
 import org.wikicrimes.util.rotaSegura.geometria.Ponto;
@@ -34,7 +33,7 @@ public class KMLRouteHandler {
 		return kml;
 	}
 	
-	public static String getKML(List<Rota> rotas, int zoom) {
+	public static Document getKML(List<Rota> rotas, int zoom) {
 		try {
 		
 			//pega o KML da primeira rota
@@ -57,8 +56,7 @@ public class KMLRouteHandler {
 				
 			}
 			
-			XMLOutputter out = new XMLOutputter();
-			return out.outputString(resDoc);
+			return resDoc;
 		
 		} catch (MalformedURLException e) {
 			e.printStackTrace();

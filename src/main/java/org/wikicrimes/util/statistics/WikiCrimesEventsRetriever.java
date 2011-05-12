@@ -1,7 +1,10 @@
 package org.wikicrimes.util.statistics;
 
 import java.awt.Point;
+import java.awt.Rectangle;
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +17,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.wikicrimes.model.BaseObject;
 import org.wikicrimes.model.Crime;
+import org.wikicrimes.model.GeoEvent;
 import org.wikicrimes.model.PontoLatLng;
 import org.wikicrimes.model.Razao;
 import org.wikicrimes.service.CrimeService;
@@ -21,6 +25,8 @@ import org.wikicrimes.service.DelegaciaService;
 import org.wikicrimes.service.RazaoService;
 import org.wikicrimes.util.Util;
 import org.wikicrimes.util.kernelmap.LatLngBoundsGM;
+import org.wikicrimes.util.statistics.Param.CenteredEvent;
+import org.wikicrimes.util.statistics.Param.EventType;
 import org.wikicrimes.web.FiltroForm;
 
 public class WikiCrimesEventsRetriever extends EventsRetriever<BaseObject>{
@@ -34,9 +40,9 @@ public class WikiCrimesEventsRetriever extends EventsRetriever<BaseObject>{
 	private ServletContext context;
 	private HttpSession session;
 	
-	private boolean includePoints;
 	private boolean includeHistograms;
 	private boolean includeReports;
+	private boolean hasCenteredEvent;
 
 	protected List<Point> points;
 	protected List<BaseObject> events;
@@ -49,23 +55,24 @@ public class WikiCrimesEventsRetriever extends EventsRetriever<BaseObject>{
 	}
 	
 	public WikiCrimesEventsRetriever(HttpServletRequest request, ServletContext context, 
-			boolean toPixel, boolean includeHistograms, boolean includeReports) {
+			boolean includeHistograms, boolean includeReports) {
 		this.request = request;
 		this.context = context;
 		this.session = request.getSession();
-		this.includePoints = toPixel;
 		this.includeHistograms = includeHistograms;
 		this.includeReports = includeReports;
+		this.hasCenteredEvent = Param.getCenteredEvent(request) != null;
 		load();
+	}
+	
+	public WikiCrimesEventsRetriever(Rectangle boundsPixel, int zoom, Date dataInicial, ServletContext context){
+		this.context = context;
+		this.points = load(boundsPixel, zoom, dataInicial);
 	}
 	
 	private void load() {
 		retrieveEvents();
 		this.totalEvents = events.size();
-		if(includePoints) {
-			int zoom = Param.getZoom(request);
-			this.points = toPixel(events, zoom);
-		}
 		if(includeHistograms) {
 			buildHistograms();
 		}
@@ -73,7 +80,18 @@ public class WikiCrimesEventsRetriever extends EventsRetriever<BaseObject>{
 	
 	private void retrieveEvents(){
 		
-		LatLngBoundsGM limitesLatlng = Param.getLatLngBounds(request);
+		LatLngBoundsGM limitesLatlng;
+		GeoEvent centerEv = null;
+		if(hasCenteredEvent) {
+			CenteredEvent ce = Param.getCenteredEvent(request);
+			centerEv = retrieveSpecificEvent(ce.id, ce.type);
+			PontoLatLng center = centerEv.getLatLng();
+			int zoom = Param.getZoom(request);
+			limitesLatlng = new LatLngBoundsGM(center, ce.viewportWidth, ce.viewportHeight, zoom);
+			new SessionBuffer(request).saveCenter(center);
+		}else {
+			limitesLatlng = Param.getLatLngBounds(request);
+		}
 		
 		FiltroForm filtroForm = getFiltroForm();
 		String tipoCrime = request.getParameter("tc");
@@ -99,9 +117,34 @@ public class WikiCrimesEventsRetriever extends EventsRetriever<BaseObject>{
 		if(includeReports) {
 			List<BaseObject> reports = filtroForm.getRelatosFiltrados(norte, sul, leste, oeste, dataInicial, dataFinal, true);
 			events.addAll(reports);
-			reports = filtroForm.getDelegaciasFiltrados(norte, sul, leste, oeste);
-			events.addAll(reports);		
+			List<BaseObject> policeStations = filtroForm.getDelegaciasFiltrados(norte, sul, leste, oeste);
+			events.addAll(policeStations);
 		}
+		
+		if(hasCenteredEvent && !events.contains(centerEv)) {
+			events.add(centerEv);
+		}
+	}
+	
+	private GeoEvent retrieveSpecificEvent(String id, EventType type){
+		FiltroForm filtroForm = getFiltroForm();
+		GeoEvent event;
+		switch (type) {
+		case CRIME:
+			event = filtroForm.getCrime(id);
+			if (event == null){
+				event = filtroForm.getCrime(Long.parseLong(id));
+			}
+			break;
+		case REPORT:
+			event = filtroForm.getRelato(id);
+			break;
+		case POLICE_STATION:
+//			break;
+		default:
+			throw new InvalidParameterException();
+		}
+		return event;
 	}
 	
 	public static List<Point> toPixel(List<BaseObject> crimes, int zoom){
@@ -124,24 +167,23 @@ public class WikiCrimesEventsRetriever extends EventsRetriever<BaseObject>{
 	}
 	
 	private void countTypesAndReasons() {
-	
 		for(BaseObject event : events) {
 			
 			if(!(event instanceof Crime)) continue;
 			Crime c = (Crime)event;
-				String[] attrStr = c.getCacheEstatisticas().split("\\|");
+			String[] attrStr = c.getCacheEstatisticas().split("\\|");
+			
+			if(attrStr.length > 0) {
+				String type = attrStr[0];
+				increment(typeHistogram, type);
+			}
 
-				if(attrStr.length > 0) {
-					String type = attrStr[0];
-					increment(typeHistogram, type);
+			if(attrStr.length > 2) {
+				String[] reasons = attrStr[2].split(",");
+				for(String reason : reasons) {
+					increment(reasonHistogram, reason);
 				}
-				
-				if(attrStr.length > 2) {
-					String[] reasons = attrStr[2].split(",");
-					for(String reason : reasons) {
-						increment(reasonHistogram, reason);
-					}
-				}
+			}
 		}
 	}
 	
@@ -219,14 +261,38 @@ public class WikiCrimesEventsRetriever extends EventsRetriever<BaseObject>{
 		return service;
 	}
 	
+	private List<Point> load(Rectangle boundsPixel, int zoom, Date dataInicial){
+		
+		Point pixelNO = new Point((int)boundsPixel.getMinX(), (int)boundsPixel.getMinY());
+		Point pixelSE = new Point((int)boundsPixel.getMaxX(), (int)boundsPixel.getMaxY());
+		PontoLatLng latlngNO = PontoLatLng.fromPixel(pixelNO, zoom);
+		PontoLatLng latlngSE = PontoLatLng.fromPixel(pixelSE, zoom);
+		
+		Map<String,Object> params = new HashMap<String, Object>();
+		params.put("norte", latlngNO.lat);
+		params.put("sul", latlngSE.lat);
+		params.put("leste", latlngSE.lng);
+		params.put("oeste", latlngNO.lng);
+		params.put("dataInicial", dataInicial);
+		params.put("dataFinal", new Date());
+		ApplicationContext springContext = WebApplicationContextUtils.getWebApplicationContext(context);
+		CrimeService service = (CrimeService)springContext.getBean("crimeService");
+		List<BaseObject> crimes = service.filter(params);
+		List<Point> crimesPixel = WikiCrimesEventsRetriever.toPixel(crimes, zoom);
+		
+		return crimesPixel;
+	}
+	
 	public List<Point> getPoints(){
+		if(points == null)
+			points = toPixel(events, Param.getZoom(request));
 		return points; 
 	}
 	
 	public List<BaseObject> getEvents(){
 		return events; 
 	}
-		
+	
 	public Map<String, Integer> getTypeHistogram() {
 		return typeHistogram;
 	}

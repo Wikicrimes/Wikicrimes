@@ -113,7 +113,7 @@ public class SafeRouteCalculator {
 			rotasJaPassadas.add(rota);
 		}
 		
-		if(iteracao == 0){
+//		if(iteracao == 0){
 			
 			//TODO rodar essas 2 estrategias denovo em outras iteracoes, 
 			//atualizando soh as ligacoes da origem e destino pro grafo gerado na estrategia 
@@ -126,15 +126,15 @@ public class SafeRouteCalculator {
 //			/*DEBUG*/TesteRotasImg.teste(altGV, "criarAlternativas, GV", this);
 //			rotas.addAll(altGV);
 			
-		}
+//		}
 		
-//		Queue<Rota> altPD = new AlternativasPontoDesvio(this).getAlternativas(rota);
+		Queue<Rota> altPD = new AlternativasPontoDesvio(this).getAlternativas(rota);
 //		/*DEBUG*/TesteRotasImg.teste(altPD, "criarAlternativas, PD", this);
-//		rotas.addAll(altPD);
+		rotas.addAll(altPD);
 		
-		Queue<Rota> altR = new AlternativasRandom(this).getAlternativas(rota);
+//		Queue<Rota> altR = new AlternativasRandom(this).getAlternativas(rota);
 //		/*DEBUG*/TesteRotasImg.teste(altR, "criarAlternativas, R", this);
-		rotas.addAll(altR);
+//		rotas.addAll(altR);
 		
 //		/*DEBUG*/TesteRotasImg.teste(rotas, "criarAlternativas, resultado", this);
 		return rotas;

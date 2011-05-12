@@ -16,7 +16,13 @@ public class DividedClientEventsRetriever extends EventsRetriever{
 	@Override
 	public List getEvents() {
 		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
+	public int getTotalEvents() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
 	}
 	
 }

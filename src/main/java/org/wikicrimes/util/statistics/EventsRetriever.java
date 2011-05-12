@@ -7,5 +7,6 @@ public abstract class EventsRetriever<T> {
 
 	public abstract List<Point> getPoints();
 	public abstract List<T> getEvents();
+	public abstract int getTotalEvents();
 	
 }

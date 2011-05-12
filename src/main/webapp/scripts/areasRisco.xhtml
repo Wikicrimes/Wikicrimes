@@ -39,7 +39,8 @@
 				//mousemove listener
 				mousemoveHotspot = GEvent.addListener(map, "mousemove", function (latlng) {
 					//marcar apenas em determinados niveis zoom
-					if(zoomKernel < 11 || zoomKernel > 14){
+					var zoom = map.getZoom();
+					if(zoom < 11 || zoom > 14){
 						return;
 					}
 
@@ -854,6 +855,12 @@
 		width: 30px;
 		text-align: right;
 	}
+	.areasTitle{
+		font-size:100%;
+		font-weight:bold;
+		margin-left:7ex;
+		margin-bottom: 5px
+	}
 	.areasLink{
 		vertical-align: bottom;
 	}
@@ -888,7 +895,7 @@
 			<table width="100%" class="areas">
 				<tr> <td colspan="2" width="100%" style="vertical-align:bottom;">
 					 <img src="images/areaRisco.png" style="width:45px; height:45px; float:left;"/> 
-					 <h3 style="margin-left:7ex; margin-bottom: 5px"> #{messages['areasrisco.janela.salvar.explicacao']} </h3> </td>  </tr>
+					 <p class="areasTitle" > #{messages['areasrisco.janela.salvar.explicacao']} </p> </td>  </tr>
 				<tr> <td colspan="2" style="font-size:20; font-weight:bold;"> #{messages['areasrisco.janela.vcpode']} </td> </tr>
 				<tr height="10"></tr>
 				<tr> 
@@ -951,7 +958,7 @@
 			<table width="100%" class="areas">
 				<tr> <td colspan="2" width="100%" style="vertical-align:bottom">
 					 <img src="images/areaRisco.png" style="width:45px; height:45px; float:left"/> 
-					 <h3 style="margin-left:7ex; margin-bottom: 5px" id="editarAreaRiscoDescTD">  </h3> </td>  </tr>
+					 <p class="areasTitle" id="editarAreaRiscoDescTD">  </p> </td>  </tr>
 				<tr> <td colspan="2" style="font-size:20; font-weight:bold;"> #{messages['areasrisco.janela.vcpode']} </td> </tr>
 				<tr height="10"></tr>
 				<tr> 

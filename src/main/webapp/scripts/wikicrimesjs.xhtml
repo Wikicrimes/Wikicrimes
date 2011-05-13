@@ -464,9 +464,10 @@
 			    });
 			    GEvent.addListener(polyListArea, "mouseout", function(latlng, index) {
 			     	map.removeOverlay(label);
-			    });  	 	
+			    });
+			    closeModal('modal');
 				map.addOverlay(polyListArea);					
-				map.setCenter(polyListArea.getVertex(0),16);
+				map.setCenter(polyListArea.getVertex(0),zoomLimiteInfMarcadores);
 			}				
 
 			

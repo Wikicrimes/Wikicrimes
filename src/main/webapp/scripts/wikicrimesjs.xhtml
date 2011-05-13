@@ -1056,27 +1056,19 @@
 
 			function mostrarCrimeMapa(chave,lat, lng){
 //********************************** KERNEL MAP INICIO *********************************************
-				if(kernelEnable){
+				if(kernelEnabled){
 					desativaMapaKernel();
 				}
 //********************************** KERNEL MAP FIM ************************************************				
-				idconf = null;
 				map.closeInfoWindow();				
-				podeCarregarCrimes = false;
-				id=chave;
-				qtd_roubos = 0;
-				qtd_furtos = 0;
-				qtd_outros = 0;
-				qtd_denuncias = 0;
+				eventId=chave;
+				eventType='crime';
 				
-				//var temp=podeCarregarCrimes;
-			   	//podeCarregarCrimes=false;
 			   	if(lat != undefined && lng != undefined){
 				   	var latLngGM = new GLatLng(lat,lng);	
-			        //map.setCenter(latLngGM,15);
-			        preparaRequisicaoMudandoData(latLngGM, 15);
+			        preparaRequisicaoMudandoData(latLngGM, zoomLimiteInfMarcadores);
 			   	}else{
-			   		preparaRequisicaoMudandoData(null, 15);	
+			   		preparaRequisicaoMudandoData(null, zoomLimiteInfMarcadores);	
 				}				
 			}
 
@@ -1133,7 +1125,7 @@
 					wikicrimesDiv.innerHTML = htmlLegenda();
 		//*********************** Kernel Map INICIO ****************************
 		//corrigir o bug qd esconde e mostra a legenda do kernel e os numeros zeravam
-					//if(kernelEnable)
+					//if(kernelEnabled)
 						//atualizaLegendaKernel();
 		//*********************** Kernel Map FIM ****************************
 				}							
@@ -1161,7 +1153,7 @@
 			function htmlLegenda(){
 		//*********************** Kernel Map INICIO ****************************
 		//mostrar a legenda do mapa de kernel, se ele tiver ligado
-				if(kernelEnable)
+				if(kernelEnabled)
 					return htmlLegendaKernel();
 				else
 		//*********************** Kernel Map FIM ****************************

@@ -42,9 +42,11 @@
 
 		    var podeMudarModoKernel = true; //pq qd abre a janela arearisco, tem que ficar sempre kernel desligado
 
+		    var kernelForcedByUser = false; //qd usuario clica no botao "hotspot" no zoom baixo
+
 			function ativaMapaKernel(primeiraVez){
-			    if(!kernelEnable){
-				  	kernelEnable = true;
+			    if(!kernelEnabled){
+				  	kernelEnabled = true;
 				  	selecionarComando(map, 'kernel');
 				  	limpaCrimesAgrupador();
 				  	document.getElementById("divTelaFiltro").style.visibility = "hidden";
@@ -63,7 +65,7 @@
 
 			function desativaMapaKernel(){
 				removeHintComandosMapa();
-				kernelEnable = false;
+				kernelEnabled = false;
 				mostraCrimesAgrupador();
 				selecionarComando(map, 'mao');
 				apagaMapaKernel();
@@ -138,7 +140,7 @@
 			function buildStatisticsUrl(farZoom, eventId, eventType){
 				lastKernelRequest = {};
 				var url ='';
-				if(farZoom){
+				if(farZoom || kernelForcedByUser){
 					url += 'actions=kernel|charts|json';
 					url += boundsPixelUrlParams(map);
 				}else{
@@ -334,8 +336,6 @@
 				var lon2 = east;
 
 				if (validateKernelImage()){
-			  		//aindaCarregando = false;
-
 			  		photo = new TPhoto();
 					photo.id = 'kernelImage' + new Date().getTime();
 					photo.percentOpacity = IE? 50 : 100; //no IE, a imagem vem opaca, precisa de transparencia aqui
@@ -343,9 +343,7 @@
 					photo.anchorBottomRight = new GLatLng(lat2,lon2);
 					photo.src = "statistics?actions=image&nocache=" + new Date().getTime();
 					map.addTPhoto(photo);
-			  		
 			  	}else{
-					//console.log('zoom diferente no metodo exibeImagemMapaKernel()');
 					forceMapUpdate();
 			  	}
 			}
@@ -438,7 +436,7 @@
 			
 			function htmlLegendaKernel(){
 				
-				var html = "<table cellpading='0' cellspacing='0' style='width:90px; padding:4px ;border:1px solid #333333; opacity: .99; -moz-opacity:0.99; filter: alpha(opacity=99); background-color:white;font-family:Arial, sans-serif;  font-size: 11px;'>";
+				var html = "<table cellpading='0' cellspacing='0' style='width:110px; padding:4px ;border:1px solid #333333; opacity: .99; -moz-opacity:0.99; filter: alpha(opacity=99); background-color:white;font-family:Arial, sans-serif;  font-size: 11px;'>";
 				html+="     	<tr>";
 				html+="     		<td align='center' colspan='2'> <b id='tituloLegenda'> #{messages['wikicrimes.legenda.densidade']}" +"</b> <img width='12px' height='12px' src='./images/maximizar.png' onclick='mostraEscondeLeganda();' style='font-size: 12px;cursor: pointer;'/> </td>";
 				html+="         </tr>";

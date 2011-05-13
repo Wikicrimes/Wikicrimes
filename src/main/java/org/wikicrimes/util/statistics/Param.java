@@ -165,7 +165,7 @@ public class Param {
 				return null;
 			if(type.equals("crime"))
 				return CRIME;
-			if(type.equals("denuncia"))
+			if(type.equals("relato"))
 				return REPORT;
 			else if(type.equals("delegacia"))
 				return POLICE_STATION;

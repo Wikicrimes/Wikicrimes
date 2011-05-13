@@ -4,7 +4,7 @@ var estaRegistrandoArea = false;
 function ComandoMao() {
 }
 ComandoMao.prototype = new GControl();
-var kernelEnable = false;
+var kernelEnabled = false;
 ComandoMao.prototype.initialize = function(map) {
   var container = document.createElement("div");
 
@@ -367,6 +367,7 @@ ComandoKernel.prototype.initialize = function(map) {
   GEvent.addDomListener(kernelDiv, "click", function() {
 //*********************** Kernel Map INICIO ****************************
 //clique no botao pra ativar o mapa de kernel
+	  kernelForcedByUser = true;
 	  ativaMapaKernel();
 //*********************** Kernel Map FIM ****************************
   });
@@ -418,8 +419,10 @@ ComandoKernelSelecionado.prototype.initialize = function(map) {
   GEvent.addDomListener(kernelDiv, "click", function() {  	
 //*********************** Kernel Map INICIO ****************************
 //clique no botao pra desativar o mapa de kernel
-	if(map.getZoom() >= zoomLimiteSupKernel)	
-	  	desativaMapaKernel();  
+	if(map.getZoom() >= zoomLimiteSupKernel){
+		kernelForcedByUser = false;
+		desativaMapaKernel();  
+	}
 //*********************** Kernel Map FIM ****************************
   });
   GEvent.addDomListener(kernelDiv, "mouseover", function() {

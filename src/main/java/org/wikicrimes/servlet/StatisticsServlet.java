@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
 
+import org.wikicrimes.model.BaseObject;
 import org.wikicrimes.model.PontoLatLng;
 import org.wikicrimes.util.ServletUtil;
 import org.wikicrimes.util.kernelmap.KernelMap;
@@ -26,7 +27,7 @@ import org.wikicrimes.util.statistics.Param.Actions;
 @SuppressWarnings("serial")
 public class StatisticsServlet extends HttpServlet{
 
-	//TODO ajeitar bottleneckfinder (sem hierarquia)
+	//TODO ajeitar timetest (sem hierarquia)
 	//TODO medir tempos denovo
 	//TODO ajeitar contornos
 	//TODO pegar do properties no chartrequesthandler
@@ -55,7 +56,7 @@ public class StatisticsServlet extends HttpServlet{
 			if(actions.needEventsFromDB()) {
 				boolean needHistograms = actions.generateCharts();
 				boolean needReports = actions.sendEvents();
-				EventsRetriever events = new WikiCrimesEventsRetriever(request, context, needHistograms, needReports);
+				EventsRetriever<BaseObject> events = new WikiCrimesEventsRetriever(request, context, needHistograms, needReports);
 //				EventsRetriever events = new AccidentEventsRetriever(request, context);
 				sessionBuffer.saveTotalEvents(events.getTotalEvents());
 //				/*DEBUG*/TimeTest.saveTime("consulta BD");

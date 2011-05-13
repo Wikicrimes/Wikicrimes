@@ -2,6 +2,7 @@ package org.wikicrimes.util.statistics;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,7 +46,9 @@ public class ChartRequestHandler {
 		labels.add(format("Furto", values.get(1), total));
 		labels.add(format("Denúncia", values.get(2), total));
 		labels.add(format("Outro", values.get(3), total));
-//		removeZeros(labels, values);
+		List<String> colorList = toList(colors);
+		removeZeros(labels, values, colorList);
+		colors = format(colorList);
 		return makeChartApiUrl("p", values, width, 70, labels, colors);
 	}
 	
@@ -73,22 +76,22 @@ public class ChartRequestHandler {
 		labels.add(format(max2, values.get(1), total));
 		labels.add(format(max3, values.get(2), total));
 		labels.add(format("Outros", values.get(3), total));
-		removeZeros(labels, values);
+		removeZeros(labels, values, null);
 		return makeChartApiUrl("p", values, width, 70, labels, colors);
 	}
 	
 	private String makeChartApiUrl(String type, List<Double> values, int width, int height, List<String> labels, String colors) {
 		String cht = "cht=" + type;
-		String chd = "chd=t:" + format(values);
+		String chd = "chd=t:" + formatPecentages(values);
 		String chs = "chs=" + width + "x" + height;
-		String chdl = "chdl=" + formatLabels(labels);
+		String chdl = "chdl=" + formatAndEncode(labels);
 		String chf = "chf=bg,s,65432100";
 		String chco = "chco=" + colors;
 		String url = "http://chart.googleapis.com/chart?" + cht + "&" + chd + "&"  + chs + "&" + chdl + "&" + chf + "&" + chco;
 		return url;
 	}
 	
-	private String format(List<Double> array) {
+	private String formatPecentages(List<Double> array) {
 		double total = Util.sumDoubles(array);
 		StringBuilder s = new StringBuilder();
 		for(double x : array) {
@@ -100,7 +103,11 @@ public class ChartRequestHandler {
 		return s.toString();
 	}
 	
-	private String formatLabels(List<String> array) {
+	private String formatAndEncode(List<String> array) {
+		return ServletUtil.urlEncode(format(array));
+	}
+	
+	private String format(List<String> array){
 		StringBuilder s = new StringBuilder();
 		for(String x : array) {
 			s.append(x);
@@ -108,7 +115,7 @@ public class ChartRequestHandler {
 		}
 		if(s.length() > 0)
 			s.delete(s.length()-1, s.length());
-		return ServletUtil.urlEncode(s.toString());
+		return s.toString();
 	}
 	
 	private String format(String label, double value, double total) {
@@ -117,16 +124,26 @@ public class ChartRequestHandler {
 		return label + " (" + pctg + ")";
 	}
 	
-	private void removeZeros(List<String> labels, List<Double> values) {
+	private void removeZeros(List<String> labels, List<Double> values, List<String> colors) {
 		for(int i=0; i<labels.size(); i++) {
 			if(values.get(i) == 0) {
 				labels.remove(i);
 				values.remove(i);
+				if(colors != null) colors.remove(i);
 				i--;
 			}
 		}
 	}
-
+	
+	private List<String> toList(String pipeDividedString){
+		List<String> list = new ArrayList<String>();
+		String[] array = pipeDividedString.split("\\|");
+		for(String str : array) {
+			list.add(str);
+		}
+		return list;
+	}
+	
 	public String getTypesChart() {
 		return typesChart;
 	}

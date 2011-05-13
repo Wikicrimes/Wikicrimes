@@ -923,7 +923,7 @@ topo_dirFiltro{
 
 				function updateKernelGUI(){
 					if(podeMudarModoKernel)
-						if(kernelEnable){
+						if(kernelEnabled){
 							if(mudouZoom && map.getZoom() > zoomLimiteSupKernel){
 								desativaMapaKernel();
 							}else{
@@ -991,7 +991,7 @@ topo_dirFiltro{
 				//o if � pra n�o deixar plotar os marcadores qd o mapa de kernel estiver ligado
 									arrayCrimesLatLng[index] = new crimeKernelMap(long, lat, marcador);
 									++index;
-									if(!kernelEnable 
+									if(!kernelEnabled 
 										//nao plotar marcadores qd o modo kernel for ser habilitado por mudan�a de zoom
 											&& !(podeMudarModoKernel 
 											&& (mudouZoom) 

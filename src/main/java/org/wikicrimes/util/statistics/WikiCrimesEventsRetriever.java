@@ -107,7 +107,6 @@ public class WikiCrimesEventsRetriever extends EventsRetriever<BaseObject>{
 		String sul = limitesLatlng.sul+"";
 		String leste = limitesLatlng.leste+"";
 		String oeste = limitesLatlng.oeste+"";
-		String ignoraData = request.getParameter("id");
 		
 		events = filtroForm.getCrimesFiltrados(tipoCrime, tipoVitima,
 				tipoLocal, horarioInicial, horarioFinal, dataInicial,

@@ -13,7 +13,6 @@ import net.sf.json.JSONObject;
 
 import org.wikicrimes.model.PontoLatLng;
 import org.wikicrimes.util.ServletUtil;
-import org.wikicrimes.util.TimeTest;
 import org.wikicrimes.util.kernelmap.KernelMap;
 import org.wikicrimes.util.statistics.ChartRequestHandler;
 import org.wikicrimes.util.statistics.CrimeStringBuilder;

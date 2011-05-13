@@ -112,7 +112,7 @@ public class WikiCrimesEventsRetriever extends EventsRetriever<BaseObject>{
 		events = filtroForm.getCrimesFiltrados(tipoCrime, tipoVitima,
 				tipoLocal, horarioInicial, horarioFinal, dataInicial,
 				dataFinal, entidadeCertificadora, confirmadosPositivamente,
-				norte, sul, leste, oeste, ignoraData, null);
+				norte, sul, leste, oeste, null);
 		
 		if(includeReports) {
 			List<BaseObject> reports = filtroForm.getRelatosFiltrados(norte, sul, leste, oeste, dataInicial, dataFinal, true);

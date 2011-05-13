@@ -226,9 +226,12 @@
 							default:
 								zoom=#{filtroForm.zoomMapa};		
 						}
-				      	preparaRequisicaoMudandoData(point, zoom);
-				      	map.openInfoWindowHtml(point,html); 
-				      
+				      	isUpdatingMap = true;
+				      	map.setZoom(zoom);
+				      	isUpdatingMap = false;
+				      	map.setCenter(point);				      	
+				      	map.openInfoWindowHtml(point,html);
+				      	
 			      }
 			}
 

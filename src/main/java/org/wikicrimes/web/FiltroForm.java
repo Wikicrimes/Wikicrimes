@@ -473,15 +473,14 @@ public class FiltroForm extends GenericForm {
 			String tipoVitima, String tipoLocal, String horarioInicial,
 			String horarioFinal, String dataInicial, String dataFinal,
 			String entidadeCertificadora, String crimeConfirmadoPositivamente2,
-			String norte, String sul, String leste, String oeste, 
-			String ignoraData, String emailUsuario){
+			String norte, String sul, String leste, String oeste, String emailUsuario){
 		try {
 			Map params = getCrimeFilterParameters(tipoCrime, tipoVitima, tipoLocal, 
 					horarioInicial, horarioFinal, dataInicial, dataFinal, 
 					entidadeCertificadora, crimeConfirmadoPositivamente2, 
-					norte, sul, leste, oeste, ignoraData, emailUsuario);
+					norte, sul, leste, oeste, emailUsuario);
 			List<BaseObject> result = crimeService.filter(params);
-			undoIgnoreStuff(result, ignoraData);
+			
 			return result;
 			
 		}catch (Exception e) {
@@ -492,21 +491,12 @@ public class FiltroForm extends GenericForm {
 		}
 	}
 	
-	private Map getCrimeFilterParameters(String tipoCrime,
+	private Map<String, Object> getCrimeFilterParameters(String tipoCrime,
 			String tipoVitima, String tipoLocal, String horarioInicial,
 			String horarioFinal, String dataInicial, String dataFinal,
-			String entidadeCertificadora, String crimeConfirmadoPositivamente2, String norte, String sul, String leste, String oeste, String ignoraData, String emailUsuario) throws ParseException {
-		List<BaseObject> crimes = new ArrayList<BaseObject>();
-		//se e' o primeira vez
-		if(ignoraData!=null){
-			if (primeiraVez || ignoraData.equals("true")) { 
-				setMaxResults(600);
-				dataInicial="";
-				
-			}
-		}	
-	
-		Map parameters = new HashMap();
+			String entidadeCertificadora, String crimeConfirmadoPositivamente2, String norte, String sul, String leste, String oeste, String emailUsuario) throws ParseException {
+		
+		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("credibilidadeInicial", credibilidadeInicial / 100);
 		parameters.put("credibilidadeFinal", credibilidadeFinal / 100);
 		
@@ -594,17 +584,7 @@ public class FiltroForm extends GenericForm {
 		}
 		return parameters;
 	}
-	
-	private void undoIgnoreStuff(List<BaseObject> result, String ignoraData){
-		if(ignoraData!=null){
-			if (primeiraVez || ignoraData.equals("true")) {
-				setMaxResults(null);
-				if (result !=null && result.size()>0)
-					setDataInicial(((Crime) result.get(result.size()-1)).getData());
-				primeiraVez=false;
-			}
-		}	
-	}
+
 
 	public String showAll() {
 		String returnPage = FAILURE;

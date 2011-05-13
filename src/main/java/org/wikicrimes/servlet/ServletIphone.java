@@ -89,7 +89,7 @@ public class ServletIphone extends HttpServlet {
 		crimes = filtroForm.getCrimesFiltrados(tipoCrime, tipoVitima,
 				tipoLocal, horarioInicial, horarioFinal, dataInicial,
 				dataFinal, entidadeCertificadora, confirmadosPositivamente,
-				norte, sul, leste, oeste, ignoraData,null);
+				norte, sul, leste, oeste, null);
 		String dataMaisAntiga = dataInicial;
 		if(crimes.size()>0){
 			Crime crimeMaisAntigo =(Crime) crimes.get(crimes.size()-1);
@@ -130,7 +130,7 @@ public class ServletIphone extends HttpServlet {
 	private StringBuilder constroiStringCrimes(List<BaseObject> crimes, StringBuilder stringCrimes) {
 
 		String linha = "";
-		Crime crime = null; // Lê do banco e escreve no StringBuilder
+		Crime crime = null; // Lï¿½ do banco e escreve no StringBuilder
 		for (int i = 0; i < crimes.size(); i++) {
 			if (crimes.get(i) instanceof Crime) {
 				crime = (Crime) crimes.get(i);

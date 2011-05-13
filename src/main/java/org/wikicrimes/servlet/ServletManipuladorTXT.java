@@ -80,7 +80,7 @@ public class ServletManipuladorTXT extends HttpServlet {
 		crimes = filtroForm.getCrimesFiltrados(tipoCrime, tipoVitima,
 					tipoLocal, horarioInicial, horarioFinal, dataInicial,
 					dataFinal, entidadeCertificadora, confirmadosPositivamente,
-					norte, sul, leste, oeste, ignoraData,null);
+					norte, sul, leste, oeste, null);
 		String dataMaisAntiga = dataInicial;
 		if(crimes.size()>0){
 			Crime crimeMaisAntigo =(Crime) crimes.get(crimes.size()-1);
@@ -145,8 +145,8 @@ public class ServletManipuladorTXT extends HttpServlet {
 		saida = new PrintWriter(writer, true);
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		String linha = "";
-		Crime crime = null; // Lê do banco e escreve no PrintWriter
-		Relato relato = null; // Lê do banco e escreve no PrintWriter
+		Crime crime = null; // Lï¿½ do banco e escreve no PrintWriter
+		Relato relato = null; // Lï¿½ do banco e escreve no PrintWriter
 		for (int i = 0; i < crimes.size(); i++) {
 			if (crimes.get(i) instanceof Crime) {
 				crime = (Crime) crimes.get(i);

@@ -160,25 +160,7 @@ public class ServletManipuladorTXT extends HttpServlet {
 					linha += "|";
 				}
 				linha += "|" + sdf.format(crime.getData());
-				Set<CrimeRazao> razoes =  crime.getRazoes();
-				String razoesTexto = "";
-				if(razoes != null){
-					for (Iterator<CrimeRazao> iterator = razoes.iterator(); iterator.hasNext();) {
-						CrimeRazao crimeRazao = (CrimeRazao) iterator.next();
-						razoesTexto += crimeRazao.getRazao().getIdRazao().toString()+",";
-					}
-				}	
-				linha += "|" +razoesTexto;
-				String desc10Letras = "";
-				if (crime.getDescricao().length() > 10)
-					desc10Letras = crime.getDescricao().substring(0, 10)
-							+ "...";
-				else
-					desc10Letras=crime.getDescricao().substring(0,crime.getDescricao().length());
-				linha += "|"+ desc10Letras.replaceAll("\\|", "").replaceAll("\\\n", "");
-				linha += "|" +crime.getVisualizacoes();
-				linha += "|" +crime.getQtdComentarios();
-				linha += "|" +crime.getConfirmacoesPositivas();
+				
 			}
 			else {
 				relato = (Relato) crimes.get(i);
@@ -194,15 +176,7 @@ public class ServletManipuladorTXT extends HttpServlet {
 				}
 				linha += "|" + sdf.format(relato.getDataHoraRegistro());
 				
-				Set<RelatoRazao> razoes =  relato.getRazoes();
-				String razoesTexto = "";
-				if(razoes != null){
-					for (Iterator<RelatoRazao> iterator = razoes.iterator(); iterator.hasNext();) {
-						RelatoRazao relatoRazao = (RelatoRazao) iterator.next();
-						razoesTexto += relatoRazao.getRazao().getIdRazao().toString()+",";
-					}
-				}
-				linha += "|" +razoesTexto;
+				
 			}
 			
 			/*if (i == crimes.size() - 1)

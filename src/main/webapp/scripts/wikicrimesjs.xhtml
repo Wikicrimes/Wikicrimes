@@ -535,6 +535,14 @@
 					// Esconde toolTip do marcador temporário.
 					infoTT.style.visibility="hidden";		
 				});
+				
+				GEvent.addListener(map,"infowindowbeforeclose", function(overlay,latlng) {
+					if(crime2){
+						map.removeOverlay(crime2);
+						crime2=null;
+					}	
+				});
+				
 				GEvent.addListener(map, "click", function (overlay, latLng) {
 					
 					//*********************** ROTAS SEGURAS INICIO ****************************				

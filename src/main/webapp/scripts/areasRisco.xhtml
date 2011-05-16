@@ -20,6 +20,8 @@
 			var polyEditando; //poligono q foi gravado pelo usuario como uma de suas "Areas de Risco"
 			var idPolyEditando; //id da AreaRisco do polyEditando
 			var nomePolyEditando; //nome da AreaRisco do polyEditando
+			var minZoomAreasRisco = 11;
+			var maxZoomAreasRisco = 14;
 
 			
 	    //******************************************************************
@@ -40,7 +42,7 @@
 				mousemoveHotspot = GEvent.addListener(map, "mousemove", function (latlng) {
 					//marcar apenas em determinados niveis zoom
 					var zoom = map.getZoom();
-					if(zoom < 11 || zoom > 14){
+					if(zoom < minZoomAreasRisco || zoom > maxZoomAreasRisco){
 						return;
 					}
 

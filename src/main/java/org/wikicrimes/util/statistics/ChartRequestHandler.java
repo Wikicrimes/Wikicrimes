@@ -2,7 +2,6 @@ package org.wikicrimes.util.statistics;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +11,8 @@ import org.wikicrimes.util.Util;
 
 public class ChartRequestHandler {
 
+	//TODO pegar strings do properties
+	
 	private WikiCrimesEventsRetriever events;
 	
 	private String typesChart, reasonsChart;

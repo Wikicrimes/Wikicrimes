@@ -500,7 +500,7 @@ public class ServletWikiCrimesApi extends HttpServlet {
 			List<Point> points = getPoints("pontoXY");
 			KernelMapRequestHandler kmrh = new KernelMapRequestHandler(request, points, pixelBounds);
 			SessionBuffer sessionBuffer = new SessionBuffer(request);
-			sessionBuffer.saveKernelMap(kmrh.getKernel(), kmrh.getImage());
+			sessionBuffer.saveKernelMap(kmrh.getKernel(), kmrh.getImage(), null);
 			
 			//Envia informacoes resultates para o cliente
 			resposta.put("topLeftX", westPixel);

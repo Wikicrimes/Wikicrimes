@@ -139,9 +139,13 @@
 			
 			function buildStatisticsUrl(farZoom, eventId, eventType){
 				lastKernelRequest = {};
+				var zoom = map.getZoom();
 				var url ='';
 				if(farZoom || kernelForcedByUser){
 					url += 'actions=kernel|charts|json';
+					if(zoom >= minZoomAreasRisco && zoom <= maxZoomAreasRisco){
+						url += '|polygons';
+					}
 					url += boundsPixelUrlParams(map);
 				}else{
 					url += 'actions=events|charts|json';
@@ -152,8 +156,8 @@
 					url += '&zoom=' + zoomLimiteInfMarcadores;
 				}else{
 					url += boundsLatLngUrlParams(map);
-					url += '&zoom=' + map.getZoom();
-					lastKernelRequest.zoom = map.getZoom();
+					url += '&zoom=' + zoom;
+					lastKernelRequest.zoom = zoom;
 				}
 				url += parametrosFiltroCrimes();
 				return url;

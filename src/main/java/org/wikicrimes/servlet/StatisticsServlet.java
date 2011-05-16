@@ -27,10 +27,6 @@ import org.wikicrimes.util.statistics.Param.Actions;
 @SuppressWarnings("serial")
 public class StatisticsServlet extends HttpServlet{
 
-	//TODO ajeitar timetest (sem hierarquia)
-	//TODO medir tempos denovo
-	//TODO ajeitar contornos
-	//TODO pegar do properties no chartrequesthandler
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -51,46 +47,51 @@ public class StatisticsServlet extends HttpServlet{
 			ServletContext context = getServletContext();
 			SessionBuffer sessionBuffer = new SessionBuffer(request);
 			Actions actions = Param.getActions(request);
-//			/*DEBUG*/TimeTest.saveTime("init");
+//			/*DEBUG*/TimeTest.saveInstant("init");
 			
 			if(actions.needEventsFromDB()) {
+				sessionBuffer.clear();
 				boolean needHistograms = actions.generateCharts();
 				boolean needReports = actions.sendEvents();
 				EventsRetriever<BaseObject> events = new WikiCrimesEventsRetriever(request, context, needHistograms, needReports);
 //				EventsRetriever events = new AccidentEventsRetriever(request, context);
 				sessionBuffer.saveTotalEvents(events.getTotalEvents());
-//				/*DEBUG*/TimeTest.saveTime("consulta BD");
+//				/*DEBUG*/TimeTest.saveInstant("consulta BD");
 			
 				if(actions.generateKernelMap()) {
 					KernelMapRequestHandler kernelHandler = new KernelMapRequestHandler(request, events.getPoints());
-					sessionBuffer.saveKernelMap(kernelHandler.getKernel(), kernelHandler.getImage());
-//					/*DEBUG*/TimeTest.saveTime("kernel");
+					if(actions.generateBooleanGrid()) {
+						kernelHandler.generateBooleanGrid();
+					}
+					sessionBuffer.saveKernelMap(kernelHandler.getKernel(), kernelHandler.getImage(), kernelHandler.getBooleanGrid());
+//					/*DEBUG*/TimeTest.saveInstant("kernel");
 				}
 				
 				if(actions.generateCharts() && events instanceof WikiCrimesEventsRetriever) {
 					ChartRequestHandler chartHandler = new ChartRequestHandler((WikiCrimesEventsRetriever)events);
 					sessionBuffer.saveChartsUrls(chartHandler.getTypesChart(), chartHandler.getReasonsChart());
-//					/*DEBUG*/TimeTest.saveTime("charts");
+//					/*DEBUG*/TimeTest.saveInstant("charts");
 				}
 				
 				if(actions.sendEvents()) {
 					String crimesString = CrimeStringBuilder.buildString(events.getEvents());
 					sessionBuffer.saveEvents(crimesString);
-//					/*DEBUG*/TimeTest.saveTime("events string");
+//					/*DEBUG*/TimeTest.saveInstant("events string");
 				}
 			}
 			
 			if(actions.getJson()) {
 				JSONObject json = generateJSON(sessionBuffer);
+//				/*DEBUG*/TimeTest.saveInstant("generate json");
 				ServletUtil.sendJson(response, json);
-//				/*DEBUG*/TimeTest.saveTime("send json");
+//				/*DEBUG*/TimeTest.saveInstant("send json");
 			}else if(actions.getKernelMapImage()){
 				Image image = sessionBuffer.getKernelMapImage();
 				ServletUtil.sendImage(response, image);
-//				/*DEBUG*/TimeTest.saveTime("send image");
+//				/*DEBUG*/TimeTest.saveInstant("send image");
 			}
 			
-//			/*DEBUG*/TimeTest.printTimes();
+//			/*DEBUG*/TimeTest.print();
 			
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -117,9 +118,14 @@ public class StatisticsServlet extends HttpServlet{
 			kernelObj.put("maxDensity", kernel.getMaxDens());
 			kernelObj.put("avgDensity", kernel.getMediaDens());
 			kernelObj.put("minDensity", kernel.getMinDens());
-			kernelObj.put("booleanGrid", kernel.booleanGrid());
-	//		kernelObj.put("grid", kernel.getDensityGrid());
-	//		kernelObj.put("image", ses.getKernelMapImage());
+			//kernelObj.put("grid", kernel.getDensityGrid());
+			//kernelObj.put("image", ses.getKernelMapImage());
+
+			String grid = ses.getKernelMapBooleanGrid(); 
+			if(grid != null) {
+				kernelObj.put("booleanGrid", grid);
+			}
+			
 			json.put("kernel", kernelObj);
 		}
 

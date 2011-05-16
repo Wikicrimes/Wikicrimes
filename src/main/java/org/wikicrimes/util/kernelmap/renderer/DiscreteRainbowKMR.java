@@ -1,6 +1,7 @@
 package org.wikicrimes.util.kernelmap.renderer;
 
 import java.awt.Color;
+import java.awt.Image;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -59,17 +60,13 @@ public class DiscreteRainbowKMR extends CellBasedKMR{
 		double intervalWidth = (double)cells.length/nColors;
 		if(ratio != 1) intervalWidth *=  nColors * (ratio-1) / (Math.pow(ratio, nColors)-1);
 		int pos = 0;
-//		/*DEBUG*/System.out.println("LARGURA DOS INTERVALOS: ");
 		for(int i=0; i<nColors; i++) {
-//			/*DEBUG*/System.out.print(intervalWidth);
 			pos += intervalWidth;
 			limits[i] = cells[pos];
 			if(ratio != 1) intervalWidth *= ratio;
 		}
 //		limits[0] = cells[(int)((double)cells.length/nColors)]; //fixed width for dark blue
 //		limits[1] = cells[(int)((double)cells.length/nColors)]; //fixed width for dark blue
-//		/*DEBUG*/System.out.println();
-//		/*DEBUG*/System.out.println("LIMITES, " + Arrays.toString(limits));
 	}
 	
 	private Double[] sort(double[][] matrix) {
@@ -94,12 +91,16 @@ public class DiscreteRainbowKMR extends CellBasedKMR{
 		
 		for(int i=0; i<colors.length; i++) {
 			if(densidade <= limits[i]) {
-//				/*DEBUG*/count[i] ++;
 				return colors[i];
 			}
 		}
 		
 		return colors[colors.length-1];
+	}
+	
+	@Override
+	protected double threshold() {
+		return limits[limits.length-1];
 	}
 
 }

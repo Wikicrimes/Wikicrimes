@@ -244,32 +244,5 @@ public class KernelMap implements Serializable {
 		return s.toString();
 	}
 	
-	public String booleanGrid() {
-		double max = getMaxDens();
-		StringBuilder s = new StringBuilder();
-		for(double[] col : densityGrid){
-			for(double d : col){
-				s.append(d > max*0.5? "1" : "0");
-			}
-			s.append("\n");
-		}
-		return s.toString();
-	}
-	
-//	public int[][] booleanGrid() {
-//		double avg = getMediaDens();
-//		int cols = getCols();
-//		int rows = getRows();
-//		double[][] grid = getDensityGrid();
-//		int[][] array = new int[cols][rows];
-//		for (int i = 0; i < rows; i++) {
-//			array[i] = new int[cols];
-//			for (int j = 0; j < cols; j++) {
-//				array[j][i] = grid[j][i] > avg? 1 : 0;
-//			}
-//		}
-//		return array;
-//	}
-	
 }
 

@@ -35,9 +35,10 @@ public class SessionBuffer {
 		this(request.getSession(),Param.getApplication(request));
 	}
 	
-	public void saveKernelMap(KernelMap obj, Image img) {
-		res.kernelMapObj = obj;
+	public void saveKernelMap(KernelMap obj, Image img, String booleanGrid) {
+		res.kernelmapObj = obj;
 		res.kernelmapImg = img;
+		res.kernelmapBooleanGrid = booleanGrid;
 	}
 	
 	public void saveChartsUrls(String typeChartUrl, String reasonChartUrl) {
@@ -58,11 +59,15 @@ public class SessionBuffer {
 	}
 	
 	public KernelMap getKernelMap() {
-		return res.kernelMapObj;
+		return res.kernelmapObj;
 	}
 	
 	public Image getKernelMapImage() {
 		return res.kernelmapImg;
+	}
+	
+	public String getKernelMapBooleanGrid() {
+		return res.kernelmapBooleanGrid;
 	}
 	
 	public String getTypesChartUrl() {
@@ -85,12 +90,23 @@ public class SessionBuffer {
 		return res.center;
 	}
 	
+	public void clear() {
+		res.totalEvents = 0;
+		res.events = null;
+		res.center = null;
+		res.kernelmapImg = null;
+		res.kernelmapObj = null;
+		res.kernelmapBooleanGrid = null;
+		res.typesChartUrl = null;
+		res.reasonsChartUrl = null;
+	}
 }
 
 class StatReqResults{
 	int totalEvents;
 	Image kernelmapImg;
-	KernelMap kernelMapObj;
-	String typesChartUrl, reasonsChartUrl, events;
+	KernelMap kernelmapObj;
+	String typesChartUrl, reasonsChartUrl, events, kernelmapBooleanGrid;
 	PontoLatLng center;
+	
 }

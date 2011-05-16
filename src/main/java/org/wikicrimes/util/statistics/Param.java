@@ -63,6 +63,7 @@ public class Param {
 		private boolean charts;
 		private boolean events;
 		private boolean json;
+		private boolean polygons;
 		private boolean image;
 		
 		public boolean generateKernelMap() {
@@ -71,6 +72,10 @@ public class Param {
 		
 		public boolean generateCharts() {
 			return charts;
+		}
+		
+		public boolean generateBooleanGrid() {
+			return polygons;
 		}
 		
 		public boolean sendEvents() {
@@ -106,6 +111,8 @@ public class Param {
 				actions.json = true;
 			else if(actionStrArray[i].equalsIgnoreCase("image"))
 				actions.image = true;
+			else if(actionStrArray[i].equalsIgnoreCase("polygons"))
+				actions.polygons = true;
 			else
 				throw new InvalidParameterException(actionsStr);
 		}

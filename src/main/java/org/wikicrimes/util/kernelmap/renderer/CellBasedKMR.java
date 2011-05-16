@@ -45,10 +45,8 @@ public abstract class CellBasedKMR extends KernelMapRenderer{
 			}
 		}
 		
-//		/*DEBUG*/System.out.println("CELULAS POR INTERVALO, " + Arrays.toString(count));
 		return buffer;
 	}
-//	/*DEBUG*/int[] count = new int[9];
 	
 	public abstract Color renderCell(double density);
 	

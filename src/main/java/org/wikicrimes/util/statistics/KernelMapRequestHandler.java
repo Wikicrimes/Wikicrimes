@@ -23,7 +23,9 @@ public class KernelMapRequestHandler {
 	private Rectangle pixelBounds;
 	
 	private KernelMap kernel;
+	private KernelMapRenderer renderer;
 	private Image image;
+	private String booleanGrid;
 	
 	private KernelMapRequestHandler(HttpServletRequest request) {
 		this.request = request;
@@ -41,16 +43,20 @@ public class KernelMapRequestHandler {
 	}
 	
 	private void generateKernelMap(){
-		int zoom = Param.getZoom(request);
+//		int zoom = Param.getZoom(request);
 //		double bandwidth = getZoomDependantBandwidth(zoom);
 		double bandwidth = DEFAULT_BANDWIDTH;
 		kernel = new KernelMap(DEFAULT_NODE_SIZE, bandwidth, pixelBounds, points);
 		boolean isIE = ServletUtil.isClientUsingIE(request); 
-		KernelMapRenderer renderer = KMRFactory.getDefaultRenderer(kernel, isIE);
+		renderer = KMRFactory.getDefaultRenderer(kernel, isIE);
 		image = renderer.renderImage();
 //		/*TESTE CENARIO*/TesteCenariosRotas.setResult("numCrimes", points.size());
 //		/*TESTE CENARIO*/TesteCenariosRotas.setResult("densMedia", kernel.getMediaDens());
 //		/*TESTE CENARIO*/TesteCenariosRotas.setResult("densMax", kernel.getMaxDens());
+	}
+	
+	public void generateBooleanGrid() {
+		booleanGrid = renderer.booleanGrid();
 	}
 	
 	private double getZoomDependantBandwidth(int zoom) {
@@ -80,6 +86,10 @@ public class KernelMapRequestHandler {
 
 	public Image getImage() {
 		return image;
+	}
+
+	public String getBooleanGrid() {
+		return booleanGrid;
 	}
 	
 }

@@ -20,4 +20,20 @@ public abstract class KernelMapRenderer {
 	
 	public abstract Image renderImage();
 	
+	public String booleanGrid() {
+		double max = threshold();
+		StringBuilder s = new StringBuilder();
+		for(double[] col : kernel.getDensityGrid()){
+			for(double d : col){
+				s.append(d > max*0.5? "1" : "0");
+			}
+			s.append("\n");
+		}
+		return s.toString();
+	}
+	
+	protected double threshold() {
+		return kernel.getMaxDens();
+	}
+	
 }

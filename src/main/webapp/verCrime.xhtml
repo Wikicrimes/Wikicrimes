@@ -4,7 +4,6 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:v="http://rdf.data-vocabulary.org/#"
 	xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
@@ -59,59 +58,28 @@
 					
 					<div id="detalhemapa" style="height: 300px; width: 500px; float: right; margin: 20px;"></div>
 					
-					<div xmlns:v="http://rdf.data-vocabulary.org/#" typeof="v:Event">
-					
 					<c:if test="#{mostrarDadosForm.crime.cidade != null}">
-			 		
+			 		<p><h:outputFormat value="#{messages['crime.titulo']}">
 			 		 	<c:if test="#{mostrarDadosForm.crime.tipoCrime.idTipoCrime != 5}">
-			 				<span property="v:summary"><h:outputText value="#{mostrarDadosForm.crime.tipoCrime.descricao}"/></span>
+			 			<f:param value="#{mostrarDadosForm.crime.tipoCrime.descricao}"/>
 			 			</c:if>
 			 			<c:if test="#{mostrarDadosForm.crime.tipoCrime.idTipoCrime == 5}">
-			 				<span property="v:summary"><h:outputText value="#{mostrarDadosForm.crime.tipoVitima.descricao}"/></span>
+			 			<f:param value="#{mostrarDadosForm.crime.tipoVitima.descricao}"/>
 			 			</c:if>
-			 			
-			 			<span rel="v:location">
-				    		<span typeof="v:Address">    			
-			 					<h:outputText value=" #{messages['crime.titulo.cidade']} "/>			 					
-			 					<span property="v:locality">			 			
-			 					<h:outputText value="#{mostrarDadosForm.crime.cidade}"/>
-			 					</span>
-			 					<h:outputText value=" #{messages['crime.titulo.estado']} "/>
-			 					<span property="v:region">
-			 					<h:outputText value="#{mostrarDadosForm.crime.estado}"/>
-			 					</span>
-			 					
-			 					<span rel="v:geo">
-			 						<span property="v:latitude" content="#{mostrarDadosForm.crime.latitude}" ></span>
-          							<span property="v:longitude" content="#{mostrarDadosForm.crime.longitude}" ></span>
-			 					</span>
-			 				</span>		
-			 			</span> 
-			 			<span property="v:startDate" content="#{mostrarDadosForm.ISODate}">	
-			 			<h:outputText value=" - #{mostrarDadosForm.crime.dataHoraRegistro}">
+			 			<f:param value="#{mostrarDadosForm.crime.cidade}"/>
+			 			<f:param value="#{mostrarDadosForm.crime.estado}"/> 
+			 			<f:param value="#{mostrarDadosForm.crime.dataHoraRegistro}"/>
 			 			<f:convertDateTime pattern="#{messages['crime.data.formato']}" />
-			 			</h:outputText>
-			 			</span>
-			 		
+			 		</h:outputFormat></p>
 			 		</c:if>
 			 		<c:if test="#{mostrarDadosForm.crime.cidade == null}">
-			 		<p>
-			 		<h:outputText value="#{messages['crime.titulo.data']} "/>
-			 		<span property="v:startDate" content="#{mostrarDadosForm.ISODate}">	
-			 			<h:outputText value="#{mostrarDadosForm.crime.dataHoraRegistro}">
+			 		<p><h:outputFormat value="#{messages['crime.titulo2']}"> 
+			 			<f:param value="#{mostrarDadosForm.crime.dataHoraRegistro}"/>
 			 			<f:convertDateTime pattern="#{messages['crime.data.formato']}" />
-			 			</h:outputText>
-			 		</span>
-			 		</p>
+			 		</h:outputFormat></p>
 			 		</c:if>
-			 					 		
-					<p style="text-align: justify;">
-					<span property="v:description">
-					<h:outputText value="#{mostrarDadosForm.crime.descricao}" />
-					</span>
-					</p>
-					
-					
+			 		
+					<p style="text-align: justify;"><h:outputText value="#{mostrarDadosForm.crime.descricao}" /></p>
 					<c:if test="#{mostrarDadosForm.crime.linkNoticia}">
 					<p style="text-align: justify;">Fonte:<br/>
 						<h:outputLink target="_blank" value="#{mostrarDadosForm.crime.linkNoticia}">
@@ -120,12 +88,12 @@
 					</p>
 					</c:if>
 					<div>
-					<h:outputLink value="main.html" rel="v:url">
+					<h:outputLink value="main.html">
 						<h:outputText value="#{messages['crime.mapainterativo']}"/>
 						<f:param name="idcrime" value="#{mostrarDadosForm.crime.chave}"/>
 					</h:outputLink>
 					</div>
-					</div>
+					
 					<hr/>
 					<div id="divFiltrosAplicados"></div>
 					<div id="loadingPequeno"></div>

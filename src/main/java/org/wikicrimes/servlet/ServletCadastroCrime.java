@@ -84,6 +84,7 @@ public class ServletCadastroCrime extends HttpServlet {
 			crime.setConfirmacoesPositivas(new Long(0)); //ok
 			crime.setVisualizacoes(new Long(0)); //ok
 			crime.setQtdComentarios(new Long(0)); //ok
+			crime.setCacheEstatisticas(request.getParameter("tipoCrime")+"|"+request.getParameter("tipoVitima"));
 			crime.setTipoRegistro(new TipoRegistro(new Long(4))); //ok (Nao Sei)			
 			crime.setTipoPapel(new TipoPapel(Long.parseLong(request.getParameter("relacao")))); //ok
 			crime.setTipoCrime(new TipoCrime(Long.parseLong(request.getParameter("tipoCrime")))); //ok

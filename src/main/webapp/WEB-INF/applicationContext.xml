@@ -50,10 +50,7 @@
 	<bean id="usuarioService"
 		class="org.wikicrimes.service.impl.UsuarioServiceImpl">
 		<property name="dao" ref="usuarioDao" />
-		<property name="usuarioDao" ref="usuarioDao" />
-		<property name="txtTermoUso" ref="termoUso"/>
-		<property name="txtTermoUso_EN" ref="termoUso_EN" />
-		<property name="txtTermoUso_ES" ref="termoUso_ES" />
+		<property name="usuarioDao" ref="usuarioDao" />		
 		<property name="emailService" ref="emailService" />
 		<property name="reputacaoDao" ref="reputacaoDao" />
 	</bean>
@@ -82,20 +79,6 @@
 		class="org.wikicrimes.service.impl.CredibilidadeServiceImpl">
 		<property name="dao" ref="credibilidadeDao" />
 		<property name="credibilidadeDao" ref="credibilidadeDao" />		
-	</bean>
-	
-	<bean id="termoUso" class="org.springframework.core.io.ClassPathResource">
-		<constructor-arg value="termosDeUso.txt"/>
-	</bean>
-
-	<bean id="termoUso_EN"
-		class="org.springframework.core.io.ClassPathResource">
-		<constructor-arg value="termosDeUso_EN.txt" />
-	</bean>
-
-	<bean id="termoUso_ES"
-		class="org.springframework.core.io.ClassPathResource">
-		<constructor-arg value="termosDeUso_ES.txt" />
 	</bean>
 	
 	<bean id="opensocialService"

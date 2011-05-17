@@ -477,13 +477,14 @@
 				document.getElementById("loading").style.visibility = "visible";
 				map = new GMap2(document.getElementById("map"));
 				map.addControl(new LegendaWikicrimes());
-				map.disableScrollWheelZoom();
+				
 				map.addControl(new ComandoEmbed());
 				map.setCenter(new GLatLng(_lat, _long), _zoom);
 					
 				//mostraComandosLogado(map);
 				selecionarComando(map, 'mao');
 				map.setUIToDefault();
+				map.disableScrollWheelZoom();
 				new GKeyboardHandler(map);
 			
 				// Marcador Temporário

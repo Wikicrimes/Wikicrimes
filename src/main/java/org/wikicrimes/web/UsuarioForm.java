@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -368,11 +369,11 @@ public class UsuarioForm extends GenericForm {
 			Usuario usuario = service.login(getUsuario());
 			// System.out.println("id sessao: " + getExternalSession().getId());
 			
-			//Usuário RPX
+			//Usuï¿½rio RPX
 			getUsuario().setSenha("");
 			Usuario usuarioRpx = service.login(getUsuario());
 			if(usuarioRpx != null){
-				System.out.println("Usuário "+usuarioRpx.getEmail()+" do Rpx tentando fazer login pelo wikicrimes");
+				System.out.println("Usuï¿½rio "+usuarioRpx.getEmail()+" do Rpx tentando fazer login pelo wikicrimes");
 				
 				addMessage("usuario.loginFail", "");
 				getRequestScope().put("loginMessage",
@@ -488,7 +489,21 @@ public class UsuarioForm extends GenericForm {
 	}
 
 	public String getTermoUso() {
+		HttpServletResponse response = (HttpServletResponse) FacesContext
+		.getCurrentInstance().getExternalContext().getResponse();
+		
+		HttpServletRequest request = (HttpServletRequest) FacesContext
+		.getCurrentInstance().getExternalContext().getRequest();
+		
 		StringWriter sw = new StringWriter();
+		try {
+			request.setCharacterEncoding("ISO-8859-1");
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		response.setContentType("text/html;charset=ISO-8859-1");
+
 		try {
 			if (FacesContext.getCurrentInstance().getViewRoot().getLocale()
 					.toString().equals("pt")
@@ -506,6 +521,7 @@ public class UsuarioForm extends GenericForm {
 			e.printStackTrace();
 			return "";
 		}
+		
 		return sw.toString();
 	}
 
@@ -690,7 +706,7 @@ public class UsuarioForm extends GenericForm {
 	
 	/*
 	 * TODO
-	//faz parte da ação do login mobile!
+	//faz parte da aï¿½ï¿½o do login mobile!
 	public String realizaLoginMobile(){
 		Usuario user = new Usuario();
 		user.setSenha(senhaMobile);

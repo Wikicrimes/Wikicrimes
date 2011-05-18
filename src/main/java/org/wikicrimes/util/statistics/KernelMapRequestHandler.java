@@ -56,6 +56,8 @@ public class KernelMapRequestHandler {
 	}
 	
 	public void generateBooleanGrid() {
+//		String bigString = renderer.booleanGrid();
+//		booleanGrid = Util.compress(bigString.toString());
 		booleanGrid = renderer.booleanGrid();
 	}
 	

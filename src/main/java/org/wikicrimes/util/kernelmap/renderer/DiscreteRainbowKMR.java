@@ -100,7 +100,7 @@ public class DiscreteRainbowKMR extends CellBasedKMR{
 	
 	@Override
 	protected double threshold() {
-		return limits[limits.length-1];
+		return limits[limits.length-3];
 	}
 
 }

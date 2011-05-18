@@ -87,7 +87,12 @@ public class StatisticsServlet extends HttpServlet{
 //				/*DEBUG*/TimeTest.saveInstant("send json");
 			}else if(actions.getKernelMapImage()){
 				Image image = sessionBuffer.getKernelMapImage();
-				ServletUtil.sendImage(response, image);
+				if(image != null) {
+					ServletUtil.sendImage(response, image);
+				}else {
+					//ignora: o usuario mexeu o mapa rapidamente, causando requisicoes sobrepostas
+					//image == null, ocorre nas primeiras requisicoes, mas, neste caso, apenas a ultima importa 
+				}
 //				/*DEBUG*/TimeTest.saveInstant("send image");
 			}
 			

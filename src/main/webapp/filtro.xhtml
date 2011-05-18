@@ -904,13 +904,9 @@ topo_dirFiltro{
 				function centerOnEvent(){
 					var center = new GLatLng(statistics.center.lat, statistics.center.lng);
 					map.setCenter(center, zoomLimiteInfMarcadores);
-					//*DEBUG*/console.log('1, eventId=' + eventId);
-					//*DEBUG*/var s="";for(var c in crimesAtuais) s+=c+", ";console.log("crimesAtuais=" + s); 
 					var marker = crimesAtuais[eventId];
-					//*DEBUG*/console.log('2, marker=' + marker);
 					map.addOverlay(marker);
 					showMarkerInfo(marker);
-					//*DEBUG*/console.log('3');
 					eventId = null;
 					eventType = null;
 				}

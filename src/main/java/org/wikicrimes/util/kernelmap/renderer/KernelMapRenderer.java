@@ -25,7 +25,7 @@ public abstract class KernelMapRenderer {
 		StringBuilder s = new StringBuilder();
 		for(double[] col : kernel.getDensityGrid()){
 			for(double d : col){
-				s.append(d > max*0.5? "1" : "0");
+				s.append(d > max? "1" : "0");
 			}
 			s.append("\n");
 		}
@@ -33,7 +33,7 @@ public abstract class KernelMapRenderer {
 	}
 	
 	protected double threshold() {
-		return kernel.getMaxDens();
+		return kernel.getMaxDens() * 0.5;
 	}
 	
 }

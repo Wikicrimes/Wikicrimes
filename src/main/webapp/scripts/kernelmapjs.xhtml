@@ -136,7 +136,37 @@
 				}
 				statistics.kernel.booleanGrid = array;
 			}
-			
+
+			//grid compactada
+			/*function getBooleanGrid(){
+				var url = statistics.kernel.booleanGridUrl;
+				if(!url) return;
+
+				var doneTransfering = new function(zip){
+					var extracted = zip.extract();
+					var reader = extracted.openTextReader();
+					var i = 0;
+					var j = 0;
+					var grid = new Array();
+					grid[i] = new Array();
+					var c = reader.readChar()
+					while(c){
+						switch(c){
+						case '\n':
+							i=++;
+							grid[i] = new Array();
+							break;
+						default:
+							grid[i][j] = c;
+						}
+						c = reader.readLine()
+					}
+					statistics.kernel.booleanGrid = grid;
+				}
+
+				new ZipFile(url, doneTransfering);
+			}*/
+
 			function buildStatisticsUrl(farZoom, eventId, eventType){
 				lastKernelRequest = {};
 				var zoom = map.getZoom();

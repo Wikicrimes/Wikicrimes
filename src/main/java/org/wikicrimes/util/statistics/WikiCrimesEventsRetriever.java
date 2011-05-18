@@ -139,7 +139,6 @@ public class WikiCrimesEventsRetriever extends EventsRetriever<BaseObject>{
 			event = filtroForm.getRelato(id);
 			break;
 		case POLICE_STATION:
-//			break;
 		default:
 			throw new InvalidParameterException();
 		}

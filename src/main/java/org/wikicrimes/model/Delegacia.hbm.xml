@@ -18,30 +18,7 @@
         <property name="telefone" column="DEL_TELEFONE" type="java.lang.String" not-null="true"/>
         <property name="tipoDelegacia" column="DEL_TIPO" type="java.lang.Integer" not-null="true"/>
         <property name="chave" column="DEL_CHAVE" type="java.lang.String" not-null="true"/>
-        
-<!--        <many-to-one name="tipoVitima" column="TVI_IDTIPO_VITIMA" class="org.wikicrimes.model.TipoVitima" />-->
-<!--        <many-to-one name="tipoLocal" column="TLO_IDTIPO_LOCAL" class="org.wikicrimes.model.TipoLocal" />-->
-<!--        <many-to-one name="tipoArmaUsada" column="TAU_IDTIPO_ARMA_USADA" class="org.wikicrimes.model.TipoArmaUsada" />-->
-<!--        <many-to-one name="tipoRegistro" column="TRE_IDTIPO_REGISTRO" class="org.wikicrimes.model.TipoRegistro" />-->
-<!--        <many-to-one name="tipoPapel" column="TPA_IDTIPO_PAPEL" class="org.wikicrimes.model.TipoPapel" />-->
-<!--        <many-to-one name="tipoCrime" column="TCR_IDTIPO_CRIME" class="org.wikicrimes.model.TipoCrime" lazy="false"/>-->
-<!--        <many-to-one name="tipoTransporte" column="TTR_IDTIPO_TRANSPORTE" class="org.wikicrimes.model.TipoTransporte" />-->
-<!--        <many-to-one name="usuario" column="USU_IDUSUARIO" class="org.wikicrimes.model.Usuario" />-->
-<!--        <many-to-one name="usuarioRedeSocial" column="URS_IDUSUARIO_REDE_SOCIAL" class="org.wikicrimes.model.UsuarioRedeSocial" />-->
+       
 
-<!--		<set name="credibilidades" table="TB_CRE_CREDIBILIDADE" lazy="true">-->
-<!--            <key><column name="CRI_IDCRIME" not-null="true" /></key>-->
-<!--            <one-to-many class="org.wikicrimes.model.Credibilidade"/>-->
-<!--        </set>-->
-<!---->
-<!--        <set name="confirmacoes" table="TB_CON_CONFIRMACAO" lazy="true">-->
-<!--            <key><column name="CRI_IDCRIME" not-null="true" /></key>-->
-<!--            <one-to-many class="org.wikicrimes.model.Confirmacao"/>-->
-<!--        </set>-->
-<!--        -->
-<!--		<set name="razoes" table="TB_CRZ_CRIME_RAZAO" lazy="false">-->
-<!--            <key><column name="CRZ_IDCRIME" not-null="true" /></key>-->
-<!--            <one-to-many class="org.wikicrimes.model.CrimeRazao"/>-->
-<!--        </set>-->
     </class>
 </hibernate-mapping>

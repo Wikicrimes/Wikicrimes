@@ -285,7 +285,7 @@ public class ServletRotaSeguraServerSide extends HttpServlet{
 		/*DEBUG*/if(rotas.isEmpty()) throw new AssertionError("rotas == empty");
 		
 		response.setContentType("text/plain");
-		response.setCharacterEncoding("UTF-8");
+//		response.setCharacterEncoding("UTF-8");
 		
 		switch(formato){
 		case LATLNGS:

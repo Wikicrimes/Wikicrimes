@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="org.wikicrimes.model.EstatisticaExterna" table="TB_ESE_ESTATISTICA_EXTERNA" lazy="true">
+        <id name="idEstatisticaExterna" column="ESE_IDESTATISTICA_EXTERNA" unsaved-value="null">
+            <generator class="increment"/>
+        </id>
+        <property name="mes" column="ESE_MES" type="java.lang.String" />
+        <property name="numVitimas" column="ESE_NUM_VITIMAS" type="java.lang.Integer" />
+        <property name="dataHoraRegistro" column="ESE_DATA_HORA_REGISTRO" type="java.util.Date"/>
+        <property name="tipo" column="ESE_TIPO" type="java.lang.String" />
+         <property name="delegacia" column="ESE_DELEGACIA" type="java.lang.String" />
+        <many-to-one name="fonte" column="ESE_IDFONTE_EXTERNA" class="org.wikicrimes.model.FonteExterna"/>
+    </class>
+</hibernate-mapping>

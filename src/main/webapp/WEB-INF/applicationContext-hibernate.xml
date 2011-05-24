@@ -73,6 +73,8 @@
                  <value>org/wikicrimes/model/AreaRisco.hbm.xml</value>
                  <value>org/wikicrimes/model/PontoLatLng.hbm.xml</value>
                  <value>org/wikicrimes/model/MobileRequestLog.hbm.xml</value>
+                 <value>org/wikicrimes/model/FonteExterna.hbm.xml</value>
+                 <value>org/wikicrimes/model/EstatisticaExterna.hbm.xml</value>
             </list>
         </property>
         <property name="hibernateProperties">

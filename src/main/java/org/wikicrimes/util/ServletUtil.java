@@ -76,8 +76,9 @@ public class ServletUtil {
 		URLConnection con;
 		try {
 			con = url.openConnection();
+			con.addRequestProperty("content-type", "text/html; charset=UTF-8");
 //			/*DEBUG*/System.out.println( "content type: " + con.getContentType() );
-			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
 			String linha = null;
 			while((linha = in.readLine()) != null)
 				str.append(linha);

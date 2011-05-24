@@ -286,7 +286,7 @@ public class ServletRotaSeguraServerSide extends HttpServlet{
 		
 		response.setContentType("text/plain");
 //		response.setCharacterEncoding("UTF-8");
-		response.setCharacterEncoding("ISO-8859-1");
+//		response.setCharacterEncoding("ISO-8859-1");
 		
 		switch(formato){
 		case LATLNGS:
@@ -297,7 +297,6 @@ public class ServletRotaSeguraServerSide extends HttpServlet{
 			PrintWriter out = response.getWriter();
 			int zoom = getZoom(request);
 			String json = JSONRouteHandler.getJSON(rotas, zoom);
-			/*DEBUG*/System.out.println("*DEBUG*: " + json);
 			out.println(json);
 			return;
 		case KML:

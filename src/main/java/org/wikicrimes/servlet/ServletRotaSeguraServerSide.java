@@ -63,15 +63,15 @@ public class ServletRotaSeguraServerSide extends HttpServlet{
 		try{
 			metodoPrincipal(request, response);
 		}catch(ParametroInvalidoRotaSeguraException e){
-			e.printStackTrace();
-			respostaErro(request, response, e.getMessage());
+//			e.printStackTrace();
+			respostaErro(response, e.getMessage());
 		}catch(DirectionsAPIRequestException e){
-			e.printStackTrace();
-			respostaErro(request, response, e.getMessage());
+//			e.printStackTrace();
+			respostaErro(response, e.getMessage());
 		}catch(Throwable e){
 			e.printStackTrace();
 			if(!response.isCommitted()){
-				respostaErro(request, response);
+				respostaErro(response, e);
 //				/*teste*/TesteCenariosRotas.setResult("erro", e.getClass() + " : " + e.getMessage());
 //				/*teste*/TesteCenariosRotas.salvar();
 			}

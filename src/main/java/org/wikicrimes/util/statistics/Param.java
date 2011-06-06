@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.wikicrimes.util.kernelmap.LatLngBoundsGM;
 
+import antlr.ActionTransInfo;
+
 public class Param {
 
 	public static class Keys{
@@ -98,6 +100,7 @@ public class Param {
 	
 	public static Actions getActions(ServletRequest request) {
 		String actionsStr = request.getParameter(Keys.actions);
+		if(actionsStr == null) throw new InvalidParameterException(Keys.actions + " is empty");
 		String[] actionStrArray = actionsStr.split("\\|");
 		Actions actions = new Actions();
 		for(int i=0; i<actionStrArray.length; i++) {
@@ -114,7 +117,7 @@ public class Param {
 			else if(actionStrArray[i].equalsIgnoreCase("polygons"))
 				actions.polygons = true;
 			else
-				throw new InvalidParameterException(actionsStr);
+				throw new InvalidParameterException(Keys.actions + " = " + actionsStr);
 		}
 		return actions;
 	}

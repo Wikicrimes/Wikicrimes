@@ -60,7 +60,7 @@ public class ServletRotaSeguraClientSide extends HttpServlet {
 		}catch(Throwable e){
 			e.printStackTrace();
 			if(!response.isCommitted()){
-				respostaErro(request, response);
+				respostaErro(response, e);
 				/*TESTE CENARIO*/TesteCenariosRotas.setResult("erro", e.getClass() + " : " + e.getMessage());
 				/*TESTE CENARIO*/TesteCenariosRotas.salvar();
 			}
@@ -286,17 +286,23 @@ public class ServletRotaSeguraClientSide extends HttpServlet {
 		out.close();
 	}
 	
-	public static void respostaErro(HttpServletRequest request, HttpServletResponse response) throws IOException{
-		respostaErro(request, response, null);
+	public static void respostaErro(HttpServletResponse response) throws IOException{
+		respostaErro(response, (String)null);
 	}
 	
-	public static void respostaErro(HttpServletRequest request, HttpServletResponse response, String details) throws IOException{
+	public static void respostaErro(HttpServletResponse response, String details) throws IOException{
 		PrintWriter out = response.getWriter();
-		out.println("erro");
+		out.println("error");
 		if(details != null) {
 			out.println(details);
 		}
 //		/*DEBUG*/System.out.println("FIM ERRO");
+		out.close();
+	}
+	
+	public static void respostaErro(HttpServletResponse response, Throwable error) throws IOException{
+		PrintWriter out = response.getWriter();
+		error.printStackTrace(out);
 		out.close();
 	}
 	

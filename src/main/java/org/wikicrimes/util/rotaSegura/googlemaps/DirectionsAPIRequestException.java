@@ -7,7 +7,7 @@ public class DirectionsAPIRequestException extends RuntimeException{
 	private StatusGMDirections status;
 
 	public DirectionsAPIRequestException(StatusGMDirections status) {
-		super("Erro na requisicao � api Directions do GoogleMaps. Status=" + status);
+		super("Erro na requisicao a api Directions do GoogleMaps. Status=" + status);
 		this.status = status;
 	}
 	

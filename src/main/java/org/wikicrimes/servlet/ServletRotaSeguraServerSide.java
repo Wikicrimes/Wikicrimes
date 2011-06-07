@@ -314,8 +314,10 @@ public class ServletRotaSeguraServerSide extends HttpServlet{
 	
 	private void limpar(HttpServletRequest request) throws IOException, ServletException{
 		HttpSession sessao = request.getSession();
-		SafeRouteCalculator logicaRotas = getLogicaRotaSegura(request);
-		logicaRotas.limpar();
+//		SafeRouteCalculator logicaRotas = getLogicaRotaSegura(request);
+		SafeRouteCalculator logicaRotas = ServletRotaSeguraClientSide.getLogicaRotaSeguraIfSet(request);
+		if(logicaRotas != null)
+			logicaRotas.limpar();
 		sessao.removeAttribute(ServletRotaSeguraClientSide.LOGICA_ROTAS);
 //		/*TESTE*/TesteRotasImg.limpar();
 		System.gc();

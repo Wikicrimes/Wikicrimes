@@ -349,6 +349,12 @@ public class ServletRotaSeguraClientSide extends HttpServlet {
 		return logicaRotas;
 	}
 	
+	public static SafeRouteCalculator getLogicaRotaSeguraIfSet(HttpServletRequest request) throws ServletException, IOException{
+		HttpSession sessao = request.getSession();
+		SafeRouteCalculator logicaRotas = (SafeRouteCalculator)sessao.getAttribute(LOGICA_ROTAS);
+		return logicaRotas;
+	}
+	
 	public static boolean isLogicaRotasNaSessao(HttpServletRequest request){
 		HttpSession sessao = request.getSession();
 		return sessao.getAttribute(LOGICA_ROTAS) != null && sessao.getAttribute(LOGICA_ROTAS) instanceof SafeRouteCalculator;

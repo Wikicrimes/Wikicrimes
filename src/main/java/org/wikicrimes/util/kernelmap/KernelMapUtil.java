@@ -43,13 +43,13 @@ public class KernelMapUtil {
 		}else if(eventType.equalsIgnoreCase("acidente")) {
 			AccidentEventsRetriever er = new AccidentEventsRetriever(context, boundsPixel, zoom, dataInicial);
 			points = er.getPoints();
-		}else if(eventType.equalsIgnoreCase("crime+acidente")) {
+		}else if(eventType.equalsIgnoreCase("crime|acidente")) {
 			WikiCrimesEventsRetriever er1 = new WikiCrimesEventsRetriever(boundsPixel, zoom, dataInicial, context);
 			AccidentEventsRetriever er2 = new AccidentEventsRetriever(context, boundsPixel, zoom, dataInicial);
 			points = er1.getPoints();
 			points.addAll(er2.getPoints());
 		}else {
-			throw new ParametroInvalidoRotaSeguraException("Parametro events invalido. Valores possiveis: crime, acidente e crime+acidente. Valor passado: " + eventType);
+			throw new ParametroInvalidoRotaSeguraException("Parametro eventos invalido. Valores possiveis: crime, acidente e crime|acidente. Valor passado: " + eventType);
 		}
 		return points;
 	}

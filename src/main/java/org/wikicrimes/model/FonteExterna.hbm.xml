@@ -10,6 +10,7 @@
         </id>
         <property name="nome" column="FNE_NOME" type="java.lang.String" />
         <property name="dataHoraRegistro" column="FNE_DATA_HORA_REGISTRO" type="java.util.Date"/>
-        
+        <property name="latitude" column="FNE_LATITUDE" type="java.lang.Double"/>
+        <property name="longitude" column="FNE_LONGITUDE" type="java.lang.Double"/>
     </class>
 </hibernate-mapping>

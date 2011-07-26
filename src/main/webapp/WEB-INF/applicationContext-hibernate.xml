@@ -196,4 +196,8 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     
+     <bean id="estatisticaExternaDao" class="org.wikicrimes.dao.hibernate.EstatisticaExternaDaoHibernate">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    
 </beans>

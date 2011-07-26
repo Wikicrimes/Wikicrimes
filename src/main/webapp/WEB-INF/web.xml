@@ -366,6 +366,18 @@
 		<url-pattern>/ServletIphone</url-pattern>
 	</servlet-mapping>
 	
+	<servlet>
+		<servlet-name>ServletEstatisticaExterna</servlet-name>
+		<servlet-class>org.wikicrimes.servlet.ServletEstatisticaExterna</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>ServletEstatisticaExterna</servlet-name>
+		<url-pattern>/ServletEstatisticaExterna</url-pattern>
+	</servlet-mapping>
+	
+	
 <!-- TESTE esses servlets nao devem ser usados em produção
 	<servlet>
 		<servlet-name>TesteCenariosRotas</servlet-name>

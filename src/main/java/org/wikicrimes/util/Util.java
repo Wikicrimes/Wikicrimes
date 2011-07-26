@@ -233,5 +233,85 @@ public class Util {
 		}
 		return null;
 	}*/
+
+	//Retorna o mês como String
+	public static String getMonthAsString(int month)
+	{
+		String stringMonth = "";
+		
+		switch (month) {
+		case 1:
+			stringMonth = "Janeiro";
+			break;
+		case 2:
+			stringMonth = "Fevereiro";
+			break;
+		case 3:
+			stringMonth = "Maro";
+			break;
+		case 4:
+			stringMonth = "Abril";
+			break;
+		case 5:
+			stringMonth = "Maio";
+			break;
+		case 6:
+			stringMonth = "Junho";
+			break;
+		case 7:
+			stringMonth = "Julho";
+			break;
+		case 8:
+			stringMonth = "Agosto";
+			break;
+		case 9:
+			stringMonth = "Setembro";
+			break;
+		case 10:
+			stringMonth = "Outubro";
+			break;
+		case 11:
+			stringMonth = "Novembro";
+			break;
+		case 12:
+			stringMonth = "Dezembro";
+			break;
+		}
+		
+		return stringMonth;
+	}
 	
+	//Retorna o mês como inteiro
+	public static int getMonthAsInt(String month)
+	{
+		int intMonth = 0;
+		
+		if (month.equalsIgnoreCase("Janeiro")) {
+			intMonth = 1;
+		} else if (month.equalsIgnoreCase("Fevereiro")) {
+			intMonth = 2;
+		} else if (month.equalsIgnoreCase("Maro")) {
+			intMonth = 3;
+		} else if (month.equalsIgnoreCase("Abril")) {
+			intMonth = 4;
+		} else if (month.equalsIgnoreCase("Maio")) {
+			intMonth = 5;
+		} else if (month.equalsIgnoreCase("Junho")) {
+			intMonth = 6;
+		} else if (month.equalsIgnoreCase("Julho")) {
+			intMonth = 7;
+		} else if (month.equalsIgnoreCase("Agosto")) {
+			intMonth = 8;
+		} else if (month.equalsIgnoreCase("Setembro")) {
+			intMonth = 9;
+		} else if (month.equalsIgnoreCase("Outubro")) {
+			intMonth = 10;
+		} else if (month.equalsIgnoreCase("Novembro")) {
+			intMonth = 11;
+		} else if (month.equalsIgnoreCase("Dezembro")) {
+			intMonth = 12;
+		}
+		
+		return intMonth;
+	}
 }

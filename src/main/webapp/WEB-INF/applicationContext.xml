@@ -182,6 +182,11 @@
             </prop>
         </props>
     </property>
-</bean>
+    
+	</bean>
+	<bean id="estatisticaExternaService"
+		class="org.wikicrimes.service.impl.EstatisticaExternaServiceImpl">
+		<property name="estatisticaExternaDao" ref="estatisticaExternaDao" />		
+	</bean>
 
 </beans>

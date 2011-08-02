@@ -290,7 +290,7 @@ public class Util {
 			intMonth = 1;
 		} else if (month.equalsIgnoreCase("Fevereiro")) {
 			intMonth = 2;
-		} else if (month.equalsIgnoreCase("Maro")) {
+		} else if (month.equalsIgnoreCase("Marco")) {
 			intMonth = 3;
 		} else if (month.equalsIgnoreCase("Abril")) {
 			intMonth = 4;

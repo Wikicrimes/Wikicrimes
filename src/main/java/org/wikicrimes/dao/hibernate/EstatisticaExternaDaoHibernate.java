@@ -21,14 +21,17 @@ implements EstatisticaExternaDao{
 	@SuppressWarnings("unchecked")
 	public EstatisticaExterna getEstatisticaExterna(String mes, String dp,
 			String tipoCrime) {
+		System.out.println("mes="+mes);
 		String query="";
 		String parametros= "";
+		System.out.println("dp="+dp);
 		String ultimoMesBanco = ultimoMesBanco(dp);
-		EstatisticaExterna e = new EstatisticaExterna();
 		
+		EstatisticaExterna e = new EstatisticaExterna();
+		System.out.println("ultimoMesBanco="+ultimoMesBanco);
 		//O parametro mes é opcional. Caso o último mês que há no banco seja anterior ao atual, pega-se o último mês do banco.
 		if(mes.isEmpty() )  mes = ultimoMesBanco;
-		System.out.println(mes);
+		System.out.println("mes="+mes);
 		if(Util.getMonthAsInt(mes)> Util.getMonthAsInt(ultimoMesBanco) ){
 			parametros = "  mes = '" + ultimoMesBanco+"' and delegacia = '"+ dp + "'" ;
 		}else{

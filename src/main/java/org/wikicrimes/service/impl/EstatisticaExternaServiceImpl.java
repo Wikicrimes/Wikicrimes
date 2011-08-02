@@ -56,7 +56,6 @@ public class EstatisticaExternaServiceImpl extends GenericCrudServiceImpl implem
 		String resposta="";
 		
 		dp = estatisticaExternaDao.getDP(lat, lng);
-		System.out.println(mes);
 		EstatisticaExterna ee = getEstatisticaExterna(mes, dp, tipoCrime);
 		
 		if(tipoCrime.isEmpty()){

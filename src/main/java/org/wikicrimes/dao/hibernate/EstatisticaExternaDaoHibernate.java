@@ -52,7 +52,7 @@ implements EstatisticaExternaDao{
 			if(numVitimas >0){
 			
 				e.setNumVitimas(numVitimas);
-				e.setDelegacia("");
+				e.setIdEstatisticaExterna(Long.parseLong(dp));
 				e.setMes(mes);
 				e.setTipo("");
 				
@@ -299,7 +299,7 @@ implements EstatisticaExternaDao{
 
 	@Override
 	public int getRankDp(EstatisticaExterna e) {
-		String ultimoMesBanco = ultimoMesBanco(e.getDelegacia());
+		String ultimoMesBanco = ultimoMesBanco(e.getFonte().getIdFonteExterna().toString());
 		List<DelegaciaOcorrencias> ocorrencias; 
 		
 		if (e.getMes().isEmpty()) e.setMes(ultimoMesBanco);

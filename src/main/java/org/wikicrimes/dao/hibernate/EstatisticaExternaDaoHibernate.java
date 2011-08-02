@@ -61,6 +61,7 @@ implements EstatisticaExternaDao{
 		
 	}
 	
+	@SuppressWarnings("unchecked")
 	public String ultimoMesBanco(String dp){
 		String query = "from EstatisticaExterna ";
 		
@@ -85,6 +86,7 @@ implements EstatisticaExternaDao{
 		return mesAtual;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public String getDP(double lat, double lng) {
 		String retorno = "";
@@ -149,6 +151,7 @@ implements EstatisticaExternaDao{
 		
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<DelegaciaOcorrencias> getTopDPs(String mes) {
 		//String query ="select new org.wikicrimes.util.DelegaciaOcorrencias(sum(Ee.numVitimas), Ee.delegacia) from EstatisticaExterna Ee";
@@ -185,6 +188,7 @@ implements EstatisticaExternaDao{
     	
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public int getCrescimento(EstatisticaExterna estatistica) {
 		String query = "from EstatisticaExterna ";
@@ -314,6 +318,7 @@ implements EstatisticaExternaDao{
 		
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public double getTaxaCrescimento(EstatisticaExterna estatistica){
 		double taxa;
@@ -361,6 +366,7 @@ implements EstatisticaExternaDao{
 		
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public FonteExterna getFonteExternaPorDp(String dp){
 		String query = "from FonteExterna ";

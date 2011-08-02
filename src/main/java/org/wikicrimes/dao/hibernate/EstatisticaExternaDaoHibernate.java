@@ -28,11 +28,11 @@ implements EstatisticaExternaDao{
 		//O parametro mes é opcional. Caso o último mês que há no banco seja anterior ao atual, pega-se o último mês do banco.
 		if(mes.isEmpty() )  mes = ultimoMesBanco;
 		
-//		if(Util.getMonthAsInt(mes)> Util.getMonthAsInt(ultimoMesBanco) ){
+		//if(Util.getMonthAsInt(mes)> Util.getMonthAsInt(ultimoMesBanco) ){
 			parametros = "  mes = '" + ultimoMesBanco+"' and delegacia = '"+ dp + "'" ;
-//		}else{
-//			parametros = " mes = '" + mes+"' and delegacia = '"+ dp + "'" ;
-//		}
+		//}else{
+		//	parametros = " mes = '" + mes+"' and delegacia = '"+ dp + "'" ;
+		//}
 		//O parametro tipoCrime também é opcional.
 		if(!tipoCrime.isEmpty()) {
 			query +=  "from EstatisticaExterna where tipo like '%"+tipoCrime +"%' and " + parametros;

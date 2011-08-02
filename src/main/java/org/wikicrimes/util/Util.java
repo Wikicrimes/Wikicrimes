@@ -285,6 +285,9 @@ public class Util {
 	public static int getMonthAsInt(String month)
 	{
 		int intMonth = 0;
+		if(month == null){
+			System.out.println("ta nulo!");
+		}
 		
 		if (month.equalsIgnoreCase("Janeiro")) {
 			intMonth = 1;

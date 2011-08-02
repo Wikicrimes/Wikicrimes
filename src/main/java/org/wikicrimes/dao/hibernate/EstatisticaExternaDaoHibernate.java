@@ -28,7 +28,7 @@ implements EstatisticaExternaDao{
 		
 		//O parametro mes é opcional. Caso o último mês que há no banco seja anterior ao atual, pega-se o último mês do banco.
 		if(mes.isEmpty() )  mes = ultimoMesBanco;
-		
+		System.out.println(mes);
 		if(Util.getMonthAsInt(mes)> Util.getMonthAsInt(ultimoMesBanco) ){
 			parametros = "  mes = '" + ultimoMesBanco+"' and delegacia = '"+ dp + "'" ;
 		}else{

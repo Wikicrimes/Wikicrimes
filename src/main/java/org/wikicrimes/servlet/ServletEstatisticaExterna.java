@@ -19,13 +19,13 @@ public class ServletEstatisticaExterna extends HttpServlet{
 	throws ServletException, IOException {
 		try{		
 			//Dados recebidos
-			String mes = "";
+			String mes = "Fevereiro";
 			String tipoCrime = "";
 			double lat = Double.parseDouble(request.getParameter("lat"));
 			double lng = Double.parseDouble(request.getParameter("lng"));
 			if(request.getParameter("mes") != null) mes = request.getParameter("mes");
 			if(request.getParameter("tp") != null) tipoCrime = request.getParameter("tp");
-			
+			System.out.println(mes);
 			String resposta = getService().getEstatisticaExternaResposta(mes,lng,lat,tipoCrime);
 			
 			response.getWriter().write(resposta);

@@ -20,13 +20,13 @@ public class EstatisticaExternaServiceImpl extends GenericCrudServiceImpl implem
 		return estatisticaExternaDao.getEstatisticaExterna(mes, dp, tipoCrime);
 	}
 
-	public double getTaxaCrescimento(EstatisticaExterna estatistica){
+	public double getTaxaCrescimento(EstatisticaExterna estatistica, String dp){
 		 
-		return estatisticaExternaDao.getTaxaCrescimento(estatistica);
+		return estatisticaExternaDao.getTaxaCrescimento(estatistica, dp);
 	}
 	
-	public int getCrescimento(EstatisticaExterna estatistica){
-		return estatisticaExternaDao.getCrescimento(estatistica);
+	public int getCrescimento(EstatisticaExterna estatistica, String dp){
+		return estatisticaExternaDao.getCrescimento(estatistica, dp);
 	}
 	
 	public int getRankDp(String dp, String mes, String tipoCrime){
@@ -56,6 +56,7 @@ public class EstatisticaExternaServiceImpl extends GenericCrudServiceImpl implem
 		String resposta="";
 		
 		dp = estatisticaExternaDao.getDP(lat, lng);
+		String nomeDP = estatisticaExternaDao.getDPNome(lat, lng);
 		EstatisticaExterna ee = getEstatisticaExterna(mes, dp, tipoCrime);
 		
 		if(tipoCrime.isEmpty()){
@@ -68,15 +69,15 @@ public class EstatisticaExternaServiceImpl extends GenericCrudServiceImpl implem
 		
 		latDp = fonte.getLatitude();
 		lngDp = fonte.getLongitude();
-		taxa = getTaxaCrescimento(ee);
-		crescimento = getCrescimento(ee);
+		taxa = getTaxaCrescimento(ee,dp);
+		crescimento = getCrescimento(ee, dp);
 		rank = getRankDp(dp,  mes, tipoCrime);
 		mesComparacao = ee.getMes();
 		mesAnterior = getMesAnterior(ee.getMes());
 		if(tipo.isEmpty()){
-			resposta = "{\"dp\":\""+dp+"\", \"lat\":"+latDp+", \"lng\":"+lngDp+", \"taxa\":"+taxa+", \"crescimento\":"+crescimento+", \"rank\":"+rank+", \"mes\":\""+mesComparacao+"\", \"mesAnterior\":\""+mesAnterior+"\"}";
+			resposta = "{\"dp\":\""+nomeDP+"\", \"lat\":"+latDp+", \"lng\":"+lngDp+", \"taxa\":"+taxa+", \"crescimento\":"+crescimento+", \"rank\":"+rank+", \"mes\":\""+mesComparacao+"\", \"mesAnterior\":\""+mesAnterior+"\"}";
 		}else{
-			resposta = "{\"dp\":\""+dp+"\", \"lat\":"+latDp+", \"lng\":"+lngDp+", \"taxa\":"+taxa+", \"crescimento\":"+crescimento+", \"rank\":"+rank+", \"mes\":\""+mesComparacao+"\", \"mesAnterior\":\""+mesAnterior+"\", \"tipo\":\""+tipo+"\"}";	
+			resposta = "{\"dp\":\""+nomeDP+"\", \"lat\":"+latDp+", \"lng\":"+lngDp+", \"taxa\":"+taxa+", \"crescimento\":"+crescimento+", \"rank\":"+rank+", \"mes\":\""+mesComparacao+"\", \"mesAnterior\":\""+mesAnterior+"\", \"tipo\":\""+tipo+"\"}";	
 		}
 		return resposta;
 	}

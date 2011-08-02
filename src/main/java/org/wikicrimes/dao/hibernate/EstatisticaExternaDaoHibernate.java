@@ -33,9 +33,9 @@ implements EstatisticaExternaDao{
 		if(mes.isEmpty() )  mes = ultimoMesBanco;
 		System.out.println("mes="+mes);
 		if(Util.getMonthAsInt(mes)> Util.getMonthAsInt(ultimoMesBanco) ){
-			parametros = "  mes = '" + ultimoMesBanco+"' and delegacia = '"+ dp + "'" ;
+			parametros = "  mes = '" + ultimoMesBanco+"' and ese_idfonte_externa = "+ dp + "" ;
 		}else{
-			parametros = " mes = '" + mes+"' and delegacia = '"+ dp + "'" ;
+			parametros = " mes = '" + mes+"' and ese_idfonte_externa = "+ dp + "" ;
 		}
 		//O parametro tipoCrime também é opcional.
 		if(!tipoCrime.isEmpty()) {
@@ -52,7 +52,7 @@ implements EstatisticaExternaDao{
 			if(numVitimas >0){
 			
 				e.setNumVitimas(numVitimas);
-				e.setDelegacia(dp);
+				e.setDelegacia("");
 				e.setMes(mes);
 				e.setTipo("");
 				
@@ -69,7 +69,7 @@ implements EstatisticaExternaDao{
 		String query = "from EstatisticaExterna ";
 		
 		if(dp!=null){
-			query += "where delegacia like '"+ dp + "' group by mes" ;
+			query += "where ese_idfonte_externa = '"+ Long.parseLong(dp) + "' group by mes" ;
 		}
 		List<EstatisticaExterna> eC = getHibernateTemplate().find(query);
 		
@@ -132,10 +132,71 @@ implements EstatisticaExternaDao{
 				}	
 				Collections.sort(delegacias);
 				
+				retorno = delegacias.get(0).getIdFonteExterna().toString();				
+				
+			}
+			
+			/*String query = "select new.wikicrimes.util.DelegaciaProxima(f.idFonteExterna, f.latitude, f.longitude," +
+			"((ACOS(SIN("+lat+" * PI() / 180) * SIN(f.latitude * PI() / 180) + COS("+lat+
+			" * PI() / 180) * COS(f.latitude * PI() / 180) * COS(("+lng+
+			" - f.longitude) * PI() / 180)) * 180 / PI()) * 60 * 1.1515) as distance, f.nome) FROM FonteExterna f"+
+			" having distance is not null order by distance";
+			
+			//getSession(true).createQuery(query).setCacheable(false).list();
+			List<DelegaciaProxima> eC = getSession().createQuery(query).setCacheable(false).list();
+			retorno = eC.get(0).getNome().replace("Ocorrências Mensais -", "");
+			retorno = retorno.replace("2011" , "");
+			retorno = retorno.trim();*/
+		}
+			return retorno;	
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public String getDPNome(double lat, double lng) {
+		String retorno = "";
+				
+		if(lat != 0 & lng != 0){
+			String queryFonte = "from FonteExterna where latitude is not null and longitude is not null";
+			List<FonteExterna> fontes = getHibernateTemplate().find(queryFonte);
+			if(!fontes.isEmpty()){
+				ArrayList<DelegaciaProxima> delegacias = 	new ArrayList<DelegaciaProxima>();
+				for (FonteExterna f : fontes) {
+					double distancia = (Math.acos(
+							Math.sin(
+									lat * Math.PI / 180
+							        ) 
+							 	* Math.sin(
+									f.getLatitude() * Math.PI / 180
+							      	) 
+								+ Math.cos(
+							      		lat * Math.PI / 180
+							      	) 
+								* Math.cos(
+							      		f.getLatitude() * Math.PI / 180
+							      	) 
+								* Math.cos(
+									(
+										lng - f.getLongitude()
+									) 
+									* Math.PI / 180
+							        )
+							     )
+							 * 180 / Math.PI) * 60 * 1.1515; 
+					DelegaciaProxima delegacia = new DelegaciaProxima();
+							delegacia.setIdFonteExterna(f.getIdFonteExterna());
+							delegacia.setLatitude(f.getLatitude()); 
+							delegacia.setLongitude(f.getLongitude());
+							delegacia.setDistancia(distancia);
+							delegacia.setNome(f.getNome());			
+							
+							delegacias.add(delegacia);
+				}	
+				Collections.sort(delegacias);				
 				retorno = delegacias.get(0).getNome().replace("Ocorrências Mensais -", "");
 				retorno = retorno.replace("2011" , "");
-				retorno = retorno.trim();
-				
+				retorno = retorno.trim();				
 			}
 			
 			/*String query = "select new.wikicrimes.util.DelegaciaProxima(f.idFonteExterna, f.latitude, f.longitude," +
@@ -193,14 +254,14 @@ implements EstatisticaExternaDao{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public int getCrescimento(EstatisticaExterna estatistica) {
+	public int getCrescimento(EstatisticaExterna estatistica, String dp) {
 		String query = "from EstatisticaExterna ";
 		String mesAnterior = getMesAnterior(estatistica.getMes()); 
 		EstatisticaExterna estatisticaComparar;
 		
 		//Tratamento para Tipo de Crime vazio
 		if(estatistica.getTipo().isEmpty()){
-			query = "select sum(numVitimas) from EstatisticaExterna where mes = '"+mesAnterior+"' and delegacia = '"+estatistica.getDelegacia()+"' ";
+			query = "select sum(numVitimas) from EstatisticaExterna where mes = '"+mesAnterior+"' and ese_idfonte_externa = "+dp+" ";
 			
 			estatisticaComparar = new EstatisticaExterna();
 			
@@ -212,7 +273,7 @@ implements EstatisticaExternaDao{
 		}else{
 			
 			if (estatistica.getMes()!= null ) {
-				query += "where mes = '" + mesAnterior+"' and delegacia ='"+estatistica.getDelegacia()+"' and tipo = '"+estatistica.getTipo()+ "'  order by numVitimas desc";
+				query += "where mes = '" + mesAnterior+"' and ese_idfonte_externa ="+dp+" and tipo = '"+estatistica.getTipo()+ "'  order by numVitimas desc";
 			}
 			List<EstatisticaExterna> eC = getHibernateTemplate().find(query);
 			if(eC.size()>0){
@@ -323,7 +384,7 @@ implements EstatisticaExternaDao{
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public double getTaxaCrescimento(EstatisticaExterna estatistica){
+	public double getTaxaCrescimento(EstatisticaExterna estatistica, String dp){
 		double taxa;
 		String query;
 		String mesAnterior = getMesAnterior(estatistica.getMes()); 
@@ -332,7 +393,7 @@ implements EstatisticaExternaDao{
 			query = "select sum(numVitimas) from EstatisticaExterna ";
 			
 			if(!estatistica.getMes().isEmpty()){
-				query += " where mes = '" + mesAnterior+"' and delegacia ='"+estatistica.getDelegacia()+"' ";
+				query += " where mes = '" + mesAnterior+"' and ese_idfonte_externa = "+dp+" ";
 			}
 			
 			int numVitimas = Integer.parseInt(getSession().createQuery(query).setCacheable(false).uniqueResult().toString());
@@ -352,7 +413,7 @@ implements EstatisticaExternaDao{
 		
 		
 			if (estatistica.getMes()!= null ) {
-				query += " where mes = '" + mesAnterior+"' and delegacia ='"+estatistica.getDelegacia()+"' and tipo like '%"+estatistica.getTipo()+ "%'  order by numVitimas desc";
+				query += " where mes = '" + mesAnterior+"' and ese_idfonte_externa = "+estatistica.getFonte().getIdFonteExterna()+" and tipo like '%"+estatistica.getTipo()+ "%'  order by numVitimas desc";
 			}
     	
 			List<EstatisticaExterna> eC = getHibernateTemplate().find(query);
@@ -375,7 +436,7 @@ implements EstatisticaExternaDao{
 		String query = "from FonteExterna ";
 				
     	if (!dp.isEmpty()) {
-    	    query += "where nome like'%"+ dp +"%' ";
+    	    query += "where fne_idfonte_externa = "+ dp;
     	}
     	
     	List<FonteExterna> eC = getHibernateTemplate().find(query);

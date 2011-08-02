@@ -298,22 +298,23 @@ implements EstatisticaExternaDao{
 	}
 
 	@Override
-	public int getRankDp(String dp, String mes) {
-		String ultimoMesBanco = ultimoMesBanco(dp);
+	public int getRankDp(EstatisticaExterna e) {
+		String ultimoMesBanco = ultimoMesBanco(e.getDelegacia());
 		List<DelegaciaOcorrencias> ocorrencias; 
 		
-		if (mes.isEmpty()) mes = ultimoMesBanco;
+		if (e.getMes().isEmpty()) e.setMes(ultimoMesBanco);
 		
-		if(Util.getMonthAsInt(mes)>Util.getMonthAsInt(ultimoMesBanco)){
+		if(Util.getMonthAsInt(e.getMes())>Util.getMonthAsInt(ultimoMesBanco)){
 			ocorrencias = getTopDPs(ultimoMesBanco);
 		}else{
-			ocorrencias = getTopDPs(mes);
+			ocorrencias = getTopDPs(e.getMes());
 		}
 		
 		
+				
 		if(ocorrencias!=null){
 			for(int i=0;i<ocorrencias.size();i++){
-				if(dp.equals(ocorrencias.get(i).getDelegacia())){
+				if(e.getFonte().getIdFonteExterna()==ocorrencias.get(i).getIdDp()){
 					return i+1; //Posição no rank de delegacias mais perigosas
 				}
 			}

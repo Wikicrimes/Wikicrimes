@@ -13,7 +13,7 @@ public interface EstatisticaExternaDao extends GenericCrudDao {
 	public String getDPNome(double lat, double lng);
 	public List<DelegaciaOcorrencias> getTopDPs(String mes);
 	public int getCrescimento(EstatisticaExterna estatistica, String dp); 
-	public int getRankDp(String dp, String mes);
+	public int getRankDp(EstatisticaExterna e);
 	public double getTaxaCrescimento(EstatisticaExterna estatistica, String dp);
 	//public FonteExterna getFonteExterna(long idFonte);
 	public String getMesAnterior(String mes);

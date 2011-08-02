@@ -3,7 +3,8 @@ package org.wikicrimes.util;
 public class DelegaciaOcorrencias {
 	private long numTotalVitimas;
 	private String delegacia;
-	private Long idDp;
+	private Long idDp;//idFonteExterna
+	
 	public DelegaciaOcorrencias(int numTotalVitimas, String delegacia, Long idDp) {
 		super();
 		this.numTotalVitimas = numTotalVitimas;

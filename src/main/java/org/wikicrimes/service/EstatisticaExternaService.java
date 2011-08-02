@@ -6,6 +6,6 @@ public interface EstatisticaExternaService extends GenericCrudService{
 	public EstatisticaExterna getEstatisticaExterna(String mes,String dp,String  tipoCrime);
 	public double getTaxaCrescimento(EstatisticaExterna estatistica, String dp);
 	public int getCrescimento(EstatisticaExterna estatistica, String dp);
-	public int getRankDp(String dp, String tipoCrime, String mes);
+	public int getRankDp(EstatisticaExterna e);
 	public String getEstatisticaExternaResposta(String mes, double lng, double lat, String tipoCrime);
 }

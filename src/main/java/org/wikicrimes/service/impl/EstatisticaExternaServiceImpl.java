@@ -29,8 +29,8 @@ public class EstatisticaExternaServiceImpl extends GenericCrudServiceImpl implem
 		return estatisticaExternaDao.getCrescimento(estatistica, dp);
 	}
 	
-	public int getRankDp(String dp, String mes, String tipoCrime){
-		return estatisticaExternaDao.getRankDp(dp, mes);
+	public int getRankDp(EstatisticaExterna e){
+		return estatisticaExternaDao.getRankDp(e);
 	}
 	
 	public String getMesAnterior(String mes){
@@ -54,13 +54,16 @@ public class EstatisticaExternaServiceImpl extends GenericCrudServiceImpl implem
 		double lngDp;
 		String tipo ="";
 		String resposta="";
-		
+		//Obtém Delegacia através a latitude e longitude
 		dp = estatisticaExternaDao.getDP(lat, lng);
 		String nomeDP = estatisticaExternaDao.getDPNome(lat, lng);
+		
+		//Monta objeto EstatisticaExterna conforme parâmetros
 		EstatisticaExterna ee = getEstatisticaExterna(mes, dp, tipoCrime);
 		
 		if(tipoCrime.isEmpty()){
 			fonte =getFonteExterna(dp);
+			ee.setFonte(fonte);
 		}else{
 			tipo = ee.getTipo();
 			fonte = ee.getFonte();
@@ -71,7 +74,7 @@ public class EstatisticaExternaServiceImpl extends GenericCrudServiceImpl implem
 		lngDp = fonte.getLongitude();
 		taxa = getTaxaCrescimento(ee,dp);
 		crescimento = getCrescimento(ee, dp);
-		rank = getRankDp(dp,  mes, tipoCrime);
+		rank = getRankDp(ee);
 		mesComparacao = ee.getMes();
 		mesAnterior = getMesAnterior(ee.getMes());
 		if(tipo.isEmpty()){

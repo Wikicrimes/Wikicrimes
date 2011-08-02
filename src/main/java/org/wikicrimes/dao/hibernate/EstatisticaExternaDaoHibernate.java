@@ -18,6 +18,7 @@ implements EstatisticaExternaDao{
 		setEntity(EstatisticaExterna.class);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public EstatisticaExterna getEstatisticaExterna(String mes, String dp,
 			String tipoCrime) {
 		String query="";

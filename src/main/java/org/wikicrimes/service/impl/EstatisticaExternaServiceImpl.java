@@ -16,16 +16,16 @@ public class EstatisticaExternaServiceImpl extends GenericCrudServiceImpl implem
 		this.estatisticaExternaDao = estatisticaExternaDao;
 	}
 
-	public EstatisticaExterna getEstatisticaExterna(String mes,String dp,String  tipoCrime){
+	public EstatisticaExterna getEstatisticaExterna(String mes,Long dp,String  tipoCrime){
 		return estatisticaExternaDao.getEstatisticaExterna(mes, dp, tipoCrime);
 	}
 
-	public double getTaxaCrescimento(EstatisticaExterna estatistica, String dp){
+	public double getTaxaCrescimento(EstatisticaExterna estatistica, Long dp){
 		 
 		return estatisticaExternaDao.getTaxaCrescimento(estatistica, dp);
 	}
 	
-	public int getCrescimento(EstatisticaExterna estatistica, String dp){
+	public int getCrescimento(EstatisticaExterna estatistica, Long dp){
 		return estatisticaExternaDao.getCrescimento(estatistica, dp);
 	}
 	
@@ -37,13 +37,11 @@ public class EstatisticaExternaServiceImpl extends GenericCrudServiceImpl implem
 		return estatisticaExternaDao.getMesAnterior(mes);
 	}
 	
-	public FonteExterna getFonteExterna(String dp){
-		return estatisticaExternaDao.getFonteExternaPorDp(dp);
-	}
+	
 	
 	public String getEstatisticaExternaResposta(String mes, double lng,double lat,String tipoCrime){
 		//Resposta
-		String dp ;
+		Long dp ;
 		double taxa; //taxa do crime
 		int crescimento; //1 se cresceu, -1 de baixou  e 0 se permaneceu a msm quantidade com relação ao mês anterior
 		int rank; //posição no rank de crimes
@@ -52,7 +50,6 @@ public class EstatisticaExternaServiceImpl extends GenericCrudServiceImpl implem
 		FonteExterna fonte= new FonteExterna();
 		double latDp;
 		double lngDp;
-		String tipo ="";
 		String resposta="";
 		//Obtém Delegacia através a latitude e longitude
 		dp = estatisticaExternaDao.getDP(lat, lng);
@@ -61,29 +58,23 @@ public class EstatisticaExternaServiceImpl extends GenericCrudServiceImpl implem
 		//Monta objeto EstatisticaExterna conforme parâmetros
 		EstatisticaExterna ee = getEstatisticaExterna(mes, dp, tipoCrime);
 		
-		if(tipoCrime.isEmpty()){
-			fonte =getFonteExterna(dp);
-			ee.setFonte(fonte);
-		}else{
-			tipo = ee.getTipo();
-			fonte = ee.getFonte();
-		}
-		
-		
-		latDp = fonte.getLatitude();
-		lngDp = fonte.getLongitude();
+	
+				
+		latDp = ee.getFonte().getLatitude();
+		lngDp = ee.getFonte().getLongitude();
 		taxa = getTaxaCrescimento(ee,dp);
 		crescimento = getCrescimento(ee, dp);
 		rank = getRankDp(ee);
 		mesComparacao = ee.getMes();
 		mesAnterior = getMesAnterior(ee.getMes());
-		if(tipo.isEmpty()){
+		if(ee.getTipo().isEmpty()){
 			resposta = "{\"dp\":\""+nomeDP+"\", \"lat\":"+latDp+", \"lng\":"+lngDp+", \"taxa\":"+taxa+", \"crescimento\":"+crescimento+", \"rank\":"+rank+", \"mes\":\""+mesComparacao+"\", \"mesAnterior\":\""+mesAnterior+"\"}";
 		}else{
-			resposta = "{\"dp\":\""+nomeDP+"\", \"lat\":"+latDp+", \"lng\":"+lngDp+", \"taxa\":"+taxa+", \"crescimento\":"+crescimento+", \"rank\":"+rank+", \"mes\":\""+mesComparacao+"\", \"mesAnterior\":\""+mesAnterior+"\", \"tipo\":\""+tipo+"\"}";	
+			resposta = "{\"dp\":\""+nomeDP+"\", \"lat\":"+latDp+", \"lng\":"+lngDp+", \"taxa\":"+taxa+", \"crescimento\":"+crescimento+", \"rank\":"+rank+", \"mes\":\""+mesComparacao+"\", \"mesAnterior\":\""+mesAnterior+"\", \"tipo\":\""+ee.getTipo()+"\"}";	
 		}
 		return resposta;
 	}
+
 
 	
 }

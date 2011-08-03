@@ -8,14 +8,14 @@ import org.wikicrimes.util.DelegaciaOcorrencias;
 
 public interface EstatisticaExternaDao extends GenericCrudDao {
 	
-	public EstatisticaExterna getEstatisticaExterna(String mes, String dp, String tipoCrime);
-	public String getDP(double lat,double lng);
+	public EstatisticaExterna getEstatisticaExterna(String mes, Long dp, String tipoCrime);
+	public Long getDP(double lat,double lng);
 	public String getDPNome(double lat, double lng);
 	public List<DelegaciaOcorrencias> getTopDPs(String mes);
-	public int getCrescimento(EstatisticaExterna estatistica, String dp); 
+	public int getCrescimento(EstatisticaExterna estatistica, Long dp); 
 	public int getRankDp(EstatisticaExterna e);
-	public double getTaxaCrescimento(EstatisticaExterna estatistica, String dp);
+	public double getTaxaCrescimento(EstatisticaExterna estatistica, Long dp);
 	//public FonteExterna getFonteExterna(long idFonte);
 	public String getMesAnterior(String mes);
-	public FonteExterna getFonteExternaPorDp(String dp);
+	public FonteExterna getFonteExternaPorDp(Long dp);
 }

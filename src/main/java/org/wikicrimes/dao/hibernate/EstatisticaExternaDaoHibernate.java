@@ -19,7 +19,7 @@ implements EstatisticaExternaDao{
 	}
 	
 	@SuppressWarnings("unchecked")
-	public EstatisticaExterna getEstatisticaExterna(String mes, String dp,
+	public EstatisticaExterna getEstatisticaExterna(String mes, Long dp,
 			String tipoCrime) {
 		System.out.println("mes="+mes);
 		String query="";
@@ -52,24 +52,26 @@ implements EstatisticaExternaDao{
 			if(numVitimas >0){
 			
 				e.setNumVitimas(numVitimas);
-				e.setIdEstatisticaExterna(Long.parseLong(dp));
 				e.setMes(mes);
 				e.setTipo("");
+				FonteExterna fonte = getFonteExternaPorDp(dp);
+				e.setFonte(fonte);
 				
 			}
 			
 		}
+				
 		return e;
 		
 		
 	}
 	
 	@SuppressWarnings("unchecked")
-	public String ultimoMesBanco(String dp){
+	public String ultimoMesBanco(Long dp){
 		String query = "from EstatisticaExterna ";
 		
 		if(dp!=null){
-			query += "where ese_idfonte_externa = '"+ Long.parseLong(dp) + "' group by mes" ;
+			query += "where ese_idfonte_externa = '"+dp+ "' group by mes" ;
 		}
 		List<EstatisticaExterna> eC = getHibernateTemplate().find(query);
 		
@@ -91,14 +93,14 @@ implements EstatisticaExternaDao{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public String getDP(double lat, double lng) {
-		String retorno = "";
+	public Long getDP(double lat, double lng) {
+		Long retorno;
 				
 		if(lat != 0 & lng != 0){
 			String queryFonte = "from FonteExterna where latitude is not null and longitude is not null";
 			List<FonteExterna> fontes = getHibernateTemplate().find(queryFonte);
-			if(!fontes.isEmpty()){
-				ArrayList<DelegaciaProxima> delegacias = 	new ArrayList<DelegaciaProxima>();
+			int i = getHibernateTemplate().find(queryFonte).size();
+			ArrayList<DelegaciaProxima> delegacias = 	new ArrayList<DelegaciaProxima>();
 				for (FonteExterna f : fontes) {
 					double distancia = (Math.acos(
 							Math.sin(
@@ -131,10 +133,11 @@ implements EstatisticaExternaDao{
 							delegacias.add(delegacia);
 				}	
 				Collections.sort(delegacias);
-				
-				retorno = delegacias.get(0).getIdFonteExterna().toString();				
-				
-			}
+				if (delegacias.size()>0){
+					retorno = delegacias.get(0).getIdFonteExterna();
+					return retorno;
+				}
+			
 			
 			/*String query = "select new.wikicrimes.util.DelegaciaProxima(f.idFonteExterna, f.latitude, f.longitude," +
 			"((ACOS(SIN("+lat+" * PI() / 180) * SIN(f.latitude * PI() / 180) + COS("+lat+
@@ -148,7 +151,7 @@ implements EstatisticaExternaDao{
 			retorno = retorno.replace("2011" , "");
 			retorno = retorno.trim();*/
 		}
-			return retorno;	
+			return null;	
 		
 	}
 	
@@ -222,20 +225,21 @@ implements EstatisticaExternaDao{
 		
 		String queryVitimas ="select sum(numVitimas) from EstatisticaExterna ";
 		String queryDelegacias = "select delegacia from EstatisticaExterna ";
+		String queryIdFonte = "select ee.fonte.idFonteExterna from EstatisticaExterna ee ";
 		
 		if (mes != null ) {
     	    queryVitimas += "where mes = '" + mes + "' group by delegacia order by sum(numVitimas) desc";
     	    queryDelegacias+= "where mes = '" + mes + "' group by delegacia order by sum(numVitimas) desc";
-    	    //query += "where mes = '" + mes + "' group by delegacia order by sum(numVitimas) desc";
+    	    queryIdFonte += "where mes = '" + mes + "' group by delegacia order by sum(numVitimas) desc";
 		}
 			
 		List<Long> numVitimas;
 		List<String> delegacias;
-		
-		//List<DelegaciaOcorrencias> teste = getSession().createQuery(query).setCacheable(false).list(); 
+		List<Long> idFontes;
 		
 		numVitimas = getSession().createQuery(queryVitimas).setCacheable(false).list();
 		delegacias = getSession().createQuery(queryDelegacias).setCacheable(false).list();
+		idFontes= getSession().createQuery(queryIdFonte).setCacheable(false).list();
 		
 		ArrayList<DelegaciaOcorrencias> ocorrencias = new ArrayList<DelegaciaOcorrencias>();
 		
@@ -244,7 +248,7 @@ implements EstatisticaExternaDao{
 				DelegaciaOcorrencias ocorrencia = new DelegaciaOcorrencias();
 				ocorrencia.setDelegacia(delegacias.get(i));
 				ocorrencia.setNumTotalVitimas(numVitimas.get(i));
-				
+				ocorrencia.setIdDp(idFontes.get(i));
 				ocorrencias.add(ocorrencia);
 			}
 		}
@@ -254,7 +258,7 @@ implements EstatisticaExternaDao{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public int getCrescimento(EstatisticaExterna estatistica, String dp) {
+	public int getCrescimento(EstatisticaExterna estatistica, Long dp) {
 		String query = "from EstatisticaExterna ";
 		String mesAnterior = getMesAnterior(estatistica.getMes()); 
 		EstatisticaExterna estatisticaComparar;
@@ -299,7 +303,7 @@ implements EstatisticaExternaDao{
 
 	@Override
 	public int getRankDp(EstatisticaExterna e) {
-		String ultimoMesBanco = ultimoMesBanco(e.getFonte().getIdFonteExterna().toString());
+		String ultimoMesBanco = ultimoMesBanco(e.getFonte().getIdFonteExterna());
 		List<DelegaciaOcorrencias> ocorrencias; 
 		
 		if (e.getMes().isEmpty()) e.setMes(ultimoMesBanco);
@@ -310,11 +314,12 @@ implements EstatisticaExternaDao{
 			ocorrencias = getTopDPs(e.getMes());
 		}
 		
-		
+		Long idFonte = e.getFonte().getIdFonteExterna();
 				
 		if(ocorrencias!=null){
 			for(int i=0;i<ocorrencias.size();i++){
-				if(e.getFonte().getIdFonteExterna()==ocorrencias.get(i).getIdDp()){
+				Long IdFonteOcorrencia = ocorrencias.get(i).getIdDp();
+				if(idFonte.intValue()== IdFonteOcorrencia.intValue()){
 					return i+1; //Posição no rank de delegacias mais perigosas
 				}
 			}
@@ -385,7 +390,7 @@ implements EstatisticaExternaDao{
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public double getTaxaCrescimento(EstatisticaExterna estatistica, String dp){
+	public double getTaxaCrescimento(EstatisticaExterna estatistica, Long dp){
 		double taxa;
 		String query;
 		String mesAnterior = getMesAnterior(estatistica.getMes()); 
@@ -433,10 +438,10 @@ implements EstatisticaExternaDao{
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public FonteExterna getFonteExternaPorDp(String dp){
+	public FonteExterna getFonteExternaPorDp(Long dp){
 		String query = "from FonteExterna ";
 				
-    	if (!dp.isEmpty()) {
+    	if (dp!=null) {
     	    query += "where fne_idfonte_externa = "+ dp;
     	}
     	

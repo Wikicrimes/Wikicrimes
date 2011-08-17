@@ -430,6 +430,19 @@ public class CrimeDaoHibernate extends GenericCrudDaoHibernate implements
     	  		
     	
     }
+	
+	public List<Crime> getCrime(String chave) {
+    	
+    	String query = "from Crime ";
+
+    	
+    	    query += "where cri_chave='"+chave+"' and cri_status=0";
+    	
+
+    	return getHibernateTemplate().find(query);
+    	  		
+    	
+    }
    /*
     * Metodo para retornar crimes dentro de Viewport
     */

@@ -21,6 +21,7 @@ public interface CrimeDao extends GenericCrudDao {
 	public Integer getQtdCrimesByDateIntervalEstado(final int tipoCrime, final String dataInicio, final String dataFim, final String siglaEstado);
 	public Integer getQtdCrimesByDateIntervalCidade(final int tipoCrime, final String dataInicio, final String dataFim, final String nomeCidade);
 	public List<Crime> getCrimesSemChave();
+	public List<Crime> getCrime(String chave);
 	public List<Crime> getCrimesByViewPort(final double norte, final double sul, final double leste, final double oeste);
 	public List<Crime> pesquisarCrime(Crime crime);
 	public List<Crime> getCrimesMaisVistos();

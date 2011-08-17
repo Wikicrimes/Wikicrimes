@@ -471,7 +471,11 @@ public class CrimeServiceImpl extends GenericCrudServiceImpl implements
 	public Crime getCrime(String chave) {
 			Crime c= new Crime();
 			c.setChave(chave);
-			List<BaseObject> list =this.getDao().find(c);
+			List<Crime> list = crimeDao.getCrime(chave);
+			if(list.size() == 0){
+				c.setStatus(new Long(1));
+				return c;
+			}
 			c = (Crime)list.get(0);
 			Hibernate.initialize(c.getTipoCrime());
 			Hibernate.initialize(c.getUsuario());

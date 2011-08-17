@@ -55,11 +55,14 @@
 				</rich:panel>
 				
 				<div id="detalhecrime">
-					
+					<c:if test="#{mostrarDadosForm.crime.status == 1}">
+						<p><h:outputText value="Este crime foi removido pelo administrador." /></p>
+					</c:if>
+					<c:if test="#{mostrarDadosForm.crime.status == 0}">
 					<div id="detalhemapa" style="height: 300px; width: 500px; float: right; margin: 20px;"></div>
 					
 					<c:if test="#{mostrarDadosForm.crime.cidade != null}">
-			 		<p><h:outputFormat value="#{messages['crime.titulo']}">
+			 		<h1 style="font-size:12px"><h:outputFormat value="#{messages['crime.titulo']}">
 			 		 	<c:if test="#{mostrarDadosForm.crime.tipoCrime.idTipoCrime != 5}">
 			 			<f:param value="#{mostrarDadosForm.crime.tipoCrime.descricao}"/>
 			 			</c:if>
@@ -70,7 +73,7 @@
 			 			<f:param value="#{mostrarDadosForm.crime.estado}"/> 
 			 			<f:param value="#{mostrarDadosForm.crime.dataHoraRegistro}"/>
 			 			<f:convertDateTime pattern="#{messages['crime.data.formato']}" />
-			 		</h:outputFormat></p>
+			 		</h:outputFormat></h1>
 			 		</c:if>
 			 		<c:if test="#{mostrarDadosForm.crime.cidade == null}">
 			 		<p><h:outputFormat value="#{messages['crime.titulo2']}"> 
@@ -110,6 +113,7 @@
 						</div>
 					</t:column>
 					</t:dataTable>
+					</c:if>
 				</div>
 				<t:saveState value="#{mostrarDadosForm.idCrime}"></t:saveState>
 			</ui:define>

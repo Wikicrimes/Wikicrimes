@@ -54,7 +54,8 @@ public class EstatisticaExternaServiceImpl extends GenericCrudServiceImpl implem
 		//Obtém Delegacia através a latitude e longitude
 		dp = estatisticaExternaDao.getDP(lat, lng);
 		String nomeDP = estatisticaExternaDao.getDPNome(lat, lng);
-		
+		nomeDP.replace("Ocorrências Mensais -", " ");
+		nomeDP.replace("2011"," ");
 		//Monta objeto EstatisticaExterna conforme parâmetros
 		EstatisticaExterna ee = getEstatisticaExterna(mes, dp, tipoCrime);
 		

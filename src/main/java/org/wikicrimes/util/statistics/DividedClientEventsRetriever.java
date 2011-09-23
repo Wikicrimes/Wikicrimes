@@ -3,10 +3,13 @@ package org.wikicrimes.util.statistics;
 import java.awt.Point;
 import java.util.List;
 
+import org.wikicrimes.model.BaseObject;
+
 /**
+ * TODO
  * pra substituir o ServletWikicrimesAPI
  */
-public class DividedClientEventsRetriever extends EventsRetriever{
+public class DividedClientEventsRetriever extends EventsRetriever<BaseObject>{
 	
 	public List<Point> getPoints(){
 		//TODO
@@ -14,7 +17,7 @@ public class DividedClientEventsRetriever extends EventsRetriever{
 	}
 	
 	@Override
-	public List getEvents() {
+	public List<BaseObject> getEvents() {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}

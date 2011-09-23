@@ -3,12 +3,11 @@ package org.wikicrimes.util.statistics;
 import java.awt.Rectangle;
 import java.security.InvalidParameterException;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
 import org.wikicrimes.util.kernelmap.LatLngBoundsGM;
-
-import antlr.ActionTransInfo;
 
 public class Param {
 
@@ -68,31 +67,31 @@ public class Param {
 		private boolean polygons;
 		private boolean image;
 		
-		public boolean generateKernelMap() {
+		public boolean asksGenerateKernelMap() {
 			return kernel;
 		}
 		
-		public boolean generateCharts() {
+		public boolean asksCreateCharts() {
 			return charts;
 		}
 		
-		public boolean generateBooleanGrid() {
+		public boolean asksGenerateBooleanGrid() {
 			return polygons;
 		}
 		
-		public boolean sendEvents() {
+		public boolean asksSendEvents() {
 			return events;
 		}
 		
-		public boolean getJson() {
+		public boolean asksSendJson() {
 			return json;
 		}
 		
-		public boolean getKernelMapImage() {
+		public boolean asksSendKernelMapImage() {
 			return image;
 		}
 		
-		public boolean needEventsFromDB() {
+		public boolean needsEventsFromDB() {
 			return kernel | charts | events; 
 		}
 		
@@ -235,6 +234,17 @@ public class Param {
 		}
 	}
 	
-	
+	public static EventsRetriever<?> getEventsRetriever(HttpServletRequest request, ServletContext context){
+		switch(getApplication(request)){
+		case WIKICRIMES:
+			Actions actions = Param.getActions(request);
+			boolean needsHistograms = actions.asksCreateCharts();
+			boolean needsReports = actions.asksSendEvents();
+			return new WikiCrimesEventsRetriever(request, context, needsHistograms, needsReports);
+		case WIKIMAPPS:
+			return new WikiMappsEventsRetriever(request);
+		}
+		return null;
+	}
 	
 }

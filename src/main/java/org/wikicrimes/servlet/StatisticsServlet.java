@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
 
-import org.wikicrimes.model.BaseObject;
 import org.wikicrimes.model.PontoLatLng;
 import org.wikicrimes.util.ServletUtil;
 import org.wikicrimes.util.kernelmap.KernelMap;
@@ -20,9 +19,9 @@ import org.wikicrimes.util.statistics.CrimeStringBuilder;
 import org.wikicrimes.util.statistics.EventsRetriever;
 import org.wikicrimes.util.statistics.KernelMapRequestHandler;
 import org.wikicrimes.util.statistics.Param;
+import org.wikicrimes.util.statistics.Param.Actions;
 import org.wikicrimes.util.statistics.SessionBuffer;
 import org.wikicrimes.util.statistics.WikiCrimesEventsRetriever;
-import org.wikicrimes.util.statistics.Param.Actions;
 
 @SuppressWarnings("serial")
 public class StatisticsServlet extends HttpServlet{
@@ -49,43 +48,40 @@ public class StatisticsServlet extends HttpServlet{
 			Actions actions = Param.getActions(request);
 //			/*DEBUG*/TimeTest.saveInstant("init");
 			
-			if(actions.needEventsFromDB()) {
+			if(actions.needsEventsFromDB()) {
 				sessionBuffer.clear();
-				boolean needHistograms = actions.generateCharts();
-				boolean needReports = actions.sendEvents();
-				EventsRetriever<BaseObject> events = new WikiCrimesEventsRetriever(request, context, needHistograms, needReports);
-//				EventsRetriever events = new AccidentEventsRetriever(request, context);
+				EventsRetriever<?> events = Param.getEventsRetriever(request, context);
 				sessionBuffer.saveTotalEvents(events.getTotalEvents());
 //				/*DEBUG*/TimeTest.saveInstant("consulta BD");
 			
-				if(actions.generateKernelMap()) {
+				if(actions.asksGenerateKernelMap()) {
 					KernelMapRequestHandler kernelHandler = new KernelMapRequestHandler(request, events.getPoints());
-					if(actions.generateBooleanGrid()) {
+					if(actions.asksGenerateBooleanGrid()) {
 						kernelHandler.generateBooleanGrid();
 					}
 					sessionBuffer.saveKernelMap(kernelHandler.getKernel(), kernelHandler.getImage(), kernelHandler.getBooleanGrid());
 //					/*DEBUG*/TimeTest.saveInstant("kernel");
 				}
 				
-				if(actions.generateCharts() && events instanceof WikiCrimesEventsRetriever) {
+				if(actions.asksCreateCharts() && events instanceof WikiCrimesEventsRetriever) {
 					ChartRequestHandler chartHandler = new ChartRequestHandler((WikiCrimesEventsRetriever)events);
 					sessionBuffer.saveChartsUrls(chartHandler.getTypesChart(), chartHandler.getReasonsChart());
 //					/*DEBUG*/TimeTest.saveInstant("charts");
 				}
 				
-				if(actions.sendEvents()) {
-					String crimesString = CrimeStringBuilder.buildString(events.getEvents());
+				if(actions.asksSendEvents() && events instanceof WikiCrimesEventsRetriever) {
+					String crimesString = CrimeStringBuilder.buildString(((WikiCrimesEventsRetriever)events).getEvents());
 					sessionBuffer.saveEvents(crimesString);
 //					/*DEBUG*/TimeTest.saveInstant("events string");
 				}
 			}
 			
-			if(actions.getJson()) {
+			if(actions.asksSendJson()) {
 				JSONObject json = generateJSON(sessionBuffer);
 //				/*DEBUG*/TimeTest.saveInstant("generate json");
 				ServletUtil.sendJson(response, json);
 //				/*DEBUG*/TimeTest.saveInstant("send json");
-			}else if(actions.getKernelMapImage()){
+			}else if(actions.asksSendKernelMapImage()){
 				Image image = sessionBuffer.getKernelMapImage();
 				if(image != null) {
 					ServletUtil.sendImage(response, image);

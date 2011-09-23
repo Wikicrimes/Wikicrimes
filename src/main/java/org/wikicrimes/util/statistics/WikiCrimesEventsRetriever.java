@@ -54,8 +54,7 @@ public class WikiCrimesEventsRetriever extends EventsRetriever<BaseObject>{
 		load();
 	}
 	
-	public WikiCrimesEventsRetriever(HttpServletRequest request, ServletContext context, 
-			boolean includeHistograms, boolean includeReports) {
+	public WikiCrimesEventsRetriever(HttpServletRequest request, ServletContext context, boolean includeHistograms, boolean includeReports) {
 		this.request = request;
 		this.context = context;
 		this.session = request.getSession();

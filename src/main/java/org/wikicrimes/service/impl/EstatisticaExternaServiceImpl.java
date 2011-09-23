@@ -1,5 +1,7 @@
 package org.wikicrimes.service.impl;
 
+import java.util.List;
+
 import org.wikicrimes.dao.*;
 
 import org.wikicrimes.model.*;
@@ -37,8 +39,6 @@ public class EstatisticaExternaServiceImpl extends GenericCrudServiceImpl implem
 		return estatisticaExternaDao.getMesAnterior(mes);
 	}
 	
-	
-	
 	public String getEstatisticaExternaResposta(String mes, double lng,double lat,String tipoCrime){
 		//Resposta
 		Long dp ;
@@ -58,8 +58,6 @@ public class EstatisticaExternaServiceImpl extends GenericCrudServiceImpl implem
 		nomeDP=nomeDP.replace("2011"," ");
 		//Monta objeto EstatisticaExterna conforme parâmetros
 		EstatisticaExterna ee = getEstatisticaExterna(mes, dp, tipoCrime);
-		
-	
 				
 		latDp = ee.getFonte().getLatitude();
 		lngDp = ee.getFonte().getLongitude();
@@ -74,6 +72,13 @@ public class EstatisticaExternaServiceImpl extends GenericCrudServiceImpl implem
 			resposta = "{\"dp\":\""+nomeDP+"\", \"lat\":"+latDp+", \"lng\":"+lngDp+", \"taxa\":"+taxa+", \"crescimento\":"+crescimento+", \"rank\":"+rank+", \"mes\":\""+mesComparacao+"\", \"mesAnterior\":\""+mesAnterior+"\", \"tipo\":\""+ee.getTipo()+"\"}";	
 		}
 		return resposta;
+	}
+
+	@Override
+	public List<FonteExterna> getDelegacias(double latitude, double longitude,double raio) {
+		List<FonteExterna> fontesExternas = estatisticaExternaDao.getDelegacias(latitude, longitude, raio);
+		
+		return fontesExternas;
 	}
 
 

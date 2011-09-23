@@ -18,4 +18,5 @@ public interface EstatisticaExternaDao extends GenericCrudDao {
 	//public FonteExterna getFonteExterna(long idFonte);
 	public String getMesAnterior(String mes);
 	public FonteExterna getFonteExternaPorDp(Long dp);
+	public List<FonteExterna> getDelegacias(double latitude, double longitude, double raio);
 }

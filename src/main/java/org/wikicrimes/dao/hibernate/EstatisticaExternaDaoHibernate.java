@@ -18,17 +18,16 @@ implements EstatisticaExternaDao{
 		setEntity(EstatisticaExterna.class);
 	}
 	
+	private final double RAIO_TERRA_KM=6378.137;
+	
 	@SuppressWarnings("unchecked")
 	public EstatisticaExterna getEstatisticaExterna(String mes, Long dp,
 			String tipoCrime) {
-		System.out.println("mes="+mes);
 		String query="";
 		String parametros= "";
-		System.out.println("dp="+dp);
 		String ultimoMesBanco = ultimoMesBanco(dp);
 		
 		EstatisticaExterna e = new EstatisticaExterna();
-		System.out.println("ultimoMesBanco="+ultimoMesBanco);
 		//O parametro mes é opcional. Caso o último mês que há no banco seja anterior ao atual, pega-se o último mês do banco.
 		if(mes.isEmpty() )  mes = ultimoMesBanco;
 		System.out.println("mes="+mes);
@@ -448,5 +447,14 @@ implements EstatisticaExternaDao{
     	List<FonteExterna> eC = getHibernateTemplate().find(query);
 		
     	return eC.get(0);
+	}
+
+	@Override
+	public List<FonteExterna> getDelegacias(double latitude, double longitude, double raio) {
+		String query = "from FonteExterna fe where ("+RAIO_TERRA_KM+" * ACOS( (SIN(PI()* "+latitude+" /180)*SIN(PI() * fe.latitude/180)) + (COS(PI()* "+latitude+" /180)*COS(PI()*fe.latitude/180)*COS(PI() * fe.longitude/180-PI()* "+longitude+" /180))) < "+raio+")";
+		   	
+    	List<FonteExterna> eC = getHibernateTemplate().find(query);
+		
+    	return eC;
 	}
 }

@@ -14,11 +14,11 @@ public class WhiteToRedKMR extends CellBasedKMR{
 		super(kernel);
 	}
 	
-	public WhiteToRedKMR(KernelMap kernel, double maxDensity){
+	public WhiteToRedKMR(KernelMap kernel, float maxDensity){
 		super(kernel, maxDensity);
 	}
 	
-	public Color renderCell(double density){
+	public Color renderCell(float density){
 //		if(density == 0)
 //			return new Color(1,1,1,0);
 		float greenBlue = (float)(1- density/MAX_DENSITY); //valor entre 0 e 1, inversamente proporcional a densidade

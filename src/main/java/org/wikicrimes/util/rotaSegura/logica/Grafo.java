@@ -1,27 +1,20 @@
 package org.wikicrimes.util.rotaSegura.logica;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
-import java.util.Queue;
 import java.util.Set;
-
-import org.wikicrimes.util.rotaSegura.logica.modelo.ArestaRotas;
-import org.wikicrimes.util.rotaSegura.logica.modelo.VerticeRotas;
-import org.wikicrimes.util.rotaSegura.testes.TesteRotasImg;
 
 /**
  * @author victor
  *
- * Grafo de propósito geral.
- * Implementado com lista de adjascências.
- * Direcionado (usar apenas addArco) ou não (usar apenas addAresta).
+ * Grafo de proposito geral.
+ * Implementado com lista de adjascencias.
+ * Direcionado (usar apenas addArco) ou nao (usar apenas addAresta).
  */
 public class Grafo<T> {
 
@@ -118,7 +111,7 @@ public class Grafo<T> {
 				if(w.custo > v.custo + noW.peso){
 					w.custo = v.custo + noW.peso;
 					w.pai = v;
-					q.remove(w); //remove e adiciona pra atualizar a posição
+					q.remove(w); //remove e adiciona pra atualizar a posiï¿½ï¿½o
 					q.add(w);
 				}
 			}
@@ -170,18 +163,19 @@ public class Grafo<T> {
 		this.pesoMaximo = Double.NaN;
 		return caminhos;
 	}
+	
 	private T origemTC, destinoTC;
 	private double pesoMaximo = Double.NaN;
 	private List<List<T>> todosCaminhosSubrotina(T origem, T destino, List<T> caminhoAteOrigem, double pesoAteOrigem){
 		List<List<T>> caminhos = new ArrayList<List<T>>();
 
-		//condição de parada: qd chega no destino
+		//condiï¿½ï¿½o de parada: qd chega no destino
 		if(origem.equals(destino)){
 			caminhos.add(caminhoAteOrigem);
 			return caminhos;	
 		}
 			
-		//ramificação
+		//ramificaï¿½ï¿½o
 		for(No no : getNosVizinhos(origem)){
 			T v = no.elm;
 			if(caminhoAteOrigem.contains(v)) continue;

@@ -17,23 +17,20 @@ import org.wikicrimes.util.rotaSegura.geometria.Ponto;
 public class FloodBorderKMR extends KernelMapRenderer{
 	
 	private final Color color;
-	private final int strokeWidth;
+
+	private final float threshold;
+	private final float maxDensity;
 	
-	private final double threshold;
-	private final double maxDensity;
-	
-	public FloodBorderKMR(KernelMap kernel, Color color, double threshold, int strokeWidth){
+	public FloodBorderKMR(KernelMap kernel, Color color, float threshold, int strokeWidth){
 		super(kernel);
 		this.color = color;
-		this.strokeWidth = strokeWidth;
 		this.threshold = threshold;
-		this.maxDensity = Double.NaN;
+		this.maxDensity = Float.NaN;
 	}
 	
-	public FloodBorderKMR(KernelMap kernel, Color color, double threshold, int strokeWidth, double maxDens){
+	public FloodBorderKMR(KernelMap kernel, Color color, float threshold, int strokeWidth, float maxDens){
 		super(kernel);
 		this.color = color;
-		this.strokeWidth = strokeWidth;
 		this.threshold = threshold;
 		this.maxDensity = maxDens;
 	}

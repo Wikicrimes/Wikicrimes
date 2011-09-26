@@ -23,9 +23,10 @@ import org.wikicrimes.util.MapaChaveDupla;
 /**
 * Gera umas imagens de mapa de kernel grandes para cidades inteiras.
 * Fiz pro Douglas.
-* N�o � pra ir pra produ��o.
+* Nao usa na producao.
 * @author Victor
 */
+@SuppressWarnings({"serial", "unchecked"})
 public class ServletCrimesHotSpots extends HttpServlet {
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)	throws ServletException, IOException {
@@ -35,15 +36,13 @@ public class ServletCrimesHotSpots extends HttpServlet {
 		
 		String path = "/home/victor/Desktop/testes/rotas 2010.07.29/teste douglas/3/" + request.getParameter("cidade");
 
-		// L� os objetos serializados
+		// Le os objetos serializados
 		try {
 			File f = new File(path);
 			ObjectInputStream objectInputStream;
 			objectInputStream = new ObjectInputStream(new FileInputStream(f));
 			double[][] matriz = (double[][])objectInputStream.readObject();
 			MapaChaveDupla<Integer, Integer, List<BaseObject>> mapa = (MapaChaveDupla<Integer, Integer, List<BaseObject>>)objectInputStream.readObject();
-			
-			String tamanho;
 			
 			double linhas = (matriz[0].length/45.0);
 			double colunas = (matriz.length/45.0);

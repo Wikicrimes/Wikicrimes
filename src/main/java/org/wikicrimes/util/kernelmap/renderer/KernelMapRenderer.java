@@ -3,6 +3,7 @@ package org.wikicrimes.util.kernelmap.renderer;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 
+import org.wikicrimes.util.ValueCompression;
 import org.wikicrimes.util.kernelmap.KernelMap;
 
 public abstract class KernelMapRenderer {
@@ -21,19 +22,20 @@ public abstract class KernelMapRenderer {
 	public abstract Image renderImage();
 	
 	public String booleanGrid() {
-		double max = threshold();
+		float max = threshold();
 		StringBuilder s = new StringBuilder();
-		for(double[] col : kernel.getDensityGrid()){
-			for(double d : col){
-				s.append(d > max? "1" : "0");
+		for(short[] col : kernel.getDensityGrid()){
+			for(short comprDens : col){
+				float dens = ValueCompression.uncompressShort(comprDens);
+				s.append(dens > max? "1" : "0");
 			}
 			s.append("\n");
 		}
 		return s.toString();
 	}
 	
-	protected double threshold() {
-		return kernel.getMaxDens() * 0.5;
+	protected float threshold() {
+		return kernel.getMaxDens() * 0.5f;
 	}
 	
 }

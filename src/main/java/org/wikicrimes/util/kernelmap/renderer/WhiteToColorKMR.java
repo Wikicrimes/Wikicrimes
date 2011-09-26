@@ -18,12 +18,12 @@ public class WhiteToColorKMR extends CellBasedKMR{
 		colorComponents = color.getColorComponents(null);
 	}
 	
-	public WhiteToColorKMR(KernelMap kernel, Color color, double maxDensity){
+	public WhiteToColorKMR(KernelMap kernel, Color color, float maxDensity){
 		super(kernel, maxDensity);
 		colorComponents = color.getColorComponents(null);
 	}
 	
-	public Color renderCell(double density){
+	public Color renderCell(float density){
 		if(density == 0)
 			return new Color(1,1,1,0);
 		float x = (float)(1-density/MAX_DENSITY);

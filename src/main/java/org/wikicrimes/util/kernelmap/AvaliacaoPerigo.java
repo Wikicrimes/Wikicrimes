@@ -21,7 +21,7 @@ public class AvaliacaoPerigo{
 	private static final int PROPORCAO_TAMANHO_MAPA = 10; //proporcao do tamanho do mapa de kernel em relacao ao circulo avaliado
 	private static final int ZOOM = 12;
 	private static final int NODE_SIZE = 5;
-	private static final double BANDWIDTH = 30;
+	private static final float BANDWIDTH = 30;
 	
 	//condicoes pra avaliacao
 	private double amplitudeMinima = 0.000025; //diferenca entre a menor e a maior densidade do mapa de kernel 

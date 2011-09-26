@@ -3,7 +3,6 @@ package org.wikicrimes.util.rotaSegura.logica;
 import java.awt.Rectangle;
 import java.util.PriorityQueue;
 import java.util.Queue;
-import java.util.Random;
 
 import org.wikicrimes.util.rotaSegura.geometria.Ponto;
 import org.wikicrimes.util.rotaSegura.geometria.Rota;

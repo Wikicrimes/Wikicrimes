@@ -5,18 +5,19 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 
+import org.wikicrimes.util.ValueCompression;
 import org.wikicrimes.util.kernelmap.KernelMap;
 
 public abstract class CellBasedKMR extends KernelMapRenderer{
 
-	protected final double MAX_DENSITY;
+	protected final float MAX_DENSITY;
 	
 	public CellBasedKMR(KernelMap kernel){
 		super(kernel);
 		this.MAX_DENSITY = kernel.getMaxDens();
 	}
 	
-	public CellBasedKMR(KernelMap kernel, double maxDensity){
+	public CellBasedKMR(KernelMap kernel, float maxDensity){
 		super(kernel);
 		this.MAX_DENSITY = maxDensity;
 	}
@@ -38,16 +39,18 @@ public abstract class CellBasedKMR extends KernelMapRenderer{
 		int rows = kernel.getRows();
 		for(int i=0; i<cols; i++){
 			for(int j=0; j<rows; j++){
-				double density = kernel.getDensityGrid()[i][j];
+				float density = ValueCompression.uncompressShort(kernel.getDensityGrid()[i][j]);
 				Color cor = renderCell(density);
 				g.setColor(cor);
 				g.fillRect(i*node, j*node, node, node);
 			}
 		}
 		
+//		buffer = ImageUtil.blur((BufferedImage)buffer);
+		
 		return buffer;
 	}
 	
-	public abstract Color renderCell(double density);
+	public abstract Color renderCell(float density);
 	
 }

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+@SuppressWarnings("serial")
 public final class Horario implements Comparable, Serializable {
     private static int size = 0;
 

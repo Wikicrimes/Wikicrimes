@@ -13,22 +13,22 @@ import org.wikicrimes.util.rotaSegura.geometria.Ponto;
 public class HotspotContour{
 
 	private static final int VERTICES_DESCARTADOS = PropertiesLoader.getInt("hotspot_contour.dropped_vertices"); //qt maior, menos detalhe (mais vertices descartados)
-	private static final double MINIMUM_POLYGON_AREA = PropertiesLoader.getInt("hotspot_contour.minimum_polygon_area"); //poligonos com area menor sao descartados
+	private static final float MINIMUM_POLYGON_AREA = PropertiesLoader.getInt("hotspot_contour.minimum_polygon_area"); //poligonos com area menor sao descartados
 	private static final int MINIMUM_VERTICES= PropertiesLoader.getInt("hotspot_contour.minimum_vertices"); //poligonos com menos vertices sao descartados
 	private final KernelMap kernel;
 	private List<Poligono> poligonos;
 	private final float threshold; //varia entre 0 e 1, onde 1 eh a densidade maxima
-	private final double maxDens;
+	private final float maxDens;
 	
-	public HotspotContour(KernelMap kernelMap, double threshold) {
+	public HotspotContour(KernelMap kernelMap, float threshold) {
 		this.kernel = kernelMap;
 		if(threshold < 0 || threshold > 1)
 			throw new InvalidParameterException("Threshold must be between 0 and 1. Given: " + threshold); 
 		this.threshold = (float)threshold;
-		this.maxDens = Double.NaN;
+		this.maxDens = Float.NaN;
 	}
 	
-	public HotspotContour(KernelMap kernelMap, double threshold, double maxDensity) {
+	public HotspotContour(KernelMap kernelMap, float threshold, float maxDensity) {
 		this.kernel = kernelMap;
 		if(threshold < 0 || threshold > 1)
 			throw new InvalidParameterException("Threshold must be between 0 and 1. Given: " + threshold); 
@@ -42,7 +42,7 @@ public class HotspotContour{
 		return poligonos;
 	}
 	
-	private List<Poligono> calcular(Rectangle bounds, double maxDens){
+	private List<Poligono> calcular(Rectangle bounds, float maxDens){
 		
 		List<Poligono> polis = new ArrayList<Poligono>();
 		
@@ -176,7 +176,7 @@ public class HotspotContour{
 	
 	private boolean isPolygonBigEnough(Poligono poly){
 		Rectangle bounds = poly.bounds();
-		double rectArea = bounds.getWidth()*bounds.getHeight();
+		float rectArea = (float)(bounds.getWidth()*bounds.getHeight());
 		return rectArea >= MINIMUM_POLYGON_AREA;
 	}
 	

@@ -9,17 +9,19 @@ import java.util.List;
 
 import org.wikicrimes.util.rotaSegura.geometria.Ponto;
 
+import org.wikicrimes.util.ValueCompression;
+
 @SuppressWarnings("serial")
 public class KernelMap implements Serializable {
 
 	protected final int nodeSize;
-	protected final double bandwidth;
+	protected final float bandwidth;
 	protected final Rectangle bounds;
 	
-	protected double[][] densityGrid;
-	protected double maxDens = Double.NaN;
-	protected double avgDens = Double.NaN;
-	protected double minDens = Double.NaN;
+	protected short[][] densityGrid;
+	protected float maxDens = Float.NaN;
+	protected float avgDens = Float.NaN;
+	protected float minDens = Float.NaN;
 	
 	protected static final int defaultNodeSize = 5;
 	protected static final int defaultBandwidth = 20;
@@ -30,34 +32,34 @@ public class KernelMap implements Serializable {
 	 * @param <b>bandwidth</b> Radius of influence for each point.
 	 * The bigger the bandwidth, the variations will be smoother and hotspots will spread out.
 	 */
-	public KernelMap(int nodeSize, double bandwidth, Rectangle bounds, List<Point> points){
+	public KernelMap(int nodeSize, float bandwidth, Rectangle bounds, List<Point> points){
 		this.nodeSize = nodeSize;
 		this.bandwidth = bandwidth;
 		this.bounds = bounds;
 		this.densityGrid = evaluateDensities(points);
 	}
 	
-	public KernelMap(double[][] densities, int nodeSize, Rectangle bounds){
-		densityGrid = densities;
-		this.bounds = bounds;
-		this.nodeSize = nodeSize;
-		this.bandwidth = Double.NaN;
-	}
-	
 	public KernelMap(Rectangle bounds, List<Point> pontos) {
 		this(defaultNodeSize, defaultBandwidth, bounds, pontos);
 	}
 	
-	private double[][] evaluateDensities(List<Point> pontos){
+	public KernelMap(short[][] densities, int nodeSize, Rectangle bounds){
+		densityGrid = densities;
+		this.bounds = bounds;
+		this.nodeSize = nodeSize;
+		this.bandwidth = Float.NaN;
+	}
+	
+	private short[][] evaluateDensities(List<Point> pontos){
 		int cols = getCols();  
 		int rows = getRows();
-		double [][] densityArray = new double[cols][rows];
+		short[][] densityArray = new short[cols][rows];
 		
 		//constantes calculadas uma unica vez fora do loop pra poupar operacoes
 		int x1 = bounds.x + nodeSize/2; //coordenada X do centro da primeira celula (a do canto superior esquerdo)
 		int y1 = bounds.y + nodeSize/2; //coordenada Y do centro da primeira celula (a do canto superior esquerdo)
-		double r2 = Math.pow(bandwidth,2); //bandwidth ao quadrado
-		double threeOverPi = 3/Math.PI; 
+		float r2 = (float)Math.pow(bandwidth,2); //bandwidth ao quadrado
+		float threeOverPi = 3/(float)Math.PI; 
 		int colsMinus1 = cols-1;
 		int rowsMinus1 = rows-1;
 		
@@ -84,7 +86,10 @@ public class KernelMap implements Serializable {
 					double distPS = p.distance(s);
 					if(distPS <= bandwidth){
 						double h2 = Math.pow(distPS, 2); // distancia do pt H, ao quadrado
-						densityArray[i][j] += (threeOverPi/r2) * Math.pow(1-(h2/r2), 2);
+						double pInfluence = (threeOverPi/r2) * Math.pow(1-(h2/r2), 2);
+						short cell = densityArray[i][j];
+						float newValue = ValueCompression.uncompressShort(cell) + (float)pInfluence;
+						densityArray[i][j] = ValueCompression.compressShort(newValue);
 					}
 				}
 			}
@@ -93,53 +98,53 @@ public class KernelMap implements Serializable {
 		return densityArray;
 	}
 	
-	protected double findMaxDensity(){
-		double maxDens = 0;
-		for(double[] linha : densityGrid)
-			for(double d : linha)
-				maxDens = Math.max(maxDens, d);
+	protected float findMaxDensity(){
+		float maxDens = 0;
+		for(short[] linha : densityGrid)
+			for(short d : linha)
+				maxDens = Math.max(maxDens, ValueCompression.uncompressShort(d));
 		return maxDens;
 	}
 	
-	protected double findAvgDensity(){
-		double mediaDens = 0;
-		for(double[] linha : densityGrid)
-			for(double d : linha)
-				mediaDens += d;
+	protected float findAvgDensity(){
+		float mediaDens = 0;
+		for(short[] linha : densityGrid)
+			for(short d : linha)
+				mediaDens += ValueCompression.uncompressShort(d);
 		return mediaDens/(getCols()*getRows());
 	}
 	
-	protected double findMinDensity(){
-		double minDens = Integer.MAX_VALUE;
-		for(double[] linha : densityGrid)
-			for(double d : linha)
-				minDens = Math.min(minDens, d);
+	protected float findMinDensity(){
+		float minDens = Integer.MAX_VALUE;
+		for(short[] linha : densityGrid)
+			for(short d : linha)
+				minDens = ValueCompression.uncompressShort(d);
 		return minDens;
 	}
 	
-	public double[][] getDensityGrid(){
+	public short[][] getDensityGrid(){
 		return densityGrid;
 	}
 	
-	public double getMaxDens(){
-		if(Double.isNaN(maxDens))
+	public float getMaxDens(){
+		if(Float.isNaN(maxDens))
 			maxDens = findMaxDensity();
 		return maxDens;
 	}
 	
-	public double getMediaDens() {
-		if(Double.isNaN(avgDens))
+	public float getMediaDens() {
+		if(Float.isNaN(avgDens))
 			avgDens = findAvgDensity();
 		return avgDens;
 	}
 	
-	public double getMinDens(){
-		if(Double.isNaN(minDens))
+	public float getMinDens(){
+		if(Float.isNaN(minDens))
 			minDens = findMinDensity();
 		return minDens;
 	}
 	
-	public double getDensity(Ponto pixel){
+	public float getDensity(Ponto pixel){
 		int x = xPixelParaGrid(pixel.x);
 		int y = yPixelParaGrid(pixel.y);
 		return densityGrid[x][y];
@@ -152,7 +157,7 @@ public class KernelMap implements Serializable {
 	public double getBandwidth() {
 		return bandwidth;
 	}
-
+	
 	public int getNodeSize(){
 		return nodeSize;
 	}
@@ -207,15 +212,15 @@ public class KernelMap implements Serializable {
 		return taNoHotspot(celula, 0.5f);
 	}
 	
-	public boolean taNoHotspot(Point celula, double threshold){
+	public boolean taNoHotspot(Point celula, float threshold){
 		if(celula.x < 0 || celula.x >= getCols() 
 				|| celula.y < 0 || celula.y >= getRows())
 			return false;
 		return densityGrid[celula.x][celula.y] >= maxDens*threshold;
 	}
 	
-	public boolean taNoHotspot(Point celula, double threshold, double maxDens){
-		if(Double.isNaN(maxDens)) 
+	public boolean taNoHotspot(Point celula, float threshold, float maxDens){
+		if(Float.isNaN(maxDens)) 
 			return taNoHotspot(celula, threshold);
 		if(celula.x < 0 || celula.x >= getCols() 
 				|| celula.y < 0 || celula.y >= getRows())
@@ -225,18 +230,19 @@ public class KernelMap implements Serializable {
 	
 	@Override
 	public String toString() {
-		double[][] dens = getDensityGrid();
+		short[][] dens = getDensityGrid();
 		NumberFormat f = new DecimalFormat("0.000");
 		
 		StringBuilder s = new StringBuilder();
 //		s.append("BANDWIDTH: " + bandwidth + "\n");
 //		s.append("GRID NODE: " + nodeSize + "\n");
-		s.append("DENSIDADE MÁXIMA: " + maxDens + "\n");
-		s.append("DENSIDADE MÉDIA: " + avgDens + "\n");
+		s.append("DENSIDADE MAXIMA: " + maxDens + "\n");
+		s.append("DENSIDADE MEDIA: " + avgDens + "\n");
 		s.append("DENSIDADES:");
 		for (int i = 0; i < dens.length; i++) {
 			for (int j = 0; j < dens[i].length; j++) {
-				s.append(f.format(dens[i][j]) + "  ");
+				float d = ValueCompression.uncompressShort(dens[i][j]);
+				s.append(f.format(d) + "  ");
 			}
 			s.append('\n');
 		}

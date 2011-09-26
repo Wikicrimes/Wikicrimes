@@ -48,7 +48,7 @@ public class KMRFactory {
 		}
 	}
 	
-	public static KernelMapRenderer getRenderer(KernelMap kernel, double maxDens, Color color, String style) {
+	public static KernelMapRenderer getRenderer(KernelMap kernel, float maxDens, Color color, String style) {
 		try {
 			float threshold = DEFAULT_BORDER_THRESHOLD;
 			if(style.equals("w")) { //varia de branco pra cor
@@ -74,11 +74,11 @@ public class KMRFactory {
 	}
 	
 	public static KernelMapRenderer getDefaultRenderer(KernelMap kernel) {
-		return new DiscreteRainbowKMR(kernel, 0.65);
+		return new DiscreteRainbowKMR(kernel, 0.65f);
 	}
 	
 	public static KernelMapRenderer getDefaultRenderer(KernelMap kernel, boolean isInternetExplorer) {
-		return new DiscreteRainbowKMR(kernel, 0.65);
+		return new DiscreteRainbowKMR(kernel, 0.65f);
 	}
 	
 }

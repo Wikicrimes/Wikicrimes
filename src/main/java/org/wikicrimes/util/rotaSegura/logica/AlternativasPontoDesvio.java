@@ -1,6 +1,5 @@
 package org.wikicrimes.util.rotaSegura.logica;
 
-import java.awt.Color;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.Comparator;
@@ -11,9 +10,7 @@ import org.wikicrimes.util.kernelmap.PropertiesLoader;
 import org.wikicrimes.util.rotaSegura.geometria.Ponto;
 import org.wikicrimes.util.rotaSegura.geometria.Rota;
 import org.wikicrimes.util.rotaSegura.logica.exceptions.CantFindPath;
-import org.wikicrimes.util.rotaSegura.logica.exceptions.VertexNotInGraph;
 import org.wikicrimes.util.rotaSegura.logica.modelo.RotaPromissora;
-import org.wikicrimes.util.rotaSegura.testes.TesteRotasImg;
 
 public class AlternativasPontoDesvio extends GeradorDeAlternativasAbstrato{
 
@@ -153,9 +150,6 @@ public class AlternativasPontoDesvio extends GeradorDeAlternativasAbstrato{
 		public PontoPromissor(int x, int y, double valor) {
 			super(x,y);
 			this.valor = valor;
-		}
-		public PontoPromissor(Ponto p, double valor){
-			this(p.x, p.y, valor);
 		}
 	}
 	

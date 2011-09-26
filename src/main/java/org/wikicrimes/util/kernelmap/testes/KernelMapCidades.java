@@ -35,10 +35,11 @@ import org.wikicrimes.util.kernelmap.renderer.KernelMapRenderer;
 import org.wikicrimes.util.statistics.WikiCrimesEventsRetriever;
 
 //pro Douglas, 04/08/2010
+@SuppressWarnings({ "unused", "serial" })
 public class KernelMapCidades extends HttpServlet {
 	
 	private static final int NODE_SIZE = 5;
-	private static final double BANDWIDTH = 30;
+	private static final float BANDWIDTH = 30;
 	private static final int ZOOM = 13;
 	private final String dir = "/home/victor/Desktop/teste2/";
 	
@@ -236,12 +237,12 @@ public class KernelMapCidades extends HttpServlet {
 		int setoresAltura = kernel.getRows()*nodeSize/tamanhoSetor + 1;
 		Image imagem = new BufferedImage(largura, altura, BufferedImage.TYPE_4BYTE_ABGR);
 		Graphics g = imagem.getGraphics();
-		double[][] gridInteira = kernel.getDensityGrid();
+		short[][] gridInteira = kernel.getDensityGrid();
 		for(int x=0; x<setoresLargura; x++){
 			for(int y=0; y<setoresAltura; y++){
 				
 				//delimita setor
-				double[][] gridSetor = new double[tamanhoSetor][tamanhoSetor];
+				short[][] gridSetor = new short[tamanhoSetor][tamanhoSetor];
 				for(int i=0; i<celsSetor; i++){
 					for(int j=0; j<celsSetor; j++){
 						int offsetX = x*celsSetor;

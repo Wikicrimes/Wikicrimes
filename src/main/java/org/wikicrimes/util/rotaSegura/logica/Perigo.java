@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.wikicrimes.util.Util;
+import org.wikicrimes.util.ValueCompression;
 import org.wikicrimes.util.kernelmap.KernelMap;
 import org.wikicrimes.util.kernelmap.PropertiesLoader;
 import org.wikicrimes.util.rotaSegura.geometria.Ponto;
@@ -113,7 +114,7 @@ public class Perigo {
 	public double perigo(Segmento segm){
 		
 		Rectangle bounds = kernel.getBounds();
-		double[][] dens = kernel.getDensityGrid();
+		short[][] dens = kernel.getDensityGrid();
 		int node = kernel.getNodeSize();
 
 		//largura e altura do mapa de kernel
@@ -158,7 +159,7 @@ public class Perigo {
 				for(int j=yIni; j<=yFim; j++){
 					Rectangle cel = new Rectangle(bounds.x + i*node, bounds.y + j*node, node, node);
 					double peso = tamanhoSegmCortandoQuadrado(segm, cel);
-					double d = dens[i][j];
+					double d = ValueCompression.uncompressShort(dens[i][j]);
 					contribuicoesDeDensidade += d*peso;
 //					/*TESTE*/cels.add(cel);
 				}
@@ -175,7 +176,7 @@ public class Perigo {
 				for(int j=jIni; j<=jFim; j++){
 					Rectangle cel = new Rectangle(bounds.x + i*node, bounds.y + j*node, node, node);
 					double peso = tamanhoSegmCortandoQuadrado(segm, cel);
-					double d = dens[i][j];
+					double d = ValueCompression.uncompressShort(dens[i][j]);
 					contribuicoesDeDensidade += d*peso;
 //					/*TESTE*/cels.add(cel);
 				}
@@ -199,12 +200,12 @@ public class Perigo {
 	
 	public double perigo(Ponto p){
 		Rectangle bounds = kernel.getBounds();
-		double[][] dens = kernel.getDensityGrid();
+		short[][] dens = kernel.getDensityGrid();
 		int node = kernel.getNodeSize();
 		
 		int x = (p.x-bounds.x)/node;
 		int y = (p.y-bounds.y)/node;
-		return dens[x][y];
+		return ValueCompression.uncompressShort(dens[x][y]);
 	}
 	
 	private double tamanhoSegmCortandoQuadrado(Segmento segm, Rectangle celula){

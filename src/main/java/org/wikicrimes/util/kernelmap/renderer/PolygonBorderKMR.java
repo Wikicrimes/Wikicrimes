@@ -22,14 +22,14 @@ public class PolygonBorderKMR extends KernelMapRenderer{
 	private final HotspotContour contour;
 	private final int strokeWidth;
 	
-	public PolygonBorderKMR(KernelMap kernel, Color color, double threshold, int strokeWidth){
+	public PolygonBorderKMR(KernelMap kernel, Color color, float threshold, int strokeWidth){
 		super(kernel);
 		this.color = color;
 		this.strokeWidth = strokeWidth;
 		this.contour = new HotspotContour(kernel, threshold);
 	}
 	
-	public PolygonBorderKMR(KernelMap kernel, Color color, double threshold, int strokeWidth, double maxDens){
+	public PolygonBorderKMR(KernelMap kernel, Color color, float threshold, int strokeWidth, float maxDens){
 		super(kernel);
 		this.color = color;
 		this.strokeWidth = strokeWidth;

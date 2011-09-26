@@ -25,12 +25,12 @@ public class WhiteToRedDiscreteKMR extends CellBasedKMR{
 		super(kernel);
 	}
 	
-	public WhiteToRedDiscreteKMR(KernelMap kernel, double maxDensity){
+	public WhiteToRedDiscreteKMR(KernelMap kernel, float maxDensity){
 		super(kernel, maxDensity);
 	}
 	
 	//transparente, com conjunto de cores predefinido
-	public Color renderCell(double densidade){
+	public Color renderCell(float densidade){
 		double intervalo = MAX_DENSITY/CORES6TR.length;  //intervalo entre os níveis de densidade que terao cores diferentes (para dividir a densidade em faixas que terao cores diferentes)
 		int faixa = (int)(densidade/intervalo); //em que faixa se encontra esta densidade (o valor da faixa corresponde a uma posicao do vetor de cores)
 		if(faixa >= CORES6TR.length) faixa = CORES6TR.length-1; //se extrapolar, assume o valor maior

@@ -44,8 +44,8 @@ public class KernelMapRequestHandler {
 	
 	private void generateKernelMap(){
 //		int zoom = Param.getZoom(request);
-//		double bandwidth = getZoomDependantBandwidth(zoom);
-		double bandwidth = DEFAULT_BANDWIDTH;
+//		float bandwidth = getZoomDependantBandwidth(zoom);
+		float bandwidth = DEFAULT_BANDWIDTH;
 		kernel = new KernelMap(DEFAULT_NODE_SIZE, bandwidth, pixelBounds, points);
 		boolean isIE = ServletUtil.isClientUsingIE(request); 
 		renderer = KMRFactory.getDefaultRenderer(kernel, isIE);
@@ -61,6 +61,7 @@ public class KernelMapRequestHandler {
 		booleanGrid = renderer.booleanGrid();
 	}
 	
+	@SuppressWarnings("unused")
 	private double getZoomDependantBandwidth(int zoom) {
 		//zoom do googlemaps vai de 0 (longe) a 19 (perto)
 //		double bandwidthKm = 1;

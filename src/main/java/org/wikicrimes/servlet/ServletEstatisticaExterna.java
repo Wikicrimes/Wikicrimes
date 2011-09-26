@@ -37,7 +37,7 @@ public class ServletEstatisticaExterna extends HttpServlet{
 				double lng = Double.parseDouble(request.getParameter("lng"));
 				double raio = Double.parseDouble(request.getParameter("raio"));
 				List<FonteExterna> fontesExternas = getService().getDelegacias(lat, lng, raio);
-				resposta="{ Delegacias : [";
+				resposta="{ \"delegacias\" : [";
 				int cont = 0;
 				for (FonteExterna fonteExterna : fontesExternas) {
 					String nomeDp = fonteExterna.getNome();

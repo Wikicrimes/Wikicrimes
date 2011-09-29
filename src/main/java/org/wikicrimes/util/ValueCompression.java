@@ -40,9 +40,9 @@ public class ValueCompression {
 	
 	//FLOAT TO SHORT
 	
-	private static final int maskShort = 0x1FFFE000;  //0001 1111 1111 1111 1110 0000 0000 0000
-	private static final int shiftShort = 13; //quantidade de zeros a direita na mascara
-	private static final int fixedShort = 0x20000000; //0010 0000 0000 0000 0000 0000 0000 0000
+	private static final int maskShort = 0x7FFF8000;  //0111 1111 1111 1111 1000 0000 0000 0000
+	private static final int shiftShort = 15; //quantidade de zeros a direita na mascara
+	private static final int fixedShort = 0x00000000; //0000 0000 0000 0000 0000 0000 0000 0000
 	
 	public static short compressShort(float f){
 		if(f == 0) return 0;

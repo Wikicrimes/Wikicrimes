@@ -16,6 +16,7 @@ import org.wikicrimes.util.kernelmap.PropertiesLoader;
  * y: latitude 
  */
 
+@SuppressWarnings("serial")
 public class Ponto extends Point{
 
 	private static final double TOLERANCIA_PONTOS_IGUAIS = PropertiesLoader.getDouble("geometry.point_approximation");

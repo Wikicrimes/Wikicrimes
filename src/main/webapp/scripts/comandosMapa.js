@@ -367,7 +367,7 @@ ComandoKernel.prototype.initialize = function(map) {
   GEvent.addDomListener(kernelDiv, "click", function() {
 //*********************** Kernel Map INICIO ****************************
 //clique no botao pra ativar o mapa de kernel
-	  kernelForcedByUser = true;
+	  kernelModifiedByUser = true;
 	  ativaMapaKernel();
 //*********************** Kernel Map FIM ****************************
   });
@@ -420,7 +420,7 @@ ComandoKernelSelecionado.prototype.initialize = function(map) {
 //*********************** Kernel Map INICIO ****************************
 //clique no botao pra desativar o mapa de kernel
 	if(map.getZoom() >= zoomLimiteSupKernel){
-		kernelForcedByUser = false;
+		kernelModifiedByUser = true;
 		desativaMapaKernel();  
 	}
 //*********************** Kernel Map FIM ****************************

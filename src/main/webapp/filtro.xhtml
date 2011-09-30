@@ -883,10 +883,9 @@ topo_dirFiltro{
 					isUpdatingMap = true;
 					mostrarCarregandoPequeno();
 					verificaFiltrosAplicados();
-					var farZoom = map.getZoom() <= zoomLimiteSupKernel;
-					if(eventId)
-						farZoom = false;
-					updateStatistics(farZoom, eventId, eventType);
+					//console.log("atualizaMapa 1");
+					updateStatistics(eventId, eventType);
+					//console.log("atualizaMapa 2");
 					updateStatisticsGUI();
 					if(eventId)
 						centerOnEvent();
@@ -923,12 +922,12 @@ topo_dirFiltro{
 							if(mudouZoom && map.getZoom() > zoomLimiteSupKernel){
 								desativaMapaKernel();
 							}else{
+								limpaCrimesAgrupador();
 								apagaMapaKernel();
 								pintaMapaKernel();
 							}
 						}else{
-							if(mudouZoom)
-							if(map.getZoom() < zoomLimiteInfMarcadores){
+							if(mudouZoom && map.getZoom() < zoomLimiteInfMarcadores){
 								ativaMapaKernel();
 							}
 						}
@@ -940,9 +939,7 @@ topo_dirFiltro{
 					var crimes = statistics.events;
 					if(crimes){ 
 						linhas = crimes.split("\n");
-						//document.getElementById('divQtdeCrimesFiltrados').innerHTML = linhas.length-1;
 						i=0;
-						//window.setTimeout(plotaMarcadores,1);
 						plotaMarcadores();
 					}else{
         	           	document.getElementById("loading").style.visibility='hidden';
@@ -962,62 +959,53 @@ topo_dirFiltro{
 					      	var idTipoCrime = dadosCrimeLinha[1];
 					      	var lat = dadosCrimeLinha[2];
    					   	 	var long = dadosCrimeLinha[3];
-						       	var idCrime2 = dadosCrimeLinha[4];
-						        var dataCrime = dadosCrimeLinha[5];
-						        if(dataCrime != undefined){
-	 						    	var dia=dataCrime.substring(0,2);
- 						        var mes = dataCrime.substring(3,5);	
- 						        var ano = dataCrime.substring(6,10);
- 						        if (!filtrou) {
+					       	var idCrime2 = dadosCrimeLinha[4];
+					        var dataCrime = dadosCrimeLinha[5];
+					        if(dataCrime != undefined){
+ 						    	var dia=dataCrime.substring(0,2);
+						        var mes = dataCrime.substring(3,5);	
+						        var ano = dataCrime.substring(6,10);
+						        if (!filtrou) {
 	 						    	var tempDataCrime = new Date(ano,mes-1,dia);
 	 						        if (tempDataCrime < tempDataMaisAntiga){
 	 						        	dataMaisAntiga=dataCrime;
 	 						            tempDataMaisAntiga=tempDataCrime;
 	 						        }
 								}
-						        }
-						        if (id==idCrime2)
-						        	id=idCrime;
-						           	if(!crimesAtuais[idCrime])	{
-	   					        	// Cria o marcador
-						            var marcador = createMarkerId(new GLatLng(lat, long),idTipoCrime,idCrime,dataCrime);
-									crimesAtuais[idCrime]=marcador;
-				//*********************** Kernel Map INICIO ****************************
-				//coleta os crimes pra serem mandados pro servlet q gera o mapa de kernel
-				//o if � pra n�o deixar plotar os marcadores qd o mapa de kernel estiver ligado
-									arrayCrimesLatLng[index] = new crimeKernelMap(long, lat, marcador);
-									++index;
-									if(!kernelEnabled 
-										//nao plotar marcadores qd o modo kernel for ser habilitado por mudan�a de zoom
-											&& !(podeMudarModoKernel 
-											&& (mudouZoom) 
-											&& map.getZoom() <= zoomLimiteInfMarcadores))  
-				//*********************** Kernel Map FIM ****************************
-										// Google Agrupadores: Preenchendo Vetor de marcadores
-										map.addOverlay(marcador);
-										
-									}
-					            		
-						      		i++
-						      			
-					      		}
-					      		if (document.getElementById("loading")){
-									 var datainicial = document.getElementById("dataInicial").value;
-					      			 var datafinal = document.getElementById("dataFinal").value;
-						      		 document.getElementById("loadingMessage").innerHTML= "#{messages['webapp.carregando.crimes']} "  + i + " #{messages['webapp.carregando.de']} " +  (linhas.length-1) +  "<br/> #{messages['webapp.carregando.periodo']}: " + datainicial + " #{messages['webapp.carregando.a']} " + datafinal;		           				    
-					      		}
-					      		//window.setTimeout(plotaMarcadores,1);			      				
-		      				}
-		      				else {
-       	                		 document.getElementById("loading").style.visibility='hidden';
-       	                		 document.getElementById("loadingMessage").innerHTML="#{messages['webapp.carregando.crimes']}".
-       	                		 i=0;
-		      				}
-			      			if (!filtrou) {
-			      				document.getElementById("dataInicial").value=dataMaisAntiga;
-			      				verificaFiltrosAplicados();
-			      				dataInicial=dataMaisAntiga.split("/");	
-			      			}
+					        }
+					        if (id==idCrime2)
+					        	id=idCrime;
+					           	if(!crimesAtuais[idCrime])	{
+	  					        	// Cria o marcador
+					            var marcador = createMarkerId(new GLatLng(lat, long),idTipoCrime,idCrime,dataCrime);
+								crimesAtuais[idCrime]=marcador;
+			//*********************** Kernel Map INICIO ****************************
+			//coleta os crimes pra serem mandados pro servlet q gera o mapa de kernel
+			//o if eh pra nao deixar plotar os marcadores qd o mapa de kernel estiver ligado
+								arrayCrimesLatLng[index] = new crimeKernelMap(long, lat, marcador);
+								++index;
+			//*********************** Kernel Map FIM ****************************
+									// Google Agrupadores: Preenchendo Vetor de marcadores
+									map.addOverlay(marcador);
+								}
+					      		i++
+				      		}
+				      		if (document.getElementById("loading")){
+								 var datainicial = document.getElementById("dataInicial").value;
+				      			 var datafinal = document.getElementById("dataFinal").value;
+					      		 document.getElementById("loadingMessage").innerHTML= "#{messages['webapp.carregando.crimes']} "  + i + " #{messages['webapp.carregando.de']} " +  (linhas.length-1) +  "<br/> #{messages['webapp.carregando.periodo']}: " + datainicial + " #{messages['webapp.carregando.a']} " + datafinal;		           				    
+				      		}
+				      		//window.setTimeout(plotaMarcadores,1);			      				
+	      				}else {
+	                		 document.getElementById("loading").style.visibility='hidden';
+	                		 document.getElementById("loadingMessage").innerHTML="#{messages['webapp.carregando.crimes']}".
+	                		 i=0;
+	      				}
+		      			if (!filtrou) {
+		      				document.getElementById("dataInicial").value=dataMaisAntiga;
+		      				verificaFiltrosAplicados();
+		      				dataInicial=dataMaisAntiga.split("/");	
+		      			}
 		      		}						
 				  
 				   function plotaEstados() {

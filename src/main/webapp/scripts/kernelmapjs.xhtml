@@ -40,9 +40,8 @@
 		    var kernelLayer;
 		    var kernelDiv;
 
+		    var kernelModifiedByUser = false; //usuario mudou o kernel pelo botao
 		    var podeMudarModoKernel = true; //pq qd abre a janela arearisco, tem que ficar sempre kernel desligado
-
-		    var kernelForcedByUser = false; //qd usuario clica no botao "hotspot" no zoom baixo
 
 			function ativaMapaKernel(primeiraVez){
 			    if(!kernelEnabled){
@@ -55,7 +54,6 @@
 				  	if(statusLegenda=='visivel')
 						wikicrimesDiv.innerHTML = htmlLegenda();
 					if(!primeiraVez){
-				  		//updateStatistics();
 						pintaMapaKernel();
 					}
 					if(!isJanelaAreaRiscoVisible())
@@ -109,16 +107,43 @@
 				}
 			}
 			
-			function updateStatistics(farZoom, eventId, eventType){
-				var url = buildStatisticsUrl(farZoom, eventId, eventType);
+			function updateStatistics(eventId, eventType){
+				updateKernelMode(eventId);
+				var url = buildStatisticsUrl(eventId, eventType);
+				//console.log("update " + url);
 				var req = requestStatistics(url);
 				if (req.readyState == 4 && req.status == 200){
 					statistics = eval("(" + req.responseText + ")");
-					if(farZoom){
+					if(kernelEnabled){
 						uncompressBooleanGrid();
 					}else{
 						constroiMarcadores();
 					}
+				}
+			}
+			
+			function updateKernelMode(eventId){
+				if(kernelModifiedByUser){
+					kernelModifiedByUser = false;
+					return;
+				}
+				
+				var shouldEnable;
+				if(eventId){
+					shouldEnable = false;
+				}else if(map.getZoom() <= zoomLimiteSupKernel){
+					shouldEnable = true;
+				}else if(map.getZoom() <= zoomLimiteInfMarcadores){
+					shouldEnable = false;
+				}else{
+					shouldEnable = false;
+				}
+				
+				if(podeMudarModoKernel)
+				if(shouldEnable){
+					ativaMapaKernel();
+				}else{
+					desativaMapaKernel();
 				}
 			}
 
@@ -167,11 +192,11 @@
 				new ZipFile(url, doneTransfering);
 			}*/
 
-			function buildStatisticsUrl(farZoom, eventId, eventType){
+			function buildStatisticsUrl(eventId, eventType){
 				lastKernelRequest = {};
 				var zoom = map.getZoom();
 				var url ='';
-				if(farZoom || kernelForcedByUser){
+				if(kernelEnabled){
 					url += 'actions=kernel|charts|json';
 					if(zoom >= minZoomAreasRisco && zoom <= maxZoomAreasRisco){
 						url += '|polygons';
@@ -358,7 +383,7 @@
 			function exibeImagemMapaKernel(){
 				var bounds = map.getBounds();
 
-				removeHintComandosMapa();//pra q mesmo?
+				removeHintComandosMapa();
 				
 				north = bounds.getNorthEast().lat();
 				south = bounds.getSouthWest().lat();
@@ -370,6 +395,7 @@
 				var lon2 = east;
 
 				if (validateKernelImage()){
+					map.removeTPhoto(photo);
 			  		photo = new TPhoto();
 					photo.id = 'kernelImage' + new Date().getTime();
 					photo.percentOpacity = IE? 50 : 100; //no IE, a imagem vem opaca, precisa de transparencia aqui
@@ -378,7 +404,9 @@
 					photo.src = "statistics?actions=image&nocache=" + new Date().getTime();
 					map.addTPhoto(photo);
 			  	}else{
+			  		console.log("forceMapUpdate 1");
 					forceMapUpdate();
+					console.log("forceMapUpdate 2");
 			  	}
 			}
 
@@ -415,7 +443,7 @@
 			function mostraCrimesAgrupador(){
 				for (k in crimesAtuais) {
 					map.addOverlay(crimesAtuais[k]);
-			 	} 	
+			 	}
 				atualizaMapa();
 			}		
 			

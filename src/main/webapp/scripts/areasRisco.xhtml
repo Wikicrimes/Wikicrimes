@@ -352,46 +352,35 @@
 			//******************************************************************
 			//JANELA PARA EDITAR, SALVAR A MARCACAO OU MANDAR ALERTA
 
-			//var kernelLigadoAoExibirJanelaAreaRisco;
 			var podeAbrirJanelaAreaRisco = true;
 			
 			function exibirJanelaAreaRisco(tipo){
-					//console.log('areasRisco.xhtml, 5');		
-					var poly;
-					if(tipo == 'Salvar'){
-						poly = polyHotspot;
-						podeDesmarcarHotspot = false;
-					}else if(tipo == 'Editar'){
-						poly = polyEditando;
-					}
-					//console.log('areasRisco.xhtml, 5.1');
-					//map.disableDragging(); //nao ta funcionando pq isso ta sendo desfeito logo depois, pq em algum lugartem um enableDragging on mouseover no mapa
-					podeMudarModoKernel = false;
-					//kernelLigadoAoExibirJanelaAreaRisco = kernelEnabled;
-					if(kernelEnabled){
-						//console.log('areasRisco.xhtml, 5.2');
-						desativaMapaKernel();
-						//console.log('areasRisco.xhtml, 5.3');
-					}
-					//desativaMarcacaoHotspot(); //ja e chamado dentro do desativaMapaKernel()
-					removeHint();
-					//console.log('areasRisco.xhtml, 5.4');
-					zoomNoPoligono(poly);
-					//console.log('areasRisco.xhtml, 5.5');
-					document.getElementById("editarAreaRiscoTituloTD").innerHTML = nomePolyEditando;
-					document.getElementById("editarAreaRiscoDescTD").innerHTML = "#{messages['areasrisco.janela.editar.explicacao']}" + nomePolyEditando;
-					document.getElementById("janela"+tipo+"AreasRisco").style.visibility = "visible";
-
-					ativaDragJanelaAreaRisco(tipo);
-					
-					podeAbrirJanelaAreaRisco = false;
-					//console.log('areasRisco.xhtml, 5.6');
+				var poly;
+				if(tipo == 'Salvar'){
+					poly = polyHotspot;
+					podeDesmarcarHotspot = false;
+				}else if(tipo == 'Editar'){
+					poly = polyEditando;
 				}
+				podeMudarModoKernel = false;
+				if(kernelEnabled){
+					//desativaMapaKernel();
+					kernelEnabled = false;
+					apagaMapaKernel();
+				}
+				removeHint();
+				zoomNoPoligono(poly);
+				document.getElementById("editarAreaRiscoTituloTD").innerHTML = nomePolyEditando;
+				document.getElementById("editarAreaRiscoDescTD").innerHTML = "#{messages['areasrisco.janela.editar.explicacao']}" + nomePolyEditando;
+				document.getElementById("janela"+tipo+"AreasRisco").style.visibility = "visible";
+
+				ativaDragJanelaAreaRisco(tipo);
+				
+				podeAbrirJanelaAreaRisco = false;
+			}
 			
 			function fecharJanelaAreaRisco(tipo){
-				//map.enableDragging();
 				fecharTodasOpcoesAreasRisco();
-				//fecharShareLinks(tipo);
 				limparShareLinks();
 				fecharOpcaoAreasRisco('salvar');
 				fecharOpcaoAreasRisco('editarNome');
@@ -409,14 +398,11 @@
 				}
 				podeCarregarCrimes=false;
 				podeMudarModoKernel = true;
+				//console.log("fechar 1");
 				recuperarZoom();
+				//console.log("fechar 2");
 				podeDesmarcarHotspot = true;
-				//if(kernelLigadoAoExibirJanelaAreaRisco){
-				//	ativaMapaKernel();
-				//	kernelLigadoAoExibirJanelaAreaRisco = false;
-				//}
 				podeCarregarCrimes=true;
-				//ativaMarcacaoHotspot(); //ja e chamado dentro do ativaMapaKernel()
 
 				if(polyHotspot){
 					map.removeOverlay(polyHotspot);
@@ -427,7 +413,7 @@
 				
 				podeAbrirJanelaAreaRisco = true;
 
-				GEvent.trigger(map,"moveend");
+				//GEvent.trigger(map,"moveend");
 			}
 
 			function isJanelaAreaRiscoVisible(tipo){
@@ -443,20 +429,15 @@
 			var zoomAnterior;
 			
 			function zoomNoPoligono(poly){
-				//console.log('areasRisco.xhtml, 5.4.1');
 				var mapBounds = map.getBounds();
-				//console.log('areasRisco.xhtml, 5.4.2');
 				centroAnterior = mapBounds.getCenter();
 				zoomAnterior = map.getZoom();
 				var polyBounds = poly.getBounds();
-				//console.log('areasRisco.xhtml, 5.4.3');
 				var zoom = map.getBoundsZoomLevel(polyBounds);
 				var centro = polyBounds.getCenter();
 				var widthJanela = document.getElementById("janelaSalvarAreasRisco").offsetWidth;
-				//console.log('areasRisco.xhtml, 5.4.4');
 				centro = deslocaLatLng(centro, widthJanela/2, zoom);
 				map.setCenter(centro, zoom);
-				//console.log('areasRisco.xhtml, 5.4.5');
 			}
 
 			function deslocaLatLng(latlng, pixelDistance, zoom){
@@ -479,13 +460,6 @@
 				var td = document.getElementById(nome + "AreaRiscoTD");
 				var div = document.getElementById(nome + "AreaRiscoDIV");
 				td.appendChild(div);
-
-				/*
-				//teste
-				var janela = document.getElementById('janelaSalvarAreasRisco');
-				janela.style.height += div.offsetHeight;
-				console.log('janela: ' + janela.offsetHeight + 'div: ' + div.offsetHeight);
-				*/
 			}
 
 			function fecharOpcaoAreasRisco(nome){

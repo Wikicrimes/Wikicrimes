@@ -19,6 +19,7 @@
 		if(this.percentOpacity){this.setOpacity(this.percentOpacity);}
 		this.zoomend = GEvent.bind(a,"zoomend", this, function(){this.setPosition(a)});
 		this.moveend = GEvent.bind(a,"moveend", this, function(){this.setPosition(a)});
+//		/*DEBUG*/console.log("cria imagem: " + this.id);
 	}
 
 	TPhoto.prototype.setPosition=function(a){
@@ -57,11 +58,12 @@
 			if(b != null){
 				this.getPane(G_MAP_MAP_PANE).removeChild(b);
 				delete(b);
+//				/*DEBUG*/console.log("apaga imagem: " + a.id);
 			}else{
-				//console.log("[tphoto.2.05.js] erro: b == null");
+//				/*DEBUG*/console.log("[tphoto.2.05.js] erro: b == null");
 			}
 		}catch(e){
-			//console.log("[tphoto.2.05.js] erro: " + e);
+//			/*DEBUG*/console.log("[tphoto.2.05.js] erro: " + e);
 		}
 		
 	}

@@ -1,0 +1,1093 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE rdf:RDF [
+    <!ENTITY ns "http://rdfs.org/sioc/ns#" >
+    <!ENTITY terms "http://purl.org/dc/terms/" >
+    <!ENTITY foaf "http://xmlns.com/foaf/0.1/" >
+    <!ENTITY time "http://www.w3.org/2006/time#" >
+    <!ENTITY aboutdcmi "http://purl.org/dc/aboutdcmi#" >
+    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+    <!ENTITY dc "http://purl.org/dc/elements/1.1/" >
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY event "http://purl.org/NET/c4dm/event.owl#" >
+    <!ENTITY skos "http://www.w3.org/2004/02/skos/core#" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY wgs84_pos "http://www.w3.org/2003/01/geo/wgs84_pos#" >
+    <!ENTITY history "http://dublincore.org/usage/terms/history/#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+    <!ENTITY ontology "http://www.wikicrimes.org/ontology/ontology.owl#" >
+    <!ENTITY address "http://daml.umbc.edu/ontologies/ittalks/address#" >
+    <!ENTITY pml-provenance "http://inferenceweb.stanford.edu/2006/06/pml-provenance.owl#" >
+]>
+
+
+<rdf:RDF xmlns="http://www.wikimapps.com/semantic/wikimapps.owl#"
+     xml:base="http://www.wikimapps.com/semantic/wikimapps.owl"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:pml-provenance="http://inferenceweb.stanford.edu/2006/06/pml-provenance.owl#"
+     xmlns:ns="http://rdfs.org/sioc/ns#"
+     xmlns:wgs84_pos="http://www.w3.org/2003/01/geo/wgs84_pos#"
+     xmlns:foaf="http://xmlns.com/foaf/0.1/"
+     xmlns:terms="http://purl.org/dc/terms/"
+     xmlns:ontology="http://www.wikicrimes.org/ontology/ontology.owl#"
+     xmlns:history="http://dublincore.org/usage/terms/history/#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:time="http://www.w3.org/2006/time#"
+     xmlns:address="http://daml.umbc.edu/ontologies/ittalks/address#"
+     xmlns:event="http://purl.org/NET/c4dm/event.owl#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:aboutdcmi="http://purl.org/dc/aboutdcmi#"
+     xmlns:skos="http://www.w3.org/2004/02/skos/core#">
+    <owl:Ontology rdf:about="http://www.wikicrimes.org/ontology/ontology.owl">
+        <owl:imports rdf:resource="http://daml.umbc.edu/ontologies/ittalks/address"/>
+        <owl:imports rdf:resource="http://inferenceweb.stanford.edu/2006/06/pml-provenance.owl"/>
+        <owl:imports rdf:resource="http://purl.org/NET/c4dm/event.owl"/>
+        <owl:imports rdf:resource="http://rdfs.org/sioc/ns#"/>
+        <owl:imports rdf:resource="http://www.geonames.org/ontology"/>
+        <owl:imports rdf:resource="http://www.w3.org/2006/time"/>
+        <owl:imports rdf:resource="http://xmlns.com/foaf/0.1/"/>
+    </owl:Ontology>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Annotation properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <owl:AnnotationProperty rdf:about="&wgs84_pos;lat">
+        <rdfs:label>latitude</rdfs:label>
+        <rdfs:comment>The WGS84 latitude of a SpatialThing (decimal degrees).</rdfs:comment>
+        <rdfs:domain rdf:resource="&wgs84_pos;SpatialThing"/>
+    </owl:AnnotationProperty>
+    <owl:AnnotationProperty rdf:about="&foaf;based_near"/>
+    <owl:AnnotationProperty rdf:about="&wgs84_pos;alt">
+        <rdfs:label>altitude</rdfs:label>
+        <rdfs:comment>The WGS84 altitude of a SpatialThing (decimal meters 
+above the local reference ellipsoid).</rdfs:comment>
+        <rdfs:domain rdf:resource="&wgs84_pos;SpatialThing"/>
+    </owl:AnnotationProperty>
+    <owl:AnnotationProperty rdf:about="&rdfs;label"/>
+    <rdf:Description rdf:about="&dc;description">
+        <rdfs:label xml:lang="en-us">Description</rdfs:label>
+        <rdfs:comment xml:lang="en-us">An account of the resource.</rdfs:comment>
+        <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
+    </rdf:Description>
+    <owl:AnnotationProperty rdf:about="&rdfs;comment"/>
+    <owl:AnnotationProperty rdf:about="&rdfs;seeAlso"/>
+    <owl:AnnotationProperty rdf:about="&rdfs;isDefinedBy"/>
+    <owl:AnnotationProperty rdf:about="&wgs84_pos;long">
+        <rdfs:label>longitude</rdfs:label>
+        <rdfs:comment>The WGS84 longitude of a SpatialThing (decimal degrees).</rdfs:comment>
+        <rdfs:domain rdf:resource="&wgs84_pos;SpatialThing"/>
+    </owl:AnnotationProperty>
+    <rdf:Description rdf:about="&dc;date">
+        <rdfs:label xml:lang="en-us">Date</rdfs:label>
+        <rdfs:comment xml:lang="en-us">A point or period of time associated with an event in the lifecycle of the resource.</rdfs:comment>
+        <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
+    </rdf:Description>
+    <owl:AnnotationProperty rdf:about="&wgs84_pos;location">
+        <rdfs:label>location</rdfs:label>
+        <rdfs:comment>The relation between something and the point, 
+ or other geometrical thing in space, where it is.  For example, the realtionship between
+ a radio tower and a Point with a given lat and long.
+ Or a relationship between a park and its outline as a closed arc of points, or a road and
+ its location as a arc (a sequence of points).
+ Clearly in practice there will be limit to the accuracy of any such statement, but one would expect
+ an accuracy appropriate for the size of the object and uses such as mapping .
+ </rdfs:comment>
+    </owl:AnnotationProperty>
+    <rdf:Description rdf:about="&dc;title">
+        <rdfs:label xml:lang="en-us">Title</rdfs:label>
+        <rdfs:comment xml:lang="en-us">A name given to the resource.</rdfs:comment>
+        <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
+    </rdf:Description>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Datatypes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://inferenceweb.stanford.edu/2006/06/pml-provenance.owl#hasDescription -->
+
+    <owl:ObjectProperty rdf:about="&pml-provenance;hasDescription"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/hasVersion -->
+
+    <owl:ObjectProperty rdf:about="&terms;hasVersion"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/publisher -->
+
+    <owl:ObjectProperty rdf:about="&terms;publisher"/>
+    
+
+
+    <!-- http://rdfs.org/sioc/ns#about -->
+
+    <owl:ObjectProperty rdf:about="&ns;about"/>
+    
+
+
+    <!-- http://rdfs.org/sioc/ns#has_creator -->
+
+    <owl:ObjectProperty rdf:about="&ns;has_creator"/>
+    
+
+
+    <!-- http://rdfs.org/sioc/ns#topic -->
+
+    <owl:ObjectProperty rdf:about="&ns;topic"/>
+    
+
+
+    <!-- http://www.w3.org/2003/01/geo/wgs84_pos#location -->
+
+    <owl:ObjectProperty rdf:about="&wgs84_pos;location">
+        <rdfs:label>location</rdfs:label>
+        <rdfs:comment>The relation between something and the point, 
+ or other geometrical thing in space, where it is.  For example, the realtionship between
+ a radio tower and a Point with a given lat and long.
+ Or a relationship between a park and its outline as a closed arc of points, or a road and
+ its location as a arc (a sequence of points).
+ Clearly in practice there will be limit to the accuracy of any such statement, but one would expect
+ an accuracy appropriate for the size of the object and uses such as mapping .
+ </rdfs:comment>
+        <rdfs:range rdf:resource="&wgs84_pos;SpatialThing"/>
+        <rdfs:subPropertyOf rdf:resource="&foaf;based_near"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.w3.org/2006/time#hasDateTimeDescription -->
+
+    <owl:ObjectProperty rdf:about="&time;hasDateTimeDescription"/>
+    
+
+
+    <!-- http://www.wikicrimes.org/ontology/ontology.owl#killed -->
+
+    <owl:ObjectProperty rdf:about="&ontology;killed"/>
+    
+
+
+    <!-- http://www.wikimapps.com/semantic/wikimapps.owl#hasAddress -->
+
+    <owl:ObjectProperty rdf:about="http://www.wikimapps.com/semantic/wikimapps.owl#hasAddress"/>
+    
+
+
+    <!-- http://www.wikimapps.com/semantic/wikimapps.owl#hasAuthor -->
+
+    <owl:ObjectProperty rdf:about="http://www.wikimapps.com/semantic/wikimapps.owl#hasAuthor"/>
+    
+
+
+    <!-- http://www.wikimapps.com/semantic/wikimapps.owl#hasDeadVictim -->
+
+    <owl:ObjectProperty rdf:about="http://www.wikimapps.com/semantic/wikimapps.owl#hasDeadVictim">
+        <rdfs:subPropertyOf rdf:resource="http://www.wikimapps.com/semantic/wikimapps.owl#hasVictim"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.wikimapps.com/semantic/wikimapps.owl#hasMarker -->
+
+    <owl:ObjectProperty rdf:about="http://www.wikimapps.com/semantic/wikimapps.owl#hasMarker"/>
+    
+
+
+    <!-- http://www.wikimapps.com/semantic/wikimapps.owl#hasVictim -->
+
+    <owl:ObjectProperty rdf:about="http://www.wikimapps.com/semantic/wikimapps.owl#hasVictim"/>
+    
+
+
+    <!-- http://www.wikimapps.com/semantic/wikimapps.owl#hasWitness -->
+
+    <owl:ObjectProperty rdf:about="http://www.wikimapps.com/semantic/wikimapps.owl#hasWitness"/>
+    
+
+
+    <!-- http://www.wikimapps.com/semantic/wikimapps.owl#usedWeapon -->
+
+    <owl:ObjectProperty rdf:about="http://www.wikimapps.com/semantic/wikimapps.owl#usedWeapon"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://purl.org/dc/terms/date -->
+
+    <owl:DatatypeProperty rdf:about="&terms;date"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/description -->
+
+    <owl:DatatypeProperty rdf:about="&terms;description"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/issued -->
+
+    <owl:DatatypeProperty rdf:about="&terms;issued"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/modified -->
+
+    <owl:DatatypeProperty rdf:about="&terms;modified"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/title -->
+
+    <owl:DatatypeProperty rdf:about="&terms;title"/>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#note -->
+
+    <owl:DatatypeProperty rdf:about="&skos;note"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://daml.umbc.edu/ontologies/ittalks/address#Address -->
+
+    <owl:Class rdf:about="&address;Address"/>
+    
+
+
+    <!-- http://inferenceweb.stanford.edu/2006/06/pml-provenance.owl#Information -->
+
+    <owl:Class rdf:about="&pml-provenance;Information"/>
+    
+
+
+    <!-- http://inferenceweb.stanford.edu/2006/06/pml-provenance.owl#Person -->
+
+    <owl:Class rdf:about="&pml-provenance;Person"/>
+    
+
+
+    <!-- http://rdfs.org/sioc/ns#Item -->
+
+    <owl:Class rdf:about="&ns;Item"/>
+    
+
+
+    <!-- http://rdfs.org/sioc/ns#Post -->
+
+    <owl:Class rdf:about="&ns;Post"/>
+    
+
+
+    <!-- http://rdfs.org/sioc/ns#Site -->
+
+    <owl:Class rdf:about="&ns;Site"/>
+    
+
+
+    <!-- http://rdfs.org/sioc/ns#UserAccount -->
+
+    <owl:Class rdf:about="&ns;UserAccount"/>
+    
+
+
+    <!-- http://www.w3.org/2003/01/geo/wgs84_pos#Point -->
+
+    <owl:Class rdf:about="&wgs84_pos;Point">
+        <rdfs:label>point</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&wgs84_pos;SpatialThing"/>
+        <rdfs:comment>A point, typically described using a coordinate system relative to Earth, such as WGS84.
+  </rdfs:comment>
+        <rdfs:comment> 
+Uniquely identified by lat/long/alt. i.e.
+
+spaciallyIntersects(P1, P2) :- lat(P1, LAT), long(P1, LONG), alt(P1, ALT),
+  lat(P2, LAT), long(P2, LONG), alt(P2, ALT).
+
+sameThing(P1, P2) :- type(P1, Point), type(P2, Point), spaciallyIntersects(P1, P2).
+  </rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.w3.org/2003/01/geo/wgs84_pos#SpatialThing -->
+
+    <owl:Class rdf:about="&wgs84_pos;SpatialThing">
+        <rdfs:label>SpatialThing</rdfs:label>
+        <rdfs:comment>Anything with spatial extent, i.e. size, shape, or position.
+ e.g. people, places, bowling balls, as well as abstract areas like cubes.
+</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#Concept -->
+
+    <owl:Class rdf:about="&skos;Concept"/>
+    
+
+
+    <!-- http://www.w3.org/2006/time#DateTimeDescription -->
+
+    <owl:Class rdf:about="&time;DateTimeDescription"/>
+    
+
+
+    <!-- http://www.wikicrimes.org/ontology/ontology.owl#Author -->
+
+    <owl:Class rdf:about="&ontology;Author">
+        <rdfs:subClassOf rdf:resource="&foaf;Person"/>
+        <rdfs:comment>An author of a crime.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.wikicrimes.org/ontology/ontology.owl#PossessionOfWeapons -->
+
+    <owl:Class rdf:about="&ontology;PossessionOfWeapons">
+        <rdfs:subClassOf rdf:resource="http://www.wikimapps.com/semantic/wikimapps.owl#Crime"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.wikicrimes.org/ontology/ontology.owl#PublicDisorder -->
+
+    <owl:Class rdf:about="&ontology;PublicDisorder">
+        <rdfs:subClassOf rdf:resource="http://www.wikimapps.com/semantic/wikimapps.owl#Crime"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.wikicrimes.org/ontology/ontology.owl#Victim -->
+
+    <owl:Class rdf:about="&ontology;Victim">
+        <rdfs:subClassOf rdf:resource="&foaf;Person"/>
+        <rdfs:comment>A victim of a crime.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.wikicrimes.org/ontology/ontology.owl#Witness -->
+
+    <owl:Class rdf:about="&ontology;Witness">
+        <rdfs:subClassOf rdf:resource="&foaf;Person"/>
+        <rdfs:comment>A witness of a crime.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.wikimapps.com/semantic/wikimapps.owl#Alcohol -->
+
+    <owl:Class rdf:about="http://www.wikimapps.com/semantic/wikimapps.owl#Alcohol">
+        <rdfs:subClassOf rdf:resource="http://www.wikimapps.com/semantic/wikimapps.owl#Crime"/>
+        <rdfs:comment>A crime for drinking.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.wikimapps.com/semantic/wikimapps.owl#AntiSocialBehavior -->
+
+    <owl:Class rdf:about="http://www.wikimapps.com/semantic/wikimapps.owl#AntiSocialBehavior">
+        <rdfs:subClassOf rdf:resource="http://www.wikimapps.com/semantic/wikimapps.owl#Crime"/>
+        <rdfs:comment>A crime classified as anti social behavior.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.wikimapps.com/semantic/wikimapps.owl#Arson -->
+
+    <owl:Class rdf:about="http://www.wikimapps.com/semantic/wikimapps.owl#Arson">
+        <rdfs:subClassOf rdf:resource="http://www.wikimapps.com/semantic/wikimapps.owl#Crime"/>
+        <rdfs:comment>A crime for intentionally starting a fire to damage or destroy something.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.wikimapps.com/semantic/wikimapps.owl#Assault -->
+
+    <owl:Class rdf:about="http://www.wikimapps.com/semantic/wikimapps.owl#Assault">
+        <rdfs:subClassOf rdf:resource="http://www.wikimapps.com/semantic/wikimapps.owl#Crime"/>
+        <rdfs:comment>A crime caracterized by a violent attack.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.wikimapps.com/semantic/wikimapps.owl#Burglary -->
+
+    <owl:Class rdf:about="http://www.wikimapps.com/semantic/wikimapps.owl#Burglary">
+        <rdfs:subClassOf rdf:resource="http://www.wikimapps.com/semantic/wikimapps.owl#Crime"/>
+        <rdfs:comment>A crime of ilegally entering a build and stealing things.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.wikimapps.com/semantic/wikimapps.owl#Comment -->
+
+    <owl:Class rdf:about="http://www.wikimapps.com/semantic/wikimapps.owl#Comment">
+        <rdfs:subClassOf rdf:resource="&ns;Post"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.wikimapps.com/semantic/wikimapps.owl#Crime -->
+
+    <owl:Class rdf:about="http://www.wikimapps.com/semantic/wikimapps.owl#Crime">
+        <rdfs:subClassOf rdf:resource="&event;Event"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.wikimapps.com/semantic/wikimapps.owl#CrimeReport -->
+
+    <owl:Class rdf:about="http://www.wikimapps.com/semantic/wikimapps.owl#CrimeReport">
+        <rdfs:subClassOf rdf:resource="&pml-provenance;Information"/>
+        <rdfs:comment>A report of a crime.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.wikimapps.com/semantic/wikimapps.owl#Homicide -->
+
+    <owl:Class rdf:about="http://www.wikimapps.com/semantic/wikimapps.owl#Homicide">
+        <rdfs:subClassOf rdf:resource="http://www.wikimapps.com/semantic/wikimapps.owl#Crime"/>
+        <rdfs:comment>A crime for intentionally killing a person.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.wikimapps.com/semantic/wikimapps.owl#Map -->
+
+    <owl:Class rdf:about="http://www.wikimapps.com/semantic/wikimapps.owl#Map">
+        <rdfs:subClassOf rdf:resource="&pml-provenance;Information"/>
+        <rdfs:subClassOf rdf:resource="&ns;Site"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.wikimapps.com/semantic/wikimapps.owl#Marker -->
+
+    <owl:Class rdf:about="http://www.wikimapps.com/semantic/wikimapps.owl#Marker">
+        <rdfs:subClassOf rdf:resource="&ns;Item"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&ns;topic"/>
+                <owl:someValuesFrom rdf:resource="&skos;Concept"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&ns;has_creator"/>
+                <owl:someValuesFrom rdf:resource="http://www.wikimapps.com/semantic/wikimapps.owl#WikiUserAccount"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.wikimapps.com/semantic/wikimapps.owl#Narcotics -->
+
+    <owl:Class rdf:about="http://www.wikimapps.com/semantic/wikimapps.owl#Narcotics">
+        <rdfs:subClassOf rdf:resource="http://www.wikimapps.com/semantic/wikimapps.owl#Crime"/>
+        <rdfs:comment>A crime for ilegall usage/possession of drugs/narcotics.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.wikimapps.com/semantic/wikimapps.owl#Prostitution -->
+
+    <owl:Class rdf:about="http://www.wikimapps.com/semantic/wikimapps.owl#Prostitution">
+        <rdfs:subClassOf rdf:resource="http://www.wikimapps.com/semantic/wikimapps.owl#Crime"/>
+        <rdfs:comment>A crime for working as a prostitute.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.wikimapps.com/semantic/wikimapps.owl#Rape -->
+
+    <owl:Class rdf:about="http://www.wikimapps.com/semantic/wikimapps.owl#Rape">
+        <rdfs:subClassOf rdf:resource="http://www.wikimapps.com/semantic/wikimapps.owl#Crime"/>
+        <rdfs:comment>A crime of forcing someone to have sex when they are unwilling.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.wikimapps.com/semantic/wikimapps.owl#Robbery -->
+
+    <owl:Class rdf:about="http://www.wikimapps.com/semantic/wikimapps.owl#Robbery">
+        <rdfs:subClassOf rdf:resource="http://www.wikimapps.com/semantic/wikimapps.owl#Crime"/>
+        <rdfs:comment>A crime of stealing from somewhere or someone.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.wikimapps.com/semantic/wikimapps.owl#Suicide -->
+
+    <owl:Class rdf:about="http://www.wikimapps.com/semantic/wikimapps.owl#Suicide">
+        <rdfs:subClassOf rdf:resource="http://www.wikimapps.com/semantic/wikimapps.owl#Crime"/>
+        <rdfs:comment>A crime of self killing intentionally.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.wikimapps.com/semantic/wikimapps.owl#Theft -->
+
+    <owl:Class rdf:about="http://www.wikimapps.com/semantic/wikimapps.owl#Theft">
+        <rdfs:subClassOf rdf:resource="http://www.wikimapps.com/semantic/wikimapps.owl#Crime"/>
+        <rdfs:comment>A crime of taking something that belongs to someone else and keeping it.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.wikimapps.com/semantic/wikimapps.owl#Threat -->
+
+    <owl:Class rdf:about="http://www.wikimapps.com/semantic/wikimapps.owl#Threat">
+        <rdfs:subClassOf rdf:resource="http://www.wikimapps.com/semantic/wikimapps.owl#Crime"/>
+        <rdfs:comment>A crime of suggesting someone that something unpleasant or violent will happen.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.wikimapps.com/semantic/wikimapps.owl#Vandalism -->
+
+    <owl:Class rdf:about="http://www.wikimapps.com/semantic/wikimapps.owl#Vandalism">
+        <rdfs:subClassOf rdf:resource="http://www.wikimapps.com/semantic/wikimapps.owl#Crime"/>
+        <rdfs:comment>A crime of intentionally damaging property beloging to other people.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.wikimapps.com/semantic/wikimapps.owl#Weapon -->
+
+    <owl:Class rdf:about="http://www.wikimapps.com/semantic/wikimapps.owl#Weapon">
+        <rdfs:subClassOf rdf:resource="&skos;Concept"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.wikimapps.com/semantic/wikimapps.owl#WikiUser -->
+
+    <owl:Class rdf:about="http://www.wikimapps.com/semantic/wikimapps.owl#WikiUser">
+        <rdfs:subClassOf rdf:resource="&pml-provenance;Person"/>
+        <rdfs:subClassOf rdf:resource="&foaf;Person"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.wikimapps.com/semantic/wikimapps.owl#WikiUserAccount -->
+
+    <owl:Class rdf:about="http://www.wikimapps.com/semantic/wikimapps.owl#WikiUserAccount">
+        <rdfs:subClassOf rdf:resource="&ns;UserAccount"/>
+    </owl:Class>
+    
+
+
+    <!-- http://xmlns.com/foaf/0.1/Person -->
+
+    <owl:Class rdf:about="&foaf;Person"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://dublincore.org/usage/terms/history/#contributor-006 -->
+
+    <owl:NamedIndividual rdf:about="&history;contributor-006"/>
+    
+
+
+    <!-- http://dublincore.org/usage/terms/history/#coverage-006 -->
+
+    <owl:NamedIndividual rdf:about="&history;coverage-006"/>
+    
+
+
+    <!-- http://dublincore.org/usage/terms/history/#creator-006 -->
+
+    <owl:NamedIndividual rdf:about="&history;creator-006"/>
+    
+
+
+    <!-- http://dublincore.org/usage/terms/history/#date-006 -->
+
+    <owl:NamedIndividual rdf:about="&history;date-006"/>
+    
+
+
+    <!-- http://dublincore.org/usage/terms/history/#description-006 -->
+
+    <owl:NamedIndividual rdf:about="&history;description-006"/>
+    
+
+
+    <!-- http://dublincore.org/usage/terms/history/#format-007 -->
+
+    <owl:NamedIndividual rdf:about="&history;format-007"/>
+    
+
+
+    <!-- http://dublincore.org/usage/terms/history/#identifier-006 -->
+
+    <owl:NamedIndividual rdf:about="&history;identifier-006"/>
+    
+
+
+    <!-- http://dublincore.org/usage/terms/history/#language-007 -->
+
+    <owl:NamedIndividual rdf:about="&history;language-007"/>
+    
+
+
+    <!-- http://dublincore.org/usage/terms/history/#publisher-006 -->
+
+    <owl:NamedIndividual rdf:about="&history;publisher-006"/>
+    
+
+
+    <!-- http://dublincore.org/usage/terms/history/#relation-006 -->
+
+    <owl:NamedIndividual rdf:about="&history;relation-006"/>
+    
+
+
+    <!-- http://dublincore.org/usage/terms/history/#rights-006 -->
+
+    <owl:NamedIndividual rdf:about="&history;rights-006"/>
+    
+
+
+    <!-- http://dublincore.org/usage/terms/history/#source-006 -->
+
+    <owl:NamedIndividual rdf:about="&history;source-006"/>
+    
+
+
+    <!-- http://dublincore.org/usage/terms/history/#subject-006 -->
+
+    <owl:NamedIndividual rdf:about="&history;subject-006"/>
+    
+
+
+    <!-- http://dublincore.org/usage/terms/history/#title-006 -->
+
+    <owl:NamedIndividual rdf:about="&history;title-006"/>
+    
+
+
+    <!-- http://dublincore.org/usage/terms/history/#type-006 -->
+
+    <owl:NamedIndividual rdf:about="&history;type-006"/>
+    
+
+
+    <!-- http://purl.org/dc/aboutdcmi#DCMI -->
+
+    <owl:NamedIndividual rdf:about="&aboutdcmi;DCMI"/>
+    
+
+
+    <!-- http://purl.org/dc/elements/1.1/ -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/elements/1.1/">
+        <terms:modified>2010-10-11</terms:modified>
+        <terms:title xml:lang="en-us">Dublin Core Metadata Element Set, Version 1.1</terms:title>
+        <terms:publisher rdf:resource="&aboutdcmi;DCMI"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://purl.org/dc/elements/1.1/contributor -->
+
+    <owl:NamedIndividual rdf:about="&dc;contributor">
+        <rdfs:label xml:lang="en-us">Contributor</rdfs:label>
+        <terms:issued>1999-07-02</terms:issued>
+        <terms:modified>2008-01-14</terms:modified>
+        <skos:note xml:lang="en-us">A second property with the same name as this property has been declared in the dcterms: namespace (http://purl.org/dc/terms/).  See the Introduction to the document &quot;DCMI Metadata Terms&quot; (http://dublincore.org/documents/dcmi-terms/) for an explanation.</skos:note>
+        <rdfs:comment xml:lang="en-us">An entity responsible for making contributions to the resource.</rdfs:comment>
+        <terms:description xml:lang="en-us">Examples of a Contributor include a person, an organization, or a service. Typically, the name of a Contributor should be used to indicate the entity.</terms:description>
+        <terms:hasVersion rdf:resource="&history;contributor-006"/>
+        <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://purl.org/dc/elements/1.1/coverage -->
+
+    <owl:NamedIndividual rdf:about="&dc;coverage">
+        <rdfs:label xml:lang="en-us">Coverage</rdfs:label>
+        <terms:modified>2008-01-14</terms:modified>
+        <terms:issued>1999-07-02</terms:issued>
+        <skos:note xml:lang="en-us">A second property with the same name as this property has been declared in the dcterms: namespace (http://purl.org/dc/terms/).  See the Introduction to the document &quot;DCMI Metadata Terms&quot; (http://dublincore.org/documents/dcmi-terms/) for an explanation.</skos:note>
+        <terms:description xml:lang="en-us">Spatial topic and spatial applicability may be a named place or a location specified by its geographic coordinates. Temporal topic may be a named period, date, or date range. A jurisdiction may be a named administrative entity or a geographic place to which the resource applies. Recommended best practice is to use a controlled vocabulary such as the Thesaurus of Geographic Names [TGN]. Where appropriate, named places or time periods can be used in preference to numeric identifiers such as sets of coordinates or date ranges.</terms:description>
+        <rdfs:comment xml:lang="en-us">The spatial or temporal topic of the resource, the spatial applicability of the resource, or the jurisdiction under which the resource is relevant.</rdfs:comment>
+        <terms:hasVersion rdf:resource="&history;coverage-006"/>
+        <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://purl.org/dc/elements/1.1/creator -->
+
+    <owl:NamedIndividual rdf:about="&dc;creator">
+        <rdfs:label xml:lang="en-us">Creator</rdfs:label>
+        <terms:issued>1999-07-02</terms:issued>
+        <terms:modified>2008-01-14</terms:modified>
+        <skos:note xml:lang="en-us">A second property with the same name as this property has been declared in the dcterms: namespace (http://purl.org/dc/terms/).  See the Introduction to the document &quot;DCMI Metadata Terms&quot; (http://dublincore.org/documents/dcmi-terms/) for an explanation.</skos:note>
+        <rdfs:comment xml:lang="en-us">An entity primarily responsible for making the resource.</rdfs:comment>
+        <terms:description xml:lang="en-us">Examples of a Creator include a person, an organization, or a service. Typically, the name of a Creator should be used to indicate the entity.</terms:description>
+        <terms:hasVersion rdf:resource="&history;creator-006"/>
+        <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://purl.org/dc/elements/1.1/date -->
+
+    <owl:NamedIndividual rdf:about="&dc;date">
+        <rdfs:label xml:lang="en-us">Date</rdfs:label>
+        <terms:issued>1999-07-02</terms:issued>
+        <terms:modified>2008-01-14</terms:modified>
+        <rdfs:comment xml:lang="en-us">A point or period of time associated with an event in the lifecycle of the resource.</rdfs:comment>
+        <skos:note xml:lang="en-us">A second property with the same name as this property has been declared in the dcterms: namespace (http://purl.org/dc/terms/).  See the Introduction to the document &quot;DCMI Metadata Terms&quot; (http://dublincore.org/documents/dcmi-terms/) for an explanation.</skos:note>
+        <terms:description xml:lang="en-us">Date may be used to express temporal information at any level of granularity.  Recommended best practice is to use an encoding scheme, such as the W3CDTF profile of ISO 8601 [W3CDTF].</terms:description>
+        <terms:hasVersion rdf:resource="&history;date-006"/>
+        <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://purl.org/dc/elements/1.1/description -->
+
+    <owl:NamedIndividual rdf:about="&dc;description">
+        <rdfs:label xml:lang="en-us">Description</rdfs:label>
+        <terms:modified>2008-01-14</terms:modified>
+        <terms:issued>1999-07-02</terms:issued>
+        <skos:note xml:lang="en-us">A second property with the same name as this property has been declared in the dcterms: namespace (http://purl.org/dc/terms/).  See the Introduction to the document &quot;DCMI Metadata Terms&quot; (http://dublincore.org/documents/dcmi-terms/) for an explanation.</skos:note>
+        <rdfs:comment xml:lang="en-us">An account of the resource.</rdfs:comment>
+        <terms:description xml:lang="en-us">Description may include but is not limited to: an abstract, a table of contents, a graphical representation, or a free-text account of the resource.</terms:description>
+        <terms:hasVersion rdf:resource="&history;description-006"/>
+        <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://purl.org/dc/elements/1.1/format -->
+
+    <owl:NamedIndividual rdf:about="&dc;format">
+        <rdfs:label xml:lang="en-us">Format</rdfs:label>
+        <terms:modified>2008-01-14</terms:modified>
+        <terms:issued>1999-07-02</terms:issued>
+        <skos:note xml:lang="en-us">A second property with the same name as this property has been declared in the dcterms: namespace (http://purl.org/dc/terms/).  See the Introduction to the document &quot;DCMI Metadata Terms&quot; (http://dublincore.org/documents/dcmi-terms/) for an explanation.</skos:note>
+        <terms:description xml:lang="en-us">Examples of dimensions include size and duration. Recommended best practice is to use a controlled vocabulary such as the list of Internet Media Types [MIME].</terms:description>
+        <rdfs:comment xml:lang="en-us">The file format, physical medium, or dimensions of the resource.</rdfs:comment>
+        <terms:hasVersion rdf:resource="&history;format-007"/>
+        <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://purl.org/dc/elements/1.1/identifier -->
+
+    <owl:NamedIndividual rdf:about="&dc;identifier">
+        <rdfs:label xml:lang="en-us">Identifier</rdfs:label>
+        <terms:issued>1999-07-02</terms:issued>
+        <terms:modified>2008-01-14</terms:modified>
+        <skos:note xml:lang="en-us">A second property with the same name as this property has been declared in the dcterms: namespace (http://purl.org/dc/terms/).  See the Introduction to the document &quot;DCMI Metadata Terms&quot; (http://dublincore.org/documents/dcmi-terms/) for an explanation.</skos:note>
+        <rdfs:comment xml:lang="en-us">An unambiguous reference to the resource within a given context.</rdfs:comment>
+        <terms:description xml:lang="en-us">Recommended best practice is to identify the resource by means of a string conforming to a formal identification system. </terms:description>
+        <terms:hasVersion rdf:resource="&history;identifier-006"/>
+        <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://purl.org/dc/elements/1.1/language -->
+
+    <owl:NamedIndividual rdf:about="&dc;language">
+        <rdfs:label xml:lang="en-us">Language</rdfs:label>
+        <terms:issued>1999-07-02</terms:issued>
+        <terms:modified>2008-01-14</terms:modified>
+        <rdfs:comment xml:lang="en-us">A language of the resource.</rdfs:comment>
+        <skos:note xml:lang="en-us">A second property with the same name as this property has been declared in the dcterms: namespace (http://purl.org/dc/terms/).  See the Introduction to the document &quot;DCMI Metadata Terms&quot; (http://dublincore.org/documents/dcmi-terms/) for an explanation.</skos:note>
+        <terms:description xml:lang="en-us">Recommended best practice is to use a controlled vocabulary such as RFC 4646 [RFC4646].</terms:description>
+        <terms:hasVersion rdf:resource="&history;language-007"/>
+        <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
+        <rdfs:seeAlso rdf:resource="http://www.ietf.org/rfc/rfc4646.txt"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://purl.org/dc/elements/1.1/publisher -->
+
+    <owl:NamedIndividual rdf:about="&dc;publisher">
+        <rdfs:label xml:lang="en-us">Publisher</rdfs:label>
+        <terms:issued>1999-07-02</terms:issued>
+        <terms:modified>2008-01-14</terms:modified>
+        <skos:note xml:lang="en-us">A second property with the same name as this property has been declared in the dcterms: namespace (http://purl.org/dc/terms/).  See the Introduction to the document &quot;DCMI Metadata Terms&quot; (http://dublincore.org/documents/dcmi-terms/) for an explanation.</skos:note>
+        <rdfs:comment xml:lang="en-us">An entity responsible for making the resource available.</rdfs:comment>
+        <terms:description xml:lang="en-us">Examples of a Publisher include a person, an organization, or a service. Typically, the name of a Publisher should be used to indicate the entity.</terms:description>
+        <terms:hasVersion rdf:resource="&history;publisher-006"/>
+        <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://purl.org/dc/elements/1.1/relation -->
+
+    <owl:NamedIndividual rdf:about="&dc;relation">
+        <rdfs:label xml:lang="en-us">Relation</rdfs:label>
+        <terms:modified>2008-01-14</terms:modified>
+        <terms:issued>1999-07-02</terms:issued>
+        <rdfs:comment xml:lang="en-us">A related resource.</rdfs:comment>
+        <skos:note xml:lang="en-us">A second property with the same name as this property has been declared in the dcterms: namespace (http://purl.org/dc/terms/).  See the Introduction to the document &quot;DCMI Metadata Terms&quot; (http://dublincore.org/documents/dcmi-terms/) for an explanation.</skos:note>
+        <terms:description xml:lang="en-us">Recommended best practice is to identify the related resource by means of a string conforming to a formal identification system. </terms:description>
+        <terms:hasVersion rdf:resource="&history;relation-006"/>
+        <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://purl.org/dc/elements/1.1/rights -->
+
+    <owl:NamedIndividual rdf:about="&dc;rights">
+        <rdfs:label xml:lang="en-us">Rights</rdfs:label>
+        <terms:modified>2008-01-14</terms:modified>
+        <terms:issued>1999-07-02</terms:issued>
+        <skos:note xml:lang="en-us">A second property with the same name as this property has been declared in the dcterms: namespace (http://purl.org/dc/terms/).  See the Introduction to the document &quot;DCMI Metadata Terms&quot; (http://dublincore.org/documents/dcmi-terms/) for an explanation.</skos:note>
+        <rdfs:comment xml:lang="en-us">Information about rights held in and over the resource.</rdfs:comment>
+        <terms:description xml:lang="en-us">Typically, rights information includes a statement about various property rights associated with the resource, including intellectual property rights.</terms:description>
+        <terms:hasVersion rdf:resource="&history;rights-006"/>
+        <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://purl.org/dc/elements/1.1/source -->
+
+    <owl:NamedIndividual rdf:about="&dc;source">
+        <rdfs:label xml:lang="en-us">Source</rdfs:label>
+        <terms:issued>1999-07-02</terms:issued>
+        <terms:modified>2008-01-14</terms:modified>
+        <rdfs:comment xml:lang="en-us">A related resource from which the described resource is derived.</rdfs:comment>
+        <skos:note xml:lang="en-us">A second property with the same name as this property has been declared in the dcterms: namespace (http://purl.org/dc/terms/).  See the Introduction to the document &quot;DCMI Metadata Terms&quot; (http://dublincore.org/documents/dcmi-terms/) for an explanation.</skos:note>
+        <terms:description xml:lang="en-us">The described resource may be derived from the related resource in whole or in part. Recommended best practice is to identify the related resource by means of a string conforming to a formal identification system.</terms:description>
+        <terms:hasVersion rdf:resource="&history;source-006"/>
+        <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://purl.org/dc/elements/1.1/subject -->
+
+    <owl:NamedIndividual rdf:about="&dc;subject">
+        <rdfs:label xml:lang="en-us">Subject</rdfs:label>
+        <terms:modified>2008-01-14</terms:modified>
+        <terms:issued>1999-07-02</terms:issued>
+        <skos:note xml:lang="en-us">A second property with the same name as this property has been declared in the dcterms: namespace (http://purl.org/dc/terms/).  See the Introduction to the document &quot;DCMI Metadata Terms&quot; (http://dublincore.org/documents/dcmi-terms/) for an explanation.</skos:note>
+        <rdfs:comment xml:lang="en-us">The topic of the resource.</rdfs:comment>
+        <terms:description xml:lang="en-us">Typically, the subject will be represented using keywords, key phrases, or classification codes. Recommended best practice is to use a controlled vocabulary. To describe the spatial or temporal topic of the resource, use the Coverage element.</terms:description>
+        <terms:hasVersion rdf:resource="&history;subject-006"/>
+        <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://purl.org/dc/elements/1.1/title -->
+
+    <owl:NamedIndividual rdf:about="&dc;title">
+        <rdfs:label xml:lang="en-us">Title</rdfs:label>
+        <terms:issued>1999-07-02</terms:issued>
+        <terms:modified>2008-01-14</terms:modified>
+        <rdfs:comment xml:lang="en-us">A name given to the resource.</rdfs:comment>
+        <skos:note xml:lang="en-us">A second property with the same name as this property has been declared in the dcterms: namespace (http://purl.org/dc/terms/).  See the Introduction to the document &quot;DCMI Metadata Terms&quot; (http://dublincore.org/documents/dcmi-terms/) for an explanation.</skos:note>
+        <terms:hasVersion rdf:resource="&history;title-006"/>
+        <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://purl.org/dc/elements/1.1/type -->
+
+    <owl:NamedIndividual rdf:about="&dc;type">
+        <rdfs:label xml:lang="en-us">Type</rdfs:label>
+        <terms:modified>2008-01-14</terms:modified>
+        <terms:issued>1999-07-02</terms:issued>
+        <skos:note xml:lang="en-us">A second property with the same name as this property has been declared in the dcterms: namespace (http://purl.org/dc/terms/).  See the Introduction to the document &quot;DCMI Metadata Terms&quot; (http://dublincore.org/documents/dcmi-terms/) for an explanation.</skos:note>
+        <terms:description xml:lang="en-us">Recommended best practice is to use a controlled vocabulary such as the DCMI Type Vocabulary [DCMITYPE]. To describe the file format, physical medium, or dimensions of the resource, use the Format element.</terms:description>
+        <rdfs:comment xml:lang="en-us">The nature or genre of the resource.</rdfs:comment>
+        <terms:hasVersion rdf:resource="&history;type-006"/>
+        <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/elements/1.1/"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Annotations
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <rdf:Description rdf:about="&wgs84_pos;lat_long">
+        <rdfs:label>lat/long</rdfs:label>
+        <rdfs:comment>A comma-separated representation of a latitude, longitude coordinate.</rdfs:comment>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://www.w3.org/2003/01/geo/wgs84_pos#">
+        <rdfs:label>geo</rdfs:label>
+        <dc:description>A vocabulary for representing latitude, longitude and 
+ altitude information in the WGS84 geodetic reference datum. 
+ Version $Id: wgs84_pos.rdf,v 1.22 2009/04/20 15:00:30 timbl Exp $. See http://www.w3.org/2003/01/geo/ for more details.</dc:description>
+        <rdfs:comment>
+Recent changes to this namespace:
+$Log: wgs84_pos.rdf,v $
+Revision 1.22  2009/04/20 15:00:30  timbl
+Remove the time bits which have been deal with elsewhere eg in iCal.
+
+Revision 1.21  2009/04/20 12:52:47  timbl
+try again
+
+Revision 1.20  2009/04/20 12:42:11  timbl
+Add Event (edited ages ago and never checked in), and location (following discussion http://chatlogs.planetrdf.com/swig/2009-04-20#T12-36-09)
+
+Revision 1.19  2009/04/20 12:36:31  timbl
+Add Event (edited ages ago and never checked in), and location (following discussion http://chatlogs.planetrdf.com/swig/2009-04-20#T12-36-09)
+
+Revision 1.18  2006/02/01 22:01:04  danbri
+Clarified that lat and long are decimal degrees, and that alt is decimal metres about local reference ellipsoid
+
+Revision 1.17  2004/02/06 17:38:12  danbri
+Fixed a bad commit screwup
+
+Revision 1.15  2003/04/19 11:24:08  danbri
+Fixed the typo even more.
+
+Revision 1.14  2003/04/19 11:16:56  danbri
+fixed a typo
+
+Revision 1.13  2003/02/19 22:27:27  connolly
+relaxed domain constraints on lat/long/alt from Point to SpatialThing
+
+Revision 1.12  2003/01/12 01:41:41  danbri
+Trying local copy of XSLT doc.
+
+Revision 1.11  2003/01/12 01:20:18  danbri
+added a link to morten&#39;s xslt rdfs viewer.
+
+Revision 1.10  2003/01/11 18:56:49  danbri
+Removed datatype range from lat and long properties, since they would
+have required each occurance of the property to mention the datatype.
+
+Revision 1.9  2003/01/11 11:41:31  danbri
+Another typo; repaired rdfs:Property to rdf:Property x4
+
+Revision 1.8  2003/01/11 11:05:02  danbri
+Added an rdfs:range for each lat/long/alt property,
+http://www.w3.org/2001/XMLSchema#float
+
+Revision 1.7  2003/01/10 20:25:16  danbri
+Longer rdfs:comment for Point, trying to be Earth-centric and neutral about
+coordinate system(s) at the same time. Feedback welcomed.
+
+Revision 1.6  2003/01/10 20:18:30  danbri
+Added CVS log comments into the RDF/XML as an rdfs:comment property of the
+vocabulary. Note that this is not common practice (but seems both harmless
+and potentially useful).
+
+
+revision 1.5
+date: 2003/01/10 20:14:31;  author: danbri;  state: Exp;  lines: +16 -5
+Updated schema:
+Added a dc:date, added url for more info. Changed the rdfs:label of the
+namespace from gp to geo. Added a class Point, set as the rdfs:domain of
+each property. Added XML comment on the lat_long property suggesting that
+we might not need it (based on #rdfig commentary from implementors).
+
+revision 1.4
+date: 2003/01/10 20:01:07;  author: danbri;  state: Exp;  lines: +6 -5
+Fixed typo; several rdfs:about attributes are now rdf:about. Thanks to MortenF in
+#rdfig for catching this error.
+
+revision 1.3
+date: 2003/01/10 11:59:03;  author: danbri;  state: Exp;  lines: +4 -3
+fixed buglet in vocab, added more wgs links
+
+revision 1.2
+date: 2003/01/10 11:01:11;  author: danbri;  state: Exp;  lines: +4 -4
+Removed alt from the as-a-flat-string property, and switched from
+space separated to comma separated.
+
+revision 1.1
+date: 2003/01/10 10:53:23;  author: danbri;  state: Exp;
+basic geo vocab
+
+</rdfs:comment>
+        <dc:date>$Date: 2009/04/20 15:00:30 $</dc:date>
+        <dc:title>WGS84 Geo Positioning: an RDF vocabulary</dc:title>
+    </rdf:Description>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 3.2.3.1824) http://owlapi.sourceforge.net -->
+

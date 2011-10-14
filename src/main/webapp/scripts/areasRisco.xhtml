@@ -12,6 +12,8 @@
 	xmlns:rich="http://richfaces.org/rich"
 	xmlns:a4j="http://richfaces.org/a4j">
 
+<head>
+
 	<script type="text/javascript" src="scripts/dragresize.js"></script>
 	<script type="text/javascript">
 	        /* <![CDATA[ */
@@ -776,11 +778,16 @@
 			//DRAG
 			
 			function ativaDragJanelaAreaRisco(tipo){
-				var espacoExtra = document.getElementById('janela'+ tipo +'AreasRisco').offsetWidth - 50;
-				var dragresize = new DragResize('dragresize',
-				 	{ minLeft: -espacoExtra, minTop: 0, 
-				 	maxLeft:getWidthWikicrimes() + espacoExtra, maxTop:getHeightWikicrimes() + espacoExtra });
-					//maxLeft:1000, maxTop:1000 });
+				var div = document.getElementById('janela'+ tipo +'AreasRisco');
+				var espacoExtra = div.offsetWidth - 50;
+				var size = getBrowserWindowSize();
+				var config = {
+					minLeft: -espacoExtra,
+					minTop: 0, 
+				 	maxLeft:size.width + espacoExtra,
+				 	maxTop:size.height + espacoExtra,
+				}
+				var dragresize = new DragResize('dragresize', config);
 			
 			 	dragresize.isElement = function(elm){
 			 		if (elm.className && elm.className.indexOf('divJanelaAreaRisco') > -1) return true;
@@ -792,13 +799,34 @@
 			
 			 	dragresize.apply(document);
 		 	}
+		 	
+		 	function getBrowserWindowSize(){
+		 		var w = 0;
+		 		var h = 0;
 
-		 	function getWidthWikicrimes(){
-				return document.body.clientWidth;
-		 	}
-
-		 	function getHeightWikicrimes(){
-		 		return document.body.clientHeight;
+		 		//IE
+		 		if(!window.innerWidth)
+		 		{
+		 			//strict mode
+		 			if(!(document.documentElement.clientWidth == 0))
+		 			{
+		 				w = document.documentElement.clientWidth;
+		 				h = document.documentElement.clientHeight;
+		 			}
+		 			//quirks mode
+		 			else
+		 			{
+		 				w = document.body.clientWidth;
+		 				h = document.body.clientHeight;
+		 			}
+		 		}
+		 		//w3c
+		 		else
+		 		{
+		 			w = window.innerWidth;
+		 			h = window.innerHeight;
+		 		}
+		 		return {width:w,height:h};
 		 	}
 
 			/* ]]> */
@@ -857,6 +885,9 @@
 		cursor: move;
 	}
 	</style>
+	
+</head>
+<body>
 	
 	<div id="janelaSalvarAreasRisco" class="divJanelaAreaRisco" style="left:5%; top:20%">
 		<rich:panel style="width:100%; height:100%;	border-width:medium;	border-color:#3a6bb4; border-style:solid;">
@@ -966,4 +997,5 @@
 	    </rich:panel>
 	</div>
 	
+</body>
 </html>

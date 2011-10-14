@@ -110,7 +110,7 @@
 			function updateStatistics(eventId, eventType){
 				updateKernelMode(eventId);
 				var url = buildStatisticsUrl(eventId, eventType);
-				//console.log("update " + url);
+				///*DEBUG*/console.log("update " + url);
 				var req = requestStatistics(url);
 				if (req.readyState == 4 && req.status == 200){
 					statistics = eval("(" + req.responseText + ")");

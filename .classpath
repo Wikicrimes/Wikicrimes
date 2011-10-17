@@ -69,6 +69,6 @@
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/tomahawk-sandbox-1.1.7-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/velocity-1.5.jar"/>
 	<classpathentry kind="lib" path="lib/json-20090211.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.eclipse.jst.server.tomcat.runtimeTarget/Apache Tomcat v7.0"/>
+	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.eclipse.jst.server.tomcat.runtimeTarget/Apache Tomcat v6.0"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

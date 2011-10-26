@@ -13,6 +13,8 @@ import org.wikicrimes.util.rotaSegura.geometria.Ponto;
 import org.wikicrimes.util.statistics.AccidentEventsRetriever;
 import org.wikicrimes.util.statistics.WikiCrimesEventsRetriever;
 
+import br.com.wikinova.heatmaps.KernelMap;
+
 public class KernelMapUtil {
 
 	public static KernelMap fazerKernelMap(PontoLatLng centro, double raioKm, int zoom, ServletContext context, String eventType, Date dataInicial) {

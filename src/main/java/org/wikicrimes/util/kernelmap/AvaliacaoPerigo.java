@@ -13,6 +13,8 @@ import org.wikicrimes.service.CrimeService;
 import org.wikicrimes.util.rotaSegura.geometria.Ponto;
 import org.wikicrimes.util.statistics.WikiCrimesEventsRetriever;
 
+import br.com.wikinova.heatmaps.KernelMap;
+
 
 public class AvaliacaoPerigo{
 	

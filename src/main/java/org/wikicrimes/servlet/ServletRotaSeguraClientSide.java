@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.wikicrimes.util.kernelmap.KernelMap;
 import org.wikicrimes.util.kernelmap.PropertiesLoader;
 import org.wikicrimes.util.rotaSegura.geometria.Ponto;
 import org.wikicrimes.util.rotaSegura.geometria.Rota;
@@ -27,6 +26,8 @@ import org.wikicrimes.util.rotaSegura.logica.modelo.RotaGM;
 import org.wikicrimes.util.rotaSegura.testes.TesteCenariosRotas;
 import org.wikicrimes.util.rotaSegura.testes.TesteRotasImg;
 import org.wikicrimes.util.statistics.SessionBuffer;
+
+import br.com.wikinova.heatmaps.KernelMap;
 
 /**
  * Trata requisicoes HTTP para calcular rotas seguras.

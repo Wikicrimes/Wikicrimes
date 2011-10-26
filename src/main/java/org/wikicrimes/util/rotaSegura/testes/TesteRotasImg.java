@@ -21,9 +21,6 @@ import java.util.Queue;
 
 import javax.imageio.ImageIO;
 
-import org.wikicrimes.util.kernelmap.KernelMap;
-import org.wikicrimes.util.kernelmap.renderer.KMRFactory;
-import org.wikicrimes.util.kernelmap.renderer.KernelMapRenderer;
 import org.wikicrimes.util.rotaSegura.geometria.Poligono;
 import org.wikicrimes.util.rotaSegura.geometria.Ponto;
 import org.wikicrimes.util.rotaSegura.geometria.Rota;
@@ -31,6 +28,10 @@ import org.wikicrimes.util.rotaSegura.geometria.Segmento;
 import org.wikicrimes.util.rotaSegura.logica.Grafo;
 import org.wikicrimes.util.rotaSegura.logica.SafeRouteCalculator;
 import org.wikicrimes.util.rotaSegura.logica.modelo.GrafoRotas;
+
+import br.com.wikinova.heatmaps.KMRFactory;
+import br.com.wikinova.heatmaps.KernelMap;
+import br.com.wikinova.heatmaps.renderer.KernelMapRenderer;
 
 /**
  * Representa rotas graficamente, para testes. 

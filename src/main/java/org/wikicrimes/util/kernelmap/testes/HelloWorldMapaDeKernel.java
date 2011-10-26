@@ -11,9 +11,9 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
-import org.wikicrimes.util.kernelmap.KernelMap;
-import org.wikicrimes.util.kernelmap.renderer.KernelMapRenderer;
-import org.wikicrimes.util.kernelmap.renderer.TransparentToColorKMR;
+import br.com.wikinova.heatmaps.KernelMap;
+import br.com.wikinova.heatmaps.renderer.KernelMapRenderer;
+import br.com.wikinova.heatmaps.renderer.TransparentToColorKMR;
 
 public class HelloWorldMapaDeKernel {
 

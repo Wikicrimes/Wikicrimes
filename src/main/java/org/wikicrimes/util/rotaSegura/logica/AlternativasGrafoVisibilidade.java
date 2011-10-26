@@ -146,7 +146,7 @@ public class AlternativasGrafoVisibilidade extends GeradorDeAlternativasAbstrato
 						direcao = direcao.prox();
 						celula = celulaVizinha(celula, direcao);
 						if(!kernel.taNoHotspot(celula)){
-							Ponto novoPonto = kernel.gridParaPixel(celula); 
+							Ponto novoPonto = new Ponto(kernel.gridParaPixel(celula)); 
 							if(contorno.size() >= 2){ //descartar pontos alinhados
 								Ponto penultimoPonto = contorno.get(contorno.size()-2);
 								Ponto ultimoPonto = contorno.get(contorno.size()-1);

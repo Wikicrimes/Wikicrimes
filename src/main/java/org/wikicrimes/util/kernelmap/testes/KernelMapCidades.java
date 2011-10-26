@@ -28,11 +28,12 @@ import org.wikicrimes.model.BaseObject;
 import org.wikicrimes.model.PontoLatLng;
 import org.wikicrimes.service.CrimeService;
 import org.wikicrimes.util.MapaChaveDupla;
-import org.wikicrimes.util.kernelmap.KernelMap;
 import org.wikicrimes.util.kernelmap.LatLngBoundsGM;
-import org.wikicrimes.util.kernelmap.renderer.KMRFactory;
-import org.wikicrimes.util.kernelmap.renderer.KernelMapRenderer;
 import org.wikicrimes.util.statistics.WikiCrimesEventsRetriever;
+
+import br.com.wikinova.heatmaps.KMRFactory;
+import br.com.wikinova.heatmaps.KernelMap;
+import br.com.wikinova.heatmaps.renderer.KernelMapRenderer;
 
 //pro Douglas, 04/08/2010
 @SuppressWarnings({ "unused", "serial" })

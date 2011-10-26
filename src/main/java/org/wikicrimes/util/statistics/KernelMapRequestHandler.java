@@ -7,17 +7,17 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.wikicrimes.util.ServletUtil;
-import org.wikicrimes.util.kernelmap.KernelMap;
 import org.wikicrimes.util.kernelmap.PropertiesLoader;
-import org.wikicrimes.util.kernelmap.renderer.KMRFactory;
-import org.wikicrimes.util.kernelmap.renderer.KernelMapRenderer;
+
+import br.com.wikinova.heatmaps.KernelMap;
+import br.com.wikinova.heatmaps.renderer.DiscreteRainbowKMR;
+import br.com.wikinova.heatmaps.renderer.KernelMapRenderer;
 
 public class KernelMapRequestHandler {
 
 	private final static int DEFAULT_NODE_SIZE = PropertiesLoader.getInt("kernelmap.nodesize");
 	private final static int DEFAULT_BANDWIDTH = PropertiesLoader.getInt("kernelmap.bandwidth");
-	
+
 	private HttpServletRequest request;
 	private List<Point> points;
 	private Rectangle pixelBounds;
@@ -47,8 +47,9 @@ public class KernelMapRequestHandler {
 //		float bandwidth = getZoomDependantBandwidth(zoom);
 		float bandwidth = DEFAULT_BANDWIDTH;
 		kernel = new KernelMap(DEFAULT_NODE_SIZE, bandwidth, pixelBounds, points);
-		boolean isIE = ServletUtil.isClientUsingIE(request); 
-		renderer = KMRFactory.getDefaultRenderer(kernel, isIE);
+//		boolean isIE = ServletUtil.isClientUsingIE(request); 
+//		renderer = KMRFactory.getDefaultRenderer(kernel, isIE);
+		renderer = new DiscreteRainbowKMR(kernel, 0.65f);
 		image = renderer.renderImage();
 //		/*TESTE CENARIO*/TesteCenariosRotas.setResult("numCrimes", points.size());
 //		/*TESTE CENARIO*/TesteCenariosRotas.setResult("densMedia", kernel.getMediaDens());

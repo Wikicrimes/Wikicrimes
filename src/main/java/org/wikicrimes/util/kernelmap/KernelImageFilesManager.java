@@ -10,10 +10,13 @@ import java.util.TimerTask;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpSession;
 
-import org.wikicrimes.util.kernelmap.renderer.KMRFactory;
-import org.wikicrimes.util.kernelmap.renderer.KernelMapRenderer;
+import br.com.wikinova.heatmaps.KMRFactory;
+import br.com.wikinova.heatmaps.KernelMap;
+import br.com.wikinova.heatmaps.renderer.KernelMapRenderer;
 
 /**
+ * Nao eh mais usado.
+ * 
  * Criacao e delecao de imagens relacionadas com Mapa de Kernel.
  * Obs: A implementacao do Mapa de Kernel gera imagens com um endereco similar a 
  * "/images/KernelMap/[id-da-sessao]/". Esta classe gerencia a criacao e delecao das imagens.

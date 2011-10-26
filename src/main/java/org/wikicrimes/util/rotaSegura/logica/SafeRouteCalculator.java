@@ -6,11 +6,12 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
-import org.wikicrimes.util.kernelmap.KernelMap;
 import org.wikicrimes.util.kernelmap.PropertiesLoader;
 import org.wikicrimes.util.rotaSegura.geometria.Ponto;
 import org.wikicrimes.util.rotaSegura.geometria.Rota;
 import org.wikicrimes.util.rotaSegura.logica.modelo.GrafoRotas;
+
+import br.com.wikinova.heatmaps.KernelMap;
 
 /**
  * @author victor

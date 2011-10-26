@@ -8,12 +8,13 @@ import java.util.Set;
 
 import org.wikicrimes.util.Util;
 import org.wikicrimes.util.ValueCompression;
-import org.wikicrimes.util.kernelmap.KernelMap;
 import org.wikicrimes.util.kernelmap.PropertiesLoader;
 import org.wikicrimes.util.rotaSegura.geometria.Ponto;
 import org.wikicrimes.util.rotaSegura.geometria.Rota;
 import org.wikicrimes.util.rotaSegura.geometria.Segmento;
 import org.wikicrimes.util.rotaSegura.logica.modelo.RotaGM;
+
+import br.com.wikinova.heatmaps.KernelMap;
 
 public class Perigo {
 

@@ -1,7 +1,8 @@
 package org.wikicrimes.util.rotaSegura.logica;
 
-import org.wikicrimes.util.kernelmap.KernelMap;
 import org.wikicrimes.util.rotaSegura.logica.modelo.GrafoRotas;
+
+import br.com.wikinova.heatmaps.KernelMap;
 
 public abstract class GeradorDeAlternativasAbstrato {
 

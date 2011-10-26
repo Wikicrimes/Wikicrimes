@@ -20,7 +20,6 @@ import org.jdom.Document;
 import org.jdom.output.XMLOutputter;
 import org.wikicrimes.model.PontoLatLng;
 import org.wikicrimes.util.DataUtil;
-import org.wikicrimes.util.kernelmap.KernelMap;
 import org.wikicrimes.util.kernelmap.KernelMapUtil;
 import org.wikicrimes.util.kernelmap.PropertiesLoader;
 import org.wikicrimes.util.rotaSegura.ParametroInvalidoRotaSeguraException;
@@ -37,6 +36,8 @@ import org.wikicrimes.util.rotaSegura.logica.SafeRouteCalculator;
 import org.wikicrimes.util.rotaSegura.logica.exceptions.CantFindPath;
 import org.wikicrimes.util.rotaSegura.logica.modelo.GrafoRotas;
 import org.wikicrimes.util.rotaSegura.logica.modelo.RotaGM;
+
+import br.com.wikinova.heatmaps.KernelMap;
 
 
 @SuppressWarnings("serial")

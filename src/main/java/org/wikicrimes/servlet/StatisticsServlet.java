@@ -13,7 +13,6 @@ import net.sf.json.JSONObject;
 
 import org.wikicrimes.model.PontoLatLng;
 import org.wikicrimes.util.ServletUtil;
-import org.wikicrimes.util.kernelmap.KernelMap;
 import org.wikicrimes.util.statistics.ChartRequestHandler;
 import org.wikicrimes.util.statistics.CrimeStringBuilder;
 import org.wikicrimes.util.statistics.EventsRetriever;
@@ -22,6 +21,8 @@ import org.wikicrimes.util.statistics.Param;
 import org.wikicrimes.util.statistics.Param.Actions;
 import org.wikicrimes.util.statistics.SessionBuffer;
 import org.wikicrimes.util.statistics.WikiCrimesEventsRetriever;
+
+import br.com.wikinova.heatmaps.KernelMap;
 
 @SuppressWarnings("serial")
 public class StatisticsServlet extends HttpServlet{

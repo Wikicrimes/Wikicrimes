@@ -8,8 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.wikicrimes.model.PontoLatLng;
-import org.wikicrimes.util.kernelmap.KernelMap;
 import org.wikicrimes.util.statistics.Param.Application;
+
+import br.com.wikinova.heatmaps.KernelMap;
 
 public class SessionBuffer {
 

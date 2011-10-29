@@ -9,7 +9,6 @@ import java.util.ResourceBundle;
 
 import javax.faces.FactoryFinder;
 import javax.faces.application.ApplicationFactory;
-import javax.faces.context.FacesContext;
 import javax.mail.internet.MimeMessage;
 
 import org.apache.velocity.app.VelocityEngine;
@@ -168,7 +167,7 @@ public class EmailServiceImpl extends GenericCrudServiceImpl implements
 		           	    Map model= new HashMap();
 						model.put("usuario",crime.getUsuario());
 						if (locale.equals("pt_BR") || locale.equals("pt")){
-							message.setSubject("Alterações no registro de seu crime - WikiCrimes.org");
+							message.setSubject("Alteraï¿½ï¿½es no registro de seu crime - WikiCrimes.org");
 						 text = VelocityEngineUtils.mergeTemplateIntoString(
 					               velocityEngine, "org/wikicrimes/template-mudancas-crime.vm", model);
 						}
@@ -413,17 +412,17 @@ public class EmailServiceImpl extends GenericCrudServiceImpl implements
 						message.setSubject(bundle.getString("confirmacao.denuncia")+" - WikiCrimes.org");
 						//verifica se usuario ja e cadastrado
 						if(relato.getSubTipoRelato().equalsIgnoreCase("1"))
-							model.put("subTipoRelato", "Áreas Perigosas");
+							model.put("subTipoRelato", "ï¿½reas Perigosas");
 						if(relato.getSubTipoRelato().equalsIgnoreCase("2"))
-							model.put("subTipoRelato", "Áreas com uso/tráfico de drogas");
+							model.put("subTipoRelato", "ï¿½reas com uso/trï¿½fico de drogas");
 						if(relato.getSubTipoRelato().equalsIgnoreCase("3"))
 							model.put("subTipoRelato", "Bares Ilegais");
 						if(relato.getSubTipoRelato().equalsIgnoreCase("4"))
-							model.put("subTipoRelato", "Uso Excessivo de Álcool");
+							model.put("subTipoRelato", "Uso Excessivo de ï¿½lcool");
 						if(relato.getSubTipoRelato().equalsIgnoreCase("5"))
-							model.put("subTipoRelato", "Violência contra Mulher");
+							model.put("subTipoRelato", "Violï¿½ncia contra Mulher");
 						if(relato.getSubTipoRelato().equalsIgnoreCase("6"))
-							model.put("subTipoRelato", "Violência contra Criança");
+							model.put("subTipoRelato", "Violï¿½ncia contra Crianï¿½a");
 					if(confirmacao.getUsuario().getPerfil().getIdPerfil()== Perfil.CONVIDADO){
 						text = VelocityEngineUtils.mergeTemplateIntoString(
 					               velocityEngine, "org/wikicrimes/template-convidado-relato-confirmacao.vm", model);
@@ -466,7 +465,7 @@ public class EmailServiceImpl extends GenericCrudServiceImpl implements
 				Thread t = new Thread() {
 					public void run() {
 						mailSender.send(preparator);
-						System.out.println("[" + new Date() + "] Email de Confirmacao de Denúncia registrado por " + usuario.getEmail() + " para " + confirmacao.getUsuario().getEmail());
+						System.out.println("[" + new Date() + "] Email de Confirmacao de Denï¿½ncia registrado por " + usuario.getEmail() + " para " + confirmacao.getUsuario().getEmail());
 					}
 				};
 				t.start();
@@ -523,7 +522,7 @@ public class EmailServiceImpl extends GenericCrudServiceImpl implements
 					else
 						model.put("usuarioEmailouNome",usuarioTexto);
 					if (!positiva)
-						model.put("nao", " não ");
+						model.put("nao", " nï¿½o ");
 					else
 						model.put("nao", " ");
 					if(crime.getTipoCrime().getIdTipoCrime() != 5)
@@ -556,7 +555,7 @@ public class EmailServiceImpl extends GenericCrudServiceImpl implements
 				Thread t = new Thread() {
 					public void run() {
 						mailSender.send(preparator);
-						System.out.println("[" + new Date() + "] Email de Notificação de confirmacao de Crime por " + confirmacao.getUsuario().getEmail() + " para " + usuario.getEmail());
+						System.out.println("[" + new Date() + "] Email de Notificaï¿½ï¿½o de confirmacao de Crime por " + confirmacao.getUsuario().getEmail() + " para " + usuario.getEmail());
 					}
 				};
 				t.start();
@@ -601,7 +600,7 @@ public class EmailServiceImpl extends GenericCrudServiceImpl implements
 					else
 						model.put("usuarioEmailouNome",usuarioTexto);
 					if (!positiva)
-						model.put("nao", " não ");
+						model.put("nao", " nï¿½o ");
 					else
 						model.put("nao", " ");
 					String text=null;
@@ -625,7 +624,7 @@ public class EmailServiceImpl extends GenericCrudServiceImpl implements
 				Thread t = new Thread() {
 					public void run() {
 						mailSender.send(preparator);
-						System.out.println("[" + new Date() + "] Email de Notificação de confirmacao de Relato por " + confirmacao.getUsuario().getEmail() + " para " + usuario.getEmail());
+						System.out.println("[" + new Date() + "] Email de Notificaï¿½ï¿½o de confirmacao de Relato por " + confirmacao.getUsuario().getEmail() + " para " + usuario.getEmail());
 					}
 				};
 				t.start();
@@ -718,7 +717,7 @@ public class EmailServiceImpl extends GenericCrudServiceImpl implements
 				Thread t = new Thread() {
 					public void run() {
 						mailSender.send(preparator);
-						System.out.println("[" + new Date() + "] Email de Notificação de comentário de " + comentario.getUsuario().getEmail() + " enviado para " + usuario.getEmail());
+						System.out.println("[" + new Date() + "] Email de Notificaï¿½ï¿½o de comentï¿½rio de " + comentario.getUsuario().getEmail() + " enviado para " + usuario.getEmail());
 					}
 				};
 				t.start();

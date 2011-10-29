@@ -3,9 +3,7 @@ package org.wikicrimes.servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -17,10 +15,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.wikicrimes.model.BaseObject;
 import org.wikicrimes.model.Crime;
-import org.wikicrimes.model.CrimeRazao;
 import org.wikicrimes.model.EstatisticaEstado;
 import org.wikicrimes.model.Relato;
-import org.wikicrimes.model.RelatoRazao;
 import org.wikicrimes.service.CrimeService;
 import org.wikicrimes.web.FiltroForm;
 

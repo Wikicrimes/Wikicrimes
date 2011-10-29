@@ -73,8 +73,6 @@
                  <value>org/wikicrimes/model/AreaRisco.hbm.xml</value>
                  <value>org/wikicrimes/model/PontoLatLng.hbm.xml</value>
                  <value>org/wikicrimes/model/MobileRequestLog.hbm.xml</value>
-                 <value>org/wikicrimes/model/FonteExterna.hbm.xml</value>
-                 <value>org/wikicrimes/model/EstatisticaExterna.hbm.xml</value>
             </list>
         </property>
         <property name="hibernateProperties">
@@ -193,10 +191,6 @@
     </bean>
     
     <bean id="mobileRequestLogDao" class="org.wikicrimes.dao.hibernate.MobileRequestLogDaoHibernate">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    
-     <bean id="estatisticaExternaDao" class="org.wikicrimes.dao.hibernate.EstatisticaExternaDaoHibernate">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     

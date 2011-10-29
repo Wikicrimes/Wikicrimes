@@ -14,7 +14,6 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.UnknownHostException;
 
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageInputStream;
@@ -27,9 +26,9 @@ import javax.swing.ImageIcon;
 
 
 /**
- * Gera um QRCode através da API do GoogleChart
+ * Gera um QRCode atravï¿½s da API do GoogleChart
  * Comunica-se com a Google Charts(http://code.google.com/apis/charttools/).
- * @author André
+ * @author Andrï¿½
  */
 
 public class ServletQRCode extends HttpServlet {
@@ -51,7 +50,7 @@ public class ServletQRCode extends HttpServlet {
 			else
 				tamanho = 1;
 		} catch (Exception e) {
-			tamanho = 1; // Caso nenhum numero válido seja passado
+			tamanho = 1; // Caso nenhum numero vï¿½lido seja passado
 		}
 		
 		
@@ -99,7 +98,7 @@ public class ServletQRCode extends HttpServlet {
 	
 	
 	/**
-	 * Método que retorna uma imagem recebida pelo Google Charts.
+	 * Mï¿½todo que retorna uma imagem recebida pelo Google Charts.
 	 * @param url - URL de request para o Google Charts
 	 * @param tamanho - Fator de escala da imagem(para aumentar ou diminuir a imagem)
 	 * @return Imagem com o recebida

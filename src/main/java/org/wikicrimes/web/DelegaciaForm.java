@@ -2,8 +2,6 @@ package org.wikicrimes.web;
 
 import java.util.List;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.wikicrimes.model.Delegacia;
 import org.wikicrimes.service.DelegaciaService;
 

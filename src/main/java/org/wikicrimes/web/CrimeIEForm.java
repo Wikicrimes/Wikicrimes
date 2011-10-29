@@ -19,7 +19,6 @@ import org.apache.commons.logging.LogFactory;
 import org.wikicrimes.model.BaseObject;
 import org.wikicrimes.model.Confirmacao;
 import org.wikicrimes.model.Crime;
-import org.wikicrimes.model.LogUbiquity;
 import org.wikicrimes.model.Razao;
 import org.wikicrimes.model.TipoArmaUsada;
 import org.wikicrimes.model.TipoCrime;
@@ -33,7 +32,6 @@ import org.wikicrimes.service.CrimeService;
 import org.wikicrimes.service.LogUbiquityService;
 import org.wikicrimes.service.UsuarioService;
 import org.wikicrimes.util.Horario;
-
 import org.wikicrimes.web.converter.WikiCrimesDataConverter;
 
 public class CrimeIEForm extends GenericForm {
@@ -609,7 +607,7 @@ public class CrimeIEForm extends GenericForm {
 		itens.add(new SelectItem("9", "9"));
 		itens.add(new SelectItem("10", "10"));
 		itens.add(new SelectItem("11", "Mais de 10"));
-		itens.add(new SelectItem("12", "Não Sei"));
+		itens.add(new SelectItem("12", "Nï¿½o Sei"));
 
 		return itens;
 	}
@@ -629,7 +627,7 @@ public class CrimeIEForm extends GenericForm {
 		itens.add(new SelectItem("9", "9"));
 		itens.add(new SelectItem("10", "10"));
 		itens.add(new SelectItem("11", "Mais de 10"));
-		itens.add(new SelectItem("12", "Não Sei"));
+		itens.add(new SelectItem("12", "Nï¿½o Sei"));
 
 		return itens;
 	}
@@ -730,7 +728,7 @@ public class CrimeIEForm extends GenericForm {
 		itens.add(new SelectItem("1", "Menor que 16"));
 		itens.add(new SelectItem("2", "Entre 16 e 25"));
 		itens.add(new SelectItem("3", "Maior que 25"));
-		itens.add(new SelectItem("4", "Não Sei"));
+		itens.add(new SelectItem("4", "Nï¿½o Sei"));
 
 		return itens;
 	}

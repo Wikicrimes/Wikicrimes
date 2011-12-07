@@ -3,10 +3,12 @@ package org.wikicrimes.util.statistics;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.wikicrimes.model.PontoLatLng;
 import org.wikicrimes.util.kernelmap.PropertiesLoader;
 
 import br.com.wikinova.heatmaps.KernelMap;
@@ -39,14 +41,16 @@ public class KernelMapRequestHandler {
 	}
 	
 	public KernelMapRequestHandler(HttpServletRequest request, List<Point> points) {
-		this(request, points, Param.getPixelBounds(request));
+//		this(request, points, Param.getPixelBounds(request));
+		this(request, points, Param.getLatLngBounds(request).toPixel(Param.getZoom(request)));
 	}
 	
 	private void generateKernelMap(){
 //		int zoom = Param.getZoom(request);
 //		float bandwidth = getZoomDependantBandwidth(zoom);
 		float bandwidth = DEFAULT_BANDWIDTH;
-		kernel = new KernelMap(DEFAULT_NODE_SIZE, bandwidth, pixelBounds, points);
+		List<Point> fixedPoints = fixPointsFor180DegreesMeridian(points, pixelBounds, request);
+		kernel = new KernelMap(DEFAULT_NODE_SIZE, bandwidth, pixelBounds, fixedPoints);
 //		boolean isIE = ServletUtil.isClientUsingIE(request); 
 //		renderer = KMRFactory.getDefaultRenderer(kernel, isIE);
 		renderer = new DiscreteRainbowKMR(kernel, 0.65f);
@@ -94,6 +98,24 @@ public class KernelMapRequestHandler {
 
 	public String getBooleanGrid() {
 		return booleanGrid;
+	}
+	
+	private static List<Point> fixPointsFor180DegreesMeridian(List<Point> points, Rectangle bounds, HttpServletRequest request){
+		if(bounds.x >= 0)
+			return points;
+		int zoom = Param.getZoom(request);
+		int maxX = new PontoLatLng(0,180).toPixel(zoom).x; //x correspondente a 180 graus de longitude
+		List<Point> fixedList = new ArrayList<Point>();
+		int east = bounds.x + bounds.width;
+		for(Point p : points){
+			Point fixedPoint = p;
+			if(p.x > east){
+				int fixedX = p.x - maxX;
+				fixedPoint = new Point(fixedX, p.y);
+			}
+			fixedList.add(fixedPoint);
+		}
+		return fixedList;
 	}
 	
 }

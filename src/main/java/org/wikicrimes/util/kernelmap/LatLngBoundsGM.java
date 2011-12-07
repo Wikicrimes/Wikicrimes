@@ -72,7 +72,9 @@ public class LatLngBoundsGM {
 		int south = new PontoLatLng(sul, 0.0).toPixel(zoom).y;
 		int east = new PontoLatLng(0.0,leste).toPixel(zoom).x;
 		int west = new PontoLatLng(0.0,oeste).toPixel(zoom).x;
-		int width = east - west; ;
+		int maxX = new PontoLatLng(0,180).toPixel(zoom).x; //x correspondente a 180 graus de longitude
+		if(west > east) west = west-maxX;
+		int width = east - west;
 		int height = south - north;
 		return new Rectangle(west, north, width, height);
 	}

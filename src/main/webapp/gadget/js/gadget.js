@@ -395,7 +395,7 @@ function mostraJanelaRegistroCrime(tipoCrime){
 	marcadorAlertaAmigos=criaMarcador(novoCrime, null);
 	desabilitaTutor(2000);
 	marcadorAlertaAmigos.setMap(map);
-	constroiModoal(constroiHtmlAlertaCrime(tipoCrime),438,540,prefs.getMsg("titulo.registrar.alerta")+"(Crime)",2,25,true);
+	constroiModoal(constroiHtmlAlertaCrime(tipoCrime),438,390,prefs.getMsg("titulo.registrar.alerta")+"(Crime)",2,25,true);
 
 }
 

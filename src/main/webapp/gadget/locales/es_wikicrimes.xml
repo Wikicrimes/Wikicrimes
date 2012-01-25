@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<messagebundle>
+	<!-- Canvas -->
+	<msg name="erro.pesquisa">The address searched was not found</msg>
+	<msg name="hint.alertarAmigos">Click this image to alert your friends</msg>
+	<msg name="carregando">loading...</msg>
+	<msg name="amigo">Friend</msg>
+	<msg name="ms.registro1">Drag</msg>
+	<msg name="ms.registro2">the icon to local of Denounce, after click</msg>
+	<msg name="aqui">here</msg>
+	<msg name="ms.registro3">to ty Data</msg>
+	<msg name="ms.registro4">To perform a</msg>
+	<msg name="ms.registro5">Search by Address</msg>
+	<msg name="ms.registro6">type address on text field and clique in</msg>
+	<msg name="atividade.alerta"> is warning you</msg>
+	<msg name="atividade.comentou"> comments a warning in WikiCrimes Social </msg>
+	<msg name="atividade.confirmou"> confirm a warning in WikiCrimes Social</msg>
+	<msg name="atividade.body">to view the profile of</msg>
+	<msg name="ocorrencia">Crime</msg>
+	<msg name="alertas.que.voce.recebeu">Alerts you received</msg>
+	<msg name="comentarios">Comments</msg>
+	<msg name="alertou.em">alert in</msg>
+	<msg name="pesquisar.no.mapa">search on the map</msg>
+	<msg name="pesquise.um.endereco.no.mapa">Find an address on the map, example: "Av Joao Pessoa, Fortaleza"</msg>
+	<msg name="fale.conosco">Contact Us</msg>
+	<msg name="registrar.crimes">WikiCrimes.org</msg>
+	<msg name="nenhum.comentario">No comment on the alert</msg>
+	<msg name="nenhum.amigo.registrou.alerta">None of his friends recorded a Alert</msg>
+	<msg name="usuario.anonimo">Anonymous User</msg>
+	<msg name="comenta">comments</msg>
+	<msg name="salvar">Save</msg>
+	<msg name="cancelar">Cancel</msg>
+	<msg name="selecione">Select</msg>	
+	<msg name="nome">Name</msg>
+	<msg name="dados.do.seu.amigo">Data from your Friend</msg>
+	<msg name="sem.permissao">To perform this operation you must add the WikiCrimes in your profile!</msg>
+	<msg name="comentario.registrado">Comment registered successfully!</msg>
+	<msg name="confirmacao.registrada">Confirmation was successful!</msg>
+	<msg name="alerta.registrado"> Alert registered successfully!  </msg>
+	<msg name="ja.confirmou">Already confirmed that notification!</msg>
+	<msg name="repasse.efetuado">Disbursements made successfully!</msg>
+	<msg name="erro.requisicao">Unable to hold its last request!</msg>
+	<msg name="email.fale.conosco.enviado">Contact email sent successfully!</msg>
+	<msg name="cod.pais">Cod Country</msg>
+	<msg name="hint.repasse.alerta">Pass this alert to your friends</msg>
+	<msg name="hint.confirmar.positivamente"> Confirm that positively alert </msg>	
+	<msg name="hint.confirmar.negativamente"> Confirm that negatively alert </msg>
+	<msg name="hint.comentar.alerta"> Comment on this alert </msg>
+	<msg name="imagem.wikicrimes"> images/widget/wikicrimes_en.PNG </msg>
+	<msg name="imagem.registrar.relato_hint"> images/baloes/en/relato_hint_en.gif </msg>
+	<msg name="imagem.registrar.roubo_hint"> images/baloes/en/vermelha_hint_en.png </msg>
+	<msg name="imagem.registrar.furto_hint"> images/baloes/en/azul_hint_en.png </msg>
+	<msg name="imagem.registrar.outros_hint"> images/baloes/en/laranja_hint_en.png </msg>
+	<msg name="imagem.registrar.relato"> images/btns/en/btnAlerta_en.PNG </msg>
+	<msg name="denuncia_text"> Denounce </msg>
+	<msg name="roubo_text"> Robbery </msg>
+	<msg name="furto_text"> Theft </msg>
+	<msg name="outros_text"> Others </msg>
+	<msg name="tentativa_text"> Attempt </msg>
+	<msg name="pergunta_escolha_tipo_crime">What kind of crime you want to register?</msg>
+	<msg name="pergunta_escolha_tipo_alerta">You want alert your friends recording:</msg>
+	<msg name="mensagem.conf.repasse"> Want to pass this alert to your friends? </msg>
+	<msg name="mensagem.sistema"> Message System </msg>
+	<msg name="convidar.amigos"> Invite your friends </msg>
+	<msg name="canvas.configuracoes"> Settings </msg>
+	<msg name="canvas.mensagem.desativa.tutor">The automatic aid was successfully disabled! To activate it again, go to "Settings" link below the map.</msg>
+	<!-- Canvas -->
+	
+	<!-- Tela de configuracoes-->
+	<msg name="config.deseja.receber.ajuda.baloes"> To receive aid in the form of balloons </msg>	
+	<msg name="config.salvas" >Settings saved successfully!</msg>
+	<!-- Tela de configuracoes-->
+	
+	<!-- Texto Baloes -->
+	<msg name="balao.ajuda.alertar">To alert your friends click on this button and then enter the data requested.</msg>
+	<msg name="balao.ajuda.notificacoes">This is your area of notifications. Here will be listed all the alerts that your friends have done.</msg>
+	<msg name="balao.ajuda.pesquisar.endereco">You can search for an address on the map! Just write it in the text box, eg "Fortaleza, Av. João pessoa," and then click on "search the map".</msg>
+	<msg name="balao.ajuda.manipulacao.mapa">Use these buttons to move the map and increase or decrease the zoom. If you prefer you can use the arrow keys on your keyboard to move and signs of "+" or "-" to manipulate the zoom.</msg>
+	<msg name="balao.ajuda.tipo.mapa">There are other types of maps. To type "Satellite", for example, you can view the map generated from satellite images.</msg>
+	<msg name="balao.ajuda.relacionada">Help related</msg>
+	<msg name="balao.ajuda.nao.receber">I do not want to receive aid</msg>
+	<msg name="balao.ajuda.relacionada.cade.meus.alertas">Where are the alerts I receive</msg>
+	<msg name="balao.ajuda.relacionada.como.registrar.alerta">How to register a warning</msg>
+	<!-- Texto Baloes -->
+	
+	<!-- Tela inicial -->
+	<msg name="voce.ja.e.usuario.wikicrimes">Already a user WikiCrimes? </msg>
+	<msg name="sim">Yes</msg>
+	<msg name="nao">No</msg>
+	<!-- Tela inicial -->
+	
+	<!-- Registrar Usuário(Não é usuario do wikicrimes) -->
+	<msg name="informe.cidade.pais">Tell your city and country </msg>
+	<msg name="cidade">City</msg>
+	<msg name="pais">Country</msg>
+	<!-- Registrar Usuário(Não é usuario do wikicrimes) -->
+	
+	<!-- Modal Fale Conosco -->
+	<msg name="msg.email.seu.email">Your Email</msg>
+	<msg name="msg.email.mensagem">Message</msg>
+	<msg name="msg.email.fale.conosco">Send us a message with suggestions, complaints, criticism and / or comentários.Teremos be more than happy to listen to it and find where you can answer.</msg>
+	<msg name="enviar">send</msg>	
+	<!-- Modal Fale Conosco -->
+	
+	<!-- Tela de Login -->
+	<msg name="informe.login.senha">Enter your Login and Password WikiCrimes of</msg>
+	<msg name="senha">Password</msg>
+	<msg name="voltar">back</msg>
+	<msg name="login.senha.invalido">login or password invalid</msg>
+	<msg name="deseja.amigos.ver.crimes">Do you want your friends to see the crimes that you filed in WikiCrime?</msg>
+	<!-- Tela de Login -->
+	
+	<!-- Modal Registrar Alerta -->
+	<msg name="alerta.tipo.roubo">Type of Robbery</msg>
+	<msg name="alerta.tipo.furto">Type of Theft</msg>
+	<msg name="alerta.tipo.crime">Type of Crime</msg>
+	<msg name="alerta.tipo.local">Local</msg>
+	<msg name="alerta.tipo.horario">Time</msg>
+	<msg name="alerta.tipo.data">Date</msg>
+	<msg name="alerta.qtd.vitimas">Number of Victims</msg>
+	<msg name="alerta.qtd.criminosos">Number of Criminals</msg>
+	<msg name="alerta.tipo.arma.usada">Weapon Used</msg>
+	<msg name="alerta.tipo.relacao.crime">What is your relationship to the crime?</msg>
+	<msg name="alerta.tipo.pol.info">The police was informed?</msg>
+	<msg name="titulo.registrar.alerta">Register Alert</msg>
+	<msg name="desc.alerta">  Description of Alert </msg>
+	<msg name="em.que.turno.ocorre"> In part this is that </msg>
+	<msg name="manha"> Morning (05:00 as 11:59) </msg>
+	<msg name="tarde"> Afternoon (12:00 as 17:59) </msg>
+	<msg name="noite"> Night (18:00 as 23:59) </msg>
+	<msg name="madrugada"> Dawn (00:00 as 04:59) </msg>
+	<msg name="causa.motivo.ocorrencia1"> Tell us what you consider to cause and reason for the </msg>
+	<msg name="causa.motivo.ocorrencia2"> occurrence. Check at least 1 and no more than 4 options </msg>
+	<msg name="ma.iluminacao.publica"> Bad public illumination </msg> 	   	 
+	<msg name="ausencia.lazer.jovens">Lack of leisure places for youth</msg>
+	<msg name="desemprego.regiao">Unemployment</msg>
+	<msg name="facil.acesso.fuga">Easy escape routes</msg>
+	<msg name="disputa.gangues">Gang disputes</msg>
+	<msg name="trafico.drogas">Drug abuse/sales</msg>
+	<msg name="uso.alcool">Use of alcohol</msg> 
+	<msg name="criancas.ruas">Children in the streets</msg>
+	<msg name="alta.concentracao.pessoas">High demographics</msg> 		
+	<msg name="falta.policiamento">Lack of Guardians</msg>
+	<msg name="omissao.testemunhas">Omission of the persons in the place</msg>
+	<msg name="proximidade.regioes.perigosas">Proximity of dangerous areas</msg>
+	<msg name="impunidade.penal">Impunity</msg>
+	<msg name="pistolagem">Contract killing</msg>
+	<msg name="violencia.policial">Police brutality</msg>
+	<msg name="falta.moradia">Housing and urbanization problems</msg>
+	<msg name="crime.organizado">Organized crime</msg>
+	<msg name="crime.passional">Jeabusy</msg>
+	<msg name="outros">Others</msg>
+	<msg name="nao.sei">Not Known</msg>	
+	<msg name="relato.descricao.requerida"> The description of the alert is a required field </msg>
+	<msg name="relato.turno.requerida"> You must select at least one shift! </msg>
+	<msg name="relato.razao.requerida"> You must select at least 1 and at most 4 reasons! </msg>
+	<msg name="alerta.campo.requerido"> is required! </msg>
+	<msg name="alerta.campo.numero">The value informed is not a number</msg>
+	<!-- Modal Registrar Alerta -->
+	
+</messagebundle>
+
+
+
+

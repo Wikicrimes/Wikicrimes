@@ -160,7 +160,21 @@
 		<filter-name>extensionsFilter</filter-name>
 		<url-pattern>/faces/myFacesExtensionResource/*</url-pattern>
 	</filter-mapping>
-
+	
+	<filter>
+	  <filter-name>IE9CompatablityFixServlet</filter-name>
+	  <filter-class>org.wikicrimes.filter.IE9CompatablityFixServlet</filter-class>
+		<init-param>
+			<param-name>CompabilityMode</param-name>
+			<param-value>IE=EmulateIE7</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>IE9CompatablityFixServlet</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+	
 	<listener>
 		<listener-class>
 			org.springframework.web.context.ContextLoaderListener

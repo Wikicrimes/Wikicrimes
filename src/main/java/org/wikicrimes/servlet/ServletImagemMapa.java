@@ -42,6 +42,7 @@ import org.wikicrimes.web.ImagemMapaForm;
  * 
  * @author victor
  */
+@SuppressWarnings("serial")
 public class ServletImagemMapa extends HttpServlet {
 
 	private ImagemMapaService service;
@@ -62,18 +63,20 @@ public class ServletImagemMapa extends HttpServlet {
 				
 				//recupera os dados no banco (objeto ImagemMapa)
 				ImagemMapa im = service.get(Integer.valueOf(id));
+				BufferedImage imagem = new BufferedImage(im.getWidth(), im.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
 				
 				//pega a imgaem (so o mapa) pela Google Static Maps API
 				URL urlImagem = constroiUrlGSM(im);
 				BufferedImage imagemMapa = ServletUtil.requestImage(urlImagem);
+				imagem.getGraphics().drawImage(imagemMapa, 0, 0, null);
 				
 				//pinta o poligono por cima
-				pintaPoligono(im, imagemMapa);
+				pintaPoligono(im, imagem);
 				
 				//pinta os marcadores por cima
-				pintaMarcadores(im, imagemMapa, sessao);
+				pintaMarcadores(im, imagem, sessao);
 				
-				ServletUtil.sendImage(resp, imagemMapa);
+				ServletUtil.sendImage(resp, imagem);
 			}
 		}
 	}

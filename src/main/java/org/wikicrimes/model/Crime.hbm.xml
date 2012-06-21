@@ -37,8 +37,7 @@
         <property name="dataHoraRegistro" column="CRI_DATA_HORA_REGISTRO" type="java.util.Date"/>
         <property name="ultimaCredibilidade" column="CRE_CREDIBILIDADE" type="java.lang.Double"/>
         <property name="cacheEstatisticas" column="CRI_CACHE_ESTATISTICAS" type="java.lang.String" length="20"/>
-        
-        <property name="identificadorUK" column="CRI_ID_UK" type="java.lang.Integer" not-null="false"/>
+        <property name="idOriginal" column="CRI_ID_ORIGINAL" type="java.lang.String" not-null="false"/>
 
         <many-to-one name="tipoVitima" column="TVI_IDTIPO_VITIMA" class="org.wikicrimes.model.TipoVitima" />
         <many-to-one name="tipoLocal" column="TLO_IDTIPO_LOCAL" class="org.wikicrimes.model.TipoLocal" />
@@ -49,6 +48,7 @@
         <many-to-one name="tipoTransporte" column="TTR_IDTIPO_TRANSPORTE" class="org.wikicrimes.model.TipoTransporte" />
         <many-to-one name="usuario" column="USU_IDUSUARIO" class="org.wikicrimes.model.Usuario" />
         <many-to-one name="usuarioRedeSocial" column="URS_IDUSUARIO_REDE_SOCIAL" class="org.wikicrimes.model.UsuarioRedeSocial" />
+        <many-to-one name="baseOrigem" column="CRI_ID_BASE_ORIGEM" class="org.wikicrimes.model.BaseCrimesImportacao" not-null="false"/>
 
 <!--		<set name="credibilidades" table="TB_CRE_CREDIBILIDADE" lazy="true">-->
 <!--            <key><column name="CRI_IDCRIME" not-null="true" /></key>-->

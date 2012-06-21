@@ -99,7 +99,9 @@ public class Crime extends GeoEvent {
 	
 	private UsuarioRedeSocial usuarioRedeSocial;
 	
-	private Integer identificadorUK;
+	private String idOriginal;
+	
+	private BaseCrimesImportacao baseOrigem;
 	
 //	TODO Manter lista de Credibilidades para futura atualizacao
 //	private Set<Credibilidade> credibilidades;
@@ -465,12 +467,20 @@ public class Crime extends GeoEvent {
 		this.ultimaCredibilidade = ultimaCredibilidade;
 	}
 	
-	public Integer getIdentificadorUK() {
-		return identificadorUK;
+	public String getIdOriginal() {
+		return idOriginal;
 	}
 
-	public void setIdentificadorUK(Integer identificadorUK) {
-		this.identificadorUK = identificadorUK;
+	public void setIdOriginal(String idOriginal) {
+		this.idOriginal = idOriginal;
+	}
+
+	public BaseCrimesImportacao getBaseOrigem() {
+		return baseOrigem;
+	}
+
+	public void setBaseOrigem(BaseCrimesImportacao baseOrigem) {
+		this.baseOrigem = baseOrigem;
 	}
 
 	public String getCacheEstatisticas() {

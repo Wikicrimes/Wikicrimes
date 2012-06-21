@@ -30,6 +30,7 @@ public class StatisticsServlet extends HttpServlet{
 	/*
 	 * url de exemplo:
 	 * http://200.19.188.105:5152/wikicrimes/statistics?actions=kernel|image&northPixel=2019&southPixel=2405&eastPixel=1950&westPixel=963&widthPixel=987&heightPixel=386&northLatLng=2.5479878714713835&southLatLng=-29.91685223307016&eastLatLng=-8.61328125&westLatLng=-95.361328125&widthLatLng=86.748046875&heightLatLng=32.46484010454154&zoom=4&tc=0&tv=&tl=&di=&df=11,10,2011&hi=-1&hf=-1&z=4&ec=-1&cp=&id=undefined
+	 * http://wikicrimes.org/statistics?actions=kernel|image&northPixel=2019&southPixel=2405&eastPixel=1950&westPixel=963&widthPixel=987&heightPixel=386&northLatLng=2.5479878714713835&southLatLng=-29.91685223307016&eastLatLng=-8.61328125&westLatLng=-95.361328125&widthLatLng=86.748046875&heightLatLng=32.46484010454154&zoom=4
 	 */
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -92,7 +93,7 @@ public class StatisticsServlet extends HttpServlet{
 					ServletUtil.sendImage(response, image);
 				}else {
 					//ignora: o usuario mexeu o mapa rapidamente, causando requisicoes sobrepostas
-					//image == null, ocorre nas primeiras requisicoes, mas, neste caso, apenas a ultima importa 
+					//image == null, ocorre nas primeiras requisicoes mas, neste caso, apenas a ultima importa 
 				}
 //				/*DEBUG*/TimeTest.saveInstant("send image");
 			}

@@ -1,0 +1,33 @@
+PARA IMPORTAR CRIMES DE UMA BASE JÁ CONHECIDA
+1) ver exemplo em Main.java
+2) instanciar o Parser apropriado com o arquivo contendo os dados a serem importados
+    ex: para importar crimes de Washington do arquivo "crime_incidents_2011_CSV.csv", instanciar "new WashingtonParser(new File(DIR, "crime_incidents_2011_CSV.csv")))"
+    
+PARA IMPORTAR CRIMES DE UMA BASE NOVA
+1) criar uma nova classe extendendo Parser (colocar no pacote "specific")
+    obs: as classes fora do pacote "specific" sao generalizadas para qualquer base e nao precisam ser alteradas
+2) Parser recebe strings de dados de crimes
+    ex1: tabelas onde as tuplas sao separadas por quebra de linha e os valores por virgulas
+    ex2: json
+3) o Parser deve implementar o metodo "convert" para extrair cada parte do crime (data, lat lng, tipo crime, etc) e returnar um "Model"
+
+------------------------------------------------
+
+VISAO GERAL DO CODIGO
+A) DAO
+   - eh onde fica o SQL
+   - conecta com o banco usando o jdbc.properties (q tb eh usado pelo wikicrimes)
+   - recebe objetos Model de um Parser e escreve seus valores no banco
+B) Model
+   - tem atributos correspondentes a cada campo (da tabela tb_cri_crime) que pode receber algum valor durante a importacao   
+   - tem constantes para valores fixos e valores default
+   - tem logica para checar valores obrigatorios e setar valores derivados
+C) Report
+   - escreve um log, dizendo qts crimes foram importados e ignorados (por ser repetido ou de tipo nao reconhecido no wikicrimes)
+D) IgnoredCrimeException
+   - um Parser deve jogar essa excecao sempre q um crime tiver q ser ignorado pq tem dados incompletos, incorretos ou tem tipo nao reconhecido pelo wikicrimes 
+   - eh tratado no DAO e informado ao Report
+E) FileParser
+   - extende Parser pra importar arquivos com tuplas separadas por quebra de linha, q eh comum
+F) Main
+   - chama o DAO passando o Parser e o arquivo com os dados pra rodar a importacao

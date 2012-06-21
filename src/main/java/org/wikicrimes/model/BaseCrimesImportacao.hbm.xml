@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="org.wikicrimes.model.BaseCrimesImportacao" table="TB_BCI_BASE_CRIMES_IMPORTACAO" >
+        
+        <id name="id" column="BCI_IDBASE" unsaved-value="null" >
+            <generator class="increment"/>
+        </id>
+        <property name="nome" column="BCI_NOME" not-null="true" />
+        <property name="url" column="BCI_URL" />
+        <property name="dataUltimaImportacao" column="BCI_DATA_ULTIMA_IMPORTACAO" />
+        <property name="dataHoraRegistro" column="BCI_DATA_HORA_REGISTRO" not-null="true" />
+
+    </class>
+</hibernate-mapping>

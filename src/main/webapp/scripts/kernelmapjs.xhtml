@@ -42,6 +42,8 @@
 
 		    var kernelModifiedByUser = false; //usuario mudou o kernel pelo botao
 		    var podeMudarModoKernel = true; //pq qd abre a janela arearisco, tem que ficar sempre kernel desligado
+		    
+		    var defaultFilter = true; //limitar o filtro pra 1000 crimes se o usuario nao especificar nada no filtro (setado pra true sempre q o usuario faz busca)
 
 			function ativaMapaKernel(primeiraVez){
 			    if(!kernelEnabled){
@@ -246,7 +248,7 @@
 			    else
 				    confirmadosPositivamente = "";
 				    
-				return '&tc='+tipoCrime+'&tv='+tipoVitima+'&tl='+document.getElementById("tipoLocal").value+'&di='+dataInicial+'&df='+dataFinal+'&hi='+horarioInicial+'&hf='+horarioFinal +  '&z=' + map.getZoom()+ '&ec=' + entidadeCertificadora + '&cp=' + confirmadosPositivamente +'&id=' + ignoraData;
+				return '&tc='+tipoCrime+'&tv='+tipoVitima+'&tl='+document.getElementById("tipoLocal").value+'&di='+dataInicial+'&df='+dataFinal+'&hi='+horarioInicial+'&hf='+horarioFinal +  '&z=' + map.getZoom()+ '&ec=' + entidadeCertificadora + '&cp=' + confirmadosPositivamente +'&id=' + ignoraData + '&defilter=' + defaultFilter;
 			}
 
 			function boundsPixelUrlParams(map){

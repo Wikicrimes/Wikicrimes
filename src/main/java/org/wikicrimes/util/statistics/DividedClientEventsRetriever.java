@@ -1,6 +1,7 @@
 package org.wikicrimes.util.statistics;
 
 import java.awt.Point;
+import java.util.Date;
 import java.util.List;
 
 import org.wikicrimes.model.BaseObject;
@@ -26,6 +27,11 @@ public class DividedClientEventsRetriever extends EventsRetriever<BaseObject>{
 	public int getTotalEvents() {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
+	}
+	
+	@Override
+	public Date getStartDate() {
+		return null;
 	}
 	
 }

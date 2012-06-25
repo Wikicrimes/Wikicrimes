@@ -885,7 +885,7 @@ topo_dirFiltro{
 
 					document.getElementById('divFiltrosAplicados').innerHTML = filtrosHtml;
 				}
-
+				
 				function atualizaMapa(){
 					if(isUpdatingMap) return;
 					isUpdatingMap = true;
@@ -895,6 +895,7 @@ topo_dirFiltro{
 					updateStatistics(eventId, eventType);
 					//console.log("atualizaMapa 2");
 					updateStatisticsGUI();
+					updateFilterGUI();
 					if(eventId)
 						centerOnEvent();
 					updateKernelGUI();
@@ -922,6 +923,12 @@ topo_dirFiltro{
 					document.getElementById('divQtdeCrimesFiltrados').innerHTML = statistics.totalEvents;
 					document.getElementById('graficoEstatisticasAV').innerHTML="<img title='#{messages['estatisticas.area.visivel.titulo.graf.ocorrencias']}' src='" + statistics.charts.types + "'/>";
 					document.getElementById('graficoRazoesAV').innerHTML="<img title='#{messages['estatisticas.area.visivel.titulo.graf.causas']}' src='" + statistics.charts.reasons + "'/>";
+				}
+				
+				function updateFilterGUI(){
+					if(defaultFilter){
+						document.getElementById("dataInicial").value = statistics.startDate;
+					}
 				}
 
 				function updateKernelGUI(){
@@ -1038,6 +1045,7 @@ topo_dirFiltro{
 
 					function setaSubmeteuFiltro(){
 						submeteu = true;
+						defaultFilter = false;
 					}	
 								      		
 					/*Funcao que habilita/desabilita a lista contendo as entidades certificadoras cadastradas*/

@@ -89,7 +89,7 @@ public class ServletIphone extends HttpServlet {
 		crimes = filtroForm.getCrimesFiltrados(tipoCrime, tipoVitima,
 				tipoLocal, horarioInicial, horarioFinal, dataInicial,
 				dataFinal, entidadeCertificadora, confirmadosPositivamente,
-				norte, sul, leste, oeste, null);
+				norte, sul, leste, oeste, null, null);
 		String dataMaisAntiga = dataInicial;
 		if(crimes.size()>0){
 			Crime crimeMaisAntigo =(Crime) crimes.get(crimes.size()-1);

@@ -473,12 +473,12 @@ public class FiltroForm extends GenericForm {
 			String tipoVitima, String tipoLocal, String horarioInicial,
 			String horarioFinal, String dataInicial, String dataFinal,
 			String entidadeCertificadora, String crimeConfirmadoPositivamente2,
-			String norte, String sul, String leste, String oeste, String emailUsuario){
+			String norte, String sul, String leste, String oeste, String emailUsuario, String maxResults){
 		try {
 			Map params = getCrimeFilterParameters(tipoCrime, tipoVitima, tipoLocal, 
 					horarioInicial, horarioFinal, dataInicial, dataFinal, 
 					entidadeCertificadora, crimeConfirmadoPositivamente2, 
-					norte, sul, leste, oeste, emailUsuario);
+					norte, sul, leste, oeste, emailUsuario, maxResults);
 			List<BaseObject> result = crimeService.filter(params);
 			
 			return result;
@@ -494,7 +494,7 @@ public class FiltroForm extends GenericForm {
 	private Map<String, Object> getCrimeFilterParameters(String tipoCrime,
 			String tipoVitima, String tipoLocal, String horarioInicial,
 			String horarioFinal, String dataInicial, String dataFinal,
-			String entidadeCertificadora, String crimeConfirmadoPositivamente2, String norte, String sul, String leste, String oeste, String emailUsuario) throws ParseException {
+			String entidadeCertificadora, String crimeConfirmadoPositivamente2, String norte, String sul, String leste, String oeste, String emailUsuario, String maxResults) throws ParseException {
 		
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("credibilidadeInicial", credibilidadeInicial / 100);
@@ -556,8 +556,8 @@ public class FiltroForm extends GenericForm {
 			
 		}
 		
-		if (maxResults != null)
-			parameters.put("maxResults", this.getMaxResults());
+		if (maxResults != null && !"".equals(maxResults))
+			parameters.put("maxResults", Integer.valueOf(maxResults));
 		if (entidadeCertificadora != null
 				&& !entidadeCertificadora.equals("0") && !entidadeCertificadora.equals("-1")
 				&& entidadeCertificadora != "") {
@@ -582,6 +582,7 @@ public class FiltroForm extends GenericForm {
 			parameters.put("crimeConfirmadoPositivamente", new Boolean(crimeConfirmadoPositivamente2));
 
 		}
+		
 		return parameters;
 	}
 

@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -76,5 +77,10 @@ public class WikiMappsEventsRetriever extends EventsRetriever<Point>{
 	@Override
 	public int getTotalEvents() {
 		return points.size();
+	}
+	
+	@Override
+	public Date getStartDate() {
+		return null;
 	}
 }

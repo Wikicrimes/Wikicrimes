@@ -58,6 +58,7 @@ public class StatisticsServlet extends HttpServlet{
 				sessionBuffer.clear();
 				EventsRetriever<?> events = Param.getEventsRetriever(request, context);
 				sessionBuffer.saveTotalEvents(events.getTotalEvents());
+				sessionBuffer.saveStartDate(events.getStartDate());
 //				/*DEBUG*/TimeTest.saveInstant("consulta BD");
 			
 				if(actions.asksGenerateKernelMap()) {
@@ -109,6 +110,7 @@ public class StatisticsServlet extends HttpServlet{
 
 		JSONObject json = new JSONObject();
 		json.put("totalEvents", ses.getTotalEvents());
+		json.put("startDate", ses.getStartDate());
 		
 		JSONObject chartsObj = new JSONObject();
 		chartsObj.put("types", ses.getTypesChartUrl());

@@ -793,7 +793,7 @@ public class ServletOpensocial extends HttpServlet {
 							.getBean("crimeService");
 					filtroForm.setCrimeService(crimeService);
 					List<BaseObject> crimes = filtroForm.getCrimesFiltrados("", "",
-							"", "", "", "", "", "", "", norte, sul, leste, oeste,null);
+							"", "", "", "", "", "", "", norte, sul, leste, oeste, null, null);
 					// /List<Crime> crimes = opensocialService.getCrimes(null);
 					for (BaseObject bo : crimes) {
 	

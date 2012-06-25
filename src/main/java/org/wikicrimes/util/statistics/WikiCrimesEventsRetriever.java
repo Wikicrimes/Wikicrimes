@@ -34,6 +34,7 @@ public class WikiCrimesEventsRetriever extends EventsRetriever<BaseObject>{
 	private Map<String,Integer> typeHistogram;
 	private Map<String,Integer> reasonHistogram;
 	private int totalEvents;
+	private Date startDate;
 	private int totalReasons;
 	
 	private HttpServletRequest request;
@@ -72,6 +73,9 @@ public class WikiCrimesEventsRetriever extends EventsRetriever<BaseObject>{
 	private void load() {
 		retrieveEvents();
 		this.totalEvents = events.size();
+		if(events.size() > 0){
+			this.startDate = ((Crime)events.get(events.size()-1)).getData();
+		}
 		if(includeHistograms) {
 			buildHistograms();
 		}
@@ -95,10 +99,10 @@ public class WikiCrimesEventsRetriever extends EventsRetriever<BaseObject>{
 		FiltroForm filtroForm = getFiltroForm();
 		String tipoCrime = request.getParameter("tc");
 		String tipoVitima = request.getParameter("tv");
-		String tipoLocal = request.getParameter("tl"); // Data - Ex.: 01,01,2008
-		String dataInicial = request.getParameter("di");
-		String dataFinal = request.getParameter("df"); // Horario - Ex.: 5
-		String horarioInicial = request.getParameter("hi");
+		String tipoLocal = request.getParameter("tl");
+		String dataInicial = request.getParameter("di"); // Data - Ex.: 01,01,2008
+		String dataFinal = request.getParameter("df");
+		String horarioInicial = request.getParameter("hi"); // Horario - Ex.: 5
 		String horarioFinal = request.getParameter("hf");
 		String entidadeCertificadora = request.getParameter("ec");
 		String confirmadosPositivamente = request.getParameter("cp");
@@ -106,11 +110,17 @@ public class WikiCrimesEventsRetriever extends EventsRetriever<BaseObject>{
 		String sul = limitesLatlng.sul+"";
 		String leste = limitesLatlng.leste+"";
 		String oeste = limitesLatlng.oeste+"";
+		String maxResults = null;
+		boolean defaultFilter = Boolean.valueOf(request.getParameter("defilter"));
+		if(defaultFilter){
+			dataInicial = null;
+			maxResults = "1000";
+		}
 		
 		events = filtroForm.getCrimesFiltrados(tipoCrime, tipoVitima,
 				tipoLocal, horarioInicial, horarioFinal, dataInicial,
 				dataFinal, entidadeCertificadora, confirmadosPositivamente,
-				norte, sul, leste, oeste, null);
+				norte, sul, leste, oeste, null, maxResults);
 		
 		if(includeReports) {
 			List<BaseObject> reports = filtroForm.getRelatosFiltrados(norte, sul, leste, oeste, dataInicial, dataFinal, true);
@@ -300,6 +310,10 @@ public class WikiCrimesEventsRetriever extends EventsRetriever<BaseObject>{
 
 	public int getTotalEvents() {
 		return totalEvents;
+	}
+	
+	public Date getStartDate(){
+		return startDate;
 	}
 	
 	public int getTotalReasons() {

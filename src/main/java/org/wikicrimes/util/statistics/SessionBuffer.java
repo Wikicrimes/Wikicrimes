@@ -1,6 +1,8 @@
 package org.wikicrimes.util.statistics;
 
 import java.awt.Image;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,6 +53,10 @@ public class SessionBuffer {
 		res.totalEvents = totalEvents;
 	}
 	
+	public void saveStartDate(Date startDate){
+		res.startDate = startDate;
+	}
+	
 	public void saveEvents(String events) {
 		res.events = events;
 	}
@@ -83,6 +89,13 @@ public class SessionBuffer {
 		return res.totalEvents;
 	}
 	
+	public String getStartDate(){
+		if(res.startDate == null)
+			return null;
+		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		return df.format(res.startDate);
+	}
+	
 	public String getEvents() {
 		return res.events;
 	}
@@ -93,6 +106,7 @@ public class SessionBuffer {
 	
 	public void clear() {
 		res.totalEvents = 0;
+		res.startDate = null;
 		res.events = null;
 		res.center = null;
 		res.kernelmapImg = null;
@@ -108,6 +122,7 @@ class StatReqResults{
 	Image kernelmapImg;
 	KernelMap kernelmapObj;
 	String typesChartUrl, reasonsChartUrl, events, kernelmapBooleanGrid;
+	Date startDate;
 	PontoLatLng center;
 	
 }

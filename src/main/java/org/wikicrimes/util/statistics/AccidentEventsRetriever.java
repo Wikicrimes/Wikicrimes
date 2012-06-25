@@ -80,6 +80,11 @@ public class AccidentEventsRetriever extends EventsRetriever<Acidente>{
 		return events.size();
 	}
 	
+	@Override
+	public Date getStartDate() {
+		return null;
+	}
+	
 	public static List<Point> toPixel(List<Acidente> events, int zoom){
 		List<Point> pontos = new ArrayList<Point>();
 		for(Acidente o : events){

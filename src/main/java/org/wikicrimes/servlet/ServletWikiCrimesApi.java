@@ -291,7 +291,7 @@ public class ServletWikiCrimesApi extends HttpServlet {
 		filtroForm.setMaxResults(0);
 		filtroForm.setPrimeiraVez(false);
 		List<BaseObject> crimes = filtroForm.getCrimesFiltrados(tipoCrime, tipoVitima,
-				"", "", "", dataInicial, dataFinal, "", "", norte, sul, leste, oeste,email);
+				"", "", "", dataInicial, dataFinal, "", "", norte, sul, leste, oeste,email, null);
 		List<String> crimesText = new ArrayList<String>();
 		for (Iterator<BaseObject> iterator = crimes.iterator(); iterator.hasNext();) {
 			Crime crime = (Crime) iterator.next();

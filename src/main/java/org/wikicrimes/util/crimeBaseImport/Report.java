@@ -3,7 +3,7 @@ package org.wikicrimes.util.crimeBaseImport;
 public class Report {
 
 	Parser parser;
-	int successCount, discardCount, repeatCount;
+	int successCount, discardCount, repeatCount, totalCount;
 	
 	public Report(Parser parser) {
 		this.parser = parser;
@@ -11,6 +11,9 @@ public class Report {
 
 	public void countSuccess(Model crime){
 		successCount++;
+		totalCount++;
+		System.out.print(totalCount + " ");
+		System.out.println("Crime importado, id_original=" + crime.CRI_ID_ORIGINAL);
 	}
 	
 	public void countException(IgnoredCrimeException exception){
@@ -31,6 +34,9 @@ public class Report {
 			writeToFile(exception.rawData);
 			break;
 		}
+		totalCount++;
+		System.out.print(totalCount + " ");
+		System.out.println("Crime ignorado, razao=" + exception.reason);
 	}
 	
 	public void printSummary(){

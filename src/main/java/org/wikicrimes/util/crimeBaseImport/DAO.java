@@ -98,7 +98,7 @@ public class DAO {
 			} catch (IgnoredCrimeException e) {
 				/*LOG*/report.countException(e);
 			}
-			parser.next();
+			data = parser.next();
 		}
 		/*LOG*/report.printSummary();
 		updateLastImportTime(parser);

@@ -28,7 +28,7 @@ import org.wikicrimes.util.crimeBaseImport.Model;
 /**
  * Base com crimes de Washington
  * 
- * http://data.octo.dc.gov/Main_DataCatalog.aspx
+ * http://data.octo.dc.gov/Main_DataCatalog.aspx //Pegar o tipo CSV
  *
  * @author victor
  */

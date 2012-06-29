@@ -8,12 +8,12 @@ import java.util.List;
 import javax.servlet.ServletContext;
 
 import org.wikicrimes.model.PontoLatLng;
-import org.wikicrimes.util.rotaSegura.ParametroInvalidoRotaSeguraException;
-import org.wikicrimes.util.rotaSegura.geometria.Ponto;
 import org.wikicrimes.util.statistics.AccidentEventsRetriever;
 import org.wikicrimes.util.statistics.WikiCrimesEventsRetriever;
+import org.wikinova.rotaSegura.ParametroInvalidoRotaSeguraException;
 
 import br.com.wikinova.heatmaps.KernelMap;
+import br.com.wikinova.heatmaps.util.Ponto;
 
 public class KernelMapUtil {
 

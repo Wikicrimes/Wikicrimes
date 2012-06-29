@@ -1,4 +1,4 @@
-package org.wikicrimes.servlet;
+package org.wikicrimes.util.rotaSegura;
 
 import java.awt.Color;
 import java.io.IOException;
@@ -14,18 +14,18 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.wikicrimes.util.kernelmap.PropertiesLoader;
-import org.wikicrimes.util.rotaSegura.geometria.Ponto;
-import org.wikicrimes.util.rotaSegura.geometria.Rota;
-import org.wikicrimes.util.rotaSegura.googlemaps.StatusGM;
-import org.wikicrimes.util.rotaSegura.logica.FilaRotasCandidatas;
-import org.wikicrimes.util.rotaSegura.logica.Perigo;
-import org.wikicrimes.util.rotaSegura.logica.SafeRouteCalculator;
-import org.wikicrimes.util.rotaSegura.logica.exceptions.CantFindPath;
-import org.wikicrimes.util.rotaSegura.logica.modelo.GrafoRotas;
-import org.wikicrimes.util.rotaSegura.logica.modelo.RotaGM;
-import org.wikicrimes.util.rotaSegura.testes.TesteCenariosRotas;
-import org.wikicrimes.util.rotaSegura.testes.TesteRotasImg;
 import org.wikicrimes.util.statistics.SessionBuffer;
+import org.wikinova.rotaSegura.geometria.Ponto;
+import org.wikinova.rotaSegura.geometria.Rota;
+import org.wikinova.rotaSegura.googlemaps.StatusGM;
+import org.wikinova.rotaSegura.logica.FilaRotasCandidatas;
+import org.wikinova.rotaSegura.logica.Perigo;
+import org.wikinova.rotaSegura.logica.SafeRouteCalculator;
+import org.wikinova.rotaSegura.logica.exceptions.CantFindPath;
+import org.wikinova.rotaSegura.logica.modelo.GrafoRotas;
+import org.wikinova.rotaSegura.logica.modelo.RotaGM;
+import org.wikinova.rotaSegura.testes.TesteCenariosRotas;
+import org.wikinova.rotaSegura.testes.TesteRotasImg;
 
 import br.com.wikinova.heatmaps.KernelMap;
 

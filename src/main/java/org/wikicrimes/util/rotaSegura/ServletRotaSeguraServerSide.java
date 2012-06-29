@@ -1,7 +1,7 @@
-package org.wikicrimes.servlet;
+package org.wikicrimes.util.rotaSegura;
 
-import static org.wikicrimes.servlet.ServletRotaSeguraClientSide.corrigirPontasDaRota;
-import static org.wikicrimes.servlet.ServletRotaSeguraClientSide.respostaErro;
+import static org.wikicrimes.util.rotaSegura.ServletRotaSeguraClientSide.corrigirPontasDaRota;
+import static org.wikicrimes.util.rotaSegura.ServletRotaSeguraClientSide.respostaErro;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -22,22 +22,22 @@ import org.wikicrimes.model.PontoLatLng;
 import org.wikicrimes.util.DataUtil;
 import org.wikicrimes.util.kernelmap.KernelMapUtil;
 import org.wikicrimes.util.kernelmap.PropertiesLoader;
-import org.wikicrimes.util.rotaSegura.ParametroInvalidoRotaSeguraException;
-import org.wikicrimes.util.rotaSegura.geometria.Ponto;
-import org.wikicrimes.util.rotaSegura.geometria.Rota;
-import org.wikicrimes.util.rotaSegura.googlemaps.DirectionsAPIRequestException;
-import org.wikicrimes.util.rotaSegura.googlemaps.FormatoResposta;
-import org.wikicrimes.util.rotaSegura.googlemaps.JSONRouteHandler;
-import org.wikicrimes.util.rotaSegura.googlemaps.KMLRouteHandler;
-import org.wikicrimes.util.rotaSegura.googlemaps.StatusGMDirections;
-import org.wikicrimes.util.rotaSegura.logica.FilaRotasCandidatas;
-import org.wikicrimes.util.rotaSegura.logica.Perigo;
-import org.wikicrimes.util.rotaSegura.logica.SafeRouteCalculator;
-import org.wikicrimes.util.rotaSegura.logica.exceptions.CantFindPath;
-import org.wikicrimes.util.rotaSegura.logica.modelo.GrafoRotas;
-import org.wikicrimes.util.rotaSegura.logica.modelo.RotaGM;
+import org.wikinova.rotaSegura.ParametroInvalidoRotaSeguraException;
+import org.wikinova.rotaSegura.geometria.Rota;
+import org.wikinova.rotaSegura.googlemaps.DirectionsAPIRequestException;
+import org.wikinova.rotaSegura.googlemaps.FormatoResposta;
+import org.wikinova.rotaSegura.googlemaps.JSONRouteHandler;
+import org.wikinova.rotaSegura.googlemaps.KMLRouteHandler;
+import org.wikinova.rotaSegura.googlemaps.StatusGMDirections;
+import org.wikinova.rotaSegura.logica.FilaRotasCandidatas;
+import org.wikinova.rotaSegura.logica.Perigo;
+import org.wikinova.rotaSegura.logica.SafeRouteCalculator;
+import org.wikinova.rotaSegura.logica.exceptions.CantFindPath;
+import org.wikinova.rotaSegura.logica.modelo.GrafoRotas;
+import org.wikinova.rotaSegura.logica.modelo.RotaGM;
 
 import br.com.wikinova.heatmaps.KernelMap;
+import br.com.wikinova.heatmaps.util.Ponto;
 
 
 @SuppressWarnings("serial")

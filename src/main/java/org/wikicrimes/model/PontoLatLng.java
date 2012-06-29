@@ -6,7 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.wikicrimes.util.kernelmap.LatLngBoundsGM;
-import org.wikicrimes.util.rotaSegura.geometria.Ponto;
+
+import br.com.wikinova.heatmaps.util.Ponto;
 
 @SuppressWarnings("serial")
 public class PontoLatLng extends BaseObject {

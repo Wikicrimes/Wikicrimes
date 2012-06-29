@@ -39,10 +39,11 @@ import org.wikicrimes.service.CrimeService;
 import org.wikicrimes.service.UsuarioService;
 import org.wikicrimes.util.Constantes;
 import org.wikicrimes.util.ServletUtil;
-import org.wikicrimes.util.rotaSegura.geometria.Ponto;
 import org.wikicrimes.util.statistics.KernelMapRequestHandler;
 import org.wikicrimes.util.statistics.SessionBuffer;
 import org.wikicrimes.web.FiltroForm;
+
+import br.com.wikinova.heatmaps.util.Ponto;
 
 public class ServletWikiCrimesApi extends HttpServlet {
 	/**

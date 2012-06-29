@@ -10,10 +10,10 @@ import java.util.Map;
 import org.wikicrimes.model.BaseObject;
 import org.wikicrimes.model.PontoLatLng;
 import org.wikicrimes.service.CrimeService;
-import org.wikicrimes.util.rotaSegura.geometria.Ponto;
 import org.wikicrimes.util.statistics.WikiCrimesEventsRetriever;
 
 import br.com.wikinova.heatmaps.KernelMap;
+import br.com.wikinova.heatmaps.util.Ponto;
 
 
 public class AvaliacaoPerigo{
